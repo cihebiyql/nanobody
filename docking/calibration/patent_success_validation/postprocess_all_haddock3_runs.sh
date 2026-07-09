@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_01_PVRIG-151_HR151" --name "case02_pos_01_PVRIG-151_HR151" --cdr1 26-35 --cdr2 53-59 --cdr3 98-116
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_02_PVRIG-20" --name "case02_pos_02_PVRIG-20" --cdr1 26-33 --cdr2 51-57 --cdr3 96-110
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_03_PVRIG-30" --name "case02_pos_03_PVRIG-30" --cdr1 26-33 --cdr2 52-58 --cdr3 97-110
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_04_PVRIG-38" --name "case02_pos_04_PVRIG-38" --cdr1 26-33 --cdr2 51-58 --cdr3 97-112
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_05_PVRIG-39" --name "case02_pos_05_PVRIG-39" --cdr1 26-33 --cdr2 51-57 --cdr3 96-109
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_06_20H5" --name "case02_pos_06_20H5" --cdr1 26-33 --cdr2 51-57 --cdr3 96-110
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_07_30H2" --name "case02_pos_07_30H2" --cdr1 26-33 --cdr2 52-58 --cdr3 97-110
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_08_39H2" --name "case02_pos_08_39H2" --cdr1 26-33 --cdr2 51-57 --cdr3 96-109
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_09_39H4" --name "case02_pos_09_39H4" --cdr1 26-33 --cdr2 51-57 --cdr3 96-109
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_10_151H7" --name "case02_pos_10_151H7" --cdr1 26-35 --cdr2 53-59 --cdr3 98-116
+python /mnt/d/work/抗体/docking/success_case_validation/process_haddock3_calibration_run.py --workdir "/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_11_151H8" --name "case02_pos_11_151H8" --cdr1 26-35 --cdr2 53-59 --cdr3 98-116

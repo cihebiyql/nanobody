@@ -1,0 +1,248 @@
+{
+  "vhh_length": 130,
+  "antigen_length": 326,
+  "vhh_score_raw": 1.112696647644043,
+  "mean_paratope_probability": 0.40131762623786926,
+  "mean_epitope_probability": 0.5104621648788452,
+  "top_paratope_residues": [
+    {
+      "position_1based": 115,
+      "aa": "S",
+      "probability": 0.9013388156890869
+    },
+    {
+      "position_1based": 116,
+      "aa": "Y",
+      "probability": 0.8841553926467896
+    },
+    {
+      "position_1based": 114,
+      "aa": "Y",
+      "probability": 0.8783227205276489
+    },
+    {
+      "position_1based": 118,
+      "aa": "L",
+      "probability": 0.8670420050621033
+    },
+    {
+      "position_1based": 112,
+      "aa": "L",
+      "probability": 0.8608929514884949
+    },
+    {
+      "position_1based": 117,
+      "aa": "P",
+      "probability": 0.8426687121391296
+    },
+    {
+      "position_1based": 106,
+      "aa": "D",
+      "probability": 0.8361575603485107
+    },
+    {
+      "position_1based": 113,
+      "aa": "Y",
+      "probability": 0.8151981830596924
+    },
+    {
+      "position_1based": 111,
+      "aa": "Y",
+      "probability": 0.8002551198005676
+    },
+    {
+      "position_1based": 108,
+      "aa": "Y",
+      "probability": 0.7814743518829346
+    },
+    {
+      "position_1based": 105,
+      "aa": "Y",
+      "probability": 0.7773425579071045
+    },
+    {
+      "position_1based": 107,
+      "aa": "Y",
+      "probability": 0.774996280670166
+    },
+    {
+      "position_1based": 104,
+      "aa": "N",
+      "probability": 0.7565880417823792
+    },
+    {
+      "position_1based": 101,
+      "aa": "Y",
+      "probability": 0.7523975968360901
+    },
+    {
+      "position_1based": 120,
+      "aa": "W",
+      "probability": 0.7508613467216492
+    }
+  ],
+  "top_epitope_residues": [
+    {
+      "position_1based": 92,
+      "aa": "H",
+      "probability": 0.7521597743034363
+    },
+    {
+      "position_1based": 94,
+      "aa": "E",
+      "probability": 0.7384333610534668
+    },
+    {
+      "position_1based": 80,
+      "aa": "P",
+      "probability": 0.7304796576499939
+    },
+    {
+      "position_1based": 289,
+      "aa": "E",
+      "probability": 0.7265205383300781
+    },
+    {
+      "position_1based": 141,
+      "aa": "E",
+      "probability": 0.7246494889259338
+    },
+    {
+      "position_1based": 320,
+      "aa": "E",
+      "probability": 0.7150024175643921
+    },
+    {
+      "position_1based": 155,
+      "aa": "D",
+      "probability": 0.7144446969032288
+    },
+    {
+      "position_1based": 312,
+      "aa": "D",
+      "probability": 0.7129615545272827
+    },
+    {
+      "position_1based": 119,
+      "aa": "E",
+      "probability": 0.708129346370697
+    },
+    {
+      "position_1based": 93,
+      "aa": "P",
+      "probability": 0.7014825940132141
+    },
+    {
+      "position_1based": 251,
+      "aa": "H",
+      "probability": 0.6959341764450073
+    },
+    {
+      "position_1based": 197,
+      "aa": "K",
+      "probability": 0.6897897720336914
+    },
+    {
+      "position_1based": 111,
+      "aa": "Q",
+      "probability": 0.6894147396087646
+    },
+    {
+      "position_1based": 98,
+      "aa": "R",
+      "probability": 0.6840643286705017
+    },
+    {
+      "position_1based": 322,
+      "aa": "P",
+      "probability": 0.6764819622039795
+    }
+  ],
+  "pvrig_overlap": {
+    "has_mask": true,
+    "threshold": 0.5,
+    "predicted_epitope_count": 181,
+    "target_epitope_count": 24,
+    "overlap_count": 22,
+    "target_recall": 0.9166666666666666,
+    "predicted_precision_on_target": 0.12154696132596685,
+    "target_hits_in_top20": 5,
+    "target_recall_top20": 0.20833333333333334,
+    "target_hits_in_top50": 10,
+    "target_recall_top50": 0.4166666666666667,
+    "weighted_target_probability_sum": 13.311202937364577,
+    "top_target_positions": [
+      {
+        "position_1based": 92,
+        "aa": "H",
+        "probability": 0.7521597743034363,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_47"
+      },
+      {
+        "position_1based": 141,
+        "aa": "E",
+        "probability": 0.7246494889259338,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_92"
+      },
+      {
+        "position_1based": 98,
+        "aa": "R",
+        "probability": 0.6840643286705017,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_53"
+      },
+      {
+        "position_1based": 83,
+        "aa": "A",
+        "probability": 0.6723077297210693,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_38"
+      },
+      {
+        "position_1based": 143,
+        "aa": "S",
+        "probability": 0.6706441640853882,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_94"
+      },
+      {
+        "position_1based": 81,
+        "aa": "N",
+        "probability": 0.6620505452156067,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_36"
+      },
+      {
+        "position_1based": 139,
+        "aa": "F",
+        "probability": 0.656097412109375,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_90"
+      },
+      {
+        "position_1based": 95,
+        "aa": "R",
+        "probability": 0.6308087706565857,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_50;soft_hint_R95"
+      },
+      {
+        "position_1based": 140,
+        "aa": "P",
+        "probability": 0.6215388774871826,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_91"
+      },
+      {
+        "position_1based": 96,
+        "aa": "G",
+        "probability": 0.6041541695594788,
+        "target_weight": 1.0,
+        "hotspot_ids": "core_hotspot_51"
+      }
+    ]
+  },
+  "warning": "Phase1 baseline only; not calibrated Kd and not a final PVRIG binder proof."
+}

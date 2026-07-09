@@ -1,0 +1,14 @@
+stage_or_metric,basis,n,observed_total_s,per_sequence_s,confidence,notes
+parse/write input,"stage_timings.tsv, 11 sequences",11,0.004,<0.01,high,FASTA parsing and small file writes are negligible.
+official ab-data-validator / positive CDR identity,"stage_timings.tsv, 11 sequences",11,22.773,2.07,high,Includes official validator setup and 48 built-in positive references.
+vhh-screen L1 + basic physicochemical/liability scan,"skip-abnativ/skip-sapiens/skip-tnp benchmark, 11 sequences",11,2.66,0.24,high,"Numbering, CDR extraction, length, pI/charge/GRAVY, simple liabilities."
+AbNatiV VHH scoring incremental,abnativ_only - l1_basic benchmark,11,32.64,2.97,medium-high,Wrapper/model overhead included; 9/11 produced scores in this positive set.
+Sapiens human-likeness incremental,sapiens_only - l1_basic benchmark,11,21.26,1.93,medium-high,Human-likeness and suggested mutation scoring.
+TNP developability incremental through vhh-screen,tnp_only - l1_basic benchmark,11,111.65,10.15,medium-high,TNP wrapper/model overhead; direct standalone batch was faster in one observed run.
+vhh-screen full,"full benchmark, 11 sequences",11,187.57,17.05,high,Full run includes ~19.4s residual wrapper/interaction overhead in this split benchmark.
+local positive CDR novelty,"stage_timings.tsv, 11 sequences vs local positive CDRs",11,24.489,2.23,high,Local CDR novelty/leakage check.
+team diversity clustering,"stage_timings.tsv, 11 sequences",11,1.881,0.17,high,Pairwise team identity and cluster scoring.
+portfolio merge/ranking/report writes,"stage_timings.tsv, 11 sequences",11,0.006,<0.01,high,Negligible for this batch size.
+NanoBodyBuilder2 monomer structure prediction,"mutant-panel sequential normalized-PDB mtime cadence, 34 usable deltas",34,,median 24.0; mean 32.2; range 20.9-137.5,medium,No unified timer in logs; cadence includes ssh/copy/normalization. Long pauses excluded.
+HADDOCK3 docking,"HADDOCK3 final log duration, mutant panel",34,,median 159.5; mean 172.6; range 145.0-244.0,high,"Current cfg around 40 rigidbody jobs, 10 flexref/emref, 8 cores."
+8X6B + 9E6Y scoring/classification/postprocess,timed rerun on /tmp copy for one completed workdir,1,20.46,20.46,medium,Local CPU postprocess of 10 models; varies with number of top models.

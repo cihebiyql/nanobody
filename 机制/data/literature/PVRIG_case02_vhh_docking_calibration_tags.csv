@@ -1,0 +1,13 @@
+tag_id,importance,tag,meaning,docking_or_modeling_check,warning
+case02_tag_001,HIGH,BINDER_NOT_ENOUGH,Binding to PVRIG alone is insufficient,Do not rank only by docking energy; require PVRL2 blocking/interface occlusion,Binder can be non-blocking
+case02_tag_002,HIGH,BLOCKING_INTERFACE_REQUIRED,Known VHHs have nM blocking IC50,Prefer poses near PVRIG-PVRL2 consensus interface,Remote-surface poses should be downgraded
+case02_tag_003,HIGH,STERIC_COMPETITION,VHH likely blocks by steric competition with PVRL2,Superpose PVRL2 from 8X6B/9E6Y and check clash/occlusion,Clash-free remote poses may not block
+case02_tag_004,HIGH,HR151_POSITIVE_CONTROL_NOT_TEMPLATE,HR-151 is official positive and leakage reference,Use HR-151 to calibrate pipeline but exclude similar CDR designs,Do not copy or lightly mutate HR-151
+case02_tag_005,HIGH,MULTI_FAMILY_POSITIVE_SIGNAL,20/30/38/39/151 are all useful positives,Calibrate against multiple VHH families,Do not overfit to 151
+case02_tag_006,MEDIUM,LONG_CDR3_ADVANTAGE,HR-151 has a 19-aa CDR3 that may form protruding paratope,Check whether CDR3 points to interface and mediates contacts,Longer is not automatically better
+case02_tag_007,MEDIUM,SHORTER_CDR3_CAN_WORK,20/30 appear to have shorter CDR3 but still block,Accept compact CDR3 poses if interface occlusion is strong,Avoid hard minimum length rules
+case02_tag_008,MEDIUM,CDR3_CYS_RISK_AND_OPPORTUNITY,CDR3 cysteine may stabilize or create developability risk,Check disulfide/free Cys and exposed hydrophobicity,Flag unexplained free Cys
+case02_tag_009,MEDIUM,FORMAT_DEPENDENCE,VHH-Fc and bispecific formats affect activity,Separate paratope docking from in-vivo format interpretation,Docking does not predict half-life/Fc effects
+case02_tag_010,MEDIUM,PVRIG30_NOT_SECONDARY,PVRIG-30 family is also successful in bispecific context,Keep 30 family in validation set,Do not treat 151 as the only useful positive
+case02_tag_011,CAUTION,NO_PUBLIC_VHH_PVRIG_COMPLEX,No public PVRIG-HR151/PVRIG-151 complex structure,Label residue contacts as docking inference unless experimentally validated,Do not state R95/F139 contact as fact
+case02_tag_012,CAUTION,NUMBERING_MUST_BE_UNIFIED,Patent CDRs may use Kabat while local validator uses IMGT,Normalize with ANARCI/IMGT before similarity/contact comparisons,Mixed numbering can corrupt CDR identity checks

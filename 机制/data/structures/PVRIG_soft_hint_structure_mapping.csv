@@ -1,0 +1,7 @@
+hint,assumed_hint_numbering,uniprot_position,expected_hint_aa,pdb_id,pvrig_chain,pdb_resseq,pdb_icode,pdb_aa,mapping_status,interface_status,alignment_col,interpretation
+S67,UniProt_Q6DKI7_position,67,S,8X6B,B,29,,S,mapped_residue_matches_hint_aa,not_4p5a_interface_in_this_structure,,soft_hint_only_not_hard_constraint
+S67,UniProt_Q6DKI7_position,67,S,9E6Y,A,27,,S,mapped_residue_matches_hint_aa,not_4p5a_interface_in_this_structure,,soft_hint_only_not_hard_constraint
+R95,UniProt_Q6DKI7_position,95,R,8X6B,B,57,,R,mapped_residue_matches_hint_aa,consensus_4p5a_interface,50,soft_hint_only_not_hard_constraint
+R95,UniProt_Q6DKI7_position,95,R,9E6Y,A,55,,R,mapped_residue_matches_hint_aa,consensus_4p5a_interface,50,soft_hint_only_not_hard_constraint
+I97,UniProt_Q6DKI7_position,97,I,8X6B,B,59,,I,mapped_residue_matches_hint_aa,single_structure_4p5a_interface,52,soft_hint_only_not_hard_constraint
+I97,UniProt_Q6DKI7_position,97,I,9E6Y,A,57,,I,mapped_residue_matches_hint_aa,not_4p5a_interface_in_this_structure,52,soft_hint_only_not_hard_constraint

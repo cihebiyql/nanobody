@@ -1,0 +1,10 @@
+{
+  "session_id": "omx-1783480950798-thvq9c",
+  "native_session_id": "019f37cc-7a60-75a1-9e21-e4e42c2e41a5",
+  "started_at": "2026-07-08T03:22:30.930Z",
+  "cwd": "/mnt/d/work/抗体/node1",
+  "pid": 620165,
+  "platform": "linux",
+  "pid_start_ticks": 32368139,
+  "pid_cmdline": "/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex resume -c model_instructions_file=\"/mnt/d/work/抗体/node1/.omx/state/sessions/omx-1783480950798-thvq9c/AGENTS.md\""
+}

@@ -1,0 +1,9 @@
+# Safety-first repository: this workspace contains hundreds of GB of data,
+# model weights, environments, and docking outputs. New files are ignored by
+# default and the sync script force-adds only lightweight source/docs artifacts.
+*
+
+!.gitignore
+!.gitattributes
+!README.md
+!PROJECT_PROGRESS.md

@@ -1,0 +1,12 @@
+recommended_order,molecule_name,family,workdir,input_fasta,cdr_ambig_tbl,haddock_cfg,node1_structure_script,node1_haddock_script,monomer_raw_pdb,monomer_chainA_pdb,haddock_run_dir,consensus_csv
+1,PVRIG-151_HR151,151,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_01_PVRIG-151_HR151,yes,yes,yes,yes,yes,yes,yes,yes,yes
+2,PVRIG-20,20,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_02_PVRIG-20,yes,yes,yes,yes,yes,yes,yes,yes,yes
+3,PVRIG-30,30,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_03_PVRIG-30,yes,yes,yes,yes,yes,yes,yes,yes,yes
+4,PVRIG-38,38,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_04_PVRIG-38,yes,yes,yes,yes,yes,yes,yes,yes,yes
+5,PVRIG-39,39,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_05_PVRIG-39,yes,yes,yes,yes,yes,yes,yes,yes,yes
+6,20H5,20,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_06_20H5,yes,yes,yes,yes,yes,yes,yes,yes,yes
+7,30H2,30,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_07_30H2,yes,yes,yes,yes,yes,yes,yes,yes,yes
+8,39H2,39,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_08_39H2,yes,yes,yes,yes,yes,yes,yes,yes,yes
+9,39H4,39,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_09_39H4,yes,yes,yes,yes,yes,yes,yes,yes,yes
+10,151H7,151,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_10_151H7,yes,yes,yes,yes,yes,yes,yes,yes,yes
+11,151H8,151,/mnt/d/work/抗体/docking/calibration/patent_success_validation/case02_pos_11_151H8,yes,yes,yes,yes,yes,yes,yes,yes,yes

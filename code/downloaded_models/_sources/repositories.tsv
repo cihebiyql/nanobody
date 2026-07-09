@@ -1,0 +1,9 @@
+model	type	url	note
+DeepNano	git	https://github.com/ddd9898/DeepNano.git	author repository for DeepNano paper
+DeepNano-data	git	https://github.com/ddd9898/DeepNano-data.git	companion data repository, useful for dataset reproduction
+NABP-BERT	git	https://github.com/FMoonlightS/NABP-BERT.git	public repository linked to NABP-BERT paper metadata/search
+NABP-LSTM-Att	git	https://github.com/FMoonlightS/NABP-LSTM-Att.git	public repository for NABP-LSTM-Att
+NanoBinder	git	https://github.com/pallucs/NanoBinder.git	public repository for NanoBinder paper/webserver
+NanoBind	git	https://github.com/zhaosq17/NanoBind.git	public repository cited by NanoBind paper
+Sequence-Based-NABP	paper	https://arxiv.org/abs/2308.01920	no official code repo found; paper will be downloaded and local baseline scaffold added
+Sequence-Based-NABP	git	https://github.com/sarwanpasha/Nanobody_Antigen.git	author repository footnoted in arXiv paper

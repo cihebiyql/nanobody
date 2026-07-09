@@ -1,0 +1,10 @@
+query_id,reference_id,chain,cdr,numbering_scheme,alignment_tool,identity_pct,hamming_distance,threshold_pct,status,notes
+HR-151_VHH,151,VH,CDRH1,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRH1 identity to 151 is 1 >= 0.8
+HR-151_VHH,151,VH,CDRH2,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRH2 identity to 151 is 1 >= 0.8
+HR-151_VHH,151,VH,CDRH3,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRH3 identity to 151 is 1 >= 0.8
+Tab5_full_IgG,CPA.7.021,VH,CDRH1,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRH1 identity to CPA.7.021 is 1 >= 0.8
+Tab5_full_IgG,CPA.7.021,VH,CDRH2,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRH2 identity to CPA.7.021 is 1 >= 0.8
+Tab5_full_IgG,CPA.7.021,VH,CDRH3,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRH3 identity to CPA.7.021 is 1 >= 0.8
+Tab5_full_IgG,CPA.7.021,VL,CDRL1,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRL1 identity to CPA.7.021 is 1 >= 0.8
+Tab5_full_IgG,CPA.7.021,VL,CDRL2,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRL2 identity to CPA.7.021 is 1 >= 0.8
+Tab5_full_IgG,CPA.7.021,VL,CDRL3,IMGT,MUSCLE5 via ab-data-validator,100.0,not_reported_by_validator,80.0,excluded_high_cdr_identity,CDRL3 identity to CPA.7.021 is 1 >= 0.8

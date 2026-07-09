@@ -1,0 +1,4 @@
+hint,status,note
+S67,soft_epitope_hint_not_hard_selected,Map separately with scripts/reconcile_pvrig_numbering.py; never use as a Phase I hard constraint.
+R95,soft_epitope_hint_not_hard_selected,Map separately with scripts/reconcile_pvrig_numbering.py; never use as a Phase I hard constraint.
+I97,soft_epitope_hint_not_hard_selected,Map separately with scripts/reconcile_pvrig_numbering.py; never use as a Phase I hard constraint.

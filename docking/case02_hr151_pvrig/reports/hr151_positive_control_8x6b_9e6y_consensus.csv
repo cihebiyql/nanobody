@@ -1,0 +1,6 @@
+model,consensus_class,baseline_count,blocker_like_count,plausible_count,binder_like_count,evidence_only_count,baseline_classes,best_haddock_rank,recommended_next_step
+cluster_10_model_1,SINGLE_BASELINE_BLOCKER_RECHECK,2,1,1,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_PLAUSIBLE_B,10,inspect weaker baseline and decide whether this is an alternative epitope or an unstable pose
+cluster_1_model_1,CONSENSUS_BLOCKER_LIKE_A,2,2,0,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_LIKE_A,1,prioritize after leakage and format checks; both reference baselines support blocker-like geometry
+cluster_2_model_1,DISCORDANT_PLAUSIBLE_VS_BINDER_RECHECK,2,0,1,1,0,8x6b:BINDER_LIKE_C;9e6y:BLOCKER_PLAUSIBLE_B,2,one baseline is plausible but another is binder-like; inspect PVRL2 placement and do not prioritize without redocking or assay evidence
+cluster_3_model_1,SINGLE_BASELINE_BLOCKER_RECHECK,2,1,1,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_PLAUSIBLE_B,3,inspect weaker baseline and decide whether this is an alternative epitope or an unstable pose
+cluster_8_model_1,SINGLE_BASELINE_BLOCKER_RECHECK,2,1,1,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_PLAUSIBLE_B,8,inspect weaker baseline and decide whether this is an alternative epitope or an unstable pose

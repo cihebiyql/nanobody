@@ -1,0 +1,1445 @@
+[
+  {
+    "id": "nanobodybuilder2_immunebuilder",
+    "name": "NanoBodyBuilder2 / ImmuneBuilder",
+    "category": "structure",
+    "papers": [
+      "https://www.nature.com/articles/s42003-023-04927-7"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s42003-023-04927-7.pdf",
+        "status": "downloaded",
+        "path": "papers/structure/nanobodybuilder2_immunebuilder/nanobodybuilder2_immunebuilder__s42003-023-04927-7.pdf.pdf",
+        "bytes": 2316919,
+        "sha256_16": "31b6a93ba676d4a4"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/ImmuneBuilder",
+        "status": "cloned",
+        "path": "code/structure/nanobodybuilder2_immunebuilder/oxpig__immunebuilder",
+        "head": "0df4e2a"
+      }
+    ]
+  },
+  {
+    "id": "nanonet",
+    "name": "NanoNet",
+    "category": "structure",
+    "papers": [
+      "https://www.frontiersin.org/articles/10.3389/fimmu.2022.958584/full"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.frontiersin.org/articles/10.3389/fimmu.2022.958584/pdf",
+        "status": "downloaded",
+        "path": "papers/structure/nanonet/nanonet__pdf.pdf",
+        "bytes": 7261211,
+        "sha256_16": "4bfeb7a8e821b8a0"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/dina-lab3D/NanoNet",
+        "status": "cloned",
+        "path": "code/structure/nanonet/dina-lab3d__nanonet",
+        "head": "e712547"
+      }
+    ]
+  },
+  {
+    "id": "igfold",
+    "name": "IgFold",
+    "category": "structure",
+    "papers": [
+      "https://www.nature.com/articles/s41467-023-38063-x"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41467-023-38063-x.pdf",
+        "status": "downloaded",
+        "path": "papers/structure/igfold/igfold__s41467-023-38063-x.pdf.pdf",
+        "bytes": 3969609,
+        "sha256_16": "cfe2a4b1489ee2d3"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/Graylab/IgFold",
+        "status": "cloned",
+        "path": "code/structure/igfold/graylab__igfold",
+        "head": "85d9dcd"
+      }
+    ]
+  },
+  {
+    "id": "heavybuilder2",
+    "name": "HeavyBuilder2",
+    "category": "structure",
+    "papers": [
+      "https://www.sciencedirect.com/science/article/pii/S0022283625005753"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/HeavyBuilder2",
+        "status": "cloned",
+        "path": "code/structure/heavybuilder2/oxpig__heavybuilder2",
+        "head": "0a597f0"
+      }
+    ]
+  },
+  {
+    "id": "abodybuilder3",
+    "name": "ABodyBuilder3",
+    "category": "structure",
+    "papers": [
+      "https://academic.oup.com/bioinformatics/article/40/10/btae576/7810444"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformatics/article-pdf/40/10/btae576/59571994/btae576.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/exscientia/abodybuilder3",
+        "status": "cloned",
+        "path": "code/structure/abodybuilder3/exscientia__abodybuilder3",
+        "head": "18e4058"
+      }
+    ]
+  },
+  {
+    "id": "deepab",
+    "name": "DeepAb",
+    "category": "structure",
+    "papers": [
+      "https://www.sciencedirect.com/science/article/pii/S2666389921002804"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/RosettaCommons/DeepAb",
+        "status": "cloned",
+        "path": "code/structure/deepab/rosettacommons__deepab",
+        "head": "70488c1"
+      }
+    ]
+  },
+  {
+    "id": "ablooper",
+    "name": "ABlooper",
+    "category": "structure",
+    "papers": [
+      "https://academic.oup.com/bioinformatics/article/38/7/1877/6517780"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformatics/article-pdf/38/7/1877/43598388/btac016.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/ABlooper",
+        "status": "cloned",
+        "path": "code/structure/ablooper/oxpig__ablooper",
+        "head": "2dcf208"
+      }
+    ]
+  },
+  {
+    "id": "h3_opt",
+    "name": "H3-OPT",
+    "category": "structure",
+    "papers": [
+      "https://elifesciences.org/articles/91512"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://elifesciences.org/articles/91512.pdf",
+        "status": "http_406",
+        "content_type": ""
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/chenhd21/H3-OPT",
+        "status": "cloned",
+        "path": "code/structure/h3_opt/chenhd21__h3-opt",
+        "head": "1cb9ec1"
+      }
+    ]
+  },
+  {
+    "id": "rosetta_snugdock",
+    "name": "RosettaAntibody3 / SnugDock",
+    "category": "structure",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC7993800/",
+      "https://docs.rosettacommons.org/docs/latest/application_documentation/antibody/antibody-protocol"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7993800/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://www.google"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "alphafold3",
+    "name": "AlphaFold 3 / AlphaFold Server",
+    "category": "structure",
+    "papers": [
+      "https://www.nature.com/articles/s41586-024-07487-w",
+      "https://alphafoldserver.com/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41586-024-07487-w.pdf",
+        "status": "downloaded",
+        "path": "papers/structure/alphafold3/alphafold3__s41586-024-07487-w.pdf.pdf",
+        "bytes": 8602339,
+        "sha256_16": "aba3109f2892454c"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/google-deepmind/alphafold3",
+        "status": "cloned",
+        "path": "code/structure/alphafold3/google-deepmind__alphafold3",
+        "head": "b1f7802"
+      }
+    ]
+  },
+  {
+    "id": "colabfold_alphafold_multimer",
+    "name": "AlphaFold-Multimer / ColabFold",
+    "category": "structure",
+    "papers": [
+      "https://www.nature.com/articles/s41592-022-01488-1"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41592-022-01488-1.pdf",
+        "status": "downloaded",
+        "path": "papers/structure/colabfold_alphafold_multimer/colabfold_alphafold_multimer__s41592-022-01488-1.pdf.pdf",
+        "bytes": 3749367,
+        "sha256_16": "1668727d682b3abf"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/sokrypton/ColabFold",
+        "status": "cloned",
+        "path": "code/structure/colabfold_alphafold_multimer/sokrypton__colabfold",
+        "head": "d04bf9c"
+      },
+      {
+        "url": "https://github.com/google-deepmind/alphafold",
+        "status": "cloned",
+        "path": "code/structure/colabfold_alphafold_multimer/google-deepmind__alphafold",
+        "head": "c77e5d2"
+      }
+    ]
+  },
+  {
+    "id": "chai1",
+    "name": "Chai-1",
+    "category": "structure",
+    "papers": [
+      "https://www.biorxiv.org/content/10.1101/2024.10.10.615955v2"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.biorxiv.org/content/10.1101/2024.10.10.615955v2.full.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/chaidiscovery/chai-lab",
+        "status": "cloned",
+        "path": "code/structure/chai1/chaidiscovery__chai-lab",
+        "head": "66c38d1"
+      }
+    ]
+  },
+  {
+    "id": "boltz",
+    "name": "Boltz-1 / Boltz-2",
+    "category": "structure",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC11601547/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11601547/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/jwohlwend/boltz",
+        "status": "cloned",
+        "path": "code/structure/boltz/jwohlwend__boltz",
+        "head": "b1ebfc4"
+      }
+    ]
+  },
+  {
+    "id": "haddock3",
+    "name": "HADDOCK2.4 / HADDOCK3",
+    "category": "structure",
+    "papers": [
+      "https://www.bonvinlab.org/education/HADDOCK3/HADDOCK3-nanobody-antigen/",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC11483107/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11483107/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/haddocking/haddock3",
+        "status": "cloned",
+        "path": "code/structure/haddock3/haddocking__haddock3",
+        "head": "503aedd"
+      },
+      {
+        "url": "https://github.com/haddocking/HADDOCK-antibody-antigen",
+        "status": "cloned",
+        "path": "code/structure/haddock3/haddocking__haddock-antibody-antigen",
+        "head": "da890ca"
+      }
+    ]
+  },
+  {
+    "id": "cluspro_abemap",
+    "name": "ClusPro / AbEMap",
+    "category": "structure",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC10898366/",
+      "https://cluspro.org/help.php"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10898366/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://www.google"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "hdock",
+    "name": "HDOCK",
+    "category": "structure",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC5793843/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5793843/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "balmfold",
+    "name": "BALMFold",
+    "category": "structure",
+    "papers": [
+      "https://academic.oup.com/bib/article/25/4/bbae245/7682462"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bib/article-pdf/25/4/bbae245/57988258/bbae245.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/beam-labs/balm",
+        "status": "cloned",
+        "path": "code/structure/balmfold/beam-labs__balm",
+        "head": "f027a7f"
+      }
+    ]
+  },
+  {
+    "id": "abdockgen",
+    "name": "AbDockGen",
+    "category": "structure",
+    "papers": [
+      "https://proceedings.mlr.press/v162/jin22a.html"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://proceedings.mlr.press/v162/jin22a/jin22a.pdf",
+        "status": "downloaded",
+        "path": "papers/structure/abdockgen/abdockgen__jin22a.pdf.pdf",
+        "bytes": 5967403,
+        "sha256_16": "69382fbc2d7c8860"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/wengong-jin/abdockgen",
+        "status": "cloned",
+        "path": "code/structure/abdockgen/wengong-jin__abdockgen",
+        "head": "7f54d38"
+      }
+    ]
+  },
+  {
+    "id": "deeprank_ab",
+    "name": "DeepRank-Ab",
+    "category": "structure",
+    "papers": [
+      "https://github.com/haddocking/DeepRank-Ab"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/haddocking/DeepRank-Ab",
+        "status": "cloned",
+        "path": "code/structure/deeprank_ab/haddocking__deeprank-ab",
+        "head": "908e411"
+      }
+    ]
+  },
+  {
+    "id": "rfantibody",
+    "name": "RFantibody",
+    "category": "design",
+    "papers": [
+      "https://www.nature.com/articles/s41586-025-09721-5",
+      "https://www.bakerlab.org/2025/02/28/designing-antibodies-with-rfdiffusion/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41586-025-09721-5.pdf",
+        "status": "downloaded",
+        "path": "papers/design/rfantibody/rfantibody__s41586-025-09721-5.pdf.pdf",
+        "bytes": 45076853,
+        "sha256_16": "142e2ba8bdcfb087"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/RosettaCommons/RFantibody",
+        "status": "cloned",
+        "path": "code/design/rfantibody/rosettacommons__rfantibody",
+        "head": "8fe3114"
+      }
+    ]
+  },
+  {
+    "id": "nanodesigner",
+    "name": "NanoDesigner",
+    "category": "design",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12333243/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12333243/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://www.google"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/bio-ontology-research-group/NanoDesigner",
+        "status": "cloned",
+        "path": "code/design/nanodesigner/bio-ontology-research-group__nanodesigner",
+        "head": "ee21e74"
+      }
+    ]
+  },
+  {
+    "id": "germinal",
+    "name": "Germinal",
+    "category": "design",
+    "papers": [
+      "https://www.biorxiv.org/content/10.1101/2025.09.19.677421v1"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.biorxiv.org/content/10.1101/2025.09.19.677421v1.full.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/SantiagoMille/germinal",
+        "status": "cloned",
+        "path": "code/design/germinal/santiagomille__germinal",
+        "head": "1e1c1a5"
+      }
+    ]
+  },
+  {
+    "id": "iggm",
+    "name": "IgGM",
+    "category": "design",
+    "papers": [
+      "https://openreview.net/forum?id=zmmfsJpYcq",
+      "https://proceedings.iclr.cc/paper_files/paper/2025/hash/fa5b423e24b442180bcd4e13ae75a27f-Abstract-Conference.html"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://openreview.net/pdf?id=zmmfsJpYcq",
+        "status": "http_403",
+        "content_type": "text/html"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/TencentAI4S/IgGM",
+        "status": "cloned",
+        "path": "code/design/iggm/tencentai4s__iggm",
+        "head": "06abc56"
+      }
+    ]
+  },
+  {
+    "id": "tfdesign_sdab",
+    "name": "TFDesign-sdAb",
+    "category": "design",
+    "papers": [
+      "https://www.nature.com/articles/s41421-025-00843-8"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41421-025-00843-8.pdf",
+        "status": "downloaded",
+        "path": "papers/design/tfdesign_sdab/tfdesign_sdab__s41421-025-00843-8.pdf.pdf",
+        "bytes": 6288038,
+        "sha256_16": "70a67847944fd6f0"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "chai2",
+    "name": "Chai-2",
+    "category": "design",
+    "papers": [
+      "https://www.biorxiv.org/content/10.1101/2025.07.05.663018v1.full-text"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.biorxiv.org/content/10.1101/2025.07.05.663018v1.full.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "latentx2",
+    "name": "Latent-X2",
+    "category": "design",
+    "papers": [
+      "https://arxiv.org/abs/2512.20263"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://arxiv.org/pdf/2512.20263",
+        "status": "downloaded",
+        "path": "papers/design/latentx2/latentx2__2512.20263.pdf",
+        "bytes": 11255503,
+        "sha256_16": "e01e5ae31daea9c3"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "jam2",
+    "name": "JAM-2",
+    "category": "design",
+    "papers": [
+      "https://nabla-public.s3.us-east-1.amazonaws.com/2025_Nabla_JAM2.pdf"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://nabla-public.s3.us-east-1.amazonaws.com/2025_Nabla_JAM2.pdf",
+        "status": "downloaded",
+        "path": "papers/design/jam2/jam2__2025_nabla_jam2.pdf.pdf",
+        "bytes": 14060931,
+        "sha256_16": "e965cfa2615b1757"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "easynano",
+    "name": "EasyNano",
+    "category": "design",
+    "papers": [
+      "https://arxiv.org/abs/2606.12772"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://arxiv.org/pdf/2606.12772",
+        "status": "downloaded",
+        "path": "papers/design/easynano/easynano__2606.12772.pdf",
+        "bytes": 824706,
+        "sha256_16": "8b68cdb3511bb51c"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "diffab",
+    "name": "DiffAb",
+    "category": "design",
+    "papers": [
+      "https://openreview.net/forum?id=jSorGn2Tjg"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://openreview.net/pdf?id=jSorGn2Tjg",
+        "status": "http_403",
+        "content_type": "text/html"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/luost26/diffab",
+        "status": "cloned",
+        "path": "code/design/diffab/luost26__diffab",
+        "head": "c3e2966"
+      }
+    ]
+  },
+  {
+    "id": "antifold",
+    "name": "AntiFold",
+    "category": "design",
+    "papers": [
+      "https://arxiv.org/abs/2405.03370",
+      "https://opig.stats.ox.ac.uk/webapps/antifold/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://arxiv.org/pdf/2405.03370",
+        "status": "downloaded",
+        "path": "papers/design/antifold/antifold__2405.03370.pdf",
+        "bytes": 2747217,
+        "sha256_16": "aaf40c84b73a6dd0"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/AntiFold",
+        "status": "cloned",
+        "path": "code/design/antifold/oxpig__antifold",
+        "head": "789d467"
+      }
+    ]
+  },
+  {
+    "id": "nanofold",
+    "name": "nanoFOLD",
+    "category": "design",
+    "papers": [
+      "https://www.biorxiv.org/content/10.1101/2025.04.29.651236v1"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.biorxiv.org/content/10.1101/2025.04.29.651236v1.full.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "iglm",
+    "name": "IgLM",
+    "category": "design",
+    "papers": [
+      "https://www.sciencedirect.com/science/article/pii/S2405471223002715"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/Graylab/IgLM",
+        "status": "cloned",
+        "path": "code/design/iglm/graylab__iglm",
+        "head": "281da4f"
+      }
+    ]
+  },
+  {
+    "id": "vhhbert",
+    "name": "VHHBERT / VHHCorpus-2M",
+    "category": "design",
+    "papers": [
+      "https://arxiv.org/abs/2405.18749"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://arxiv.org/pdf/2405.18749",
+        "status": "downloaded",
+        "path": "papers/design/vhhbert/vhhbert__2405.18749.pdf",
+        "bytes": 4429530,
+        "sha256_16": "42e025e4c84a8bad"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/cognano/AVIDa-SARS-CoV-2",
+        "status": "cloned",
+        "path": "code/design/vhhbert/cognano__avida-sars-cov-2",
+        "head": "a7c4f59"
+      }
+    ]
+  },
+  {
+    "id": "abnativ",
+    "name": "AbNatiV / AbNatiV2",
+    "category": "design",
+    "papers": [
+      "https://www.nature.com/articles/s42256-023-00778-3"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s42256-023-00778-3.pdf",
+        "status": "downloaded",
+        "path": "papers/design/abnativ/abnativ__s42256-023-00778-3.pdf.pdf",
+        "bytes": 4969564,
+        "sha256_16": "951162b6e3730901"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://gitlab.doc.ic.ac.uk/sormanni-lab/abnativ",
+        "status": "cloned",
+        "path": "code/design/abnativ/sormanni-lab__abnativ",
+        "head": "eb517f1"
+      }
+    ]
+  },
+  {
+    "id": "hudiff",
+    "name": "HuDiff / HuDiff-Nb",
+    "category": "design",
+    "papers": [
+      "https://www.biorxiv.org/content/10.1101/2024.10.22.619416v1"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.biorxiv.org/content/10.1101/2024.10.22.619416v1.full.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/TencentAI4S/HuDiff",
+        "status": "cloned",
+        "path": "code/design/hudiff/tencentai4s__hudiff",
+        "head": "9a7d1d5"
+      }
+    ]
+  },
+  {
+    "id": "llamanade",
+    "name": "Llamanade",
+    "category": "design",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC8351782/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8351782/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "biophi",
+    "name": "BioPhi / Sapiens / OASis",
+    "category": "design",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC8837241/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8837241/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/merck/biophi",
+        "status": "cloned",
+        "path": "code/design/biophi/merck__biophi",
+        "head": "bc59cd1"
+      },
+      {
+        "url": "https://github.com/Merck/Sapiens",
+        "status": "cloned",
+        "path": "code/design/biophi/merck__sapiens",
+        "head": "3d676ec"
+      }
+    ]
+  },
+  {
+    "id": "humatch",
+    "name": "Humatch",
+    "category": "design",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC11610552/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11610552/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/Humatch",
+        "status": "cloned",
+        "path": "code/design/humatch/oxpig__humatch",
+        "head": "06205ad"
+      }
+    ]
+  },
+  {
+    "id": "igcraft",
+    "name": "IgCraft",
+    "category": "design",
+    "papers": [
+      "https://arxiv.org/abs/2503.19821"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://arxiv.org/pdf/2503.19821",
+        "status": "downloaded",
+        "path": "papers/design/igcraft/igcraft__2503.19821.pdf",
+        "bytes": 29025851,
+        "sha256_16": "3387c39e6adca368"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/mgreenig/igcraft",
+        "status": "cloned",
+        "path": "code/design/igcraft/mgreenig__igcraft",
+        "head": "4a053de"
+      }
+    ]
+  },
+  {
+    "id": "mcsm_ab2",
+    "name": "mCSM-AB2",
+    "category": "design",
+    "papers": [
+      "https://academic.oup.com/bioinformatics/article/36/5/1453/5607734"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformatics/article-pdf/36/5/1453/32619347/btz752.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "gearbind",
+    "name": "GearBind",
+    "category": "design",
+    "papers": [
+      "https://www.nature.com/articles/s41467-024-51563-8"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41467-024-51563-8.pdf",
+        "status": "downloaded",
+        "path": "papers/design/gearbind/gearbind__s41467-024-51563-8.pdf.pdf",
+        "bytes": 3478173,
+        "sha256_16": "9609b10aec62af90"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/DeepGraphLearning/GearBind",
+        "status": "cloned",
+        "path": "code/design/gearbind/deepgraphlearning__gearbind",
+        "head": "34f1427"
+      }
+    ]
+  },
+  {
+    "id": "graphinity",
+    "name": "Graphinity",
+    "category": "design",
+    "papers": [
+      "https://github.com/oxpig/Graphinity"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/Graphinity",
+        "status": "cloned",
+        "path": "code/design/graphinity/oxpig__graphinity",
+        "head": "281a72f"
+      }
+    ]
+  },
+  {
+    "id": "alpseq",
+    "name": "alpseq",
+    "category": "identification",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12885427/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12885427/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://www.google"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/kzeglinski/alpseq",
+        "status": "cloned",
+        "path": "code/identification/alpseq/kzeglinski__alpseq",
+        "head": "661aea8"
+      }
+    ]
+  },
+  {
+    "id": "nanomap",
+    "name": "NanoMAP",
+    "category": "identification",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC13001438/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13001438/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://www.google"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/wlwhite-tufts/NanoMAP",
+        "status": "cloned",
+        "path": "code/identification/nanomap/wlwhite-tufts__nanomap",
+        "head": "ade7099"
+      }
+    ]
+  },
+  {
+    "id": "phage_seq_nbseq",
+    "name": "phage-seq + nbseq",
+    "category": "identification",
+    "papers": [
+      "https://github.com/caseygrun/phage-seq",
+      "https://github.com/caseygrun/nbseq"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/caseygrun/phage-seq",
+        "status": "cloned",
+        "path": "code/identification/phage_seq_nbseq/caseygrun__phage-seq",
+        "head": "77908ea"
+      },
+      {
+        "url": "https://github.com/caseygrun/nbseq",
+        "status": "cloned",
+        "path": "code/identification/phage_seq_nbseq/caseygrun__nbseq",
+        "head": "3769f6c"
+      }
+    ]
+  },
+  {
+    "id": "anarci",
+    "name": "ANARCI",
+    "category": "identification",
+    "papers": [
+      "https://academic.oup.com/bioinformatics/article/32/2/298/1744206"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformatics/article-pdf/32/2/298/17011140/btv552.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/ANARCI",
+        "status": "cloned",
+        "path": "code/identification/anarci/oxpig__anarci",
+        "head": "79f6c57"
+      }
+    ]
+  },
+  {
+    "id": "igblast",
+    "name": "IgBLAST",
+    "category": "identification",
+    "papers": [
+      "https://www.ncbi.nlm.nih.gov/igblast/"
+    ],
+    "paper_downloads": [],
+    "code_downloads": []
+  },
+  {
+    "id": "mixcr",
+    "name": "MiXCR",
+    "category": "identification",
+    "papers": [
+      "https://github.com/milaboratory/mixcr",
+      "https://mixcr.com/mixcr/reference/overview-analysis-overview/"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://github.com/milaboratory/mixcr",
+        "status": "cloned",
+        "path": "code/identification/mixcr/milaboratory__mixcr",
+        "head": "b18147e"
+      }
+    ]
+  },
+  {
+    "id": "immcantation",
+    "name": "Immcantation / pRESTO / Change-O / airrflow",
+    "category": "identification",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC4793929/",
+      "https://immcantation.readthedocs.io/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4793929/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/immcantation/presto",
+        "status": "cloned",
+        "path": "code/identification/immcantation/immcantation__presto",
+        "head": "c32a8f1"
+      },
+      {
+        "url": "https://github.com/immcantation/changeo",
+        "status": "cloned",
+        "path": "code/identification/immcantation/immcantation__changeo",
+        "head": "53038a0"
+      },
+      {
+        "url": "https://github.com/nf-core/airrflow",
+        "status": "cloned",
+        "path": "code/identification/immcantation/nf-core__airrflow",
+        "head": "e69d49e"
+      }
+    ]
+  },
+  {
+    "id": "igdiscover",
+    "name": "IgDiscover",
+    "category": "identification",
+    "papers": [
+      "https://gkhlab.gitlab.io/igdiscover22/"
+    ],
+    "paper_downloads": [],
+    "code_downloads": [
+      {
+        "url": "https://gitlab.com/gkhlab/igdiscover22",
+        "status": "cloned",
+        "path": "code/identification/igdiscover/gkhlab__igdiscover22",
+        "head": "f129755"
+      }
+    ]
+  },
+  {
+    "id": "deepnano",
+    "name": "DeepNano",
+    "category": "identification",
+    "papers": [
+      "https://doi.org/10.1038/s42256-024-00940-5"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s42256-024-00940-5.pdf",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=\"utf-8\"",
+        "sample": "<!DOCTYPE html>\n<html lang=\"en\" class=\"grade-c\">\n<head>\n    <title>Nanobodyâan"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/ddd9898/DeepNano",
+        "status": "cloned",
+        "path": "code/identification/deepnano/ddd9898__deepnano",
+        "head": "82b12d4"
+      }
+    ]
+  },
+  {
+    "id": "nabp_bert",
+    "name": "NABP-BERT",
+    "category": "identification",
+    "papers": [
+      "https://academic.oup.com/bib/article/26/1/bbae518/7926359"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bib/article-pdf/26/1/bbae518/61287888/bbae518.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/FMoonlightS/NABP-BERT",
+        "status": "cloned",
+        "path": "code/identification/nabp_bert/fmoonlights__nabp-bert",
+        "head": "e29dcc0"
+      }
+    ]
+  },
+  {
+    "id": "abagintpre",
+    "name": "AbAgIntPre",
+    "category": "identification",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC9813736/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9813736/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/emersON106/AbAgIntPre",
+        "status": "cloned",
+        "path": "code/identification/abagintpre/emerson106__abagintpre",
+        "head": "a122af6"
+      }
+    ]
+  },
+  {
+    "id": "paragraph",
+    "name": "Paragraph",
+    "category": "identification",
+    "papers": [
+      "https://academic.oup.com/bioinformatics/article/39/1/btac732/6825310"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformatics/article-pdf/39/1/btac732/48662426/btac732.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/Paragraph",
+        "status": "cloned",
+        "path": "code/identification/paragraph/oxpig__paragraph",
+        "head": "1052d66"
+      }
+    ]
+  },
+  {
+    "id": "parapred",
+    "name": "ParaPred",
+    "category": "identification",
+    "papers": [
+      "https://academic.oup.com/bioinformatics/article/34/17/2944/4972995"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformatics/article-pdf/34/17/2944/25721748/bty305.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/eliberis/parapred",
+        "status": "cloned",
+        "path": "code/identification/parapred/eliberis__parapred",
+        "head": "c54ecd7"
+      },
+      {
+        "url": "https://github.com/alchemab/parapred-pytorch",
+        "status": "cloned",
+        "path": "code/identification/parapred/alchemab__parapred-pytorch",
+        "head": "e0548be"
+      }
+    ]
+  },
+  {
+    "id": "sabpred_epipred",
+    "name": "EpiPred / SAbPred",
+    "category": "identification",
+    "papers": [
+      "https://academic.oup.com/nar/article/44/W1/W474/2499346"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/nar/article-pdf/44/W1/W474/17095697/gkw361.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "abadapt",
+    "name": "AbAdapt",
+    "category": "identification",
+    "papers": [
+      "https://academic.oup.com/bioinformaticsadvances/article/2/1/vbac015/6543605"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/bioinformaticsadvances/article-pdf/2/1/vbac015/42893097/vbac015.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "episcan",
+    "name": "EpiScan",
+    "category": "identification",
+    "papers": [
+      "https://www.nature.com/articles/s41540-024-00432-7"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s41540-024-00432-7.pdf",
+        "status": "downloaded",
+        "path": "papers/identification/episcan/episcan__s41540-024-00432-7.pdf.pdf",
+        "bytes": 4228769,
+        "sha256_16": "05156f3956a5e27d"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/gzBiomedical/EpiScan",
+        "status": "cloned",
+        "path": "code/identification/episcan/gzbiomedical__episcan",
+        "head": "62661a8"
+      }
+    ]
+  },
+  {
+    "id": "imapeP",
+    "name": "ImaPEp",
+    "category": "identification",
+    "papers": [
+      "https://www.mdpi.com/1422-0067/25/10/5434"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.mdpi.com/1422-0067/25/10/5434/pdf",
+        "status": "http_403",
+        "content_type": "text/html"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/3BioCompBio/ImaPEp",
+        "status": "cloned",
+        "path": "code/identification/imapeP/3biocompbio__imapep",
+        "head": "f85c60e"
+      }
+    ]
+  },
+  {
+    "id": "tnp",
+    "name": "TNP / Therapeutic Nanobody Profiler",
+    "category": "properties",
+    "papers": [
+      "https://www.nature.com/articles/s42003-026-09594-y"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://www.nature.com/articles/s42003-026-09594-y.pdf",
+        "status": "downloaded",
+        "path": "papers/properties/tnp/tnp__s42003-026-09594-y.pdf.pdf",
+        "bytes": 2233935,
+        "sha256_16": "b5b4a7997223f793"
+      }
+    ],
+    "code_downloads": [
+      {
+        "url": "https://github.com/oxpig/TNP",
+        "status": "cloned",
+        "path": "code/properties/tnp/oxpig__tnp",
+        "head": "29dcac7"
+      }
+    ]
+  },
+  {
+    "id": "aggrescan3d",
+    "name": "Aggrescan3D / A3D 2.0",
+    "category": "properties",
+    "papers": [
+      "https://academic.oup.com/nar/article/47/W1/W300/5485072"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://academic.oup.com/nar/article-pdf/47/W1/W300/28879756/gkz321.pdf",
+        "status": "http_403",
+        "content_type": "text/html; charset=utf-8"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "camsol",
+    "name": "CamSol",
+    "category": "properties",
+    "papers": [
+      "https://www-vendruscolo.ch.cam.ac.uk/camsolmethod.html"
+    ],
+    "paper_downloads": [],
+    "code_downloads": []
+  },
+  {
+    "id": "protparam",
+    "name": "ProtParam / Compute pI/Mw",
+    "category": "properties",
+    "papers": [
+      "https://web.expasy.org/protparam/",
+      "https://web.expasy.org/compute_pi/"
+    ],
+    "paper_downloads": [],
+    "code_downloads": []
+  },
+  {
+    "id": "iedb_netmhc",
+    "name": "IEDB / NetMHCIIpan",
+    "category": "properties",
+    "papers": [
+      "https://tools.iedb.org/",
+      "https://services.healthtech.dtu.dk/services/NetMHCIIpan-4.3/"
+    ],
+    "paper_downloads": [],
+    "code_downloads": []
+  },
+  {
+    "id": "tap",
+    "name": "TAP / Therapeutic Antibody Profiler",
+    "category": "properties",
+    "papers": [
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC6410772/",
+      "https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabpred/tap"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6410772/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "\n\n\n\n<html>\n  <head>\n    <meta name=\"viewport\" content=\"width=device-width, initi"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "protein_sol_abpred",
+    "name": "Protein-Sol / Abpred",
+    "category": "properties",
+    "papers": [
+      "https://protein-sol.manchester.ac.uk/",
+      "https://protein-sol.manchester.ac.uk/abpred"
+    ],
+    "paper_downloads": [],
+    "code_downloads": []
+  },
+  {
+    "id": "dynamut2",
+    "name": "DynaMut2",
+    "category": "properties",
+    "papers": [
+      "https://biosig.lab.uq.edu.au/dynamut2/"
+    ],
+    "paper_downloads": [],
+    "code_downloads": []
+  },
+  {
+    "id": "foldx",
+    "name": "FoldX",
+    "category": "properties",
+    "papers": [
+      "https://foldxsuite.crg.eu/products",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC1160148/"
+    ],
+    "paper_downloads": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1160148/pdf/",
+        "status": "not_pdf",
+        "content_type": "text/html; charset=utf-8",
+        "sample": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://www.google"
+      }
+    ],
+    "code_downloads": []
+  },
+  {
+    "id": "solart",
+    "name": "SOLart",
+    "category": "properties",
+    "papers": [],
+    "paper_downloads": [],
+    "code_downloads": []
+  }
+]

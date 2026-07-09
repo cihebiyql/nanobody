@@ -1,0 +1,49 @@
+{
+  "pose_pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_2_model_1_aligned_to_8x6b.pdb",
+  "total_occluding_atom_contact_count": 0,
+  "total_clash_atom_contact_count": 0,
+  "total_occluding_residue_pair_count": 0,
+  "total_clash_residue_pair_count": 0,
+  "region_summary": {
+    "CDR3": {
+      "occluding_atom_contact_count": 0,
+      "occlusion_fraction_of_total": 0.0,
+      "occluding_residue_pair_count": 0,
+      "occluding_residue_pair_fraction_of_total": 0.0,
+      "clash_atom_contact_count": 0,
+      "clash_residue_pair_count": 0,
+      "vhh_residue_count": 0,
+      "pvrl2_residue_count": 0
+    },
+    "CDR1": {
+      "occluding_atom_contact_count": 0,
+      "occlusion_fraction_of_total": 0.0,
+      "occluding_residue_pair_count": 0,
+      "occluding_residue_pair_fraction_of_total": 0.0,
+      "clash_atom_contact_count": 0,
+      "clash_residue_pair_count": 0,
+      "vhh_residue_count": 0,
+      "pvrl2_residue_count": 0
+    },
+    "CDR2": {
+      "occluding_atom_contact_count": 0,
+      "occlusion_fraction_of_total": 0.0,
+      "occluding_residue_pair_count": 0,
+      "occluding_residue_pair_fraction_of_total": 0.0,
+      "clash_atom_contact_count": 0,
+      "clash_residue_pair_count": 0,
+      "vhh_residue_count": 0,
+      "pvrl2_residue_count": 0
+    },
+    "framework": {
+      "occluding_atom_contact_count": 0,
+      "occlusion_fraction_of_total": 0.0,
+      "occluding_residue_pair_count": 0,
+      "occluding_residue_pair_fraction_of_total": 0.0,
+      "clash_atom_contact_count": 0,
+      "clash_residue_pair_count": 0,
+      "vhh_residue_count": 0,
+      "pvrl2_residue_count": 0
+    }
+  }
+}

@@ -1,0 +1,1856 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>纳米抗体/VHH 工具全景调研报告</title>
+<style>
+:root { --ink:#1b2430; --muted:#667085; --rule:#d9e2ec; --soft:#f6f8fb; --accent:#0f5e8c; --accent2:#b45309; }
+* { box-sizing: border-box; }
+body { font-family: 'WenQuanYi Zen Hei', 'Noto Sans CJK SC', 'Source Han Sans SC', sans-serif; line-height: 1.72; max-width: 1120px; margin: 0 auto; padding: 42px 28px 80px; color: var(--ink); background: linear-gradient(180deg, #f8fbff 0, #fff 180px); }
+body::before { content: '纳米抗体/VHH 工具全景调研报告'; display: block; padding: 34px 38px; margin: 0 0 34px; border-radius: 22px; color: white; font-size: 30px; font-weight: 700; letter-spacing: .03em; background: linear-gradient(135deg, #0f5e8c, #12324a 70%); box-shadow: 0 18px 44px rgba(15,94,140,.20); }
+h1 { display: none; }
+h2 { margin-top: 42px; padding-top: 14px; border-top: 2px solid var(--rule); color: #12324a; font-size: 25px; }
+h3 { margin-top: 26px; color: #0f5e8c; font-size: 19px; }
+p, li { font-size: 15.5px; }
+ul, ol { padding-left: 1.4em; }
+li { margin: .28em 0; }
+a { color: var(--accent); text-decoration-color: rgba(15,94,140,.35); overflow-wrap: anywhere; }
+code { background: #eef4f8; color: #334155; padding: 2px 5px; border-radius: 5px; font-family: 'DejaVu Sans Mono', 'Noto Sans Mono CJK SC', monospace; font-size: .92em; }
+pre { background: #0f172a; color: #e5eef8; padding: 15px 18px; border-radius: 12px; overflow-x: auto; line-height: 1.55; }
+table { border-collapse: collapse; width: 100%; margin: 18px 0 26px; font-size: 14px; box-shadow: 0 8px 28px rgba(15,23,42,.06); }
+th,td { border: 1px solid var(--rule); padding: 9px 10px; vertical-align: top; overflow-wrap: anywhere; }
+th { background: #eaf2f8; color: #12324a; }
+tr:nth-child(even) td { background: #fafcff; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 34px 0; }
+@media print { body { max-width: none; padding: 0; background: white; } body::before { box-shadow: none; } a { color: #0f5e8c; } }
+</style></head><body><h1 id="vhh">纳米抗体/VHH 工具全景调研报告（开源可复现优先版）</h1>
+<p>生成日期：2026-07-06<br />
+工作目录：<code>/mnt/d/work/抗体/tools/nanobody_tool_survey</code><br />
+资料包目录：<code>nanobody_tool_survey/</code></p>
+<h2 id="0">0. 本地资料包说明</h2>
+<p>这版报告根据你的反馈重排：<strong>正文优先讲能公开获取代码/权重、能本地复现或至少能稳定使用的工具</strong>；不能确认开源复现、只有网页/商业平台/论文白皮书的工具不删除，而是放到后置章节，作为了解和对照。</p>
+<ul>
+<li>论文 PDF 目录：<code>nanobody_tool_survey/papers/</code></li>
+<li>代码目录：<code>nanobody_tool_survey/code/</code></li>
+<li>报告目录：<code>nanobody_tool_survey/report/</code></li>
+<li>下载日志与 manifest：<code>nanobody_tool_survey/metadata/</code>、<code>nanobody_tool_survey/logs/</code></li>
+<li>调研工具总数：69 个</li>
+<li>成功下载 PDF：18 个</li>
+<li>成功浅克隆代码仓库：53 个</li>
+<li>PDF 下载状态统计：<code>{'downloaded': 18, 'http_403': 19, 'http_406': 1, 'not_pdf': 16}</code></li>
+<li>代码下载状态统计：<code>{'cloned': 53}</code></li>
+</ul>
+<p>阅读建议：</p>
+<ol>
+<li>先看第 1-2 章：这些是优先复现和优先理解的开源工具。</li>
+<li>再看第 3 章：这些工具有代码，但权重、许可证、依赖或 VHH 专用性有条件。</li>
+<li>最后看第 4 章：这些是网页/商业/论文模型，暂不作为本地复现主线。</li>
+<li>找论文和代码路径看附录：<code>report/asset_inventory.md</code>；找失败 PDF 原因看：<code>report/missing_pdfs.md</code>。</li>
+</ol>
+<hr />
+<h2 id="1">1. 先读结论：我把工具按“能不能复现”重新排了顺序</h2>
+<p>这版报告不再把所有工具平铺，而是按你真正要做项目时的优先级阅读：</p>
+<ul>
+<li><strong>A 类：优先复现/优先学习。</strong> 本地已经有公开代码；模型权重公开、可脚本下载，或者工具本身不需要神经网络权重；从工程角度最值得先试。</li>
+<li><strong>B 类：可研究但复现有条件。</strong> 代码公开，但存在非商业/学术许可证、权重申请、PyRosetta/FoldX/AF 参数、训练数据过大、VHH 非专用等限制；适合第二批看。</li>
+<li><strong>C 类：后置了解。</strong> 主要是网页服务、商业平台、论文/白皮书、无公开代码/权重，或者当前无法确认能本地跑；不删掉，但放在后面作为概念和对照。</li>
+</ul>
+<h3 id="11-a">1.1 A 类优先清单</h3>
+<p>建议优先看的开源工具如下：</p>
+<ul>
+<li><strong>结构单体建模/复合物建模：</strong> NanoBodyBuilder2/ImmuneBuilder、HeavyBuilder2、HADDOCK3、Boltz、Chai-1。NanoNet 也很重要，但许可证偏 research-use，所以放在“高价值 B 类”里详细介绍。</li>
+<li><strong>设计/优化：</strong> RFantibody、AntiFold、IgGM、BioPhi/Sapiens、Humatch。VHHBERT 是 VHH 表征重要工具，但数据许可有非商业限制，放在 B 类详细说明。</li>
+<li><strong>识别/发现：</strong> alpseq、phage-seq/nbseq、ANARCI、Immcantation/pRESTO/Change-O/airrflow、DeepNano、Paragraph。</li>
+<li><strong>性质/可开发性：</strong> TNP、ProtParam/Compute pI-Mw；A3D/CamSol/IEDB 等可作为网页/外部补充。</li>
+</ul>
+<p>如果你的目标是“先跑起来一个 VHH 项目”，最小闭环可以是：</p>
+<ol>
+<li><code>ANARCI</code> 或 <code>IgBLAST</code> 做编号和 CDR 定位。</li>
+<li><code>NanoBodyBuilder2</code> 或 <code>NanoNet</code> 做 VHH 单体结构。</li>
+<li><code>TNP</code> 做 VHH developability 风险。</li>
+<li>如果有抗原结构，用 <code>HADDOCK3</code>、<code>Chai-1</code>、<code>Boltz</code> 做复合物候选；不要只信一个模型。</li>
+<li>如果要 de novo 设计，用 <code>RFantibody</code> 做主线；再用 <code>AntiFold/IgGM</code> 做序列重设计或辅助生成。</li>
+</ol>
+<h3 id="12-bc">1.2 B/C 类为什么后看</h3>
+<ul>
+<li>有些工具很强，但不满足“完全可复现优先”：例如 <strong>AlphaFold3</strong> 有代码但权重/使用条款更受限；<strong>IgFold/IgLM/AbNatiV</strong> 可以跑但许可证偏学术或非商业；<strong>Germinal/NanoDesigner</strong> 依赖 PyRosetta、AlphaFold/FoldX 等外部组件，复现链条较长。</li>
+<li>有些工具是公司平台或论文模型，例如 <strong>Chai-2、JAM-2、Latent-X2、TFDesign-sdAb、EasyNano、nanoFOLD</strong>。这些适合了解前沿方向，但不适合作为第一批本地复现实验。</li>
+<li>有些是网页/商业工具，例如 <strong>ClusPro、HDOCK、Aggrescan3D、CamSol、IEDB、DynaMut2、FoldX、BioLuminate、PipeBio、Tamarind</strong>。它们可以使用，但不属于“本地开源模型”。</li>
+</ul>
+<hr />
+<h2 id="2-a-b">2. A 类与高价值 B 类：优先阅读的本地工具详解</h2>
+<h3 id="21-nanobodybuilder2-immunebuilder">2.1 NanoBodyBuilder2 / ImmuneBuilder</h3>
+<ul>
+<li><strong>工具定位：</strong> VHH 单体结构预测首选之一。它不是做抗原复合物，也不是做序列设计，而是把一条纳米抗体/VHH 序列快速转成三维结构。</li>
+<li><strong>发布时间和后续：</strong> ImmuneBuilder 论文发表于 2023 年，套件包含 ABodyBuilder2、NanoBodyBuilder2、TCRBuilder2。后续同一生态还有 HeavyBuilder2、ABodyBuilder3 等延伸。</li>
+<li><strong>怎么训练/搭建：</strong> 这是免疫受体专用深度学习模型，训练数据主要来自 SAbDab 等抗体/纳米抗体结构库。模型从序列预测结构，会生成 ensemble，并选择接近平均构象的结构；随后可用 OpenMM refinement 清理 clash，同时输出残基级误差估计。</li>
+<li><strong>输入输出：</strong> 输入 VHH FASTA 或字符串；输出 PDB 和误差估计。适合批量处理上百到上万条候选 VHH，比通用 AlphaFold 类工具快很多。</li>
+<li><strong>VHH 使用范围：</strong> 适合已知 VHH 序列的结构初建模、CDR3 loop 观察、结构聚类、后续 docking 前结构准备、人源化突变前后构象对比。</li>
+<li><strong>局限：</strong> 只预测单体，不知道抗原在哪里；长 CDR3、非常规二硫键、训练集中稀有构象仍可能偏；单个模型给出的 CDR3 不能直接当作真实结合构象。</li>
+<li><strong>本地状态：</strong> 代码已克隆；BSD-3-Clause；README 显示模型权重可用，适合作为第一批复现工具。</li>
+</ul>
+<h3 id="22-nanonet-b-vhh-license">2.2 NanoNet（高价值 B 类：VHH 专项，但 license 需确认）</h3>
+<ul>
+<li><strong>工具定位：</strong> VHH/VH/TCR Vβ 快速结构预测模型，尤其适合 repertoire 级别批量结构化。</li>
+<li><strong>发布时间和后续：</strong> 2022 年 Frontiers in Immunology。相对 NanoBodyBuilder2，它更像轻量级快速坐标回归器。</li>
+<li><strong>怎么训练/搭建：</strong> 端到端深度学习模型，用 one-hot 序列编码和 1D ResNet/CNN 模块直接预测 backbone 和 Cβ 坐标。训练集包含约两千条 mAb heavy chain 与 nanobody 结构，独立 Nb 测试集中评估过低相似度纳米抗体。</li>
+<li><strong>输入输出：</strong> 输入 VHH/VH 序列；输出 backbone/Cβ 坐标，必要时再用 Modeller/SCWRL 等补全侧链。</li>
+<li><strong>VHH 使用范围：</strong> 适合大规模候选序列做粗结构、按 CDR3 空间构型聚类、先筛掉明显异常结构。速度和简单性是主要优势。</li>
+<li><strong>局限：</strong> 原始输出不是完整高质量全原子模型；抗原复合物完全不处理；许可证偏研究用途，商业使用需要进一步确认。</li>
+<li><strong>本地状态：</strong> 代码和论文 PDF 已下载，适合作为结构 baseline；但本地 <code>LICENSE.txt</code> 是 research-use 类型，不宜把它列为“完全开放可商用”的 A 类。</li>
+</ul>
+<h3 id="23-heavybuilder2">2.3 HeavyBuilder2</h3>
+<ul>
+<li><strong>工具定位：</strong> 单 heavy-chain 抗体结构预测/大规模 repertoire 结构化工具。对 VHH 项目有参考价值，但不是最专门的 VHH 工具。</li>
+<li><strong>发布时间和后续：</strong> 2025 年左右公开，用于 heavy-chain-only/repertoire-scale 建模。</li>
+<li><strong>怎么训练/搭建：</strong> 继承 ImmuneBuilder/ABodyBuilder2 的免疫受体结构预测思路，去掉 light chain 依赖，对单条 heavy chain 做结构预测。</li>
+<li><strong>输入输出：</strong> heavy-chain FASTA/MiAIRR 类输入，输出 heavy-chain PDB。</li>
+<li><strong>VHH 使用范围：</strong> 如果你的数据混有普通 VH、heavy-chain-only antibody、camelid VHH，可以作为统一建模工具；纯 VHH 场景仍优先 NanoBodyBuilder2/NanoNet。</li>
+<li><strong>局限：</strong> 公开论文细节和 VHH 专项评估少于 NanoBodyBuilder2；仍不处理抗原复合物。</li>
+<li><strong>本地状态：</strong> 代码已克隆，可作为第二个结构预测基线。</li>
+</ul>
+<h3 id="24-haddock3-haddock-antibody-antigen-workflows">2.4 HADDOCK3 / HADDOCK antibody-antigen workflows</h3>
+<ul>
+<li><strong>工具定位：</strong> 信息驱动 docking，不是神经网络生成器。它适合在已有 VHH 结构和抗原结构时，用已知或预测的 epitope/paratope 约束来建复合物。</li>
+<li><strong>发布时间和后续：</strong> HADDOCK 体系长期用于蛋白 docking；HADDOCK3 是新工作流版本，官方也有 nanobody-antigen 教程。</li>
+<li><strong>怎么训练/搭建：</strong> 没有训练权重。核心是物理能量函数、采样和用户给定的 ambiguous interaction restraints。约束可来自突变、竞争实验、HDX、交联、NMR、AlphaFold/Chai/Boltz 预测界面等。</li>
+<li><strong>输入输出：</strong> 输入 VHH PDB、抗原 PDB、active/passive residues 或约束文件、TOML workflow；输出 docking decoys、clusters、HADDOCK score、界面能量等。</li>
+<li><strong>VHH 使用范围：</strong> 很适合把 NanoBodyBuilder2/Chai/Boltz 给出的结构假设再做约束 docking 和 cluster 验证。对于已知表位的 VHH 工程特别有用。</li>
+<li><strong>局限：</strong> 没有约束时成功率会明显下降；输入结构和约束质量决定上限；计算和参数门槛高于一键式 co-folding。</li>
+<li><strong>本地状态：</strong> <code>haddock3</code> 和抗体抗原示例仓库已克隆；Apache-2.0；无需模型权重。</li>
+</ul>
+<h3 id="25-chai-1">2.5 Chai-1</h3>
+<ul>
+<li><strong>工具定位：</strong> 通用生物分子结构/复合物预测模型，可用于 VHH-抗原 co-folding，也可处理蛋白、小分子、核酸、糖基化等对象。</li>
+<li><strong>发布时间和后续：</strong> 2024 年公开预印本和代码；定位类似开放的 all-atom/foundation structure model。</li>
+<li><strong>怎么训练/搭建：</strong> 深度学习结构模型，使用类似现代结构模型的几何表示和 diffusion/denoising 思路；README 标明代码和模型权重采用 Apache-2.0，可用于学术和商业。</li>
+<li><strong>输入输出：</strong> 输入蛋白链序列、MSA/约束/修饰等配置；输出结构模型、ranking/confidence 信息。VHH 可作为单条蛋白链，抗原作为另一条链。</li>
+<li><strong>VHH 使用范围：</strong> 适合在没有明确表位时生成 VHH-Ag 复合物假设；也适合与 Boltz/AlphaFold-Multimer/HADDOCK 交叉比较。</li>
+<li><strong>局限：</strong> 通用模型不是 VHH 专门训练；抗体-抗原界面缺少共进化信号，容易出现看似自信但界面错误的 pose；GPU 和依赖较重。</li>
+<li><strong>本地状态：</strong> 代码已克隆；Apache-2.0；权重公开，优先级高。</li>
+</ul>
+<h3 id="26-boltz-1-boltz-2">2.6 Boltz-1 / Boltz-2</h3>
+<ul>
+<li><strong>工具定位：</strong> 开放 all-atom 结构预测模型，Boltz-2 还扩展到部分亲和力相关输出。可以作为 AlphaFold3/Chai-1 的开放替代或互证模型。</li>
+<li><strong>发布时间和后续：</strong> Boltz-1 在 2024/2025 前后公开，Boltz-2 后续加入更强的结构和 affinity 相关能力。</li>
+<li><strong>怎么训练/搭建：</strong> 训练数据包括 PDB/OpenFold distillation 等大规模结构数据；仓库提供推理和训练说明，训练全量模型需要约数百 GB 级数据和较大算力。</li>
+<li><strong>输入输出：</strong> YAML/FASTA 类输入，链类型可为 protein/DNA/RNA/ligand；输出 mmCIF、confidence、PAE/PDE/pLDDT、Boltz-2 affinity/likelihood 类结果。</li>
+<li><strong>VHH 使用范围：</strong> 可把 VHH 和抗原作为两条 protein chain 输入，用来生成复合物结构候选；也可与 Chai-1/AF-Multimer 的界面一致性做比较。</li>
+<li><strong>局限：</strong> VHH-Ag affinity 不是 Boltz-2 最核心校准对象，不能把 affinity 输出直接当 KD；MSA、链顺序、sampling seed 和模板会影响结果。</li>
+<li><strong>本地状态：</strong> 代码已克隆；MIT；README 表明代码和权重开放，可学术/商业使用。</li>
+</ul>
+<h3 id="27-rfantibody">2.7 RFantibody</h3>
+<ul>
+<li><strong>工具定位：</strong> 目前最值得优先学习的开源 VHH/scFv de novo 设计管线之一。它不是单纯预测结构，而是从靶标表位出发生成抗体/纳米抗体候选。</li>
+<li><strong>发布时间和后续：</strong> Baker/RosettaCommons 生态，Nature 2025 论文；代码仓库提供 nanobody full pipeline 示例。</li>
+<li><strong>怎么训练/搭建：</strong> 以 RFdiffusion 为骨架，在抗体-抗原复合物上微调生成 CDR backbone；随后用 ProteinMPNN 设计 CDR 序列，再用抗体微调 RoseTTAFold2 做自一致性结构预测/过滤。训练时会把 target hotspot 定义为离抗体 CDR 最近的目标残基，并随机遮盖一部分 hotspot 训练模型学会表位条件设计。</li>
+<li><strong>输入输出：</strong> 输入靶标结构、hotspot/epitope、VHH 或 scFv framework、CDR 长度/采样参数；输出 docked backbone、CDR 序列、复合物模型和过滤分数。</li>
+<li><strong>VHH 使用范围：</strong> 适合“已知抗原结构 + 想打某个表位 + 希望生成新 VHH”的场景。README 提到 nanobody 输出常出现 side-on dock，这是模型从天然 VHH 结合方式学到的现象，不一定是 bug。</li>
+<li><strong>局限：</strong> 命中率依赖靶点、表位、筛选规模和过滤；作者也强调当前缺少足够可靠的过滤指标，一般设计 campaign 可能需要上万级候选；生成结果仍需表达、binding、SEC/DSF 等实验。</li>
+<li><strong>本地状态：</strong> 代码已克隆；MIT；README 提供 <code>include/download_weights.sh</code> 和 nanobody pipeline，适合第一批复现。</li>
+</ul>
+<h3 id="28-antifold">2.8 AntiFold</h3>
+<ul>
+<li><strong>工具定位：</strong> 抗体 inverse folding 工具：给定抗体/VHH 结构，设计或评分能折叠到该结构的序列。</li>
+<li><strong>发布时间和后续：</strong> 2024 arXiv/OPIG 工具，属于 OX Pig 抗体工具链。</li>
+<li><strong>怎么训练/搭建：</strong> 基于 ESM-IF1 微调，训练结合 SAbDab 结构和 OAS paired sequences 中由 ABodyBuilder2 建模的结构。模型学习结构条件下每个位置的氨基酸概率。</li>
+<li><strong>输入输出：</strong> 输入 PDB/抗体结构和需要设计的位置；输出采样序列、per-residue probability、perplexity/zero-shot mutation score。</li>
+<li><strong>VHH 使用范围：</strong> 适合在固定 VHH scaffold 或固定 CDR backbone 后做序列重设计；也适合给突变打分，筛掉不符合结构的变体。</li>
+<li><strong>局限：</strong> 不知道抗原，不能保证 binding；训练主要是抗体结构分布，不是 VHH 结合功能分布；要结合 TNP、结构预测和实验。</li>
+<li><strong>本地状态：</strong> 代码已克隆；BSD-3-Clause；README 提供模型权重下载链接。</li>
+</ul>
+<h3 id="29-iggm">2.9 IgGM</h3>
+<ul>
+<li><strong>工具定位：</strong> 抗体/纳米抗体序列-结构联合生成模型，可覆盖 de novo、inverse design、affinity maturation、humanization、structure prediction 等多任务。</li>
+<li><strong>发布时间和后续：</strong> ICLR 2025；TencentAI4S 开源仓库。</li>
+<li><strong>怎么训练/搭建：</strong> 结合 diffusion model 与 consistency model 思路，把抗体/纳米抗体结构和序列作为联合对象建模；仓库包含推理和 checkpoint 使用说明。</li>
+<li><strong>输入输出：</strong> 可输入抗原 PDB/epitope、framework、FASTA、任务配置；输出候选抗体/纳米抗体序列和结构，部分流程可接 PyRosetta relax。</li>
+<li><strong>VHH 使用范围：</strong> 适合探索“一个模型做多种抗体工程任务”的思路；如果只做 VHH de novo binder，建议与 RFantibody/Germinal/NanoDesigner 横向比较。</li>
+<li><strong>局限：</strong> wet-lab 命中率和失败案例公开透明度不如单一任务工具；不同任务的默认参数需要仔细读 README。</li>
+<li><strong>本地状态：</strong> 代码已克隆；MIT；有 checkpoint/Zenodo 下载线索，优先级较高。</li>
+</ul>
+<h3 id="210-vhhbert-vhhcorpus-2m-b-vhh">2.10 VHHBERT / VHHCorpus-2M（高价值 B 类：VHH 表征，但数据许可受限）</h3>
+<ul>
+<li><strong>工具定位：</strong> VHH 语言模型和数据集，不直接输出结构或复合物，而是提供 VHH 序列表征、embedding、突变分析和下游 binding prediction 的基础。</li>
+<li><strong>发布时间和后续：</strong> 2024 arXiv/NeurIPS 数据集方向工作，仓库与 AVIDa-SARS-CoV-2 相关。</li>
+<li><strong>怎么训练/搭建：</strong> RoBERTa/BERT-style masked language modeling，训练于超过 200 万条 alpaca VHH 序列；下游可 fine-tune 到 SARS-CoV-2 等 Nb-Ag 任务。</li>
+<li><strong>输入输出：</strong> 输入 VHH 序列；输出 embedding、mask 位置概率、下游分类/回归模型分数。</li>
+<li><strong>VHH 使用范围：</strong> 适合做 VHH 序列聚类、候选 embedding、变体打分、结合预测模型特征。它是“表征层”，通常要接分类器、结构工具或实验标签。</li>
+<li><strong>局限：</strong> 语言模型学的是 VHH 序列分布，不直接学某个抗原的结合；SARS-CoV-2 benchmark 泛化到别的靶点需重新验证。</li>
+<li><strong>本地状态：</strong> 代码和 PDF 已下载；代码是 MIT，但数据集/语料存在 CC BY-NC 条款，因此适合研究和建模理解，不应默认列入完全开放可商用主线。</li>
+</ul>
+<h3 id="211-biophi-sapiens-oasis">2.11 BioPhi / Sapiens / OASis</h3>
+<ul>
+<li><strong>工具定位：</strong> 抗体人源化、人源性评分和 OAS human repertoire 对比工具。对 VHH 不是最专用，但可作为人源性辅助参考。</li>
+<li><strong>发布时间和后续：</strong> BioPhi/Sapiens 论文约 2022 年；Merck 开源仓库。</li>
+<li><strong>怎么训练/搭建：</strong> Sapiens 使用 OAS 中的人类抗体可变区序列训练语言模型/序列模型；OASis 统计序列片段在人类 repertoire 中的出现情况，辅助识别非人源片段。</li>
+<li><strong>输入输出：</strong> 输入抗体/VH/VL 或相关序列；输出 humanization 建议、人源性分数、OASis identity/coverage 等。</li>
+<li><strong>VHH 使用范围：</strong> 对 VHH 人源化可作辅助，但不能替代 VHH 专门方法，因为 VHH 的 FR2 hallmark、单域稳定性和 CDR3 特征与常规 VH/VL 不同。</li>
+<li><strong>局限：</strong> 过度追求人源性可能破坏 VHH 溶解性或稳定性；建议和 AbNatiV/TNP/Llamanade/HuDiff-Nb 交叉使用。</li>
+<li><strong>本地状态：</strong> BioPhi 和 Sapiens 代码已克隆。</li>
+</ul>
+<h3 id="212-humatch">2.12 Humatch</h3>
+<ul>
+<li><strong>工具定位：</strong> 抗体或 VHH human-likeness / humanization 辅助工具，属于 OPIG 生态。</li>
+<li><strong>怎么训练/搭建：</strong> 基于序列相似性、human repertoire 或统计模型比较候选序列与人类抗体分布，定位不自然或非人源区域。</li>
+<li><strong>输入输出：</strong> 输入可变区序列；输出匹配到的人源参考、位置级建议或分数。</li>
+<li><strong>VHH 使用范围：</strong> 适合 VHH humanization 的早期筛选，尤其是和 AbNatiV/BioPhi/TNP 一起看“人源性 vs VHH 稳定性”的冲突位点。</li>
+<li><strong>局限：</strong> 不是结合预测器，也不是 developability 总分；对 camelid VHH hallmark 的保护需要人为规则。</li>
+<li><strong>本地状态：</strong> 代码已克隆；适合工具链补充。</li>
+</ul>
+<h3 id="213-alpseq">2.13 alpseq</h3>
+<ul>
+<li><strong>工具定位：</strong> 针对 nanobody Illumina 2x300 数据的 Nextflow pipeline，从原始测序 reads 到候选序列和报告。</li>
+<li><strong>发布时间和后续：</strong> 近年 VHH NGS 分析工具，适合展示库/免疫库筛选后处理。</li>
+<li><strong>怎么训练/搭建：</strong> 不是深度学习模型，不需要权重；核心是 QC、read merge、过滤、翻译、CDR/候选统计和可视化报告。</li>
+<li><strong>输入输出：</strong> 输入 FASTQ 和配置；输出清洗 reads、翻译后的 VHH 序列、候选表、统计图和 HTML/report。</li>
+<li><strong>VHH 使用范围：</strong> 适合从免疫动物或展示库筛选轮次中快速整理 enriched clone；是实验数据进入计算筛选的入口。</li>
+<li><strong>局限：</strong> 富集不等于结合；引物偏差、测序错误、display bias 和轮次设计会影响排序；后续仍需 ANARCI/IgBLAST、TNP 和实验验证。</li>
+<li><strong>本地状态：</strong> 代码已克隆；GPL-3.0；无权重，复现门槛低。</li>
+</ul>
+<h3 id="214-phage-seq-nbseq">2.14 phage-seq + nbseq</h3>
+<ul>
+<li><strong>工具定位：</strong> phage display/NGS 后的序列整理、feature table 和交互分析工具链。</li>
+<li><strong>怎么训练/搭建：</strong> 规则和数据处理工具，不依赖模型权重；重点是把不同轮次、不同样本和 CDR3/AA 特征组织成可查询数据。</li>
+<li><strong>输入输出：</strong> 输入 phage-seq reads、样本元数据、实验轮次；输出富集序列、CDR3 feature space、候选列表和可视化。</li>
+<li><strong>VHH 使用范围：</strong> 适合 display panning 后找富集家族、代表 clone、轮次趋势；能和 NanoMAP/alpseq 互补。</li>
+<li><strong>局限：</strong> 对实验设计依赖非常高；扩增偏差和 display fitness 可能制造假阳性；仍需 binding assay。</li>
+<li><strong>本地状态：</strong> <code>phage-seq</code> 和 <code>nbseq</code> 仓库已克隆；无权重。</li>
+</ul>
+<h3 id="215-anarci">2.15 ANARCI</h3>
+<ul>
+<li><strong>工具定位：</strong> 抗体/免疫受体编号和 CDR 定位基础工具。几乎所有 VHH 流程都需要类似功能。</li>
+<li><strong>发布时间和后续：</strong> 2016 Bioinformatics；OPIG 经典工具。</li>
+<li><strong>怎么训练/搭建：</strong> 基于 HMMER/HMM profile，对输入序列匹配不同物种和链型的免疫受体 profile，然后按 IMGT/Chothia/Kabat/AHo 等规则编号。</li>
+<li><strong>输入输出：</strong> 输入 FASTA；输出编号序列、chain type、domain 边界、CDR 区域、HMM hit 信息。</li>
+<li><strong>VHH 使用范围：</strong> 用于定位 CDR1/2/3、过滤非抗体域、统一编号，为 TNP、structure modeling、humanization 和突变设计提供坐标系。</li>
+<li><strong>局限：</strong> 不能单独判断某条 VH 是否一定是 camelid VHH；VHH-like hallmark、germline、自定义库和富集证据仍需额外判断。</li>
+<li><strong>本地状态：</strong> 代码已克隆；BSD-like；无神经网络权重。</li>
+</ul>
+<h3 id="216-immcantation-presto-change-o-airrflow">2.16 Immcantation / pRESTO / Change-O / airrflow</h3>
+<ul>
+<li><strong>工具定位：</strong> AIRR-seq/BCR repertoire 分析生态，适合 VHH NGS 数据的预处理、注释表标准化、克隆家族和 SHM 分析。</li>
+<li><strong>怎么训练/搭建：</strong> 传统生信流程，无神经网络权重。pRESTO 处理 reads，Change-O 规范注释表和 clone assignment，airrflow 用 nf-core/Nextflow 串联工作流。</li>
+<li><strong>输入输出：</strong> 输入 FASTQ/IgBLAST/MiXCR/AIRR 表；输出 AIRR TSV、clone assignment、lineage、多样性和 SHM 统计。</li>
+<li><strong>VHH 使用范围：</strong> 适合免疫后 VHH repertoire、亲和力成熟轮次、展示库轮次的 clone family 分析。</li>
+<li><strong>局限：</strong> 默认人/鼠 BCR/TCR 设置要改成 camelid/VHH germline、primer 和 CDR3 规则；不是 binding predictor。</li>
+<li><strong>本地状态：</strong> 多个仓库已克隆；开源，无权重。</li>
+</ul>
+<h3 id="217-deepnano">2.17 DeepNano</h3>
+<ul>
+<li><strong>工具定位：</strong> Nanobody-antigen interaction prediction，直接预测 VHH 序列和抗原序列是否相互作用。</li>
+<li><strong>发布时间和后续：</strong> 2024 Nature Machine Intelligence。</li>
+<li><strong>怎么训练/搭建：</strong> ensemble deep learning + prompt-based protein language model。仓库包含 DeepNano-seq、DeepNano-site、DeepNano 等模型和训练/预测脚本，训练使用 Nb-Ag interaction 数据、PPI 数据和蛋白语言模型表征。</li>
+<li><strong>输入输出：</strong> 输入 nanobody FASTA、antigen FASTA 和 pair table；输出 interaction/PPI probability 或 score，也可用于大规模候选排序。</li>
+<li><strong>VHH 使用范围：</strong> 适合“已有很多 VHH 序列 + 一个或多个抗原序列”时做候选预排序；尤其适合 NGS/展示库筛出来的候选过多时做第一层筛选。</li>
+<li><strong>局限：</strong> sequence-only/PLM-based 模型难以可靠捕获构象表位、糖基化、抗原构象状态和实验体系；分数不是 KD。</li>
+<li><strong>本地状态：</strong> 代码已克隆；MIT；README 提供模型权重下载链接。</li>
+</ul>
+<h3 id="218-paragraph">2.18 Paragraph</h3>
+<ul>
+<li><strong>工具定位：</strong> 抗体 paratope 预测工具，预测哪些抗体/VHH 残基可能参与结合。</li>
+<li><strong>怎么训练/搭建：</strong> 结构/图模型或几何特征模型，训练于抗体-抗原复合物中的 residue-level paratope 标注。</li>
+<li><strong>输入输出：</strong> 输入抗体或 VHH 结构/模型；输出每个残基的 paratope probability。</li>
+<li><strong>VHH 使用范围：</strong> 适合从 NanoBodyBuilder2/IgFold 结构中找可能参与结合的 CDR/FR 残基，为 HADDOCK 约束、突变扫描、表位竞争实验提供假设。</li>
+<li><strong>局限：</strong> 训练数据主要来自常规抗体复合物；VHH 的 framework-mediated contact 和长 CDR3 可能导致阈值偏差。</li>
+<li><strong>本地状态：</strong> 代码已克隆；适合作为 docking 前辅助工具。</li>
+</ul>
+<h3 id="219-tnp-therapeutic-nanobody-profiler">2.19 TNP — Therapeutic Nanobody Profiler</h3>
+<ul>
+<li><strong>工具定位：</strong> VHH 专用 developability profiler，是性质预测里最应该优先看的一项。</li>
+<li><strong>发布时间和后续：</strong> Communications Biology 2026。目标是把 TAP 类抗体 developability 思路重新校准到纳米抗体。</li>
+<li><strong>怎么训练/搭建：</strong> 不是单一黑箱深度模型，而是面向 VHH 的 descriptor/profile 系统。它整合临床阶段纳米抗体、OAS、PLAbDab-nano、SAbDab、Thera-SAbDab 和实验性 VHH/Fc 表达/SEC 等数据，定义与 VHH 风险相关的阈值和特征。</li>
+<li><strong>输入输出：</strong> 输入 VHH 序列；输出 developability descriptors、风险等级、异常残基/patch 定位、CDR/loop/charge/hydrophobicity 相关指标。</li>
+<li><strong>VHH 使用范围：</strong> 适合 hit triage、lead optimization 前的风险定位、人源化或突变设计前后比较。对于 VHH 项目，它比通用 TAP 更合适。</li>
+<li><strong>局限：</strong> 临床 VHH 样本数量仍有限；结构相关 patch 依赖预测结构质量；TNP 不是表达量、热稳定性、PK 或免疫原性的直接实验替代。</li>
+<li><strong>本地状态：</strong> 代码和 PDF 已下载；BSD-3-Clause；优先复现。</li>
+</ul>
+<h3 id="220-protparam-compute-pi-mw">2.20 ProtParam / Compute pI-Mw</h3>
+<ul>
+<li><strong>工具定位：</strong> 蛋白基础物化性质计算，不是 ML 模型，但非常实用。</li>
+<li><strong>怎么训练/搭建：</strong> 确定性公式和经验参数：分子量、理论 pI、消光系数、GRAVY、instability index、aliphatic index 等。</li>
+<li><strong>输入输出：</strong> 输入 VHH 氨基酸序列；输出 pI/Mw/组成/疏水性等基础表格。</li>
+<li><strong>VHH 使用范围：</strong> 适合所有候选 VHH 的基础 QC、IEX/formulation 初步判断、标签/突变前后 Mw 和 pI 变化检查。</li>
+<li><strong>局限：</strong> 理论 pI 不等于实验 pI；不考虑三维结构、二硫键、PTM、浓度、盐和 formulation。</li>
+<li><strong>本地状态：</strong> 主要是网页工具，但算法本身可复现；建议作为每条 VHH 的基础字段。</li>
+</ul>
+<hr />
+<h2 id="3-b">3. B 类：代码公开但复现有条件，第二批看</h2>
+<h3 id="31-igfold">3.1 IgFold</h3>
+<ul>
+<li><strong>定位：</strong> 快速抗体结构预测，明确支持 nanobody/heavy-only 输入，可作为 NanoBodyBuilder2 的对照模型。</li>
+<li><strong>方法和数据：</strong> AntiBERTy 在约 5.58 亿天然抗体序列上预训练，再用结构模块从 embedding 预测 backbone；可接 Rosetta refinement。</li>
+<li><strong>用途范围：</strong> 大批量 VHH 单体建模、比较 CDR3 构象、给 docking 或 developability 工具提供结构输入。</li>
+<li><strong>为什么放 B：</strong> 代码和模型可用，但许可证是 JHU Academic Software License，商业用途要单独联系；不是 VHH-only 训练。</li>
+<li><strong>局限：</strong> 不处理抗原；对人工设计、非天然 framework、超长 CDR3 的置信度要谨慎。</li>
+</ul>
+<h3 id="32-alphafold3-alphafold-server">3.2 AlphaFold3 / AlphaFold Server</h3>
+<ul>
+<li><strong>定位：</strong> all-atom biomolecular interaction 模型，可建蛋白、核酸、小分子、离子、修饰残基等复合物；可用于 VHH-Ag co-folding。</li>
+<li><strong>方法和数据：</strong> 以 PDB 多类型生物分子结构为核心训练数据，使用 diffusion/denoising 风格结构生成。</li>
+<li><strong>用途范围：</strong> 当你有 VHH 序列和抗原序列/结构时，可作为复合物候选生成器；也可和 Chai-1/Boltz/HADDOCK 互证。</li>
+<li><strong>为什么放 B：</strong> 代码已公开，但本地权重和使用条款不是完全无门槛；服务器/本地使用条件需要单独遵守。</li>
+<li><strong>局限：</strong> 抗体-抗原界面共进化信号弱，容易出现高置信错误 pose；分数不等于亲和力。</li>
+</ul>
+<h3 id="33-alphafold-multimer-colabfold">3.3 AlphaFold-Multimer / ColabFold</h3>
+<ul>
+<li><strong>定位：</strong> AF2 多链复合物预测和高效前端。对 VHH-Ag 可跑，但不是抗体专用。</li>
+<li><strong>方法和数据：</strong> AF-Multimer 扩展 AF2 到多链；ColabFold 用 MMseqs2 加速 MSA。</li>
+<li><strong>用途范围：</strong> 生成复合物 baseline、检查不同 seed/stoichiometry 下界面是否稳定、与 docking 结果比较。</li>
+<li><strong>为什么放 B：</strong> 可用性强，但 AF 参数/许可证和 MSA 依赖需要记录；VHH-Ag 不一定可靠。</li>
+<li><strong>局限：</strong> Ab/Nb-Ag 复合物缺乏共进化，接口预测经常不稳；需要多 seed、多模型和实验约束。</li>
+</ul>
+<h3 id="34-abnativ-abnativ2">3.4 AbNatiV / AbNatiV2</h3>
+<ul>
+<li><strong>定位：</strong> 抗体/纳米抗体 nativeness、humanness 和 residue-level profile 评估，是 VHH 人源化和 hit selection 的重要工具。</li>
+<li><strong>方法和数据：</strong> VQ-VAE/深度序列表征，学习 OAS 等大规模 antibody/nanobody repertoire 的天然序列分布，含 human、mouse、camelid VHH 等模型。</li>
+<li><strong>用途范围：</strong> 判断设计序列是否偏离天然 VHH 分布，定位异常残基，做 humanization 前后比较。</li>
+<li><strong>为什么放 B：</strong> 代码/模型可用，但许可证 CC BY-NC-SA，商业用途受限。</li>
+<li><strong>局限：</strong> nativeness/humanness 不是表达、稳定、聚集或免疫原性；不能单独最大化分数。</li>
+</ul>
+<h3 id="35-hudiff-hudiff-nb">3.5 HuDiff / HuDiff-Nb</h3>
+<ul>
+<li><strong>定位：</strong> 抗体和纳米抗体人源化 diffusion 模型；HuDiff-Nb 面向 nanobody。</li>
+<li><strong>方法和数据：</strong> 自回归 diffusion/denoising 生成 humanized variants；公开仓库包含训练脚本、数据处理和 checkpoint 下载线索。</li>
+<li><strong>用途范围：</strong> 已有 camelid VHH binder，想做人源化但尽量保留结合和 nativeness 时使用。</li>
+<li><strong>为什么放 B：</strong> 代码公开，但 PolyForm Noncommercial；部分数据/权重需要单独下载，商业复现受限。</li>
+<li><strong>局限：</strong> 人源化不是亲和力成熟；生成序列必须再过 TNP、结构、MHC-II 和实验。</li>
+</ul>
+<h3 id="36-germinal">3.6 Germinal</h3>
+<ul>
+<li><strong>定位：</strong> epitope-targeted VHH/scFv 生成管线，和 RFantibody 类似但实现路线不同。</li>
+<li><strong>方法和数据：</strong> 组合 ColabDesign/AF-Multimer hallucination、AbMPNN、AlphaFold/RF 类结构过滤；少量靶点有低通量验证。</li>
+<li><strong>用途范围：</strong> 当你有抗原结构和表位，想比较不同设计生成器时可作为 RFantibody 的对照。</li>
+<li><strong>为什么放 B：</strong> 代码 Apache-2.0，但依赖 PyRosetta、AF-Multimer/AF3 参数等外部组件，复现链条长。</li>
+<li><strong>局限：</strong> 仍在 active development；公开靶点和失败案例有限；命中率不可直接外推。</li>
+</ul>
+<h3 id="37-nanodesigner">3.7 NanoDesigner</h3>
+<ul>
+<li><strong>定位：</strong> VHH 专项 CDR 设计/优化 workflow，强调 CDR generation 与 docking 的联合迭代。</li>
+<li><strong>方法和数据：</strong> EM-like 迭代框架，调用 IgFold、DockQ、Rosetta、FoldX、HDOCK、side-chain packing 等模块，评估 ΔG/ΔΔG 和 docking 改善。</li>
+<li><strong>用途范围：</strong> 已有 nanobody scaffold、抗原结构和表位/复合物信息时，做局部 CDR 优化。</li>
+<li><strong>为什么放 B：</strong> 代码公开但外部依赖多，部分依赖许可证复杂；不是一键复现。</li>
+<li><strong>局限：</strong> 能量函数和 docking 近似不能替代亲和力实验；依赖初始表位/结构质量。</li>
+</ul>
+<h3 id="38-iglm">3.8 IgLM</h3>
+<ul>
+<li><strong>定位：</strong> 抗体 autoregressive language model，可做序列生成、补全和突变建议。</li>
+<li><strong>方法和数据：</strong> 在约 5.58 亿 heavy/light antibody variable sequences 上训练语言模型。</li>
+<li><strong>用途范围：</strong> 作为 VHH 序列生成/补全的参考模型，或给 CDR mutational library 提供语言模型概率。</li>
+<li><strong>为什么放 B：</strong> JHU Academic Software License，偏非商业；不是 VHH 专用，也不感知抗原。</li>
+<li><strong>局限：</strong> sequence-only；生成天然样式不等于结合、稳定或低免疫风险。</li>
+</ul>
+<h3 id="39-diffab">3.9 DiffAb</h3>
+<ul>
+<li><strong>定位：</strong> 抗原条件的抗体 CDR sequence/structure diffusion 生成模型。</li>
+<li><strong>方法和数据：</strong> 训练于 SAbDab 抗体-抗原复合物，扩散生成 CDR 结构和序列。</li>
+<li><strong>用途范围：</strong> 研究 CDR 生成模型时可参考；如果要用于 VHH，需要改 framework/链输入并验证。</li>
+<li><strong>为什么放 B：</strong> 代码和权重公开线索存在，但默认是常规抗体，不是 VHH 专用。</li>
+<li><strong>局限：</strong> 对 VHH 单域、framework contact 和超长 CDR3 的适配不确定。</li>
+</ul>
+<h3 id="310-gearbind-graphinity-mcsm-ab2">3.10 GearBind / Graphinity / mCSM-AB2</h3>
+<ul>
+<li><strong>定位：</strong> 抗体-抗原突变亲和力变化预测或 affinity maturation ranking 工具。</li>
+<li><strong>方法和数据：</strong> GearBind 用 geometric GNN，CATH 预训练 + SKEMPI fine-tuning；Graphinity 用 Siamese equivariant GNN；mCSM-AB2 用 graph signatures 和实验 mutation 数据。</li>
+<li><strong>用途范围：</strong> 已有 VHH-Ag 复合物结构时，对 CDR 或界面突变做排序，帮助缩小实验库。</li>
+<li><strong>为什么放 B：</strong> 部分代码公开，但训练数据不是 VHH 专用，泛化风险明显；mCSM-AB2主要是 web/server。</li>
+<li><strong>局限：</strong> ΔΔG 模型误差大，不应单独决定突变；输入复合物结构错，排序就会错。</li>
+</ul>
+<h3 id="311-abodybuilder3-ablooper-deepab-h3-opt-abdockgen-deeprank-ab-balmfold">3.11 ABodyBuilder3 / ABlooper / DeepAb / H3-OPT / AbDockGen / DeepRank-Ab / BALMFold</h3>
+<ul>
+<li><strong>定位：</strong> 这些是结构预测、loop 建模、docking generation 或 docking ranking 的补充工具。</li>
+<li><strong>用途范围：</strong> ABodyBuilder3 适合常规 VH/VL；ABlooper 做 CDR loop；DeepAb 是历史结构基线；H3-OPT 做 CDR-H3 loop 优化；AbDockGen/DeepRank-Ab 用于抗体-抗原 docking generation/ranking；BALMFold 是通用结构模型方向。</li>
+<li><strong>为什么放 B：</strong> 多数不是 VHH 专用，或需要特定权重/外部依赖，适合作为方法学习和对照，不是 VHH 项目首选主线。</li>
+<li><strong>局限：</strong> 不能替代 NanoBodyBuilder2/TNP/RFantibody 这类 VHH 更贴近的工具。</li>
+</ul>
+<h3 id="312-nanomap-mixcr-igdiscover-nabp-bert-abagintpre-parapred-episcan-imapep">3.12 NanoMAP / MiXCR / IgDiscover / NABP-BERT / AbAgIntPre / ParaPred / EpiScan / ImaPEp</h3>
+<ul>
+<li><strong>定位：</strong> 识别/发现和 binding/epitope/paratope 预测补充工具。</li>
+<li><strong>用途范围：</strong> NanoMAP 做 VHH repertoire/clonal family；MiXCR 做通用 BCR/TCR repertoire；IgDiscover 发现 germline；NABP-BERT/AbAgIntPre 做 sequence-level interaction；ParaPred 做 paratope；EpiScan/ImaPEp 做 epitope/paratope 相关预测。</li>
+<li><strong>为什么放 B：</strong> 有代码，但有的许可证非商业、有的不是 VHH 专用、有的训练标签有限；适合在 A 类流程跑通后补充。</li>
+<li><strong>局限：</strong> 富集或序列级 interaction 分数不能替代 binding assay；epitope/paratope prediction 只能提出假设。</li>
+</ul>
+<hr />
+<h2 id="4-c">4. C 类：后置了解，暂不作为本地复现主线</h2>
+<h3 id="41-chai-2jam-2latent-x2tfdesign-sdabeasynanonanofold">4.1 Chai-2、JAM-2、Latent-X2、TFDesign-sdAb、EasyNano、nanoFOLD</h3>
+<ul>
+<li><strong>共同定位：</strong> 前沿抗体/纳米抗体设计模型或公司/预印本平台，报告了较强的 zero-shot 或 epitope-targeted 设计能力。</li>
+<li><strong>为什么后看：</strong> 当前没有稳定公开代码/权重，或主要是白皮书/论文/公司平台；不能作为“本地可复现模型”优先线。</li>
+<li><strong>仍然值得看什么：</strong> 它们的任务设定、hit-rate 评价方式、wet-lab 验证格式、表位条件设计策略、失败案例定义。可以作为未来工具发展方向，而不是现在的主流程依赖。</li>
+</ul>
+<h3 id="42-llamanade">4.2 Llamanade</h3>
+<ul>
+<li><strong>定位：</strong> VHH 人源化/工程化方法，基于 VHH 与人 IgG 序列/结构比较，提出人源化 mutation plan。</li>
+<li><strong>为什么后看：</strong> 论文和方法重要，但本地公开可复现代码不如 HuDiff/AbNatiV/BioPhi 明确。</li>
+<li><strong>用途范围：</strong> 已有 VHH binder 要做人源化时，可把 Llamanade 的保守位点思想作为人工规则参考，尤其注意不要破坏 VHH hallmark 和 solubility residues。</li>
+</ul>
+<h3 id="43-cluspro-abemap-hdock-epipred-sabpred-abadapt">4.3 ClusPro / AbEMap / HDOCK / EpiPred-SAbPred / AbAdapt</h3>
+<ul>
+<li><strong>定位：</strong> 网页 docking、表位预测或 antibody-antigen workflow。</li>
+<li><strong>为什么后看：</strong> 多数是 web/server 工具，不能完全本地复现；或者底层代码/参数不完全开放。</li>
+<li><strong>用途范围：</strong> 快速提出 VHH-Ag docking/epitope 假设，给 HADDOCK3 或实验设计提供候选；适合做交叉验证而非单一结论。</li>
+<li><strong>局限：</strong> rigid docking 对 VHH CDR3 和抗原柔性处理有限；web score 不是 affinity。</li>
+</ul>
+<h3 id="44-aggrescan3dcamsolprotein-solabprediedbnetmhciipantapdynamut2foldxsolart">4.4 Aggrescan3D、CamSol、Protein-Sol/Abpred、IEDB/NetMHCIIpan、TAP、DynaMut2、FoldX、SOLart</h3>
+<ul>
+<li><strong>定位：</strong> developability、solubility、aggregation、MHC-II immunogenicity、mutation stability 等性质预测工具。</li>
+<li><strong>为什么后看：</strong> 很多是网页服务、商业许可或独立二进制，不属于本地开源模型；但实际项目中仍然很有用。</li>
+<li><strong>用途范围：</strong> A3D 看结构聚集 patch；CamSol/Protein-Sol 看溶解性；IEDB/NetMHCIIpan 看 HLA-II binding epitope；FoldX/DynaMut2 看突变稳定性；TAP 是常规抗体 developability 对照。</li>
+<li><strong>局限：</strong> 所有这些都是 risk proxy，不是表达、SEC、Tm、DLS、HIC、ADA 或 PK 的替代。</li>
+</ul>
+<h3 id="45-igblastprotparam">4.5 IgBLAST、ProtParam 等官方/网页基础工具</h3>
+<ul>
+<li><strong>定位：</strong> IgBLAST 是 V(D)J/germline 注释基础工具；ProtParam 是基础物化计算。</li>
+<li><strong>为什么不是 A 类模型：</strong> 它们不是本地深度模型，但算法/服务稳定、权威，仍应作为基础 QC 使用。</li>
+<li><strong>用途范围：</strong> IgBLAST 适合自定义 camelid germline 做 V/D/J 和 junction 注释；ProtParam 适合所有 VHH 的 pI/Mw/GRAVY 基础表。</li>
+</ul>
+<h3 id="46-bioluminatepipebiotamarind-bio">4.6 商业平台：BioLuminate、PipeBio、Tamarind Bio</h3>
+<ul>
+<li><strong>定位：</strong> 商业/云平台，把结构预测、docking、developability、NGS 和报告工作流包装起来。</li>
+<li><strong>为什么后看：</strong> 闭源、版本和参数不透明，无法作为可复现开源模型；但可用于实际生产流程或对照。</li>
+<li><strong>使用注意：</strong> 如果使用商业平台，必须导出输入、输出、底层工具版本、参数、数据库版本和失败样本，不要只保留黑箱总分。</li>
+</ul>
+<hr />
+<h2 id="5">5. 按任务选择工具：更实用的阅读路线</h2>
+<h3 id="51-vhh">5.1 我只有 VHH 序列，想知道结构和风险</h3>
+<ul>
+<li><strong>第一步：</strong> ANARCI 编号，确认 CDR 区域和序列是否完整。</li>
+<li><strong>第二步：</strong> NanoBodyBuilder2 和 NanoNet 建模；IgFold 可作为 B 类对照。</li>
+<li><strong>第三步：</strong> TNP 做 VHH developability；ProtParam 做基础物化字段；A3D/CamSol/Protein-Sol 做补充。</li>
+<li><strong>第四步：</strong> 如果要突变，先用 AntiFold 看结构兼容性，再用 FoldX/DynaMut2 粗筛稳定性。</li>
+</ul>
+<h3 id="52-ngs-vhh">5.2 我有 NGS/展示库数据，想找候选 VHH</h3>
+<ul>
+<li><strong>第一步：</strong> alpseq 或 phage-seq/nbseq 处理 reads 和富集。</li>
+<li><strong>第二步：</strong> ANARCI/IgBLAST/MiXCR/Immcantation 做编号、VDJ、clone family、lineage 和 SHM。</li>
+<li><strong>第三步：</strong> TNP/AbNatiV 过滤 developability/nativeness 异常。</li>
+<li><strong>第四步：</strong> DeepNano/NABP-BERT 做序列级 Nb-Ag 预排序，但必须用 binding assay 确认。</li>
+</ul>
+<h3 id="53-vhh">5.3 我知道抗原结构，想设计新的 VHH</h3>
+<ul>
+<li><strong>第一步：</strong> 明确 target state、表位和不想碰的区域；没有表位时先用结构/功能位点/实验信息缩小范围。</li>
+<li><strong>第二步：</strong> RFantibody 做主设计线；IgGM/Germinal/NanoDesigner 做对照或补充。</li>
+<li><strong>第三步：</strong> Chai-1/Boltz/AF-Multimer/AF3 生成复合物假设；HADDOCK3 用表位/突变约束做 refinement。</li>
+<li><strong>第四步：</strong> TNP、AntiFold、A3D/CamSol、IEDB/NetMHCIIpan 做风险过滤；保留序列多样性进入实验。</li>
+</ul>
+<h3 id="54-binder">5.4 我有 binder，想做人源化或亲和力成熟</h3>
+<ul>
+<li><strong>人源化：</strong> HuDiff-Nb、AbNatiV、BioPhi/Sapiens、Humatch、Llamanade 思路一起看；不要单独最大化 humanness。</li>
+<li><strong>亲和力成熟：</strong> 有复合物结构时用 GearBind/Graphinity/mCSM-AB2/FoldX 排序突变；没有结构时先做结构和复合物假设。</li>
+<li><strong>风险闭环：</strong> 每个突变都要检查 TNP、聚集、溶解性、MHC-II epitope、表达/Tm/SEC 实验。</li>
+</ul>
+<hr />
+<h2 id="6">6. 读工具时最容易踩的坑</h2>
+<ul>
+<li><strong>开源代码不等于可复现。</strong> 还要看权重、许可证、训练数据、外部依赖、GPU 要求、输入格式和示例是否完整。</li>
+<li><strong>能跑 VHH 不等于为 VHH 校准。</strong> 通用蛋白模型可以输入 VHH，但阈值、置信度和误差模式未必适合纳米抗体。</li>
+<li><strong>结构置信度不等于结合正确。</strong> VHH-Ag co-folding 的错误常常看起来很自信，必须多模型、多 seed、docking 和实验互证。</li>
+<li><strong>序列自然性不等于可开发性。</strong> AbNatiV/BioPhi/IgLM 类工具只能说明像不像训练分布，不能替代 TNP、聚集/溶解性和实验。</li>
+<li><strong>生成式命中率不可横向比较。</strong> 每个论文的靶点、表位、筛选规模、实验格式、成功定义都不同。</li>
+<li><strong>商业或网页工具要记录版本。</strong> 否则即使结果好，也很难复现和追责。</li>
+</ul>
+<hr />
+<h2 id="7-12">7. 建议你优先精读的 12 个工具</h2>
+<ol>
+<li><strong>NanoBodyBuilder2/ImmuneBuilder</strong>：VHH 单体结构主线。</li>
+<li><strong>NanoNet</strong>：VHH 快速结构 baseline。</li>
+<li><strong>TNP</strong>：VHH developability 主线。</li>
+<li><strong>RFantibody</strong>：开源 VHH de novo 设计主线。</li>
+<li><strong>AntiFold</strong>：结构条件序列重设计。</li>
+<li><strong>Chai-1</strong>：开放复合物 co-folding。</li>
+<li><strong>Boltz</strong>：开放 AF3-like 结构/复合物模型。</li>
+<li><strong>HADDOCK3</strong>：约束 docking 和实验信息融合。</li>
+<li><strong>ANARCI</strong>：编号/CDR 定位基础设施。</li>
+<li><strong>alpseq 或 phage-seq/nbseq</strong>：NGS/展示库入口。</li>
+<li><strong>DeepNano</strong>：VHH-Ag 序列级候选排序。</li>
+<li><strong>AbNatiV/HuDiff-Nb/BioPhi</strong>：人源化与 nativeness 风险评估。</li>
+</ol>
+<hr />
+<h2 id="8">8. 本地资料怎么用</h2>
+<ul>
+<li>先从 <code>report/asset_inventory.md</code> 找本地代码和 PDF。</li>
+<li>每个本地代码仓库优先读 <code>README.md</code>、<code>LICENSE</code>、<code>environment.yml</code>、<code>pyproject.toml</code>、<code>requirements.txt</code>。</li>
+<li>如果要真正跑某个模型，先记录：代码 commit、模型权重 URL、数据库版本、输入 FASTA/PDB、随机种子、GPU、参数文件和输出目录。</li>
+<li>对下载失败的论文 PDF，见 <code>report/missing_pdfs.md</code>。这些没有绕过 403/反爬/付费墙，只保留了链接和失败原因。</li>
+</ul>
+<hr />
+<h1 id="vhh_1">纳米抗体/VHH 工具开源可复现优先级分层说明</h1>
+<p>生成日期：2026-07-06<br />
+工作目录：<code>/mnt/d/work/抗体/tools/nanobody_tool_survey</code><br />
+本文件只基于只读清单、已下载/已克隆资产和公开网页/仓库/论文链接整理；未移动 <code>papers/</code> 或 <code>code/</code>，未修改现有生成脚本。</p>
+<h2 id="0_1">0. 判定口径与证据路径</h2>
+<h3 id="01">0.1 请求类型</h3>
+<p>综合研究：在已有纳米抗体/VHH 工具清单上，补充“开源可复现优先级分层”和 A 类工具的用途范围、输入输出、训练/构建方式、VHH 适用场景与局限。</p>
+<h3 id="02">0.2 本地证据</h3>
+<ul>
+<li>工具全集来自 <code>metadata/asset_manifest.py</code>，共 69 个条目。</li>
+<li>下载/克隆状态来自 <code>metadata/asset_download_results.json</code>：论文 PDF 下载成功、失败原因、代码 clone 路径、短 commit head 都以该文件为准。</li>
+<li>代码可复现性优先看本地 clone 中的 <code>README*</code>、<code>LICENSE*</code>、环境文件、权重/数据下载说明；本报告不重新下载权重、不构建环境。</li>
+</ul>
+<h3 id="03">0.3 分层规则</h3>
+<ul>
+<li><strong>A 完全开源/本地可复现优先</strong>：公开代码已在本地 clone；核心推理或流程有开放许可证或常见开源许可证；权重/示例/构建方式在 README 中可获得，或方法本身不依赖专有权重；没有强制闭源商业组件作为核心路径。A 类仍可能有 GPU/数据库/环境成本，也仍需实验验证。</li>
+<li><strong>B 代码公开但暂时后看</strong>：代码公开或部分 clone 成功，但存在非商业/研究用途 license、模型权重/训练数据另行授权、缺少 license、强依赖 PyRosetta/FoldX/HDOCK/Schrodinger/AF3 参数等受限组件，或工具目标与 VHH 当前主线间接相关。</li>
+<li><strong>C 闭源/网页/商业/不可复现或仅论文</strong>：manifest 中没有公开代码仓库，主要是网页服务、商业/闭源二进制、申请制服务、仅论文/预印本，或本地无法形成可审计的 open-source pipeline。</li>
+</ul>
+<h3 id="04">0.4 重要解释</h3>
+<p>本分层是“先做什么更可复现”的工程优先级，不是科学价值排名。C 类网页工具和 B 类受限工具仍可能很有用，但不适合作为第一批本地、可审计、可自动化的 VHH 报告主干。</p>
+<h2 id="1_1">1. 分层总览</h2>
+<h3 id="a">A. 完全开源/本地可复现优先</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>工具</th>
+<th>为什么进 A</th>
+<th>本地资产/公开证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VHH/重链单体结构</td>
+<td>NanoBodyBuilder2 / ImmuneBuilder</td>
+<td>BSD-3-Clause；VHH 专项模型；本地 clone 和论文 PDF 均有</td>
+<td><code>code/structure/nanobodybuilder2_immunebuilder/oxpig__immunebuilder</code>；https://github.com/oxpig/ImmuneBuilder；https://www.nature.com/articles/s42003-023-04927-7</td>
+</tr>
+<tr>
+<td>重链结构/大规模 repertoire</td>
+<td>HeavyBuilder2</td>
+<td>BSD-3-Clause；本地 clone；适合 heavy-chain-only 批处理</td>
+<td><code>code/structure/heavybuilder2/oxpig__heavybuilder2</code>；https://github.com/oxpig/HeavyBuilder2</td>
+</tr>
+<tr>
+<td>VH/VL 结构补充</td>
+<td>ABodyBuilder3</td>
+<td>Apache-2.0；权重/数据在 Zenodo；可本地构建，但非 VHH 首选</td>
+<td><code>code/structure/abodybuilder3/exscientia__abodybuilder3</code>；https://github.com/exscientia/abodybuilder3；https://academic.oup.com/bioinformatics/article/40/10/btae576/7810444</td>
+</tr>
+<tr>
+<td>CDR loop</td>
+<td>ABlooper</td>
+<td>BSD-3-Clause；CDR loop 专项；无强制商业组件</td>
+<td><code>code/structure/ablooper/oxpig__ablooper</code>；https://github.com/oxpig/ABlooper；https://academic.oup.com/bioinformatics/article/38/7/1877/6517780</td>
+</tr>
+<tr>
+<td>通用复合物 co-folding</td>
+<td>AlphaFold-Multimer / ColabFold</td>
+<td>AlphaFold2/ColabFold 可本地运行，代码和参数许可公开；资源成本高但可审计</td>
+<td><code>code/structure/colabfold_alphafold_multimer/</code>；https://github.com/sokrypton/ColabFold；https://github.com/google-deepmind/alphafold；https://www.nature.com/articles/s41592-022-01488-1</td>
+</tr>
+<tr>
+<td>通用复合物 co-folding</td>
+<td>Chai-1</td>
+<td>Apache-2.0；README 声明代码和模型权重均 Apache-2.0；权重可自动下载</td>
+<td><code>code/structure/chai1/chaidiscovery__chai-lab</code>；https://github.com/chaidiscovery/chai-lab；https://www.biorxiv.org/content/10.1101/2024.10.10.615955v2</td>
+</tr>
+<tr>
+<td>通用复合物/亲和力</td>
+<td>Boltz-1 / Boltz-2</td>
+<td>MIT；README 声明代码和权重均 MIT、可商用；提供预测和训练文档</td>
+<td><code>code/structure/boltz/jwohlwend__boltz</code>；https://github.com/jwohlwend/boltz；https://pmc.ncbi.nlm.nih.gov/articles/PMC11601547/</td>
+</tr>
+<tr>
+<td>信息驱动 docking</td>
+<td>HADDOCK3 + antibody-antigen scripts</td>
+<td>Apache-2.0；不依赖学习权重；有 nanobody-antigen 教程和 antibody-antigen workflow</td>
+<td><code>code/structure/haddock3/</code>；https://github.com/haddocking/haddock3；https://github.com/haddocking/HADDOCK-antibody-antigen；https://www.bonvinlab.org/education/HADDOCK3/HADDOCK3-nanobody-antigen/</td>
+</tr>
+<tr>
+<td>Ab-Ag docking/design baseline</td>
+<td>AbDockGen</td>
+<td>MIT；ckpts 在仓库内；SAbDab/RAbD 数据处理流程公开</td>
+<td><code>code/structure/abdockgen/wengong-jin__abdockgen</code>；https://github.com/wengong-jin/abdockgen；https://proceedings.mlr.press/v162/jin22a.html</td>
+</tr>
+<tr>
+<td>docking 结果排序</td>
+<td>DeepRank-Ab</td>
+<td>Apache-2.0；自动 PDB→DockQ/质量标志推理管线；适合作为 docking 后处理</td>
+<td><code>code/structure/deeprank_ab/haddocking__deeprank-ab</code>；https://github.com/haddocking/DeepRank-Ab</td>
+</tr>
+<tr>
+<td>de novo VHH/scFv 设计</td>
+<td>RFantibody</td>
+<td>MIT；README 声明 non-profit/for-profit 均可用；有 nanobody full pipeline 和下载权重脚本</td>
+<td><code>code/design/rfantibody/rosettacommons__rfantibody</code>；https://github.com/RosettaCommons/RFantibody；https://www.nature.com/articles/s41586-025-09721-5</td>
+</tr>
+<tr>
+<td>antibody/nanobody 生成</td>
+<td>IgGM</td>
+<td>MIT；权重可自动下载；README 有 nanobody structure/design/humanization examples</td>
+<td><code>code/design/iggm/tencentai4s__iggm</code>；https://github.com/TencentAI4S/IgGM；https://openreview.net/forum?id=zmmfsJpYcq</td>
+</tr>
+<tr>
+<td>inverse folding</td>
+<td>AntiFold</td>
+<td>BSD-3-Clause；模型下载链接公开；输入结构输出序列概率/采样序列</td>
+<td><code>code/design/antifold/oxpig__antifold</code>；https://github.com/oxpig/AntiFold；https://arxiv.org/abs/2405.03370</td>
+</tr>
+<tr>
+<td>人源性/可开发性</td>
+<td>BioPhi / Sapiens</td>
+<td>MIT；BioConda/Docker/CLI/web 均有；适合 humanness/OASis/Sapiens baseline</td>
+<td><code>code/design/biophi/merck__biophi</code>；<code>code/design/biophi/merck__sapiens</code>；https://github.com/Merck/BioPhi；https://github.com/Merck/Sapiens；https://pmc.ncbi.nlm.nih.gov/articles/PMC8837241/</td>
+</tr>
+<tr>
+<td>人源化</td>
+<td>Humatch</td>
+<td>BSD-3-Clause；本地安装；基因特异 humanisation</td>
+<td><code>code/design/humatch/oxpig__humatch</code>；https://github.com/oxpig/Humatch；https://pmc.ncbi.nlm.nih.gov/articles/PMC11610552/</td>
+</tr>
+<tr>
+<td>paired antibody sequence generator</td>
+<td>IgCraft</td>
+<td>MIT；Hugging Face/Zenodo 权重数据；但偏 paired human antibody，VHH 只作参考</td>
+<td><code>code/design/igcraft/mgreenig__igcraft</code>；https://github.com/mgreenig/igcraft；https://arxiv.org/abs/2503.19821</td>
+</tr>
+<tr>
+<td>结构 ddG/亲和力变化</td>
+<td>Graphinity</td>
+<td>BSD-3-Clause；示例、训练/推理配置和部分权重/数据路径公开；用于 Ab-Ag ddG 研究</td>
+<td><code>code/design/graphinity/oxpig__graphinity</code>；https://github.com/oxpig/Graphinity；https://www.nature.com/articles/s43588-025-00823-8</td>
+</tr>
+<tr>
+<td>VHH NGS pipeline</td>
+<td>alpseq</td>
+<td>GPL-3.0；Nextflow pipeline；明确用于 Illumina 2x300 bp nanobody sequencing</td>
+<td><code>code/identification/alpseq/kzeglinski__alpseq</code>；https://github.com/kzeglinski/alpseq；https://pmc.ncbi.nlm.nih.gov/articles/PMC12885427/</td>
+</tr>
+<tr>
+<td>VHH phage-seq processing</td>
+<td>phage-seq + nbseq</td>
+<td>nbseq MIT；Snakemake workflow；用于 nanobody/VHH sequencing feature tables</td>
+<td><code>code/identification/phage_seq_nbseq/</code>；https://github.com/caseygrun/nbseq；https://github.com/caseygrun/phage-seq</td>
+</tr>
+<tr>
+<td>编号/链型识别</td>
+<td>ANARCI</td>
+<td>BSD-like license；抗体/TCR numbering 和 receptor class identification；VHH 注释必备基础件</td>
+<td><code>code/identification/anarci/oxpig__anarci</code>；https://github.com/oxpig/ANARCI；https://academic.oup.com/bioinformatics/article/32/2/298/1744206</td>
+</tr>
+<tr>
+<td>AIRR repertoire</td>
+<td>Immcantation / pRESTO / Change-O / airrflow</td>
+<td>AGPL/GPL/nf-core；AIRR 生态成熟；适合 BCR repertoire 标准化处理</td>
+<td><code>code/identification/immcantation/</code>；https://immcantation.readthedocs.io/；https://github.com/immcantation/presto；https://github.com/immcantation/changeo；https://github.com/nf-core/airrflow</td>
+</tr>
+<tr>
+<td>germline discovery</td>
+<td>IgDiscover</td>
+<td>MIT-like license；GitLab docs；用于从 repertoire 发现 V genes</td>
+<td><code>code/identification/igdiscover/gkhlab__igdiscover22</code>；https://gitlab.com/gkhlab/igdiscover22；https://gkhlab.gitlab.io/igdiscover22/</td>
+</tr>
+<tr>
+<td>Nb-Ag sequence/site prediction</td>
+<td>DeepNano</td>
+<td>MIT；README 声明代码和模型权重均在仓库；DeepNano-seq/site/interaction 三类模型</td>
+<td><code>code/identification/deepnano/ddd9898__deepnano</code>；https://github.com/ddd9898/DeepNano；https://doi.org/10.1038/s42256-024-00940-5</td>
+</tr>
+<tr>
+<td>Ab-Ag sequence binding</td>
+<td>AbAgIntPre</td>
+<td>Apache-2.0；模型代码/数据目录公开；序列级 antibody-antigen interaction baseline</td>
+<td><code>code/identification/abagintpre/emerson106__abagintpre</code>；https://github.com/emersON106/AbAgIntPre；https://pmc.ncbi.nlm.nih.gov/articles/PMC9813736/</td>
+</tr>
+<tr>
+<td>paratope prediction</td>
+<td>Paragraph</td>
+<td>BSD-3-Clause；预训练权重在仓库；输入结构输出 paratope 概率</td>
+<td><code>code/identification/paragraph/oxpig__paragraph</code>；https://github.com/oxpig/Paragraph；https://academic.oup.com/bioinformatics/article/39/1/btac732/6825310</td>
+</tr>
+<tr>
+<td>paratope prediction</td>
+<td>ParaPred / parapred-pytorch</td>
+<td>原始和 PyTorch 版均有权重；PyTorch 版 MIT；适合作历史 baseline</td>
+<td><code>code/identification/parapred/</code>；https://github.com/eliberis/parapred；https://github.com/alchemab/parapred-pytorch；https://academic.oup.com/bioinformatics/article/34/17/2944/4972995</td>
+</tr>
+<tr>
+<td>epitope mapping</td>
+<td>EpiScan</td>
+<td>MIT；训练模型在仓库；病毒蛋白 antibody-specific epitope sequence mapping</td>
+<td><code>code/identification/episcan/gzbiomedical__episcan</code>；https://github.com/gzBiomedical/EpiScan；https://www.nature.com/articles/s41540-024-00432-7</td>
+</tr>
+<tr>
+<td>VHH developability</td>
+<td>TNP / Therapeutic Nanobody Profiler</td>
+<td>BSD-3-Clause；VHH/Nb 专项 developability profiler；本地 code clone</td>
+<td><code>code/properties/tnp/oxpig__tnp</code>；https://github.com/oxpig/TNP；https://www.nature.com/articles/s42003-026-09594-y</td>
+</tr>
+</tbody>
+</table>
+<h3 id="b-license">B. 代码公开但权重/数据/license/依赖受限，暂时后看</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>后看原因</th>
+<th>仍可保留的用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NanoNet</td>
+<td><code>LICENSE.txt</code> 是 research-use license，明确排除直接/间接商业获益；虽是 VHH 专项但不是完全开源许可。证据：https://github.com/dina-lab3D/NanoNet</td>
+<td>学术内部 VHH 单体建模对照；与 NanoBodyBuilder2 交叉验证。</td>
+</tr>
+<tr>
+<td>IgFold</td>
+<td>JHU Academic Software License；README 写明 code 和 pre-trained models 仅 non-commercial use。证据：https://github.com/Graylab/IgFold</td>
+<td>快速 nanobody/VH baseline；但商业/转化项目需先处理授权。</td>
+</tr>
+<tr>
+<td>DeepAb</td>
+<td>Rosetta-DL non-commercial license；非 VHH 专项。证据：https://github.com/RosettaCommons/DeepAb</td>
+<td>历史抗体结构 baseline；不作第一批 VHH 主线。</td>
+</tr>
+<tr>
+<td>H3-OPT</td>
+<td>依赖 AbRSA 下载和 Schrodinger Python API；局部 CDR-H3 优化强但环境/商业依赖限制明显。证据：https://github.com/chenhd21/H3-OPT；https://elifesciences.org/articles/91512</td>
+<td>有 CDR-H3 局部优化需求时作为专门候选。</td>
+</tr>
+<tr>
+<td>RosettaAntibody3 / SnugDock</td>
+<td>Rosetta/PyRosetta 授权和安装复杂；manifest 未 clone 代码；但论文/文档支持 single-domain/camelid 场景。证据：https://docs.rosettacommons.org/docs/latest/application_documentation/antibody/antibody-protocol；https://pmc.ncbi.nlm.nih.gov/articles/PMC7993800/</td>
+<td>高分辨率 docking/refinement；需要 Rosetta 许可后再纳入。</td>
+</tr>
+<tr>
+<td>AlphaFold 3 / AlphaFold Server</td>
+<td>源码 Apache-2.0，但模型参数必须从 Google 获得且受 <code>WEIGHTS_TERMS_OF_USE.md</code> 非商业条款约束；server 也不是本地可审计。证据：https://github.com/google-deepmind/alphafold3；https://www.nature.com/articles/s41586-024-07487-w；https://alphafoldserver.com/</td>
+<td>VHH-Ag co-folding 强对照；内部非商业研究可用，生产/商业需授权。</td>
+</tr>
+<tr>
+<td>BALMFold</td>
+<td>推理代码公开，但 README 要从 Google Drive 下载预训练权重；VHH 项目中主要是抗体语言模型/结构补充。证据：https://github.com/beam-labs/balm</td>
+<td>抗体结构/功能预测对照；先不作为主线。</td>
+</tr>
+<tr>
+<td>NanoDesigner</td>
+<td>GitHub clone 缺少明确 LICENSE；流程依赖 IgFold、HDOCK、Rosetta、FoldX 等多外部组件。证据：https://github.com/bio-ontology-research-group/NanoDesigner；https://pmc.ncbi.nlm.nih.gov/articles/PMC12333243/</td>
+<td>有 scaffold+epitope 的 VHH CDR 设计想法时阅读方法，但落地前先清授权/依赖。</td>
+</tr>
+<tr>
+<td>Germinal</td>
+<td>仓库 Apache-2.0，但 README 明确 PyRosetta、IgLM、AF3/Protenix/Chai 等组件需单独许可/权重；active development。证据：https://github.com/SantiagoMille/germinal；https://www.biorxiv.org/content/10.1101/2025.09.19.677421v1</td>
+<td>epitope-targeted de novo VHH 设计可作为方法参考；等依赖策略确定后再运行。</td>
+</tr>
+<tr>
+<td>TFDesign-sdAb</td>
+<td>Nature 文章的 Code availability 指向 IgGM-FR 和 A2Binder/PALM 组件，但 manifest 没有本地 clone，且不是一个已打包在资料包中的单一可复现 pipeline。证据：https://www.nature.com/articles/s41421-025-00843-8；https://github.com/TencentAI4S/IgGM；https://github.com/TencentAILabHealthcare/PALM</td>
+<td>sdAb tailored design 方法值得跟踪；若要落地，先补 clone、license、权重和组件版本。</td>
+</tr>
+<tr>
+<td>DiffAb</td>
+<td>Apache-2.0 代码，但设计新抗原时需要 HDOCK；relax/能量需要 PyRosetta；权重在 Hugging Face/Google Drive。证据：https://github.com/luost26/diffab；https://openreview.net/forum?id=jSorGn2Tjg</td>
+<td>抗原特异 CDR 生成基线；受限依赖解决后再跑。</td>
+</tr>
+<tr>
+<td>IgLM</td>
+<td>JHU Academic Software License，non-commercial；预训练数据另行下载。证据：https://github.com/Graylab/IgLM</td>
+<td>抗体语言模型 baseline；可作为 Germinal/序列生成依赖的风险点。</td>
+</tr>
+<tr>
+<td>VHHBERT / AVIDa-SARS-CoV-2</td>
+<td>代码 MIT，但数据集 README 标明 CC BY-NC 4.0；更像数据/benchmark，不是直接工具。证据：https://github.com/cognano/AVIDa-SARS-CoV-2；https://arxiv.org/abs/2405.18749</td>
+<td>SARS-CoV-2 VHH interaction 数据与预训练语料参考。</td>
+</tr>
+<tr>
+<td>AbNatiV / AbNatiV2</td>
+<td>LICENSE 是 CC BY-NC-SA 4.0，README 明确不能商业使用。证据：https://gitlab.doc.ic.ac.uk/sormanni-lab/abnativ；https://www.nature.com/articles/s42256-023-00778-3</td>
+<td>VHH nativeness/humanization 很重要，但先作为学术评估工具。</td>
+</tr>
+<tr>
+<td>HuDiff / HuDiff-Nb</td>
+<td>PolyForm Noncommercial License；虽提供 Nb humanization 模型和数据，但非商业限制。证据：https://github.com/TencentAI4S/HuDiff；https://www.biorxiv.org/content/10.1101/2024.10.22.619416v1</td>
+<td>VHH humanization 方法参考；商业或转化前需授权。</td>
+</tr>
+<tr>
+<td>NanoMAP</td>
+<td>VHH 分析代码公开，但 <code>LICENSE.txt</code> 为 CC BY-NC-SA 4.0。证据：https://github.com/wlwhite-tufts/NanoMAP；https://pmc.ncbi.nlm.nih.gov/articles/PMC13001438/</td>
+<td>学术 VHH 序列处理/可视化参考；不作为完全开源主线。</td>
+</tr>
+<tr>
+<td>MiXCR</td>
+<td>功能成熟，但本地 <code>LICENSE</code> 是 Academic User / academic-only EULA，不是开源许可证。证据：https://github.com/milaboratory/mixcr；https://mixcr.com/mixcr/reference/overview-analysis-overview/</td>
+<td>AIRR/BCR repertoire 标准工具；授权确认后可用于生产流程。</td>
+</tr>
+<tr>
+<td>NABP-BERT</td>
+<td>clone 中未见明确 license；README 要从 Google Drive 下载模型。证据：https://github.com/FMoonlightS/NABP-BERT；https://academic.oup.com/bib/article/26/1/bbae518/7926359</td>
+<td>纳米抗体-抗原序列 binding 预测对照；需补 license/weights 可追溯性。</td>
+</tr>
+<tr>
+<td>GearBind</td>
+<td>Apache-2.0 代码，但自有复合物使用需 FoldX 处理；README 明示部分 FoldX 生成结构因 license 不能提供。证据：https://github.com/DeepGraphLearning/GearBind；https://www.nature.com/articles/s41467-024-51563-8</td>
+<td>蛋白-蛋白 ddG 参考；VHH-Ag 需谨慎外推。</td>
+</tr>
+<tr>
+<td>ImaPEp</td>
+<td>clone 中未见明确 LICENSE；虽然模型和训练/预测脚本在仓库，但授权不可判定。证据：https://github.com/3BioCompBio/ImaPEp；https://www.mdpi.com/1422-0067/25/10/5434</td>
+<td>paratope-epitope pair probability 参考；先补授权信息。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="c">C. 闭源/网页/商业/不可复现或仅论文，暂时后看</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>后看原因</th>
+<th>可保留用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClusPro / AbEMap</td>
+<td>manifest 无 code；主要是网页/服务和论文协议。证据：https://pmc.ncbi.nlm.nih.gov/articles/PMC10898366/；https://cluspro.org/help.php</td>
+<td>快速网页 docking/epitope 参照，不作本地可复现主干。</td>
+</tr>
+<tr>
+<td>HDOCK</td>
+<td>manifest 无 code；通常是网页/二进制而非开源代码。证据：https://pmc.ncbi.nlm.nih.gov/articles/PMC5793843/</td>
+<td>DiffAb/NanoDesigner 等依赖项或 docking 对照。</td>
+</tr>
+<tr>
+<td>Chai-2</td>
+<td>manifest 无 code；预印本/网页信息优先，不能本地复现。证据：https://www.biorxiv.org/content/10.1101/2025.07.05.663018v1.full-text</td>
+<td>作为最新设计方向追踪。</td>
+</tr>
+<tr>
+<td>Latent-X2</td>
+<td>manifest 无 code，仅 arXiv。证据：https://arxiv.org/abs/2512.20263</td>
+<td>论文阅读，不纳入自动化。</td>
+</tr>
+<tr>
+<td>JAM-2</td>
+<td>manifest 无 code；Nabla PDF/商业主体，缺少可审计实现。证据：https://nabla-public.s3.us-east-1.amazonaws.com/2025_Nabla_JAM2.pdf</td>
+<td>高层方法/实验结果参考。</td>
+</tr>
+<tr>
+<td>EasyNano</td>
+<td>manifest 无 code，仅 arXiv。证据：https://arxiv.org/abs/2606.12772</td>
+<td>等公开代码后再评估。</td>
+</tr>
+<tr>
+<td>nanoFOLD</td>
+<td>manifest 无 code，仅预印本。证据：https://www.biorxiv.org/content/10.1101/2025.04.29.651236v1</td>
+<td>VHH inverse folding 方向参考。</td>
+</tr>
+<tr>
+<td>Llamanade</td>
+<td>manifest 无 code。证据：https://pmc.ncbi.nlm.nih.gov/articles/PMC8351782/</td>
+<td>方法阅读。</td>
+</tr>
+<tr>
+<td>mCSM-AB2</td>
+<td>manifest 无 code，主要网页/服务。证据：https://academic.oup.com/bioinformatics/article/36/5/1453/5607734</td>
+<td>抗体突变亲和力网页对照。</td>
+</tr>
+<tr>
+<td>IgBLAST</td>
+<td>NCBI 官方工具很有用，但不是 manifest 中的开源代码 clone；本分层按“非完全开源”后看。证据：https://www.ncbi.nlm.nih.gov/igblast/</td>
+<td>免疫受体 V(D)J 注释标准对照。</td>
+</tr>
+<tr>
+<td>EpiPred / SAbPred</td>
+<td>manifest 无 code，主要 OPIG/SAbPred web server 和论文。证据：https://academic.oup.com/nar/article/44/W1/W474/2499346</td>
+<td>epitope/paratope 网页对照。</td>
+</tr>
+<tr>
+<td>AbAdapt</td>
+<td>manifest 无 code。证据：https://academic.oup.com/bioinformaticsadvances/article/2/1/vbac015/6543605</td>
+<td>adaptive immune receptor/antibody sequence 分析参考。</td>
+</tr>
+<tr>
+<td>Aggrescan3D / A3D 2.0</td>
+<td>manifest 无 code，主要 web server。证据：https://academic.oup.com/nar/article/47/W1/W300/5485072</td>
+<td>聚集风险网页对照。</td>
+</tr>
+<tr>
+<td>CamSol</td>
+<td>manifest 无 code，网页/方法页。证据：https://www-vendruscolo.ch.cam.ac.uk/camsolmethod.html</td>
+<td>溶解性 proxy 对照。</td>
+</tr>
+<tr>
+<td>ProtParam / Compute pI/Mw</td>
+<td>ExPASy 网页服务，公式可复现但不是本清单开源代码。证据：https://web.expasy.org/protparam/；https://web.expasy.org/compute_pi/</td>
+<td>pI/MW/理化性质快速对照。</td>
+</tr>
+<tr>
+<td>IEDB / NetMHCIIpan</td>
+<td>web/server/服务条款，不是本地开源 clone。证据：https://tools.iedb.org/；https://services.healthtech.dtu.dk/services/NetMHCIIpan-4.3/</td>
+<td>免疫原性/MHC-II 风险筛查对照。</td>
+</tr>
+<tr>
+<td>TAP / Therapeutic Antibody Profiler</td>
+<td>manifest 无 code；web server。证据：https://pmc.ncbi.nlm.nih.gov/articles/PMC6410772/；https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabpred/tap</td>
+<td>developability 网页对照；VHH 用 TNP 优先。</td>
+</tr>
+<tr>
+<td>Protein-Sol / Abpred</td>
+<td>manifest 无 code；网页服务。证据：https://protein-sol.manchester.ac.uk/；https://protein-sol.manchester.ac.uk/abpred</td>
+<td>溶解性/抗体属性网页对照。</td>
+</tr>
+<tr>
+<td>DynaMut2</td>
+<td>manifest 无 code；网页服务。证据：https://biosig.lab.uq.edu.au/dynamut2/</td>
+<td>突变稳定性网页对照。</td>
+</tr>
+<tr>
+<td>FoldX</td>
+<td>商业/授权工具；manifest 无 code。证据：https://foldxsuite.crg.eu/products；https://pmc.ncbi.nlm.nih.gov/articles/PMC1160148/</td>
+<td>作为 NanoDesigner/GearBind/Graphinity 相关依赖或 ddG 对照，授权后再用。</td>
+</tr>
+<tr>
+<td>SOLart</td>
+<td>manifest 无 papers/code_urls；本地清单无可追溯来源。</td>
+<td>暂不纳入，除非后续补来源。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-a-vhh">2. A 类工具的用途范围、输入输出、训练/构建方式与 VHH 场景</h2>
+<h3 id="21-vhh-loop">2.1 VHH/重链单体结构与 loop 建模</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途范围</th>
+<th>输入 -&gt; 输出</th>
+<th>训练/构建方式</th>
+<th>适合的 VHH 场景</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NanoBodyBuilder2 / ImmuneBuilder</td>
+<td>从 VHH/抗体/TCR 序列快速预测单体结构，给出 ensemble 和误差估计</td>
+<td>VHH 序列/FASTA -&gt; PDB、误差/置信信息</td>
+<td>论文和 README 描述为免疫受体专用深度学习模型；代码 BSD；本地 <code>setup.py</code>；权重随包或按包逻辑获取</td>
+<td>VHH 候选批量建模、CDR3 构象初筛、docking 前单体结构准备、结构聚类</td>
+<td>不预测抗原复合物；长/非典型 CDR3、额外二硫键、训练集稀有框架仍要用多模型和实验/结构约束复核</td>
+</tr>
+<tr>
+<td>HeavyBuilder2</td>
+<td>high-throughput heavy-chain-only 结构化分析</td>
+<td>heavy-chain/VHH-like 序列或 repertoire -&gt; heavy-chain PDB/结构特征</td>
+<td>基于 ImmuneBuilder 系列；BSD；本地 <code>setup.py</code></td>
+<td>大规模重链 repertoire 结构空间分析；当输入不确定是否 camelid VHH 时可作快速补充</td>
+<td>不是 VHH 专项首选；VHH hallmark、长 CDR3 和抗原界面仍需 NanoBodyBuilder2/实验信息复核</td>
+</tr>
+<tr>
+<td>ABodyBuilder3</td>
+<td>常规 VH/VL Fv 结构预测增强版</td>
+<td>VH/VL 序列 -&gt; Fv PDB、模型不确定性</td>
+<td>Apache；README 指向 Zenodo 数据/模型权重；OpenFold 相关依赖</td>
+<td>对照普通抗体 Fv 或从 VHH 项目扩展到 scFv/VH-VL 时使用</td>
+<td>VHH 无 light chain，直接优先级低；权重/数据体积和 OpenFold 依赖增加复现成本</td>
+</tr>
+<tr>
+<td>ABlooper</td>
+<td>CDR loop 尤其 H3 loop 建模/重建</td>
+<td>抗体/VHH 结构或序列上下文 -&gt; loop 坐标/PDB</td>
+<td>Equivariant graph neural network；BSD；本地安装简单</td>
+<td>修补 VHH 单体模型中 CDR3 局部、比较多个结构模型的 loop 差异</td>
+<td>只解决 loop，不解决整体 VHH-Ag pose；loop 质量依赖上下文结构和编号一致性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-vhh-docking">2.2 VHH-抗原复合物建模、docking 和排序</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途范围</th>
+<th>输入 -&gt; 输出</th>
+<th>训练/构建方式</th>
+<th>适合的 VHH 场景</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ColabFold / AlphaFold-Multimer</td>
+<td>多链 co-folding baseline，生成 VHH-Ag 候选复合物</td>
+<td>多链 FASTA/MSA -&gt; PDB/mmCIF、pLDDT、PAE、ipTM/pTM</td>
+<td>AlphaFold2/Multimer 参数和数据库下载；ColabFold 用 MMseqs2 加速 MSA；代码公开</td>
+<td>无表位约束时快速生成一批 pose；与 HADDOCK/Chai/Boltz 交叉验证</td>
+<td>抗体-抗原缺少共进化，ipTM/PAE 可能高置信错 pose；本地数据库约 100GB-1TB 级；seed/MSA/模板敏感</td>
+</tr>
+<tr>
+<td>Chai-1</td>
+<td>通用多模态结构/复合物预测，支持蛋白、小分子、核酸、糖基化等</td>
+<td>FASTA/结构输入、可选 MSA/template/restraint -&gt; PDB/置信分数</td>
+<td>Apache-2.0；README 说明权重自动下载，默认可不用 MSA；可用 MSA/template server 增强</td>
+<td>VHH-Ag co-folding、含非蛋白组分的靶标对照、与 Boltz/AF-Multimer 取共识</td>
+<td>非 VHH 专项；interface 置信度不等于亲和力；默认无 MSA 时需更多交叉验证</td>
+</tr>
+<tr>
+<td>Boltz-1 / Boltz-2</td>
+<td>all-atom biomolecular interaction prediction；Boltz-2 还给 affinity 相关输出</td>
+<td>YAML/FASTA/分子描述 -&gt; 结构、binder/affinity 相关输出</td>
+<td>MIT；README 声明代码和权重 MIT；有 prediction/training docs</td>
+<td>VHH-Ag 复合物候选、与 Chai/AF 系列对照；小分子/蛋白多组分项目也可复用</td>
+<td>Boltz-2 affinity 主要不能直接等价为 VHH-Ag KD；VHH 特异训练偏置未知；仍需实验/约束过滤</td>
+</tr>
+<tr>
+<td>HADDOCK3 + antibody-antigen</td>
+<td>信息驱动 docking/refinement，利用 paratope/epitope/restraints</td>
+<td>VHH 结构 + 抗原结构 + active/passive residues/TOML -&gt; decoys、cluster、HADDOCK score</td>
+<td>无训练权重；Apache；CNS/HADDOCK 环境；nanobody-antigen 教程和 antibody-antigen script</td>
+<td>已知或预测表位、已有单体结构、需要把实验信息融入 docking 的场景</td>
+<td>无约束 blind docking 成功率有限；输入结构和约束质量决定结果；score 不是亲和力</td>
+</tr>
+<tr>
+<td>AbDockGen</td>
+<td>antibody-antigen docking 与 CDR 设计 baseline</td>
+<td>renumbered PDB/JSONL -&gt; docked pose 或生成序列/结构</td>
+<td>MIT；README 指明 SAbDab 数据、IMGT renumber、ckpts 推理命令</td>
+<td>作为 ML docking/design 历史 baseline；小规模对照 VHH-Ag pose</td>
+<td>训练以传统 Ab-Ag 为主；VHH 特异性弱；依赖旧 CUDA/PyTorch 版本</td>
+</tr>
+<tr>
+<td>DeepRank-Ab</td>
+<td>docking decoy ranking 和 DockQ 预测</td>
+<td>PDB/ensemble -&gt; DockQ score、质量标志、排序</td>
+<td>Apache；README 描述自动结构处理和 pretrained EGNN inference</td>
+<td>HADDOCK/ClusPro/AF/Chai/Boltz 生成多 pose 后的统一排序辅助</td>
+<td>预印本/新工具；ranking 不能替代实验；VHH 外推需校准</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-de-novo-inverse-folding">2.3 de novo 设计、inverse folding、人源化/可开发性</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途范围</th>
+<th>输入 -&gt; 输出</th>
+<th>训练/构建方式</th>
+<th>适合的 VHH 场景</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RFantibody</td>
+<td>epitope-targeted de novo antibody/nanobody design</td>
+<td>target PDB、framework PDB、hotspots/CDR 配置 -&gt; RFdiffusion dock、ProteinMPNN 序列、RF2/Quiver score</td>
+<td>MIT；<code>include/download_weights.sh</code>；Docker/Apptainer/uv；README 有 <code>nanobody_full_pipeline.sh</code></td>
+<td>已有靶标结构和表位假设，要生成 VHH/scFv binder；适合做大规模设计池</td>
+<td>GPU/存储成本高；作者 README 指出 filter 仍是主要限制，常需 10k 量级设计；生成不等于表达/亲和力</td>
+</tr>
+<tr>
+<td>IgGM</td>
+<td>antibody/nanobody 结构预测、CDR 设计、epitope design、humanization</td>
+<td>nanobody framework/FASTA、抗原 PDB、epitope -&gt; 序列和结构；可选 relax</td>
+<td>MIT；权重可自动下载；PyRosetta relax 可选但受限</td>
+<td>快速尝试 VHH CDRH3/CDR loop 设计、反向设计、结构预测、人源化候选</td>
+<td>新模型，实验命中率需按靶点验证；若启用 PyRosetta relax 会引入授权约束</td>
+</tr>
+<tr>
+<td>AntiFold</td>
+<td>antibody inverse folding，给定结构采样适配序列并输出 residue likelihood</td>
+<td>VHH/抗体 PDB -&gt; CSV residue log-likelihood、FASTA sampled sequences</td>
+<td>BSD；ESM-IF1 fine-tuned on SAbDab/OAS；model.pt 公开下载</td>
+<td>固定 VHH backbone 或 docking pose 后做 CDR/框架序列重设计、mutation scoring</td>
+<td>不是 VHH-only；inverse folding 保结构不保证结合；输入编号/结构缺失会影响结果</td>
+</tr>
+<tr>
+<td>BioPhi / Sapiens</td>
+<td>humanness/OASis/Sapiens 人源化与抗体语言模型评估</td>
+<td>VH/VL/VHH-like 序列 -&gt; humanness、OASis identity、suggested mutations</td>
+<td>MIT；Docker/Conda/PyPI；Sapiens 模型包公开</td>
+<td>VHH humanization 初筛、human-like 过滤、设计序列可开发性报告</td>
+<td>主要从 human antibody repertoire 学习；VHH 人源性和免疫原性不是同一概念，camelid hallmark 可能被误判</td>
+</tr>
+<tr>
+<td>Humatch</td>
+<td>gene-specific antibody humanisation</td>
+<td>antibody heavy/light sequences -&gt; humanized sequences/匹配结果</td>
+<td>BSD；依赖 ANARCI；本地 pip install</td>
+<td>如果 VHH 项目扩展到 conventional antibody 或想比较 heavy-chain humanization 策略</td>
+<td>原始目标是 heavy+light joint humanisation；对单域 VHH 需谨慎解释</td>
+</tr>
+<tr>
+<td>IgCraft</td>
+<td>paired human antibody sequence generation</td>
+<td>condition CSV/HDF5、IMGT region mask -&gt; generated paired sequences</td>
+<td>MIT；Hugging Face/Zenodo weights/data；Lightning 环境</td>
+<td>作为 human antibody generative baseline；若要从 VHH 转 scFv/paired Ab 可参考</td>
+<td>不是 VHH 专项；模型偏 paired human antibody，VHH 直接使用风险高</td>
+</tr>
+<tr>
+<td>Graphinity</td>
+<td>antibody-antigen ΔΔG 研究和 EGNN affinity-change baseline</td>
+<td>Ab-Ag complex/mutation configs -&gt; ΔΔG prediction CSV；也可训练</td>
+<td>BSD；conda env；示例推理/训练；数据来自 SAbDab、FoldX/Rosetta synthetic ddG</td>
+<td>VHH-Ag 突变优先级排序的研究型对照，尤其已有复合物结构时</td>
+<td>论文/README 强调实验 ddG 数据不足且泛化不稳；FoldX/Rosetta synthetic 数据不等于真实 VHH affinity</td>
+</tr>
+<tr>
+<td>TNP</td>
+<td>Therapeutic Nanobody Profiler，VHH developability 筛选</td>
+<td>nanobody sequence(s) -&gt; developability/property profile</td>
+<td>BSD；本地 package；VHH 专项论文和代码</td>
+<td>VHH hit triage：聚集/电荷/可开发性 proxy、设计后过滤、报告中的首选性质模块</td>
+<td>预测性质是 proxy；不能替代表达、SEC、DSF、binding assay；模型适用域需按序列长度/框架检查</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-vhh-discoveryngs-paratopeepitope">2.4 VHH discovery、NGS、编号和 paratope/epitope 预测</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途范围</th>
+<th>输入 -&gt; 输出</th>
+<th>训练/构建方式</th>
+<th>适合的 VHH 场景</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alpseq</td>
+<td>Illumina 2x300 bp nanobody sequencing pipeline</td>
+<td>paired FASTQ/config -&gt; preprocessing、clone/feature tables、analysis report</td>
+<td>GPL-3.0；Nextflow；文档网站；无需深度学习权重</td>
+<td>免疫库/展示库 NGS 的 VHH clone 富集和基础 QC</td>
+<td>需要按项目修改 <code>nextflow.config</code>；不直接预测 binding/structure</td>
+</tr>
+<tr>
+<td>phage-seq + nbseq</td>
+<td>phage display coupled HTS 和 VHH feature table processing</td>
+<td>FASTQ/Snakemake workflow -&gt; VHH feature tables、enrichment-ready outputs</td>
+<td>nbseq MIT；workflow/repo 数据公开；Snakemake 安装</td>
+<td>phage display 或类似 selection 实验后的 VHH 序列整理</td>
+<td>任务特定 workflow；输入实验设计不同时需改规则和元数据</td>
+</tr>
+<tr>
+<td>ANARCI</td>
+<td>antibody numbering 和 receptor class identification</td>
+<td>sequence/FASTA -&gt; IMGT/Chothia/Kabat 等编号、chain type</td>
+<td>BSD-like；HMMER/IMGT germline models；本地 CLI/Python</td>
+<td>所有 VHH 流程的前置：识别 CDR、标准编号、过滤异常序列</td>
+<td>对非常短/破碎/非典型序列可能失败；VHH hallmark 需要额外规则</td>
+</tr>
+<tr>
+<td>Immcantation / pRESTO / Change-O / airrflow</td>
+<td>AIRR repertoire preprocessing、VDJ assignment output processing、clonal assignment</td>
+<td>FASTQ/VDJ aligner outputs/AIRR tables -&gt; standardized AIRR tables、clones、reports</td>
+<td>AGPL/GPL/nf-core；成熟文档和容器生态</td>
+<td>大规模 BCR/VHH repertoire 的标准化表格和 clone lineage 分析</td>
+<td>VHH 专项逻辑少，需要结合 ANARCI/VHH hallmark；许可证 copyleft 影响集成方式</td>
+</tr>
+<tr>
+<td>IgDiscover</td>
+<td>从 antibody repertoire 发现新 V genes</td>
+<td>HTS reads/repertoire config -&gt; inferred germline V genes</td>
+<td>MIT-like；conda/env；GitLab docs</td>
+<td>非模式物种、camelid 样本或 germline reference 不完整时发现 V gene</td>
+<td>输入数据质量和个体/物种背景强相关；不输出 binding 结论</td>
+</tr>
+<tr>
+<td>DeepNano</td>
+<td>Nb-Ag sequence/site/interaction prediction</td>
+<td>nanobody sequence、antigen sequence/信息 -&gt; interaction/site prediction</td>
+<td>MIT；README 声明代码和模型权重在仓库；PyTorch/transformers 环境</td>
+<td>大规模候选的 sequence-only 结合初筛、antigen-site 粗筛</td>
+<td>训练集和抗原类型适用域要严格核查；预测概率不能替代亲和力实验</td>
+</tr>
+<tr>
+<td>AbAgIntPre</td>
+<td>sequence-only antibody-antigen interaction classifier</td>
+<td>antigen sequence + antibody heavy/light or related sequence features -&gt; interaction probability</td>
+<td>Apache；Siamese CNN + CKSAAP；数据来自 SAbDab/CoV-AbDab</td>
+<td>缺结构时的 Ab-Ag/VHH-Ag 粗筛对照</td>
+<td>原方法偏常规 antibody；VHH 单链输入需要映射/适配，泛化风险高</td>
+</tr>
+<tr>
+<td>Paragraph</td>
+<td>structure-based paratope prediction</td>
+<td>antibody/VHH structure -&gt; residue-level paratope probabilities</td>
+<td>BSD；GNN；预训练权重在仓库</td>
+<td>VHH 单体结构已有时预测 paratope，给 HADDOCK/设计热点提供约束</td>
+<td>依赖结构质量；训练偏既有抗体结构；paratope 概率不是 epitope 或 binding pose</td>
+</tr>
+<tr>
+<td>ParaPred</td>
+<td>sequence-based paratope prediction baseline</td>
+<td>antibody sequence/CDR -&gt; paratope labels/probabilities</td>
+<td>原始 Keras 版与 PyTorch 版均有权重；PyTorch 版 MIT</td>
+<td>无结构或快速 baseline；与 Paragraph/DeepNano-site 交叉</td>
+<td>历史模型，性能和编号适配可能落后；VHH 长 CDR3 外推需验证</td>
+</tr>
+<tr>
+<td>EpiScan</td>
+<td>antibody-specific viral epitope mapping from sequence</td>
+<td>antibody/antigen sequence features -&gt; epitope mapping output</td>
+<td>MIT；trained_model 在仓库；PyTorch 依赖</td>
+<td>病毒抗原 VHH/antibody epitope mapping 的 sequence-level 对照</td>
+<td>重点是 viral protein；非病毒靶点外推有限</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3">3. 建议的开源可复现优先路线</h2>
+<ol>
+<li><strong>先建基础注释层</strong>：<code>ANARCI</code> + <code>alpseq</code>/<code>nbseq</code>/<code>Immcantation</code>，把 VHH 序列、编号、CDR、clone/enrichment 表统一起来。</li>
+<li><strong>再建单体结构层</strong>：<code>NanoBodyBuilder2</code> 为 VHH 主线，<code>HeavyBuilder2</code> 和 <code>ABlooper</code> 作补充；常规 VH/VL 项目再引入 <code>ABodyBuilder3</code>。</li>
+<li><strong>复合物候选不要只信一个模型</strong>：用 <code>Chai-1</code>、<code>Boltz</code>、<code>ColabFold/AF-Multimer</code> 做 co-folding 候选，再用 <code>HADDOCK3</code> 在有 paratope/epitope 约束时 refinement；<code>DeepRank-Ab</code> 做 decoy 排序辅助。</li>
+<li><strong>设计类先区分“生成”和“过滤”</strong>：<code>RFantibody</code>/<code>IgGM</code> 负责生成，<code>AntiFold</code> 做固定骨架序列重设计，<code>TNP</code>/<code>BioPhi</code>/<code>Paragraph</code>/<code>DeepNano</code> 做可开发性和界面证据过滤。</li>
+<li><strong>B/C 类只在证据缺口明确时引入</strong>：例如需要 AF3 作强对照、需要 Rosetta refinement、需要 FoldX ddG、需要网页免疫原性筛查时，再单独处理 license、参数、数据和可复现记录。</li>
+</ol>
+<h2 id="4">4. 证据充分性与未决风险</h2>
+<ul>
+<li>已覆盖本地 manifest 的全部 69 个条目，并按本地 clone/license/README、论文/网页链接进行了分层。</li>
+<li>没有实际安装、下载权重、运行模型或验证输出；因此“可复现”指公开材料显示具备本地复现路径，不代表当前机器已可运行。</li>
+<li>GitHub 仓库状态可能在 2026-07-06 后变化；本报告的本地 commit head 以 <code>metadata/asset_download_results.json</code> 为准。</li>
+<li>许可证判定只做工程 triage，不构成法律意见；商业/转化使用前应复核上游 LICENSE、模型权重条款和第三方依赖条款。</li>
+<li>VHH-Ag 结构/亲和力预测普遍存在“高置信错 pose”和“proxy 不等于实验”的风险；任何 A/B/C 分层都不能替代 wet-lab validation。</li>
+</ul>
+<h2 id="5_1">5. 可复用结论</h2>
+<p>优先把报告主线建立在 A 类：<code>ANARCI</code>/<code>alpseq</code>/<code>nbseq</code>/<code>Immcantation</code> 做序列与 repertoire，<code>NanoBodyBuilder2</code>/<code>HeavyBuilder2</code>/<code>ABlooper</code> 做 VHH 单体，<code>Chai-1</code>/<code>Boltz</code>/<code>ColabFold</code>/<code>HADDOCK3</code>/<code>DeepRank-Ab</code> 做复合物候选和排序，<code>RFantibody</code>/<code>IgGM</code>/<code>AntiFold</code> 做开放设计，<code>TNP</code>/<code>BioPhi</code>/<code>Paragraph</code>/<code>DeepNano</code> 做过滤。B 类等 license、权重、外部依赖清楚后再跑；C 类只作网页/论文对照或方法追踪。</p>
+<hr />
+<h1 id="a_1">附录 A：本地下载清单</h1>
+<h2 id="a1-pdf">A1. 成功下载的论文 PDF</h2>
+<ul>
+<li><code>papers/design/abnativ/abnativ__s42256-023-00778-3.pdf.pdf</code></li>
+<li><code>papers/design/antifold/antifold__2405.03370.pdf</code></li>
+<li><code>papers/design/easynano/easynano__2606.12772.pdf</code></li>
+<li><code>papers/design/gearbind/gearbind__s41467-024-51563-8.pdf.pdf</code></li>
+<li><code>papers/design/igcraft/igcraft__2503.19821.pdf</code></li>
+<li><code>papers/design/jam2/jam2__2025_nabla_jam2.pdf.pdf</code></li>
+<li><code>papers/design/latentx2/latentx2__2512.20263.pdf</code></li>
+<li><code>papers/design/rfantibody/rfantibody__s41586-025-09721-5.pdf.pdf</code></li>
+<li><code>papers/design/tfdesign_sdab/tfdesign_sdab__s41421-025-00843-8.pdf.pdf</code></li>
+<li><code>papers/design/vhhbert/vhhbert__2405.18749.pdf</code></li>
+<li><code>papers/identification/episcan/episcan__s41540-024-00432-7.pdf.pdf</code></li>
+<li><code>papers/properties/tnp/tnp__s42003-026-09594-y.pdf.pdf</code></li>
+<li><code>papers/structure/abdockgen/abdockgen__jin22a.pdf.pdf</code></li>
+<li><code>papers/structure/alphafold3/alphafold3__s41586-024-07487-w.pdf.pdf</code></li>
+<li><code>papers/structure/colabfold_alphafold_multimer/colabfold_alphafold_multimer__s41592-022-01488-1.pdf.pdf</code></li>
+<li><code>papers/structure/igfold/igfold__s41467-023-38063-x.pdf.pdf</code></li>
+<li><code>papers/structure/nanobodybuilder2_immunebuilder/nanobodybuilder2_immunebuilder__s42003-023-04927-7.pdf.pdf</code></li>
+<li><code>papers/structure/nanonet/nanonet__pdf.pdf</code></li>
+</ul>
+<h2 id="a2">A2. 成功浅克隆的代码仓库</h2>
+<ul>
+<li><code>code/design/abnativ/sormanni-lab__abnativ</code></li>
+<li><code>code/design/antifold/oxpig__antifold</code></li>
+<li><code>code/design/biophi/merck__biophi</code></li>
+<li><code>code/design/biophi/merck__sapiens</code></li>
+<li><code>code/design/diffab/luost26__diffab</code></li>
+<li><code>code/design/gearbind/deepgraphlearning__gearbind</code></li>
+<li><code>code/design/germinal/santiagomille__germinal</code></li>
+<li><code>code/design/graphinity/oxpig__graphinity</code></li>
+<li><code>code/design/hudiff/tencentai4s__hudiff</code></li>
+<li><code>code/design/humatch/oxpig__humatch</code></li>
+<li><code>code/design/igcraft/mgreenig__igcraft</code></li>
+<li><code>code/design/iggm/tencentai4s__iggm</code></li>
+<li><code>code/design/iglm/graylab__iglm</code></li>
+<li><code>code/design/nanodesigner/bio-ontology-research-group__nanodesigner</code></li>
+<li><code>code/design/rfantibody/rosettacommons__rfantibody</code></li>
+<li><code>code/design/vhhbert/cognano__avida-sars-cov-2</code></li>
+<li><code>code/identification/abagintpre/emerson106__abagintpre</code></li>
+<li><code>code/identification/alpseq/kzeglinski__alpseq</code></li>
+<li><code>code/identification/anarci/oxpig__anarci</code></li>
+<li><code>code/identification/deepnano/ddd9898__deepnano</code></li>
+<li><code>code/identification/episcan/gzbiomedical__episcan</code></li>
+<li><code>code/identification/igdiscover/gkhlab__igdiscover22</code></li>
+<li><code>code/identification/imapeP/3biocompbio__imapep</code></li>
+<li><code>code/identification/immcantation/immcantation__changeo</code></li>
+<li><code>code/identification/immcantation/immcantation__presto</code></li>
+<li><code>code/identification/immcantation/nf-core__airrflow</code></li>
+<li><code>code/identification/mixcr/milaboratory__mixcr</code></li>
+<li><code>code/identification/nabp_bert/fmoonlights__nabp-bert</code></li>
+<li><code>code/identification/nanomap/wlwhite-tufts__nanomap</code></li>
+<li><code>code/identification/paragraph/oxpig__paragraph</code></li>
+<li><code>code/identification/parapred/alchemab__parapred-pytorch</code></li>
+<li><code>code/identification/parapred/eliberis__parapred</code></li>
+<li><code>code/identification/phage_seq_nbseq/caseygrun__nbseq</code></li>
+<li><code>code/identification/phage_seq_nbseq/caseygrun__phage-seq</code></li>
+<li><code>code/properties/tnp/oxpig__tnp</code></li>
+<li><code>code/structure/abdockgen/wengong-jin__abdockgen</code></li>
+<li><code>code/structure/ablooper/oxpig__ablooper</code></li>
+<li><code>code/structure/abodybuilder3/exscientia__abodybuilder3</code></li>
+<li><code>code/structure/alphafold3/google-deepmind__alphafold3</code></li>
+<li><code>code/structure/balmfold/beam-labs__balm</code></li>
+<li><code>code/structure/boltz/jwohlwend__boltz</code></li>
+<li><code>code/structure/chai1/chaidiscovery__chai-lab</code></li>
+<li><code>code/structure/colabfold_alphafold_multimer/google-deepmind__alphafold</code></li>
+<li><code>code/structure/colabfold_alphafold_multimer/sokrypton__colabfold</code></li>
+<li><code>code/structure/deepab/rosettacommons__deepab</code></li>
+<li><code>code/structure/deeprank_ab/haddocking__deeprank-ab</code></li>
+<li><code>code/structure/h3_opt/chenhd21__h3-opt</code></li>
+<li><code>code/structure/haddock3/haddocking__haddock-antibody-antigen</code></li>
+<li><code>code/structure/haddock3/haddocking__haddock3</code></li>
+<li><code>code/structure/heavybuilder2/oxpig__heavybuilder2</code></li>
+<li><code>code/structure/igfold/graylab__igfold</code></li>
+<li><code>code/structure/nanobodybuilder2_immunebuilder/oxpig__immunebuilder</code></li>
+<li><code>code/structure/nanonet/dina-lab3d__nanonet</code></li>
+</ul>
+<h2 id="a3">A3. 每个工具的资产状态</h2>
+<h3 id="nanobodybuilder2-immunebuilder-nanobodybuilder2_immunebuilder">NanoBodyBuilder2 / ImmuneBuilder (<code>nanobodybuilder2_immunebuilder</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：downloaded | <code>papers/structure/nanobodybuilder2_immunebuilder/nanobodybuilder2_immunebuilder__s42003-023-04927-7.pdf.pdf</code> | https://www.nature.com/articles/s42003-023-04927-7.pdf</li>
+<li>Code：cloned | <code>code/structure/nanobodybuilder2_immunebuilder/oxpig__immunebuilder</code> | https://github.com/oxpig/ImmuneBuilder</li>
+</ul>
+<h3 id="nanonet-nanonet">NanoNet (<code>nanonet</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：downloaded | <code>papers/structure/nanonet/nanonet__pdf.pdf</code> | https://www.frontiersin.org/articles/10.3389/fimmu.2022.958584/pdf</li>
+<li>Code：cloned | <code>code/structure/nanonet/dina-lab3d__nanonet</code> | https://github.com/dina-lab3D/NanoNet</li>
+</ul>
+<h3 id="igfold-igfold">IgFold (<code>igfold</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：downloaded | <code>papers/structure/igfold/igfold__s41467-023-38063-x.pdf.pdf</code> | https://www.nature.com/articles/s41467-023-38063-x.pdf</li>
+<li>Code：cloned | <code>code/structure/igfold/graylab__igfold</code> | https://github.com/Graylab/IgFold</li>
+</ul>
+<h3 id="heavybuilder2-heavybuilder2">HeavyBuilder2 (<code>heavybuilder2</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/structure/heavybuilder2/oxpig__heavybuilder2</code> | https://github.com/oxpig/HeavyBuilder2</li>
+</ul>
+<h3 id="abodybuilder3-abodybuilder3">ABodyBuilder3 (<code>abodybuilder3</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformatics/article-pdf/40/10/btae576/59571994/btae576.pdf</li>
+<li>Code：cloned | <code>code/structure/abodybuilder3/exscientia__abodybuilder3</code> | https://github.com/exscientia/abodybuilder3</li>
+</ul>
+<h3 id="deepab-deepab">DeepAb (<code>deepab</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/structure/deepab/rosettacommons__deepab</code> | https://github.com/RosettaCommons/DeepAb</li>
+</ul>
+<h3 id="ablooper-ablooper">ABlooper (<code>ablooper</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformatics/article-pdf/38/7/1877/43598388/btac016.pdf</li>
+<li>Code：cloned | <code>code/structure/ablooper/oxpig__ablooper</code> | https://github.com/oxpig/ABlooper</li>
+</ul>
+<h3 id="h3-opt-h3_opt">H3-OPT (<code>h3_opt</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：http_406 | `` | https://elifesciences.org/articles/91512.pdf</li>
+<li>Code：cloned | <code>code/structure/h3_opt/chenhd21__h3-opt</code> | https://github.com/chenhd21/H3-OPT</li>
+</ul>
+<h3 id="rosettaantibody3-snugdock-rosetta_snugdock">RosettaAntibody3 / SnugDock (<code>rosetta_snugdock</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC7993800/pdf/</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="alphafold-3-alphafold-server-alphafold3">AlphaFold 3 / AlphaFold Server (<code>alphafold3</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：downloaded | <code>papers/structure/alphafold3/alphafold3__s41586-024-07487-w.pdf.pdf</code> | https://www.nature.com/articles/s41586-024-07487-w.pdf</li>
+<li>Code：cloned | <code>code/structure/alphafold3/google-deepmind__alphafold3</code> | https://github.com/google-deepmind/alphafold3</li>
+</ul>
+<h3 id="alphafold-multimer-colabfold-colabfold_alphafold_multimer">AlphaFold-Multimer / ColabFold (<code>colabfold_alphafold_multimer</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：downloaded | <code>papers/structure/colabfold_alphafold_multimer/colabfold_alphafold_multimer__s41592-022-01488-1.pdf.pdf</code> | https://www.nature.com/articles/s41592-022-01488-1.pdf</li>
+<li>Code：cloned | <code>code/structure/colabfold_alphafold_multimer/sokrypton__colabfold</code> | https://github.com/sokrypton/ColabFold</li>
+<li>Code：cloned | <code>code/structure/colabfold_alphafold_multimer/google-deepmind__alphafold</code> | https://github.com/google-deepmind/alphafold</li>
+</ul>
+<h3 id="chai-1-chai1">Chai-1 (<code>chai1</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：http_403 | `` | https://www.biorxiv.org/content/10.1101/2024.10.10.615955v2.full.pdf</li>
+<li>Code：cloned | <code>code/structure/chai1/chaidiscovery__chai-lab</code> | https://github.com/chaidiscovery/chai-lab</li>
+</ul>
+<h3 id="boltz-1-boltz-2-boltz">Boltz-1 / Boltz-2 (<code>boltz</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC11601547/pdf/</li>
+<li>Code：cloned | <code>code/structure/boltz/jwohlwend__boltz</code> | https://github.com/jwohlwend/boltz</li>
+</ul>
+<h3 id="haddock24-haddock3-haddock3">HADDOCK2.4 / HADDOCK3 (<code>haddock3</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC11483107/pdf/</li>
+<li>Code：cloned | <code>code/structure/haddock3/haddocking__haddock3</code> | https://github.com/haddocking/haddock3</li>
+<li>Code：cloned | <code>code/structure/haddock3/haddocking__haddock-antibody-antigen</code> | https://github.com/haddocking/HADDOCK-antibody-antigen</li>
+</ul>
+<h3 id="cluspro-abemap-cluspro_abemap">ClusPro / AbEMap (<code>cluspro_abemap</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC10898366/pdf/</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="hdock-hdock">HDOCK (<code>hdock</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC5793843/pdf/</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="balmfold-balmfold">BALMFold (<code>balmfold</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bib/article-pdf/25/4/bbae245/57988258/bbae245.pdf</li>
+<li>Code：cloned | <code>code/structure/balmfold/beam-labs__balm</code> | https://github.com/beam-labs/balm</li>
+</ul>
+<h3 id="abdockgen-abdockgen">AbDockGen (<code>abdockgen</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：downloaded | <code>papers/structure/abdockgen/abdockgen__jin22a.pdf.pdf</code> | https://proceedings.mlr.press/v162/jin22a/jin22a.pdf</li>
+<li>Code：cloned | <code>code/structure/abdockgen/wengong-jin__abdockgen</code> | https://github.com/wengong-jin/abdockgen</li>
+</ul>
+<h3 id="deeprank-ab-deeprank_ab">DeepRank-Ab (<code>deeprank_ab</code>)</h3>
+<ul>
+<li>类别：结构预测/复合物建模</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/structure/deeprank_ab/haddocking__deeprank-ab</code> | https://github.com/haddocking/DeepRank-Ab</li>
+</ul>
+<h3 id="rfantibody-rfantibody">RFantibody (<code>rfantibody</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/rfantibody/rfantibody__s41586-025-09721-5.pdf.pdf</code> | https://www.nature.com/articles/s41586-025-09721-5.pdf</li>
+<li>Code：cloned | <code>code/design/rfantibody/rosettacommons__rfantibody</code> | https://github.com/RosettaCommons/RFantibody</li>
+</ul>
+<h3 id="nanodesigner-nanodesigner">NanoDesigner (<code>nanodesigner</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC12333243/pdf/</li>
+<li>Code：cloned | <code>code/design/nanodesigner/bio-ontology-research-group__nanodesigner</code> | https://github.com/bio-ontology-research-group/NanoDesigner</li>
+</ul>
+<h3 id="germinal-germinal">Germinal (<code>germinal</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://www.biorxiv.org/content/10.1101/2025.09.19.677421v1.full.pdf</li>
+<li>Code：cloned | <code>code/design/germinal/santiagomille__germinal</code> | https://github.com/SantiagoMille/germinal</li>
+</ul>
+<h3 id="iggm-iggm">IgGM (<code>iggm</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://openreview.net/pdf?id=zmmfsJpYcq</li>
+<li>Code：cloned | <code>code/design/iggm/tencentai4s__iggm</code> | https://github.com/TencentAI4S/IgGM</li>
+</ul>
+<h3 id="tfdesign-sdab-tfdesign_sdab">TFDesign-sdAb (<code>tfdesign_sdab</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/tfdesign_sdab/tfdesign_sdab__s41421-025-00843-8.pdf.pdf</code> | https://www.nature.com/articles/s41421-025-00843-8.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="chai-2-chai2">Chai-2 (<code>chai2</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://www.biorxiv.org/content/10.1101/2025.07.05.663018v1.full.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="latent-x2-latentx2">Latent-X2 (<code>latentx2</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/latentx2/latentx2__2512.20263.pdf</code> | https://arxiv.org/pdf/2512.20263</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="jam-2-jam2">JAM-2 (<code>jam2</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/jam2/jam2__2025_nabla_jam2.pdf.pdf</code> | https://nabla-public.s3.us-east-1.amazonaws.com/2025_Nabla_JAM2.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="easynano-easynano">EasyNano (<code>easynano</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/easynano/easynano__2606.12772.pdf</code> | https://arxiv.org/pdf/2606.12772</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="diffab-diffab">DiffAb (<code>diffab</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://openreview.net/pdf?id=jSorGn2Tjg</li>
+<li>Code：cloned | <code>code/design/diffab/luost26__diffab</code> | https://github.com/luost26/diffab</li>
+</ul>
+<h3 id="antifold-antifold">AntiFold (<code>antifold</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/antifold/antifold__2405.03370.pdf</code> | https://arxiv.org/pdf/2405.03370</li>
+<li>Code：cloned | <code>code/design/antifold/oxpig__antifold</code> | https://github.com/oxpig/AntiFold</li>
+</ul>
+<h3 id="nanofold-nanofold">nanoFOLD (<code>nanofold</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://www.biorxiv.org/content/10.1101/2025.04.29.651236v1.full.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="iglm-iglm">IgLM (<code>iglm</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/design/iglm/graylab__iglm</code> | https://github.com/Graylab/IgLM</li>
+</ul>
+<h3 id="vhhbert-vhhcorpus-2m-vhhbert">VHHBERT / VHHCorpus-2M (<code>vhhbert</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/vhhbert/vhhbert__2405.18749.pdf</code> | https://arxiv.org/pdf/2405.18749</li>
+<li>Code：cloned | <code>code/design/vhhbert/cognano__avida-sars-cov-2</code> | https://github.com/cognano/AVIDa-SARS-CoV-2</li>
+</ul>
+<h3 id="abnativ-abnativ2-abnativ">AbNatiV / AbNatiV2 (<code>abnativ</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/abnativ/abnativ__s42256-023-00778-3.pdf.pdf</code> | https://www.nature.com/articles/s42256-023-00778-3.pdf</li>
+<li>Code：cloned | <code>code/design/abnativ/sormanni-lab__abnativ</code> | https://gitlab.doc.ic.ac.uk/sormanni-lab/abnativ</li>
+</ul>
+<h3 id="hudiff-hudiff-nb-hudiff">HuDiff / HuDiff-Nb (<code>hudiff</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://www.biorxiv.org/content/10.1101/2024.10.22.619416v1.full.pdf</li>
+<li>Code：cloned | <code>code/design/hudiff/tencentai4s__hudiff</code> | https://github.com/TencentAI4S/HuDiff</li>
+</ul>
+<h3 id="llamanade-llamanade">Llamanade (<code>llamanade</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC8351782/pdf/</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="biophi-sapiens-oasis-biophi">BioPhi / Sapiens / OASis (<code>biophi</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC8837241/pdf/</li>
+<li>Code：cloned | <code>code/design/biophi/merck__biophi</code> | https://github.com/merck/biophi</li>
+<li>Code：cloned | <code>code/design/biophi/merck__sapiens</code> | https://github.com/Merck/Sapiens</li>
+</ul>
+<h3 id="humatch-humatch">Humatch (<code>humatch</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC11610552/pdf/</li>
+<li>Code：cloned | <code>code/design/humatch/oxpig__humatch</code> | https://github.com/oxpig/Humatch</li>
+</ul>
+<h3 id="igcraft-igcraft">IgCraft (<code>igcraft</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/igcraft/igcraft__2503.19821.pdf</code> | https://arxiv.org/pdf/2503.19821</li>
+<li>Code：cloned | <code>code/design/igcraft/mgreenig__igcraft</code> | https://github.com/mgreenig/igcraft</li>
+</ul>
+<h3 id="mcsm-ab2-mcsm_ab2">mCSM-AB2 (<code>mcsm_ab2</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformatics/article-pdf/36/5/1453/32619347/btz752.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="gearbind-gearbind">GearBind (<code>gearbind</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：downloaded | <code>papers/design/gearbind/gearbind__s41467-024-51563-8.pdf.pdf</code> | https://www.nature.com/articles/s41467-024-51563-8.pdf</li>
+<li>Code：cloned | <code>code/design/gearbind/deepgraphlearning__gearbind</code> | https://github.com/DeepGraphLearning/GearBind</li>
+</ul>
+<h3 id="graphinity-graphinity">Graphinity (<code>graphinity</code>)</h3>
+<ul>
+<li>类别：设计/优化/人源化</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/design/graphinity/oxpig__graphinity</code> | https://github.com/oxpig/Graphinity</li>
+</ul>
+<h3 id="alpseq-alpseq">alpseq (<code>alpseq</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC12885427/pdf/</li>
+<li>Code：cloned | <code>code/identification/alpseq/kzeglinski__alpseq</code> | https://github.com/kzeglinski/alpseq</li>
+</ul>
+<h3 id="nanomap-nanomap">NanoMAP (<code>nanomap</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC13001438/pdf/</li>
+<li>Code：cloned | <code>code/identification/nanomap/wlwhite-tufts__nanomap</code> | https://github.com/wlwhite-tufts/NanoMAP</li>
+</ul>
+<h3 id="phage-seq-nbseq-phage_seq_nbseq">phage-seq + nbseq (<code>phage_seq_nbseq</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/identification/phage_seq_nbseq/caseygrun__phage-seq</code> | https://github.com/caseygrun/phage-seq</li>
+<li>Code：cloned | <code>code/identification/phage_seq_nbseq/caseygrun__nbseq</code> | https://github.com/caseygrun/nbseq</li>
+</ul>
+<h3 id="anarci-anarci">ANARCI (<code>anarci</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformatics/article-pdf/32/2/298/17011140/btv552.pdf</li>
+<li>Code：cloned | <code>code/identification/anarci/oxpig__anarci</code> | https://github.com/oxpig/ANARCI</li>
+</ul>
+<h3 id="igblast-igblast">IgBLAST (<code>igblast</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="mixcr-mixcr">MiXCR (<code>mixcr</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/identification/mixcr/milaboratory__mixcr</code> | https://github.com/milaboratory/mixcr</li>
+</ul>
+<h3 id="immcantation-presto-change-o-airrflow-immcantation">Immcantation / pRESTO / Change-O / airrflow (<code>immcantation</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC4793929/pdf/</li>
+<li>Code：cloned | <code>code/identification/immcantation/immcantation__presto</code> | https://github.com/immcantation/presto</li>
+<li>Code：cloned | <code>code/identification/immcantation/immcantation__changeo</code> | https://github.com/immcantation/changeo</li>
+<li>Code：cloned | <code>code/identification/immcantation/nf-core__airrflow</code> | https://github.com/nf-core/airrflow</li>
+</ul>
+<h3 id="igdiscover-igdiscover">IgDiscover (<code>igdiscover</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：cloned | <code>code/identification/igdiscover/gkhlab__igdiscover22</code> | https://gitlab.com/gkhlab/igdiscover22</li>
+</ul>
+<h3 id="deepnano-deepnano">DeepNano (<code>deepnano</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：not_pdf | `` | https://www.nature.com/articles/s42256-024-00940-5.pdf</li>
+<li>Code：cloned | <code>code/identification/deepnano/ddd9898__deepnano</code> | https://github.com/ddd9898/DeepNano</li>
+</ul>
+<h3 id="nabp-bert-nabp_bert">NABP-BERT (<code>nabp_bert</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bib/article-pdf/26/1/bbae518/61287888/bbae518.pdf</li>
+<li>Code：cloned | <code>code/identification/nabp_bert/fmoonlights__nabp-bert</code> | https://github.com/FMoonlightS/NABP-BERT</li>
+</ul>
+<h3 id="abagintpre-abagintpre">AbAgIntPre (<code>abagintpre</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC9813736/pdf/</li>
+<li>Code：cloned | <code>code/identification/abagintpre/emerson106__abagintpre</code> | https://github.com/emersON106/AbAgIntPre</li>
+</ul>
+<h3 id="paragraph-paragraph">Paragraph (<code>paragraph</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformatics/article-pdf/39/1/btac732/48662426/btac732.pdf</li>
+<li>Code：cloned | <code>code/identification/paragraph/oxpig__paragraph</code> | https://github.com/oxpig/Paragraph</li>
+</ul>
+<h3 id="parapred-parapred">ParaPred (<code>parapred</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformatics/article-pdf/34/17/2944/25721748/bty305.pdf</li>
+<li>Code：cloned | <code>code/identification/parapred/eliberis__parapred</code> | https://github.com/eliberis/parapred</li>
+<li>Code：cloned | <code>code/identification/parapred/alchemab__parapred-pytorch</code> | https://github.com/alchemab/parapred-pytorch</li>
+</ul>
+<h3 id="epipred-sabpred-sabpred_epipred">EpiPred / SAbPred (<code>sabpred_epipred</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/nar/article-pdf/44/W1/W474/17095697/gkw361.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="abadapt-abadapt">AbAdapt (<code>abadapt</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/bioinformaticsadvances/article-pdf/2/1/vbac015/42893097/vbac015.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="episcan-episcan">EpiScan (<code>episcan</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：downloaded | <code>papers/identification/episcan/episcan__s41540-024-00432-7.pdf.pdf</code> | https://www.nature.com/articles/s41540-024-00432-7.pdf</li>
+<li>Code：cloned | <code>code/identification/episcan/gzbiomedical__episcan</code> | https://github.com/gzBiomedical/EpiScan</li>
+</ul>
+<h3 id="imapep-imapep">ImaPEp (<code>imapeP</code>)</h3>
+<ul>
+<li>类别：识别/发现/结合预测</li>
+<li>PDF：http_403 | `` | https://www.mdpi.com/1422-0067/25/10/5434/pdf</li>
+<li>Code：cloned | <code>code/identification/imapeP/3biocompbio__imapep</code> | https://github.com/3BioCompBio/ImaPEp</li>
+</ul>
+<h3 id="tnp-therapeutic-nanobody-profiler-tnp">TNP / Therapeutic Nanobody Profiler (<code>tnp</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：downloaded | <code>papers/properties/tnp/tnp__s42003-026-09594-y.pdf.pdf</code> | https://www.nature.com/articles/s42003-026-09594-y.pdf</li>
+<li>Code：cloned | <code>code/properties/tnp/oxpig__tnp</code> | https://github.com/oxpig/TNP</li>
+</ul>
+<h3 id="aggrescan3d-a3d-20-aggrescan3d">Aggrescan3D / A3D 2.0 (<code>aggrescan3d</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：http_403 | `` | https://academic.oup.com/nar/article-pdf/47/W1/W300/28879756/gkz321.pdf</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="camsol-camsol">CamSol (<code>camsol</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="protparam-compute-pimw-protparam">ProtParam / Compute pI/Mw (<code>protparam</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="iedb-netmhciipan-iedb_netmhc">IEDB / NetMHCIIpan (<code>iedb_netmhc</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="tap-therapeutic-antibody-profiler-tap">TAP / Therapeutic Antibody Profiler (<code>tap</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC6410772/pdf/</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="protein-sol-abpred-protein_sol_abpred">Protein-Sol / Abpred (<code>protein_sol_abpred</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="dynamut2-dynamut2">DynaMut2 (<code>dynamut2</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="foldx-foldx">FoldX (<code>foldx</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：not_pdf | `` | https://pmc.ncbi.nlm.nih.gov/articles/PMC1160148/pdf/</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<h3 id="solart-solart">SOLart (<code>solart</code>)</h3>
+<ul>
+<li>类别：性质预测/可开发性</li>
+<li>PDF：无直接开放 PDF 候选或仅有网页/商业白皮书链接</li>
+<li>Code：无公开代码仓库、Web only、商业闭源或需手动申请</li>
+</ul>
+<hr />
+<h1 id="pdf">未能自动下载的 PDF 清单</h1>
+<p>说明：没有绕过出版商限制；以下保留原始 URL 和 HTTP/解析状态，后续可手动下载或从机构访问补齐。</p>
+<h2 id="abodybuilder3-abodybuilder3_1">ABodyBuilder3 (<code>abodybuilder3</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformatics/article-pdf/40/10/btae576/59571994/btae576.pdf</li>
+</ul>
+<h2 id="ablooper-ablooper_1">ABlooper (<code>ablooper</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformatics/article-pdf/38/7/1877/43598388/btac016.pdf</li>
+</ul>
+<h2 id="h3-opt-h3_opt_1">H3-OPT (<code>h3_opt</code>)</h2>
+<ul>
+<li>http_406：站点不接受脚本请求 | https://elifesciences.org/articles/91512.pdf</li>
+</ul>
+<h2 id="rosettaantibody3-snugdock-rosetta_snugdock_1">RosettaAntibody3 / SnugDock (<code>rosetta_snugdock</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC7993800/pdf/</li>
+</ul>
+<h2 id="chai-1-chai1_1">Chai-1 (<code>chai1</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://www.biorxiv.org/content/10.1101/2024.10.10.615955v2.full.pdf</li>
+</ul>
+<h2 id="boltz-1-boltz-2-boltz_1">Boltz-1 / Boltz-2 (<code>boltz</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC11601547/pdf/</li>
+</ul>
+<h2 id="haddock24-haddock3-haddock3_1">HADDOCK2.4 / HADDOCK3 (<code>haddock3</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC11483107/pdf/</li>
+</ul>
+<h2 id="cluspro-abemap-cluspro_abemap_1">ClusPro / AbEMap (<code>cluspro_abemap</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC10898366/pdf/</li>
+</ul>
+<h2 id="hdock-hdock_1">HDOCK (<code>hdock</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC5793843/pdf/</li>
+</ul>
+<h2 id="balmfold-balmfold_1">BALMFold (<code>balmfold</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bib/article-pdf/25/4/bbae245/57988258/bbae245.pdf</li>
+</ul>
+<h2 id="nanodesigner-nanodesigner_1">NanoDesigner (<code>nanodesigner</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC12333243/pdf/</li>
+</ul>
+<h2 id="germinal-germinal_1">Germinal (<code>germinal</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://www.biorxiv.org/content/10.1101/2025.09.19.677421v1.full.pdf</li>
+</ul>
+<h2 id="iggm-iggm_1">IgGM (<code>iggm</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://openreview.net/pdf?id=zmmfsJpYcq</li>
+</ul>
+<h2 id="chai-2-chai2_1">Chai-2 (<code>chai2</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://www.biorxiv.org/content/10.1101/2025.07.05.663018v1.full.pdf</li>
+</ul>
+<h2 id="diffab-diffab_1">DiffAb (<code>diffab</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://openreview.net/pdf?id=jSorGn2Tjg</li>
+</ul>
+<h2 id="nanofold-nanofold_1">nanoFOLD (<code>nanofold</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://www.biorxiv.org/content/10.1101/2025.04.29.651236v1.full.pdf</li>
+</ul>
+<h2 id="hudiff-hudiff-nb-hudiff_1">HuDiff / HuDiff-Nb (<code>hudiff</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://www.biorxiv.org/content/10.1101/2024.10.22.619416v1.full.pdf</li>
+</ul>
+<h2 id="llamanade-llamanade_1">Llamanade (<code>llamanade</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC8351782/pdf/</li>
+</ul>
+<h2 id="biophi-sapiens-oasis-biophi_1">BioPhi / Sapiens / OASis (<code>biophi</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC8837241/pdf/</li>
+</ul>
+<h2 id="humatch-humatch_1">Humatch (<code>humatch</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC11610552/pdf/</li>
+</ul>
+<h2 id="mcsm-ab2-mcsm_ab2_1">mCSM-AB2 (<code>mcsm_ab2</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformatics/article-pdf/36/5/1453/32619347/btz752.pdf</li>
+</ul>
+<h2 id="alpseq-alpseq_1">alpseq (<code>alpseq</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC12885427/pdf/</li>
+</ul>
+<h2 id="nanomap-nanomap_1">NanoMAP (<code>nanomap</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC13001438/pdf/</li>
+</ul>
+<h2 id="anarci-anarci_1">ANARCI (<code>anarci</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformatics/article-pdf/32/2/298/17011140/btv552.pdf</li>
+</ul>
+<h2 id="immcantation-presto-change-o-airrflow-immcantation_1">Immcantation / pRESTO / Change-O / airrflow (<code>immcantation</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC4793929/pdf/</li>
+</ul>
+<h2 id="deepnano-deepnano_1">DeepNano (<code>deepnano</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://www.nature.com/articles/s42256-024-00940-5.pdf</li>
+</ul>
+<h2 id="nabp-bert-nabp_bert_1">NABP-BERT (<code>nabp_bert</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bib/article-pdf/26/1/bbae518/61287888/bbae518.pdf</li>
+</ul>
+<h2 id="abagintpre-abagintpre_1">AbAgIntPre (<code>abagintpre</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC9813736/pdf/</li>
+</ul>
+<h2 id="paragraph-paragraph_1">Paragraph (<code>paragraph</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformatics/article-pdf/39/1/btac732/48662426/btac732.pdf</li>
+</ul>
+<h2 id="parapred-parapred_1">ParaPred (<code>parapred</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformatics/article-pdf/34/17/2944/25721748/bty305.pdf</li>
+</ul>
+<h2 id="epipred-sabpred-sabpred_epipred_1">EpiPred / SAbPred (<code>sabpred_epipred</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/nar/article-pdf/44/W1/W474/17095697/gkw361.pdf</li>
+</ul>
+<h2 id="abadapt-abadapt_1">AbAdapt (<code>abadapt</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/bioinformaticsadvances/article-pdf/2/1/vbac015/42893097/vbac015.pdf</li>
+</ul>
+<h2 id="imapep-imapep_1">ImaPEp (<code>imapeP</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://www.mdpi.com/1422-0067/25/10/5434/pdf</li>
+</ul>
+<h2 id="aggrescan3d-a3d-20-aggrescan3d_1">Aggrescan3D / A3D 2.0 (<code>aggrescan3d</code>)</h2>
+<ul>
+<li>http_403：出版商/站点拒绝脚本直连 | https://academic.oup.com/nar/article-pdf/47/W1/W300/28879756/gkz321.pdf</li>
+</ul>
+<h2 id="tap-therapeutic-antibody-profiler-tap_1">TAP / Therapeutic Antibody Profiler (<code>tap</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC6410772/pdf/</li>
+</ul>
+<h2 id="foldx-foldx_1">FoldX (<code>foldx</code>)</h2>
+<ul>
+<li>not_pdf：返回 HTML/JS 下载页或非 PDF 内容 | https://pmc.ncbi.nlm.nih.gov/articles/PMC1160148/pdf/</li>
+</ul></body></html>

@@ -1,0 +1,48 @@
+{
+  "pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_1_model_1_aligned_to_8x6b.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "A": {
+      "atom_count": 1157,
+      "ca_count": 127,
+      "adjacent_ca_distance_min": 3.7726864433716236,
+      "adjacent_ca_distance_median": 3.7957254906012374,
+      "adjacent_ca_distance_max": 3.857107854338533,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -4.512,
+          31.033,
+          26.007
+        ],
+        "max": [
+          35.219,
+          69.932,
+          57.997
+        ]
+      },
+      "likely_sane_backbone": true
+    },
+    "B": {
+      "atom_count": 940,
+      "ca_count": 103,
+      "adjacent_ca_distance_min": 2.8806264943584767,
+      "adjacent_ca_distance_median": 3.7957863480443654,
+      "adjacent_ca_distance_max": 5.209758919566237,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -11.721,
+          18.457,
+          17.691
+        ],
+        "max": [
+          26.053,
+          47.212,
+          56.107
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}

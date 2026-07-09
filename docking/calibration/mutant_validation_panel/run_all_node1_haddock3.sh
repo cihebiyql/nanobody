@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo 'running mutant panel HADDOCK3'
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_01_PVRIG-20_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_02_PVRIG-20_cdr3_cons_F99Y/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_03_PVRIG-20_cdr3_arom_F99A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_04_PVRIG-20_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_05_PVRIG-20_fw_cons_D61E/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_06_PVRIG-20_patent_20_D103E_style/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_07_PVRIG-30_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_08_PVRIG-30_cdr3_cons_T101S/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_09_PVRIG-30_cdr3_arom_W100A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_10_PVRIG-30_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_11_PVRIG-30_fw_cons_Y60F/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_12_PVRIG-38_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_13_PVRIG-38_cdr3_cons_D99E/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_14_PVRIG-38_cdr3_arom_F100A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_15_PVRIG-38_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_16_PVRIG-38_fw_cons_T61S/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_17_PVRIG-39_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_18_PVRIG-39_cdr3_cons_F99Y/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_19_PVRIG-39_cdr3_arom_F99A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_20_PVRIG-39_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_21_PVRIG-39_fw_cons_Y59F/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_22_20H5_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_23_20H5_cdr3_cons_F99Y/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_24_20H5_cdr3_arom_F99A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_25_20H5_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_26_20H5_fw_cons_D61E/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_27_30H2_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_28_30H2_cdr3_cons_T101S/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_29_30H2_cdr3_arom_W100A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_30_30H2_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_31_30H2_fw_cons_Y60F/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_32_39H4_base_reference/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_33_39H4_cdr3_cons_F99Y/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_34_39H4_cdr3_arom_F99A/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_35_39H4_cdr3_center_ala_scan/run_node1_haddock3.sh
+bash /mnt/d/work/抗体/docking/calibration/mutant_validation_panel/workdirs/mut_36_39H4_fw_cons_Y59F/run_node1_haddock3.sh

@@ -1,0 +1,10 @@
+tag_id,importance,tag,meaning,docking_or_modeling_check,warning
+case04_tag_001,HIGH,DISTINCT_EPITOPE_ALLOWED,SRF813/GSK4381562 is publicly described as binding a distinct PVRIG epitope,Do not require all blockers to mimic COM701/Tab5/HR-151 contact pattern,Exact distinct residues are not public
+case04_tag_002,HIGH,BLOCKING_STILL_REQUIRED,Distinct epitope does not mean non-blocking; SRF813 reportedly blocks CD112/PVRL2,Docking pose should still occlude or allosterically interfere with PVRL2 binding,Remote non-blocking epitopes are insufficient
+case04_tag_003,HIGH,ANTI_OVERFIT_CONTROL,This case helps prevent overfitting to HR-151/VHH or Tab5/CPA.7.021,Include it as a separate positive-control family when evaluating docking pipelines,Do not infer shared residue contacts without evidence
+case04_tag_004,HIGH,IGG1_FORMAT_CONTEXT,SRF813/remzistotug is IgG1 kappa,Separate Fab epitope docking from Fc/NK functional interpretation,Fv docking alone cannot predict Fc effects
+case04_tag_005,MEDIUM,CD226_AXIS_RELEVANT,PVRIG blockade may promote PVRL2-CD226/DNAM-1 activating signaling,Mechanism scoring should include ligand redirection/CD226 pathway beyond physical occlusion,Not directly visible in static docking
+case04_tag_006,MEDIUM,NK_AND_T_CELL_READOUT,Public sources claim NK and T-cell activation preclinically,Use both NK and T-cell functional assays as downstream calibration concepts,Exact assay values may require abstract/poster figures
+case04_tag_007,MEDIUM,PUBLIC_SEQUENCE_AVAILABLE,NCATS/GInAS provides full heavy/light chain sequence,Use VH/VL as a structure-prediction and docking sanity-check input,Run ANARCI/IMGT before CDR similarity use
+case04_tag_008,CAUTION,NO_RESIDUE_LEVEL_EPITOPE,No public residue-level SRF813-PVRIG complex/epitope map found,Mark contacts from predicted structures as model inference only,Do not claim exact hotspot contacts as known
+case04_tag_009,CAUTION,CLINICAL_STATUS_NOT_MECHANISM_PROOF,Public development status is mixed/negative by 2025 reporting,Treat this as a preclinical mechanism/design calibration case,Do not call it clinical efficacy success

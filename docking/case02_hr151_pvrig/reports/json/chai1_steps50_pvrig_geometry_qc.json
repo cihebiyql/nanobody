@@ -1,0 +1,27 @@
+{
+  "pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/complex/chai1_8x6b/out_steps50/pred.model_idx_0.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "B": {
+      "atom_count": 773,
+      "ca_count": 103,
+      "adjacent_ca_distance_min": 3.7321057058984817,
+      "adjacent_ca_distance_median": 3.771669921931133,
+      "adjacent_ca_distance_max": 3.811726249352123,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -19.666,
+          -10.061,
+          -12.502
+        ],
+        "max": [
+          21.137,
+          14.839,
+          24.521
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}

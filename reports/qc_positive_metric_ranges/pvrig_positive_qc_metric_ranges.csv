@@ -1,0 +1,47 @@
+metric,source,kind,n,missing,min,q1,median,q3,max,mean,counts,positive_observation,proposed_use,robustness,recommendation
+final_verdict,screen_summary.tsv,categorical,11,0,,,,,,,REJECT_NOT_VHH_LIKE=6; REVIEW=4; DEPRIORITIZE_DEVELOPABILITY=1,阳性校准序列也会被 QC 分成 REVIEW / NOT_VHH_LIKE / DEVELOPABILITY 风险。,不要当阻断生物学 hard gate；只作提交/开发性分层。,中等,已知 blocker 中 6/11 被判 not VHH-like，说明该门控不能等价为不阻断。
+L1_numbering_integrity,screen_summary.tsv,categorical,11,0,,,,,,,PASS=11,11/11 PASS。,hard gate,高,新候选必须能稳定编号并取出完整 FR/CDR。
+L2_vhh_features,screen_summary.tsv,categorical,11,0,,,,,,,FAIL=6; PASS=4; WARN=1,PASS/WARN/FAIL 都出现在阳性 blocker 中。,warn/review 或提交风险 gate,低到中,不能作为 blocker 否决；可作为表达/单域性风险。
+single_domain_suitability,screen_summary.tsv,categorical,11,0,,,,,,,poor=6; good=5,good/poor 都出现在阳性 blocker 中。,warn/review,低到中,poor 不能自动解释为无阻断；只能提示单域性/表达风险。
+L3_developability,screen_summary.tsv,categorical,11,0,,,,,,,SKIPPED=6; WARN=4; FAIL=1,L2 fail 后会跳过，非全量。,warn/ranking；严重责任位点人工复核,中等,不要把单个 developability flag 解释成无阻断。
+L4_structure_stability,screen_summary.tsv,categorical,11,0,,,,,,,SKIPPED=7; NOT_RUN=4,本次 vhh-competition-qc 未请求结构工具。,未覆盖；需单独结构流程,未评估,结构稳定性不能从本次 QC 输出判断。
+official_validator_pass,portfolio_ranked.tsv,categorical,11,0,,,,,,,FAIL=11,11/11 FAIL，原因是阳性 CDR 相似性。,hard gate,高,这是泄漏排除成功，不是阳性质量差。
+pass_similarity_filter,cdr_novelty.tsv,categorical,11,0,,,,,,,FAIL=11,11/11 FAIL。,hard gate,高,新候选任一 CDR 对阳性 identity >=0.80 应拦截；0.75-0.80 标边界。
+max_CDR_identity_to_positive,cdr_novelty.tsv,numeric,11,0,1,1,1,1,1,1,,阳性校准集全部触达 exact/near-positive 泄漏信号。,hard gate,高,不要放宽 >=0.80；这是防抄袭/泄漏门控。
+length,screen_summary.tsv,numeric,11,0,120,120.5,121,125,127,122.5455,,长度阳性范围较窄，但不应把 120-127 当唯一可行长度。,hard broad range + preferred envelope,高,保留 95-160 硬范围；105/110-145 或阳性范围附近作 ranking/warn。
+imgt_cdr1_len,screen_summary.tsv,numeric,11,0,8,8,8,9,10,8.5455,,CDR1 长度有稳定窄范围。,warn/ranking,中等,明显偏离 8-10 时复核编号和结构；不要单独 hard fail。
+imgt_cdr2_len,screen_summary.tsv,numeric,11,0,7,7,7,7,8,7.0909,,CDR2 长度有稳定窄范围。,warn/ranking,中等,明显偏离 7-8 时复核编号和结构。
+imgt_cdr3_len,screen_summary.tsv,numeric,11,0,14,14,15,17.5,19,15.7273,,CDR3 覆盖短/中/偏长阳性。,warn/ranking,中等,14-19 是本 PVRIG 阳性 envelope；极端 CDR3 需结构确认。
+fr2_hallmark_score,screen_summary.tsv,numeric,11,0,0.25,0.5,0.75,0.875,1,0.7045,,阳性中最低只有 0.25。,warn/review,低,不能作为 blocker hard gate；用于单域性/表达风险。
+fr2_interface_hydrophobic_count,screen_summary.tsv,numeric,11,0,0,0,1,1,2,0.6364,,阳性中可为 0 或 1。,warn/review,中等,FR2 接触面过疏水提示聚集风险，不是阻断否决。
+abnativ_vhh_score,screen_summary.tsv,numeric,9,2,0.7523,0.7675,0.799,0.8014,0.8585,0.7957,,9/11 有值且均在较高区间，2 条缺失。,warn/ranking,中等,有值时 <0.55 fail、0.55-0.70 warn 合理；缺值不应直接 hard fail。
+abnativ_fr_vhh_score,screen_summary.tsv,numeric,9,2,0.8697,0.8721,0.8966,0.9205,0.9759,0.9041,,9/11 有值，FR 框架分数整体高。,warn/ranking,中等,用于 VHH-like/框架自然性排序。
+sapiens_mean_self_probability,screen_summary.tsv,numeric,11,0,0.6683,0.7007,0.7267,0.7442,0.78,0.7234,,阳性自概率偏低到中等，反映人源化负担。,ranking,中等,用于人源化/免疫原性负担，不判断阻断。
+sapiens_num_suggested_mutations,screen_summary.tsv,numeric,11,0,11,14,15,17,25,16,,阳性也需要较多建议突变。,ranking,中等,建议突变数高时降优先级，但不否决 blocker。
+mw,screen_summary.tsv,numeric,11,0,12726.997,12926.74,13176.474,13299.144,13458.904,13127.1936,,分子量与 VHH 长度一致。,sanity/warn,中等,主要做异常输入检查。
+pI,screen_summary.tsv,numeric,11,0,4.995,5.224,5.708,6.422,8.62,6.0011,,酸性到偏碱性阳性都存在。,warn/ranking,中等,极端 pI 才开发性降级；本范围不是 hard gate。
+charge_pH7_4,screen_summary.tsv,numeric,11,0,-5.336,-1.947,-1.447,-0.9645,1.484,-1.7264,,阳性允许负电到轻微正电。,warn/ranking,中等,极端电荷提示表达/非特异风险。
+gravy,screen_summary.tsv,numeric,11,0,-0.4959,-0.4114,-0.2512,-0.2141,-0.0614,-0.2997,,阳性均偏亲水。,warn/ranking,中等,候选明显更疏水时降级/复核。
+eval_instability_index,pvrig11_positive.vhh_eval.tsv,numeric,11,0,35.029,35.996,37.136,38.0105,39.172,37.0367,,阳性均在 35-40 附近。,ranking,中等,用于可开发性排序，不判断阻断。
+nglyc_motif_count,screen_summary.tsv,numeric,11,0,0,0,0,0,0,0,,11/11 为 0。,developability warn/hard by location,中等,CDR 内 N-glyc motif 可 hard/warn；框架中人工复核。
+cys_count,screen_summary.tsv,numeric,11,0,2,4,4,4,4,3.8182,,2 或 4 个 Cys 均可出现在阳性中。,warn/review,中等,非经典 Cys 不能自动否决 blocker；必须看成键/结构。
+deamidation_NG_NS_NT_count,screen_summary.tsv,numeric,11,0,0,1.5,2,2,2,1.6364,,阳性允许 0-2 个。,warn/review,中等,位置相关复核，不单独 hard fail。
+isomerization_DG_DS_DD_DT_count,screen_summary.tsv,numeric,11,0,2,2.5,3,4,5,3.2727,,阳性普遍含 2-5 个。,warn/review,低到中,该 motif 太常见，不能单独 hard fail。
+acid_cleavage_DP_count,screen_summary.tsv,numeric,11,0,0,0,0,0,0,0,,11/11 为 0。,warn/review,中等,出现 DP 时按位置复核。
+eval_oxidation_MW_count,pvrig11_positive.vhh_eval.tsv,numeric,11,0,4,5,5,5,6,5,,阳性仍可有氧化风险计数。,warn/review,中等,评估位置和暴露度。
+hydrophobic_5_count,screen_summary.tsv,numeric,11,0,0,0,0,0,1,0.0909,,有 1 条阳性触发 5 连疏水并 L3 FAIL。,warn/developability risk,中等,不应作为 blocker hard fail，但应降级并人工复核。
+diversity_max_team_identity,team_diversity.tsv,numeric,11,0,0.5447,0.9421,1,1,1,0.9375,,阳性家族内高度相似。,portfolio constraint,中等,用于组合多样性，不评价单条阻断能力。
+diversity_intra_team_cluster_size,team_diversity.tsv,numeric,11,0,1,2.5,3,5,5,3.5455,,阳性分成多个家族簇。,portfolio constraint,中等,批量提交时限制同簇数量。
+diversity_diversity_score,team_diversity.tsv,numeric,11,0,55,55,70,77.5,100,68.6364,,多样性分数在硬拒绝背景下仍可计算。,portfolio ranking,中等,只能在 hard gate 通过后用于排序。
+tnp_total_cdr_length,TNP_Results_Multientry.json,numeric,11,0,29,29,30,34,36,31.3636,,all-11 TNP 长度全绿。,warn/ranking,中等,作为 CDR 尺寸/可开发性佐证。
+tnp_cdr3_length,TNP_Results_Multientry.json,numeric,11,0,14,14,15,17.5,19,15.7273,,all-11 TNP CDR3 长度全绿。,warn/ranking,中等,与 IMGT CDR3 envelope 互相校验。
+tnp_cdr3_compactness,TNP_Results_Multientry.json,numeric,11,0,1.0119,1.0266,1.0688,1.3937,1.4501,1.1807,,all-11 compactness 全绿。,warn/ranking,中等,结构/可开发性风险指标，不替代 docking。
+tnp_PSH_all11,TNP_Results_Multientry.json,numeric,11,0,83.8441,95.3665,104.1461,111.7769,125.1016,103.848,,all-11 PSH 全绿。,warn/ranking,中等,高表面疏水候选应降级/复核。
+tnp_PPC_all11,TNP_Results_Multientry.json,numeric,11,0,0,0,0.1131,0.2091,0.3038,0.123,,all-11 PPC 全绿。,warn/ranking,中等,正电 patch 风险用于开发性排序。
+tnp_PNC_all11,TNP_Results_Multientry.json,numeric,11,0,0,0.0767,0.1326,0.3492,3.0326,0.6606,,2/11 阳性 PNC 为红。,warn/review,低到中,PNC 红不能作为 blocker 否决，只能开发性复核。
+tnp_L_flag_all11,TNP_Results_Multientry.json,categorical,11,0,,,,,,,green=11,TNP all-11 补跑得到的 flag。,warn/review,中等,本阳性集全绿，可作为候选开发性风险参考。
+tnp_L3_flag_all11,TNP_Results_Multientry.json,categorical,11,0,,,,,,,green=11,TNP all-11 补跑得到的 flag。,warn/review,中等,本阳性集全绿，可作为候选开发性风险参考。
+tnp_C_flag_all11,TNP_Results_Multientry.json,categorical,11,0,,,,,,,green=11,TNP all-11 补跑得到的 flag。,warn/review,中等,本阳性集全绿，可作为候选开发性风险参考。
+tnp_PSH_flag_all11,TNP_Results_Multientry.json,categorical,11,0,,,,,,,green=11,TNP all-11 补跑得到的 flag。,warn/review,中等,本阳性集全绿，可作为候选开发性风险参考。
+tnp_PPC_flag_all11,TNP_Results_Multientry.json,categorical,11,0,,,,,,,green=11,TNP all-11 补跑得到的 flag。,warn/review,中等,本阳性集全绿，可作为候选开发性风险参考。
+tnp_PNC_flag_all11,TNP_Results_Multientry.json,categorical,11,0,,,,,,,green=9; red=2,TNP all-11 补跑得到的 flag。,warn/review,中等,红色 flag 进入开发性复核；不要直接解释为无阻断。

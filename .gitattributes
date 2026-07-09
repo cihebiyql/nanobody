@@ -1,0 +1,15 @@
+* text=auto
+*.pdb text
+*.cif text
+*.mmcif text
+*.fasta text
+*.fa text
+*.faa text
+*.fna text
+*.csv text
+*.tsv text
+*.json text
+*.jsonl text
+*.md text
+*.py text
+*.sh text eol=lf

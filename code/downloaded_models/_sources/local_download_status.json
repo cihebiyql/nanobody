@@ -1,0 +1,310 @@
+{
+  "generated_at": "2026-07-06T18:37:08+08:00",
+  "root": "/mnt/d/work/抗体/code",
+  "repositories": {
+    "DeepNano": {
+      "exists": true,
+      "files": 105,
+      "bytes": 11444212188
+    },
+    "DeepNano-data": {
+      "exists": true,
+      "files": 7,
+      "bytes": 1729268
+    },
+    "NABP-BERT": {
+      "exists": true,
+      "files": 45,
+      "bytes": 8597393919
+    },
+    "NABP-LSTM-Att": {
+      "exists": true,
+      "files": 23,
+      "bytes": 89078758
+    },
+    "Sequence-Based-NABP": {
+      "exists": true,
+      "files": 16,
+      "bytes": 1823511
+    },
+    "NanoBinder": {
+      "exists": true,
+      "files": 5,
+      "bytes": 171549
+    },
+    "NanoBind": {
+      "exists": true,
+      "files": 89,
+      "bytes": 572256798
+    }
+  },
+  "background_jobs": {
+    "deepnano_checkpoints": {
+      "pid": "1515322",
+      "running": true,
+      "log": "downloads_background/logs/deepnano_checkpoints.log"
+    },
+    "deepnano_esm2": {
+      "pid": "1515323",
+      "running": false,
+      "log": "downloads_background/logs/deepnano_esm2.log"
+    },
+    "google_drive_assets": {
+      "pid": "1489950",
+      "running": false,
+      "log": "downloads_background/logs/google_drive_assets.log"
+    },
+    "nabpbert_training_data": {
+      "pid": "1472705",
+      "running": true,
+      "log": "downloads_background/logs/nabpbert_training_data.log"
+    },
+    "nanobind_site_lfs": {
+      "pid": "1515337",
+      "running": false,
+      "log": "downloads_background/logs/nanobind_site_lfs.log"
+    }
+  },
+  "notes": [
+    "Files targeted by active background jobs may be partial until their log reports completion. Use downloads_background/scripts/status.sh for live state. Completed: DeepNano ESM2 encoders, NanoBind site checkpoint, NABP-BERT Google Drive zip, NABP-LSTM-Att Google Drive archives."
+  ],
+  "artifact_groups": {
+    "DeepNano_checkpoints": {
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano(esm2_t12_35M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 311086175,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano(esm2_t30_150M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 1241620053,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 89962563,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t12_35M_UR50D)_DScriptData_finetune1_best.model": {
+        "bytes": 151123043,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t12_35M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 151124152,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t30_150M_UR50D)_DScriptData_finetune1_best.model": {
+        "bytes": 614413984,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t30_150M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 614416075,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t33_650M_UR50D)_DScriptData_finetune1_best.model": {
+        "bytes": 2644478165,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t33_650M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 1092613232,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t6_8M_UR50D)_DScriptData_finetune1_best.model": {
+        "bytes": 42530421,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_seq(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 42541827,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_site(esm2_t12_35M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 159709523,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_site(esm2_t30_150M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 626938934,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/DeepNano_site(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_best.model": {
+        "bytes": 47179281,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/output/checkpoint/README.md": {
+        "bytes": 226
+      }
+    },
+    "DeepNano_models": {
+      "downloaded_models/DeepNano/models/.DS_Store": {
+        "bytes": 6148
+      },
+      "downloaded_models/DeepNano/models/__init__.py": {
+        "bytes": 0
+      },
+      "downloaded_models/DeepNano/models/esm2_t12_35M_UR50D/config.json": {
+        "bytes": 778
+      },
+      "downloaded_models/DeepNano/models/esm2_t12_35M_UR50D/pytorch_model.bin": {
+        "bytes": 136051985,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/models/esm2_t12_35M_UR50D/special_tokens_map.json": {
+        "bytes": 125
+      },
+      "downloaded_models/DeepNano/models/esm2_t12_35M_UR50D/tokenizer_config.json": {
+        "bytes": 95
+      },
+      "downloaded_models/DeepNano/models/esm2_t12_35M_UR50D/vocab.txt": {
+        "bytes": 93
+      },
+      "downloaded_models/DeepNano/models/esm2_t30_150M_UR50D/config.json": {
+        "bytes": 779
+      },
+      "downloaded_models/DeepNano/models/esm2_t30_150M_UR50D/pytorch_model.bin": {
+        "bytes": 595364077,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/models/esm2_t30_150M_UR50D/special_tokens_map.json": {
+        "bytes": 125
+      },
+      "downloaded_models/DeepNano/models/esm2_t30_150M_UR50D/tokenizer_config.json": {
+        "bytes": 95
+      },
+      "downloaded_models/DeepNano/models/esm2_t30_150M_UR50D/vocab.txt": {
+        "bytes": 93
+      },
+      "downloaded_models/DeepNano/models/esm2_t33_650M_UR50D/config.json": {
+        "bytes": 724
+      },
+      "downloaded_models/DeepNano/models/esm2_t33_650M_UR50D/pytorch_model.bin": {
+        "bytes": 2609621831,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/models/esm2_t33_650M_UR50D/special_tokens_map.json": {
+        "bytes": 125
+      },
+      "downloaded_models/DeepNano/models/esm2_t33_650M_UR50D/tokenizer_config.json": {
+        "bytes": 95
+      },
+      "downloaded_models/DeepNano/models/esm2_t33_650M_UR50D/vocab.txt": {
+        "bytes": 93
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/README.md": {
+        "bytes": 1705
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/config.json": {
+        "bytes": 775
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/gitattributes": {
+        "bytes": 1438
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/model.safetensors": {
+        "bytes": 31384292
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/pytorch_model.bin": {
+        "bytes": 31406877,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/special_tokens_map.json": {
+        "bytes": 125
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/tf_model.h5": {
+        "bytes": 30256864,
+        "lfs_pointer": false
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/tokenizer_config.json": {
+        "bytes": 95
+      },
+      "downloaded_models/DeepNano/models/esm2_t6_8M_UR50D/vocab.txt": {
+        "bytes": 93
+      },
+      "downloaded_models/DeepNano/models/models.py": {
+        "bytes": 19432
+      },
+      "downloaded_models/DeepNano/models/readme.md": {
+        "bytes": 93
+      }
+    },
+    "NABP_BERT_google_drive": {
+      "downloaded_models/NABP-BERT/_downloads/google_drive/NABP-BERT-models.zip": {
+        "bytes": 2786545374,
+        "lfs_pointer": false
+      }
+    },
+    "NABP_LSTM_google_drive": {
+      "downloaded_models/NABP-LSTM-Att/_downloads/google_drive/data.rar": {
+        "bytes": 8644042,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NABP-LSTM-Att/_downloads/google_drive/model.rar": {
+        "bytes": 79964401,
+        "lfs_pointer": false
+      }
+    },
+    "NABP_BERT_PPI_data": {
+      "downloaded_models/NABP-BERT/data/PPI_data/ArabidopsisThaliana_binary_hq.txt": {
+        "bytes": 2620915
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/CaenorhabditisElegans_binary_hq.txt": {
+        "bytes": 1089978
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/DrosophilaMelanogaster_binary_hq.txt": {
+        "bytes": 2806692
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/EscherichiaColi_binary_hq.txt": {
+        "bytes": 1248620
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/HomoSapiens_binary_hq.txt": {
+        "bytes": 21678501
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/MusMusculus_binary_hq.txt": {
+        "bytes": 746054
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/OryzaSativa_binary_hq.txt": {
+        "bytes": 27429
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/RattusNorvegicus_binary_hq.txt": {
+        "bytes": 180128
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/SaccharomycesCerevisiae_binary_hq.txt": {
+        "bytes": 4548887
+      },
+      "downloaded_models/NABP-BERT/data/PPI_data/SchizosaccharomycesPombe_binary_hq.txt": {
+        "bytes": 334572
+      }
+    },
+    "NABP_BERT_uniprot_raw": {
+      "downloaded_models/NABP-BERT/data/uniprot_raw/uniprot_sprot.fasta.gz": {
+        "bytes": 93706469
+      },
+      "downloaded_models/NABP-BERT/data/uniprot_raw/uniprot_trembl.fasta.gz": {
+        "bytes": 5686151792
+      }
+    },
+    "NanoBind_checkpoints": {
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_pair_0.model": {
+        "bytes": 42011422,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_pair_100.model": {
+        "bytes": 42011686,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_pair_50.model": {
+        "bytes": 42011422,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_pro(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_good.model": {
+        "bytes": 144160852,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_seq(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_good.model": {
+        "bytes": 38904282,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_site(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_good.model": {
+        "bytes": 103432362,
+        "lfs_pointer": false
+      },
+      "downloaded_models/NanoBind/output/checkpoint/NanoBind_site(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_good.model.lfs-pointer.txt": {
+        "bytes": 134
+      }
+    }
+  }
+}

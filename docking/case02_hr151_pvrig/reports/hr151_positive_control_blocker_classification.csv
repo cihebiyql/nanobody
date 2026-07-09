@@ -1,0 +1,6 @@
+model,haddock_rank,haddock_score,hotspot_overlap_count,total_pvrl2_residue_pair_occlusion,cdr3_pvrl2_residue_pair_occlusion,cdr3_occlusion_fraction,framework_residue_pair_occlusion,classification,note
+cluster_10_model_1,10,-25.506,15,630,110,0.1746031746031746,424,BLOCKER_LIKE_A,passes HR151-calibrated interface+occlusion+CDR3 checks
+cluster_1_model_1,1,-99.226,18,681,194,0.28487518355359764,311,BLOCKER_LIKE_A,passes HR151-calibrated interface+occlusion+CDR3 checks
+cluster_2_model_1,2,-51.219,20,0,0,0.0,0,BINDER_LIKE_C,hotspot contact without PVRL2 occlusion; likely binder-like pose
+cluster_3_model_1,3,-48.980,18,694,118,0.17002881844380405,427,BLOCKER_LIKE_A,passes HR151-calibrated interface+occlusion+CDR3 checks
+cluster_8_model_1,8,-38.019,14,982,270,0.27494908350305497,566,BLOCKER_LIKE_A,passes HR151-calibrated interface+occlusion+CDR3 checks

@@ -1,0 +1,61 @@
+{
+  "version": "v2",
+  "generated_at": "2026-07-07",
+  "purpose": "Success-case-calibrated standards for deciding whether future PVRIG VHH/antibody candidates are likely blockers rather than generic binders.",
+  "classifier": {
+    "BLOCKER_LIKE_A": {
+      "meaning": "Prioritized structurally blocker-like pose or experimentally proven blocker-like candidate.",
+      "required_for_vhh_docking": {
+        "hotspot_overlap_count": ">= 14",
+        "total_vhh_pvrl2_residue_pair_occlusion": ">= 500",
+        "cdr3_pvrl2_residue_pair_occlusion": ">= 100",
+        "cdr3_occlusion_fraction": ">= 0.15"
+      },
+      "experimental_equivalent": "Strong PVRIG binding plus direct PVRIG-PVRL2/CD112 blocking evidence, ideally low-nM IC50 or better."
+    },
+    "BLOCKER_PLAUSIBLE_B": {
+      "meaning": "Alternative epitope or format-aware candidate with plausible ligand interference but incomplete quantitative support.",
+      "required_notes": [
+        "blocking evidence missing or weaker",
+        "must not be remote binder-only",
+        "needs follow-up assay or second-structure validation"
+      ]
+    },
+    "BINDER_LIKE_C": {
+      "meaning": "PVRIG binder or interface-contacting pose without enough PVRL2 blocking geometry.",
+      "rule": "If hotspot_overlap_count >= 14 but total_vhh_pvrl2_residue_pair_occlusion < 50, downgrade to BINDER_LIKE_C."
+    },
+    "FORMAT_CONTEXT_D": {
+      "meaning": "Mechanistically interesting only in Fc, VHH-Fc, or bispecific architecture context.",
+      "rule": "Do not infer this class from naked VHH docking alone."
+    },
+    "EVIDENCE_INFERENCE_ONLY_E": {
+      "meaning": "Useful hypothesis or case label with insufficient structure/assay evidence for blocker prioritization.",
+      "rule": "Keep in research notes; do not advance as blocker proof."
+    }
+  },
+  "hard_gates": [
+    "Separate binding evidence from ligand-blocking evidence.",
+    "Require PVRL2/CD112 blocking geometry or assay evidence before calling a candidate blocker-like.",
+    "Downgrade hotspot-only non-occluding poses.",
+    "Apply positive-control leakage checks against HR-151, Tab5/CPA.7.021, and known VHH families using normalized CDR definitions.",
+    "Label residue contacts from docking as inference unless supported by a public complex or epitope map."
+  ],
+  "soft_positive_features": [
+    "Consensus interface coverage, especially R95 neighborhood.",
+    "PVRL2 steric occlusion from a plausible CDR/paratope angle.",
+    "Alternative distinct epitope that still interferes with PVRL2 binding.",
+    "Compatibility with intended format: naked VHH, VHH-Fc, IgG1/IgG4, or TIGIT/PVRIG bispecific.",
+    "NK/Fc/CD226/TIGIT context annotations for downstream functional validation."
+  ],
+  "case_ids": [
+    "CD112RIVE_structure_guided_trap",
+    "COM701_CPA7021_Tab5",
+    "GSK4381562_SRF813",
+    "IBI352g4a",
+    "NK_cell_blockade_biology",
+    "PM1009_SIM0348",
+    "PVRIG_VHH_20_30_38_39_151_HR151",
+    "SHR2002_TIGIT8_PVRIG30"
+  ]
+}

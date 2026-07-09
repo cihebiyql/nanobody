@@ -1,0 +1,7 @@
+tag,meaning,modeling_use
+DUAL_CHECKPOINT_NOT_SINGLE_BINDER,"SHR-2002 success comes from co-blocking TIGIT/CD155 and PVRIG/CD112, not merely higher PVRIG affinity.",Do not rank this class only by PVRIG docking score.
+N_TERMINAL_VHH_DISPLAY,Anti-PVRIG nanobody is fused at the N terminus of anti-TIGIT antibody in the reported BsAb format.,"When modeling VHH-Fc/BsAb, check whether CDRs remain exposed after fusion."
+PVRIG30_ARM_CALIBRATION,PVRIG-30 family is a positive PVRIG arm reference; local sequence exists from WO2021180205A1.,"Use PVRIG-30/30H2 to calibrate PVRIG-arm structure/docking, not as new design."
+IGG4_FORMAT_SUCCESS,Reported lead uses IgG4-style bispecific format; Fc/format can change NK/T-cell outputs.,Separate paratope score from format score.
+T_NK_FUNCTION_GATE,Positive mechanism requires both receptor-ligand blockade and T/NK functional activation signals.,Add downstream function labels when available.
+COMBINATION_CONTEXT,Activity improves/extends in PD-1 or PD-L1 combination context.,Do not assume single-agent PVRIG blockade fully captures biology.

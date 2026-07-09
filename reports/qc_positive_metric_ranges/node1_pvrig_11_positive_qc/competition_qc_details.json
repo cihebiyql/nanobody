@@ -1,0 +1,14 @@
+{
+  "config": {
+    "identity_threshold": 0.8,
+    "safe_identity_threshold": 0.75,
+    "cluster_identity": 0.9,
+    "cluster_limit": 3,
+    "structure_tools": ""
+  },
+  "reference_counts": {
+    "official_positive_cdrs": 48,
+    "local_positive_cdrs": 30
+  },
+  "portfolio_count": 11
+}

@@ -1,0 +1,49 @@
+{
+  "pose_pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_1_model_1_aligned_to_8x6b.pdb",
+  "total_occluding_atom_contact_count": 7985,
+  "total_clash_atom_contact_count": 1419,
+  "total_occluding_residue_pair_count": 681,
+  "total_clash_residue_pair_count": 249,
+  "region_summary": {
+    "CDR3": {
+      "occluding_atom_contact_count": 2137,
+      "occlusion_fraction_of_total": 0.2676,
+      "occluding_residue_pair_count": 194,
+      "occluding_residue_pair_fraction_of_total": 0.2849,
+      "clash_atom_contact_count": 364,
+      "clash_residue_pair_count": 70,
+      "vhh_residue_count": 21,
+      "pvrl2_residue_count": 60
+    },
+    "CDR1": {
+      "occluding_atom_contact_count": 1048,
+      "occlusion_fraction_of_total": 0.1312,
+      "occluding_residue_pair_count": 94,
+      "occluding_residue_pair_fraction_of_total": 0.138,
+      "clash_atom_contact_count": 199,
+      "clash_residue_pair_count": 35,
+      "vhh_residue_count": 8,
+      "pvrl2_residue_count": 41
+    },
+    "CDR2": {
+      "occluding_atom_contact_count": 828,
+      "occlusion_fraction_of_total": 0.1037,
+      "occluding_residue_pair_count": 82,
+      "occluding_residue_pair_fraction_of_total": 0.1204,
+      "clash_atom_contact_count": 152,
+      "clash_residue_pair_count": 24,
+      "vhh_residue_count": 7,
+      "pvrl2_residue_count": 38
+    },
+    "framework": {
+      "occluding_atom_contact_count": 3972,
+      "occlusion_fraction_of_total": 0.4974,
+      "occluding_residue_pair_count": 311,
+      "occluding_residue_pair_fraction_of_total": 0.4567,
+      "clash_atom_contact_count": 704,
+      "clash_residue_pair_count": 120,
+      "vhh_residue_count": 44,
+      "pvrl2_residue_count": 87
+    }
+  }
+}

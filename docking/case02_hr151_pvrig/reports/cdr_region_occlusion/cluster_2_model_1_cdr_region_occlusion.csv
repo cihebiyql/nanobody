@@ -1,0 +1,5 @@
+pose_pdb,region,occluding_atom_contact_count,occlusion_fraction_of_total,occluding_residue_pair_count,occluding_residue_pair_fraction_of_total,clash_atom_contact_count,clash_fraction_of_total,clash_residue_pair_count,clash_residue_pair_fraction_of_total,vhh_residue_count,pvrl2_residue_count,min_distance_a,vhh_residues,pvrl2_residues
+/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_2_model_1_aligned_to_8x6b.pdb,CDR3,0,0.0,0,0.0,0,0.0,0,0.0,0,0,,,
+/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_2_model_1_aligned_to_8x6b.pdb,CDR1,0,0.0,0,0.0,0,0.0,0,0.0,0,0,,,
+/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_2_model_1_aligned_to_8x6b.pdb,CDR2,0,0.0,0,0.0,0,0.0,0,0.0,0,0,,,
+/mnt/d/work/抗体/docking/case02_hr151_pvrig/haddock3/top_models_aligned_to_8x6b/cluster_2_model_1_aligned_to_8x6b.pdb,framework,0,0.0,0,0.0,0,0.0,0,0.0,0,0,,,

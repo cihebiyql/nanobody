@@ -1,0 +1,5 @@
+model	haddock_rank	haddock_score	align_rmsd_A	hotspot_overlap	cdr_contacts	pvrl2_occlusion	pvrl2_clashes
+cluster_1_model_1	1	-99.226	5.184	18	11	681	249
+cluster_8_model_1	8	-38.019	3.576	14	14	982	328
+cluster_3_model_1	3	-48.980	11.259	18	16	694	248
+cluster_10_model_1	10	-25.506	6.667	15	11	630	224

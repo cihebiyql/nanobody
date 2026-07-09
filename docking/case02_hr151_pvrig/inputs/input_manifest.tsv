@@ -1,0 +1,5 @@
+pdb_id	role	chain	residue_count	seq_start	seq_end	path
+8X6B	PVRIG	B	103	TPEVWVQVRMESFTIRCGFL	CCKFASFPEGSWEACGSLPP	/mnt/d/work/抗体/docking/case02_hr151_pvrig/inputs/8X6B_PVRIG_chainB.pdb
+8X6B	PVRL2	A	126	DVRVQVLPEVRGQLGGTVEL	TCEFATFPKGSVRGMTWLRV	/mnt/d/work/抗体/docking/case02_hr151_pvrig/inputs/8X6B_PVRL2_chainA.pdb
+9E6Y	PVRIG	A	108	TPEVWVQVRMEATELSSFTI	CKFASFPEGSWEACGSLPPS	/mnt/d/work/抗体/docking/case02_hr151_pvrig/inputs/9E6Y_PVRIG_chainA.pdb
+9E6Y	PVRL2	D	130	VRVQVLPEVRGQLGGTVELP	TFPKGSVRGMTWLRVLVPRL	/mnt/d/work/抗体/docking/case02_hr151_pvrig/inputs/9E6Y_PVRL2_chainD.pdb

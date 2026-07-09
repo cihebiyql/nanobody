@@ -1,0 +1,69 @@
+{
+  "pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/overlays/cluster_8_model_1_aligned_with_ref8x6b_pvrl2_chainL.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "A": {
+      "atom_count": 1157,
+      "ca_count": 127,
+      "adjacent_ca_distance_min": 3.7690949842104007,
+      "adjacent_ca_distance_median": 3.7961566089928325,
+      "adjacent_ca_distance_max": 3.870155164848045,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          6.017,
+          32.599,
+          24.296
+        ],
+        "max": [
+          54.189,
+          64.564,
+          54.575
+        ]
+      },
+      "likely_sane_backbone": true
+    },
+    "B": {
+      "atom_count": 940,
+      "ca_count": 103,
+      "adjacent_ca_distance_min": 2.878609039102043,
+      "adjacent_ca_distance_median": 3.7981687692886936,
+      "adjacent_ca_distance_max": 5.204990970213105,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -13.169,
+          19.015,
+          22.416
+        ],
+        "max": [
+          28.715,
+          45.718,
+          54.398
+        ]
+      },
+      "likely_sane_backbone": true
+    },
+    "L": {
+      "atom_count": 1021,
+      "ca_count": 126,
+      "adjacent_ca_distance_min": 3.7442410445910133,
+      "adjacent_ca_distance_median": 3.8055812959388975,
+      "adjacent_ca_distance_max": 3.8399084624506337,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          5.886,
+          27.772,
+          21.16
+        ],
+        "max": [
+          43.633,
+          63.682,
+          66.074
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/complex/boltz_8x6b/out_steps50/boltz_results_hr151_pvrig_8x6b/predictions/hr151_pvrig_8x6b/hr151_pvrig_8x6b_model_0.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "B": {
+      "atom_count": 773,
+      "ca_count": 103,
+      "adjacent_ca_distance_min": 2.949927795726532,
+      "adjacent_ca_distance_median": 3.7769244101517314,
+      "adjacent_ca_distance_max": 3.814699070700073,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -17.223,
+          -5.093,
+          -28.869
+        ],
+        "max": [
+          22.577,
+          23.988,
+          2.391
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}

@@ -1,0 +1,587 @@
+{
+  "pose_pdb": "/mnt/d/work/抗体/docking/case02_hr151_pvrig/aligned/chai1_steps50_hr151_pvrig_8x6b_aligned_to_8x6b.pdb",
+  "reference_pdb": "/mnt/d/work/抗体/机制/data/structures/8X6B.pdb",
+  "pvrig_chain": "B",
+  "vhh_chain": "A",
+  "ref_pvrig_chain": "B",
+  "ref_pvrl2_chain": "A",
+  "assume_aligned": true,
+  "contact_cutoff_a": 4.5,
+  "clash_cutoff_a": 2.5,
+  "hotspot_ref_column": "pdb_8x6b_ref",
+  "pvrig_vhh_contact_pair_count": 57,
+  "pvrig_contact_residue_count": 24,
+  "vhh_contact_residue_count": 25,
+  "pvrig_contact_residues": [
+    "B:3GLU",
+    "B:5TRP",
+    "B:7GLN",
+    "B:9ARG",
+    "B:16ARG",
+    "B:20LEU",
+    "B:21GLY",
+    "B:22SER",
+    "B:25ILE",
+    "B:27LEU",
+    "B:29THR",
+    "B:34GLY",
+    "B:35PRO",
+    "B:37GLY",
+    "B:38ALA",
+    "B:39GLY",
+    "B:40GLY",
+    "B:41THR",
+    "B:43LEU",
+    "B:45VAL",
+    "B:50ARG",
+    "B:53ARG",
+    "B:55TRP",
+    "B:56ALA"
+  ],
+  "vhh_contact_residues": [
+    "A:1HIS",
+    "A:2VAL",
+    "A:4LEU",
+    "A:5VAL",
+    "A:6GLU",
+    "A:19ARG",
+    "A:21SER",
+    "A:23VAL",
+    "A:25SER",
+    "A:26ALA",
+    "A:27SER",
+    "A:32ARG",
+    "A:34TYR",
+    "A:36MET",
+    "A:38TRP",
+    "A:44GLY",
+    "A:45LYS",
+    "A:46GLU",
+    "A:48GLU",
+    "A:49ALA",
+    "A:50VAL",
+    "A:52GLY",
+    "A:61TYR",
+    "A:63ASP",
+    "A:96TYR"
+  ],
+  "pvrig_vhh_contacts": [
+    {
+      "pvrig_residue": "B:3GLU",
+      "vhh_residue": "A:32ARG",
+      "distance_a": 3.149885236004641,
+      "pvrig_atom": "OE2",
+      "vhh_atom": "NE"
+    },
+    {
+      "pvrig_residue": "B:3GLU",
+      "vhh_residue": "A:34TYR",
+      "distance_a": 2.2968868060921035,
+      "pvrig_atom": "OE1",
+      "vhh_atom": "CE2"
+    },
+    {
+      "pvrig_residue": "B:3GLU",
+      "vhh_residue": "A:52GLY",
+      "distance_a": 4.4716110072321795,
+      "pvrig_atom": "OE1",
+      "vhh_atom": "CA"
+    },
+    {
+      "pvrig_residue": "B:5TRP",
+      "vhh_residue": "A:34TYR",
+      "distance_a": 2.528038172180158,
+      "pvrig_atom": "NE1",
+      "vhh_atom": "OH"
+    },
+    {
+      "pvrig_residue": "B:5TRP",
+      "vhh_residue": "A:50VAL",
+      "distance_a": 3.5531514181075945,
+      "pvrig_atom": "CH2",
+      "vhh_atom": "CG2"
+    },
+    {
+      "pvrig_residue": "B:7GLN",
+      "vhh_residue": "A:61TYR",
+      "distance_a": 3.3046169218231602,
+      "pvrig_atom": "OE1",
+      "vhh_atom": "OH"
+    },
+    {
+      "pvrig_residue": "B:9ARG",
+      "vhh_residue": "A:61TYR",
+      "distance_a": 3.984071033503292,
+      "pvrig_atom": "NH2",
+      "vhh_atom": "OH"
+    },
+    {
+      "pvrig_residue": "B:9ARG",
+      "vhh_residue": "A:63ASP",
+      "distance_a": 2.213806676293121,
+      "pvrig_atom": "NH2",
+      "vhh_atom": "OD2"
+    },
+    {
+      "pvrig_residue": "B:16ARG",
+      "vhh_residue": "A:48GLU",
+      "distance_a": 1.5500729015114123,
+      "pvrig_atom": "NH1",
+      "vhh_atom": "OE1"
+    },
+    {
+      "pvrig_residue": "B:16ARG",
+      "vhh_residue": "A:49ALA",
+      "distance_a": 4.3110075388475,
+      "pvrig_atom": "NH1",
+      "vhh_atom": "C"
+    },
+    {
+      "pvrig_residue": "B:16ARG",
+      "vhh_residue": "A:50VAL",
+      "distance_a": 3.2913621800099695,
+      "pvrig_atom": "NH1",
+      "vhh_atom": "CG1"
+    },
+    {
+      "pvrig_residue": "B:16ARG",
+      "vhh_residue": "A:61TYR",
+      "distance_a": 4.112689752461277,
+      "pvrig_atom": "NH2",
+      "vhh_atom": "OH"
+    },
+    {
+      "pvrig_residue": "B:16ARG",
+      "vhh_residue": "A:63ASP",
+      "distance_a": 1.7098400509989218,
+      "pvrig_atom": "NH2",
+      "vhh_atom": "OD2"
+    },
+    {
+      "pvrig_residue": "B:20LEU",
+      "vhh_residue": "A:23VAL",
+      "distance_a": 3.416006293905209,
+      "pvrig_atom": "CD2",
+      "vhh_atom": "CG2"
+    },
+    {
+      "pvrig_residue": "B:20LEU",
+      "vhh_residue": "A:25SER",
+      "distance_a": 3.061297274032694,
+      "pvrig_atom": "CB",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:20LEU",
+      "vhh_residue": "A:34TYR",
+      "distance_a": 3.7065575673392637,
+      "pvrig_atom": "CD1",
+      "vhh_atom": "CG"
+    },
+    {
+      "pvrig_residue": "B:21GLY",
+      "vhh_residue": "A:25SER",
+      "distance_a": 3.9763430435514504,
+      "pvrig_atom": "N",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:21GLY",
+      "vhh_residue": "A:27SER",
+      "distance_a": 3.6335163409567843,
+      "pvrig_atom": "O",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:22SER",
+      "vhh_residue": "A:25SER",
+      "distance_a": 3.5498701384698563,
+      "pvrig_atom": "CB",
+      "vhh_atom": "CB"
+    },
+    {
+      "pvrig_residue": "B:22SER",
+      "vhh_residue": "A:26ALA",
+      "distance_a": 3.1201246769960953,
+      "pvrig_atom": "CB",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "B:22SER",
+      "vhh_residue": "A:27SER",
+      "distance_a": 3.5803957881776145,
+      "pvrig_atom": "CA",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:25ILE",
+      "vhh_residue": "A:23VAL",
+      "distance_a": 3.4983621882246556,
+      "pvrig_atom": "CG2",
+      "vhh_atom": "CG2"
+    },
+    {
+      "pvrig_residue": "B:25ILE",
+      "vhh_residue": "A:25SER",
+      "distance_a": 3.897341786397492,
+      "pvrig_atom": "CG2",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:27LEU",
+      "vhh_residue": "A:34TYR",
+      "distance_a": 3.939898983476605,
+      "pvrig_atom": "CD2",
+      "vhh_atom": "CD1"
+    },
+    {
+      "pvrig_residue": "B:27LEU",
+      "vhh_residue": "A:36MET",
+      "distance_a": 3.9942784079230114,
+      "pvrig_atom": "CD2",
+      "vhh_atom": "CB"
+    },
+    {
+      "pvrig_residue": "B:29THR",
+      "vhh_residue": "A:36MET",
+      "distance_a": 3.598076152612671,
+      "pvrig_atom": "CG2",
+      "vhh_atom": "CG"
+    },
+    {
+      "pvrig_residue": "B:29THR",
+      "vhh_residue": "A:48GLU",
+      "distance_a": 4.058586576629847,
+      "pvrig_atom": "OG1",
+      "vhh_atom": "OE2"
+    },
+    {
+      "pvrig_residue": "B:34GLY",
+      "vhh_residue": "A:44GLY",
+      "distance_a": 2.368451392788124,
+      "pvrig_atom": "O",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "B:34GLY",
+      "vhh_residue": "A:45LYS",
+      "distance_a": 4.1679968809969115,
+      "pvrig_atom": "O",
+      "vhh_atom": "CA"
+    },
+    {
+      "pvrig_residue": "B:35PRO",
+      "vhh_residue": "A:44GLY",
+      "distance_a": 4.010155358586499,
+      "pvrig_atom": "CA",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "B:35PRO",
+      "vhh_residue": "A:45LYS",
+      "distance_a": 3.2483078671825387,
+      "pvrig_atom": "O",
+      "vhh_atom": "CG"
+    },
+    {
+      "pvrig_residue": "B:37GLY",
+      "vhh_residue": "A:44GLY",
+      "distance_a": 2.468298806870839,
+      "pvrig_atom": "O",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "B:38ALA",
+      "vhh_residue": "A:44GLY",
+      "distance_a": 3.99110034952768,
+      "pvrig_atom": "CA",
+      "vhh_atom": "CA"
+    },
+    {
+      "pvrig_residue": "B:39GLY",
+      "vhh_residue": "A:44GLY",
+      "distance_a": 3.812496557375494,
+      "pvrig_atom": "N",
+      "vhh_atom": "CA"
+    },
+    {
+      "pvrig_residue": "B:39GLY",
+      "vhh_residue": "A:46GLU",
+      "distance_a": 4.130078570681188,
+      "pvrig_atom": "O",
+      "vhh_atom": "OE2"
+    },
+    {
+      "pvrig_residue": "B:40GLY",
+      "vhh_residue": "A:46GLU",
+      "distance_a": 3.5564829537058036,
+      "pvrig_atom": "CA",
+      "vhh_atom": "OE2"
+    },
+    {
+      "pvrig_residue": "B:41THR",
+      "vhh_residue": "A:36MET",
+      "distance_a": 3.584559387149279,
+      "pvrig_atom": "CG2",
+      "vhh_atom": "CE"
+    },
+    {
+      "pvrig_residue": "B:41THR",
+      "vhh_residue": "A:38TRP",
+      "distance_a": 3.874103509200551,
+      "pvrig_atom": "CG2",
+      "vhh_atom": "CD1"
+    },
+    {
+      "pvrig_residue": "B:41THR",
+      "vhh_residue": "A:46GLU",
+      "distance_a": 2.987989290476121,
+      "pvrig_atom": "OG1",
+      "vhh_atom": "OE1"
+    },
+    {
+      "pvrig_residue": "B:41THR",
+      "vhh_residue": "A:48GLU",
+      "distance_a": 4.250700412873153,
+      "pvrig_atom": "CG2",
+      "vhh_atom": "CG"
+    },
+    {
+      "pvrig_residue": "B:43LEU",
+      "vhh_residue": "A:19ARG",
+      "distance_a": 4.274006083290011,
+      "pvrig_atom": "CD2",
+      "vhh_atom": "CD"
+    },
+    {
+      "pvrig_residue": "B:43LEU",
+      "vhh_residue": "A:21SER",
+      "distance_a": 3.190360011033241,
+      "pvrig_atom": "CD2",
+      "vhh_atom": "CB"
+    },
+    {
+      "pvrig_residue": "B:43LEU",
+      "vhh_residue": "A:36MET",
+      "distance_a": 3.817863931572209,
+      "pvrig_atom": "CD1",
+      "vhh_atom": "SD"
+    },
+    {
+      "pvrig_residue": "B:45VAL",
+      "vhh_residue": "A:4LEU",
+      "distance_a": 3.613954343928545,
+      "pvrig_atom": "CG1",
+      "vhh_atom": "CD2"
+    },
+    {
+      "pvrig_residue": "B:45VAL",
+      "vhh_residue": "A:21SER",
+      "distance_a": 4.166242551748522,
+      "pvrig_atom": "CG1",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:45VAL",
+      "vhh_residue": "A:23VAL",
+      "distance_a": 3.8395256217402687,
+      "pvrig_atom": "CG1",
+      "vhh_atom": "CG1"
+    },
+    {
+      "pvrig_residue": "B:50ARG",
+      "vhh_residue": "A:1HIS",
+      "distance_a": 2.520440834457337,
+      "pvrig_atom": "NH2",
+      "vhh_atom": "NE2"
+    },
+    {
+      "pvrig_residue": "B:50ARG",
+      "vhh_residue": "A:2VAL",
+      "distance_a": 4.433295501091708,
+      "pvrig_atom": "NH1",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "B:53ARG",
+      "vhh_residue": "A:4LEU",
+      "distance_a": 1.9491018444401533,
+      "pvrig_atom": "NH1",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "B:53ARG",
+      "vhh_residue": "A:5VAL",
+      "distance_a": 3.570092155673296,
+      "pvrig_atom": "NH1",
+      "vhh_atom": "N"
+    },
+    {
+      "pvrig_residue": "B:53ARG",
+      "vhh_residue": "A:6GLU",
+      "distance_a": 3.8671667923688036,
+      "pvrig_atom": "NH2",
+      "vhh_atom": "CG"
+    },
+    {
+      "pvrig_residue": "B:55TRP",
+      "vhh_residue": "A:4LEU",
+      "distance_a": 2.941726363889066,
+      "pvrig_atom": "CZ2",
+      "vhh_atom": "CD2"
+    },
+    {
+      "pvrig_residue": "B:55TRP",
+      "vhh_residue": "A:6GLU",
+      "distance_a": 3.0899867313630995,
+      "pvrig_atom": "CD1",
+      "vhh_atom": "OE1"
+    },
+    {
+      "pvrig_residue": "B:55TRP",
+      "vhh_residue": "A:19ARG",
+      "distance_a": 3.0741506143974124,
+      "pvrig_atom": "CB",
+      "vhh_atom": "NH1"
+    },
+    {
+      "pvrig_residue": "B:55TRP",
+      "vhh_residue": "A:21SER",
+      "distance_a": 4.061294005609543,
+      "pvrig_atom": "CH2",
+      "vhh_atom": "OG"
+    },
+    {
+      "pvrig_residue": "B:55TRP",
+      "vhh_residue": "A:96TYR",
+      "distance_a": 2.228166286433757,
+      "pvrig_atom": "CD1",
+      "vhh_atom": "CE1"
+    },
+    {
+      "pvrig_residue": "B:56ALA",
+      "vhh_residue": "A:19ARG",
+      "distance_a": 4.448540434794313,
+      "pvrig_atom": "N",
+      "vhh_atom": "CZ"
+    }
+  ],
+  "hotspot_count": 23,
+  "hotspot_overlap_count": 3,
+  "hotspot_overlap_fraction": 0.13043478260869565,
+  "hotspot_weight_total": 22.4,
+  "hotspot_weight_overlap": 3.0,
+  "hotspot_weight_fraction": 0.13392857142857142,
+  "hotspot_overlaps": [
+    {
+      "hotspot_id": "core_hotspot_27",
+      "pose_pvrig_residue_number": 34,
+      "weight": 1.0
+    },
+    {
+      "hotspot_id": "core_hotspot_36",
+      "pose_pvrig_residue_number": 43,
+      "weight": 1.0
+    },
+    {
+      "hotspot_id": "core_hotspot_38",
+      "pose_pvrig_residue_number": 45,
+      "weight": 1.0
+    }
+  ],
+  "cdr_contact_residue_count": 4,
+  "cdr_contact_residues": [
+    "A:26ALA",
+    "A:27SER",
+    "A:32ARG",
+    "A:34TYR"
+  ],
+  "cdr_contact_residues_by_label": {
+    "CDR1": [
+      "A:26ALA",
+      "A:27SER",
+      "A:32ARG",
+      "A:34TYR"
+    ]
+  },
+  "pvrl2_vhh_occluding_contact_count": 21,
+  "pvrl2_occluded_residue_count": 9,
+  "vhh_occluding_residue_count": 12,
+  "pvrl2_vhh_clash_count": 6,
+  "pvrl2_clash_residue_count": 3,
+  "vhh_clash_residue_count": 5,
+  "pvrl2_occluded_residues": [
+    "A:32GLY",
+    "A:34TYR",
+    "A:36SER",
+    "A:113ALA",
+    "A:114THR",
+    "A:115PHE",
+    "A:116PRO",
+    "A:213HOH",
+    "A:244HOH"
+  ],
+  "vhh_occluding_residues": [
+    "A:37ALA",
+    "A:46GLU",
+    "A:47ARG",
+    "A:48GLU",
+    "A:49ALA",
+    "A:50VAL",
+    "A:60THR",
+    "A:61TYR",
+    "A:62ALA",
+    "A:63ASP",
+    "A:64SER",
+    "A:65VAL"
+  ],
+  "pvrl2_vhh_clashes": [
+    {
+      "pvrig_residue": "A:36SER",
+      "vhh_residue": "A:61TYR",
+      "distance_a": 1.7640841816648134,
+      "pvrig_atom": "CB",
+      "vhh_atom": "CE1"
+    },
+    {
+      "pvrig_residue": "A:115PHE",
+      "vhh_residue": "A:48GLU",
+      "distance_a": 0.4761207829952413,
+      "pvrig_atom": "CZ",
+      "vhh_atom": "O"
+    },
+    {
+      "pvrig_residue": "A:115PHE",
+      "vhh_residue": "A:49ALA",
+      "distance_a": 2.248092969607798,
+      "pvrig_atom": "CZ",
+      "vhh_atom": "N"
+    },
+    {
+      "pvrig_residue": "A:115PHE",
+      "vhh_residue": "A:63ASP",
+      "distance_a": 0.7385946114073662,
+      "pvrig_atom": "CB",
+      "vhh_atom": "CG"
+    },
+    {
+      "pvrig_residue": "A:115PHE",
+      "vhh_residue": "A:64SER",
+      "distance_a": 1.1213482955799217,
+      "pvrig_atom": "CE2",
+      "vhh_atom": "CB"
+    },
+    {
+      "pvrig_residue": "A:116PRO",
+      "vhh_residue": "A:64SER",
+      "distance_a": 2.2022910797621624,
+      "pvrig_atom": "N",
+      "vhh_atom": "OG"
+    }
+  ],
+  "notes": [
+    "Only ATOM/HETATM heavy atoms are scored; hydrogens/deuteriums are ignored.",
+    "Pose and reference must already be in the same PVRIG coordinate frame; Kabsch superposition is a future TODO.",
+    "Hotspot overlap assumes pose PVRIG residue numbers match the chosen reference hotspot column."
+  ]
+}
