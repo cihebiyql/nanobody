@@ -1,6 +1,6 @@
 # Lightweight Sync Inventory
 
-- Generated: 2026-07-09 10:19:13 Asia/Shanghai
+- Generated: 2026-07-09 10:22:05 Asia/Shanghai
 - Workspace: `/mnt/d/work/抗体`
 - Target remote: `git@github.com:cihebiyql/nanobody.git`
 - SSH identity: `/root/.ssh/id_ed25519_github_yuqiule` copied from the Windows key whose public comment is `yuqiule@gmail.com`.
@@ -8,8 +8,8 @@
 
 ## Selection Result
 
-- Selected files: 1,206
-- Selected bytes: 37,468,113 (35.73 MiB)
+- Selected files: 1,179
+- Selected bytes: 37,295,826 (35.57 MiB)
 - Per-file threshold: 5 MiB by default (`NANOBODY_SYNC_MAX_BYTES`).
 - Included classes: source code, shell/Python scripts, notebooks under the threshold, Markdown/text docs, JSON/YAML/TOML config, small CSV/TSV/FASTA/PDB/CIF structure or table artifacts, and small documentation assets such as PNG/PDF/HTML.
 
@@ -25,7 +25,7 @@
 | `tools` | 58 | 0.98 |
 | `data` | 28 | 0.75 |
 | `visualization` | 3 | 0.52 |
-| `node1` | 39 | 0.31 |
+| `node1` | 12 | 0.15 |
 | `docs` | 5 | 0.14 |
 | `scripts` | 9 | 0.10 |
 | `.` | 4 | 0.01 |
@@ -64,7 +64,7 @@
 
 ## Explicit Exclusions
 
-- `.conda-envs/`, `.local/`, `.omx/`, cache directories, `__pycache__/`, logs, pid/status/tmp directories.
+- `.conda-envs/`, `.local/`, any `.omx/` directory at any level, cache directories, `__pycache__/`, logs, pid/status/tmp directories.
 - `data/datasets/`, `data/models/`, and `data/model_data/` because they are large downloaded corpora, model outputs, and training data rather than lightweight source/docs.
 - `code/downloads_background/`, `code/repro_outputs/`, model weight directories such as `NABP-BERT-models`, and downloaded model data/output folders.
 - `docking/**/haddock3`, `docking/**/workdirs`, pose/model output folders, remote/log/test-output folders; lightweight docking scripts, reports, inputs, and small aligned structures remain eligible.

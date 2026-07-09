@@ -88,6 +88,7 @@ EXCLUDED_PREFIXES = {
 EXCLUDED_DIR_NAMES = {
     ".cache",
     ".git",
+    ".omx",
     ".ipynb_checkpoints",
     ".mypy_cache",
     ".pytest_cache",
