@@ -9,7 +9,7 @@
 ## Selection Result
 
 - Selected files: 1,179
-- Selected bytes: 37,297,298 (35.57 MiB)
+- Selected bytes: 37,306,740 (35.58 MiB)
 - Per-file threshold: 5 MiB by default (`NANOBODY_SYNC_MAX_BYTES`).
 - Included classes: source code, shell/Python scripts, notebooks under the threshold, Markdown/text docs, JSON/YAML/TOML config, small CSV/TSV/FASTA/PDB/CIF structure or table artifacts, and small documentation assets such as PNG/PDF/HTML.
 
