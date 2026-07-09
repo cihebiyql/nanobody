@@ -1,6 +1,6 @@
 # Lightweight Sync Inventory
 
-- Generated: 2026-07-09 10:22:05 Asia/Shanghai
+- Generated: 2026-07-09 10:29:56 Asia/Shanghai
 - Workspace: `/mnt/d/work/抗体`
 - Target remote: `git@github.com:cihebiyql/nanobody.git`
 - SSH identity: `/root/.ssh/id_ed25519_github_yuqiule` copied from the Windows key whose public comment is `yuqiule@gmail.com`.
@@ -9,7 +9,7 @@
 ## Selection Result
 
 - Selected files: 1,179
-- Selected bytes: 37,295,826 (35.57 MiB)
+- Selected bytes: 37,297,298 (35.57 MiB)
 - Per-file threshold: 5 MiB by default (`NANOBODY_SYNC_MAX_BYTES`).
 - Included classes: source code, shell/Python scripts, notebooks under the threshold, Markdown/text docs, JSON/YAML/TOML config, small CSV/TSV/FASTA/PDB/CIF structure or table artifacts, and small documentation assets such as PNG/PDF/HTML.
 
@@ -81,4 +81,4 @@ A manifest-scoped scan checked for private-key blocks, GitHub/OpenAI/HuggingFace
 scripts/sync_lightweight_to_github.sh
 ```
 
-The sync script regenerates `docs/lightweight_sync_manifest.txt`, force-adds only the manifest-selected files, commits using the configured Git identity, and pushes with the dedicated GitHub SSH key.
+The sync script regenerates `docs/lightweight_sync_manifest.txt`, temporarily bypasses manifest-selected embedded Git checkout boundaries without adding their internal `.git/` directories, force-adds only the manifest-selected files, commits using the configured Git identity, and pushes with the dedicated GitHub SSH key.

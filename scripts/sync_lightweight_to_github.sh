@@ -32,7 +32,58 @@ python3 scripts/build_lightweight_sync_manifest.py --output "$MANIFEST" --summar
 
 git add -u
 git add -f .gitignore .gitattributes scripts/build_lightweight_sync_manifest.py scripts/sync_lightweight_to_github.sh "$MANIFEST"
+
+BACKUP_ROOT=""
+EMBEDDED_GIT_BACKUPS=()
+restore_embedded_git() {
+  local pair gitdir backup
+  for pair in "${EMBEDDED_GIT_BACKUPS[@]:-}"; do
+    gitdir="${pair%%::*}"
+    backup="${pair#*::}"
+    if [[ -e "$backup" && ! -e "$gitdir" ]]; then
+      mkdir -p "$(dirname "$gitdir")"
+      mv "$backup" "$gitdir"
+    fi
+  done
+  if [[ -n "$BACKUP_ROOT" && -d "$BACKUP_ROOT" ]]; then
+    rmdir "$BACKUP_ROOT" 2>/dev/null || true
+  fi
+}
+
+mapfile -t EMBEDDED_GIT_DIRS < <(python3 - "$MANIFEST" <<'PY'
+from pathlib import Path
+import sys
+manifest = Path(sys.argv[1])
+seen = set()
+for rel in manifest.read_text(encoding='utf-8').splitlines():
+    path = Path(rel)
+    for parent in reversed(path.parents):
+        if str(parent) in ('', '.'):
+            continue
+        gitdir = parent / '.git'
+        if gitdir.is_dir():
+            text = gitdir.as_posix()
+            if text not in seen:
+                seen.add(text)
+                print(text)
+PY
+)
+
+if (( ${#EMBEDDED_GIT_DIRS[@]} > 0 )); then
+  BACKUP_ROOT="$(mktemp -d /tmp/nanobody-embedded-git.XXXXXX)"
+  trap restore_embedded_git EXIT
+  idx=0
+  for gitdir in "${EMBEDDED_GIT_DIRS[@]}"; do
+    backup="$BACKUP_ROOT/gitdir_$idx"
+    mv "$gitdir" "$backup"
+    EMBEDDED_GIT_BACKUPS+=("$gitdir::$backup")
+    idx=$((idx + 1))
+  done
+fi
+
 git add -f --pathspec-from-file="$MANIFEST"
+restore_embedded_git
+trap - EXIT
 
 if git diff --cached --quiet; then
   echo "No lightweight changes to commit."
