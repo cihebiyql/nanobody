@@ -1,0 +1,2 @@
+[console_scripts]
+ab-data-validator = ab_data_validator.cli:main
