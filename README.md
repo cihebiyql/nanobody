@@ -2,7 +2,7 @@
 
 这是 `/mnt/d/work/抗体` 本地工作区的轻量 Git 镜像，用于保存和共享纳米抗体 / PVRIG 项目中可复查、可阅读、可复现的代码、脚本、文档、报告和小型结构/表格文件。
 
-本仓库刻意不上传大型数据集、模型权重、Conda/本地环境、缓存、对接运行中间产物和批量下载镜像。完整同步范围以 `docs/lightweight_sync_manifest.txt` 为准；当前轻量清单约 `1179` 个文件，约 `35.58 MiB`。
+本仓库刻意不上传大型数据集、模型权重、Conda/本地环境、缓存、对接运行中间产物和批量下载镜像。完整同步范围以 `docs/lightweight_sync_manifest.txt` 为准；当前轻量清单约 `1260` 个文件，约 `39.39 MiB`。
 
 ## 快速阅读入口
 
@@ -35,6 +35,7 @@
 
 - 数据清点：`data/DATA_INVENTORY_DETAILED.md`
 - 小模型计划：`data/PVRIG_VHH_SMALL_MODEL_PLAN.md`
+- Phase2 5080 训练实验：`data/docs/phase2_5080_training/README.md`, `data/experiments/phase2_5080_v1/README.md`
 - 结构与热点：`data/structures/8X6B.pdb`, `data/structures/9E6Y.pdb`, `data/structures/PVRIG_hotspot_set_v1.csv`
 - 基线模型脚本：`data/scripts/train_phase1_sequence_baseline.py`, `data/scripts/score_pvrig_candidates_with_calibration.py`
 - 报告：`data/reports/phase1_sequence_baseline_eval.md`, `data/reports/pvrig_candidate_calibrated_scoring_v0.md`
@@ -168,7 +169,7 @@ PVRIG-PVRL2 机制和结构界面的轻量可视化入口。包含一个 Python 
 ## 明确不在仓库中的内容
 
 - 大型下载语料：如 `data/datasets/`。
-- 模型权重、训练数据和输出：如 `data/models/`, `data/model_data/`, 部分 `code/downloaded_models/**/data` 或权重目录。
+- 模型权重、训练数据和输出：如 `data/models/`, `data/model_data/`, `data/experiments/**/checkpoints`, `data/experiments/**/prepared`, `data/experiments/**/runs`, 部分 `code/downloaded_models/**/data` 或权重目录。
 - 本地环境和缓存：如 `.conda-envs/`, `.local/`, 任意 `.omx/`, `__pycache__/`, `.pytest_cache/`。
 - docking/HADDOCK3 大型运行目录、姿态批量输出、远端日志和中间文件。
 - 第三方大规模工具/论文镜像：如 `tools/nanobody_tool_survey/code/`, `tools/nanobody_tool_survey/papers/`。

@@ -1,0 +1,7 @@
+tag,case,meaning,modeling_use
+SCFV_C_TERMINAL_FORMAT,PM1009,"PM1009 uses anti-TIGIT IgG1 plus C-terminal anti-PVRIG scFv format, different from SHR-2002 N-terminal nanobody fusion.",Add format branch: C-terminal scFv accessibility and linker clearance.
+WILDTYPE_IGG1_FC,PM1009,PM1009 is described as containing wildtype IgG1 Fc.,Separate Fc effector function from PVRIG blocking score.
+CD226_REBALANCING,PM1009/SIM0348,Dual blockade should free CD112/CD155 to signal through CD226/DNAM-1.,"Score mechanism as network rebalance, not only receptor occupancy."
+FC_MEDIATED_TREG_KILLING,SIM0348,SIM0348 emphasizes IgG1 Fc-mediated killing of TIGIT+ or TIGIT/PVRIG+ Tregs.,Add Treg depletion / Fc engagement label; do not compare only PVRIG arm docking.
+SINTILIMAB_COMBINATION_CONTEXT,SIM0348,SIM0348 clinical signal is more visible in combination with PD-1 antibody sintilimab than monotherapy in early data.,Rank mechanisms with combination context; avoid overclaiming monotherapy.
+RECEPTOR_OCCUPANCY_GATE,SIM0348,Clinical abstract reports nearly complete peripheral T-cell TIGIT/PVRIG receptor occupancy at selected doses.,Bridge structure/docking to pharmacodynamic receptor occupancy.

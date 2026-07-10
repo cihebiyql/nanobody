@@ -1,0 +1,63 @@
+experiment_name: phase2_v1_crosscontactnet
+seed: 7
+hardware:
+  target_gpu: NVIDIA GeForce RTX 5080
+  expected_vram_gb: 16
+  mixed_precision: true
+paths:
+  root: /mnt/d/work/抗体/data
+  output_root: experiments/phase2_5080_v1
+  zym_paratope: datasets/49_hf_broad_antibody/ZYMScott_Paratope
+  sabdab2_manifest: model_data/sabdab2_single_domain_structure_manifest_v0.csv
+  sabdab2_archive: datasets/13_sabdab_structures/sabdab_all_single_domain_structures.tgz
+  pvrig_mask: model_data/pvrig_full_sequence_mask_v0.csv
+  pvrig_positive_calibration: model_data/pvrig_blocker_positive_calibration_v0.csv
+  pvrig_mutant_controls: model_data/pvrig_blocker_mutant_control_calibration_v0.csv
+model:
+  name: VHHAgCrossContactNetV1
+  d_model: 192
+  encoder_layers: 4
+  attention_heads: 4
+  dropout: 0.1
+  max_vhh_len: 160
+  max_antigen_len: 512
+loss:
+  paratope_bce: 1.0
+  epitope_bce: 1.0
+  contact_bce: 2.0
+  pair_binding_bce: 1.0
+  ranking_loss: 0.0
+negative_sampling:
+  contact_positive_cutoff_angstrom: 4.5
+  contact_negative_min_distance_angstrom: 8.0
+  contact_negative_ratio: 4
+  pair_positive_to_easy_negative: 1.0
+  pair_positive_to_same_family_hard_negative: 0.5
+  pair_positive_to_framework_hard_negative: 0.5
+split:
+  train_fraction: 0.70
+  val_fraction: 0.15
+  test_fraction: 0.15
+  group_keys:
+    - pdb_id
+    - antigen_cluster_id
+    - vhh_cdr3_cluster_id
+training:
+  optimizer: AdamW
+  learning_rate: 0.0002
+  weight_decay: 0.01
+  batch_size_site: 32
+  batch_size_pair: 16
+  gradient_accumulation_steps: 2
+  epochs_site_warmup: 10
+  epochs_contact_pair: 30
+  early_stopping_metric: val_contact_auprc
+  patience: 5
+evaluation:
+  report_easy_and_hard_negatives_separately: true
+  primary_metrics:
+    - paratope_auprc
+    - epitope_auprc
+    - contact_auprc
+    - pair_hard_negative_auprc
+    - pvrig_hotspot_recall_top50

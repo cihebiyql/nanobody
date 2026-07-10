@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "failed_checks": [],
+  "warnings": [
+    "pair head improved but remains below strong standalone threshold: AUROC=0.5833, AUPRC=0.3338"
+  ],
+  "summary": {
+    "records": 8414,
+    "positive_pairs": 855922,
+    "negative_pairs": 3423688,
+    "contact_auroc": 0.8974996146639671,
+    "contact_auprc": 0.7241646423468612,
+    "contact_positive_rate": 0.2081668659415007,
+    "paratope_auprc": 0.6476695610728131,
+    "epitope_auprc": 0.2272145018841288,
+    "pair_auroc": 0.5833391690009337,
+    "pair_auprc": 0.33381912065809005,
+    "pvrig_prediction_rows": 50
+  },
+  "checks": [
+    {
+      "name": "cuda_5080_environment_recorded",
+      "passed": true,
+      "evidence": "environment audit records RTX 5080 CUDA"
+    },
+    {
+      "name": "full2277_contact_dataset_present",
+      "passed": true,
+      "evidence": "records=8414 pos=855922 neg=3423688"
+    },
+    {
+      "name": "contact_summary_csv_matches_json",
+      "passed": true,
+      "evidence": "csv_records=8414"
+    },
+    {
+      "name": "train_val_test_contact_split_present",
+      "passed": true,
+      "evidence": "{\"test\": 884, \"train\": 6068, \"val\": 1462}"
+    },
+    {
+      "name": "training_outputs_present",
+      "passed": true,
+      "evidence": "checkpoint_mb=8.5"
+    },
+    {
+      "name": "contact_model_above_random",
+      "passed": true,
+      "evidence": "contact_auroc=0.8975 contact_auprc=0.7242 random=0.2082"
+    },
+    {
+      "name": "improves_contact_over_v21",
+      "passed": true,
+      "evidence": "contact AUPRC 0.6157->0.7242"
+    },
+    {
+      "name": "improves_site_over_v21",
+      "passed": true,
+      "evidence": "paratope 0.6411->0.6477; epitope 0.1839->0.2272"
+    },
+    {
+      "name": "improves_pair_over_v21",
+      "passed": true,
+      "evidence": "pair AUROC/AUPRC 0.5160/0.2686->0.5833/0.3338"
+    },
+    {
+      "name": "pvrig_predictions_clean",
+      "passed": true,
+      "evidence": "rows=50 leakage={'NO_KNOWN_POSITIVE_LEAKAGE': 50}"
+    },
+    {
+      "name": "report_states_boundary",
+      "passed": true,
+      "evidence": "report keeps computational-prior boundary"
+    }
+  ]
+}

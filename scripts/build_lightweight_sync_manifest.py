@@ -124,6 +124,13 @@ DOCKING_SKIP_NAMES = {
     "top_models_unzipped",
     "workdirs",
 }
+EXPERIMENT_SKIP_NAMES = {
+    "checkpoints",
+    "data_splits",
+    "negative_sets",
+    "prepared",
+    "runs",
+}
 
 
 def as_posix(path: Path) -> str:
@@ -142,6 +149,8 @@ def is_excluded_dir(rel: str) -> bool:
     name = parts[-1]
     if name in EXCLUDED_DIR_NAMES:
         return True
+    if name.startswith(".venv") or name.endswith("_venv") or name in {"site-packages", "dist-packages"}:
+        return True
     if name.startswith("gdown_venv.bad"):
         return True
     if any(has_prefix(rel, prefix) for prefix in EXCLUDED_PREFIXES):
@@ -151,6 +160,9 @@ def is_excluded_dir(rel: str) -> bool:
             return True
     if parts[0] == "docking":
         if name in DOCKING_SKIP_NAMES or name.startswith("run_"):
+            return True
+    if len(parts) >= 3 and parts[0] == "data" and parts[1] == "experiments":
+        if name in EXPERIMENT_SKIP_NAMES:
             return True
     return False
 

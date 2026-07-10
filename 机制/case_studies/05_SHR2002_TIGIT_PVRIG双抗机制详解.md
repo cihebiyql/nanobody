@@ -225,12 +225,146 @@ format_designability_score
 format_designability_score =
     VHH 端点方向是否适合 fusion
   + CDR 是否远离 fusion/linker 干扰
-  + VHH 是否可作为 N端/C端 module
-  + 是否保留 PVRIG blocking pose
+  + N端/C端 fusion 后 paratope 是否仍可及
+  + 是否保留 PVRIG-PVRL2 blocking pose
   + 是否适合二价/Fc/双抗构型
 ```
 
-如果一个 VHH 单体 docking 很好，但 CDR 靠近 N端 linker 或 fusion 后很容易被 IgG scaffold 挡住，它不应该排得太高。
+更直白地说：
+
+```text
+binding / docking score：
+这个 VHH 单独存在时，能不能贴住 PVRIG。
+
+format_designability_score：
+这个 VHH 被接到 Fc、IgG、二价 VHH 或 TIGIT/PVRIG 双抗里以后，
+还能不能用同样正确的姿势贴住 PVRIG，并继续阻断 PVRIG-PVRL2。
+```
+
+可以把 VHH 理解成一个“钩子”，Fc/IgG/双抗理解成“钩子后面的杆子和支架”。钩子本身能勾住目标还不够，装到支架上以后还要满足：方向对、不被支架挡住、仍然能勾到 PVRIG-PVRL2 的功能界面。
+
+### 5.3.1 VHH 端点方向是否适合 fusion
+
+VHH 是一条单链，有 N 端和 C 端。做 VHH-Fc 或双抗时，通常要从 N 端或 C 端接 linker。
+
+好的情况：
+
+```text
+CDR/paratope 朝向 PVRIG interface
+N端或C端朝外
+linker / Fc / IgG scaffold 在背面或侧面
+```
+
+坏的情况：
+
+```text
+N端或C端刚好朝向 PVRIG interface
+接上 linker/Fc 后，大结构挤进结合面
+VHH 原本的 blocking pose 被拉歪或挡住
+```
+
+所以这项看的是：VHH 的可连接端点是否在空间上适合接东西。
+
+### 5.3.2 CDR 是否远离 linker/IgG scaffold 干扰
+
+VHH 真正识别 PVRIG 的位置主要是 CDR，尤其 CDR3。linker 或 IgG scaffold 如果太靠近 CDR，可能造成：
+
+```text
+1. 物理遮挡 CDR；
+2. 限制 CDR 摆动；
+3. 让原来能覆盖 PVRIG-PVRL2 interface 的 loop 变成侧向接触；
+4. 让 blocker 退化成普通 binder。
+```
+
+所以这项看的是：融合后 CDR/paratope 是否还露在外面，而不是被自己的 scaffold 挡住。
+
+### 5.3.3 N端/C端 fusion 后 paratope 是否仍可及
+
+`paratope` 是 VHH 上接触抗原的表面；`epitope` 是 PVRIG 上被识别的表面。
+
+这项要问：
+
+```text
+单体 VHH docking 时 paratope 能接触 PVRIG；
+接上 Fc/IgG/双抗后，这个 paratope 是否仍然能接触 PVRIG？
+```
+
+如果 fusion 后 paratope 被埋住、朝向 IgG scaffold、或被 linker 拉到错误方向，这个 VHH 即使单体 docking 很好，也不适合做后续药物 format。
+
+### 5.3.4 是否保留 PVRIG-PVRL2 blocking pose
+
+这是最核心的一项。我们的目标不是普通 PVRIG binder，而是 blocker。
+
+好的 pose 应该是：
+
+```text
+VHH 占住或遮挡 PVRIG-PVRL2 / CD112 接触面
+        ↓
+PVRL2 不能再贴到 PVRIG 上
+```
+
+坏的 pose 是：
+
+```text
+VHH 仍然结合 PVRIG
+但接触位置偏到侧面
+PVRL2 仍然可以结合
+```
+
+因此，format_designability 必须检查 fusion 后是否还保持“阻断姿势”，而不是只保持“结合姿势”。
+
+### 5.3.5 是否适合二价/Fc/双抗构型
+
+后续真实分子可能不是裸 VHH，而是：
+
+```text
+VHH-Fc
+二价 VHH
+双 VHH
+VHH 接 IgG N 端或 C 端
+TIGIT-PVRIG 双抗
+PVRIG-PD1 / PVRIG-PDL1 组合格式
+```
+
+不同格式会引入不同空间限制。比如 TIGIT/PVRIG 双抗还要问：
+
+```text
+1. PVRIG arm 能不能接触 PVRIG；
+2. TIGIT arm 能不能接触 TIGIT；
+3. 两个 arm 是否能同时工作；
+4. linker 长度是否够；
+5. 两个靶点结合时有没有 steric clash；
+6. Fc 是 IgG1 还是 IgG4，是否需要保留/削弱 effector function。
+```
+
+所以，如果一个 VHH 单体 docking 很好，但 CDR 靠近 N端 linker 或 fusion 后很容易被 IgG scaffold 挡住，它不应该排得太高。
+
+### 5.3.6 可以落地成的粗评分
+
+第一版不需要很复杂，可以先这样拆：
+
+```text
+format_designability_score =
+0.25 x terminus_orientation_score
++ 0.20 x linker_clearance_score
++ 0.20 x paratope_accessibility_score
++ 0.25 x blocking_pose_retention_score
++ 0.10 x multivalent_format_score
+```
+
+对应含义：
+
+| 子分数 | 看什么 | 好的表现 |
+|---|---|---|
+| terminus_orientation_score | N/C 端朝向 | 端点朝外，不朝向 PVRIG interface |
+| linker_clearance_score | linker/Fc 是否靠近 CDR | CDR 与 linker/Fc 距离足够远 |
+| paratope_accessibility_score | CDR/paratope 是否暴露 | CDR1/2/3 仍然可接触 PVRIG |
+| blocking_pose_retention_score | fusion 后是否还挡 PVRL2 | 仍覆盖 PVRIG-PVRL2 interface |
+| multivalent_format_score | 是否适合 Fc/二价/双抗 | 两个 arm 不互相打架，linker 方向合理 |
+
+最短总结：
+
+> format_designability_score 评价的不是“这个 VHH 能不能结合 PVRIG”，而是“这个 VHH 被做成 VHH-Fc、二价 VHH、IgG fusion 或 TIGIT/PVRIG 双抗后，还能不能保持原来的 PVRIG-PVRL2 阻断姿势，并且不被 linker/Fc/IgG scaffold 挡住”。
 
 ---
 

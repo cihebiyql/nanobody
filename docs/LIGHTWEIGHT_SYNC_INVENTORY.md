@@ -1,6 +1,6 @@
 # Lightweight Sync Inventory
 
-- Generated: 2026-07-09 10:29:56 Asia/Shanghai
+- Generated: 2026-07-10 10:25:05 Asia/Shanghai
 - Workspace: `/mnt/d/work/抗体`
 - Target remote: `git@github.com:cihebiyql/nanobody.git`
 - SSH identity: `/root/.ssh/id_ed25519_github_yuqiule` copied from the Windows key whose public comment is `yuqiule@gmail.com`.
@@ -8,8 +8,8 @@
 
 ## Selection Result
 
-- Selected files: 1,179
-- Selected bytes: 37,306,740 (35.58 MiB)
+- Selected files: 1,260
+- Selected bytes: 41,304,714 (39.39 MiB)
 - Per-file threshold: 5 MiB by default (`NANOBODY_SYNC_MAX_BYTES`).
 - Included classes: source code, shell/Python scripts, notebooks under the threshold, Markdown/text docs, JSON/YAML/TOML config, small CSV/TSV/FASTA/PDB/CIF structure or table artifacts, and small documentation assets such as PNG/PDF/HTML.
 
@@ -18,17 +18,17 @@
 | Area | Files | Size MiB |
 | --- | ---: | ---: |
 | `docking` | 760 | 10.02 |
-| `机制` | 74 | 9.71 |
-| `code` | 145 | 5.09 |
+| `机制` | 82 | 9.77 |
+| `code` | 148 | 5.15 |
+| `data` | 98 | 4.44 |
 | `scaffolds` | 9 | 4.42 |
 | `reports` | 65 | 3.66 |
 | `tools` | 58 | 0.98 |
-| `data` | 28 | 0.75 |
 | `visualization` | 3 | 0.52 |
+| `docs` | 5 | 0.15 |
 | `node1` | 12 | 0.15 |
-| `docs` | 5 | 0.14 |
 | `scripts` | 9 | 0.10 |
-| `.` | 4 | 0.01 |
+| `.` | 4 | 0.02 |
 | `tests` | 2 | 0.01 |
 | `positives` | 5 | 0.01 |
 
@@ -37,6 +37,7 @@
 | Size MiB | Path |
 | ---: | --- |
 | 4.46 | `机制/data/patents/WO2021180205A1/WO2021180205A1.pdf` |
+| 2.68 | `data/reports/mvp_pvrig_candidate_scores_v0.csv` |
 | 1.98 | `scaffolds/vhh_scaffold_quality_table.csv` |
 | 1.96 | `code/downloaded_models/Sequence-Based-NABP-paper.pdf` |
 | 1.51 | `scaffolds/raw_vhh_scaffold_metadata.csv` |
@@ -57,15 +58,15 @@
 | 0.29 | `code/downloaded_models/Sequence-Based-NABP/Code/Antigene_Antibody_Data_Preprocessing_PWM.ipynb` |
 | 0.28 | `scaffolds/clean_vhh_scaffold_library.fasta` |
 | 0.27 | `scaffolds/raw_vhh_scaffold_pool.fasta` |
+| 0.27 | `data/reports/mvp_pvrig_top_candidates_v0.csv` |
+| 0.25 | `data/reports/mvp_pvrig_control_scores_v0.csv` |
 | 0.22 | `code/downloaded_models/Sequence-Based-NABP/Plots/nanobody_kmers_embedding.png` |
-| 0.19 | `scaffolds/top_200_vhh_scaffolds_for_design.csv` |
-| 0.19 | `data/structures/9E6Y.pdb` |
-| 0.19 | `机制/data/structures/9E6Y.pdb` |
 
 ## Explicit Exclusions
 
-- `.conda-envs/`, `.local/`, any `.omx/` directory at any level, cache directories, `__pycache__/`, logs, pid/status/tmp directories.
+- `.conda-envs/`, `.local/`, any `.omx/` directory at any level, cache directories, `__pycache__/`, `.venv*`, Python `site-packages/`, logs, pid/status/tmp directories.
 - `data/datasets/`, `data/models/`, and `data/model_data/` because they are large downloaded corpora, model outputs, and training data rather than lightweight source/docs.
+- Experiment-heavy directories such as `data/experiments/**/checkpoints`, `data/experiments/**/prepared`, `data/experiments/**/data_splits`, `data/experiments/**/negative_sets`, `data/experiments/**/runs`, and logs are excluded; experiment `src/`, `configs/`, `reports/`, `audits/`, and small prediction summaries remain eligible.
 - `code/downloads_background/`, `code/repro_outputs/`, model weight directories such as `NABP-BERT-models`, and downloaded model data/output folders.
 - `docking/**/haddock3`, `docking/**/workdirs`, pose/model output folders, remote/log/test-output folders; lightweight docking scripts, reports, inputs, and small aligned structures remain eligible.
 - `tools/nanobody_tool_survey/code/` and `tools/nanobody_tool_survey/papers/`, which are bulky external tool/paper mirrors; local survey metadata and reports remain eligible.

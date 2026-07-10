@@ -1,0 +1,42 @@
+{
+  "boundary": "MVP computational prioritization only; new candidates require docking and experimental validation.",
+  "candidate_pool_rows": 547,
+  "candidate_role_counts": {
+    "known_pvrig_blocking_positive_control_not_ranked": 11,
+    "mutant_or_leakage_control_not_ranked": 36,
+    "new_candidate_from_zym_vhh_affinity_seq_test": 500
+  },
+  "contact_extraction_summary": {
+    "contact_rows": 1286,
+    "cutoff_angstrom": 4.5,
+    "eligible_sampled_structures": 12,
+    "manifest_rows": 2422,
+    "output": "/mnt/d/work/抗体/data/model_data/sabdab2_single_domain_contacts_mvp.csv",
+    "processed_structures": 12,
+    "stderr": "",
+    "structures_with_contacts": 12
+  },
+  "control_rows": 47,
+  "final_label_counts": {
+    "AI_PRIOR_HIGH_NEEDS_DOCKING_CALIBRATION": 500,
+    "EXCLUDE_EXACT_KNOWN_POSITIVE_CONTROL": 18,
+    "HOLD_NEAR_KNOWN_POSITIVE_MANUAL_LEAKAGE_REVIEW": 29
+  },
+  "leakage_label_counts": {
+    "EXACT_KNOWN_POSITIVE": 18,
+    "NEAR_KNOWN_POSITIVE_OR_CDR_SIMILAR": 29,
+    "NO_KNOWN_POSITIVE_LEAKAGE": 500
+  },
+  "paths": {
+    "candidate_pool": "/mnt/d/work/抗体/data/model_data/mvp_candidates_v0.csv",
+    "contact_out": "/mnt/d/work/抗体/data/model_data/sabdab2_single_domain_contacts_mvp.csv",
+    "contact_report": "/mnt/d/work/抗体/data/reports/sabdab2_contact_extraction_mvp.md",
+    "controls": "/mnt/d/work/抗体/data/reports/mvp_pvrig_control_scores_v0.csv",
+    "report": "/mnt/d/work/抗体/data/reports/MVP_PVRIG_VHH_WORKFLOW_REPORT.md",
+    "scores": "/mnt/d/work/抗体/data/reports/mvp_pvrig_candidate_scores_v0.csv",
+    "summary": "/mnt/d/work/抗体/data/reports/mvp_pvrig_summary_v0.json",
+    "top": "/mnt/d/work/抗体/data/reports/mvp_pvrig_top_candidates_v0.csv"
+  },
+  "scored_rows": 547,
+  "top_rows": 50
+}

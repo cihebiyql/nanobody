@@ -1,0 +1,29 @@
+{
+  "dataset_expansion": {
+    "v21_records": 2725,
+    "v22_records": 8414,
+    "v21_positive_pairs": 293937,
+    "v22_positive_pairs": 855922,
+    "v21_negative_pairs": 1175748,
+    "v22_negative_pairs": 3423688,
+    "record_multiplier": 3.0877064220183486,
+    "positive_pair_multiplier": 2.9119233032928826
+  },
+  "metrics": {
+    "v21_contact_auroc": 0.8617162507810164,
+    "v22_contact_auroc": 0.8974996146639671,
+    "v21_contact_auprc": 0.6157458658402079,
+    "v22_contact_auprc": 0.7241646423468612,
+    "v21_contact_test_records": 318.0,
+    "v22_contact_test_records": 884.0,
+    "v21_paratope_auprc": 0.6410665123085403,
+    "v22_paratope_auprc": 0.6476695610728131,
+    "v21_epitope_auprc": 0.183870095040085,
+    "v22_epitope_auprc": 0.2272145018841288,
+    "v21_pair_auroc": 0.5160364145658264,
+    "v22_pair_auroc": 0.5833391690009337,
+    "v21_pair_auprc": 0.26859930619441885,
+    "v22_pair_auprc": 0.33381912065809005
+  },
+  "interpretation": "V2.2 uses the full2277 contact-map dataset and improves contact, site, and pair metrics over V2.1; pair-level classification is improved but still not sufficient as standalone blocker proof."
+}

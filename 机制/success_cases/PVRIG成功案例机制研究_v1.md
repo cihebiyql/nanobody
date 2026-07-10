@@ -424,3 +424,16 @@ species_cross_reactivity_risk
 ```
 
 关键词：SHR-2002、TIGIT-8-PVRIG-30-IgG4、PVRIG nanobody arm、N-terminal fusion、dual checkpoint blockade、format_designability_score。
+
+
+---
+
+## 附：Case 06 详细拆解已完成
+
+```text
+机制/case_studies/06_PM1009_SIM0348_TIGIT_PVRIG双抗机制详解.md
+机制/data/literature/PVRIG_case06_pm1009_sim0348_evidence_table.csv
+机制/data/literature/PVRIG_case06_pm1009_sim0348_calibration_tags.csv
+```
+
+关键词：PM1009、SIM0348、C-terminal PVRIG scFv、wildtype IgG1 Fc、CD226/DNAM-1 rebalance、Fc-mediated Treg killing、sintilimab combination、receptor occupancy。

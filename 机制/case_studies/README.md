@@ -1,6 +1,6 @@
 # PVRIG 真实案例逐个机制拆解
 
-更新时间：2026-07-08
+更新时间：2026-07-09
 
 这个目录按“一个真实案例一份文档”的方式整理 PVRIG 机制证据。目标不是罗列名字，而是回答：它为什么有效、证据是什么、表位在哪里、对后续 AI/筛选模型有什么约束。
 
@@ -21,7 +21,10 @@
 5. `05_SHR2002_TIGIT_PVRIG双抗机制详解.md`  
    SHR-2002 / TIGIT-8-PVRIG-30-IgG4：PVRIG nanobody 作为双抗模块时，为什么可能比单药更强，以及后续筛选为什么要加入 format_designability。
 
+6. `06_PM1009_SIM0348_TIGIT_PVRIG双抗机制详解.md`  
+   PM1009 / SIM0348：比较 C-terminal PVRIG scFv、IgG1 Fc-competent 双抗、CD226/DNAM-1 共刺激恢复、以及 SIM0348 的 Fc-mediated Treg killing。
+
 ## 建议下一批
 
-6. `06_PM1009_SIM0348_TIGIT_PVRIG双抗机制详解.md`  
-   继续看其他 TIGIT/PVRIG 双抗，比较不同格式、连接位置、Fc 和双靶点功能输出。
+7. `07_CD112RIVE_ligand_trap_结构工程机制详解.md`  
+   从抗体跳到结构工程化 ligand trap，验证 PVRIG-PVRL2/CD112R-CD112 界面能否被理性改造。

@@ -192,3 +192,19 @@ pymol visualization/pvrig_pvrl2_mechanism_view_portable.pml
 ```
 
 第五例已经拆解 SHR-2002 / TIGIT-8-PVRIG-30-IgG4，重点说明 PVRIG VHH 不只是单体 blocker，也可以作为 anti-TIGIT IgG 的 N 端 nanobody arm，在双抗 format 中同时阻断 TIGIT-CD155 和 PVRIG-CD112，从而增强 T cell activation 与 NK cytotoxicity。这个案例给后续筛选流程新增 `format_designability_score` 和 `dual-checkpoint context` 两个机制维度。
+
+
+## 新增：第六例 PM1009 / SIM0348 双抗机制拆解
+
+```text
+机制/case_studies/06_PM1009_SIM0348_TIGIT_PVRIG双抗机制详解.md
+机制/data/literature/PVRIG_case06_pm1009_sim0348_evidence_table.csv
+机制/data/literature/PVRIG_case06_pm1009_sim0348_calibration_tags.csv
+机制/data/literature/sources/nci_pm1009_drug_dictionary.md
+机制/data/literature/sources/nci_sim0348_drug_dictionary.md
+机制/data/literature/sources/clinicaltrials_NCT05607563_PM1009.json
+机制/data/literature/sources/simcere_SIM0348_FPI_20230403.md
+机制/data/literature/sources/annals_SIM0348_163MO_2025.md
+```
+
+第六例已经拆解 PM1009 / SIM0348，重点说明 TIGIT/PVRIG 双抗不仅有 dual checkpoint blockade，还可能通过 CD226/DNAM-1 共刺激恢复、IgG1 Fc effector、以及 Fc-mediated Treg killing 改变 TME。这个案例把候选筛选从“PVRIG arm docking”进一步扩展到 `Fc strategy`、`Treg/TME context`、`C-terminal scFv compatibility` 等机制维度。

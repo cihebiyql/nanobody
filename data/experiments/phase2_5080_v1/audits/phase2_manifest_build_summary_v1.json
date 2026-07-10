@@ -1,0 +1,34 @@
+{
+  "contact_label_counts": {
+    "0": 8696,
+    "1": 2174
+  },
+  "contact_negative_rows": 8696,
+  "contact_pair_rows": 10870,
+  "pair_binding_rows": 4851,
+  "pair_binding_split_counts": {
+    "test": 954,
+    "train": 3345,
+    "val": 552
+  },
+  "pair_negative_rows": 3621,
+  "pair_negative_type_counts": {
+    "N1_easy_cross_antigen": 1230,
+    "N2_same_family_hard_antigen": 1163,
+    "N3_framework_similar_hard_vhh": 1228
+  },
+  "pvrig_external_rows": 97,
+  "seed": 7,
+  "structure_groups": 24,
+  "structure_split_counts": {
+    "test": 3,
+    "train": 17,
+    "val": 4
+  },
+  "zym_site_rows": 1230,
+  "zym_split_counts": {
+    "test": 240,
+    "train": 851,
+    "val": 139
+  }
+}

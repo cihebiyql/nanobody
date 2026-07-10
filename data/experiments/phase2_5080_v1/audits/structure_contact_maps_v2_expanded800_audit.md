@@ -1,0 +1,28 @@
+# Structure Contact Maps V2 Audit
+
+Updated: 2026-07-09
+
+## Summary
+
+```json
+{
+  "input_structures_sampled": 800,
+  "negative_min_distance_angstrom": 8.0,
+  "negative_pairs": 1175748,
+  "output_jsonl": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v2_expanded800.jsonl",
+  "output_summary_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v2_expanded800_summary.csv",
+  "positive_cutoff_angstrom": 4.5,
+  "positive_pairs": 293937,
+  "records": 2725,
+  "seed": 31,
+  "split_counts": {
+    "test": 318,
+    "train": 1932,
+    "val": 475
+  }
+}
+```
+
+## Boundary
+
+Positive labels are true same-complex residue pairs with heavy-atom distance <= 4.5 A. Negative labels are sampled same-complex residue pairs with min heavy-atom distance >= 8.0 A. Residue indices are 0-based reconstructed sequence indices per chain from mmCIF atom_site records.

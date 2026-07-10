@@ -1,0 +1,34 @@
+{
+  "dataset_expansion": {
+    "v2_records": 371,
+    "v21_records": 2725,
+    "v2_positive_pairs": 32807,
+    "v21_positive_pairs": 293937,
+    "v2_negative_pairs": 131228,
+    "v21_negative_pairs": 1175748,
+    "record_multiplier": 7.345013477088949,
+    "positive_pair_multiplier": 8.959581796567806
+  },
+  "metrics": {
+    "v1_site_paratope_auprc": 0.6244340297865512,
+    "v1_site_epitope_auprc": 0.15410052732313168,
+    "v1_pair_auroc": 0.5152952847805788,
+    "v1_pair_auprc": 0.26837667444110264,
+    "v2_contact_auroc": 0.8728014120832861,
+    "v2_contact_auprc": 0.6559011663561297,
+    "v2_contact_test_records": 32,
+    "v2_site_paratope_auprc": 0.5794784153314595,
+    "v2_site_epitope_auprc": 0.10659993189944962,
+    "v2_pair_auroc": 0.5180380485527545,
+    "v2_pair_auprc": 0.2707656036425119,
+    "v21_contact_auroc": 0.8617162507810164,
+    "v21_contact_auprc": 0.6157458658402079,
+    "v21_contact_positive_rate": 0.20002996984284563,
+    "v21_contact_test_records": 318,
+    "v21_site_paratope_auprc": 0.6410665123085403,
+    "v21_site_epitope_auprc": 0.183870095040085,
+    "v21_pair_auroc": 0.5160364145658264,
+    "v21_pair_auprc": 0.26859930619441885
+  },
+  "interpretation": "V2.1 expanded real-contact dataset improves site heads over V1/V2 and keeps real-contact AUPRC far above random on a much larger test set; pair head remains weak and needs ranking/contrastive or docking-negative supervision."
+}

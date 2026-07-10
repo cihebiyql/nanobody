@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "failed_checks": [],
+  "warnings": [
+    "pair head remains weak: AUROC=0.5160, AUPRC=0.2686",
+    "contact AUPRC is lower than small V2 but uses a much larger test set: 0.6157 vs 0.6559"
+  ],
+  "summary": {
+    "records": 2725,
+    "positive_pairs": 293937,
+    "negative_pairs": 1175748,
+    "contact_auroc": 0.8617162507810164,
+    "contact_auprc": 0.6157458658402079,
+    "contact_positive_rate": 0.20002996984284563,
+    "paratope_auprc": 0.6410665123085403,
+    "epitope_auprc": 0.183870095040085,
+    "pair_auroc": 0.5160364145658264,
+    "pair_auprc": 0.26859930619441885,
+    "pvrig_prediction_rows": 50
+  },
+  "checks": [
+    {
+      "name": "cuda_5080_environment_recorded",
+      "passed": true,
+      "evidence": "environment_audit.md records RTX 5080 CUDA availability"
+    },
+    {
+      "name": "expanded800_contact_dataset_present",
+      "passed": true,
+      "evidence": "structures=800 records=2725 pos=293937 neg=1175748"
+    },
+    {
+      "name": "contact_summary_csv_matches_json",
+      "passed": true,
+      "evidence": "csv_records=2725 csv_pos=293937 csv_neg=1175748"
+    },
+    {
+      "name": "train_val_test_contact_split_present",
+      "passed": true,
+      "evidence": "{\"test\": 318, \"train\": 1932, \"val\": 475}"
+    },
+    {
+      "name": "training_outputs_present",
+      "passed": true,
+      "evidence": "checkpoint_mb=8.5"
+    },
+    {
+      "name": "contact_model_above_random",
+      "passed": true,
+      "evidence": "contact_auroc=0.8617 contact_auprc=0.6157 random=0.2000"
+    },
+    {
+      "name": "site_heads_improved_over_v1",
+      "passed": true,
+      "evidence": "paratope 0.6244->0.6411; epitope 0.1541->0.1839"
+    },
+    {
+      "name": "pair_metrics_present_with_boundary",
+      "passed": true,
+      "evidence": "pair_auroc=0.5160 pair_auprc=0.2686"
+    },
+    {
+      "name": "pvrig_predictions_clean",
+      "passed": true,
+      "evidence": "rows=50 leakage={'NO_KNOWN_POSITIVE_LEAKAGE': 50}"
+    },
+    {
+      "name": "reports_state_delivery_boundary",
+      "passed": true,
+      "evidence": "audit/report preserve computational-only boundary"
+    },
+    {
+      "name": "comparison_records_expansion",
+      "passed": true,
+      "evidence": "record_multiplier=7.35"
+    }
+  ]
+}

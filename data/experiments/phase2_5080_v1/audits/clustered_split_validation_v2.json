@@ -1,0 +1,369 @@
+{
+  "base": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1",
+  "checks": [
+    {
+      "evidence": "path=/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv rows=1230",
+      "name": "site_manifest_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "rows=1230",
+      "name": "site_rows_nonempty",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing=[] invalid=[]",
+      "name": "site_split_values_valid",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"test\": 184, \"train\": 861, \"val\": 185}",
+      "name": "site_split_nonempty",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"test\": 0.14959349593495935, \"train\": 0.7, \"val\": 0.15040650406504066}",
+      "name": "site_split_ratios_reasonable",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[]",
+      "name": "site_vhh_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[]",
+      "name": "site_antigen_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "path=/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv rows=4833",
+      "name": "pair_manifest_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "rows=4833",
+      "name": "pair_rows_nonempty",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing=[] invalid=[]",
+      "name": "pair_split_values_valid",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"test\": 728, \"train\": 3380, \"val\": 725}",
+      "name": "pair_split_nonempty",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"test\": 0.15063107800537967, \"train\": 0.6993585764535485, \"val\": 0.1500103455410718}",
+      "name": "pair_split_ratios_reasonable",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[]",
+      "name": "pair_vhh_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[]",
+      "name": "pair_antigen_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "path=/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl rows=8414",
+      "name": "contact_manifest_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "rows=8414",
+      "name": "contact_rows_nonempty",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing=[] invalid=[]",
+      "name": "contact_split_values_valid",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"test\": 1262, \"train\": 5890, \"val\": 1262}",
+      "name": "contact_split_nonempty",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"test\": 0.14998811504635132, \"train\": 0.7000237699072973, \"val\": 0.14998811504635132}",
+      "name": "contact_split_ratios_reasonable",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[]",
+      "name": "contact_vhh_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[]",
+      "name": "contact_antigen_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_exact_vhh_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_exact_antigen_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "pair_exact_vhh_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "pair_exact_antigen_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_exact_vhh_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_exact_antigen_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"train_vs_test\": 157, \"train_vs_val\": 161, \"val_vs_test\": 87}",
+      "name": "combined_exact_vhh_overlap_zero",
+      "passed": false,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"train_vs_test\": 157, \"train_vs_val\": 160, \"val_vs_test\": 91}",
+      "name": "combined_exact_antigen_overlap_zero",
+      "passed": false,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"positive\": 1230, \"unlabeled\": 3603}",
+      "name": "pair_labels_are_tristate_domain",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"positive\": 1230, \"unlabeled\": 3603}",
+      "name": "pair_has_positive_and_nonpositive_supervision_state",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_label_source_rows=0",
+      "name": "pair_label_source_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_source_detail_rows=0",
+      "name": "pair_source_detail_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "path=/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pvrig_external_calibration_manifest_v1.csv rows=97",
+      "name": "pvrig_controls_manifest_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "ordinary_split_rows=[]",
+      "name": "pvrig_controls_not_marked_as_ordinary_split",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "bad_policy_rows=[]",
+      "name": "pvrig_controls_have_exclusion_or_calibration_policy",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "train_control_hits=0",
+      "name": "site_pvrig_controls_absent_from_train_vhh",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "train_control_hits=0",
+      "name": "pair_pvrig_controls_absent_from_train_vhh",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "train_control_hits=0",
+      "name": "contact_pvrig_controls_absent_from_train_vhh",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "train_control_hits=0",
+      "name": "combined_pvrig_controls_absent_from_ordinary_training",
+      "passed": true,
+      "severity": "error"
+    }
+  ],
+  "failed_checks": [
+    "combined_exact_vhh_overlap_zero",
+    "combined_exact_antigen_overlap_zero"
+  ],
+  "manifests": {
+    "contact": {
+      "extra": {},
+      "label_sources": {},
+      "label_states": [],
+      "name": "contact",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+      "ratios": {
+        "test": 0.14998811504635132,
+        "train": 0.7000237699072973,
+        "val": 0.14998811504635132
+      },
+      "rows": 8414,
+      "source_fields": {},
+      "split_counts": {
+        "test": 1262,
+        "train": 5890,
+        "val": 1262
+      },
+      "unique_antigen_by_split": {
+        "test": 424,
+        "train": 1734,
+        "val": 409
+      },
+      "unique_vhh_by_split": {
+        "test": 354,
+        "train": 1223,
+        "val": 347
+      }
+    },
+    "pair": {
+      "extra": {
+        "pair_label_counts": {
+          "positive": 1230,
+          "unlabeled": 3603
+        }
+      },
+      "label_sources": {
+        "cognate_structure_pair": 1230,
+        "constructed_unobserved_pair": 3603
+      },
+      "label_states": [
+        "positive",
+        "unlabeled"
+      ],
+      "name": "pair",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+      "ratios": {
+        "test": 0.15063107800537967,
+        "train": 0.6993585764535485,
+        "val": 0.1500103455410718
+      },
+      "rows": 4833,
+      "source_fields": {
+        "construction_rule": 4833,
+        "label_source": 4833,
+        "negative_type": 4833
+      },
+      "split_counts": {
+        "test": 728,
+        "train": 3380,
+        "val": 725
+      },
+      "unique_antigen_by_split": {
+        "test": 165,
+        "train": 615,
+        "val": 161
+      },
+      "unique_vhh_by_split": {
+        "test": 154,
+        "train": 613,
+        "val": 155
+      }
+    },
+    "site": {
+      "extra": {},
+      "label_sources": {
+        "cognate_structure_pair": 1230
+      },
+      "label_states": [
+        "positive"
+      ],
+      "name": "site",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+      "ratios": {
+        "test": 0.14959349593495935,
+        "train": 0.7,
+        "val": 0.15040650406504066
+      },
+      "rows": 1230,
+      "source_fields": {
+        "label_source": 1230,
+        "source_dataset": 1230,
+        "source_file": 1230,
+        "source_row": 1230
+      },
+      "split_counts": {
+        "test": 184,
+        "train": 861,
+        "val": 185
+      },
+      "unique_antigen_by_split": {
+        "test": 165,
+        "train": 615,
+        "val": 161
+      },
+      "unique_vhh_by_split": {
+        "test": 154,
+        "train": 613,
+        "val": 155
+      }
+    }
+  },
+  "pvrig_controls": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pvrig_external_calibration_manifest_v1.csv",
+    "rows": 97,
+    "unique_sequences": 90
+  },
+  "root": "/mnt/d/work/抗体/data",
+  "status": "FAIL"
+}
