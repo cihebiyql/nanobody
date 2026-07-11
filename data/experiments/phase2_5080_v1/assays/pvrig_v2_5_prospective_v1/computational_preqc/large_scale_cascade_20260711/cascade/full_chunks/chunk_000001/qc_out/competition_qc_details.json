@@ -1,0 +1,35 @@
+{
+  "config": {
+    "identity_threshold": 0.8,
+    "safe_identity_threshold": 0.75,
+    "cluster_identity": 0.9,
+    "cluster_limit": 3,
+    "structure_tools": "",
+    "gate_policy": "blocker_calibrated",
+    "large_scale_fast": false,
+    "official_validator_deferred": false,
+    "skip_abnativ": false,
+    "skip_sapiens": false,
+    "skip_tnp": true,
+    "team_diversity_deferred": true,
+    "novelty_only_official_pass": false,
+    "identity_cache_size": 500000,
+    "novelty_bound_pruning": true
+  },
+  "reference_counts": {
+    "official_positive_cdrs": 48,
+    "local_positive_cdrs": 30
+  },
+  "portfolio_count": 4,
+  "novelty_performance": {
+    "candidate_count": 4,
+    "positive_reference_count": 78,
+    "reference_pairs": 392,
+    "identity_requests": 142,
+    "upper_bound_pruned": 250,
+    "muscle_cache_hits": 0,
+    "muscle_cache_misses": 142,
+    "muscle_cache_maxsize": 500000,
+    "bound_pruning_enabled": true
+  }
+}

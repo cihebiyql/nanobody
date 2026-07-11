@@ -1,0 +1,68 @@
+{
+  "approved_plan_artifacts": {
+    "phase2-v2-5-consensus-handoff.md": {
+      "mtime_utc": "2026-07-11T00:54:37.549747+00:00",
+      "path": "/mnt/d/work/抗体/data/.omx/plans/phase2-v2-5-consensus-handoff.md",
+      "sha256": "614b0738c17eb14d734a7ed4335b591fb66037e83127e5981a3a3df8e99f067b"
+    },
+    "prd-phase2-v2-5.md": {
+      "mtime_utc": "2026-07-11T00:54:37.558260+00:00",
+      "path": "/mnt/d/work/抗体/data/.omx/plans/prd-phase2-v2-5.md",
+      "sha256": "c48752d42024f5c288acc0c80cd3f97294feaa09462f142a0a9e8d418111c1b3"
+    },
+    "test-spec-phase2-v2-5.md": {
+      "mtime_utc": "2026-07-11T00:54:37.567277+00:00",
+      "path": "/mnt/d/work/抗体/data/.omx/plans/test-spec-phase2-v2-5.md",
+      "sha256": "02603004c1f7093336b2b8d610635ade5fbbce16c24ea8ef395d5ceae0ff1993"
+    }
+  },
+  "artifact_created_after_unseal": true,
+  "chronology_note": "The dedicated ledger is post-unseal. The frozen pre-unseal method is evidenced by approved plans, config_resolved.json, preregistered_selection.json, run summary hashes, and checkpoint hashes.",
+  "formal_seeds": [
+    43,
+    53,
+    67
+  ],
+  "frozen_artifact_sha256": {
+    "baseline_registry_json": "d63ac584a732c5622ef4f1aeaaf905a46fba1f6c02b3a593fb4e6482f39c7066",
+    "config_resolved_json": "9e892b92b1e0ce76f2331716cc8cbfb441eb7378028de8f65b59f9097d4c8410",
+    "embeddings_pt": "e3f5ae1db29cd95e9209e21a38ab40d85b2bae2b0825772eea10345b766167c2",
+    "formal_blinded_csv": "8c69b2108d0e97dbfe99414dda3d58a1514c6e0507215a06e0b26bfbfe498587",
+    "preregistered_selection_json": "6c9bd923f8ab556e55ab1d39a6c6ce1aab56ee117f6c46172ab3255231c0781b",
+    "records_csv": "4c598a6c6d001b2955170d75dbae2a2ec58c3d9fcb1dcb17f24a098d3e083e06",
+    "seed_checkpoints": {
+      "43": "35f44ef4cbe8f634b5ffaea5798a2df2e52f3a625c2d74bd7814666ee35c5421",
+      "53": "7d9e67f35720d0382022152e12239c4e575fff37daf73249669a2fb33667bf09",
+      "67": "52c3d23552bc01e1a64c1efe601f505875ac724cc67c6d35786bc244a83845ba"
+    }
+  },
+  "generated_at_utc": "2026-07-11T05:20:46.211130+00:00",
+  "known_gap": "The training summary did not freeze a source-code hash or the prepared sealed-label SHA before unseal.",
+  "registered_selection_at_utc": "2026-07-11T04:29:04.600010+00:00",
+  "run_dir": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/phase2_v2_5_generic/phase2_v2_5_generic_20260711T042831_045756Z",
+  "schema_version": "phase2_v2_5_preregistration_v1",
+  "scientific_boundary": {
+    "formal_rerun_allowed_in_v2_5": false,
+    "generic_formal_scope": "E4 generic affinity ranking only",
+    "generic_success_implies_pvrig_success": false,
+    "pvrig_target_adaptation_allowed": false
+  },
+  "selection_policy": {
+    "checkpoint_rule": "maximum development macro-group pairwise accuracy; first epoch on ties",
+    "formal_metrics_consulted": false,
+    "primary_metric": "macro_group_pairwise_preference_accuracy",
+    "scope": "DEVELOPMENT_ONLY_BEFORE_FORMAL_UNSEAL",
+    "selected_baseline": "frozen_cosine_distance"
+  },
+  "statistics": {
+    "bootstrap_n": 5000,
+    "bootstrap_unit": "assay_comparable_ranking_group_id",
+    "multi_seed_aggregation": "mean seed delta within ranking group, then macro average across groups",
+    "permutation_n": 5000,
+    "primary_alpha_two_sided": 0.05,
+    "primary_metric": "macro_group_pairwise_preference_accuracy",
+    "statistics_rng_seed": 1822152995,
+    "statistics_rng_seed_source": "first_32_bits_of_pre_unseal_preregistered_selection_sha256"
+  },
+  "status": "FROZEN_BEFORE_FORMAL_RUNS_WITH_POSTHOC_LEDGER"
+}

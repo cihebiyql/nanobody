@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "candidate_count": 50,
+  "roots": [
+    "/mnt/d/work/抗体/docking",
+    "/mnt/d/work/抗体/node1",
+    "/mnt/d/work/抗体/reports"
+  ],
+  "files_scanned": 22131,
+  "text_files_scanned": 4630,
+  "pdb_files_scanned": 1680,
+  "cif_files_scanned": 2,
+  "filename_candidate_id_hits": [],
+  "metadata_candidate_id_hits": [],
+  "metadata_exact_sequence_hits": [],
+  "pdb_exact_sequence_hits": [],
+  "pdb_near_sequence_hits_not_accepted_as_exact": [],
+  "exact_pose_candidate_ids": [],
+  "exact_pose_candidate_count": 0,
+  "decision": "NO_EXACT_TOP50_POSES_FOUND",
+  "boundary": "Known-positive/calibration structures are not reassigned to ordinary top-50 candidates; only exact candidate ID or exact sequence evidence counts."
+}

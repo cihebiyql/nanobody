@@ -1,0 +1,35 @@
+{
+  "claim_boundary": "software_and_artifact_safety_review_not_experimental_validation",
+  "closures": [
+    "strict_per_baseline_class_allowlist_rejects_recheck_and_consensus_labels",
+    "full_canonical_consensus_comparison_prevents_recheck_to_high_upgrade",
+    "chain_A_sequence_reconstructed_from_real_VHH_input_PDB_must_match_manifest_sha256",
+    "finalize_export_requires_imported_RUN_two_baselines_allowed_class_and_four_metrics"
+  ],
+  "code_reviewer": {
+    "critical": 0,
+    "high": 0,
+    "low": 0,
+    "medium": 0,
+    "status": "APPROVE",
+    "tests": "12/12 PASS"
+  },
+  "independent_verifier": {
+    "cascade_result": "1_FINAL_POSITIVE_HIGH_3_FINAL_INCOMPLETE_NEEDS_DOCKING",
+    "finalize_csv_sha256": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
+    "prospective_state": "24_PENDING_EXPRESSION_QC_0_E6",
+    "remote_local_hashes": "5/5 MATCH",
+    "status": "PASS"
+  },
+  "initial_findings": {
+    "high": [
+      "single_baseline_recheck_label_could_collapse_to_A"
+    ],
+    "medium": [
+      "complete_rows_not_strongly_bound_to_manifest_sequence_when_source_CSV_hashes_absent"
+    ]
+  },
+  "reviewed_at": "2026-07-11",
+  "schema_version": "pvrig_v2_5_geometry4_review_closure_v1",
+  "status": "APPROVED"
+}

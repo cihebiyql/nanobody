@@ -1,0 +1,41 @@
+{
+  "chain_type_counts": {
+    "antigen": 2418,
+    "mixed": 213,
+    "vhh": 2304
+  },
+  "dtype_counts": {
+    "torch.float16": 4935
+  },
+  "expected_embedding_dim": 320,
+  "manifest": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+  "manifest_rows": 4935,
+  "manifest_sha256": "6d931b1f3f9a42a673c1ad9ee3cb8920feef6060515a11e1a05da51398828060",
+  "max_cached_length": 1024,
+  "max_sequence_length": 4327,
+  "model_paths": [
+    "/mnt/d/work/抗体/code/downloaded_models/NanoBind/models/esm2_t6_8M_UR50D"
+  ],
+  "model_sha256_values": [
+    "cbf069e9aea56e93cf87a8ee7e0bbdf5d9ae04e6004d0af006b9670b079dd410"
+  ],
+  "orphan_shard_keys": 0,
+  "shard_count": 21,
+  "status": "PASS",
+  "strict_input_validation": "PASS",
+  "strict_inputs": {
+    "cdr_mask_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+    "clustered_site_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+    "contact_jsonl": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+    "esm2_cache_manifest": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+    "pair_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+    "ranking_triplets_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv"
+  },
+  "total_cached_residues": 1122598,
+  "truncation_policy_counts": {
+    "none": 4838,
+    "prefix_1024": 97
+  },
+  "unique_sequence_hashes": 4935,
+  "validated_tensor_keys": 4935
+}

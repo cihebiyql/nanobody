@@ -44,13 +44,37 @@
       "severity": "error"
     },
     {
-      "evidence": "path=/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv rows=4833",
+      "evidence": "missing_rows=[] count=0",
+      "name": "site_vhh_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "site_cdr3_proxy_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "site_antigen_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "site_split_group_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "path=/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv rows=4844",
       "name": "pair_manifest_present",
       "passed": true,
       "severity": "error"
     },
     {
-      "evidence": "rows=4833",
+      "evidence": "rows=4844",
       "name": "pair_rows_nonempty",
       "passed": true,
       "severity": "error"
@@ -62,13 +86,13 @@
       "severity": "error"
     },
     {
-      "evidence": "{\"test\": 728, \"train\": 3380, \"val\": 725}",
+      "evidence": "{\"test\": 721, \"train\": 3389, \"val\": 734}",
       "name": "pair_split_nonempty",
       "passed": true,
       "severity": "error"
     },
     {
-      "evidence": "{\"test\": 0.15063107800537967, \"train\": 0.6993585764535485, \"val\": 0.1500103455410718}",
+      "evidence": "{\"test\": 0.14884393063583815, \"train\": 0.6996284062758051, \"val\": 0.15152766308835672}",
       "name": "pair_split_ratios_reasonable",
       "passed": true,
       "severity": "error"
@@ -82,6 +106,30 @@
     {
       "evidence": "missing_rows=[]",
       "name": "pair_antigen_sequences_present",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "pair_vhh_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "pair_cdr3_proxy_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "pair_antigen_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "pair_split_group_id_complete",
       "passed": true,
       "severity": "error"
     },
@@ -128,6 +176,30 @@
       "severity": "error"
     },
     {
+      "evidence": "missing_rows=[] count=0",
+      "name": "contact_vhh_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "contact_cdr3_proxy_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "contact_antigen_cluster_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "missing_rows=[] count=0",
+      "name": "contact_split_group_id_complete",
+      "passed": true,
+      "severity": "error"
+    },
+    {
       "evidence": "all pairwise overlaps=0",
       "name": "site_exact_vhh_overlap_zero",
       "passed": true,
@@ -136,6 +208,36 @@
     {
       "evidence": "all pairwise overlaps=0",
       "name": "site_exact_antigen_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_vhh_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_cdr3_proxy_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_antigen_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_split_group_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "site_pdb_id_overlap_zero",
       "passed": true,
       "severity": "error"
     },
@@ -153,6 +255,36 @@
     },
     {
       "evidence": "all pairwise overlaps=0",
+      "name": "pair_vhh_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "pair_cdr3_proxy_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "pair_antigen_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "pair_split_group_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "pair_pdb_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
       "name": "contact_exact_vhh_overlap_zero",
       "passed": true,
       "severity": "error"
@@ -164,25 +296,85 @@
       "severity": "error"
     },
     {
-      "evidence": "{\"train_vs_test\": 157, \"train_vs_val\": 161, \"val_vs_test\": 87}",
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_vhh_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_cdr3_proxy_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_antigen_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_split_group_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "contact_pdb_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
       "name": "combined_exact_vhh_overlap_zero",
-      "passed": false,
+      "passed": true,
       "severity": "error"
     },
     {
-      "evidence": "{\"train_vs_test\": 157, \"train_vs_val\": 160, \"val_vs_test\": 91}",
+      "evidence": "all pairwise overlaps=0",
       "name": "combined_exact_antigen_overlap_zero",
-      "passed": false,
+      "passed": true,
       "severity": "error"
     },
     {
-      "evidence": "{\"positive\": 1230, \"unlabeled\": 3603}",
+      "evidence": "all pairwise overlaps=0",
+      "name": "combined_vhh_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "combined_cdr3_proxy_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "combined_antigen_cluster_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "combined_split_group_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "all pairwise overlaps=0",
+      "name": "combined_pdb_id_overlap_zero",
+      "passed": true,
+      "severity": "error"
+    },
+    {
+      "evidence": "{\"positive\": 1230, \"unlabeled\": 3614}",
       "name": "pair_labels_are_tristate_domain",
       "passed": true,
       "severity": "error"
     },
     {
-      "evidence": "{\"positive\": 1230, \"unlabeled\": 3603}",
+      "evidence": "{\"positive\": 1230, \"unlabeled\": 3614}",
       "name": "pair_has_positive_and_nonpositive_supervision_state",
       "passed": true,
       "severity": "error"
@@ -242,10 +434,7 @@
       "severity": "error"
     }
   ],
-  "failed_checks": [
-    "combined_exact_vhh_overlap_zero",
-    "combined_exact_antigen_overlap_zero"
-  ],
+  "failed_checks": [],
   "manifests": {
     "contact": {
       "extra": {},
@@ -266,26 +455,53 @@
         "val": 1262
       },
       "unique_antigen_by_split": {
-        "test": 424,
-        "train": 1734,
-        "val": 409
+        "test": 430,
+        "train": 1733,
+        "val": 404
+      },
+      "unique_partition_values_by_split": {
+        "antigen_cluster_id": {
+          "test": 370,
+          "train": 1079,
+          "val": 342
+        },
+        "cdr3_proxy_cluster_id": {
+          "test": 297,
+          "train": 877,
+          "val": 293
+        },
+        "pdb_id": {
+          "test": 289,
+          "train": 1475,
+          "val": 342
+        },
+        "split_group_id": {
+          "test": 181,
+          "train": 146,
+          "val": 179
+        },
+        "vhh_cluster_id": {
+          "test": 272,
+          "train": 811,
+          "val": 301
+        }
       },
       "unique_vhh_by_split": {
-        "test": 354,
-        "train": 1223,
-        "val": 347
+        "test": 337,
+        "train": 1239,
+        "val": 348
       }
     },
     "pair": {
       "extra": {
         "pair_label_counts": {
           "positive": 1230,
-          "unlabeled": 3603
+          "unlabeled": 3614
         }
       },
       "label_sources": {
         "cognate_structure_pair": 1230,
-        "constructed_unobserved_pair": 3603
+        "constructed_unobserved_pair": 3614
       },
       "label_states": [
         "positive",
@@ -294,30 +510,57 @@
       "name": "pair",
       "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
       "ratios": {
-        "test": 0.15063107800537967,
-        "train": 0.6993585764535485,
-        "val": 0.1500103455410718
+        "test": 0.14884393063583815,
+        "train": 0.6996284062758051,
+        "val": 0.15152766308835672
       },
-      "rows": 4833,
+      "rows": 4844,
       "source_fields": {
-        "construction_rule": 4833,
-        "label_source": 4833,
-        "negative_type": 4833
+        "construction_rule": 4844,
+        "label_source": 4844,
+        "negative_type": 4844
       },
       "split_counts": {
-        "test": 728,
-        "train": 3380,
-        "val": 725
+        "test": 721,
+        "train": 3389,
+        "val": 734
       },
       "unique_antigen_by_split": {
-        "test": 165,
-        "train": 615,
-        "val": 161
+        "test": 158,
+        "train": 629,
+        "val": 154
+      },
+      "unique_partition_values_by_split": {
+        "antigen_cluster_id": {
+          "test": 143,
+          "train": 428,
+          "val": 129
+        },
+        "cdr3_proxy_cluster_id": {
+          "test": 131,
+          "train": 515,
+          "val": 132
+        },
+        "pdb_id": {
+          "test": 113,
+          "train": 446,
+          "val": 135
+        },
+        "split_group_id": {
+          "test": 88,
+          "train": 97,
+          "val": 92
+        },
+        "vhh_cluster_id": {
+          "test": 115,
+          "train": 418,
+          "val": 144
+        }
       },
       "unique_vhh_by_split": {
-        "test": 154,
-        "train": 613,
-        "val": 155
+        "test": 147,
+        "train": 617,
+        "val": 158
       }
     },
     "site": {
@@ -348,14 +591,41 @@
         "val": 185
       },
       "unique_antigen_by_split": {
-        "test": 165,
-        "train": 615,
-        "val": 161
+        "test": 158,
+        "train": 629,
+        "val": 154
+      },
+      "unique_partition_values_by_split": {
+        "antigen_cluster_id": {
+          "test": 143,
+          "train": 428,
+          "val": 129
+        },
+        "cdr3_proxy_cluster_id": {
+          "test": 131,
+          "train": 515,
+          "val": 132
+        },
+        "pdb_id": {
+          "test": 113,
+          "train": 446,
+          "val": 135
+        },
+        "split_group_id": {
+          "test": 88,
+          "train": 97,
+          "val": 92
+        },
+        "vhh_cluster_id": {
+          "test": 115,
+          "train": 418,
+          "val": 144
+        }
       },
       "unique_vhh_by_split": {
-        "test": 154,
-        "train": 613,
-        "val": 155
+        "test": 147,
+        "train": 617,
+        "val": 158
       }
     }
   },
@@ -365,5 +635,5 @@
     "unique_sequences": 90
   },
   "root": "/mnt/d/work/抗体/data",
-  "status": "FAIL"
+  "status": "PASS"
 }

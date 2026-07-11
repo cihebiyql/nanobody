@@ -1,0 +1,18 @@
+{
+  "first_timestamp": "2026-07-11T00:47:29+08:00",
+  "gpu_names": [
+    "NVIDIA GeForce RTX 5080"
+  ],
+  "last_timestamp": "2026-07-11T00:50:05+08:00",
+  "max_memory_used_mib": 6079.0,
+  "max_power_draw_w": 112.94,
+  "max_temperature_c": 51.0,
+  "max_utilization_gpu_pct": 69.0,
+  "mean_memory_used_mib": 5143.489051094891,
+  "mean_utilization_gpu_pct": 28.7007299270073,
+  "samples": 137,
+  "schema_version": "phase2_v2_4_seed_gpu_telemetry_v1",
+  "seed": 53,
+  "telemetry_csv": "experiments/phase2_5080_v1/logs/phase2_v2_4_strict_listwise_20260711_seed53_gpu_telemetry.csv",
+  "train_exit_code": 0
+}

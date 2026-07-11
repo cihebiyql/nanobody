@@ -1,0 +1,107 @@
+{
+  "device": "NVIDIA GeForce RTX 5080",
+  "esm2_embedding_external_sampler": {
+    "gpu_names": [
+      "NVIDIA GeForce RTX 5080"
+    ],
+    "memory_used_mib": {
+      "max": 5477.0,
+      "mean": 2860.3076923076924,
+      "min": 2738.0
+    },
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/logs/phase2_v2_5_esm2_gpu_telemetry.csv",
+    "samples": 26,
+    "sha256": "e0a9e6bfb3400dbb3dc323d643761ccb05e9fde28e8fc0108c7a2a481bd6af3d",
+    "temperature_c_max": 39.0,
+    "utilization_gpu_pct": {
+      "max": 1.0,
+      "mean": 1.0
+    }
+  },
+  "formal_inference_torch_telemetry_by_seed": {
+    "43": {
+      "actual_device": "cuda",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5080",
+      "cuda_peak_allocated_bytes": 34201600,
+      "cuda_peak_allocated_mib": 32.6171875,
+      "elapsed_seconds": 0.25536164408549666,
+      "requested_device": "cuda",
+      "torch_cuda_version": "13.0"
+    },
+    "53": {
+      "actual_device": "cuda",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5080",
+      "cuda_peak_allocated_bytes": 34201600,
+      "cuda_peak_allocated_mib": 32.6171875,
+      "elapsed_seconds": 0.010800004005432129,
+      "requested_device": "cuda",
+      "torch_cuda_version": "13.0"
+    },
+    "67": {
+      "actual_device": "cuda",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5080",
+      "cuda_peak_allocated_bytes": 34201600,
+      "cuda_peak_allocated_mib": 32.6171875,
+      "elapsed_seconds": 0.009763565962202847,
+      "requested_device": "cuda",
+      "torch_cuda_version": "13.0"
+    }
+  },
+  "generated_at_utc": "2026-07-11T05:21:07.085966+00:00",
+  "gpu_used": true,
+  "interpretation": "GPU execution is confirmed. The frozen-embedding shallow head is intentionally tiny, so one-second nvidia-smi sampling understates short compute bursts; memory residency and PyTorch CUDA telemetry are the stronger evidence.",
+  "schema_version": "phase2_v2_5_gpu_telemetry_summary_v1",
+  "shallow_training_external_sampler": {
+    "gpu_names": [
+      "NVIDIA GeForce RTX 5080"
+    ],
+    "memory_used_mib": {
+      "max": 3147.0,
+      "mean": 2920.4545454545455,
+      "min": 2738.0
+    },
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/logs/phase2_v2_5_train_authoritative_gpu_telemetry.csv",
+    "samples": 44,
+    "sha256": "32c564f4ad50f093e9c48f983d822d44c59fccbab03f2904d3c2365c6c81eaf4",
+    "temperature_c_max": 37.0,
+    "utilization_gpu_pct": {
+      "max": 17.0,
+      "mean": 5.931818181818182
+    }
+  },
+  "training_torch_telemetry_by_seed": {
+    "43": {
+      "actual_device": "cuda",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5080",
+      "cuda_peak_allocated_bytes": 70850048,
+      "cuda_peak_allocated_mib": 67.56787109375,
+      "elapsed_seconds": 17.640429996070452,
+      "requested_device": "cuda",
+      "torch_cuda_version": "13.0"
+    },
+    "53": {
+      "actual_device": "cuda",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5080",
+      "cuda_peak_allocated_bytes": 70850048,
+      "cuda_peak_allocated_mib": 67.56787109375,
+      "elapsed_seconds": 6.112705939915031,
+      "requested_device": "cuda",
+      "torch_cuda_version": "13.0"
+    },
+    "67": {
+      "actual_device": "cuda",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5080",
+      "cuda_peak_allocated_bytes": 70850048,
+      "cuda_peak_allocated_mib": 67.56787109375,
+      "elapsed_seconds": 6.141080308938399,
+      "requested_device": "cuda",
+      "torch_cuda_version": "13.0"
+    }
+  }
+}

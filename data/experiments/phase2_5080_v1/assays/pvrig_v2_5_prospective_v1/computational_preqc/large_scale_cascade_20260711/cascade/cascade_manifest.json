@@ -1,0 +1,22 @@
+{
+  "config": {
+    "fast_chunk_size": 24,
+    "full_chunk_size": 24,
+    "full_qc_limit": 0,
+    "full_run_tnp": false,
+    "geometry_cluster_limit": 3,
+    "geometry_limit": 24,
+    "geometry_pool_size": 24,
+    "length_max": 160,
+    "length_min": 95,
+    "skip_final_diversity": false
+  },
+  "duplicates": 0,
+  "fast_chunks": 1,
+  "input_digest": "2bd593e74a1e8dd97d2d9604d159a46877c69f7a12b32991eb34006f7988a1c7",
+  "input_fasta": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450/panel_blinded.fasta",
+  "input_records": 24,
+  "quick_rejects": 0,
+  "schema_version": 1,
+  "unique_ready": 24
+}

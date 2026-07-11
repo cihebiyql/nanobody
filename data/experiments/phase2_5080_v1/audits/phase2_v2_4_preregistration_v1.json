@@ -1,0 +1,170 @@
+{
+  "completion_interpretation": "Threshold failure may still be engineering-complete, but must retain the pair/ranking limitation and must not claim a validated binder/blocker classifier.",
+  "config": {
+    "batch_contact": 96,
+    "batch_pair": 64,
+    "batch_rank": 12,
+    "batch_site": 16,
+    "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+    "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+    "contact_dim": 96,
+    "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+    "contact_neg_sample": 256,
+    "contact_pos_sample": 64,
+    "contact_weight": 2.0,
+    "cross_layers": 1,
+    "d_model": 160,
+    "dropout": 0.1,
+    "epochs": 4,
+    "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+    "esm_dim": 320,
+    "eval_contact_seed": 1729,
+    "exclude_unresolved_cdr_pair_tasks": true,
+    "grad_accum_steps": 2,
+    "heads": 4,
+    "init_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+    "layers": 2,
+    "listwise_weight": 1.0,
+    "log_every_steps": 10,
+    "lr": 0.0001,
+    "max_antigen_len": 768,
+    "max_vhh_len": 180,
+    "num_workers": 0,
+    "out_root": "experiments/phase2_5080_v1",
+    "pair_bce_weight": 0.1,
+    "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+    "pvrig_controls_csv": "experiments/phase2_5080_v1/data_splits/pvrig_validation_controls_v2_4.csv",
+    "ranking_groups_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_groups_v2_4.csv",
+    "ranking_temperature": 0.5,
+    "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv",
+    "root": ".",
+    "seed": 43,
+    "selection_contact_weight": 1.0,
+    "selection_hard_negative_weight": 0.25,
+    "selection_paratope_weight": 0.3,
+    "selection_ranking_weight": 1.25,
+    "site_weight": 0.6,
+    "typed_margin_weight": 0.5,
+    "use_amp": true,
+    "warmstart_required": true,
+    "weight_decay": 0.01
+  },
+  "config_path": "experiments/phase2_5080_v1/configs/phase2_v2_4_listwise_5080_16gb.json",
+  "config_sha256": "51bb9269f1ce6cc94ab96a6bd59638b96ee20cbbb8f237cf2b0e6664063c4d65",
+  "formal_run_names": {
+    "43": "phase2_v2_4_strict_listwise_20260711_seed43",
+    "53": "phase2_v2_4_strict_listwise_20260711_seed53",
+    "67": "phase2_v2_4_strict_listwise_20260711_seed67"
+  },
+  "formal_seeds": [
+    43,
+    53,
+    67
+  ],
+  "input_sha256": {
+    "cdr_masks": {
+      "path": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+      "sha256": "45a93db6f5a8dc669b7b374a8af9b1428f537f3189e73f5246eda6645a2d29d0"
+    },
+    "config": {
+      "path": "experiments/phase2_5080_v1/configs/phase2_v2_4_listwise_5080_16gb.json",
+      "sha256": "51bb9269f1ce6cc94ab96a6bd59638b96ee20cbbb8f237cf2b0e6664063c4d65"
+    },
+    "contact_maps": {
+      "path": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+      "sha256": "be4fb5326030d796d4ac681cf14ac6eaa2d8ba81296abb262a5dc40b96496db5"
+    },
+    "esm2_manifest": {
+      "path": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+      "sha256": "6d931b1f3f9a42a673c1ad9ee3cb8920feef6060515a11e1a05da51398828060"
+    },
+    "pair_split": {
+      "path": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+      "sha256": "d3283a0a46123f973be58a3ee20a2f61d1cd6297fb3e320d68c08cef4fce9d21"
+    },
+    "pvrig_controls": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_validation_controls_v2_4.csv",
+      "sha256": "755d831a4b0a0e828a0af22932d3945114e3259fcd419f817d8bbf6a93527b11"
+    },
+    "ranking_groups": {
+      "path": "experiments/phase2_5080_v1/data_splits/pair_ranking_groups_v2_4.csv",
+      "sha256": "62705ebafa92187e78637dc6460b1587666fcfbc31b5f70354b3b0d5e342391a"
+    },
+    "ranking_triplets": {
+      "path": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv",
+      "sha256": "1a217b8c1fbf624c48115d479ea2588dfc4c2a71d93f1b9eb560bd266ad05517"
+    },
+    "site_split": {
+      "path": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+      "sha256": "e53ce14168481d8011f64ba1bd38d4baac7b5616963b72e3fd9bf7953b4c619d"
+    }
+  },
+  "preferred_thresholds": {
+    "contact_auprc_mean_floor": 0.489729,
+    "hard_negative_win_mean_min": 0.6,
+    "paratope_auprc_mean_floor": 0.600628,
+    "ranking_hit_at_1_mean_min": 0.25,
+    "ranking_mrr_mean_min": 0.56,
+    "v2_3_random_mrr_mean": 0.532976,
+    "v2_3_ranking_mrr_mean": 0.524921
+  },
+  "registered_at_utc": "2026-07-10T16:44:10.483540+00:00",
+  "schema_version": "phase2_v2_4_preregistration_v1",
+  "scientific_boundary": {
+    "calibration": {
+      "reason": "no verified positive-and-negative probability labels",
+      "status": "NOT_APPLICABLE"
+    },
+    "candidate_poses": "computational docking evidence only, not experimental binding/blocking evidence",
+    "constructed_candidates": "ranking proxies, not verified non-binders",
+    "pvrig_controls": "11 positives + 36 mutant/reference controls isolated from ordinary train/test/candidate lanes"
+  },
+  "selection_policy": {
+    "all_three_seeds_run_regardless_of_seed43_test_metrics": true,
+    "checkpoint_selected_on_validation_only": true,
+    "formal_config_changes_after_registration": "FORBIDDEN",
+    "selection_score": "1.0*contact_auprc + 1.25*ranking_mrr + 0.25*hard_negative_win + 0.3*paratope_auprc",
+    "test_metrics_used_for_selection": false
+  },
+  "smoke_runtime_only": {
+    "epochs": 1,
+    "first_attempt_note": "training and evaluation completed; artifact write failed because a fresh out_root lacked reports/, then fixed and rerun from scratch",
+    "seed": 43,
+    "telemetry": {
+      "canonical_checkpoint_exists": true,
+      "gpu_names": [
+        "NVIDIA GeForce RTX 5080"
+      ],
+      "max_memory_used_mib": 6076.0,
+      "max_power_draw_w": 108.84,
+      "max_temperature_c": 46.0,
+      "max_utilization_gpu_pct": 60.0,
+      "mean_utilization_gpu_pct": 15.080645161290322,
+      "report_exists": true,
+      "run_summary_exists": true,
+      "samples": 62,
+      "train_exit_code": 0
+    },
+    "used_for_hyperparameter_selection": false,
+    "val_contact_auprc": 0.5353678840865941,
+    "val_ranking_hard_negative_win_rate": 0.5619596541786743,
+    "val_ranking_hit_at_1": 0.2,
+    "val_ranking_mrr": 0.5189814814814814,
+    "val_ranking_mrr_delta_vs_random": -0.00864197530864197
+  },
+  "status": "FROZEN_BEFORE_FORMAL_RUNS",
+  "warmstart_sha256": {
+    "43": {
+      "path": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97"
+    },
+    "53": {
+      "path": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b"
+    },
+    "67": {
+      "path": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9"
+    }
+  }
+}

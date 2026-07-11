@@ -1,0 +1,146 @@
+{
+  "checked_at": "2026-07-11T17:17:00+08:00",
+  "checks": [
+    {
+      "evidence": {
+        "checked": 10,
+        "mismatches": {}
+      },
+      "name": "assay_package_manifest_hashes",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "panel_candidates": 24,
+        "prospective_groups": 8,
+        "scheduled_day_blocks": 3,
+        "scheduled_runs": 3,
+        "scheduled_sample_runs": 72
+      },
+      "name": "assay_package_counts",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "checked": 29,
+        "mismatches": {}
+      },
+      "name": "machine_audit_artifact_hashes",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "IMPORTED": 1,
+        "INCOMPLETE": 3
+      },
+      "name": "geometry_audit_import_counts",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "rows": 1,
+        "sha256": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76"
+      },
+      "name": "finalize_import_only",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "input_pdb_sequence": "76413dbdc48ab17b144ab10be41e5ebc07b20faeab5865f6b893aea2d5ddf0bb",
+        "manifest": "76413dbdc48ab17b144ab10be41e5ebc07b20faeab5865f6b893aea2d5ddf0bb"
+      },
+      "name": "input_pdb_sequence_provenance",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "FINAL_INCOMPLETE_NEEDS_DOCKING": 3,
+        "FINAL_POSITIVE_HIGH": 1
+      },
+      "name": "cascade_final_label_counts",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "IMPORTED": 1,
+        "MISSING": 3
+      },
+      "name": "cascade_docking_evidence_counts",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "PENDING_EXPRESSION_QC": 24
+      },
+      "name": "prospective_truth_status",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "rows": 0,
+        "summary": 0
+      },
+      "name": "prospective_e6_rows",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "expected": 5,
+        "matched": 5
+      },
+      "name": "remote_local_finalize_hashes",
+      "status": "PASS"
+    },
+    {
+      "evidence": 12,
+      "name": "geometry_tests",
+      "status": "PASS"
+    },
+    {
+      "evidence": 160,
+      "name": "phase2_tests",
+      "status": "PASS"
+    },
+    {
+      "evidence": 2,
+      "name": "success_case_regressions",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "exit": 20,
+        "load1": 101.38,
+        "threshold": 64
+      },
+      "name": "node1_load_gate",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "code_review": "APPROVE",
+        "verification": "PASS"
+      },
+      "name": "independent_review_closure",
+      "status": "PASS"
+    }
+  ],
+  "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+  "failed_checks": [],
+  "schema_version": "pvrig_v2_5_geometry4_final_verification_v1",
+  "status": "PASS",
+  "summary": {
+    "cascade_labels": {
+      "FINAL_INCOMPLETE_NEEDS_DOCKING": 3,
+      "FINAL_POSITIVE_HIGH": 1
+    },
+    "e6_review_rows": 0,
+    "experimental_truth_status": {
+      "PENDING_EXPRESSION_QC": 24
+    },
+    "geometry_tests": 12,
+    "phase2_tests": 160,
+    "remaining_docking_jobs": 3,
+    "review": "APPROVE",
+    "success_case_regression_scripts": 2
+  }
+}

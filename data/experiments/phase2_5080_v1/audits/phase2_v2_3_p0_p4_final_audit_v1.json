@@ -1,0 +1,291 @@
+{
+  "status": "PASS_WITH_PAIR_RANKING_LIMITATION",
+  "failed_checks": [],
+  "check_count": 37,
+  "checks": [
+    {
+      "name": "p0_independent_split_validation_pass",
+      "passed": true,
+      "evidence": "checks=72"
+    },
+    {
+      "name": "p0_all_72_split_checks_pass",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "p1_target_proxy_contract_is_explicit",
+      "passed": true,
+      "evidence": "derived_structure_supported_proxy_not_reviewed_uniprot_topological_domain"
+    },
+    {
+      "name": "p1_target_is_not_mislabeled_reviewed_domain",
+      "passed": true,
+      "evidence": "derived_structure_supported_proxy_not_reviewed_uniprot_topological_domain"
+    },
+    {
+      "name": "p1_external_priors_complete",
+      "passed": true,
+      "evidence": {
+        "nanobind_seq": 50,
+        "nanobind_site": 50,
+        "nanobind_pro": 50,
+        "deepnano_seq": 50,
+        "deepnano_site": 50
+      }
+    },
+    {
+      "name": "p1_external_prior_boundary",
+      "passed": true,
+      "evidence": "External model outputs are uncalibrated binding/site priors, not blocker probabilities."
+    },
+    {
+      "name": "p2_esm2_cache_exhaustive_pass",
+      "passed": true,
+      "evidence": {
+        "rows": 4935,
+        "shards": 21
+      }
+    },
+    {
+      "name": "p2_esm2_cache_no_orphans",
+      "passed": true,
+      "evidence": 0
+    },
+    {
+      "name": "p2_seed43_metrics_present",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed43"
+    },
+    {
+      "name": "p2_seed43_pair_boundary",
+      "passed": true,
+      "evidence": "constructed rows are unlabeled contrastive candidates, not verified non-binders"
+    },
+    {
+      "name": "p2_seed43_portable_checkpoint",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt"
+    },
+    {
+      "name": "p2_seed53_metrics_present",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed53"
+    },
+    {
+      "name": "p2_seed53_pair_boundary",
+      "passed": true,
+      "evidence": "constructed rows are unlabeled contrastive candidates, not verified non-binders"
+    },
+    {
+      "name": "p2_seed53_dataset_sizes_match",
+      "passed": true,
+      "evidence": {
+        "contact_test": 1262,
+        "contact_train": 5890,
+        "contact_val": 1262,
+        "pair_test": 686,
+        "pair_train": 3262,
+        "pair_val": 712,
+        "rank_test": 502,
+        "rank_train": 2402,
+        "rank_val": 527,
+        "site_test": 184,
+        "site_train": 861,
+        "site_val": 185
+      }
+    },
+    {
+      "name": "p2_seed53_portable_checkpoint",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt"
+    },
+    {
+      "name": "p2_seed67_metrics_present",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed67"
+    },
+    {
+      "name": "p2_seed67_pair_boundary",
+      "passed": true,
+      "evidence": "constructed rows are unlabeled contrastive candidates, not verified non-binders"
+    },
+    {
+      "name": "p2_seed67_dataset_sizes_match",
+      "passed": true,
+      "evidence": {
+        "contact_test": 1262,
+        "contact_train": 5890,
+        "contact_val": 1262,
+        "pair_test": 686,
+        "pair_train": 3262,
+        "pair_val": 712,
+        "rank_test": 502,
+        "rank_train": 2402,
+        "rank_val": 527,
+        "site_test": 184,
+        "site_train": 861,
+        "site_val": 185
+      }
+    },
+    {
+      "name": "p2_seed67_portable_checkpoint",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt"
+    },
+    {
+      "name": "p2_three_cuda_runs_telemetry_pass",
+      "passed": true,
+      "evidence": [
+        "NVIDIA GeForce RTX 5080"
+      ]
+    },
+    {
+      "name": "p2_gpu_was_materially_used",
+      "passed": true,
+      "evidence": [
+        {
+          "seed": 43,
+          "max_util": 62.0,
+          "max_mem": 5984.0
+        },
+        {
+          "seed": 53,
+          "max_util": 65.0,
+          "max_mem": 5634.0
+        },
+        {
+          "seed": 67,
+          "max_util": 63.0,
+          "max_mem": 5632.0
+        }
+      ]
+    },
+    {
+      "name": "p2_runtime_staging_byte_equivalent",
+      "passed": true,
+      "evidence": 786254847
+    },
+    {
+      "name": "p2_portable_inference_exact",
+      "passed": true,
+      "evidence": {
+        "phase2_v2_3_pair_ranking_logit": 0.0,
+        "phase2_v2_3_combined_ranking_ai_prior": 0.0,
+        "phase2_v2_3_contact_top20_mean_ai_prior": 0.0
+      }
+    },
+    {
+      "name": "p4_multiseed_summary_pass",
+      "passed": true,
+      "evidence": [
+        "phase2_v2_3_strict_hardened_20260710_seed43",
+        "phase2_v2_3_strict_hardened_20260710_seed53",
+        "phase2_v2_3_strict_hardened_20260710_seed67"
+      ]
+    },
+    {
+      "name": "p4_calibration_honestly_not_applicable",
+      "passed": true,
+      "evidence": {
+        "reason": "no explicit verified binary calibration labels were provided",
+        "status": "NOT_APPLICABLE"
+      }
+    },
+    {
+      "name": "p4_pair_ranking_limitation_explicit",
+      "passed": true,
+      "evidence": "Strict ranking MRR is effectively at the exact random-order expectation; hard-negative pair wins and proxy AUROC are only modestly above chance."
+    },
+    {
+      "name": "p4_validation_only_tuning_decision",
+      "passed": true,
+      "evidence": "The single pre-registered rank-focused branch did not improve validation ranking MRR; no further test-guided hyperparameter search was performed."
+    },
+    {
+      "name": "p3_pose_inventory_complete",
+      "passed": true,
+      "evidence": "NO_EXACT_TOP50_POSES_FOUND"
+    },
+    {
+      "name": "p3_zero_pose_data_gate_explicit",
+      "passed": true,
+      "evidence": {
+        "pose_coverage": 0,
+        "ai_only": 50
+      }
+    },
+    {
+      "name": "p3_fusion_validation_pass",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "p4_ensemble_has_50_three_seed_rows",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_multiseed_ensemble.csv"
+    },
+    {
+      "name": "p3_output_has_50_ai_only_rows",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/p3_late_fusion_rankings_v1.csv"
+    },
+    {
+      "name": "candidate_leakage_labels_clean",
+      "passed": true,
+      "evidence": {
+        "NO_KNOWN_POSITIVE_LEAKAGE": 50
+      }
+    },
+    {
+      "name": "known_controls_absent_from_candidate_ensemble",
+      "passed": true,
+      "evidence": "hash_overlap=0"
+    },
+    {
+      "name": "final_unit_suite_57_pass",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/logs/v2_3_final_full_unit_and_compile.log"
+    },
+    {
+      "name": "readme_documents_v2_3_boundary",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/README.md"
+    },
+    {
+      "name": "project_progress_updated",
+      "passed": true,
+      "evidence": "/mnt/d/work/抗体/PROJECT_PROGRESS.md"
+    }
+  ],
+  "summary": {
+    "seeds": [
+      43,
+      53,
+      67
+    ],
+    "strict_dataset_sizes": {
+      "contact_test": 1262,
+      "contact_train": 5890,
+      "contact_val": 1262,
+      "pair_test": 686,
+      "pair_train": 3262,
+      "pair_val": 712,
+      "rank_test": 502,
+      "rank_train": 2402,
+      "rank_val": 527,
+      "site_test": 184,
+      "site_train": 861,
+      "site_val": 185
+    },
+    "contact_auprc_mean": 0.5197292948319059,
+    "paratope_auprc_mean": 0.6306277014334235,
+    "epitope_auprc_mean": 0.15977744317005493,
+    "ranking_mrr_mean": 0.5249206349206349,
+    "ranking_mrr_random_expectation": 0.5329761904761904,
+    "candidate_rows": 50,
+    "p3_pose_coverage": 0,
+    "calibration_status": "NOT_APPLICABLE"
+  },
+  "boundary": "Computational ranking evidence only; no experimental binding, Kd, IC50, or blocker-efficacy claim."
+}

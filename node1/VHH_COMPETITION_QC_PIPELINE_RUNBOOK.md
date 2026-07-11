@@ -5,6 +5,16 @@
 远端工具目录：`/data/qlyu/software/vhh_eval_tools`  
 统一入口：`/data/qlyu/software/vhh_eval_tools/bin/vhh-competition-qc`
 
+大规模 cascade 入口：`/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen`
+
+大规模运行、断点续跑、容量估算和最终 blocker 标签见：
+
+```text
+VHH_LARGE_SCALE_SCREENING_RUNBOOK.md
+```
+
+2026-07-11 的优化不改变 `vhh-competition-qc` 默认 `competition` 策略。新入口只在大规模 fast 层启用去重、官方 CLI 延后、LCS 精确 novelty 剪枝、昂贵指标后移和 geometry shortlist；full shortlist 仍重跑官方 validator，最终高置信阳性仍要求 `CONSENSUS_BLOCKER_LIKE_A`。
+
 ## 1. 当前状态
 
 已把上一版方案推进为可执行 pipeline，并在 node1 跑通以下门控：

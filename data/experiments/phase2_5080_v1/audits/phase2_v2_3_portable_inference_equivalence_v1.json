@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "candidate_ids_equal": true,
+  "max_abs_differences": {
+    "phase2_v2_3_pair_ranking_logit": 0.0,
+    "phase2_v2_3_combined_ranking_ai_prior": 0.0,
+    "phase2_v2_3_contact_top20_mean_ai_prior": 0.0
+  }
+}

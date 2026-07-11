@@ -1,0 +1,34 @@
+[
+  {
+    "candidate_id": "zym_test_9743",
+    "vhh_seq_sha256": "f727c0f37736c65c02c86b039c7729ac82c359b84961af76b2bbbb5d9e9c4023",
+    "cdr3_seq": "NSFYYYSQAYDNYSVY",
+    "cdr3_range": "104-119",
+    "nbb2_status": "completed_refined_default",
+    "sequence_exact_match": true,
+    "monomer_likely_sane_backbone": true,
+    "monomer_ca_count": 130,
+    "haddock3_status": "completed",
+    "haddock3_top_pose_pdb_gz_count": 10,
+    "remote_monomer": "/data/qlyu/projects/pvrig_v2_4_top2/monomer/zym_test_9743/zym_test_9743_nanobodybuilder2_chainA.pdb",
+    "remote_haddock_top_dir": "/data/qlyu/projects/pvrig_v2_4_top2/haddock3/zym_test_9743/run_zym_test_9743_pvrig_hotspot/6_seletopclusts",
+    "local_monomer": "/mnt/d/work/抗体/docking/candidates/v2_4_top2/remote_sync/monomer/zym_test_9743/zym_test_9743_nanobodybuilder2_chainA.pdb",
+    "local_haddock_top_dir": "/mnt/d/work/抗体/docking/candidates/v2_4_top2/remote_sync/haddock3/zym_test_9743/run_zym_test_9743_pvrig_hotspot/6_seletopclusts"
+  },
+  {
+    "candidate_id": "zym_test_108006",
+    "vhh_seq_sha256": "76413dbdc48ab17b144ab10be41e5ebc07b20faeab5865f6b893aea2d5ddf0bb",
+    "cdr3_seq": "VRGYFMRLPSSHNFRY",
+    "cdr3_range": "104-119",
+    "nbb2_status": "completed_with_no_sidechain_bond_check_fallback",
+    "sequence_exact_match": true,
+    "monomer_likely_sane_backbone": true,
+    "monomer_ca_count": 130,
+    "haddock3_status": "completed",
+    "haddock3_top_pose_pdb_gz_count": 6,
+    "remote_monomer": "/data/qlyu/projects/pvrig_v2_4_top2/monomer/zym_test_108006/zym_test_108006_nanobodybuilder2_chainA.pdb",
+    "remote_haddock_top_dir": "/data/qlyu/projects/pvrig_v2_4_top2/haddock3/zym_test_108006/run_zym_test_108006_pvrig_hotspot/6_seletopclusts",
+    "local_monomer": "/mnt/d/work/抗体/docking/candidates/v2_4_top2/remote_sync/monomer/zym_test_108006/zym_test_108006_nanobodybuilder2_chainA.pdb",
+    "local_haddock_top_dir": "/mnt/d/work/抗体/docking/candidates/v2_4_top2/remote_sync/haddock3/zym_test_108006/run_zym_test_108006_pvrig_hotspot/6_seletopclusts"
+  }
+]

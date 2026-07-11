@@ -1,0 +1,68 @@
+{
+  "boundary": "Telemetry proves real CUDA training workload; it does not establish model utility.",
+  "max_memory_used_mib": 6081.0,
+  "max_utilization_gpu_pct": 69.0,
+  "runs": [
+    {
+      "first_timestamp": "2026-07-11T00:44:53+08:00",
+      "gpu_names": [
+        "NVIDIA GeForce RTX 5080"
+      ],
+      "last_timestamp": "2026-07-11T00:47:28+08:00",
+      "max_memory_used_mib": 6079.0,
+      "max_power_draw_w": 112.04,
+      "max_temperature_c": 50.0,
+      "max_utilization_gpu_pct": 64.0,
+      "mean_memory_used_mib": 5131.037593984963,
+      "mean_utilization_gpu_pct": 28.55639097744361,
+      "samples": 133,
+      "schema_version": "phase2_v2_4_seed_gpu_telemetry_v1",
+      "seed": 43,
+      "telemetry_csv": "experiments/phase2_5080_v1/logs/phase2_v2_4_strict_listwise_20260711_seed43_gpu_telemetry.csv",
+      "train_exit_code": 0
+    },
+    {
+      "first_timestamp": "2026-07-11T00:47:29+08:00",
+      "gpu_names": [
+        "NVIDIA GeForce RTX 5080"
+      ],
+      "last_timestamp": "2026-07-11T00:50:05+08:00",
+      "max_memory_used_mib": 6079.0,
+      "max_power_draw_w": 112.94,
+      "max_temperature_c": 51.0,
+      "max_utilization_gpu_pct": 69.0,
+      "mean_memory_used_mib": 5143.489051094891,
+      "mean_utilization_gpu_pct": 28.7007299270073,
+      "samples": 137,
+      "schema_version": "phase2_v2_4_seed_gpu_telemetry_v1",
+      "seed": 53,
+      "telemetry_csv": "experiments/phase2_5080_v1/logs/phase2_v2_4_strict_listwise_20260711_seed53_gpu_telemetry.csv",
+      "train_exit_code": 0
+    },
+    {
+      "first_timestamp": "2026-07-11T00:50:07+08:00",
+      "gpu_names": [
+        "NVIDIA GeForce RTX 5080"
+      ],
+      "last_timestamp": "2026-07-11T00:52:41+08:00",
+      "max_memory_used_mib": 6081.0,
+      "max_power_draw_w": 115.34,
+      "max_temperature_c": 51.0,
+      "max_utilization_gpu_pct": 66.0,
+      "mean_memory_used_mib": 5107.219696969697,
+      "mean_utilization_gpu_pct": 28.810606060606062,
+      "samples": 132,
+      "schema_version": "phase2_v2_4_seed_gpu_telemetry_v1",
+      "seed": 67,
+      "telemetry_csv": "experiments/phase2_5080_v1/logs/phase2_v2_4_strict_listwise_20260711_seed67_gpu_telemetry.csv",
+      "train_exit_code": 0
+    }
+  ],
+  "schema_version": "phase2_v2_4_gpu_telemetry_summary_v1",
+  "seeds": [
+    43,
+    53,
+    67
+  ],
+  "status": "PASS"
+}

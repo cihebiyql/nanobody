@@ -1,0 +1,43 @@
+{
+  "audit_csv": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/candidate_level_8x6b_9e6y_audit.csv",
+  "audit_csv_sha256": "78d2202b826a785bd17044b90bad4bc9b3c2afd099ce10cd8fb304f26170e877",
+  "candidate_count": 4,
+  "candidate_status": [
+    {
+      "candidate_id": "PV25-EF3F71502C71",
+      "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_359954/reports/zym_test_359954_8x6b_9e6y_consensus.csv",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_359954/run_zym_test_359954_pvrig_hotspot",
+      "source_candidate_id": "zym_test_359954",
+      "status": "PENDING_HADDOCK3"
+    },
+    {
+      "candidate_id": "PV25-8E96BF37FD37",
+      "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_3633872/reports/zym_test_3633872_8x6b_9e6y_consensus.csv",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_3633872/run_zym_test_3633872_pvrig_hotspot",
+      "source_candidate_id": "zym_test_3633872",
+      "status": "PENDING_HADDOCK3"
+    },
+    {
+      "candidate_id": "PV25-0B63D218E0F3",
+      "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_8787/reports/zym_test_8787_8x6b_9e6y_consensus.csv",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_8787/run_zym_test_8787_pvrig_hotspot",
+      "source_candidate_id": "zym_test_8787",
+      "status": "PENDING_HADDOCK3"
+    },
+    {
+      "candidate_id": "PV25-25F7D6778F87",
+      "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_4_top2/remote_sync/haddock3/zym_test_108006/reports/zym_test_108006_8x6b_9e6y_consensus.csv",
+      "consensus_sha256": "e46a512d3bc09378ff56fd2328c3c41be66ab482095aed7ed723ec07109855d0",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_4_top2/remote_sync/haddock3/zym_test_108006/run_zym_test_108006_pvrig_hotspot",
+      "source_candidate_id": "zym_test_108006",
+      "status": "REUSED_COMPLETE_CONSENSUS"
+    }
+  ],
+  "claim_boundary": "dual_baseline_geometry_priority_not_experimental_binding_or_blocking_truth",
+  "finalize_csv": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/cascade_finalize_docking_summary.csv",
+  "finalize_csv_sha256": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
+  "importable_candidate_count": 1,
+  "manifest": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/manifests/geometry4_candidates.tsv",
+  "manifest_sha256": "66b25ab9051fc967d1dc6e9ebbf78fcf6f4055d80e4e29592606fc5516f7fe7b",
+  "schema_version": "pvrig_v2_5_geometry4_postprocess_status_v1"
+}

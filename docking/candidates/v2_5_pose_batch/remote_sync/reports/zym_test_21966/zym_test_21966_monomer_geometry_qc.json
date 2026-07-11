@@ -1,0 +1,27 @@
+{
+  "pdb": "monomer/zym_test_21966/zym_test_21966_nanobodybuilder2_chainA.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "A": {
+      "atom_count": 1933,
+      "ca_count": 130,
+      "adjacent_ca_distance_min": 3.373286972672203,
+      "adjacent_ca_distance_median": 3.8373142951809407,
+      "adjacent_ca_distance_max": 3.952967998858579,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -23.299,
+          -20.992,
+          -17.461
+        ],
+        "max": [
+          22.754,
+          17.103,
+          16.151
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}

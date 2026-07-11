@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "schema_version": "phase2_v2_5_evidence_registry_v1",
+  "row_count": 10324,
+  "evidence_level_counts": {
+    "E0": 36,
+    "E1": 6385,
+    "E2": 3614,
+    "E3": 97,
+    "E4": 181,
+    "E5": 11
+  },
+  "data_readiness_status": "DATA_NOT_READY",
+  "target_readiness_target_id": "PVRIG_HUMAN_Q6DKI7",
+  "pvrig_target_assay_row_count": 11,
+  "ordinary_negative_count": 0,
+  "known_positive_ordinary_rows": 0,
+  "constructed_proxy_rows": 3614,
+  "pose_proxy_rows": 97,
+  "contact_site_rows": 6385,
+  "generic_e4_binding_rows": 181,
+  "contact_site_source": {
+    "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+    "status": "INCLUDED",
+    "source_row_count": 8414,
+    "included_complex_count": 6385,
+    "duplicate_source_rows_merged": 2029,
+    "excluded_row_count": 0,
+    "exclusion_reasons": {}
+  },
+  "nanobind_affinity": {
+    "status": "INCLUDED",
+    "checkout_path": "/mnt/d/work/\u6297\u4f53/data/datasets/10_github_repos/NanoBind",
+    "source_path": "/mnt/d/work/\u6297\u4f53/data/datasets/10_github_repos/NanoBind/data/affinity/all.csv",
+    "git_commit": "6cd50221ce38d7a2aabf076dafe0584ae3dcf7f7",
+    "source_sha256": "184b333b29e798a98e3d9ba0419ed922deba887065d4c440f7014c0f6decaddc",
+    "source_row_count": 185,
+    "valid_source_row_count": 185,
+    "canonical_pair_count": 181,
+    "duplicate_exact_pair_groups": 4,
+    "duplicate_rows_merged": 4,
+    "invalid_sequence_rows_excluded": 0,
+    "invalid_affinity_rows_excluded": 0,
+    "excluded_or_merged_count": 4,
+    "aggregation_policy": "group exact normalized seq_nanobody+seq_antigen pairs and take median Kd in M"
+  },
+  "external_sources": [
+    {
+      "manifest_version": "phase2_v2_5_external_dataset_manifest_v1",
+      "source_id": "nanobind_affinity_all_csv",
+      "source_family": "NanoBind",
+      "source_version": "git:6cd50221ce38d7a2aabf076dafe0584ae3dcf7f7;sha256:184b333b29e798a98e3d9ba0419ed922deba887065d4c440f7014c0f6decaddc",
+      "source_path_or_locator": "/mnt/d/work/\u6297\u4f53/data/datasets/10_github_repos/NanoBind/data/affinity/all.csv",
+      "license_or_usage_status": "REVIEWED_LOCAL_USE",
+      "redistribution_allowed": "false",
+      "allowed_use": "REVIEWED_LOCAL_USE",
+      "forbidden_use": "REDISTRIBUTION|BLOCKER_TRUTH|BLOCKER_CLAIM|BINARY_BINDING_TRUTH|CALIBRATED_PROBABILITY",
+      "accession_mapping_status": "ID+nanobody_chain+antigen_chain retained in each canonical row locator/notes",
+      "sequence_mapping_status": "seq_nanobody->vhh_sequence+sequence_sha256; seq_antigen->target_id+target_sequence_sha256",
+      "unit_normalization_status": "affinity parsed as positive finite Kd in M; label_unit=M; lower_is_stronger_binding",
+      "duplicate_policy": "exact normalized seq_nanobody+seq_antigen pairs aggregated by median Kd_M; source CSV lines retained",
+      "excluded_row_count": "4",
+      "enters_training_or_evaluation": "true",
+      "notes": "git_commit=6cd50221ce38d7a2aabf076dafe0584ae3dcf7f7; source_sha256=184b333b29e798a98e3d9ba0419ed922deba887065d4c440f7014c0f6decaddc; raw_rows=185; canonical_pairs=181; duplicate_exact_pair_groups=4; duplicate_rows_merged=4; license_files_in_actual_checkout=none; license terms absent/unresolved, so local train/eval only and no redistribution"
+    }
+  ]
+}

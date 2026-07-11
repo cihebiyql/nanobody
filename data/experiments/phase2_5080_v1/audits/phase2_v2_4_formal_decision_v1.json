@@ -1,0 +1,15 @@
+{
+  "formal_seeds": [
+    43,
+    53,
+    67
+  ],
+  "next_version_required_for_method_changes": true,
+  "preregistration": "experiments/phase2_5080_v1/audits/phase2_v2_4_preregistration_v1.json",
+  "ranking_targets_met": false,
+  "reason": "Strict held-out ranking did not improve; changing V2.4 after reading formal test metrics would invalidate the preregistered comparison.",
+  "result_status": "PASS_WITH_PAIR_RANKING_LIMITATION",
+  "schema_version": "phase2_v2_4_formal_decision_v1",
+  "status": "LOCKED_NO_POSTHOC_TUNING",
+  "test_metrics_used_for_selection": false
+}

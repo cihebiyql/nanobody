@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "raw_rows": 250,
+  "candidate_rows": 50,
+  "status_counts": {
+    "ok": 250
+  },
+  "model_counts": {
+    "nanobind_seq": 50,
+    "nanobind_site": 50,
+    "nanobind_pro": 50,
+    "deepnano_seq": 50,
+    "deepnano_site": 50
+  },
+  "domain_positions": 133,
+  "domain_full_position_range": [
+    39,
+    171
+  ],
+  "scalar_stats": {
+    "nanobind_seq": {
+      "min": 0.0168496836,
+      "mean": 0.11831686199059999,
+      "median": 0.08726620302,
+      "max": 0.4132415354
+    },
+    "nanobind_pro": {
+      "min": 0.005456745625,
+      "mean": 0.019927635723500002,
+      "median": 0.01594544342,
+      "max": 0.07040792704
+    },
+    "deepnano_seq": {
+      "min": 0.08469657414,
+      "mean": 0.18984649040479998,
+      "median": 0.18772121705,
+      "max": 0.3039630254
+    }
+  },
+  "site_stats": {
+    "nanobind_site": {
+      "target_weighted_mean_min": 0.0005946590293269034,
+      "target_weighted_mean_mean": 0.009355717402800067,
+      "target_weighted_mean_max": 0.039523963111154865,
+      "target_enrichment_positive_count": 47
+    },
+    "deepnano_site": {
+      "target_weighted_mean_min": 0.001109860825963744,
+      "target_weighted_mean_mean": 0.12143028513132181,
+      "target_weighted_mean_max": 0.39948084153184027,
+      "target_enrichment_positive_count": 28
+    }
+  },
+  "evidence_boundary": "External model outputs are uncalibrated binding/site priors, not blocker probabilities."
+}

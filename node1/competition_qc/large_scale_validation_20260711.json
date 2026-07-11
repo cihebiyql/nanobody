@@ -1,0 +1,46 @@
+{
+  "date": "2026-07-11",
+  "production": {
+    "core": "/data/qlyu/software/vhh_eval_tools/competition_qc/vhh_competition_qc.py",
+    "cascade": "/data/qlyu/software/vhh_eval_tools/competition_qc/vhh_large_scale_screen.py",
+    "entrypoint": "/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen",
+    "backup": "/data/qlyu/software/vhh_eval_tools/competition_qc/vhh_competition_qc.py.bak.20260711_optimization",
+    "core_sha256": "5789246af86bfe4df87b767523e52fcf838988e76477f5b0ef1ca65cfd3db608",
+    "cascade_sha256": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a"
+  },
+  "novelty_ab": {
+    "input_count": 11,
+    "reference_pairs": 1078,
+    "baseline_seconds": 13.577,
+    "pruned_seconds": 0.349,
+    "baseline_identity_requests": 908,
+    "pruned_identity_requests": 33,
+    "baseline_muscle_cache_misses": 653,
+    "pruned_muscle_cache_misses": 22,
+    "cdr_novelty_byte_identical": true,
+    "remote_root": "/data/qlyu/software/vhh_eval_tools/tests/large_scale_optimization_20260711"
+  },
+  "top50": {
+    "legacy_full_seconds": 1559.37,
+    "fast_seconds": 24.98,
+    "optimized_cascade_seconds": 169.82,
+    "full_shortlist_count": 10,
+    "geometry_shortlist_count": 5,
+    "resume_seconds": 1.15,
+    "legacy_vs_fast_l1_basic_metric_diff_count": 0,
+    "legacy_vs_fast_novelty_metric_diff_count": 0,
+    "remote_output": "/data/qlyu/software/vhh_eval_tools/tests/large_scale_optimization_20260711/cascade_top50_optimized_final"
+  },
+  "tnp_deferral": {
+    "full10_with_tnp_seconds": 462.48,
+    "full10_without_tnp_seconds": 143.38
+  },
+  "production_smoke": {
+    "default_qc_input_count": 3,
+    "default_qc_hard_rejects": 2,
+    "default_qc_review": 1,
+    "cascade_resume_seconds": 0.91,
+    "remote_default_qc": "/data/qlyu/software/vhh_eval_tools/tests/competition_qc_postopt_smoke_20260711",
+    "remote_cascade": "/data/qlyu/software/vhh_eval_tools/tests/large_scale_postdeploy_smoke_20260711"
+  }
+}

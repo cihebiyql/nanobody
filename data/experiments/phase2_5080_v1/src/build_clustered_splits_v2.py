@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import random
 import sys
@@ -104,6 +105,7 @@ def assign_connected_splits(
     cdr3_proxy_threshold: float,
     seed: int,
     structure_key: str | None = None,
+    balance_key: str | None = None,
 ) -> tuple[list[str], list[str], dict[str, str], dict[str, str], dict[str, str], dict[str, Any]]:
     vhh_map = cluster_sequences([clean(row.get("vhh_seq")) for row in rows], vhh_threshold)
     antigen_map = cluster_sequences([clean(row.get("antigen_seq")) for row in rows], antigen_threshold)
@@ -141,11 +143,44 @@ def assign_connected_splits(
     component_items.sort(key=len, reverse=True)
     targets = {"train": 0.70 * len(rows), "val": 0.15 * len(rows), "test": 0.15 * len(rows)}
     counts = {split: 0 for split in targets}
+    balance_totals = Counter(clean(row.get(balance_key)) or "all" for row in rows) if balance_key else Counter()
+    balance_counts = {key: Counter() for key in balance_totals}
     row_split = [""] * len(rows)
     row_group = [""] * len(rows)
     for group_rank, members in enumerate(component_items):
-        remaining = {split: targets[split] - counts[split] for split in targets}
-        split = max(remaining, key=lambda name: (remaining[name], -counts[name]))
+        if balance_key:
+            component_balance = Counter(clean(rows[idx].get(balance_key)) or "all" for idx in members)
+            candidates: list[tuple[float, int, int, str]] = []
+            for split_rank, split_name in enumerate(targets):
+                projected = {key: balance_counts[key].copy() for key in balance_totals}
+                for key, value in component_balance.items():
+                    projected[key][split_name] += value
+                projected_counts = counts.copy()
+                projected_counts[split_name] += len(members)
+                task_error = sum(
+                    (
+                        projected[key][candidate_split] / balance_totals[key]
+                        - targets[candidate_split] / len(rows)
+                    )
+                    ** 2
+                    for key in balance_totals
+                    for candidate_split in targets
+                )
+                overall_error = sum(
+                    (
+                        projected_counts[candidate_split] / len(rows)
+                        - targets[candidate_split] / len(rows)
+                    )
+                    ** 2
+                    for candidate_split in targets
+                )
+                candidates.append((task_error + 0.25 * overall_error, counts[split_name], split_rank, split_name))
+            split = min(candidates)[-1]
+            for key, value in component_balance.items():
+                balance_counts[key][split] += value
+        else:
+            remaining = {split: targets[split] - counts[split] for split in targets}
+            split = max(remaining, key=lambda name: (remaining[name], -counts[name]))
         group_id = f"connected_group_{group_rank:06d}"
         for idx in members:
             row_split[idx] = split
@@ -162,6 +197,9 @@ def assign_connected_splits(
         "cdr3_proxy_clusters": len(set(cdr3_map.values())),
         "antigen_clusters": len(set(antigen_map.values())),
     }
+    if balance_key:
+        stats["balance_key"] = balance_key
+        stats["task_split_counts"] = {key: dict(value) for key, value in balance_counts.items()}
     return row_split, row_group, vhh_map, cdr3_map, antigen_map, stats
 
 
@@ -180,17 +218,16 @@ def overlap_report(rows: list[dict[str, Any]], split_key: str = "split") -> dict
     return report
 
 
-def write_site_and_pair_outputs(root: Path, out_root: Path, args: argparse.Namespace) -> dict[str, Any]:
-    site = read_zym(root).copy()
-    site = site.rename(columns={"split": "original_split"})
-    site_rows = site.to_dict("records")
-    splits, groups, vhh_map, cdr3_map, antigen_map, stats = assign_connected_splits(
-        site_rows,
-        args.vhh_identity,
-        args.antigen_identity,
-        args.cdr3_proxy_identity,
-        args.seed,
-    )
+def write_site_and_pair_outputs(
+    out_root: Path,
+    site: pd.DataFrame,
+    assignments: dict[str, Any],
+) -> dict[str, Any]:
+    splits = assignments["splits"]
+    groups = assignments["groups"]
+    vhh_map = assignments["vhh_map"]
+    cdr3_map = assignments["cdr3_map"]
+    antigen_map = assignments["antigen_map"]
     site["split"] = splits
     site["split_group_id"] = groups
     site["vhh_cluster_id"] = [vhh_map[clean(seq).upper()] for seq in site["vhh_seq"]]
@@ -199,7 +236,7 @@ def write_site_and_pair_outputs(root: Path, out_root: Path, args: argparse.Names
     site_path = out_root / "data_splits/zym_site_split_manifest_v2_clustered.csv"
     site.to_csv(site_path, index=False, quoting=csv.QUOTE_MINIMAL)
 
-    negatives = build_pair_negatives(site, args.seed)
+    negatives = build_pair_negatives(site, assignments["seed"])
     site_by_id = {row["sample_id"]: row for _, row in site.iterrows()}
     pair_rows: list[dict[str, Any]] = []
     for _, row in site.iterrows():
@@ -280,7 +317,6 @@ def write_site_and_pair_outputs(root: Path, out_root: Path, args: argparse.Names
         "site_path": str(site_path),
         "pair_path": str(pair_path),
         "triplet_path": str(triplet_path),
-        "site_stats": stats,
         "site_overlap": overlap_report(site_records),
         "pair_rows": len(pair_rows),
         "triplets": len(triplets),
@@ -288,17 +324,16 @@ def write_site_and_pair_outputs(root: Path, out_root: Path, args: argparse.Names
     }
 
 
-def write_contact_outputs(root: Path, out_root: Path, args: argparse.Namespace) -> dict[str, Any]:
-    source = out_root / "prepared/structure_contact_maps_v2_full2277.jsonl"
-    records = [json.loads(line) for line in source.open("r", encoding="utf-8") if line.strip()]
-    splits, groups, vhh_map, cdr3_map, antigen_map, stats = assign_connected_splits(
-        records,
-        args.vhh_identity,
-        args.antigen_identity,
-        args.cdr3_proxy_identity,
-        args.seed + 1,
-        structure_key="structure_member",
-    )
+def write_contact_outputs(
+    out_root: Path,
+    records: list[dict[str, Any]],
+    assignments: dict[str, Any],
+) -> dict[str, Any]:
+    splits = assignments["splits"]
+    groups = assignments["groups"]
+    vhh_map = assignments["vhh_map"]
+    cdr3_map = assignments["cdr3_map"]
+    antigen_map = assignments["antigen_map"]
     for idx, record in enumerate(records):
         vhh = clean(record["vhh_seq"]).upper()
         antigen = clean(record["antigen_seq"]).upper()
@@ -336,11 +371,76 @@ def write_contact_outputs(root: Path, out_root: Path, args: argparse.Namespace) 
     return {
         "contact_path": str(contact_path),
         "manifest_path": str(manifest_path),
-        "contact_stats": stats,
         "contact_overlap": overlap_report(records),
         "positive_pairs": sum(len(record["positive_pairs"]) for record in records),
         "negative_pairs": sum(len(record["negative_pairs"]) for record in records),
     }
+
+
+def sequence_sha256(sequence: str) -> str:
+    return hashlib.sha256(clean(sequence).upper().encode("ascii")).hexdigest()
+
+
+def build_global_assignments(
+    root: Path,
+    out_root: Path,
+    args: argparse.Namespace,
+) -> tuple[pd.DataFrame, list[dict[str, Any]], dict[str, Any], dict[str, Any], dict[str, Any]]:
+    site = read_zym(root).copy().rename(columns={"split": "original_split"})
+    contact_source = out_root / "prepared/structure_contact_maps_v2_full2277.jsonl"
+    contacts = [json.loads(line) for line in contact_source.open("r", encoding="utf-8") if line.strip()]
+
+    site_rows = site.to_dict("records")
+    for row in site_rows:
+        row["dataset_role"] = "site"
+        row["structure_group"] = f"pdb:{clean(row.get('pdb_id')).lower()}"
+    for row in contacts:
+        row["dataset_role"] = "contact"
+        row["structure_group"] = f"pdb:{clean(row.get('pdb')).lower()}"
+
+    combined = site_rows + contacts
+    splits, groups, vhh_map, cdr3_map, antigen_map, stats = assign_connected_splits(
+        combined,
+        args.vhh_identity,
+        args.antigen_identity,
+        args.cdr3_proxy_identity,
+        args.seed,
+        structure_key="structure_group",
+        balance_key="dataset_role",
+    )
+    site_count = len(site_rows)
+    common = {
+        "vhh_map": vhh_map,
+        "cdr3_map": cdr3_map,
+        "antigen_map": antigen_map,
+        "seed": args.seed,
+    }
+    site_assignments = {**common, "splits": splits[:site_count], "groups": groups[:site_count]}
+    contact_assignments = {**common, "splits": splits[site_count:], "groups": groups[site_count:]}
+
+    manifest_rows: list[dict[str, Any]] = []
+    for idx, row in enumerate(combined):
+        vhh = clean(row.get("vhh_seq")).upper()
+        antigen = clean(row.get("antigen_seq")).upper()
+        manifest_rows.append(
+            {
+                "dataset_role": row["dataset_role"],
+                "record_id": clean(row.get("sample_id") or row.get("complex_id")),
+                "split": splits[idx],
+                "split_group_id": groups[idx],
+                "pdb_id": clean(row.get("pdb_id") or row.get("pdb")),
+                "structure_member": clean(row.get("structure_member")),
+                "vhh_sha256": sequence_sha256(vhh),
+                "antigen_sha256": sequence_sha256(antigen),
+                "vhh_cluster_id": vhh_map[vhh],
+                "cdr3_proxy_cluster_id": cdr3_map[vhh],
+                "antigen_cluster_id": antigen_map[antigen],
+            }
+        )
+    manifest_path = out_root / "data_splits/phase2_global_split_manifest_v2_clustered.csv"
+    pd.DataFrame(manifest_rows).to_csv(manifest_path, index=False, quoting=csv.QUOTE_MINIMAL)
+    stats["manifest_path"] = str(manifest_path)
+    return site, contacts, site_assignments, contact_assignments, stats
 
 
 def controls_overlap(root: Path, site_path: str, contact_path: str) -> dict[str, int]:
@@ -381,10 +481,31 @@ def main() -> None:
     for directory in [out_root / "data_splits", out_root / "prepared", out_root / "audits"]:
         directory.mkdir(parents=True, exist_ok=True)
 
-    site_pair = write_site_and_pair_outputs(root, out_root, args)
-    contact = write_contact_outputs(root, out_root, args)
+    site, contact_records, site_assignments, contact_assignments, global_stats = build_global_assignments(
+        root, out_root, args
+    )
+    site_pair = write_site_and_pair_outputs(out_root, site, site_assignments)
+    contact = write_contact_outputs(out_root, contact_records, contact_assignments)
+    site_pair["site_stats"] = {
+        "split_counts": global_stats["task_split_counts"]["site"],
+        "components": global_stats["components"],
+        "largest_component": global_stats["largest_component"],
+    }
+    contact["contact_stats"] = {
+        "split_counts": global_stats["task_split_counts"]["contact"],
+        "components": global_stats["components"],
+        "largest_component": global_stats["largest_component"],
+    }
+    global_overlap = overlap_report(site.to_dict("records") + contact_records)
     controls = controls_overlap(root, site_pair["site_path"], contact["contact_path"])
-    status = "PASS" if all_zero(site_pair["site_overlap"]) and all_zero(contact["contact_overlap"]) and not any(controls.values()) else "FAIL"
+    status = (
+        "PASS"
+        if all_zero(site_pair["site_overlap"])
+        and all_zero(contact["contact_overlap"])
+        and all_zero(global_overlap)
+        and not any(controls.values())
+        else "FAIL"
+    )
     result = {
         "status": status,
         "seed": args.seed,
@@ -395,6 +516,8 @@ def main() -> None:
         },
         "site_pair": site_pair,
         "contact": contact,
+        "global_assignment": global_stats,
+        "global_overlap": global_overlap,
         "pvrig_control_overlap": controls,
         "limitations": [
             "cdr3_proxy_cluster_id uses a C-terminal proxy window and is not an ANARCI/IMGT CDR3 assignment",
@@ -416,10 +539,18 @@ def main() -> None:
         f"- Antigen ungapped identity: {args.antigen_identity}",
         f"- CDR3 proxy-window identity: {args.cdr3_proxy_identity}",
         "",
+        "## Global Assignment",
+        "",
+        f"- Global manifest: `{global_stats['manifest_path']}`",
+        f"- Connected components: {global_stats['components']}",
+        f"- Largest connected component: {global_stats['largest_component']}",
+        f"- Combined split counts: {dict(global_stats['split_counts'])}",
+        f"- Task-balanced split counts: {global_stats['task_split_counts']}",
+        f"- Cross-task overlap: `{json.dumps(global_overlap, ensure_ascii=False)}`",
+        "",
         "## Site / Pair",
         "",
         f"- Site split counts: {dict(site_pair['site_stats']['split_counts'])}",
-        f"- Connected components: {site_pair['site_stats']['components']}",
         f"- Pair rows: {site_pair['pair_rows']}",
         f"- Ranking triplets: {site_pair['triplets']}",
         f"- Pair label states: {dict(site_pair['pair_label_states'])}",
@@ -428,7 +559,6 @@ def main() -> None:
         "## Contact",
         "",
         f"- Contact split counts: {dict(contact['contact_stats']['split_counts'])}",
-        f"- Connected components: {contact['contact_stats']['components']}",
         f"- Positive pairs: {contact['positive_pairs']}",
         f"- Negative pairs: {contact['negative_pairs']}",
         f"- Cross-split overlap: `{json.dumps(contact['contact_overlap'], ensure_ascii=False)}`",

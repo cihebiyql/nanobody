@@ -1,0 +1,72 @@
+{
+  "boundary": "Runtime /tmp staging changed only input location; portable checkpoints restore durable project paths without changing model tensors.",
+  "canonical_alias": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_best_checkpoint.pt",
+  "canonical_alias_sha256": "330c9b3574fce0f66ed0389f3b862d4a698fbc8483f232478fc7a0bd5e7adf1f",
+  "canonical_matches_selected_portable_sha256": true,
+  "canonical_seed": 53,
+  "canonical_selection": "maximum validation composite best_score among preregistered seeds 43, 53, 67",
+  "checkpoints": [
+    {
+      "best_score": 1.546338875117036,
+      "durable_cfg_paths": {
+        "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+        "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+        "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+        "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+        "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+        "pvrig_controls_csv": "experiments/phase2_5080_v1/data_splits/pvrig_validation_controls_v2_4.csv",
+        "ranking_groups_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_groups_v2_4.csv",
+        "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv"
+      },
+      "epoch": 3,
+      "model_state_roundtrip_equal": true,
+      "portable": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed43_best_checkpoint.pt",
+      "portable_sha256": "ee322c22e4fb92a2d27afa8390565230e1c71bfa8636955ddf1f9e8f509fba26",
+      "seed": 43,
+      "source": "experiments/phase2_5080_v1/runs/phase2_v2_4_strict_listwise_20260711_seed43/best_checkpoint.pt",
+      "source_sha256": "d9ded317e229b397fc09bc5f9ef24b31c487639257a4b93fdeb6972797dbe096"
+    },
+    {
+      "best_score": 1.5673044299353414,
+      "durable_cfg_paths": {
+        "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+        "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+        "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+        "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+        "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+        "pvrig_controls_csv": "experiments/phase2_5080_v1/data_splits/pvrig_validation_controls_v2_4.csv",
+        "ranking_groups_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_groups_v2_4.csv",
+        "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv"
+      },
+      "epoch": 2,
+      "model_state_roundtrip_equal": true,
+      "portable": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed53_best_checkpoint.pt",
+      "portable_sha256": "330c9b3574fce0f66ed0389f3b862d4a698fbc8483f232478fc7a0bd5e7adf1f",
+      "seed": 53,
+      "source": "experiments/phase2_5080_v1/runs/phase2_v2_4_strict_listwise_20260711_seed53/best_checkpoint.pt",
+      "source_sha256": "760ebed3ba3b794632a043d89309987b09e9b63b9302dd7de9efc6c895499f9b"
+    },
+    {
+      "best_score": 1.548030687746426,
+      "durable_cfg_paths": {
+        "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+        "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+        "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+        "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+        "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+        "pvrig_controls_csv": "experiments/phase2_5080_v1/data_splits/pvrig_validation_controls_v2_4.csv",
+        "ranking_groups_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_groups_v2_4.csv",
+        "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv"
+      },
+      "epoch": 4,
+      "model_state_roundtrip_equal": true,
+      "portable": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed67_best_checkpoint.pt",
+      "portable_sha256": "7369eb6bb2a512ac95aa69bda09bb3d9ae6c91621ff62c94624381d769812a3f",
+      "seed": 67,
+      "source": "experiments/phase2_5080_v1/runs/phase2_v2_4_strict_listwise_20260711_seed67/best_checkpoint.pt",
+      "source_sha256": "f7644bb7a05416288fc00527073509a41bccda64f7c81df013b54384983b6cf8"
+    }
+  ],
+  "schema_version": "phase2_v2_4_portable_checkpoints_v1",
+  "status": "PASS"
+}

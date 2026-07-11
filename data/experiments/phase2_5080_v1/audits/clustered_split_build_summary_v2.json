@@ -10,19 +10,6 @@
     "site_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
     "pair_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
     "triplet_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv",
-    "site_stats": {
-      "rows": 1230,
-      "components": 348,
-      "largest_component": 209,
-      "split_counts": {
-        "train": 861,
-        "val": 185,
-        "test": 184
-      },
-      "vhh_clusters": 681,
-      "cdr3_proxy_clusters": 779,
-      "antigen_clusters": 700
-    },
     "site_overlap": {
       "vhh_seq": {
         "train_val": 0,
@@ -50,29 +37,25 @@
         "val_test": 0
       }
     },
-    "pair_rows": 4833,
-    "triplets": 3603,
+    "pair_rows": 4844,
+    "triplets": 3614,
     "pair_label_states": {
       "observed_positive": 1230,
-      "unlabeled_contrastive": 3603
+      "unlabeled_contrastive": 3614
+    },
+    "site_stats": {
+      "split_counts": {
+        "train": 861,
+        "val": 185,
+        "test": 184
+      },
+      "components": 513,
+      "largest_component": 5116
     }
   },
   "contact": {
     "contact_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
     "manifest_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/structure_contact_split_manifest_v3_clustered.csv",
-    "contact_stats": {
-      "rows": 8414,
-      "components": 508,
-      "largest_component": 4598,
-      "split_counts": {
-        "train": 5890,
-        "test": 1262,
-        "val": 1262
-      },
-      "vhh_clusters": 1384,
-      "cdr3_proxy_clusters": 1467,
-      "antigen_clusters": 1791
-    },
     "contact_overlap": {
       "vhh_seq": {
         "train_val": 0,
@@ -101,7 +84,70 @@
       }
     },
     "positive_pairs": 855922,
-    "negative_pairs": 3423688
+    "negative_pairs": 3423688,
+    "contact_stats": {
+      "split_counts": {
+        "train": 5890,
+        "val": 1262,
+        "test": 1262
+      },
+      "components": 513,
+      "largest_component": 5116
+    }
+  },
+  "global_assignment": {
+    "rows": 9644,
+    "components": 513,
+    "largest_component": 5116,
+    "split_counts": {
+      "train": 6751,
+      "val": 1447,
+      "test": 1446
+    },
+    "vhh_clusters": 1409,
+    "cdr3_proxy_clusters": 1502,
+    "antigen_clusters": 1829,
+    "balance_key": "dataset_role",
+    "task_split_counts": {
+      "site": {
+        "train": 861,
+        "val": 185,
+        "test": 184
+      },
+      "contact": {
+        "train": 5890,
+        "val": 1262,
+        "test": 1262
+      }
+    },
+    "manifest_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/data_splits/phase2_global_split_manifest_v2_clustered.csv"
+  },
+  "global_overlap": {
+    "vhh_seq": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "antigen_seq": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "vhh_cluster_id": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "cdr3_proxy_cluster_id": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "antigen_cluster_id": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    }
   },
   "pvrig_control_overlap": {
     "site_exact_control_overlap": 0,

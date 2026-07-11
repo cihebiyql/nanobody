@@ -1,6 +1,200 @@
 # PVRIG Blocking VHH Project Progress
 
-This is the continuously maintained progress document for Phase I. Update it whenever Phase I evidence, gates, or artifacts change.
+This is the continuously maintained progress document for the PVRIG mechanism, scaffold, and model work. Update it whenever Phase I evidence, model gates, or candidate-ranking artifacts change.
+
+## Latest Phase 2 Model Update - 2026-07-11 (V2.5)
+
+Phase 2 V2.5 is engineering-complete with final target status
+`DATA_NOT_READY_FOR_TARGET_MODEL` and generic status
+`PASS_LIMITED_RANKING_ONLY`. It establishes a canonical evidence registry,
+license/use controls, leakage-safe generic affinity split, a one-shot formal
+evaluation, a post-unseal label-binding audit, Node1 monomer-QC coverage, and a
+prospective 24-pair assay panel. It deliberately does not train or claim a
+PVRIG blocker model without target-eligible positive/negative or ranking data.
+
+Final audit: `data/experiments/phase2_5080_v1/audits/PHASE2_V2_5_FINAL_AUDIT_V1.md`
+(`27/27` checks passed; no failed checks or warnings).
+
+| Stage | Status | Durable evidence | Result |
+| --- | --- | --- | --- |
+| P0 evidence registry | PASS | `data/experiments/phase2_5080_v1/audits/phase2_v2_5_evidence_registry_summary.json` | 10,324 canonical rows; NanoBind 185 raw rows -> 181 exact pairs; redistribution prohibited. |
+| P1 split/seal/readiness | PASS / NO-GO | `data/experiments/phase2_5080_v1/audits/phase2_v2_5_split_seal_audit_v1.json`, `data/experiments/phase2_5080_v1/audits/phase2_v2_5_readiness_audit_v1.json` | Generic 123/29/29 split with zero supported leakage overlap; 11 PVRIG E5 rows are all control-only, so target-eligible assay rows/rank groups/verified negatives/formal groups are all 0. |
+| Generic three-seed CUDA training | PASS | `data/experiments/phase2_5080_v1/runs/phase2_v2_5_generic/phase2_v2_5_generic_20260711T042831_045756Z`, `data/experiments/phase2_5080_v1/audits/PHASE2_V2_5_GPU_TELEMETRY_SUMMARY_V1.md` | Seeds 43/53/67 ran on RTX 5080; frozen ESM2 preparation peaked at 5,477 MiB sampled memory and shallow training at 3,147 MiB. |
+| One-shot generic formal | LIMITED | `data/experiments/phase2_5080_v1/reports/PHASE2_V2_5_STRICT_EVALUATION_V1.md` | Mean delta +0.136508, paired CI [-0.017460, 0.290476], permutation p=0.301940; 3/3 positive seeds but strict CI/permutation gates fail. |
+| Formal label identity | PASS with future schema requirement | `data/experiments/phase2_5080_v1/audits/phase2_v2_5_formal_label_binding_audit_v1.json` | 29/29 labels independently rebuilt from raw NanoBind and pair-bound; V2.6 must put sequence/target hashes or a row digest in sealed labels before unseal. |
+| Node1 structure lane | PASS / coverage-limited | `data/experiments/phase2_5080_v1/audits/phase2_v2_5_pose_coverage_audit.json`, `docking/candidates/v2_5_pose_batch/` | 8/8 new NBB2 monomers pass sequence and geometry QC; exact complex coverage remains 2/50 (4%); HADDOCK3 load gate refused load1 106.98 > 64. |
+| Model-to-cascade funnel | OPERATIONAL / 1 DUAL-BASELINE HIGH / 3 DOCKING QUEUED BEHIND LOAD GATE | `data/docs/phase2_5080_training/PVRIG_MODEL_TO_CASCADE_SCREENING_FUNNEL.md`, `data/experiments/phase2_5080_v1/audits/PVRIG_V2_5_SCREENING_FUNNEL_AUDIT_20260711.md` | Model score is a relative front-screen priority only. The blinded run completed 24 -> 4 -> 4 in 132 seconds; finalize imported one A/A geometry row as computational `FINAL_POSITIVE_HIGH`, while a bounded Node1 waiter holds the other three until `load1 < 64`. |
+| Prospective assay design | PANEL FROZEN / MEASUREMENTS PENDING | `data/experiments/phase2_5080_v1/data_splits/pvrig_v2_5_prospective_assay_panel.csv` | 24 pairs across 8 groups; all proposed negatives remain unmeasured, not verified. |
+| Assay execution and intake | READY FOR LAB PREREGISTRATION | `data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/` | 24 blinded IDs, 3 randomized day blocks, 72 sample-run slots, 10 manifest artifacts, mandatory functional concentration/viability gates, raw-data SHA gates, and 0 current E6 review rows. |
+
+Frozen generic formal primary results:
+
+- Seed 43: shallow `0.509524`, baseline `0.419048`, delta `+0.090476`.
+- Seed 53: shallow `0.552381`, baseline `0.419048`, delta `+0.133333`.
+- Seed 67: shallow `0.604762`, baseline `0.419048`, delta `+0.185714`.
+- Aggregate paired 95% bootstrap CI crosses zero and group-local permutation is
+  not significant; the positive point estimate remains exploratory.
+- Leakage-safe sequence-identity nearest neighbor scores `0.564286` as a
+  formal-only diagnostic and exceeds shallow seeds 43 and 53; it was not used
+  to alter the pre-unseal comparator.
+- Primary pairwise metrics exactly match the one-shot evaluator. Secondary
+  NDCG gain semantics differ and are not used for the formal decision.
+
+The formal run is locked at `formal_run_count=1`; any method, metric, threshold,
+or join-schema change belongs to V2.6. The highest-value next step is to measure
+the 24-pair PVRIG panel and create real binder/nonblocker and nonbinder evidence.
+A larger model, pseudo-negative relabeling, or global pose boost cannot replace
+that missing supervision.
+
+The prospective assay handoff is now executable rather than narrative-only.
+`build_pvrig_v2_5_assay_execution_package.py` deterministically regenerates the
+blinded package; `freeze_pvrig_v2_5_assay_preregistration.py` locks lab-specific
+thresholds before any result is entered; and
+`analyze_pvrig_v2_5_assay_results.py` validates expression/SEC, BLI/SPR,
+competition, and functional result tables. The analyzer requires raw-data
+SHA256 evidence, keeps binding/blocking/functional axes separate, and emits
+only review-only E6 candidates with sequence and target hashes. Current state
+remains physical measurements pending: 24/24 are `PENDING_EXPRESSION_QC`, with
+no inferred binder, nonbinder, blocker, or functional labels.
+
+The front-screen and post-screen responsibilities are now explicit. The Phase
+2 model is used for cheap whole-library prioritization; its exported
+`binder_score` is a within-input rank percentile, not a biological
+probability. Node1 `vhh-large-scale-screen` then performs strict sequence QC,
+positive-CDR novelty checks, full shortlist validation, bounded exact
+diversity, and geometry-queue ranking. The first blinded integration run took
+132 seconds for 24 inputs and selected four geometry candidates. Dual-baseline
+finalize now imports one complete A/A row and leaves three rows missing docking.
+
+For `zym_test_108006`, HADDOCK rank-1 pose `cluster_1_model_1` is
+`BLOCKER_LIKE_A` against both the 8X6B and 9E6Y reference interfaces. The
+candidate-level call is `CONSENSUS_BLOCKER_LIKE_A`, with conservative metrics
+15 hotspot overlaps, 610 total PVRL2 occlusion pairs, 106 CDR3 occlusion pairs,
+and a 0.17377 CDR3 fraction. Its blinded ID `PV25-25F7D6778F87` is therefore
+the sole computational `FINAL_POSITIVE_HIGH`. This is not experimental binder
+or blocker truth. The other three geometry candidates have monomer/QC/8X6B
+preparation assets, but their docking jobs remain governed by the fixed Node1
+load gate.
+
+The final Node1 preflight at 2026-07-11 17:14:51 +08:00 returned exit 20 at
+load1 `101.38`; a follow-up check at 17:15:11 reported load1 `100.92`, still
+above the fixed launch threshold 64. No new HADDOCK3 job was
+forced despite idle-looking individual GPUs; the host load gate remains the
+authoritative admission control.
+
+At 2026-07-11 17:42:09 +08:00, a guarded Node1 waiter was deployed on an
+independent tmux socket. It uses `flock`, polls every 60 seconds, expires after
+24 hours, and rechecks the strict gate before each candidate. Its initial state
+was `WAITING_FOR_LOAD` at load1 96.97, so no docking run was started.
+
+The 24-sample panel remains frozen even when a candidate fails the cascade.
+That disagreement is prospective evidence, not a reason to manufacture a
+negative label. The next gates are dual-baseline geometry, lab-specific
+preregistration freeze, and physical expression/binding/competition/functional
+measurements. Any resulting E6 rows remain review-only until a new V2.6
+registry, split, seal, readiness audit, and formal protocol exist.
+
+The Phase 2 codebase currently passes 160/160 unit tests; the geometry-4 package
+passes 13/13 tests, and both existing success-case regression scripts pass.
+Coverage includes functional `INCONCLUSIVE` evidence gates, strict rejection of
+stale recheck labels in per-baseline inputs, VHH input-PDB sequence provenance,
+and complete two-baseline finalize filtering.
+
+## Previous Phase 2 Model Update - 2026-07-11 (V2.4)
+
+Phase 2 V2.4 is engineering-complete with the explicit status
+`PASS_WITH_PAIR_RANKING_LIMITATION`. It adds complete-group listwise ranking,
+three preregistered RTX 5080 runs, portable checkpoints, multi-seed candidate
+inference, two exact candidate-specific PVRIG docking packages, and
+coverage-gated geometry integration. It is not a validated PVRIG binder or
+blocker classifier.
+
+Final audit: `data/experiments/phase2_5080_v1/audits/PHASE2_V2_4_FINAL_AUDIT_V1.md`
+(`59` required/advisory checks, no failures; three ranking-target warnings retained).
+
+| Stage | Status | Durable evidence | Result |
+| --- | --- | --- | --- |
+| V2.4 manifest/label contract | PASS | `data/experiments/phase2_5080_v1/audits/phase2_v2_4_manifest_build_v1.json` | 1,230 groups / 4,844 rows; 47 PVRIG controls isolated; zero exact sequence-hash overlap. |
+| V2.4 listwise model | PASS with ranking limitation | `data/experiments/phase2_5080_v1/reports/PHASE2_V2_4_STRICT_EVALUATION_V1.md` | Contact/site guardrails pass, but strict pair ranking remains below random expectation. |
+| Three-seed CUDA execution | PASS | `data/experiments/phase2_5080_v1/audits/PHASE2_V2_4_GPU_TELEMETRY_SUMMARY_V1.md` | Seeds 43/53/67; RTX 5080 peak utilization 64-69%, peak memory about 6.08 GiB. |
+| Portable checkpoints | PASS | `data/experiments/phase2_5080_v1/audits/phase2_v2_4_portable_checkpoints_v1.json` | Durable paths restored; canonical seed 53; portable-vs-run inference max absolute difference 0.0. |
+| Candidate-specific poses | PASS as computational evidence | `docking/candidates/v2_4_top2/RUN_REPORT.md`, `data/experiments/phase2_5080_v1/data_splits/phase2_v2_4_candidate_pose_index.csv` | 10 poses for `zym_test_9743`, 6 for `zym_test_108006`; 34/34 chain-sequence checks pass. |
+| Coverage-gated P3 fusion | PASS / coverage-limited | `data/experiments/phase2_5080_v1/audits/phase2_v2_4_p3_pose_fusion.json` | Pose coverage 2/50 (4%); global geometry boosting disabled below 80% to avoid pose-availability bias. |
+
+Strict three-seed test means and V2.3 deltas:
+
+- Contact AUPRC: `0.5323` (`+0.0126`); paratope AUPRC: `0.6418` (`+0.0112`).
+- Epitope AUPRC: `0.1611` (`+0.0013`), still weak.
+- Ranking MRR: `0.5192` (`-0.0057`) versus random `0.5330`.
+- Hit@1: `0.2019` (`-0.0019`); hard-negative win: `0.5443` (`-0.0010`).
+- Pair contrastive-proxy AUROC: `0.5301` (`+0.0012`), still only a constructed-proxy metric.
+- Candidate rank standard-deviation mean/median improved from `8.28 / 7.91`
+  to `7.71 / 6.83`; all-three-seed top-10 intersection increased from 2 to 3.
+
+Current V2.4 candidate artifacts:
+
+- Multi-seed ensemble: `data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_multiseed_ensemble.csv`.
+- Coverage-gated P3 table: `data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_v2_4_p3_pose_fusion.csv`.
+- Global sequence ranks remain 9 for `zym_test_9743` and 6 for
+  `zym_test_108006`; within the two-candidate pose-supported subset, geometry
+  ranks `zym_test_9743` first and `zym_test_108006` second.
+- The pose-supported order is not comparable to unmodeled candidates and is
+  not experimental binding/blocking evidence.
+
+The V2.4 formal branch is locked against post-hoc test-guided tuning. Any method
+change belongs to V2.5 with a new preregistration. The highest-value next input
+is verified target-family ranking/competition evidence or legitimate negative
+labels, not a larger model or another pseudo-negative weight sweep.
+
+## Previous Phase 2 Model Update - 2026-07-10
+
+Phase 2 V2.3 P0-P4 is implemented and verified. The deliverable is a strict,
+target-conditioned VHH/antigen contact-site model plus computational candidate
+ranking pipeline. It is not a validated PVRIG blocker classifier.
+
+Final audit: `data/experiments/phase2_5080_v1/audits/PHASE2_V2_3_P0_P4_FINAL_AUDIT_V1.md` (`37/37` checks passed, with the pair-ranking limitation retained).
+
+| Stage | Status | Durable evidence | Result |
+| --- | --- | --- | --- |
+| P0 strict global splits | PASS | `data/experiments/phase2_5080_v1/audits/CLUSTERED_SPLIT_VALIDATION_V2.md` | 72 checks; zero exact/cluster/PDB cross-split leakage; PVRIG controls excluded from ordinary training. |
+| P1 target/external priors | PASS | `data/experiments/phase2_5080_v1/audits/PVRIG_TARGET_DOMAIN_AUDIT_V1.md`, `data/experiments/phase2_5080_v1/audits/EXTERNAL_PRIORS_FULL50_AUDIT_V1.md` | PVRIG 39-171 structural ectodomain proxy documented; NanoBind/DeepNano 250/250 model-candidate rows completed. |
+| P2 V2.3 model | PASS with ranking limitation | `data/experiments/phase2_5080_v1/reports/PHASE2_V2_3_STRICT_EVALUATION_V1.md` | Frozen ESM2 + CDR-aware contact/site learner works; strict pair ranking remains near random. |
+| P3 optional pose fusion | Pipeline PASS / data-gated | `data/experiments/phase2_5080_v1/audits/P3_TOP50_POSE_INVENTORY_V1.md`, `data/experiments/phase2_5080_v1/audits/p3_late_fusion_validation_v1.json` | 0/50 exact candidate poses; all 50 rows correctly remain `AI_PRIOR_ONLY`. |
+| P4 multi-seed/calibration | PASS with calibration N/A | `data/experiments/phase2_5080_v1/audits/PHASE2_V2_3_MULTISEED_SUMMARY_V1.md` | Seeds 43/53/67 complete; Brier/ECE not applicable without a verified positive-and-negative probability set. |
+
+Strict three-seed test means:
+
+- Contact AUROC/AUPRC: `0.8287 / 0.5197` versus contact prevalence `0.1995`.
+- Paratope AUPRC: `0.6306` versus prevalence `0.1686`.
+- Epitope AUPRC: `0.1598` versus prevalence `0.0831`.
+- Ranking MRR: `0.5249` versus exact random-order expectation `0.5330`.
+- Hard-negative win rate: `0.5454`; pair contrastive-proxy AUROC: `0.5289`.
+
+The metrics support contact/site learning, not a strong pair-level binding claim.
+Constructed contrasts remain unlabeled ranking proxies and are never redefined as
+verified non-binders. V2.2 numbers are retained as earlier-split references and
+are not directly compared as improvements or regressions.
+
+Current candidate artifacts:
+
+- Multi-seed ensemble: `data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_multiseed_ensemble.csv`.
+- P3 ranking: `data/experiments/phase2_5080_v1/predictions/p3_late_fusion_rankings_v1.csv`.
+- Only `zym_test_108006` and `zym_test_9743` occur in all three model seed top-10 lists; this is stability evidence, not biological validation.
+- P3 ranks `zym_test_9743` first after deterministic V2.3/V2.2 plus NanoBind/DeepNano fusion; it still requires real structural and experimental follow-up.
+
+Training used the RTX 5080 in three formal runs. Mean GPU utilization was
+approximately 27-29%, P95 utilization 57-59%, peak utilization 62-65%, and peak
+memory 5.6-6.0 GiB. Runtime inputs were staged to the Linux filesystem to avoid
+WSL `/mnt/d` I/O stalls; all 27 staged files were SHA256-identical to the durable
+project artifacts. Portable checkpoints restore durable paths under
+`data/experiments/phase2_5080_v1/checkpoints/`.
+
+Phase 2 next priorities are deliberately narrow:
+
+1. Obtain verified target-conditioned negative or competition labels; without them pair calibration cannot be made legitimate.
+2. Generate real poses only for a small, stable consensus subset, then rerun P3 geometry extraction instead of fabricating pose features.
+3. Improve pair ranking with better hard-negative biology and target-conditioned interaction supervision before increasing model size.
+4. Keep all current candidate values as computational ranking evidence until binding and blocking assays exist.
 
 ## Current Objective
 

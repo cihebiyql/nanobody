@@ -1,0 +1,140 @@
+{
+  "chronology": [
+    {
+      "event": "registry_loaded",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/evidence_registry_v2_5.csv",
+      "sha256": "b3e6298f5da2634412172b1d50e7cf6100e0082b0086d6c4f00249fdc2a6885d"
+    },
+    {
+      "component_count": 258,
+      "event": "connected_components_assigned"
+    },
+    {
+      "event": "zero_supported_key_overlap_asserted"
+    },
+    {
+      "event": "formal_labels_sealed",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/phase2_v2_5_generic_formal_labels_sealed.csv",
+      "sha256": "9513e58aba9cb4703a27425fdde8998c1ba586ec4f4782f899aae758838129c2"
+    },
+    {
+      "event": "formal_manifest_blinded",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/phase2_v2_5_generic_formal_manifest_blinded.csv",
+      "sha256": "db89a41e21ac9b4faeb4da10fd4812ee1f26d3f0e98c0aa057f40b7e48a51a47"
+    }
+  ],
+  "created_at_utc": "2026-07-11T04:23:02Z",
+  "formal_labels_read_by_train_or_dev": false,
+  "formal_scope": "GENERIC_FORMAL_ONLY",
+  "input_sha256": {
+    "registry": "b3e6298f5da2634412172b1d50e7cf6100e0082b0086d6c4f00249fdc2a6885d"
+  },
+  "label_columns_absent_from_formal_blinded": true,
+  "leakage_overlap_audit": {
+    "assay_batch": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "base_mutant_group_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "cdr3": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "cdr3_cluster": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "leakage_group_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "patent_family_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "pdb_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "reference_sample_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "sequence_sha256": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "source_document_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "source_group_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "split_group_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "structure_group_id": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "target_construct": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "target_family": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "target_sequence_sha256": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    },
+    "vhh_identity_cluster": {
+      "dev_vs_formal": 0,
+      "train_vs_dev": 0,
+      "train_vs_formal": 0
+    }
+  },
+  "output_sha256": {
+    "dev_manifest": "ffa589a2d327ce9d21897f3323257b92cbe5936cee273c2175cb912744e8d211",
+    "formal_labels_sealed": "9513e58aba9cb4703a27425fdde8998c1ba586ec4f4782f899aae758838129c2",
+    "formal_manifest_blinded": "db89a41e21ac9b4faeb4da10fd4812ee1f26d3f0e98c0aa057f40b7e48a51a47",
+    "train_manifest": "24c0a1f13b1ad96c3abf8f13fcaaf710e493874c2804f061425b679efc578ff7"
+  },
+  "row_counts": {
+    "dev": 292,
+    "formal_blinded": 29,
+    "formal_labels_sealed": 29,
+    "train": 10003
+  },
+  "schema_version": "phase2_v2_5_split_seal_v1",
+  "seed": 20260711,
+  "split_group_counts": {
+    "dev": 49,
+    "formal": 5,
+    "train": 204
+  },
+  "status": "PASS"
+}

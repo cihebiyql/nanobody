@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "output": "experiments/phase2_5080_v1/predictions/p3_late_fusion_rankings_v1.csv",
+  "candidate_rows": 50,
+  "ranked_rows": 50,
+  "leakage_holdout_rows": 0,
+  "pose_available_rows": 0,
+  "pose_used_rows": 0,
+  "missing_pose_ai_prior_only_rows": 50,
+  "evidence_boundary": "computational_candidate_ranking_not_experimental_binding_or_blocker_probability",
+  "weight_spec": {
+    "ai_component_weights": {
+      "external_prior": 0.45,
+      "phase2": 0.55
+    },
+    "external_feature_weights": {
+      "deepnano_seq_raw_score": 0.2,
+      "deepnano_site_target_minus_background": 0.1,
+      "deepnano_site_target_weighted_mean": 0.1,
+      "nanobind_pro_raw_score": 0.15,
+      "nanobind_seq_raw_score": 0.2,
+      "nanobind_site_target_minus_background": 0.15,
+      "nanobind_site_target_weighted_mean": 0.1
+    },
+    "normalization": "rank_quantile_fit_on_current_non_leakage_candidate_pool_only",
+    "p3_component_weights_when_pose_present": {
+      "ai_prior": 0.8,
+      "pose_geometry": 0.2
+    },
+    "phase2_feature_weights": {
+      "phase2_v2_3_cdr3_contact_mean_ai_prior": 0.1,
+      "phase2_v2_3_cdr3_contact_top20_mean_ai_prior_norm": 0.18,
+      "phase2_v2_3_combined_ranking_ai_prior": 0.3,
+      "phase2_v2_3_contact_top20_mean_ai_prior_norm": 0.12,
+      "phase2_v2_3_pair_ranking_logit_norm": 0.18,
+      "phase2_v2_3_sigmoid_pair_ranking_ai_prior_norm": 0.12,
+      "phase2_v2_cdr3_hotspot_contact_mean": 0.15,
+      "phase2_v2_combined_rank_score": 0.5,
+      "phase2_v2_pair_binding_probability": 0.2,
+      "phase2_v2_pvrig_target_epitope_mass": 0.15
+    },
+    "pose_feature_weights": {}
+  }
+}

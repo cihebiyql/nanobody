@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+set -euo pipefail
+/data/qlyu/software/vhh_eval_tools/bin/vhh-competition-qc /data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450/cascade/full_chunks/chunk_000001/input.fasta -o /data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450/cascade/full_chunks/chunk_000001/qc_out --prefix chunk_000001 --workers 8 --tnp-ncores 4 --identity-cache-size 500000 --gate-policy blocker_calibrated --skip-team-diversity --top-n 100000000 --reserve-n 0 --local-positive-cdr-csv /data/qlyu/software/vhh_eval_tools/references/local_pvrig_positive_vhh_cdrs.csv --skip-tnp

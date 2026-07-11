@@ -1,0 +1,17 @@
+{
+  "best_score": 1.2766023297762914,
+  "boundary_note": "ranking AI prior only; sigmoid proxy is not calibrated blocker probability",
+  "cache_manifest": "/tmp/pvrig_v2_3_runtime_20260710/cache/manifest.csv",
+  "cdr_mask_csv": "/tmp/pvrig_v2_3_runtime_20260710/vhh_cdr_type_masks_v2_3.csv",
+  "checkpoint": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed67/best_checkpoint.pt",
+  "checkpoint_epoch": 5,
+  "device": "cuda",
+  "excluded_candidates": 0,
+  "excluded_output": "",
+  "input_candidates": 50,
+  "output": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_seed67.csv",
+  "ranked_candidates": 50,
+  "schema_version": "pvrig_vhh_phase2_v2_3_ranking_ai_prior_v1",
+  "status": "PASS",
+  "target_fasta": "/mnt/d/work/抗体/data/model_data/pvrig_target_ectodomain_proxy_v1.fasta"
+}

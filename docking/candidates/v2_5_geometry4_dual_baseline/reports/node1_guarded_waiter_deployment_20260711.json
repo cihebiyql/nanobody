@@ -1,0 +1,38 @@
+{
+  "artifact_sha256": {
+    "reports/node1_guarded_waiter_events_20260711.tsv": "20da2dcbb91302f3245a138bb4d8f2897313d815b00cc6b8337b204c09a8ad25",
+    "reports/node1_guarded_waiter_status_20260711.env": "d179955f3e6c97349fbaac4322973eb18ee00aebd32b5a6b4e9e915f2dc6d20d",
+    "scripts/deploy_guarded_haddock3_waiter_node1.sh": "0b16a51d91307e4fa2b253cd2d71fb46706a04210b8b48d95ac2236d16ae841e",
+    "scripts/node1_guarded_haddock3_waiter.sh": "883eed5a031c1f36fb626a0a6df55380699bc66ff9db1f1cca91b299d6e8e84d"
+  },
+  "candidate": "zym_test_359954",
+  "claim_boundary": "queued_computational_work_not_completed_docking_or_experimental_evidence",
+  "deployed_at": "2026-07-11T17:42:09+08:00",
+  "deployment_recovery": "default_tmux_server_exited; independent named tmux socket validated and used",
+  "haddock_started_at_status_check": false,
+  "load1": 99.68,
+  "max_wait_seconds": 86400,
+  "pending_candidates": [
+    "zym_test_359954",
+    "zym_test_3633872",
+    "zym_test_8787"
+  ],
+  "poll_seconds": 60,
+  "remote_log": "/data/qlyu/projects/pvrig_v2_5_pose_batch/logs/geometry4_guarded_waiter_20260711_174209.log",
+  "remote_runner": "/data/qlyu/projects/pvrig_v2_5_pose_batch/scripts/node1_guarded_haddock3_waiter.sh",
+  "runner_selftest": "expected_timeout_exit_31_at_high_load_without_starting_haddock",
+  "safety_controls": [
+    "flock_single_instance",
+    "strict_load_gate_before_each_candidate",
+    "24_hour_timeout",
+    "refuse_incomplete_existing_run",
+    "never_delete_run"
+  ],
+  "schema_version": "pvrig_v2_5_geometry4_guarded_waiter_deployment_v1",
+  "session_status": "RUNNING",
+  "state": "WAITING_FOR_LOAD",
+  "status_checked_at": "2026-07-11T17:43:10+08:00",
+  "strict_launch_condition": "load1 < 64",
+  "tmux_session": "pvrig_v25_geometry4_waiter",
+  "tmux_socket": "pvrig_v25_geometry4"
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_count": 50,
+  "claim_boundary": "computational_pose_qc_proxy_not_binding_or_blocker_proof",
+  "exact_qc_passed_coverage": 0.04,
+  "global_fusion_applied": false,
+  "global_fusion_min_coverage": 0.8,
+  "haddock3_load_gate_evidence": {
+    "latest_log_selected": true,
+    "log_path": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/logs/run_node1_v2_5_pose_batch.20260711_120644.log",
+    "log_sha256": "644293040c2f28b12ab56f0deea4c4655fcef4d0aa88c9b46ca0e81ddecd94b7",
+    "observed_load1": 106.98,
+    "status": "GATED_NOT_RUN_DUE_NODE1_LOAD",
+    "threshold": 64.0
+  },
+  "haddock3_status": "GATED_NOT_RUN_DUE_NODE1_LOAD",
+  "missingness_audit_pass": false,
+  "missingness_reason": "candidate-specific complex poses remain selected-rank dependent and cover less than 80 percent",
+  "prior_exact_complex_pose_count": 2,
+  "schema_version": "phase2_v2_5_pose_coverage_v1",
+  "status": "PASS",
+  "v2_5_new_monomer_sequence_geometry_qc_pass_count": 8
+}

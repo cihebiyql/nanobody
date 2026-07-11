@@ -1,0 +1,23 @@
+{
+  "best_score": 1.548030687746426,
+  "boundary_note": "V2.4 ranking AI prior only; sigmoid proxy is not a calibrated blocker probability; constructed N1/N2/N3 contrasts are not verified non-binders",
+  "cache_manifest": "/tmp/pvrig_v2_4_runtime_20260711/experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+  "calibration": {
+    "reason": "candidate scoring has no verified positive-and-negative probability labels",
+    "status": "NOT_APPLICABLE"
+  },
+  "cdr_mask_csv": "/tmp/pvrig_v2_4_runtime_20260711/experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv",
+  "checkpoint": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed67_best_checkpoint.pt",
+  "checkpoint_epoch": 4,
+  "checkpoint_schema_version": "phase2_v2_4_listwise_ranking_checkpoint_v1",
+  "device": "cuda",
+  "excluded_candidates": 0,
+  "excluded_output": "",
+  "input_candidates": 50,
+  "output": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_seed67.csv",
+  "ranked_candidates": 50,
+  "schema_version": "pvrig_vhh_phase2_v2_4_listwise_ranking_ai_prior_v1",
+  "status": "PASS",
+  "target_fasta": "/mnt/d/work/抗体/data/model_data/pvrig_target_ectodomain_proxy_v1.fasta",
+  "target_sequence_sha256": "b3d2735abe671004474d0196f9d010bbdf22ea2cec9ccb6d71b28f9bdb328075"
+}

@@ -1,0 +1,52 @@
+{
+  "boundaries": {
+    "constructed_negatives": "ranking proxies, not verified non-binders",
+    "pose_labels": "docking proxies, not experimental binding or blocker labels",
+    "pvrig_controls": "calibration/leakage controls, never ordinary train/test/candidate rows"
+  },
+  "controls": {
+    "control_rows": 47,
+    "duplicate_role_rows": 7,
+    "ground_truth_kind_counts": {
+      "assay_backed_positive_calibration": 11,
+      "constructed_mutant_or_leakage_control": 36
+    },
+    "mutant_or_reference_controls": 36,
+    "positive_controls": 11,
+    "unique_control_sequence_hashes": 40
+  },
+  "isolation": {
+    "control_unique_vhh_hashes": 40,
+    "hash_overlap": 0,
+    "ranking_unique_vhh_hashes": 922
+  },
+  "outputs": {
+    "pose_proxy_summary": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_pose_proxy_summary_v2_4.csv",
+    "ranking_groups": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pair_ranking_groups_v2_4.csv",
+    "validation_controls": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_validation_controls_v2_4.csv"
+  },
+  "pose_proxy": {
+    "mutant_pose_rows": 357,
+    "positive_pose_rows": 109,
+    "source_pose_rows": 466,
+    "summary_rows": 47
+  },
+  "ranking": {
+    "constructed_candidate_rows": 3614,
+    "negative_type_counts": {
+      "N1_easy_cross_antigen": 1230,
+      "N2_same_family_hard_antigen": 1156,
+      "N3_framework_similar_hard_vhh": 1228
+    },
+    "positive_anchor_rows": 1230,
+    "ranking_groups": 1230,
+    "ranking_rows": 4844,
+    "split_counts": {
+      "test": 184,
+      "train": 861,
+      "val": 185
+    }
+  },
+  "schema_version": "phase2_v2_4_manifest_contract_v1",
+  "status": "PASS"
+}

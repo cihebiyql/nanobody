@@ -1,0 +1,80 @@
+{
+  "all_three_seeds_full50_exact": true,
+  "boundary": "Equivalence validates serialization and durable-path portability only; it does not validate biological binding or blocking.",
+  "candidate_identity_hashes_equal": true,
+  "candidate_ids_equal": true,
+  "max_abs_differences": {
+    "phase2_v2_4_cdr3_contact_mean_ai_prior": 0.0,
+    "phase2_v2_4_cdr3_contact_top20_mean_ai_prior": 0.0,
+    "phase2_v2_4_combined_ranking_ai_prior": 0.0,
+    "phase2_v2_4_contact_top20_mean_ai_prior": 0.0,
+    "phase2_v2_4_pair_ranking_logit": 0.0,
+    "phase2_v2_4_sigmoid_pair_ranking_ai_prior": 0.0
+  },
+  "per_seed": [
+    {
+      "candidate_identity_hashes_equal": true,
+      "candidate_ids_equal": true,
+      "durable_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+      "max_abs_differences": {
+        "phase2_v2_4_cdr3_contact_mean_ai_prior": 0.0,
+        "phase2_v2_4_cdr3_contact_top20_mean_ai_prior": 0.0,
+        "phase2_v2_4_combined_ranking_ai_prior": 0.0,
+        "phase2_v2_4_contact_top20_mean_ai_prior": 0.0,
+        "phase2_v2_4_pair_ranking_logit": 0.0,
+        "phase2_v2_4_sigmoid_pair_ranking_ai_prior": 0.0
+      },
+      "portable_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed43_best_checkpoint.pt",
+      "ranks_equal": true,
+      "reference_candidate_csv": "experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_seed43.csv",
+      "rows": 50,
+      "runtime_staging_path_used": false,
+      "seed": 43
+    },
+    {
+      "candidate_identity_hashes_equal": true,
+      "candidate_ids_equal": true,
+      "durable_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+      "max_abs_differences": {
+        "phase2_v2_4_cdr3_contact_mean_ai_prior": 0.0,
+        "phase2_v2_4_cdr3_contact_top20_mean_ai_prior": 0.0,
+        "phase2_v2_4_combined_ranking_ai_prior": 0.0,
+        "phase2_v2_4_contact_top20_mean_ai_prior": 0.0,
+        "phase2_v2_4_pair_ranking_logit": 0.0,
+        "phase2_v2_4_sigmoid_pair_ranking_ai_prior": 0.0
+      },
+      "portable_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed53_best_checkpoint.pt",
+      "ranks_equal": true,
+      "reference_candidate_csv": "experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_seed53.csv",
+      "rows": 50,
+      "runtime_staging_path_used": false,
+      "seed": 53
+    },
+    {
+      "candidate_identity_hashes_equal": true,
+      "candidate_ids_equal": true,
+      "durable_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+      "max_abs_differences": {
+        "phase2_v2_4_cdr3_contact_mean_ai_prior": 0.0,
+        "phase2_v2_4_cdr3_contact_top20_mean_ai_prior": 0.0,
+        "phase2_v2_4_combined_ranking_ai_prior": 0.0,
+        "phase2_v2_4_contact_top20_mean_ai_prior": 0.0,
+        "phase2_v2_4_pair_ranking_logit": 0.0,
+        "phase2_v2_4_sigmoid_pair_ranking_ai_prior": 0.0
+      },
+      "portable_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_4_strict_seed67_best_checkpoint.pt",
+      "ranks_equal": true,
+      "reference_candidate_csv": "experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_seed67.csv",
+      "rows": 50,
+      "runtime_staging_path_used": false,
+      "seed": 67
+    }
+  ],
+  "schema_version": "phase2_v2_4_portable_inference_equivalence_v2",
+  "seeds": [
+    43,
+    53,
+    67
+  ],
+  "status": "PASS"
+}

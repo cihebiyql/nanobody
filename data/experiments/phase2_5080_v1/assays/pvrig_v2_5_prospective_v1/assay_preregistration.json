@@ -1,0 +1,74 @@
+{
+  "claim_boundary": "templates_and_randomization_are_not_experimental_measurements",
+  "frozen_inputs": {
+    "panel_filename": "pvrig_v2_5_prospective_assay_panel.csv",
+    "panel_sha256": "9c2b445f915ababc39b2686d5fd57732d0180136adc6b3ae6c7e79712854ffae",
+    "target_fasta_filename": "pvrig_target_ectodomain_proxy_v1.fasta",
+    "target_fasta_sha256": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50",
+    "target_sequence_sha256": "b3d2735abe671004474d0196f9d010bbdf22ea2cec9ccb6d71b28f9bdb328075"
+  },
+  "hard_truth_gates": {
+    "assay_failure_is_not_nonbinding": true,
+    "binding_is_not_blocking": true,
+    "blocker_requires_verified_binding_before_competition_interpretation": true,
+    "expression_failure_is_not_nonbinding": true,
+    "functional_claim_requires_verified_blocking_before_functional_interpretation": true,
+    "mixed_calls_are_inconclusive": true,
+    "nonbinder_requires_qc_pass_and_absent_concentration_dependent_binding_in_all_valid_runs": true,
+    "raw_data_path_and_sha256_required_for_non_pending_calls": true
+  },
+  "lab_parameters_to_freeze_before_first_measurement": {
+    "binding_fit_qc_rule": null,
+    "binding_max_analyte_concentration_nM": null,
+    "binding_response_detection_rule": null,
+    "competition_effect_rule": null,
+    "competition_max_analyte_concentration_nM": null,
+    "functional_effect_rule": null,
+    "functional_max_analyte_concentration_nM": null,
+    "functional_viability_rule": null,
+    "maximum_aggregation_fraction": null,
+    "minimum_expression_yield_mg_per_l": null,
+    "minimum_functional_viability_fraction": null,
+    "minimum_purity_fraction": null,
+    "minimum_sec_monomer_fraction": null
+  },
+  "manual_scientific_calls": {
+    "binding": [
+      "BINDER",
+      "NONBINDER",
+      "INCONCLUSIVE",
+      "NOT_RUN",
+      "PENDING"
+    ],
+    "blocking": [
+      "BLOCKER",
+      "NONBLOCKER",
+      "INCONCLUSIVE",
+      "NOT_RUN",
+      "PENDING"
+    ],
+    "expression_qc": [
+      "PASS",
+      "FAIL",
+      "INCONCLUSIVE",
+      "PENDING"
+    ],
+    "functional": [
+      "POSITIVE",
+      "NEGATIVE",
+      "INCONCLUSIVE",
+      "NOT_RUN",
+      "PENDING"
+    ]
+  },
+  "package_version": "pvrig_v2_5_prospective_assay_execution_v1",
+  "replication": {
+    "consensus_rule": "all_valid_independent_runs_must_agree",
+    "minimum_distinct_day_blocks": 2,
+    "minimum_independent_runs": 3,
+    "randomization_seed": 20260711,
+    "scheduled_distinct_day_blocks": 3,
+    "scheduled_independent_runs": 3
+  },
+  "schema_version": "pvrig_v2_5_assay_preregistration_v1"
+}

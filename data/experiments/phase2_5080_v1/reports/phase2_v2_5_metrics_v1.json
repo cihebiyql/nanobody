@@ -1,0 +1,380 @@
+{
+  "boundary": "generic affinity ranking only; no PVRIG blocker, target-success, or calibrated-probability claim",
+  "calibration": {
+    "fit_split": "dev_only",
+    "reason": "verified positive and verified negative labels are not both present",
+    "status": "NOT_APPLICABLE"
+  },
+  "data_readiness": {
+    "assay_backed_rank_groups": 0,
+    "evidence_level_counts": {
+      "E0": 36,
+      "E1": 6385,
+      "E2": 3614,
+      "E3": 97,
+      "E4": 181,
+      "E5": 11
+    },
+    "independent_family_assay_blocks": 0,
+    "no_go_reasons": [
+      "insufficient_pvrig_assay_backed_positive_and_negative_or_ranking_groups"
+    ],
+    "power_simulation": {
+      "alpha_two_sided": 0.05,
+      "estimated_power": null,
+      "expected_ci_half_width": null,
+      "formal_assay_or_source_block_count": 0,
+      "formal_labels_read": false,
+      "formal_split_group_count": 0,
+      "maximum_ci_half_width": 0.1,
+      "mde_absolute": 0.1,
+      "minimum_power": 0.8,
+      "primary_metric": "macro_group_pairwise_preference_accuracy",
+      "simulation_seed": 20260711
+    },
+    "status": "DATA_NOT_READY",
+    "target_development_assay_backed_rows": 11,
+    "target_development_control_only_rows": 11,
+    "target_development_model_eligible_rows": 0,
+    "target_development_non_model_eligible_rows": 11,
+    "target_training_scheduled": false,
+    "verified_binary_negative": 0,
+    "verified_binary_positive": 0
+  },
+  "formal_decision": {
+    "claim_boundary": "ranking_evidence_not_experimental_blocker_validation",
+    "contact_guardrail_pass": null,
+    "generic_transfer_formal_pass": false,
+    "generic_transfer_status": "PASS_LIMITED_RANKING_ONLY",
+    "next_version_required_for_any_method_change": true,
+    "paratope_guardrail_pass": null,
+    "permutation_pass": false,
+    "primary_delta_vs_strong_baseline_ci_low_gt_zero": false,
+    "seed_consistency_pass": true,
+    "status": "DATA_NOT_READY_FOR_TARGET_MODEL"
+  },
+  "formal_unseal": {
+    "completed_at_utc": "2026-07-11T04:36:57.676164+00:00",
+    "formal_blinded_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/phase2_v2_5_generic/nanobind_affinity_formal_blinded_v2_5.csv",
+    "formal_blinded_sha256": "8c69b2108d0e97dbfe99414dda3d58a1514c6e0507215a06e0b26bfbfe498587",
+    "formal_features_unchanged_after_unseal": true,
+    "formal_inference_telemetry_by_seed": {
+      "43": {
+        "actual_device": "cuda",
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 5080",
+        "cuda_peak_allocated_bytes": 34201600,
+        "cuda_peak_allocated_mib": 32.6171875,
+        "elapsed_seconds": 0.25536164408549666,
+        "requested_device": "cuda",
+        "torch_cuda_version": "13.0"
+      },
+      "53": {
+        "actual_device": "cuda",
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 5080",
+        "cuda_peak_allocated_bytes": 34201600,
+        "cuda_peak_allocated_mib": 32.6171875,
+        "elapsed_seconds": 0.010800004005432129,
+        "requested_device": "cuda",
+        "torch_cuda_version": "13.0"
+      },
+      "67": {
+        "actual_device": "cuda",
+        "cuda_available": true,
+        "cuda_device_name": "NVIDIA GeForce RTX 5080",
+        "cuda_peak_allocated_bytes": 34201600,
+        "cuda_peak_allocated_mib": 32.6171875,
+        "elapsed_seconds": 0.009763565962202847,
+        "requested_device": "cuda",
+        "torch_cuda_version": "13.0"
+      }
+    },
+    "formal_labels_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/phase2_v2_5_generic/nanobind_affinity_formal_labels_sealed_v2_5.csv",
+    "formal_labels_sha256": "61c3cfc49fbaa3c2c2d9d58d74a433d2f9529f8e587c6257886aa4e142628b48",
+    "formal_labels_used_for_selection": false,
+    "formal_rows": 29,
+    "formal_run_count": 1,
+    "formal_unseal_status": "UNSEALED_EXPLICIT_ONE_SHOT_COMPLETE",
+    "inference_completed_before_labels_read": true,
+    "next_version_required_for_any_change_or_rerun": true
+  },
+  "generated_at_utc": "2026-07-11T05:21:07.068713+00:00",
+  "generic_transfer": {
+    "canonical_primary_matches_one_shot_emission": true,
+    "dev_selected_strongest_baseline": "frozen_cosine_distance",
+    "formal_baseline_diagnostic_not_used_for_selection": {
+      "eligible_baseline_primary_by_seed": {
+        "43": {
+          "frozen_cosine_distance": 0.419047619047619,
+          "leakage_safe_sequence_identity_nn": 0.5642857142857143,
+          "train_only_source_assay_prior": 0.5
+        },
+        "53": {
+          "frozen_cosine_distance": 0.419047619047619,
+          "leakage_safe_sequence_identity_nn": 0.5642857142857143,
+          "train_only_source_assay_prior": 0.5
+        },
+        "67": {
+          "frozen_cosine_distance": 0.419047619047619,
+          "leakage_safe_sequence_identity_nn": 0.5642857142857143,
+          "train_only_source_assay_prior": 0.5
+        }
+      },
+      "policy": "Formal labels cannot replace the development-selected comparator."
+    },
+    "formal_rows": 29,
+    "group_local_permutation": {
+      "n_permutation": 5000,
+      "null_mean": -0.0008584126984126986,
+      "observed": 0.1365079365079365,
+      "p_two_sided": 0.30193961207758446
+    },
+    "mean_seed_group_delta": 0.1365079365079365,
+    "paired_bootstrap_95ci": {
+      "ci_high": 0.29047619047619044,
+      "ci_low": -0.017460317460317454,
+      "low_power_stratum": false,
+      "n_bootstrap": 5000,
+      "point": 0.1365079365079365,
+      "unit_count": 7
+    },
+    "primary_equivalence_audit": [
+      {
+        "canonical": 0.5095238095238095,
+        "emitted": 0.5095238095238095,
+        "exact_within_1e_12": true,
+        "method": "shallow_head",
+        "seed": 43
+      },
+      {
+        "canonical": 0.419047619047619,
+        "emitted": 0.419047619047619,
+        "exact_within_1e_12": true,
+        "method": "frozen_cosine_distance",
+        "seed": 43
+      },
+      {
+        "canonical": 0.5523809523809523,
+        "emitted": 0.5523809523809524,
+        "exact_within_1e_12": true,
+        "method": "shallow_head",
+        "seed": 53
+      },
+      {
+        "canonical": 0.419047619047619,
+        "emitted": 0.419047619047619,
+        "exact_within_1e_12": true,
+        "method": "frozen_cosine_distance",
+        "seed": 53
+      },
+      {
+        "canonical": 0.6047619047619047,
+        "emitted": 0.6047619047619047,
+        "exact_within_1e_12": true,
+        "method": "shallow_head",
+        "seed": 67
+      },
+      {
+        "canonical": 0.419047619047619,
+        "emitted": 0.419047619047619,
+        "exact_within_1e_12": true,
+        "method": "frozen_cosine_distance",
+        "seed": 67
+      }
+    ],
+    "ranking_group_count": 7,
+    "scope": "generic E4 affinity ranking only",
+    "secondary_ndcg_semantics_warning": {
+      "comparisons": [
+        {
+          "canonical_raw_kd_directional_ndcg": 0.840029876146547,
+          "difference": 0.030405681811795815,
+          "emitted_log_kd_ndcg": 0.8096241943347512,
+          "method": "shallow_head",
+          "seed": 43
+        },
+        {
+          "canonical_raw_kd_directional_ndcg": 0.8189402017671827,
+          "difference": 0.05800944675735964,
+          "emitted_log_kd_ndcg": 0.7609307550098231,
+          "method": "frozen_cosine_distance",
+          "seed": 43
+        },
+        {
+          "canonical_raw_kd_directional_ndcg": 0.8682658640545091,
+          "difference": 0.045767031995627594,
+          "emitted_log_kd_ndcg": 0.8224988320588815,
+          "method": "shallow_head",
+          "seed": 53
+        },
+        {
+          "canonical_raw_kd_directional_ndcg": 0.8189402017671827,
+          "difference": 0.05800944675735964,
+          "emitted_log_kd_ndcg": 0.7609307550098231,
+          "method": "frozen_cosine_distance",
+          "seed": 53
+        },
+        {
+          "canonical_raw_kd_directional_ndcg": 0.8907373675051558,
+          "difference": 0.043890163610622146,
+          "emitted_log_kd_ndcg": 0.8468472038945336,
+          "method": "shallow_head",
+          "seed": 67
+        },
+        {
+          "canonical_raw_kd_directional_ndcg": 0.8189402017671827,
+          "difference": 0.05800944675735964,
+          "emitted_log_kd_ndcg": 0.7609307550098231,
+          "method": "frozen_cosine_distance",
+          "seed": 67
+        }
+      ],
+      "reason": "The one-shot evaluator used -log10(Kd) gains while the canonical metrics module uses directional raw Kd gains; primary pairwise values match exactly and NDCG is secondary only.",
+      "status": "WARN"
+    },
+    "seed_consistency": {
+      "median_primary_delta": 0.13333333333333336,
+      "pass": true,
+      "positive_delta_seed_count": 3,
+      "primary_delta_by_seed": {
+        "43": 0.09047619047619047,
+        "53": 0.13333333333333336,
+        "67": 0.18571428571428572
+      }
+    },
+    "seed_results": [
+      {
+        "eligible_baseline_primary_diagnostic": {
+          "frozen_cosine_distance": 0.419047619047619,
+          "leakage_safe_sequence_identity_nn": 0.5642857142857143,
+          "train_only_source_assay_prior": 0.5
+        },
+        "mean_group_delta": 0.09047619047619047,
+        "model_primary": 0.5095238095238095,
+        "paired_bootstrap_95ci": {
+          "ci_high": 0.2857142857142857,
+          "ci_low": -0.10952380952380951,
+          "low_power_stratum": false,
+          "n_bootstrap": 5000,
+          "point": 0.09047619047619047,
+          "unit_count": 7
+        },
+        "positive_group_count": 3,
+        "ranking_group_count": 7,
+        "seed": 43,
+        "selected_baseline_primary": 0.419047619047619,
+        "telemetry": {
+          "actual_device": "cuda",
+          "cuda_available": true,
+          "cuda_device_name": "NVIDIA GeForce RTX 5080",
+          "cuda_peak_allocated_bytes": 34201600,
+          "cuda_peak_allocated_mib": 32.6171875,
+          "elapsed_seconds": 0.25536164408549666,
+          "requested_device": "cuda",
+          "torch_cuda_version": "13.0"
+        }
+      },
+      {
+        "eligible_baseline_primary_diagnostic": {
+          "frozen_cosine_distance": 0.419047619047619,
+          "leakage_safe_sequence_identity_nn": 0.5642857142857143,
+          "train_only_source_assay_prior": 0.5
+        },
+        "mean_group_delta": 0.13333333333333336,
+        "model_primary": 0.5523809523809523,
+        "paired_bootstrap_95ci": {
+          "ci_high": 0.30476190476190473,
+          "ci_low": -0.05714285714285714,
+          "low_power_stratum": false,
+          "n_bootstrap": 5000,
+          "point": 0.13333333333333336,
+          "unit_count": 7
+        },
+        "positive_group_count": 4,
+        "ranking_group_count": 7,
+        "seed": 53,
+        "selected_baseline_primary": 0.419047619047619,
+        "telemetry": {
+          "actual_device": "cuda",
+          "cuda_available": true,
+          "cuda_device_name": "NVIDIA GeForce RTX 5080",
+          "cuda_peak_allocated_bytes": 34201600,
+          "cuda_peak_allocated_mib": 32.6171875,
+          "elapsed_seconds": 0.010800004005432129,
+          "requested_device": "cuda",
+          "torch_cuda_version": "13.0"
+        }
+      },
+      {
+        "eligible_baseline_primary_diagnostic": {
+          "frozen_cosine_distance": 0.419047619047619,
+          "leakage_safe_sequence_identity_nn": 0.5642857142857143,
+          "train_only_source_assay_prior": 0.5
+        },
+        "mean_group_delta": 0.18571428571428572,
+        "model_primary": 0.6047619047619047,
+        "paired_bootstrap_95ci": {
+          "ci_high": 0.3285714285714286,
+          "ci_low": 0.023809523809523815,
+          "low_power_stratum": false,
+          "n_bootstrap": 5000,
+          "point": 0.18571428571428572,
+          "unit_count": 7
+        },
+        "positive_group_count": 5,
+        "ranking_group_count": 7,
+        "seed": 67,
+        "selected_baseline_primary": 0.419047619047619,
+        "telemetry": {
+          "actual_device": "cuda",
+          "cuda_available": true,
+          "cuda_device_name": "NVIDIA GeForce RTX 5080",
+          "cuda_peak_allocated_bytes": 34201600,
+          "cuda_peak_allocated_mib": 32.6171875,
+          "elapsed_seconds": 0.009763565962202847,
+          "requested_device": "cuda",
+          "torch_cuda_version": "13.0"
+        }
+      }
+    ]
+  },
+  "generic_transfer_formal_pass": false,
+  "generic_transfer_status": "PASS_LIMITED_RANKING_ONLY",
+  "input_sha256": {
+    "evidence_registry": "b3e6298f5da2634412172b1d50e7cf6100e0082b0086d6c4f00249fdc2a6885d",
+    "formal_label_binding_audit": "40e235555c38d29f8155c532459414066d77ca03a9d6ebb5183dc7d5891ac96a",
+    "formal_labels_sealed": "61c3cfc49fbaa3c2c2d9d58d74a433d2f9529f8e587c6257886aa4e142628b48",
+    "formal_manifest_blinded": "8c69b2108d0e97dbfe99414dda3d58a1514c6e0507215a06e0b26bfbfe498587",
+    "formal_unseal_audit": "c0b7e9d758e884a5fe250574596d5151b041e3ab4b9a8745e2f4ed5b9f609843",
+    "p1_formal_manifest": "db89a41e21ac9b4faeb4da10fd4812ee1f26d3f0e98c0aa057f40b7e48a51a47",
+    "preregistration_json": "b31c309ae29a45bb2fe62fe7fe70a25727c015079a2f4d4a5e0b18e3434b8d97",
+    "run_summary": "38ec3c85129d74f85a3990a30c9edd8602c9e921a6474b4e89440f7aa46778b2"
+  },
+  "label_binding": {
+    "actual_v2_5_rows_bound_to_raw_source": true,
+    "audit_path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v2_5_formal_label_binding_audit_v1.json",
+    "evaluator_schema_gap_present": true,
+    "status": "PASS"
+  },
+  "pose": {
+    "exact_qc_passed_coverage": 0.04,
+    "global_fusion_applied": false,
+    "global_fusion_min_coverage": 0.8,
+    "haddock3_status": "GATED_NOT_RUN_DUE_NODE1_LOAD",
+    "missingness_audit_pass": false,
+    "new_monomer_sequence_geometry_qc_pass_count": 8
+  },
+  "run_dir": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/phase2_v2_5_generic/phase2_v2_5_generic_20260711T042831_045756Z",
+  "schema_version": "phase2_v2_5_metrics_v1",
+  "statistics": {
+    "bootstrap_n": 5000,
+    "bootstrap_unit": "assay_comparable_ranking_group_id",
+    "multi_seed_aggregation": "mean seed delta within ranking group, then macro average across groups",
+    "permutation_n": 5000,
+    "primary_alpha_two_sided": 0.05,
+    "primary_metric": "macro_group_pairwise_preference_accuracy",
+    "statistics_rng_seed": 1822152995,
+    "statistics_rng_seed_source": "first_32_bits_of_pre_unseal_preregistered_selection_sha256"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "checkpoints": [
+    {
+      "seed": 43,
+      "source": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed43/best_checkpoint.pt",
+      "portable": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "epoch": 3,
+      "best_score": 1.2820179689373377,
+      "portable_sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97",
+      "model_state_roundtrip_equal": true,
+      "durable_cfg_paths": {
+        "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+        "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+        "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv",
+        "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+        "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+        "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv"
+      }
+    },
+    {
+      "seed": 53,
+      "source": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed53/best_checkpoint.pt",
+      "portable": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "epoch": 6,
+      "best_score": 1.2570174343474017,
+      "portable_sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b",
+      "model_state_roundtrip_equal": true,
+      "durable_cfg_paths": {
+        "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+        "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+        "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv",
+        "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+        "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+        "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv"
+      }
+    },
+    {
+      "seed": 67,
+      "source": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/phase2_v2_3_strict_hardened_20260710_seed67/best_checkpoint.pt",
+      "portable": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "epoch": 5,
+      "best_score": 1.2766023297762914,
+      "portable_sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9",
+      "model_state_roundtrip_equal": true,
+      "durable_cfg_paths": {
+        "clustered_site_csv": "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+        "pair_csv": "experiments/phase2_5080_v1/data_splits/pair_binding_split_v2_clustered.csv",
+        "ranking_triplets_csv": "experiments/phase2_5080_v1/data_splits/pair_ranking_triplets_v2_clustered.csv",
+        "contact_jsonl": "experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+        "esm2_cache_manifest": "experiments/phase2_5080_v1/prepared/esm2_8m_v2_3_cache/manifest.csv",
+        "cdr_mask_csv": "experiments/phase2_5080_v1/data_splits/vhh_cdr_type_masks_v2_3.csv"
+      }
+    }
+  ],
+  "canonical_seed": 43,
+  "canonical_selection": "maximum validation composite best_score among fixed baseline seeds 43, 53, 67",
+  "canonical_alias": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_best_checkpoint.pt",
+  "canonical_alias_sha256": "24b8407ba3573efbbd4a1d04c31a3ab283f32e9acea90e222e69dbe522505009",
+  "boundary": "Checkpoint paths are portable durable project paths; runtime /tmp staging was byte-equivalent acceleration only."
+}

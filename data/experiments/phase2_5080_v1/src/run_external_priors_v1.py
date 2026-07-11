@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import csv
+import hashlib
 import importlib
 import json
 import os
@@ -199,9 +200,12 @@ def checkpoint_info(path: Path) -> Dict[str, str]:
 
 
 def base_row(candidate: Dict[str, str], model_key: str, metadata: Dict[str, str]) -> Dict[str, str]:
+    sequence = candidate.get("vhh_seq", "")
     row = {
         "candidate_id": candidate["candidate_id"],
         "input_row_index": candidate["input_row_index"],
+        "candidate_sequence_length": str(len(sequence)) if sequence else "",
+        "candidate_sequence_sha256": hashlib.sha256(sequence.encode("ascii")).hexdigest() if sequence else "",
         "model_key": model_key,
         "model_family": metadata.get("model_family", ""),
         "model_name": metadata.get("model_name", ""),
@@ -219,7 +223,7 @@ def base_row(candidate: Dict[str, str], model_key: str, metadata: Dict[str, str]
         "checkpoint_mtime": metadata.get("checkpoint_mtime", ""),
         "source_model_root": metadata.get("source_model_root", ""),
         "source_script": metadata.get("source_script", ""),
-        "adapter_version": "external_priors_v1",
+        "adapter_version": "external_priors_v1.1",
         "evidence_boundary": "external_nanobody_antigen_prior_not_blocker_score",
         "error": "",
     }
@@ -247,6 +251,26 @@ def import_requirements(root: Path, module_name: str, class_name: str) -> Any:
             missing.append(f"{dep} ({exc.__class__.__name__}: {exc})")
     if missing:
         raise ExternalPriorError("missing Python dependencies: " + "; ".join(missing))
+    top_level = module_name.split(".", 1)[0]
+    loaded = sys.modules.get(top_level)
+    loaded_origins: list[str] = []
+    if loaded:
+        if getattr(loaded, "__file__", None):
+            loaded_origins.append(str(loaded.__file__))
+        loaded_origins.extend(str(path) for path in getattr(loaded, "__path__", []))
+    if loaded:
+        belongs_to_root = False
+        for origin in loaded_origins:
+            try:
+                belongs_to_root = belongs_to_root or Path(origin).resolve().is_relative_to(root.resolve())
+            except (OSError, ValueError):
+                continue
+        if not belongs_to_root:
+            for key in [name for name in sys.modules if name == top_level or name.startswith(f"{top_level}.")]:
+                del sys.modules[key]
+    for model_root in (DEFAULT_NANOBIND_ROOT, DEFAULT_DEEPNANO_ROOT):
+        while str(model_root) in sys.path:
+            sys.path.remove(str(model_root))
     sys.path.insert(0, str(root))
     try:
         module = importlib.import_module(module_name)
@@ -385,7 +409,11 @@ def run_nanobind(
 
             def predictor(nb_seq: str, ag_seq: str) -> Dict[str, str]:
                 with torch.no_grad():
-                    output = model(nb_seq, ag_seq, device)
+                    if kind == "pro":
+                        # NanoBind-pro squeezes away the batch axis at batch=1; duplicate and keep item 0.
+                        output = model([nb_seq, nb_seq], [ag_seq, ag_seq], device)[0]
+                    else:
+                        output = model(nb_seq, ag_seq, device)
                 if kind == "site":
                     scores = tensor_to_float_list(output)
                     positions = [
@@ -446,8 +474,9 @@ def run_deepnano(
             model.eval()
 
             def predictor(nb_seq: str, ag_seq: str) -> Dict[str, str]:
+                # DeepNano tokenizes DataLoader-style batches, unlike NanoBind's scalar-string API.
                 with torch.no_grad():
-                    output = model(nb_seq, ag_seq, device)
+                    output = model([nb_seq], [ag_seq], device)
                 if kind == "site":
                     scores = tensor_to_float_list(output)
                     positions = [
@@ -479,6 +508,12 @@ def write_rows(path: Path, rows: Sequence[Dict[str, str]]) -> None:
     fieldnames = [
         "candidate_id",
         "input_row_index",
+        "candidate_sequence_length",
+        "candidate_sequence_sha256",
+        "antigen_id",
+        "antigen_length",
+        "antigen_sequence_sha256",
+        "antigen_fasta_path",
         "model_key",
         "model_family",
         "model_name",
@@ -521,6 +556,16 @@ def main() -> int:
             rows.extend(run_deepnano(candidates, args.deepnano_root, model_key.split("_", 1)[1], antigen_seq, args.device, args.site_threshold))
         else:
             raise ExternalPriorError(f"internal unsupported model key: {model_key}")
+    antigen_sha256 = hashlib.sha256(antigen_seq.encode("ascii")).hexdigest()
+    for row in rows:
+        row.update(
+            {
+                "antigen_id": antigen_id,
+                "antigen_length": str(len(antigen_seq)),
+                "antigen_sequence_sha256": antigen_sha256,
+                "antigen_fasta_path": str(args.pvrig_ecd_fasta),
+            }
+        )
 
     write_rows(args.output_csv, rows)
     status_counts: Dict[str, int] = {}

@@ -1,0 +1,20 @@
+{
+  "candidate_count": 24,
+  "claim_boundary": "no_pending_template_or_derived_row_is_automatic_binding_blocking_or_model_truth",
+  "e6_candidate_axis_counts": {},
+  "e6_candidate_row_count": 0,
+  "measurement_status": "READY_FOR_LAB_PREREGISTRATION",
+  "model_readiness_decision": "NOT_EVALUATED_BY_ASSAY_INTAKE",
+  "output_sha256": {
+    "candidate_assay_status.csv": "b32c769674d1d21d99223035ad805d6d1c4eeb5c74d7262bab187a2897ea5143",
+    "e6_label_candidates_review.csv": "d80caf66adfeedbfab55e38fd17173cc9988c8da75482516f4bd0a8f95497a68"
+  },
+  "package_status": "READY_FOR_LAB_PREREGISTRATION",
+  "package_version": "pvrig_v2_5_prospective_assay_execution_v1",
+  "preregistration_complete": false,
+  "required_next_gate": "MANUAL_SCIENTIFIC_REVIEW_THEN_V2_6_SPLIT_SEAL_AND_READINESS",
+  "schema_version": "pvrig_v2_5_assay_analysis_summary_v1",
+  "truth_status_counts": {
+    "PENDING_EXPRESSION_QC": 24
+  }
+}

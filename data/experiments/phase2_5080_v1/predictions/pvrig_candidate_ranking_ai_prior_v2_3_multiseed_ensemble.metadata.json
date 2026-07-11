@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "schema_version": "pvrig_vhh_phase2_v2_3_multiseed_candidate_ensemble_v1",
+  "inputs": [
+    "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_seed43.csv",
+    "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_seed53.csv",
+    "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_seed67.csv"
+  ],
+  "candidate_rows": 50,
+  "seed_count": 3,
+  "boundary": "ranking AI prior only; sigmoid proxy is not calibrated blocker probability",
+  "output": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_3_multiseed_ensemble.csv"
+}

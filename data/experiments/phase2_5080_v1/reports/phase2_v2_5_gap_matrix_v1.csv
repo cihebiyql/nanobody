@@ -1,0 +1,12 @@
+gate,observed,required,status,interpretation
+pvrig_verified_binary_positive,0,>0 with verified negatives or sufficient ranking groups,FAIL,Known positives remain calibration/leakage controls
+pvrig_verified_binary_negative,0,>0 with verified positives or sufficient ranking groups,FAIL,No assay-backed nonbinder or binder-nonblocker
+pvrig_assay_backed_rank_groups,0,8,FAIL,Prospective assay panel is unmeasured
+pvrig_formal_split_groups,0,5,FAIL,No PVRIG E6/new sealed formal groups
+pvrig_formal_assay_source_blocks,0,2,FAIL,No PVRIG formal assay/source blocks
+generic_primary_mean_seed_delta,0.1365079365079365,>0,PASS,Point estimate only
+generic_primary_bootstrap_ci_low,-0.017460317460317454,>0,FAIL,Seven ranking groups; CI crosses zero
+generic_primary_permutation_p,0.30193961207758446,<0.05,FAIL,Two-sided group-local permutation
+generic_positive_seed_count,3,>=2 of 3 and median >0,PASS,"Frozen seeds 43,53,67"
+exact_qc_complex_pose_coverage,0.04,>=0.80 for global fusion,FAIL,Global pose fusion remains disabled
+new_nbb2_monomer_qc_pass,8,8,PASS,Monomer QC is not complex-pose evidence

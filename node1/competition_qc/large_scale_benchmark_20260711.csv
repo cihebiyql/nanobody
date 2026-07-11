@@ -1,0 +1,9 @@
+benchmark,input_count,full_qc_count,geometry_count,wall_seconds,notes
+legacy_full_qc,50,50,0,1559.37,Original full vhh-competition-qc benchmark including TNP and all-candidate team diversity
+novelty_lcs_disabled,11,11,0,13.577,Novelty stage with LCS bound pruning disabled; exact-match early stop remains
+novelty_lcs_pruned,11,11,0,0.349,Byte-identical cdr_novelty.tsv; MUSCLE cache misses reduced from 653 to 22
+large_scale_fast,50,0,0,24.98,Official CLI deferred; official/local positive CDR cache novelty and L1 remain active
+full_shortlist_with_tnp,10,10,0,462.48,Full sequence QC on ten shortlisted candidates with TNP
+full_shortlist_without_tnp,10,10,0,143.38,Full sequence QC on ten shortlisted candidates with TNP deferred
+optimized_cascade,50,10,5,169.82,Fast 50 then full 10 without TNP then geometry shortlist 5; docking not included
+optimized_cascade_resume,50,10,5,1.15,All completed chunks reused from complete markers

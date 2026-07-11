@@ -1,0 +1,113 @@
+{
+  "status": "PASS",
+  "failed_checks": [],
+  "checks": [
+    {
+      "name": "output_candidate_id_unique",
+      "passed": true,
+      "evidence": "duplicates=[]"
+    },
+    {
+      "name": "phase2_candidate_id_unique",
+      "passed": true,
+      "evidence": "duplicates=[]"
+    },
+    {
+      "name": "external_priors_candidate_id_unique",
+      "passed": true,
+      "evidence": "duplicates=[]"
+    },
+    {
+      "name": "output_matches_phase2_candidate_pool",
+      "passed": true,
+      "evidence": "output=50 phase2=50"
+    },
+    {
+      "name": "external_prior_join_complete",
+      "passed": true,
+      "evidence": "missing=[]"
+    },
+    {
+      "name": "pose_manifest_candidate_id_unique",
+      "passed": true,
+      "evidence": "duplicates=[]"
+    },
+    {
+      "name": "geometry_candidate_id_unique",
+      "passed": true,
+      "evidence": "duplicates=[]"
+    },
+    {
+      "name": "required_output_columns_present",
+      "passed": true,
+      "evidence": "missing=[]"
+    },
+    {
+      "name": "p3_phase2_component_ranking_score_range_0_1",
+      "passed": true,
+      "evidence": "non_null=50"
+    },
+    {
+      "name": "p3_external_prior_component_ranking_score_range_0_1",
+      "passed": true,
+      "evidence": "non_null=50"
+    },
+    {
+      "name": "p3_ai_prior_ranking_score_range_0_1",
+      "passed": true,
+      "evidence": "non_null=50"
+    },
+    {
+      "name": "p3_pose_geometry_ranking_score_range_0_1",
+      "passed": true,
+      "evidence": "non_null=0"
+    },
+    {
+      "name": "p3_fused_ranking_score_range_0_1",
+      "passed": true,
+      "evidence": "non_null=50"
+    },
+    {
+      "name": "evidence_boundary_exact",
+      "passed": true,
+      "evidence": "computational_candidate_ranking_not_experimental_binding_or_blocker_probability"
+    },
+    {
+      "name": "outputs_named_as_ranking_not_calibrated_probabilities",
+      "passed": true,
+      "evidence": "forbidden_columns=[]"
+    },
+    {
+      "name": "leakage_fields_are_held_out",
+      "passed": true,
+      "evidence": "expected=[] held=[]"
+    },
+    {
+      "name": "leakage_holdouts_not_ranked",
+      "passed": true,
+      "evidence": "held=0"
+    },
+    {
+      "name": "missing_pose_has_no_fabricated_pose_score",
+      "passed": true,
+      "evidence": "rows=50 source_pose_cols=['pose_id', 'pose_path', 'pose_relpath', 'pose_source', 'pose_status', 'geometry_pose_id', 'geometry_target_baseline', 'geometry_pose_path', 'geometry_vhh_chain', 'geometry_target_chain', 'geometry_pose_status', 'geometry_qc_status', 'geometry_status', 'geometry_notes', 'geometry_cdr3_seq', 'geometry_calibration_role', 'geometry_leakage_role']"
+    },
+    {
+      "name": "missing_or_failed_geometry_is_ai_prior_only",
+      "passed": true,
+      "evidence": "max_diff=0.0"
+    },
+    {
+      "name": "missing_pose_has_no_blocker_like_label",
+      "passed": true,
+      "evidence": "label_policy checked"
+    }
+  ],
+  "summary": {
+    "output_rows": 50,
+    "phase2_rows": 50,
+    "external_prior_rows": 50,
+    "pose_manifest_rows": 50,
+    "geometry_rows": 50
+  }
+}

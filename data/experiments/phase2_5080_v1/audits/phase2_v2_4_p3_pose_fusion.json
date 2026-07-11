@@ -1,0 +1,14 @@
+{
+  "evidence_boundary": "computational_candidate_ranking_proxy_not_binding_or_blocker_probability",
+  "geometry_available_rows": 2,
+  "geometry_coverage_fraction": 0.04,
+  "global_geometry_fusion_applied": false,
+  "minimum_global_geometry_coverage": 0.8,
+  "output": "experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_v2_4_p3_pose_fusion.csv",
+  "pose_index_csv": "experiments/phase2_5080_v1/data_splits/phase2_v2_4_candidate_pose_index.csv",
+  "pose_supported_rows_ranked": 2,
+  "rows": 50,
+  "schema_version": "pvrig_vhh_phase2_v2_4_p3_pose_fusion_v1",
+  "sequence_csv": "experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_multiseed_ensemble.csv",
+  "sequence_only_rows": 48
+}

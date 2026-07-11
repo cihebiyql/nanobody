@@ -40,6 +40,7 @@ DEFAULT_RATIO_BOUNDS = {
     "val": (0.05, 0.30),
     "test": (0.05, 0.30),
 }
+CLUSTER_FIELDS = ("vhh_cluster_id", "cdr3_proxy_cluster_id", "antigen_cluster_id", "split_group_id")
 
 
 @dataclass
@@ -59,6 +60,9 @@ class ManifestStats:
     ratios: dict[str, float] = field(default_factory=dict)
     vhh_sequences: dict[str, set[str]] = field(default_factory=lambda: defaultdict(set))
     antigen_sequences: dict[str, set[str]] = field(default_factory=lambda: defaultdict(set))
+    partition_values: dict[str, dict[str, set[str]]] = field(
+        default_factory=lambda: defaultdict(lambda: defaultdict(set))
+    )
     label_states: set[str] = field(default_factory=set)
     label_sources: Counter[str] = field(default_factory=Counter)
     source_fields: dict[str, int] = field(default_factory=dict)
@@ -73,6 +77,10 @@ class ManifestStats:
             "ratios": self.ratios,
             "unique_vhh_by_split": {k: len(v) for k, v in self.vhh_sequences.items()},
             "unique_antigen_by_split": {k: len(v) for k, v in self.antigen_sequences.items()},
+            "unique_partition_values_by_split": {
+                field_name: {split: len(values) for split, values in by_split.items()}
+                for field_name, by_split in self.partition_values.items()
+            },
             "label_states": sorted(self.label_states),
             "label_sources": dict(self.label_sources),
             "source_fields": self.source_fields,
@@ -162,6 +170,7 @@ def load_manifest(name: str, path: Path) -> tuple[ManifestStats, list[Check]]:
     invalid_split_rows: list[str] = []
     positive_pairs = 0
     negative_pairs = 0
+    missing_partition_fields: dict[str, list[str]] = defaultdict(list)
 
     for row in read_table(path):
         stats.rows += 1
@@ -177,6 +186,15 @@ def load_manifest(name: str, path: Path) -> tuple[ManifestStats, list[Check]]:
         row_vhh = clean(row.get("vhh_seq") or row.get("sequence_vhh") or row.get("nanobody_seq") or row.get("sequence"))
         row_antigen = clean(row.get("antigen_seq") or row.get("sequence_antigen"))
         add_sequence(stats, row, split)
+        for field_name in CLUSTER_FIELDS:
+            value = clean(row.get(field_name))
+            if value:
+                stats.partition_values[field_name][split].add(value)
+            else:
+                missing_partition_fields[field_name].append(row_id)
+        structure_id = clean(row.get("pdb_id") or row.get("pdb")).lower()
+        if structure_id:
+            stats.partition_values["pdb_id"][split].add(structure_id)
         if not row_vhh:
             missing_vhh_rows.append(row_id)
         if name != "site" and not row_antigen:
@@ -230,6 +248,15 @@ def load_manifest(name: str, path: Path) -> tuple[ManifestStats, list[Check]]:
     checks.append(Check(f"{name}_split_ratios_reasonable", not ratio_failures, "; ".join(ratio_failures) or json.dumps(stats.ratios, sort_keys=True)))
     checks.append(Check(f"{name}_vhh_sequences_present", not missing_vhh_rows and any(stats.vhh_sequences.values()), f"missing_rows={missing_vhh_rows[:5]}"))
     checks.append(Check(f"{name}_antigen_sequences_present", name == "site" or (not missing_antigen_rows and any(stats.antigen_sequences.values())), f"missing_rows={missing_antigen_rows[:5]}"))
+    for field_name in CLUSTER_FIELDS:
+        missing = missing_partition_fields[field_name]
+        checks.append(
+            Check(
+                f"{name}_{field_name}_complete",
+                not missing,
+                f"missing_rows={missing[:5]} count={len(missing)}",
+            )
+        )
     if name == "contact" and (positive_pairs or negative_pairs):
         checks.append(Check("contact_positive_and_negative_pairs_nonempty", positive_pairs > 0 and negative_pairs > 0, f"positive_pairs={positive_pairs} negative_pairs={negative_pairs}"))
     return stats, checks
@@ -239,10 +266,13 @@ def overlap_checks(stats_by_name: dict[str, ManifestStats]) -> list[Check]:
     checks: list[Check] = []
     combined_vhh: dict[str, set[str]] = defaultdict(set)
     combined_antigen: dict[str, set[str]] = defaultdict(set)
+    combined_partitions: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
     for stats in stats_by_name.values():
         for split in SPLITS:
             combined_vhh[split].update(stats.vhh_sequences.get(split, set()))
             combined_antigen[split].update(stats.antigen_sequences.get(split, set()))
+            for field_name, by_split in stats.partition_values.items():
+                combined_partitions[field_name][split].update(by_split.get(split, set()))
         for kind, seqs_by_split in (("vhh", stats.vhh_sequences), ("antigen", stats.antigen_sequences)):
             overlaps = {}
             for left, right in combinations(SPLITS, 2):
@@ -250,6 +280,19 @@ def overlap_checks(stats_by_name: dict[str, ManifestStats]) -> list[Check]:
                 if shared:
                     overlaps[f"{left}_vs_{right}"] = len(shared)
             checks.append(Check(f"{stats.name}_exact_{kind}_overlap_zero", not overlaps, json.dumps(overlaps, sort_keys=True) if overlaps else "all pairwise overlaps=0"))
+        for field_name, values_by_split in stats.partition_values.items():
+            overlaps = {}
+            for left, right in combinations(SPLITS, 2):
+                shared = values_by_split.get(left, set()) & values_by_split.get(right, set())
+                if shared:
+                    overlaps[f"{left}_vs_{right}"] = len(shared)
+            checks.append(
+                Check(
+                    f"{stats.name}_{field_name}_overlap_zero",
+                    not overlaps,
+                    json.dumps(overlaps, sort_keys=True) if overlaps else "all pairwise overlaps=0",
+                )
+            )
     for kind, seqs_by_split in (("vhh", combined_vhh), ("antigen", combined_antigen)):
         overlaps = {}
         for left, right in combinations(SPLITS, 2):
@@ -257,6 +300,19 @@ def overlap_checks(stats_by_name: dict[str, ManifestStats]) -> list[Check]:
             if shared:
                 overlaps[f"{left}_vs_{right}"] = len(shared)
         checks.append(Check(f"combined_exact_{kind}_overlap_zero", not overlaps, json.dumps(overlaps, sort_keys=True) if overlaps else "all pairwise overlaps=0"))
+    for field_name, values_by_split in combined_partitions.items():
+        overlaps = {}
+        for left, right in combinations(SPLITS, 2):
+            shared = values_by_split.get(left, set()) & values_by_split.get(right, set())
+            if shared:
+                overlaps[f"{left}_vs_{right}"] = len(shared)
+        checks.append(
+            Check(
+                f"combined_{field_name}_overlap_zero",
+                not overlaps,
+                json.dumps(overlaps, sort_keys=True) if overlaps else "all pairwise overlaps=0",
+            )
+        )
     return checks
 
 

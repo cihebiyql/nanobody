@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "seed": 43,
+      "run_id": "phase2_v2_3_strict_hardened_20260710_seed43",
+      "best_epoch": 3,
+      "gpu_name": "NVIDIA GeForce RTX 5080",
+      "device": "cuda",
+      "telemetry_samples": 123,
+      "elapsed": "4:16.48",
+      "maxrss_kb": 4674028,
+      "gpu_utilization_mean_pct": 27.365853658536587,
+      "gpu_utilization_p95_pct": 59.0,
+      "gpu_utilization_max_pct": 62.0,
+      "gpu_active_samples_ge_10pct": 87,
+      "gpu_memory_max_mib": 5984.0,
+      "gpu_power_max_w": 113.56,
+      "telemetry": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/logs/phase2_v2_3_strict_hardened_20260710_seed43_gpu_telemetry.csv"
+    },
+    {
+      "seed": 53,
+      "run_id": "phase2_v2_3_strict_hardened_20260710_seed53",
+      "best_epoch": 6,
+      "gpu_name": "NVIDIA GeForce RTX 5080",
+      "device": "cuda",
+      "telemetry_samples": 110,
+      "elapsed": "3:49.69",
+      "maxrss_kb": 4685028,
+      "gpu_utilization_mean_pct": 29.01818181818182,
+      "gpu_utilization_p95_pct": 58.0,
+      "gpu_utilization_max_pct": 65.0,
+      "gpu_active_samples_ge_10pct": 81,
+      "gpu_memory_max_mib": 5634.0,
+      "gpu_power_max_w": 111.91,
+      "telemetry": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/logs/phase2_v2_3_strict_hardened_20260710_seed53_gpu_telemetry.csv"
+    },
+    {
+      "seed": 67,
+      "run_id": "phase2_v2_3_strict_hardened_20260710_seed67",
+      "best_epoch": 5,
+      "gpu_name": "NVIDIA GeForce RTX 5080",
+      "device": "cuda",
+      "telemetry_samples": 106,
+      "elapsed": "3:38.56",
+      "maxrss_kb": 4697392,
+      "gpu_utilization_mean_pct": 27.57547169811321,
+      "gpu_utilization_p95_pct": 57.0,
+      "gpu_utilization_max_pct": 63.0,
+      "gpu_active_samples_ge_10pct": 81,
+      "gpu_memory_max_mib": 5632.0,
+      "gpu_power_max_w": 111.96,
+      "telemetry": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/logs/phase2_v2_3_strict_hardened_20260710_seed67_gpu_telemetry.csv"
+    }
+  ],
+  "seeds": [
+    43,
+    53,
+    67
+  ],
+  "gpu_names": [
+    "NVIDIA GeForce RTX 5080"
+  ],
+  "formal_training_runs": 3,
+  "boundary": "Telemetry proves CUDA execution and resource use; it does not prove biological binding or blocker efficacy."
+}

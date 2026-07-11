@@ -23,8 +23,9 @@ import xml.sax.saxutils as xml_escape
 from collections import defaultdict, deque
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable, Sequence
 from zipfile import ZIP_DEFLATED, ZipFile
 
 
@@ -43,7 +44,7 @@ class FastaRecord:
     description: str = ""
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run official + internal competition QC gates for VHH candidates."
     )
@@ -85,6 +86,52 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gpu", default="")
     parser.add_argument("--skip-vhh-screen", action="store_true")
     parser.add_argument(
+        "--defer-official-validator",
+        action="store_true",
+        help="Defer the official CLI to the full shortlist; official/local CDR cache novelty still runs.",
+    )
+    parser.add_argument("--skip-abnativ", action="store_true", help="Pass --skip-abnativ to vhh-screen.")
+    parser.add_argument("--skip-sapiens", action="store_true", help="Pass --skip-sapiens to vhh-screen.")
+    parser.add_argument("--skip-tnp", action="store_true", help="Pass --skip-tnp to vhh-screen.")
+    parser.add_argument(
+        "--reuse-vhh-screen",
+        action="store_true",
+        help="Reuse an existing vhh_screen/screen_summary.tsv instead of deleting and rerunning it.",
+    )
+    parser.add_argument(
+        "--skip-team-diversity",
+        action="store_true",
+        help="Assign independent neutral clusters and defer O(N^2) diversity to a later shortlist.",
+    )
+    parser.add_argument(
+        "--novelty-only-official-pass",
+        action="store_true",
+        help="Skip local novelty work for candidates already rejected by the official validator.",
+    )
+    parser.add_argument(
+        "--gate-policy",
+        choices=["competition", "blocker_calibrated"],
+        default="competition",
+        help="Keep competition submission gates or use positive-calibrated blocker sensitivity gates.",
+    )
+    parser.add_argument(
+        "--identity-cache-size",
+        type=int,
+        default=200000,
+        help="Maximum cached MUSCLE pair identities; 0 disables caching.",
+    )
+    parser.add_argument(
+        "--disable-novelty-bound-pruning",
+        action="store_true",
+        help="Disable exact LCS upper-bound pruning before MUSCLE comparisons.",
+    )
+    parser.add_argument(
+        "--large-scale-fast",
+        action="store_true",
+        help="Shorthand for light all-library gates: skip AbNatiV/Sapiens/TNP/team diversity, "
+        "skip novelty for official rejects, and use blocker_calibrated gates.",
+    )
+    parser.add_argument(
         "--docking-summary",
         type=Path,
         help="Optional CSV/TSV with candidate_id/id/name and blocker_class or occlusion fields.",
@@ -93,7 +140,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--reserve-n", type=int, default=20)
     parser.add_argument("--cluster-identity", type=float, default=0.9)
     parser.add_argument("--cluster-limit", type=int, default=3)
-    return parser.parse_args()
+    args = parser.parse_args(argv)
+    if args.large_scale_fast:
+        args.skip_abnativ = True
+        args.skip_sapiens = True
+        args.skip_tnp = True
+        args.skip_team_diversity = True
+        args.defer_official_validator = True
+        args.novelty_only_official_pass = False
+        args.gate_policy = "blocker_calibrated"
+    return args
 
 
 def main() -> int:
@@ -110,7 +166,18 @@ def main() -> int:
     official_xlsx = args.outdir / f"{args.prefix}.official_submit.xlsx"
     timed_stage(timings, "write_official_xlsx", write_validator_xlsx, official_xlsx, records)
 
-    official_failures = timed_stage(timings, "official_validator", run_official_validator, args, official_xlsx)
+    if args.defer_official_validator:
+        official_failures: dict[str, list[dict[str, str]]] = {}
+        (args.outdir / "official_failed_reasons.csv").write_text("", encoding="utf-8")
+        (args.outdir / "official_validator.log").write_text(
+            "DEFERRED_TO_FULL_SHORTLIST: official positive CDR cache novelty remains active.\n",
+            encoding="utf-8",
+        )
+        timings.append({"stage": "official_validator_deferred", "elapsed_seconds": "0.000"})
+    else:
+        official_failures = timed_stage(
+            timings, "official_validator", run_official_validator, args, official_xlsx
+        )
     screen_dir = args.outdir / "vhh_screen"
     if not args.skip_vhh_screen:
         timed_stage(timings, "vhh_screen", run_vhh_screen, args, screen_dir)
@@ -119,6 +186,14 @@ def main() -> int:
     vhh_eval_path = screen_dir / f"{args.prefix}.vhh_eval.tsv"
     if not vhh_eval_path.exists():
         candidates = screen_summary
+        if screen_summary and any(
+            not row.get("imgt_cdr1") or not row.get("imgt_cdr2") or not row.get("imgt_cdr3")
+            for row in screen_summary
+        ):
+            raise SystemExit(
+                f"Missing {vhh_eval_path}; screen summary alone does not contain CDR sequences. "
+                "Use the original prefix or rerun vhh-screen."
+            )
     else:
         candidates = timed_stage(
             timings,
@@ -127,13 +202,46 @@ def main() -> int:
             screen_summary,
             read_tsv(vhh_eval_path),
         )
+    record_ids = {record.name for record in records}
+    candidate_ids = {row.get("id", "") for row in candidates}
+    if record_ids != candidate_ids:
+        missing = sorted(record_ids - candidate_ids)[:5]
+        extra = sorted(candidate_ids - record_ids)[:5]
+        raise SystemExit(
+            "Candidate IDs from vhh-screen do not match the normalized FASTA; "
+            f"missing={missing}, extra={extra}. Do not reuse outputs from a different input."
+        )
 
     official_positive_cdrs = timed_stage(timings, "load_official_positive_cdrs", load_official_positive_cdrs, args)
     local_positive_cdrs = timed_stage(timings, "load_local_positive_cdrs", load_local_positive_cdrs, args.local_positive_cdr_csv)
     all_positive_cdrs = official_positive_cdrs + local_positive_cdrs
 
-    novelty_rows = timed_stage(timings, "positive_cdr_novelty", compute_positive_novelty, args, candidates, all_positive_cdrs)
-    team_rows, cluster_map, cluster_sizes = timed_stage(timings, "team_diversity", compute_team_diversity, args, candidates)
+    novelty_candidates = candidates
+    skipped_novelty_rows: list[dict[str, str]] = []
+    if args.novelty_only_official_pass:
+        novelty_candidates = [row for row in candidates if row.get("id", "") not in official_failures]
+        skipped_novelty_rows = make_skipped_novelty_rows(
+            row for row in candidates if row.get("id", "") in official_failures
+        )
+    novelty_performance: dict[str, object] = {}
+    computed_novelty_rows = timed_stage(
+        timings,
+        "positive_cdr_novelty",
+        compute_positive_novelty,
+        args,
+        novelty_candidates,
+        all_positive_cdrs,
+        novelty_performance,
+    )
+    novelty_rows = computed_novelty_rows + skipped_novelty_rows
+    if args.skip_team_diversity:
+        team_rows, cluster_map, cluster_sizes = timed_stage(
+            timings, "team_diversity_deferred", make_independent_team_diversity, candidates
+        )
+    else:
+        team_rows, cluster_map, cluster_sizes = timed_stage(
+            timings, "team_diversity", compute_team_diversity, args, candidates
+        )
     docking_rows = timed_stage(timings, "load_docking_summary", load_docking_summary, args.docking_summary)
     portfolio_rows = timed_stage(
         timings,
@@ -158,7 +266,16 @@ def main() -> int:
     timed_stage(timings, "write_reserve_fasta", write_fasta, args.outdir / f"reserve_{args.reserve_n}.fasta", rows_to_records(reserve))
     timed_stage(timings, "write_submission_xlsx", write_submission_xlsx, args.outdir / f"submission_top{args.top_n}.xlsx", selected)
     timed_stage(timings, "write_report", write_report, args, records, official_failures, novelty_rows, team_rows, portfolio_rows, selected, reserve)
-    timed_stage(timings, "write_details", write_details, args, official_positive_cdrs, local_positive_cdrs, portfolio_rows)
+    timed_stage(
+        timings,
+        "write_details",
+        write_details,
+        args,
+        official_positive_cdrs,
+        local_positive_cdrs,
+        portfolio_rows,
+        novelty_performance,
+    )
     write_tsv(args.outdir / "stage_timings.tsv", timings)
     return 0
 
@@ -341,6 +458,8 @@ def run_official_validator(args: argparse.Namespace, xlsx: Path) -> dict[str, li
 
 
 def run_vhh_screen(args: argparse.Namespace, outdir: Path) -> None:
+    if args.reuse_vhh_screen and (outdir / "screen_summary.tsv").exists():
+        return
     if outdir.exists():
         shutil.rmtree(outdir)
     command = [
@@ -353,6 +472,12 @@ def run_vhh_screen(args: argparse.Namespace, outdir: Path) -> None:
         "--tnp-ncores",
         str(args.tnp_ncores),
     ]
+    if args.skip_abnativ:
+        command.append("--skip-abnativ")
+    if args.skip_sapiens:
+        command.append("--skip-sapiens")
+    if args.skip_tnp:
+        command.append("--skip-tnp")
     if args.structure_tools:
         command.extend(["--structure-tools", args.structure_tools])
     if args.max_structures:
@@ -510,44 +635,147 @@ def load_local_positive_cdrs(path: Path | None) -> list[dict[str, str]]:
     return rows
 
 
+def lcs_length(a: str, b: str) -> int:
+    """Return longest-common-subsequence length using O(min(m, n)) memory."""
+    if len(a) < len(b):
+        a, b = b, a
+    previous = [0] * (len(b) + 1)
+    for aa in a:
+        current = [0]
+        for index, bb in enumerate(b, start=1):
+            if aa == bb:
+                current.append(previous[index - 1] + 1)
+            else:
+                current.append(max(previous[index], current[-1]))
+        previous = current
+    return previous[-1]
+
+
+def max_possible_aligned_identity(a: str, b: str) -> float:
+    """Exact upper bound for matches/alignment-length identity.
+
+    Any global alignment has at most LCS(a, b) matches and at least
+    max(len(a), len(b)) columns. Pairs below the current best can therefore be
+    skipped without changing the winning MUSCLE identity.
+    """
+    if not a or not b:
+        return 0.0
+    return lcs_length(a, b) / max(len(a), len(b))
+
+
+def best_identity_against_references(
+    candidate_sequence: str,
+    references: list[tuple[str, str, str]],
+    identity_function: Callable[[str, str], float],
+    *,
+    use_bound_pruning: bool = True,
+) -> tuple[float, str, str, dict[str, int]]:
+    """Find the exact best identity while pruning provably losing pairs."""
+    stats = {
+        "reference_pairs": len(references),
+        "identity_requests": 0,
+        "upper_bound_pruned": 0,
+    }
+    if not candidate_sequence or not references:
+        return 0.0, "", "", stats
+
+    bounded: list[tuple[float, int, str, str, str]] = []
+    for index, (name, reference_set, sequence) in enumerate(references):
+        upper_bound = (
+            max_possible_aligned_identity(candidate_sequence, sequence)
+            if use_bound_pruning
+            else 1.0
+        )
+        bounded.append((upper_bound, index, name, reference_set, sequence))
+    bounded.sort(key=lambda item: (-item[0], item[1]))
+
+    best_identity = -1.0
+    best_index = len(references) + 1
+    best_name = ""
+    best_set = ""
+    for position, (upper_bound, index, name, reference_set, sequence) in enumerate(bounded):
+        if use_bound_pruning and best_identity >= 0:
+            strictly_worse = upper_bound < best_identity - 1e-12
+            tied_but_later = abs(upper_bound - best_identity) <= 1e-12 and index >= best_index
+            if strictly_worse:
+                stats["upper_bound_pruned"] += len(bounded) - position
+                break
+            if tied_but_later:
+                stats["upper_bound_pruned"] += 1
+                continue
+        identity = identity_function(candidate_sequence, sequence)
+        stats["identity_requests"] += 1
+        if identity > best_identity + 1e-12 or (
+            abs(identity - best_identity) <= 1e-12 and index < best_index
+        ):
+            best_identity = identity
+            best_index = index
+            best_name = name
+            best_set = reference_set
+        if best_identity >= 1.0 and best_index == min(item[1] for item in bounded if item[0] >= 1.0):
+            stats["upper_bound_pruned"] += len(bounded) - position - 1
+            break
+    if best_identity < 0:
+        best_identity = 0.0
+    return best_identity, best_name, best_set, stats
+
+
 def compute_positive_novelty(
     args: argparse.Namespace,
     candidates: list[dict[str, str]],
     positives: list[dict[str, str]],
+    performance: dict[str, object] | None = None,
 ) -> list[dict[str, str]]:
     add_validator_src_to_path()
     from ab_data_validator.muscle import align_pair
     from ab_data_validator.similarity import calculate_identity
 
-    def best_for(candidate: dict[str, str]) -> dict[str, str]:
+    @lru_cache(maxsize=max(0, args.identity_cache_size))
+    def cached_identity(sequence_a: str, sequence_b: str) -> float:
+        aligned_a, aligned_b = align_pair(sequence_a, sequence_b, muscle_bin=args.muscle_bin)
+        return calculate_identity(aligned_a, aligned_b)
+
+    def identity(sequence_a: str, sequence_b: str) -> float:
+        if sequence_a <= sequence_b:
+            return cached_identity(sequence_a, sequence_b)
+        return cached_identity(sequence_b, sequence_a)
+
+    def best_for(candidate: dict[str, str]) -> tuple[dict[str, str], dict[str, int]]:
         candidate_id = candidate.get("id", "")
         out: dict[str, str] = {"candidate_id": candidate_id}
         max_all = 0.0
         nearest = ""
+        local_stats = {"reference_pairs": 0, "identity_requests": 0, "upper_bound_pruned": 0}
         for cdr_name, field in CDR_FIELDS.items():
             candidate_cdr = candidate.get(field, "")
             out[f"{cdr_name}_sequence"] = candidate_cdr
-            best_identity = -1.0
-            best_name = ""
-            best_set = ""
-            if candidate_cdr:
-                for positive in positives:
-                    positive_cdr = positive.get(f"positive_cdr{cdr_name[-1]}", "")
-                    if not positive_cdr:
-                        continue
-                    aligned_a, aligned_b = align_pair(candidate_cdr, positive_cdr, muscle_bin=args.muscle_bin)
-                    identity = calculate_identity(aligned_a, aligned_b)
-                    if identity > best_identity:
-                        best_identity = identity
-                        best_name = positive.get("positive_name", "")
-                        best_set = positive.get("reference_set", "")
-            if best_identity < 0:
-                best_identity = 0.0
-            out[f"{cdr_name}_max_identity_to_positive"] = f"{best_identity:.6f}"
+            references = []
+            seen_sequences: set[str] = set()
+            for positive in positives:
+                positive_cdr = positive.get(f"positive_cdr{cdr_name[-1]}", "")
+                if not positive_cdr or positive_cdr in seen_sequences:
+                    continue
+                seen_sequences.add(positive_cdr)
+                references.append(
+                    (
+                        positive.get("positive_name", ""),
+                        positive.get("reference_set", ""),
+                        positive_cdr,
+                    )
+                )
+            best_value, best_name, best_set, stats = best_identity_against_references(
+                candidate_cdr,
+                references,
+                identity,
+                use_bound_pruning=not args.disable_novelty_bound_pruning,
+            )
+            for key in local_stats:
+                local_stats[key] += stats[key]
+            out[f"{cdr_name}_max_identity_to_positive"] = f"{best_value:.6f}"
             out[f"{cdr_name}_nearest_positive"] = best_name
             out[f"{cdr_name}_nearest_reference_set"] = best_set
-            if best_identity > max_all:
-                max_all = best_identity
+            if best_value > max_all:
+                max_all = best_value
                 nearest = best_name
         out["max_CDR_identity_to_positive"] = f"{max_all:.6f}"
         out["nearest_positive_name"] = nearest
@@ -560,10 +788,69 @@ def compute_positive_novelty(
             else "FAIL"
         )
         out["novelty_score"] = f"{score_novelty(max_all, args.identity_threshold):.2f}"
-        return out
+        return out, local_stats
 
     with ThreadPoolExecutor(max_workers=max(1, args.workers)) as executor:
-        return list(executor.map(best_for, candidates))
+        results = list(executor.map(best_for, candidates))
+    if performance is not None:
+        aggregate = {"reference_pairs": 0, "identity_requests": 0, "upper_bound_pruned": 0}
+        for _, stats in results:
+            for key in aggregate:
+                aggregate[key] += stats[key]
+        cache = cached_identity.cache_info()
+        performance.update(
+            {
+                "candidate_count": len(candidates),
+                "positive_reference_count": len(positives),
+                **aggregate,
+                "muscle_cache_hits": cache.hits,
+                "muscle_cache_misses": cache.misses,
+                "muscle_cache_maxsize": cache.maxsize,
+                "bound_pruning_enabled": not args.disable_novelty_bound_pruning,
+            }
+        )
+    return [row for row, _ in results]
+
+
+def make_skipped_novelty_rows(candidates: Iterable[dict[str, str]]) -> list[dict[str, str]]:
+    rows = []
+    for candidate in candidates:
+        rows.append(
+            {
+                "candidate_id": candidate.get("id", ""),
+                "max_CDR_identity_to_positive": "",
+                "nearest_positive_name": "",
+                "pass_similarity_filter": "SKIPPED_UPSTREAM_HARD_FAIL",
+                "novelty_margin_flag": "SKIPPED",
+                "novelty_score": "0.00",
+            }
+        )
+    return rows
+
+
+def make_independent_team_diversity(
+    candidates: list[dict[str, str]],
+) -> tuple[list[dict[str, str]], dict[str, str], dict[str, int]]:
+    rows: list[dict[str, str]] = []
+    cluster_map: dict[str, str] = {}
+    cluster_sizes: dict[str, int] = {}
+    for index, candidate in enumerate(candidates, start=1):
+        candidate_id = candidate.get("id", "")
+        cluster_id = f"DEFERRED_{index:08d}"
+        cluster_map[candidate_id] = cluster_id
+        cluster_sizes[cluster_id] = 1
+        rows.append(
+            {
+                "candidate_id": candidate_id,
+                "nearest_team_neighbor": "",
+                "max_team_identity": "",
+                "intra_team_cluster_id": cluster_id,
+                "intra_team_cluster_size": "1",
+                "diversity_score": "100.00",
+                "diversity_status": "DEFERRED_TO_SHORTLIST",
+            }
+        )
+    return rows, cluster_map, cluster_sizes
 
 
 def compute_team_diversity(
@@ -723,13 +1010,20 @@ def build_portfolio(
             developability_score=developability_score,
             expression_score=expression_score,
             structure_score=structure_score,
+            gate_policy=args.gate_policy,
         )
         row = {
             "candidate_id": candidate_id,
             "sequence": record.sequence or candidate.get("sequence", ""),
             "length": candidate.get("length", str(len(record.sequence))),
             "standard_aa_only": str(set(record.sequence) <= STANDARD_AA),
-            "official_validator_pass": "PASS" if not official["has_failure"] else "FAIL",
+            "official_validator_pass": (
+                "DEFERRED_TO_FULL_SHORTLIST"
+                if args.defer_official_validator
+                else "PASS"
+                if not official["has_failure"]
+                else "FAIL"
+            ),
             "official_validator_failed_reason": official["reason_summary"],
             "ANARCI_status": candidate.get("imgt_ok", ""),
             "imgt_chain_type": candidate.get("imgt_chain_type", ""),
@@ -818,6 +1112,7 @@ def classify_candidate(
     developability_score: float,
     expression_score: float,
     structure_score: float,
+    gate_policy: str = "competition",
 ) -> tuple[bool, str, list[str]]:
     reasons: list[str] = []
     if official["has_failure"]:
@@ -837,7 +1132,7 @@ def classify_candidate(
     if candidate.get("L4_structure_stability") == "FAIL":
         reasons.append("structure_failed")
 
-    hard_fail_reasons = {
+    competition_hard_fail_reasons = {
         "official_validator_failed",
         "numbering_or_framework_failed",
         "not_vhh_like",
@@ -847,9 +1142,26 @@ def classify_candidate(
         "hydrophobic_run",
         "structure_failed",
     }
+    blocker_calibrated_hard_fail_reasons = {
+        "official_validator_failed",
+        "numbering_or_framework_failed",
+        "positive_cdr_identity_ge_threshold",
+        "invalid_amino_acids",
+        "odd_cysteine_count",
+        "structure_failed",
+    }
+    hard_fail_reasons = (
+        blocker_calibrated_hard_fail_reasons
+        if gate_policy == "blocker_calibrated"
+        else competition_hard_fail_reasons
+    )
     hard_fail = any(reason in hard_fail_reasons for reason in reasons)
     if hard_fail:
         return True, "REJECT_HARD_GATE", reasons
+    if gate_policy == "blocker_calibrated" and any(
+        reason in {"not_vhh_like", "hydrophobic_run"} for reason in reasons
+    ):
+        return False, "REVIEW_DEVELOPABILITY", reasons
     if developability_score < 65 or expression_score < 65 or structure_score < 50:
         reasons.append("score_review")
         return False, "REVIEW_RISK", reasons
@@ -1064,9 +1376,12 @@ def write_report(
         f"Output directory: `{args.outdir}`",
         f"Candidates: {len(records)}",
         f"Official validator failures: {len(official_failures)}",
+        f"Official validator deferred: {args.defer_official_validator}",
         f"Hard gate rejects: {hard_fail_count}",
         f"Selected Top {args.top_n}: {len(selected)}",
         f"Reserve {args.reserve_n}: {len(reserve)}",
+        f"Gate policy: {args.gate_policy}",
+        f"Team diversity deferred: {args.skip_team_diversity}",
         "",
         "## Recommendation counts",
         "",
@@ -1090,9 +1405,12 @@ def write_report(
             "## Notes",
             "",
             "- `official_validator_pass=FAIL` is a hard gate.",
+            "- `official_validator_pass=DEFERRED_TO_FULL_SHORTLIST` is not a pass; the full shortlist must rerun the official CLI.",
             "- `pass_similarity_filter=FAIL` means at least one CDR has identity >= threshold.",
             "- Structure and docking scores are neutral if those gates were not run/imported.",
             "- Docking labels are computational hypotheses, not experimental IC50/Kd evidence.",
+            "- `blocker_calibrated` keeps VHH-like and hydrophobic-run findings as review signals, not blocker hard fails.",
+            "- Deferred team diversity must be recomputed on the final shortlist before portfolio selection.",
         ]
     )
     (args.outdir / "portfolio_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
@@ -1103,6 +1421,7 @@ def write_details(
     official_positive_cdrs: list[dict[str, str]],
     local_positive_cdrs: list[dict[str, str]],
     portfolio_rows: list[dict[str, str]],
+    novelty_performance: dict[str, object] | None = None,
 ) -> None:
     details = {
         "config": {
@@ -1111,12 +1430,23 @@ def write_details(
             "cluster_identity": args.cluster_identity,
             "cluster_limit": args.cluster_limit,
             "structure_tools": args.structure_tools,
+            "gate_policy": args.gate_policy,
+            "large_scale_fast": args.large_scale_fast,
+            "official_validator_deferred": args.defer_official_validator,
+            "skip_abnativ": args.skip_abnativ,
+            "skip_sapiens": args.skip_sapiens,
+            "skip_tnp": args.skip_tnp,
+            "team_diversity_deferred": args.skip_team_diversity,
+            "novelty_only_official_pass": args.novelty_only_official_pass,
+            "identity_cache_size": args.identity_cache_size,
+            "novelty_bound_pruning": not args.disable_novelty_bound_pruning,
         },
         "reference_counts": {
             "official_positive_cdrs": len(official_positive_cdrs),
             "local_positive_cdrs": len(local_positive_cdrs),
         },
         "portfolio_count": len(portfolio_rows),
+        "novelty_performance": novelty_performance or {},
     }
     (args.outdir / "competition_qc_details.json").write_text(json.dumps(details, indent=2), encoding="utf-8")
 

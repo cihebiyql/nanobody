@@ -1,0 +1,40 @@
+{
+  "artifact_count": 10,
+  "artifacts": {
+    "README.md": "448cab99a74d9366f5c253751775c9897fdc09a2679ef210339233aaf82dbf61",
+    "assay_preregistration.json": "515987f2edfe680b7156b1b3c83298048384d28390fe85941c8bb3f5ffed5e56",
+    "assay_run_schedule_blinded.csv": "093d0ba43ce5add29966b4e4782d23d96e7b57f83b15d9ddd398728bdb39bebc",
+    "binding_results.csv": "52552ea1b75368336ebd907537d40e6ac7a07156ab9a6719f721bdc1a225375c",
+    "blinding_key.csv": "312f7b0d55d845166504c4991b7454841b85d5f68399f8dfd898105a40649317",
+    "competition_results.csv": "e200b5d391ce0e7a634bceed13acefee72db57cdd54d1b3c89505610f0024d1a",
+    "construct_manifest.csv": "fbc17aa5934ac8da4db9f6d88bc045a66382955123ca17662832a50aff8417b9",
+    "expression_qc_results.csv": "8942c23b64bddce16cf097ecbe94144d180004870d566dfe4028cf27a43653ea",
+    "functional_results.csv": "e5c22cbf122a04c95dfc9cd50bd40ff0ae1c082b977983f2a1b8571afe996176",
+    "panel_blinded.fasta": "a4d69935f8267a5863235b06f12d2be31c87c5c2d354a9fbf8f883f4551e2ad0"
+  },
+  "counts": {
+    "panel_candidates": 24,
+    "prospective_groups": 8,
+    "scheduled_day_blocks": 3,
+    "scheduled_runs": 3,
+    "scheduled_sample_runs": 72
+  },
+  "frozen_artifacts": {
+    "README.md": "448cab99a74d9366f5c253751775c9897fdc09a2679ef210339233aaf82dbf61",
+    "assay_preregistration.json": "515987f2edfe680b7156b1b3c83298048384d28390fe85941c8bb3f5ffed5e56",
+    "assay_run_schedule_blinded.csv": "093d0ba43ce5add29966b4e4782d23d96e7b57f83b15d9ddd398728bdb39bebc",
+    "blinding_key.csv": "312f7b0d55d845166504c4991b7454841b85d5f68399f8dfd898105a40649317",
+    "panel_blinded.fasta": "a4d69935f8267a5863235b06f12d2be31c87c5c2d354a9fbf8f883f4551e2ad0"
+  },
+  "measurement_status": "NO_EXPERIMENTAL_RESULTS_RECORDED",
+  "mutable_templates_initial_sha256": {
+    "binding_results.csv": "52552ea1b75368336ebd907537d40e6ac7a07156ab9a6719f721bdc1a225375c",
+    "competition_results.csv": "e200b5d391ce0e7a634bceed13acefee72db57cdd54d1b3c89505610f0024d1a",
+    "construct_manifest.csv": "fbc17aa5934ac8da4db9f6d88bc045a66382955123ca17662832a50aff8417b9",
+    "expression_qc_results.csv": "8942c23b64bddce16cf097ecbe94144d180004870d566dfe4028cf27a43653ea",
+    "functional_results.csv": "e5c22cbf122a04c95dfc9cd50bd40ff0ae1c082b977983f2a1b8571afe996176"
+  },
+  "package_version": "pvrig_v2_5_prospective_assay_execution_v1",
+  "schema_version": "pvrig_v2_5_assay_package_manifest_v1",
+  "status": "READY_FOR_LAB_PREREGISTRATION"
+}

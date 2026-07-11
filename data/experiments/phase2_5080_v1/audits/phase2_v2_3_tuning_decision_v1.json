@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "decision": "REJECT_RANKFOCUSED_KEEP_BASELINE_CONFIG",
+  "selection_evidence_scope": "validation_only",
+  "baseline": {
+    "config": "configs/phase2_v2_3_5080_16gb.json",
+    "best_val_ranking_mrr": {
+      "epoch": 2,
+      "value": 0.5662037037037038
+    },
+    "best_val_ranking_hard_negative_win_rate": {
+      "epoch": 2,
+      "value": 0.6051873198847262
+    }
+  },
+  "rankfocused": {
+    "config": "configs/phase2_v2_3_rankfocused_5080_16gb.json",
+    "best_val_ranking_mrr": {
+      "epoch": 6,
+      "value": 0.5402777777777777
+    },
+    "best_val_ranking_hard_negative_win_rate": {
+      "epoch": 2,
+      "value": 0.5878962536023055
+    }
+  },
+  "reason": "The single pre-registered rank-focused branch did not improve validation ranking MRR; no further test-guided hyperparameter search was performed.",
+  "test_metrics_used_for_selection": false
+}

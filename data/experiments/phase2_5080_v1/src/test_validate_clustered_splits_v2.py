@@ -59,6 +59,10 @@ class ClusteredSplitValidatorTests(unittest.TestCase):
                         "vhh_seq": vhh,
                         "antigen_seq": antigen,
                         "binding_label": "1",
+                        "vhh_cluster_id": f"vhh_cluster_{split}_{idx}",
+                        "cdr3_proxy_cluster_id": f"cdr3_cluster_{split}_{idx}",
+                        "antigen_cluster_id": f"ag_cluster_{split}_{idx}",
+                        "split_group_id": f"group_{split}_{idx}",
                         "label_source": "cognate_structure_pair",
                         "source_dataset": "fixture",
                         "source_file": "fixture.csv",
@@ -72,6 +76,10 @@ class ClusteredSplitValidatorTests(unittest.TestCase):
                         "vhh_seq": vhh,
                         "antigen_seq": antigen,
                         "binding_label": "1",
+                        "vhh_cluster_id": f"vhh_cluster_{split}_{idx}",
+                        "cdr3_proxy_cluster_id": f"cdr3_cluster_{split}_{idx}",
+                        "antigen_cluster_id": f"ag_cluster_{split}_{idx}",
+                        "split_group_id": f"group_{split}_{idx}",
                         "label_source": "cognate_structure_pair",
                         "negative_type": "positive_cognate_pair",
                         "construction_rule": "observed_cognate_pair",
@@ -84,6 +92,10 @@ class ClusteredSplitValidatorTests(unittest.TestCase):
                         "vhh_seq": vhh,
                         "antigen_seq": split_seq("NEG_AG", split, idx),
                         "binding_label": "0",
+                        "vhh_cluster_id": f"vhh_cluster_{split}_{idx}",
+                        "cdr3_proxy_cluster_id": f"cdr3_cluster_{split}_{idx}",
+                        "antigen_cluster_id": f"neg_ag_cluster_{split}_{idx}",
+                        "split_group_id": f"group_{split}_{idx}",
                         "label_source": "constructed_negative",
                         "negative_type": "easy_negative",
                         "construction_rule": "fixture_negative",
@@ -95,6 +107,10 @@ class ClusteredSplitValidatorTests(unittest.TestCase):
                         "split": split,
                         "vhh_seq": split_seq("CONTACT_VHH", split, idx),
                         "antigen_seq": split_seq("CONTACT_AG", split, idx),
+                        "vhh_cluster_id": f"contact_vhh_cluster_{split}_{idx}",
+                        "cdr3_proxy_cluster_id": f"contact_cdr3_cluster_{split}_{idx}",
+                        "antigen_cluster_id": f"contact_ag_cluster_{split}_{idx}",
+                        "split_group_id": f"contact_group_{split}_{idx}",
                         "positive_pairs": 3,
                         "negative_pairs": 12,
                     }
@@ -133,6 +149,20 @@ class ClusteredSplitValidatorTests(unittest.TestCase):
             write_csv(site, rows)
             result = validate(args_for(root))
         self.assertIn("site_exact_vhh_overlap_zero", result["failed_checks"])
+
+    def test_fails_when_cluster_overlaps_across_tasks(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.make_valid_root(root)
+            site = root / "experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2.csv"
+            contact = root / "experiments/phase2_5080_v1/prepared/structure_contact_maps_clustered_v2.jsonl"
+            site_rows = read_csv(site)
+            contact_rows = [json.loads(line) for line in contact.read_text(encoding="utf-8").splitlines()]
+            train_cluster = next(row["vhh_cluster_id"] for row in site_rows if row["split"] == "train")
+            next(row for row in contact_rows if row["split"] == "test")["vhh_cluster_id"] = train_cluster
+            write_jsonl(contact, contact_rows)
+            result = validate(args_for(root))
+        self.assertIn("combined_vhh_cluster_id_overlap_zero", result["failed_checks"])
 
     def test_fails_when_pair_source_fields_are_missing(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

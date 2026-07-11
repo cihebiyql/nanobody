@@ -1,0 +1,27 @@
+{
+  "pdb": "haddock3/zym_test_665332/data/pvrig_8x6b_chainB.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "B": {
+      "atom_count": 773,
+      "ca_count": 103,
+      "adjacent_ca_distance_min": 3.0515499340499064,
+      "adjacent_ca_distance_median": 3.80161584066565,
+      "adjacent_ca_distance_max": 5.621660697694232,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -12.031,
+          18.335,
+          19.992
+        ],
+        "max": [
+          28.468,
+          45.835,
+          56.131
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}

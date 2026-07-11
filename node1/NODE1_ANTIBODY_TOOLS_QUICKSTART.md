@@ -33,6 +33,7 @@ ssh.exe node1
 | --- | --- | --- | --- |
 | DeepNano | VHH-抗原 sequence-only / prompt-site 第一层结合筛选 | `/data/qlyu/software/DeepNano/run_deepnano_predict.sh` | 8M 和 650M model 1/2 均跑通过 PVRIG smoke test |
 | vhh-competition-qc | 比赛提交前官方合规、CDR novelty、可开发性、结构 summary、Top N portfolio 总门控 | `/data/qlyu/software/vhh_eval_tools/bin/vhh-competition-qc` | 1/3/4 条序列 smoke、NanoBodyBuilder2 结构 smoke、docking summary import smoke 已跑通；非秒级，1 条约 96-116s |
+| vhh-large-scale-screen | 大库去重、分层 QC、断点续跑、geometry shortlist、docking consensus 最终标签 | `/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen` | 50 条真实 scaffold 50->10->5 cascade 169.82s；resume 1.15s |
 | NanoBodyBuilder2 / ImmuneBuilder | 单条 VHH/nanobody 结构预测 | `/data/qlyu/anaconda3/envs/boltz/bin/NanoBodyBuilder2` | `--help` 可用，smoke PDB 已生成 |
 | Boltz-2 | VHH-抗原复合物候选生成 | `/data/qlyu/anaconda3/envs/boltz/bin/boltz` | `--help` 可用，GPU smoke PDB/confidence 已生成 |
 | Chai-1 | VHH-抗原 co-folding / complex pose | `/data/qlyu/software/envs/chai1/bin/chai-lab` | `--help` 可用，smoke CIF/score 已生成 |
@@ -53,6 +54,21 @@ ssh.exe node1 'cd /data/qlyu/software/DeepNano && GPU=5 MODEL=1 ESM2=8M ./run_de
 - `pairs.tsv` 必须有表头：`Nanobody-ID<TAB>Antigen-ID<TAB>Label`。
 - 快速调格式用 `MODEL=1 ESM2=8M`。
 - 批量正式筛选优先用 `MODEL=2 ESM2=650M`，但要选择空闲 GPU。
+
+### 大规模最终阳性筛选
+
+大库不要直接全量运行 TNP、team diversity 和 docking。使用：
+
+```bash
+ssh.exe node1 '/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen \
+  /path/to/candidates.fasta -o /data/qlyu/software/vhh_eval_tools/runs/my_cascade \
+  --fast-chunk-size 500 --chunk-jobs 2 \
+  --full-qc-limit 1000 --full-chunk-size 100 --full-chunk-jobs 1 \
+  --geometry-pool-size 100 --geometry-limit 50 --geometry-cluster-limit 3 \
+  --workers 16 --tnp-ncores 4'
+```
+
+详细策略、输出和最终 blocker 标签见 `VHH_LARGE_SCALE_SCREENING_RUNBOOK.md`。
 
 ### 单体结构生成
 
@@ -117,4 +133,5 @@ bin/rf2 --help | head -n 8
 - `VHH_SCREENING_SYSTEM_NODE1.md`：四层 VHH 筛选体系、`vhh-screen` 调用、阈值和 smoke evidence。
 - `VHH_COMPETITION_QC_PIPELINE_UPGRADE_PLAN.md`：面向 PVRIG 比赛提交的官方合规、CDR 新颖性、可开发性、结构、docking/blocking 和 Top 50 portfolio 升级方案。
 - `VHH_COMPETITION_QC_PIPELINE_RUNBOOK.md`：已经部署的比赛版 `vhh-competition-qc` 入口、调用方式、输出字段和 smoke evidence。
+- `VHH_LARGE_SCALE_SCREENING_RUNBOOK.md`：大规模分层漏斗、断点续跑、性能基准、geometry shortlist 和最终 consensus 标签。
 - `PARAGRAPH_TNP_PROTPARAM_NODE1_DEPLOYMENT.md`：Paragraph、TNP、ProtParam/Compute pI-Mw 的部署复核、便捷 wrapper 和 smoke tests。
