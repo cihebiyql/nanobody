@@ -141,7 +141,9 @@ real SOP-dependent values and run the freeze command before any measurement.
 - A bounded guarded waiter was deployed on an independent Node1 tmux socket at
   17:42:09. It uses `flock`, a 60-second poll, a 24-hour timeout, and the same
   strict `load1 < 64` rule before each candidate. Initial state was
-  `WAITING_FOR_LOAD` at load1 96.97; no docking run had started.
+  `WAITING_FOR_LOAD` at load1 96.97. After a controlled restart that moved
+  timeout enforcement before gate acceptance, the 17:49:21 status was still
+  `WAITING_FOR_LOAD` at load1 103.44; no docking run had started.
 
 ## Required Next Gates
 

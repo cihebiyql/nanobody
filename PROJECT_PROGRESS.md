@@ -85,7 +85,9 @@ authoritative admission control.
 At 2026-07-11 17:42:09 +08:00, a guarded Node1 waiter was deployed on an
 independent tmux socket. It uses `flock`, polls every 60 seconds, expires after
 24 hours, and rechecks the strict gate before each candidate. Its initial state
-was `WAITING_FOR_LOAD` at load1 96.97, so no docking run was started.
+was `WAITING_FOR_LOAD` at load1 96.97. After a controlled timeout-order
+hardening restart, the 17:49:21 status remained `WAITING_FOR_LOAD` at load1
+103.44, so no docking run was started.
 
 The 24-sample panel remains frozen even when a candidate fails the cascade.
 That disagreement is prospective evidence, not a reason to manufacture a

@@ -72,7 +72,9 @@ The deployed waiter uses an independent tmux socket plus `flock`, polls every 60
 seconds, times out after 24 hours, rechecks `load1 < 64` before every candidate,
 and refuses any incomplete pre-existing or newly appeared run directory. It was
 deployed at 2026-07-11 17:42:09 +08:00 and entered `WAITING_FOR_LOAD` at load1
-96.97; it had not started HADDOCK3 at deployment time.
+96.97. After a controlled timeout-order hardening restart, the current runner
+started at 17:48:21; the 17:49:21 status remained `WAITING_FOR_LOAD` at load1
+103.44. No HADDOCK3 run had started.
 
 The launcher is sequential, refuses incomplete pre-existing run directories,
 and never deletes a run. Completed outputs must be synced back into the
