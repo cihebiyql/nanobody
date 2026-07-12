@@ -6,12 +6,17 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
 from pathlib import Path
 
 import pyrosetta
 from pyrosetta import pose_from_pdb
+from pyrosetta.rosetta.core.chemical import VariantType
+from pyrosetta.rosetta.core.conformation import ResidueFactory
 from pyrosetta.rosetta.core.kinematics import MoveMap
+from pyrosetta.rosetta.core.pose import (
+    add_variant_type_to_pose_residue,
+    remove_variant_type_from_pose_residue,
+)
 from pyrosetta.rosetta.protocols.minimization_packing import MinMover
 from pyrosetta.rosetta.protocols.simple_moves import MutateResidue
 
@@ -73,6 +78,23 @@ def restore_labels(path: Path, labels: list[str]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="ascii")
 
 
+def ensure_terminal_vtvss(pose) -> bool:
+    """Append the missing terminal serine present in the canonical FR4."""
+    if pose.sequence().endswith("VTVSS"):
+        return False
+    if not pose.sequence().endswith("VTVS"):
+        raise ValueError(f"unexpected scaffold FR4 terminus: {pose.sequence()[-12:]}")
+    terminal = pose.size()
+    remove_variant_type_from_pose_residue(pose, VariantType.UPPER_TERMINUS_VARIANT, terminal)
+    serine_type = pose.residue_type_set_for_pose().name_map("SER")
+    pose.append_residue_by_bond(ResidueFactory.create_residue(serine_type), True)
+    new_terminal = pose.size()
+    add_variant_type_to_pose_residue(pose, VariantType.UPPER_TERMINUS_VARIANT, new_terminal)
+    pose.pdb_info().chain(new_terminal, "H")
+    pose.pdb_info().number(new_terminal, pose.pdb_info().number(terminal) + 1)
+    return True
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, required=True)
@@ -87,11 +109,13 @@ def main() -> int:
 
     pyrosetta.init("-mute all -ignore_unrecognized_res true -load_PDB_components false")
     base_pose = pose_from_pdb(str(args.source))
+    terminal_repaired = ensure_terminal_vtvss(base_pose)
     scorefxn = pyrosetta.get_fa_scorefxn()
     manifest: list[dict[str, object]] = []
 
     original = args.output_dir / "h-NbBCII10_original.pdb"
-    shutil.copy2(args.source, original)
+    base_pose.dump_pdb(str(original))
+    restore_labels(original, labels)
     manifest.append(
         {
             "scaffold_id": "orig",
@@ -100,6 +124,7 @@ def main() -> int:
             "sequence": pdb_sequence(original),
             "sha256": sha256_file(original),
             "lane": "diagnostic_baseline_only",
+            "terminal_fr4_repair": "APPEND_TERMINAL_S" if terminal_repaired else "NONE",
         }
     )
 
@@ -135,6 +160,7 @@ def main() -> int:
                 "sequence": sequence,
                 "sha256": sha256_file(output),
                 "lane": "primary_vhhified",
+                "terminal_fr4_repair": "APPEND_TERMINAL_S" if terminal_repaired else "NONE",
             }
         )
 

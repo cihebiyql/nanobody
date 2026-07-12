@@ -1,0 +1,45 @@
+{
+  "pdb_to_kabat_mapping": {
+    "H47": "H44",
+    "H48": "H45",
+    "H50": "H47",
+    "H53": "H50"
+  },
+  "schema_version": 1,
+  "source": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/inputs/scaffolds/h-NbBCII10_source.pdb",
+  "source_sha256": "ab444bb19d8391b1b75decd0026e0d9f09affff5a702a6180edc990bbda3095e",
+  "variants": [
+    {
+      "lane": "diagnostic_baseline_only",
+      "mutations": "none",
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/inputs/scaffolds/h-NbBCII10_original.pdb",
+      "scaffold_id": "orig",
+      "sequence": "QVQLVESGGGLVQPGGSLRLSCAASGGSEYSYSTFSLGWFRQAPGQGLEAVAAIASMGGLTYYADSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCAAVRGYFMRLPSSHNFRYWGQGTLVTVS",
+      "sha256": "ab444bb19d8391b1b75decd0026e0d9f09affff5a702a6180edc990bbda3095e"
+    },
+    {
+      "lane": "primary_vhhified",
+      "mutations": "H47G>Q;H48L>R;H50A>G;H53A>S",
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/inputs/scaffolds/h-NbBCII10_vhh_qrg.pdb",
+      "scaffold_id": "qrg",
+      "sequence": "QVQLVESGGGLVQPGGSLRLSCAASGGSEYSYSTFSLGWFRQAPGQQREGVASIASMGGLTYYADSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCAAVRGYFMRLPSSHNFRYWGQGTLVTVS",
+      "sha256": "16d920072a9fdd1f1dd53b0e14327375fa9dab72be0468dfa00b556cc867064a"
+    },
+    {
+      "lane": "primary_vhhified",
+      "mutations": "H47G>E;H48L>K;H50A>G;H53A>S",
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb",
+      "scaffold_id": "ekg",
+      "sequence": "QVQLVESGGGLVQPGGSLRLSCAASGGSEYSYSTFSLGWFRQAPGQEKEGVASIASMGGLTYYADSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCAAVRGYFMRLPSSHNFRYWGQGTLVTVS",
+      "sha256": "4188ad58a985767880553db2c2ab9fccbd66992ecebf48c7a8be7c6cd0a3a756"
+    },
+    {
+      "lane": "primary_vhhified",
+      "mutations": "H47G>Q;H48L>K;H50A>G;H53A>S",
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb",
+      "scaffold_id": "qkg",
+      "sequence": "QVQLVESGGGLVQPGGSLRLSCAASGGSEYSYSTFSLGWFRQAPGQQKEGVASIASMGGLTYYADSVKGRFTISRDNSKNTLYLQMNSLRAEDTAVYYCAAVRGYFMRLPSSHNFRYWGQGTLVTVS",
+      "sha256": "b32c0349f5e1294a4164ae20d5169b2edffea9f2fa44a9a1614c6e4a4b4abe0b"
+    }
+  ]
+}

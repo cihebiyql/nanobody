@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/pvrig/rfantibody/training_dataset_acceptance_v1.schema.json",
+  "title": "PVRIG RFantibody Training Dataset Acceptance Spec",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "required_outputs",
+    "axis_contract",
+    "partial_mode",
+    "final_mode",
+    "split_contract",
+    "known_positive_contract",
+    "haddock_remark_contract"
+  ],
+  "properties": {
+    "schema_version": {"const": "pvrig_training_dataset_acceptance_v1"},
+    "required_outputs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "contains": {"const": "dataset_manifest.json"},
+      "minItems": 9,
+      "uniqueItems": true
+    },
+    "axis_contract": {
+      "type": "object",
+      "required": ["binder", "pose_quality", "affinity_proxy", "blocker_geometry", "rf2_recovery"],
+      "additionalProperties": false,
+      "properties": {
+        "binder": {"type": "string"},
+        "pose_quality": {"type": "string"},
+        "affinity_proxy": {"type": "string"},
+        "blocker_geometry": {"type": "string"},
+        "rf2_recovery": {"type": "string"}
+      }
+    },
+    "partial_mode": {
+      "type": "object",
+      "required": ["allow_missing_inputs", "missingness_table", "keep_deferred_candidates"],
+      "properties": {
+        "allow_missing_inputs": {"const": true},
+        "missingness_table": {"const": "failures.tsv"},
+        "keep_deferred_candidates": {"const": true}
+      }
+    },
+    "final_mode": {
+      "type": "object",
+      "required": ["min_completed_docking_candidates", "forbid_known_positive_train_leakage", "require_docking_completion"],
+      "properties": {
+        "min_completed_docking_candidates": {"const": 1000},
+        "forbid_known_positive_train_leakage": {"const": true},
+        "require_docking_completion": {"const": true}
+      }
+    },
+    "split_contract": {
+      "type": "object",
+      "required": ["grouping_keys", "allowed_splits"],
+      "properties": {
+        "grouping_keys": {
+          "type": "array",
+          "items": {"enum": ["backbone_group_id", "arm_id", "sequence_group_id"]},
+          "minItems": 3,
+          "uniqueItems": true
+        },
+        "allowed_splits": {
+          "type": "array",
+          "items": {"enum": ["train", "validation", "test", "calibration_holdout", "deferred"]},
+          "minItems": 5,
+          "uniqueItems": true
+        }
+      }
+    },
+    "known_positive_contract": {
+      "type": "object",
+      "required": ["allowed_splits", "never_training_positive"],
+      "properties": {
+        "allowed_splits": {"const": ["calibration_holdout"]},
+        "never_training_positive": {"const": true}
+      }
+    },
+    "haddock_remark_contract": {
+      "type": "object",
+      "required": ["raw_pdb_remark_fields", "required_parser_output"],
+      "properties": {
+        "raw_pdb_remark_fields": {
+          "type": "array",
+          "items": {"enum": ["haddock_score", "vdw_energy", "electrostatic_energy", "desolvation_energy", "air_energy", "buried_surface_area"]},
+          "minItems": 6,
+          "uniqueItems": true
+        },
+        "required_parser_output": {"const": "docking_pose_features.tsv"}
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "schema_version": "pvrig_training_dataset_acceptance_v1",
+      "required_outputs": ["candidates.tsv", "rf2_metrics.tsv", "monomer_qc.tsv", "docking_runs.tsv", "docking_pose_features.tsv", "candidate_summary.tsv", "splits_by_backbone.tsv", "failures.tsv", "dataset_manifest.json"],
+      "axis_contract": {
+        "binder": "experimental or curated binder labels only; never inferred from scores",
+        "pose_quality": "HADDOCK pose/readout axis",
+        "affinity_proxy": "baseline postprocess affinity proxy axis",
+        "blocker_geometry": "PVRIG-PVRL2 interface/hotspot overlap axis",
+        "rf2_recovery": "RF2 recovery and structure consistency axis"
+      },
+      "partial_mode": {"allow_missing_inputs": true, "missingness_table": "failures.tsv", "keep_deferred_candidates": true},
+      "final_mode": {"min_completed_docking_candidates": 1000, "forbid_known_positive_train_leakage": true, "require_docking_completion": true},
+      "split_contract": {"grouping_keys": ["backbone_group_id", "arm_id", "sequence_group_id"], "allowed_splits": ["train", "validation", "test", "calibration_holdout", "deferred"]},
+      "known_positive_contract": {"allowed_splits": ["calibration_holdout"], "never_training_positive": true},
+      "haddock_remark_contract": {"raw_pdb_remark_fields": ["haddock_score", "vdw_energy", "electrostatic_energy", "desolvation_energy", "air_energy", "buried_surface_area"], "required_parser_output": "docking_pose_features.tsv"}
+    }
+  ]
+}
