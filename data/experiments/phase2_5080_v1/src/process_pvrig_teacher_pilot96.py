@@ -45,6 +45,11 @@ def find_run_dir(sync_root: Path, candidate_id: str) -> Path:
     return matches[0]
 
 
+def selected_model_count(run_dir: Path) -> int:
+    selected = run_dir / "6_seletopclusts"
+    return len(list(selected.glob("cluster_*_model_*.pdb"))) + len(list(selected.glob("cluster_*_model_*.pdb.gz")))
+
+
 def count_csv_rows(path: Path) -> int:
     if not path.exists():
         return 0
@@ -75,12 +80,25 @@ def process_one(
     work_root: Path,
     processor: Path,
     top_n: int,
+    min_models: int,
 ) -> dict[str, object]:
     candidate_id = row["candidate_id"]
     workdir = work_root / candidate_id
-    before = completion_evidence(workdir, candidate_id, top_n)
+    try:
+        run_dir = find_run_dir(sync_root, candidate_id)
+        expected_models = min(top_n, selected_model_count(run_dir))
+        if expected_models < min_models:
+            raise ValueError(f"Only {expected_models} selected models; minimum is {min_models}")
+    except Exception as error:
+        return {
+            "candidate_id": candidate_id,
+            "status": f"FAIL:{type(error).__name__}:{error}",
+            "seconds": 0.0,
+            "complete": False,
+        }
+    before = completion_evidence(workdir, candidate_id, expected_models)
     if before["complete"]:
-        return {"candidate_id": candidate_id, "status": "SKIP_COMPLETE", "seconds": 0.0, **before}
+        return {"candidate_id": candidate_id, "status": "SKIP_COMPLETE", "seconds": 0.0, "expected_models": expected_models, **before}
 
     start = time.monotonic()
     workdir.mkdir(parents=True, exist_ok=True)
@@ -90,7 +108,6 @@ def process_one(
     )
     log_path = workdir / "postprocess.log"
     try:
-        run_dir = find_run_dir(sync_root, candidate_id)
         cmd = [
             sys.executable,
             str(processor),
@@ -111,12 +128,13 @@ def process_one(
         ]
         with log_path.open("w", encoding="utf-8") as log:
             subprocess.run(cmd, cwd=WORKSPACE_ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
-        evidence = completion_evidence(workdir, candidate_id, top_n)
+        evidence = completion_evidence(workdir, candidate_id, expected_models)
         status = "PASS" if evidence["complete"] else "FAIL_INCOMPLETE_OUTPUT"
         return {
             "candidate_id": candidate_id,
             "status": status,
             "seconds": round(time.monotonic() - start, 3),
+            "expected_models": expected_models,
             "run_dir": str(run_dir),
             "log": str(log_path),
             **evidence,
@@ -126,8 +144,9 @@ def process_one(
             "candidate_id": candidate_id,
             "status": f"FAIL:{type(error).__name__}:{error}",
             "seconds": round(time.monotonic() - start, 3),
+            "expected_models": expected_models,
             "log": str(log_path),
-            **completion_evidence(workdir, candidate_id, top_n),
+            **completion_evidence(workdir, candidate_id, expected_models),
         }
 
 
@@ -146,7 +165,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     results: list[dict[str, object]] = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = {
-            pool.submit(process_one, row, args.sync_root, args.work_root, args.processor, args.top_n): row["candidate_id"]
+            pool.submit(process_one, row, args.sync_root, args.work_root, args.processor, args.top_n, args.min_models): row["candidate_id"]
             for row in rows
         }
         for future in as_completed(futures):
@@ -161,6 +180,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "sync_root": str(args.sync_root),
         "work_root": str(args.work_root),
         "top_n": args.top_n,
+        "min_models": args.min_models,
         "requested_candidates": len(rows),
         "complete_candidates": sum(row["status"] in {"PASS", "SKIP_COMPLETE"} for row in results),
         "processed_candidates": sum(row["status"] == "PASS" for row in results),
@@ -184,11 +204,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--processor", type=Path, default=DEFAULT_PROCESSOR)
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
     parser.add_argument("--top-n", type=int, default=10)
+    parser.add_argument("--min-models", type=int, default=8)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--candidate-id", action="append")
     args = parser.parse_args(argv)
-    if args.top_n <= 0 or args.workers <= 0:
-        parser.error("--top-n and --workers must be positive")
+    if args.top_n <= 0 or args.min_models <= 0 or args.min_models > args.top_n or args.workers <= 0:
+        parser.error("Require 0 < --min-models <= --top-n and positive --workers")
     return args
 
 

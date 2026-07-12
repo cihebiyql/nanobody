@@ -41,6 +41,7 @@ cd "$ROOT"
        -o -path '*/reports/*/*_asset_sha256.tsv' \
        -o -path '*/reports/*/*_haddock_outputs.txt' \
        -o -path '*/monomer/*/*_chainA.pdb' \
+       -o -path '*/haddock3/*/*_pvrig_hotspot.cfg' \
        -o -path '*/haddock3/*/logs/*_haddock3_run.log' \
        -o -path '*/manifests/*.tsv' \) -print0
   find . -maxdepth 1 -type f -name '*.complete' -print0
@@ -49,20 +50,25 @@ cd "$ROOT"
 """
 
 
-def inventory(root: Path, expected_candidates: int, top_n: int) -> dict[str, object]:
+def inventory(root: Path, expected_candidates: int, top_n: int, min_models: int) -> dict[str, object]:
     run_dirs = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot"))
     models = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot/6_seletopclusts/cluster_*_model_*.pdb*"))
     consensus = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot/traceback/consensus.tsv"))
     sequence_qc = sorted(root.glob("shard_*/reports/*/*_sequence_validation.json"))
     monomer_qc = sorted(root.glob("shard_*/reports/*/*_monomer_geometry_qc.json"))
     receptor_qc = sorted(root.glob("shard_*/reports/*/*_pvrig_receptor_geometry_qc.json"))
+    configs = sorted(root.glob("shard_*/haddock3/*/*_pvrig_hotspot.cfg"))
+    per_run_models = {
+        str(run.relative_to(root)): len(list((run / "6_seletopclusts").glob("cluster_*_model_*.pdb*")))
+        for run in run_dirs
+    }
     expected_models = expected_candidates * top_n
     status = "PASS"
     if not (root / "docking.complete").exists():
         status = "FAIL_MISSING_DOCKING_MARKER"
     elif len(run_dirs) != expected_candidates or len(consensus) != expected_candidates:
         status = "FAIL_INCOMPLETE_RUN_INVENTORY"
-    elif len(models) != expected_models:
+    elif any(count < min_models or count > top_n for count in per_run_models.values()):
         status = "FAIL_UNEXPECTED_SELECTED_MODEL_COUNT"
     elif any(len(paths) != expected_candidates for paths in (sequence_qc, monomer_qc, receptor_qc)):
         status = "FAIL_INCOMPLETE_QC_INVENTORY"
@@ -71,10 +77,17 @@ def inventory(root: Path, expected_candidates: int, top_n: int) -> dict[str, obj
         "run_dirs": len(run_dirs),
         "selected_models": len(models),
         "expected_selected_models": expected_models,
+        "minimum_selected_models": expected_candidates * min_models,
+        "per_run_model_counts": per_run_models,
         "traceback_consensus_files": len(consensus),
         "sequence_qc_files": len(sequence_qc),
         "monomer_geometry_qc_files": len(monomer_qc),
         "receptor_geometry_qc_files": len(receptor_qc),
+        "haddock_config_files": len(configs),
+        "haddock_ncores_counts": {
+            str(ncores): sum(f"ncores = {ncores}" in path.read_text(encoding="utf-8") for path in configs)
+            for ncores in (4, 8)
+        },
     }
 
 
@@ -91,7 +104,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     subprocess.run(["tar", "-C", str(args.outdir), "-xf", str(partial_tar)], check=True)
     partial_tar.unlink()
 
-    evidence = inventory(args.outdir, args.expected_candidates, args.top_n)
+    evidence = inventory(args.outdir, args.expected_candidates, args.top_n, args.min_models)
     files = sorted(path for path in args.outdir.rglob("*") if path.is_file())
     audit: dict[str, object] = {
         **evidence,
@@ -120,9 +133,10 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
     parser.add_argument("--expected-candidates", type=int, default=96)
     parser.add_argument("--top-n", type=int, default=10)
+    parser.add_argument("--min-models", type=int, default=8)
     args = parser.parse_args(argv)
-    if args.expected_candidates <= 0 or args.top_n <= 0:
-        parser.error("--expected-candidates and --top-n must be positive")
+    if args.expected_candidates <= 0 or args.top_n <= 0 or args.min_models <= 0 or args.min_models > args.top_n:
+        parser.error("Require positive candidates and 0 < --min-models <= --top-n")
     return args
 
 

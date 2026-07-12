@@ -37,6 +37,10 @@ class ProcessPilot96Test(unittest.TestCase):
             expected = root / "shard_2/haddock3/c1/run_c1_pvrig_hotspot"
             expected.mkdir(parents=True)
             self.assertEqual(MOD.find_run_dir(root, "c1"), expected)
+            selected = expected / "6_seletopclusts"
+            selected.mkdir()
+            (selected / "cluster_1_model_1.pdb.gz").write_text("x", encoding="utf-8")
+            self.assertEqual(MOD.selected_model_count(expected), 1)
 
     def test_completion_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

@@ -39,7 +39,7 @@ class SyncPilot96Test(unittest.TestCase):
                 reports.mkdir(parents=True)
                 for suffix in ("sequence_validation", "monomer_geometry_qc", "pvrig_receptor_geometry_qc"):
                     (reports / f"{cid}_{suffix}.json").write_text("{}", encoding="utf-8")
-            self.assertEqual(MOD.inventory(root, 2, 3)["status"], "PASS")
+            self.assertEqual(MOD.inventory(root, 2, 3, 2)["status"], "PASS")
 
 
 if __name__ == "__main__":

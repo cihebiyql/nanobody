@@ -1,0 +1,26 @@
+{
+  "all_checks_passed": true,
+  "generated_at": "2026-07-12T11:23:21.302011+00:00",
+  "raw_score_records": 1600,
+  "records_by_set": {
+    "A": 400,
+    "B": 400,
+    "C": 400,
+    "D": 400
+  },
+  "schema_version": 1,
+  "scientific_boundary": "ProteinMPNN NLL is a sequence-structure compatibility score, not binding affinity or blocker evidence.",
+  "score_definition": "mean masked negative log probability; lower is better",
+  "score_max": 1.521795,
+  "score_min": 0.8728535,
+  "selected_score_records": 1000,
+  "source_final_tsv": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712/final/pvrig_rfantibody_1000.tsv",
+  "source_final_tsv_sha256": "65d66b50ead7b9554211f8cb91855287dcf60729255d58073d7ac6d6978dab6f",
+  "source_log_sha256": {
+    "A": "34c196c0d12e67d5249479b70c0f376cb18da695d054af316cd3a4f9cac0e6cb",
+    "B": "7232ae313e378d69a6056fefc268242db0ca830ab8ad9697f6c4de467fc44de1",
+    "C": "511ed81d8c5ad769b8e28702885e4e9fd80d815d5120ab82955fb82dc6c680eb",
+    "D": "a92a508d21ed53918e3d9315abcc8ae6ddaa615e124b2766b4d84079304089fb"
+  },
+  "unique_backbones": 200
+}

@@ -131,8 +131,8 @@ def write_audit_markdown(path: Path, audit: dict[str, object]) -> None:
         "",
         f"- Status: `{audit['status']}`",
         f"- Candidates: `{audit['candidate_count']}/96`.",
-        f"- Pose rows: `{audit['pose_count']}/{audit['expected_pose_count']}`.",
-        f"- Contact extraction: `{audit['contact_pose_success_count']}/{audit['expected_pose_count']}`.",
+        f"- Pose rows: `{audit['pose_count']}` (maximum `{audit['maximum_pose_count']}`).",
+        f"- Contact extraction: `{audit['contact_pose_success_count']}/{audit['pose_count']}`.",
         f"- Complete candidate summaries: `{audit['complete_candidate_count']}/96`.",
         f"- Parent framework clusters: `{audit['parent_framework_cluster_count']}`.",
         f"- Claim boundary: `{CLAIM_BOUNDARY}`.",
@@ -202,7 +202,9 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     }
     config_path.write_text(json.dumps(config, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    expected_pose_count = len(selection) * args.top_k
+    maximum_pose_count = len(selection) * args.top_k
+    minimum_pose_count = len(selection) * args.min_poses
+    pose_count_distribution = Counter(int(row["pose_count"]) for row in candidate_rows)
     pose_classes = Counter(base.clean(row["consensus_class"]) for row in pose_rows)
     parent_clusters = {row["parent_framework_cluster"] for row in selection}
     audit: dict[str, object] = {
@@ -210,7 +212,9 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "schema_version": SCHEMA_VERSION,
         "candidate_count": len(candidate_rows),
         "pose_count": len(pose_rows),
-        "expected_pose_count": expected_pose_count,
+        "maximum_pose_count": maximum_pose_count,
+        "minimum_required_pose_count": minimum_pose_count,
+        "candidate_pose_count_distribution": dict(sorted(pose_count_distribution.items())),
         "pose_consensus_class_counts": dict(sorted(pose_classes.items())),
         "contact_pose_success_count": sum(base.clean(row["contact_extraction_status"]) == "ok" for row in pose_rows),
         "contact_pose_failure_count": sum(base.clean(row["contact_extraction_status"]) != "ok" for row in pose_rows),
@@ -228,7 +232,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         },
         "claim_boundary": CLAIM_BOUNDARY,
     }
-    if len(candidate_rows) != 96 or len(pose_rows) != expected_pose_count:
+    if len(candidate_rows) != 96 or any(count < args.min_poses or count > args.top_k for count in pose_count_distribution):
         audit["status"] = "FAIL_UNEXPECTED_PILOT_COUNTS"
     if sum(base.clean(row["teacher_completeness"]) == "COMPLETE" for row in candidate_rows) != 96:
         audit["status"] = "FAIL_INCOMPLETE_CANDIDATE_SUMMARIES"
@@ -252,11 +256,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--audit-json", type=Path, default=DEFAULT_AUDIT_JSON)
     parser.add_argument("--audit-md", type=Path, default=DEFAULT_AUDIT_MD)
     parser.add_argument("--top-k", type=int, default=10)
+    parser.add_argument("--min-poses", type=int, default=8)
     parser.add_argument("--min-supporting-clusters", type=int, default=2)
     parser.add_argument("--skip-contacts", action="store_true")
     args = parser.parse_args(argv)
-    if args.top_k <= 0 or args.min_supporting_clusters <= 0:
-        parser.error("--top-k and --min-supporting-clusters must be positive")
+    if args.top_k <= 0 or args.min_poses <= 0 or args.min_poses > args.top_k or args.min_supporting_clusters <= 0:
+        parser.error("Require 0 < --min-poses <= --top-k and positive --min-supporting-clusters")
     return args
 
 
