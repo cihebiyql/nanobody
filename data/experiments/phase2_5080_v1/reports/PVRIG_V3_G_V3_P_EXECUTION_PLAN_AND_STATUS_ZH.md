@@ -339,15 +339,44 @@ contact/paratope replay 指标保留源 checkpoint 的至少 90%
 label-shuffle / target-shuffle 不得通过主门
 ```
 
-Seed 83 和 89 已完成，Seed 97 正在训练。当前结果：
+Seed 83、89、97 和三种子正式判定已完成：
 
 | seed | best epoch | dev macro target AP | test macro target AP | test overall AP |
 | ---: | ---: | ---: | ---: | ---: |
-| 83 | 2 | 0.2649 | 0.2315 | 0.3071 |
-| 89 | 2 | 0.2660 | 0.2476 | 0.3283 |
+| 83 | 2 | 0.2649 | 0.2342 | 0.3094 |
+| 89 | 2 | 0.2660 | 0.2501 | 0.3306 |
+| 97 | 3 | 0.2378 | 0.2478 | 0.3701 |
 | mean-pooled `v3_full` baseline | - | 0.3951 | 0.3415 | 0.4813 |
 
-两个已完成 seed 都明显低于 baseline，83+89 两种子 ensemble 的 test macro target AP 也只有 `0.2416`。因此 V3-G2 当前大概率将得到 `FAIL_FALLBACK_TO_MEANPOOL_V3_FULL`；但仍会按预注册完成 Seed 97、cluster bootstrap、target-dependence、contact/paratope replay 和 external hTNFa 描述性比较，不用预判替代正式结果。
+三种子 ensemble 的正式结果：
+
+```text
+internal cluster-safe test macro target AP = 0.244264
+mean-pooled v3_full baseline               = 0.341462
+observed delta                            = -0.097197
+VHH-cluster bootstrap 95% CI              = [-0.180220, -0.038091]
+
+target-dependence positive true-swap margin = +0.354730
+observed target contrast win rate            = 0.622222
+contact replay retention                      = 97.47%
+paratope replay retention                     = 96.97%
+```
+
+因此正式结论是：
+
+```text
+FAIL_FALLBACK_TO_MEANPOOL_V3_FULL
+```
+
+这不是说 residue backbone 没有价值。它的 target-dependence 和 contact/site 保持都通过，但它不能取代 mean-pooled `v3_full` 成为当前 generic binding ranker。后续 V3-P 使用：
+
+```text
+V2.3 frozen residue/contact backbone
++ mean-pooled v3_full generic binding prior
++ PVRIG docking/contact-frequency teacher
+```
+
+不使用本次失败的 V3-G2 pair head 直接主导 Teacher500 或最终提交排序。
 
 正式判定器：
 
@@ -355,7 +384,14 @@ Seed 83 和 89 已完成，Seed 97 正在训练。当前结果：
 experiments/phase2_5080_v1/src/evaluate_phase2_v3_g2_final.py
 ```
 
-external hTNFa 已准备 `5,571` 条、其中 `677` binder，与保留开发集 exact VHH overlap 为 `0`。但它在旧 V3 中已经解封，因此只能写成 external comparison，不能冒充新的 pristine formal test。
+external hTNFa 已准备 `5,571` 条、其中 `677` binder，与保留开发集 exact VHH overlap 为 `0`。描述性比较中，residue ensemble AP 为 `0.222219`，高于 mean-pooled baseline 的 `0.130610`。但它在旧 V3 中已经解封，因此只能证明这一特定 transfer block 上有信号，不能推翻主 cluster-safe test 的失败，也不能冒充新的 pristine formal test。
+
+正式产物：
+
+```text
+experiments/phase2_5080_v1/runs/phase2_v3_g2_final_evaluation_v1/final_evaluation_summary.json
+experiments/phase2_5080_v1/runs/phase2_v3_g2_final_evaluation_v1/PHASE2_V3_G2_FINAL_EVALUATION_ZH.md
+```
 
 ## 五、V3-P 训练顺序
 
@@ -395,7 +431,7 @@ binding prior 与 geometry surrogate 冲突
 ## 六、接下来按此顺序执行
 
 1. 保持 Node1 RFantibody 生产运行，直到 240/240 task 完成且 0 失败。
-2. 完成正在运行的 Seed 97，随后执行 V3-G2 三种子正式门判定；若主门已失败，null controls 记为不必要的后续晋级计算，不将其伪装为 PASS。
+2. V3-G2 已完成并回退 `mean-pooled v3_full`；主门已失败，因此 null controls 记为不必要的后续晋级计算，而不将其伪装为 PASS。
 3. 对 8,640 raw 输出运行 collector，冻结 exact-dedup candidate manifest。
 4. 运行快速 hard gate 和通用 prior；按预注册配额抽取约 500 条 teacher，不机械取模型 Top 500。
 5. 生成正式 monomer + HADDOCK + 8X6B/9E6Y + contact-frequency teacher 包。
