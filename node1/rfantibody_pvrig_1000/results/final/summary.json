@@ -1,0 +1,125 @@
+{
+  "created_at": "2026-07-12T08:10:30.739128+00:00",
+  "run_root": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712",
+  "generation_shape_validated": true,
+  "expected_backbones_per_hotspot_set": 50,
+  "expected_sequences_per_backbone": 8,
+  "raw_pdb_records": 1600,
+  "raw_valid_records": 1600,
+  "raw_unique_sequences": 1494,
+  "raw_duplicate_records": 106,
+  "exact_known_positive_reference_sequences": 32,
+  "exact_known_positive_matches": 0,
+  "raw_valid_by_hotspot_set": {
+    "A": 400,
+    "B": 400,
+    "C": 400,
+    "D": 400
+  },
+  "raw_unique_by_hotspot_set": {
+    "A": 395,
+    "B": 395,
+    "C": 395,
+    "D": 395
+  },
+  "raw_sequence_length_distribution": {
+    "113": 160,
+    "114": 160,
+    "115": 128,
+    "116": 192,
+    "117": 256,
+    "118": 128,
+    "119": 224,
+    "120": 160,
+    "121": 192
+  },
+  "raw_cdr3_length_distribution": {
+    "5": 160,
+    "6": 160,
+    "7": 128,
+    "8": 192,
+    "9": 256,
+    "10": 128,
+    "11": 224,
+    "12": 160,
+    "13": 192
+  },
+  "rf_diffusion_hotspot_distance_summary": {
+    "A": {
+      "mindist": {
+        "count": 400,
+        "min": 3.2866618633270264,
+        "median": 4.874595642089844,
+        "max": 8.455499649047852
+      },
+      "averagemin": {
+        "count": 400,
+        "min": 5.868007659912109,
+        "median": 7.815695285797119,
+        "max": 9.23990535736084
+      },
+      "backbones_mindist_le_8A": 49,
+      "backbones_mindist_le_10A": 50
+    },
+    "B": {
+      "mindist": {
+        "count": 400,
+        "min": 4.176538944244385,
+        "median": 8.951609134674072,
+        "max": 10.638931274414062
+      },
+      "averagemin": {
+        "count": 400,
+        "min": 7.904336929321289,
+        "median": 9.946089267730713,
+        "max": 16.218740463256836
+      },
+      "backbones_mindist_le_8A": 20,
+      "backbones_mindist_le_10A": 45
+    },
+    "C": {
+      "mindist": {
+        "count": 400,
+        "min": 3.185492753982544,
+        "median": 4.31616997718811,
+        "max": 6.45986795425415
+      },
+      "averagemin": {
+        "count": 400,
+        "min": 5.956203460693359,
+        "median": 7.121919631958008,
+        "max": 8.212749481201172
+      },
+      "backbones_mindist_le_8A": 50,
+      "backbones_mindist_le_10A": 50
+    },
+    "D": {
+      "mindist": {
+        "count": 400,
+        "min": 2.999784231185913,
+        "median": 4.154400587081909,
+        "max": 10.37149429321289
+      },
+      "averagemin": {
+        "count": 400,
+        "min": 5.6402788162231445,
+        "median": 6.559962749481201,
+        "max": 14.513486862182617
+      },
+      "backbones_mindist_le_8A": 49,
+      "backbones_mindist_le_10A": 49
+    }
+  },
+  "selected_records": 1000,
+  "selected_unique_sequences": 1000,
+  "selected_by_hotspot_set": {
+    "A": 250,
+    "B": 250,
+    "C": 250,
+    "D": 250
+  },
+  "selected_unique_backbones": 171,
+  "selected_max_siblings_per_backbone": 6,
+  "rf2_status": "not_run_by_generation_plan",
+  "scientific_boundary": "Generated hotspot-conditioned candidates are not validated binders or blockers."
+}

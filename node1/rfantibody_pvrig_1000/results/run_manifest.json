@@ -1,0 +1,74 @@
+{
+  "run_id": "pvrig_rfantibody_1000_20260712",
+  "created_at": "2026-07-12T06:57:21.665988+00:00",
+  "objective": "Generate 1000 exact-unique full-length VHH sequence candidates",
+  "remote_host": "node1",
+  "remote_user": "qlyu",
+  "remote_root": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712",
+  "rfantibody_source": "/data/qlyu/software/RFantibody",
+  "rfantibody_reference_commit": "8fe311415754e0276d1a39c87c57e69c88927a2d",
+  "framework_id": "h-NbBCII10",
+  "target_source": "8X6B chain B protein atoms renamed to chain T",
+  "target_backbones_per_set": 50,
+  "mpnn_sequences_per_backbone": 8,
+  "raw_target_records": 1600,
+  "final_target_records": 1000,
+  "hotspot_sets": {
+    "A": "T57,T101,T106",
+    "B": "T62,T101,T106",
+    "C": "T97,T101,T105,T106",
+    "D": "T33,T36,T105,T106"
+  },
+  "gpus": {
+    "A": 1,
+    "B": 2,
+    "C": 3,
+    "D": 4
+  },
+  "rfdiffusion": {
+    "timesteps": 50,
+    "loops": "H1:7,H2:6,H3:5-13",
+    "deterministic": true,
+    "trajectory": false
+  },
+  "proteinmpnn": {
+    "loops": "H1,H2,H3",
+    "temperature": 0.2,
+    "omit_aas": "CX",
+    "deterministic": true
+  },
+  "rf2_status": "not_run_by_generation_plan",
+  "scientific_boundary": "Generated candidates are not validated binders or blockers.",
+  "files": {
+    "target": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712/inputs/pvrig_8x6b_chainT.pdb",
+      "bytes": 62621,
+      "md5": "52d3f298a1164196af6ac565f998da34",
+      "sha256": "a3451fb6a2e2659971826e7ce4a7e774378dc377ea5eee4dd70a148c7dbc2d17"
+    },
+    "framework": {
+      "path": "/data/qlyu/software/RFantibody/scripts/examples/example_inputs/h-NbBCII10.pdb",
+      "bytes": 76640,
+      "md5": "f4650f4d40876c5c52fc231852cda3d5",
+      "sha256": "ab444bb19d8391b1b75decd0026e0d9f09affff5a702a6180edc990bbda3095e"
+    },
+    "rfdiffusion_weight": {
+      "path": "/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt",
+      "bytes": 483452922,
+      "md5": "5614b1fc623b9cbc7e18190d0c2dc131",
+      "sha256": "736c18ae8e867ed505d19853fa5380514ff439675d002ff3a73c7287acf07e3c"
+    },
+    "proteinmpnn_weight": {
+      "path": "/data/qlyu/software/RFantibody/weights/ProteinMPNN_v48_noise_0.2.pt",
+      "bytes": 6681301,
+      "md5": "91d54c97a68bf551114f8c74c785e90f",
+      "sha256": "c9cb4a671d79604111231f8dbfc7c590e06f1197453b7a6854ac6661a642f5bd"
+    },
+    "config": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712/config/hotspot_sets.tsv",
+      "bytes": 317,
+      "md5": "c9ba21bbb871281e789134f64b5de846",
+      "sha256": "1aad75f801e3ec00d30142003c579bcc29116c4d7f7c0bff1e50d51ad813d738"
+    }
+  }
+}

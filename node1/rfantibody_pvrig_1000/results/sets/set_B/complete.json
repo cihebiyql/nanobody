@@ -1,0 +1,12 @@
+{
+  "set_id": "B",
+  "gpu": 2,
+  "hotspots": "T62,T101,T106",
+  "state": "complete",
+  "return_code": 0,
+  "target_backbones": 50,
+  "sequences_per_backbone": 8,
+  "backbone_pdb_count": 50,
+  "sequence_pdb_count": 400,
+  "updated_at": "2026-07-12T08:08:13.319568+00:00"
+}
