@@ -34,6 +34,12 @@ def candidate_label(classes: Counter[str], best_a_rank: int | None) -> tuple[str
     return "EVIDENCE_INFERENCE_ONLY_E", "FINAL_INSUFFICIENT_GEOMETRY"
 
 
+def apply_rf2_boundary(docking_label: str, rf2_evidence_status: str) -> str:
+    if "DIAGNOSTIC_FALLBACK_NOT_STRICT_POSE_RECOVERY" in rf2_evidence_status:
+        return "FINAL_DIAGNOSTIC_ONLY_RF2_NOT_RECOVERED"
+    return docking_label
+
+
 def aggregate(manifest_tsv: Path, postprocess_root: Path, output_dir: Path) -> dict[str, object]:
     manifest = read_tsv(manifest_tsv)
     rows: list[dict[str, object]] = []
@@ -49,7 +55,9 @@ def aggregate(manifest_tsv: Path, postprocess_root: Path, output_dir: Path) -> d
         classes = Counter(row["consensus_class"] for row in models)
         a_ranks = [int(float(row["best_haddock_rank"])) for row in models if row["consensus_class"] == "CONSENSUS_BLOCKER_LIKE_A"]
         best_a_rank = min(a_ranks) if a_ranks else None
-        computational_class, final_label = candidate_label(classes, best_a_rank)
+        computational_class, docking_label = candidate_label(classes, best_a_rank)
+        rf2_evidence_status = source.get("docking_evidence_status", "")
+        final_label = apply_rf2_boundary(docking_label, rf2_evidence_status)
         best_model = min(models, key=lambda row: int(float(row["best_haddock_rank"])))
         rows.append(
             {
@@ -72,6 +80,8 @@ def aggregate(manifest_tsv: Path, postprocess_root: Path, output_dir: Path) -> d
                 "top_haddock_model": best_model["model"],
                 "top_haddock_model_consensus_class": best_model["consensus_class"],
                 "computational_blocker_class": computational_class,
+                "docking_geometry_label": docking_label,
+                "rf2_docking_evidence_status": rf2_evidence_status,
                 "final_blocker_label": final_label,
                 "consensus_csv": str(consensus_path),
             }
@@ -84,6 +94,7 @@ def aggregate(manifest_tsv: Path, postprocess_root: Path, output_dir: Path) -> d
         "FINAL_POSITIVE_PLAUSIBLE": 2,
         "FINAL_BINDER_NOT_BLOCKER": 3,
         "FINAL_INSUFFICIENT_GEOMETRY": 4,
+        "FINAL_DIAGNOSTIC_ONLY_RF2_NOT_RECOVERED": 5,
     }
     rows.sort(
         key=lambda row: (
@@ -106,7 +117,10 @@ def aggregate(manifest_tsv: Path, postprocess_root: Path, output_dir: Path) -> d
         "candidate_count": len(rows),
         "final_label_counts": dict(sorted(Counter(str(row["final_blocker_label"]) for row in rows).items())),
         "final_positive_high": sum(row["final_blocker_label"] == "FINAL_POSITIVE_HIGH" for row in rows),
-        "high_rule": "at least two A/A models and best A/A HADDOCK rank <=3",
+        "high_rule": (
+            "at least two A/A models and best A/A HADDOCK rank <=3, and the candidate must not be an "
+            "RF2 diagnostic fallback"
+        ),
         "scientific_boundary": "All labels are computational priorities, not experimental binding, Kd, or blockade claims.",
         "all_checks_passed": True,
     }
@@ -128,4 +142,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

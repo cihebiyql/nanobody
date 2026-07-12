@@ -1,0 +1,22 @@
+{
+  "all_checks_passed": true,
+  "diagnostic_selected": 30,
+  "diagnostic_unique_backbones": 30,
+  "generated_at": "2026-07-12T12:13:03.899962+00:00",
+  "rf2_candidates": 78,
+  "schema_version": 1,
+  "scientific_boundary": "These candidates failed strict blind RF2 pose recovery. Docking is diagnostic and cannot rescue them into a high-confidence blocker class without explicitly retaining this failure flag.",
+  "selected_by_set": {
+    "A": 10,
+    "B": 4,
+    "C": 7,
+    "D": 9
+  },
+  "selected_by_stratum": {
+    "BEST_AVAILABLE_COMPOSITE": 20,
+    "LOW_IPAE_ALTERNATE_OR_NEAR_POSE": 9,
+    "NEAR_POSE_BORDERLINE_IPAE": 1
+  },
+  "selection_formula": "interaction_pae/10 + max(target_aligned_RMSD)/5 - 0.25*pred_lddt",
+  "strict_pose_recovered": 0
+}

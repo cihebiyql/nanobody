@@ -37,7 +37,15 @@ class AggregateDockingConsensusTest(unittest.TestCase):
             "FINAL_BINDER_NOT_BLOCKER",
         )
 
+    def test_rf2_diagnostic_fallback_never_becomes_high(self) -> None:
+        self.assertEqual(
+            MODULE.apply_rf2_boundary(
+                "FINAL_POSITIVE_HIGH",
+                "RF2_DIAGNOSTIC_FALLBACK_NOT_STRICT_POSE_RECOVERY",
+            ),
+            "FINAL_DIAGNOSTIC_ONLY_RF2_NOT_RECOVERED",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
-
