@@ -57,6 +57,7 @@ CUDA_VISIBLE_DEVICES=$gpu_id $RF2_BIN --input-dir $input_dir --output-dir $outpu
 EOF
   (
     export CUDA_VISIBLE_DEVICES="$gpu_id"
+    set +e
     "$RF2_BIN" \
       --input-dir "$input_dir" \
       --output-dir "$output_dir" \
@@ -64,6 +65,7 @@ EOF
       --hotspot-show-prop 0 \
       --seed 42
     rc=$?
+    set -e
     echo "$rc" > "$exit_file"
     exit "$rc"
   ) > "$log_dir/rf2.log" 2>&1 < /dev/null &
@@ -75,4 +77,3 @@ EOF
 done
 
 echo "launched_shards=$launched"
-

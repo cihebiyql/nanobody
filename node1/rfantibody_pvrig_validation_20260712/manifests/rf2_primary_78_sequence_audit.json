@@ -1,0 +1,13 @@
+{
+  "all_checks_passed": true,
+  "generated_at": "2026-07-12T11:44:01.301092+00:00",
+  "output_fasta": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/rf2_primary_78.fr4_restored.fasta",
+  "output_fasta_sha256": "81f9e784110025043c57e8004854def55a10e1bea04d594f66d25832754c25c7",
+  "record_count": 78,
+  "repair_mapping_tsv": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/manifests/fr4_terminal_repair_mapping.tsv",
+  "repair_mapping_tsv_sha256": "96da81c17ba0e9fd1fd1b45f68b53fb6279fd7b9a8362099e97a8468139732cf",
+  "schema_version": 1,
+  "shortlist_tsv": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/pose_audit/rf2_pre_shortlist_primary.tsv",
+  "shortlist_tsv_sha256": "c92c102575953f7b7bd47615eeb6f6cfe322d2dc4ecc7b3c9f0fbafea8105c31",
+  "unique_sequences": 78
+}
