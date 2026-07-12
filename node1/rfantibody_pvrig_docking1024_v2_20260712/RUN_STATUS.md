@@ -5,8 +5,8 @@
 ## 当前阶段
 
 - 已完成旧流程、hotspot、scaffold、GPU/CPU 资源与训练数据合同审计。
-- 已冻结 48-arm V2 生成设计：384 backbones、1,536 raw sequences、1,024 docking cohort。
-- 已生成 3 个 VHHified scaffold；FR2 hallmark 为 1.0，5-aa hydrophobic-run 为 0。
+- 已冻结 48-arm V2 设计规格：计划生成 384 backbones、1,536 raw sequences，并从中冻结 1,024 条 docking cohort；真实 cohort 尚未生成。
+- 已生成 3 个 FR2 VHHified scaffold 原型；hallmark 为 1.0、5-aa hydrophobic-run 为 0，正式 `VTVSS` artifact 正等待资源门控后重冻结。
 - 第一次 4-arm RFdiffusion + ProteinMPNN smoke 已通过，但它只作为补 FR4 前的诊断结果。
 - 已加入 scaffold 层 `VTVSS` 修复、SHA/CDR label preflight 和第二次 smoke 的正式门槛。
 - 三个后台控制器已经在 node1 运行：generation、RF2/NBB2/HADDOCK、双参考后处理/训练 ETL。
