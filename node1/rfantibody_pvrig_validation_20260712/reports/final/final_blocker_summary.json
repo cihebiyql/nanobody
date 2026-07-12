@@ -1,0 +1,12 @@
+{
+  "all_checks_passed": true,
+  "candidate_count": 30,
+  "final_label_counts": {
+    "FINAL_DIAGNOSTIC_ONLY_RF2_NOT_RECOVERED": 30
+  },
+  "final_positive_high": 0,
+  "generated_at": "2026-07-12T13:14:33.438447+00:00",
+  "high_rule": "at least two A/A models and best A/A HADDOCK rank <=3, and the candidate must not be an RF2 diagnostic fallback",
+  "schema_version": 1,
+  "scientific_boundary": "All labels are computational priorities, not experimental binding, Kd, or blockade claims."
+}
