@@ -544,6 +544,7 @@ data/experiments/phase2_5080_v1/src/score_p3_late_fusion.py
 data/experiments/phase2_5080_v1/src/score_pvrig_candidates_v2_3.py
 data/experiments/phase2_5080_v1/src/score_pvrig_candidates_v2_4.py
 data/experiments/phase2_5080_v1/src/score_pvrig_candidates_v3.py
+data/experiments/phase2_5080_v1/src/select_pvrig_formal_parent40.py
 data/experiments/phase2_5080_v1/src/select_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/setup_external_priors_env_v1.sh
 data/experiments/phase2_5080_v1/src/summarize_external_priors_v1.py
@@ -588,6 +589,7 @@ data/experiments/phase2_5080_v1/src/test_process_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/test_score_p3_late_fusion.py
 data/experiments/phase2_5080_v1/src/test_score_pvrig_candidates_v2_3.py
 data/experiments/phase2_5080_v1/src/test_score_pvrig_candidates_v2_4.py
+data/experiments/phase2_5080_v1/src/test_select_pvrig_formal_parent40.py
 data/experiments/phase2_5080_v1/src/test_select_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/test_summarize_phase2_v2_3_multiseed.py
 data/experiments/phase2_5080_v1/src/test_summarize_phase2_v2_5_formal.py
