@@ -21,6 +21,7 @@ DEFAULT_TEMPLATE = WORKSPACE_ROOT / "docking/candidates/v2_5_pose_batch"
 DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_teacher_v1_20260712/pilot96_package"
 REMOTE_ROOT = "/data/qlyu/projects/pvrig_teacher_v1_20260712/pilot96"
 SHARD_COUNT = 4
+HADDOCK_NCORES = 4
 CLAIM_BOUNDARY = "computational_docking_teacher_proxy_not_binding_or_blocker_proof"
 
 TEMPLATE_SCRIPTS = [
@@ -99,6 +100,13 @@ def patch_runner(source: str) -> str:
     return source
 
 
+def patch_haddock_config(source: str) -> str:
+    anchor = 'ncores = 8\n'
+    if anchor not in source:
+        raise ValueError("HADDOCK ncores anchor not found")
+    return source.replace(anchor, f"ncores = {HADDOCK_NCORES}\n", 1)
+
+
 def manifest_row(source: dict[str, str]) -> dict[str, str]:
     sequence = source["sequence"]
     cdr_ranges = {name: cdr_range(sequence, source[name]) for name in ("cdr1", "cdr2", "cdr3")}
@@ -172,6 +180,8 @@ def build_shard(shard_root: Path, rows: Sequence[dict[str, str]], template: Path
         for row in manifest:
             handle.write(f">{row['candidate_id']}\n{row['vhh_seq']}\n")
     subprocess.run(["python3", "scripts/make_candidate_haddock_assets.py"], cwd=shard_root, check=True, capture_output=True, text=True)
+    for config in sorted((shard_root / "haddock3").glob("*/*_pvrig_hotspot.cfg")):
+        config.write_text(patch_haddock_config(config.read_text(encoding="utf-8")), encoding="utf-8")
 
 
 def controller_script() -> str:
@@ -279,6 +289,7 @@ def run(selection: Path, template: Path, outdir: Path, force: bool) -> dict[str,
         "records": len(rows),
         "shard_counts": {f"shard_{index}": len(shard) for index, shard in enumerate(shards)},
         "haddock_configs": len(list(outdir.glob("shard_*/haddock3/*/*.cfg"))),
+        "haddock_ncores_per_shard": HADDOCK_NCORES,
         "controller": str(controller),
         "package_hash_manifest": str(hashes_path),
         "claim_boundary": CLAIM_BOUNDARY,

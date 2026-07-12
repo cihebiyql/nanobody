@@ -28,6 +28,10 @@ class Pilot96PackageTest(unittest.TestCase):
         self.assertIn("LOAD_GATE_WAIT", patched)
         self.assertIn("HADDOCK_SKIP_COMPLETE", patched)
 
+    def test_haddock_config_patch_preserves_load_headroom(self) -> None:
+        source = 'mode = "local"\nncores = 8\n'
+        self.assertEqual(MOD.patch_haddock_config(source), 'mode = "local"\nncores = 4\n')
+
     def test_current_selection_has_96_rows(self) -> None:
         rows = MOD.read_tsv(MOD.DEFAULT_SELECTION)
         self.assertEqual(len(rows), 96)
