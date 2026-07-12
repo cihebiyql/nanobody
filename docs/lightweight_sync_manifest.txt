@@ -1590,6 +1590,7 @@ node1/rfantibody_pvrig_1000/README.md
 node1/rfantibody_pvrig_1000/config/hotspot_sets.tsv
 node1/rfantibody_pvrig_1000/inputs/pvrig_8x6b_chainT.pdb
 node1/rfantibody_pvrig_1000/scripts/collect_sequences.py
+node1/rfantibody_pvrig_1000/scripts/finalize_when_ready.sh
 node1/rfantibody_pvrig_1000/scripts/launch_all.sh
 node1/rfantibody_pvrig_1000/scripts/run_set.sh
 node1/rfantibody_pvrig_1000/scripts/status.sh

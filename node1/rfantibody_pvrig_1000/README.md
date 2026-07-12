@@ -28,8 +28,12 @@ Hotspot sets are stored in `config/hotspot_sets.tsv`.
 cd /data/qlyu/projects/pvrig_rfantibody_1000_20260712
 bash scripts/launch_all.sh
 bash scripts/status.sh
-python3 scripts/collect_sequences.py
+nohup bash scripts/finalize_when_ready.sh > logs/finalizer.log 2>&1 < /dev/null &
 ```
+
+The finalizer waits for all four `complete.json` markers and then runs
+`collect_sequences.py` automatically. Manual collection remains available with
+`python3 scripts/collect_sequences.py`.
 
 Final artifacts:
 
