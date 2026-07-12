@@ -39,6 +39,19 @@ freeze target = 1,024 exact-unique candidates
 
 GPU 运行池固定为 `1,2,3,4,5,7`。每张 GPU 顺序处理 8 个 arm，避免同一 GPU 同时启动多个 RFdiffusion/RF2 进程。
 
+### 正式运行的 primary-only 剪枝
+
+48-arm 表仍作为完整设计空间和溯源真值，但 `orig` 的 12 个 arm 不进入最终 docking cohort。在正式 smoke 和首批实跑已经提供 `P1_orig_S/L` 诊断对照后，后续生成切换到 `config/generation_arms_primary.tsv`：
+
+```text
+36 primary VHHified arms x 8 backbones x 4 sequences = 1,152 cohort-source records
+2 completed original-scaffold diagnostic arms x 8 x 4 = 64 diagnostic records
+actual planned RFdiffusion backbones = 288 primary + 16 diagnostic = 304
+removed unused diagnostic work = 80 backbones + 320 sequence records
+```
+
+这个剪枝不降低 1,024 条 cohort 的原始容量：冻结算法原本就只从 36 个 `primary_vhhified` arm 的 1,152 条记录中选择。`GENERATION_ARM_TABLE` 同时约束 generation 和 collector，避免运行表与冻结表不一致。
+
 ## Scaffold 修复
 
 PyRosetta 使用 PDB 编号突变；PDB 与 Kabat 的映射是：

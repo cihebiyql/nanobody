@@ -93,6 +93,8 @@ Node1 根目录：
 37 个 generation worker 仍在运行
 ```
 
+节点当时只有 64 个 CPU 核，而每个默认 RFdiffusion 进程会创建约 100 个 CPU 线程，实测 CPU pressure 约为 95%。因此没有继续盲目增加 worker，而是仅对后续新启动的 task 设置可覆盖的 `OMP/MKL/OpenBLAS/NumExpr=1`。这不改变 GPU、seed、hotspot、loop 或生成参数，也不中断已在运行的 task；原脚本和修改后脚本的 SHA256 已保存在 Node1 生产目录中。
+
 最终门仍是 `240/240 task、0 failed、2,880 backbone、8,640 raw sequence records`。不会因为 partial 计数正常就提前宣称生成完成。
 
 自动接管控制器已改为独立 session 运行，对瞬时 SSH 错误和非法返回格式会重试，不会因一次轮询失败而丢失 `240/240` 后的最终化接管：

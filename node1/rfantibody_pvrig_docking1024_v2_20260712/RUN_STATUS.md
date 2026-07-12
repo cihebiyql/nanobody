@@ -1,13 +1,15 @@
 # 运行状态
 
-更新时间：2026-07-13 01:24 CST
+更新时间：2026-07-13 02:10 CST
 
 ## 当前阶段
 
 - 已冻结 48-arm V2 设计规格：`6 hotspot patches x 4 scaffolds x 2 H3 regimes`。
 - 4 个 scaffold 已经 PyRosetta 末端修复为 canonical `VTVSS`，且 PDB chain `H` 和 `H1/H2/H3` label 回归检查通过。
 - 修复后的正式 smoke 已通过：`P1_orig_S`、`P1_qrg_S`、`P1_ekg_S`、`P1_qkg_L` 均产出 1 个 backbone、TRB 和 ProteinMPNN 序列。
-- 2026-07-13 01:22 CST 已在 GPU `1,2,3,4,5,7` 启动 6 条正式 generation lane；每条 lane 顺序处理 8 个 arm。
+- 2026-07-13 01:22 CST 已在 GPU `1,2,3,4,5,7` 启动 6 条正式 generation lane。02:03 CST 实测已落盘 12 个 backbone PDB 和 12 个 TRB，6 个首批 arm 均在持续推进，未见 OOM 或异常。
+- 已加入 primary-only 过渡控制器：当当前 6 个 arm 各自完成时，逐 GPU 停止旧 lane，然后仅使用 36 个会进入 cohort 的 VHHified arm 恢复运行。
+- 完整 48-arm 矩阵仍保留作为设计溯源；实际计划生成 288 个 primary backbones 和 16 个已在运行的 original-scaffold diagnostic backbones，删去其余不会进入 1,024 条 cohort 的 80 个诊断 backbone。
 - generation、downstream 和 postprocess 三个可恢复控制器均在 node1 后台运行。downstream 等待 `data/candidates.tsv`，postprocess 等待至少 1,000 个真实 HADDOCK 成功候选。
 - 当前尚未冻结 1,024 条 cohort；因此 RF2、NanoBodyBuilder2 和 HADDOCK3 还未进入全量阶段。
 
@@ -39,7 +41,7 @@ HADDOCK nice:                       15
 
 ## 尚未完成
 
-- 384 个 RFdiffusion backbones 和 1,536 条原始 ProteinMPNN 记录；
+- 304 个实际 RFdiffusion backbones（288 primary + 16 diagnostic）和 1,216 条实际 ProteinMPNN 记录；
 - 1,024 条 exact-unique cohort 冻结和 sequence QC；
 - 不少于 1,000 条 RF2 结果；
 - 不少于 1,000 条 NanoBodyBuilder2 + 真实 HADDOCK3 结果；
