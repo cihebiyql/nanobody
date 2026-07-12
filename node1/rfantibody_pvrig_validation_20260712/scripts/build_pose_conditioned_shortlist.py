@@ -63,6 +63,8 @@ def build(
     score_by_key: dict[tuple[str, int, int], float] = {}
     for row in score_rows:
         key = (row["hotspot_set"], int(row["backbone_index"]), int(row["mpnn_index"]))
+        if key in score_by_key:
+            raise ValueError(f"duplicate ProteinMPNN score key: {key}")
         score_by_key[key] = float(row["mpnn_nll_score"])
 
     candidates_by_backbone: defaultdict[tuple[str, int], list[dict[str, object]]] = defaultdict(list)
@@ -96,8 +98,7 @@ def build(
     primary: list[dict[str, object]] = []
     rescue: list[dict[str, object]] = []
     missing_backbones: list[dict[str, object]] = []
-    used_primary_sequences: set[str] = set()
-    used_rescue_sequences: set[str] = set()
+    used_sequences: set[str] = set()
 
     for pose_row in sorted(pose_rows, key=lambda row: (str(row["set"]), int(row["backbone_index"]))):
         normalized = {"hotspot_set": pose_row["set"], **{k: v for k, v in pose_row.items() if k != "set"}}
@@ -112,7 +113,6 @@ def build(
         selected_ranked = [row for row in ranked if row["in_final_1000"]]
         target = primary if selected_ranked else rescue
         pool = selected_ranked if selected_ranked else ranked
-        used_sequences = used_primary_sequences if selected_ranked else used_rescue_sequences
         if not selected_ranked:
             missing_backbones.append(
                 {
@@ -256,4 +256,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -2,9 +2,9 @@
 set -euo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_validation_20260712}
-INPUT=${INPUT:-$RUN_ROOT/inputs/pvrig_rfantibody_1000.canonical.fasta}
-OUT=${OUT:-$RUN_ROOT/qc/cascade}
-RUN_LABEL=${RUN_LABEL:-sequence_qc}
+INPUT=${INPUT:-$RUN_ROOT/inputs/pvrig_rfantibody_1000.fr4_restored.fasta}
+OUT=${OUT:-$RUN_ROOT/qc/cascade_fr4_restored}
+RUN_LABEL=${RUN_LABEL:-sequence_qc_fr4_restored}
 TOOL=${TOOL:-/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen}
 POSITIVE_CDRS=${POSITIVE_CDRS:-/data/qlyu/software/vhh_eval_tools/references/local_pvrig_positive_vhh_cdrs.csv}
 MAX_LOAD1=${MAX_LOAD1:-64}

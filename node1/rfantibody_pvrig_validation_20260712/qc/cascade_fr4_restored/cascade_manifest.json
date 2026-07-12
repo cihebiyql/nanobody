@@ -1,0 +1,22 @@
+{
+  "config": {
+    "fast_chunk_size": 250,
+    "full_chunk_size": 100,
+    "full_qc_limit": 300,
+    "full_run_tnp": false,
+    "geometry_cluster_limit": 3,
+    "geometry_limit": 50,
+    "geometry_pool_size": 150,
+    "length_max": 160,
+    "length_min": 95,
+    "skip_final_diversity": false
+  },
+  "duplicates": 0,
+  "fast_chunks": 4,
+  "input_digest": "e98eac05cb335d93299724688a1a26bc3fcd884b554fe46877ac71c5c405be48",
+  "input_fasta": "/data/qlyu/projects/pvrig_rfantibody_validation_20260712/inputs/pvrig_rfantibody_1000.fr4_restored.fasta",
+  "input_records": 1000,
+  "quick_rejects": 0,
+  "schema_version": 1,
+  "unique_ready": 1000
+}
