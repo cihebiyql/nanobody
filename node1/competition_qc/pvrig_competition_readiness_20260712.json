@@ -1,0 +1,121 @@
+{
+  "schema_version": "pvrig_competition_asset_audit_v1",
+  "generated_at": "2026-07-12T14:05:35+08:00",
+  "deadline": "2026-07-26T18:00:00+08:00",
+  "remaining_seconds_at_generation": 1223665,
+  "overall_status": "PIPELINE_READY_CANDIDATE_PORTFOLIO_NOT_READY",
+  "primary_strategy": "VHH_TARGET_CONDITIONED_DESIGN_THEN_LEAKAGE_SAFE_CASCADE",
+  "current_claim_boundary": "computational prioritization only; no new experimental PVRIG binder/blocker truth",
+  "counts": {
+    "clean_scaffolds": 1591,
+    "design_scaffolds": 200,
+    "public_candidate_seeds": 500,
+    "model_ranked_top50": 50,
+    "top50_novelty_pass": 50,
+    "top50_full_qc_pass": 29,
+    "top50_hard_reject": 21,
+    "top50_docking_imported": 4,
+    "top50_docking_missing": 25,
+    "computational_high": 2,
+    "single_baseline_recheck": 1,
+    "computational_plausible": 1,
+    "submission_ready_designed_sequences": 0,
+    "prospective_panel": 24,
+    "prospective_measurements": 0,
+    "positive_calibration_cases": 11,
+    "mutant_control_cases": 36
+  },
+  "top50_audit": {
+    "remote_run": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v24_top50_audit_20260712",
+    "wall_seconds_sequence_cascade": 310,
+    "input_claim_boundary": "public dataset sequences for pipeline audit, not submission-ready designs",
+    "local_snapshot": "node1/competition_qc/pvrig_top50_audit_20260712/cascade"
+  },
+  "node1_snapshot": {
+    "audited_at": "2026-07-12T13:43:32+08:00",
+    "gpus": "8 x NVIDIA GeForce RTX 4090 24564 MiB",
+    "recommended_current_gpu_pool": "GPU1-5 were near-idle at audit; recheck before use",
+    "busy_gpus_at_audit": [
+      0,
+      6,
+      7
+    ],
+    "vhh_qc_jobs_at_audit": 0,
+    "data_free": "20T",
+    "data_use_percent": 74,
+    "qc_source_sha256": {
+      "vhh_competition_qc.py": "5789246af86bfe4df87b767523e52fcf838988e76477f5b0ef1ca65cfd3db608",
+      "vhh_large_scale_screen.py": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a"
+    }
+  },
+  "fresh_verification": {
+    "phase2_unittests": "182/182 PASS",
+    "geometry4_unittests": "41/41 PASS",
+    "node1_qc_unittests": "9/9 PASS",
+    "success_case_regression": "PASS",
+    "blocker_robustness_regression": "PASS",
+    "phase1_artifact_verification": "PASS"
+  },
+  "readiness_gates": [
+    {
+      "gate": "competition requirements and deadline captured",
+      "status": "PASS",
+      "evidence": "user-provided rules + audit document"
+    },
+    {
+      "gate": "VHH primary route selected",
+      "status": "PASS",
+      "evidence": "mature VHH-only generation/QC/structure/docking stack"
+    },
+    {
+      "gate": "target structure and interface constraints",
+      "status": "PASS",
+      "evidence": "8X6B, 9E6Y, hotspot set v1"
+    },
+    {
+      "gate": "batch sequence QC production readiness",
+      "status": "PASS",
+      "evidence": "Top50 audited in 310 s; 9/9 local QC tests pass"
+    },
+    {
+      "gate": "target-conditioned designed candidate library",
+      "status": "FAIL",
+      "evidence": "current 500 candidate pool and ranked Top50 are unmodified public ZYM sequences"
+    },
+    {
+      "gate": "50 designed sequences pass official+novelty+hard QC",
+      "status": "FAIL",
+      "evidence": "only 29/50 public audit sequences hard-pass; none has completed design lineage"
+    },
+    {
+      "gate": "Top10 complete computational dossiers",
+      "status": "FAIL",
+      "evidence": "4 candidates have docking; only 2 computational high; all 4 are public seeds, not frozen designs"
+    },
+    {
+      "gate": "final portfolio family/geometry diversity",
+      "status": "PARTIAL",
+      "evidence": "diversity machinery works, but final designed portfolio does not exist"
+    },
+    {
+      "gate": "docking calibration robustness",
+      "status": "PARTIAL",
+      "evidence": "11 positives and 36 mutants complete; thresholds sensitive and mutant retained-A signals exist"
+    },
+    {
+      "gate": "official submission package",
+      "status": "FAIL",
+      "evidence": "final ranked 50, template, one-page proposal and lineage table absent"
+    },
+    {
+      "gate": "reproducible source release",
+      "status": "PARTIAL",
+      "evidence": "182 Phase2 + 41 geometry + 9 QC tests pass; final release wrapper/freeze absent"
+    },
+    {
+      "gate": "wet-lab evidence",
+      "status": "PENDING_NONBLOCKING_FOR_FIRST_SUBMISSION",
+      "evidence": "0/24 prospective constructs measured"
+    }
+  ]
+}
