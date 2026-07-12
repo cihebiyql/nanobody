@@ -1,0 +1,25 @@
+{
+  "case_count": 47,
+  "claim_boundary": "docking_geometry_surrogate_for_frontscreen_only_not_binding_or_blocker_proof",
+  "complete_candidate_count": 47,
+  "contact_pose_failure_count": 0,
+  "contact_pose_success_count": 466,
+  "mutant_control_case_count": 36,
+  "output_sha256": {
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_teacher_v1_manifest.csv": "d75884cbc7f87fab389c1a273661f0d9f724db098b1af99facdae2b4194be4e9",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_v1/candidate_summary.csv": "19d5cb4a724bff6361ea2e030404f510c2abfcda14796cb6d973e466c386cb1f",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_v1/pose_contact_frequency.jsonl": "9bcc871825a86feb08f847825debdbdb57c000819fe2a7d2b68b462b8e9ce760",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_v1/pose_summary.csv": "722aa4813c1bcf2c87a8f00b07487cdd8dc245d6a9d68cbfef84e01cfeb1bbfe",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_v1/teacher_config.json": "59dbeb7c454b3b43a782766068f1695b85c0b7f861d686f2554dc3a0a035b83d"
+  },
+  "pose_consensus_class_counts": {
+    "BLOCKER_PLAUSIBLE_B": 267,
+    "CONSENSUS_BLOCKER_LIKE_A": 11,
+    "EVIDENCE_INFERENCE_ONLY_E": 43,
+    "SINGLE_BASELINE_BLOCKER_RECHECK": 145
+  },
+  "pose_count": 466,
+  "positive_case_count": 11,
+  "schema_version": "pvrig_teacher_v1_calibration_replay",
+  "status": "PASS"
+}
