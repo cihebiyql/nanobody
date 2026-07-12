@@ -256,7 +256,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--audit-json", type=Path, default=DEFAULT_AUDIT_JSON)
     parser.add_argument("--audit-md", type=Path, default=DEFAULT_AUDIT_MD)
     parser.add_argument("--top-k", type=int, default=10)
-    parser.add_argument("--min-poses", type=int, default=8)
+    parser.add_argument("--min-poses", type=int, default=4)
     parser.add_argument("--min-supporting-clusters", type=int, default=2)
     parser.add_argument("--skip-contacts", action="store_true")
     args = parser.parse_args(argv)

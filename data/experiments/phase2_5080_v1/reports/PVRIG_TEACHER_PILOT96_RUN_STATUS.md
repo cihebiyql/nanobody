@@ -15,7 +15,7 @@
 2. 初始 HADDOCK 配置每 shard 使用 8 cores，四 shard 在共享节点上产生过高瞬时负载。
 3. 后续 92 条已改为每 shard 4 cores，并重新计算每条候选的 asset SHA256。前 4 条保留实际运行时的 8-core 配置。
 4. 生产包的新默认值为 4 cores/shard，且 controller 启动和内部门控均为 `load1 <= 48`。
-5. `6_seletopclusts` 可能合法输出 9 而非 10 个 pose；后处理已改为接受每条 8-10 个实际 cluster-selected poses，不再伪造缺失 pose。
+5. `6_seletopclusts` 可能合法输出 4-10 个唯一 pose，并可同时保留同一 model stem 的 `.pdb`/`.pdb.gz`；后处理按 model stem 去重，不伪造缺失 pose，也不重复计数。
 
 ## 本地已就绪的下游
 

@@ -64,15 +64,17 @@ def selected_model_paths(run_dir: Path, top_n: int) -> list[tuple[str, Path]]:
     paths = list(source.glob("cluster_*_model_*.pdb.gz")) + list(source.glob("cluster_*_model_*.pdb"))
     if not paths:
         raise SystemExit(f"no cluster PDB files found under {source}")
-    models: list[tuple[str, Path]] = []
+    models: dict[str, Path] = {}
     for path in paths:
         model = path.name
         if model.endswith(".pdb.gz"):
             model = model[: -len(".pdb.gz")]
         elif model.endswith(".pdb"):
             model = model[: -len(".pdb")]
-        models.append((model, path))
-    return sorted(models, key=lambda item: model_sort_key(item[0]))[:top_n]
+        current = models.get(model)
+        if current is None or (current.suffix != ".gz" and path.suffix == ".gz"):
+            models[model] = path
+    return sorted(models.items(), key=lambda item: model_sort_key(item[0]))[:top_n]
 
 
 def unpack_models(model_paths: list[tuple[str, Path]], out_dir: Path) -> list[str]:

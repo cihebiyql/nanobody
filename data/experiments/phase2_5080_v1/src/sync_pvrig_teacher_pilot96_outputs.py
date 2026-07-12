@@ -52,16 +52,19 @@ cd "$ROOT"
 
 def inventory(root: Path, expected_candidates: int, top_n: int, min_models: int) -> dict[str, object]:
     run_dirs = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot"))
-    models = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot/6_seletopclusts/cluster_*_model_*.pdb*"))
+    model_files = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot/6_seletopclusts/cluster_*_model_*.pdb*"))
     consensus = sorted(root.glob("shard_*/haddock3/*/run_*_pvrig_hotspot/traceback/consensus.tsv"))
     sequence_qc = sorted(root.glob("shard_*/reports/*/*_sequence_validation.json"))
     monomer_qc = sorted(root.glob("shard_*/reports/*/*_monomer_geometry_qc.json"))
     receptor_qc = sorted(root.glob("shard_*/reports/*/*_pvrig_receptor_geometry_qc.json"))
     configs = sorted(root.glob("shard_*/haddock3/*/*_pvrig_hotspot.cfg"))
-    per_run_models = {
-        str(run.relative_to(root)): len(list((run / "6_seletopclusts").glob("cluster_*_model_*.pdb*")))
-        for run in run_dirs
-    }
+    per_run_models = {}
+    for run in run_dirs:
+        names = {
+            path.name.removesuffix(".pdb.gz").removesuffix(".pdb")
+            for path in (run / "6_seletopclusts").glob("cluster_*_model_*.pdb*")
+        }
+        per_run_models[str(run.relative_to(root))] = len(names)
     expected_models = expected_candidates * top_n
     status = "PASS"
     if not (root / "docking.complete").exists():
@@ -75,7 +78,8 @@ def inventory(root: Path, expected_candidates: int, top_n: int, min_models: int)
     return {
         "status": status,
         "run_dirs": len(run_dirs),
-        "selected_models": len(models),
+        "selected_models": sum(per_run_models.values()),
+        "selected_model_files_including_compression_duplicates": len(model_files),
         "expected_selected_models": expected_models,
         "minimum_selected_models": expected_candidates * min_models,
         "per_run_model_counts": per_run_models,
@@ -84,7 +88,7 @@ def inventory(root: Path, expected_candidates: int, top_n: int, min_models: int)
         "monomer_geometry_qc_files": len(monomer_qc),
         "receptor_geometry_qc_files": len(receptor_qc),
         "haddock_config_files": len(configs),
-        "haddock_ncores_counts": {
+        "postrun_haddock_config_ncores_counts": {
             str(ncores): sum(f"ncores = {ncores}" in path.read_text(encoding="utf-8") for path in configs)
             for ncores in (4, 8)
         },
@@ -133,7 +137,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
     parser.add_argument("--expected-candidates", type=int, default=96)
     parser.add_argument("--top-n", type=int, default=10)
-    parser.add_argument("--min-models", type=int, default=8)
+    parser.add_argument("--min-models", type=int, default=4)
     args = parser.parse_args(argv)
     if args.expected_candidates <= 0 or args.top_n <= 0 or args.min_models <= 0 or args.min_models > args.top_n:
         parser.error("Require positive candidates and 0 < --min-models <= --top-n")

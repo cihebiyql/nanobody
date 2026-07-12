@@ -47,7 +47,11 @@ def find_run_dir(sync_root: Path, candidate_id: str) -> Path:
 
 def selected_model_count(run_dir: Path) -> int:
     selected = run_dir / "6_seletopclusts"
-    return len(list(selected.glob("cluster_*_model_*.pdb"))) + len(list(selected.glob("cluster_*_model_*.pdb.gz")))
+    names = {
+        path.name.removesuffix(".pdb.gz").removesuffix(".pdb")
+        for path in selected.glob("cluster_*_model_*.pdb*")
+    }
+    return len(names)
 
 
 def count_csv_rows(path: Path) -> int:
@@ -204,7 +208,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--processor", type=Path, default=DEFAULT_PROCESSOR)
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
     parser.add_argument("--top-n", type=int, default=10)
-    parser.add_argument("--min-models", type=int, default=8)
+    parser.add_argument("--min-models", type=int, default=4)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--candidate-id", action="append")
     args = parser.parse_args(argv)

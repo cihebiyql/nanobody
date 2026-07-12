@@ -161,7 +161,7 @@ pilot 验收线：
 
 ```text
 96 candidates
-每条 8-10 个 cluster-selected poses（上限 960 pose rows）
+每条 4-10 个唯一 cluster-selected poses（上限 960 pose rows）
 全部实际 pose 均完成 dual-baseline classification
 全部实际 pose 均完成 contact extraction
 96/96 COMPLETE candidate summaries
