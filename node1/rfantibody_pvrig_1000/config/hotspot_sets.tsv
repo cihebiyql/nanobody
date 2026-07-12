@@ -1,0 +1,5 @@
+set_id	gpu	hotspots	uniprot_residues	purpose
+A	1	T57,T101,T106	R95,F139,W144	central charged plus aromatic anchors
+B	2	T62,T101,T106	W100,F139,W144	aromatic hydrophobic core
+C	3	T97,T101,T105,T106	K135,F139,S143,W144	C-terminal interface patch
+D	4	T33,T36,T105,T106	S71,T74,S143,W144	cross-patch geometry exploration
