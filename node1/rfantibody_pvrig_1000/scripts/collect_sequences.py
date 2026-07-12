@@ -10,6 +10,7 @@ import json
 import pickle
 import re
 import statistics
+import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,6 +37,16 @@ UNIPROT = {
     "D": "S71,T74,S143,W144",
 }
 TAG_RE = re.compile(r"design_(\d+)_dldesign_(\d+)\.pdb$")
+BACKBONE_PDB_RE = re.compile(r"design_(\d+)\.pdb$")
+BACKBONE_TRB_RE = re.compile(r"design_(\d+)\.trb$")
+
+# The finalizer uses node1's system Python; add the validated RFantibody
+# environment so NumPy-backed TRB pickles can be decoded.
+RFANTIBODY_SITE_PACKAGES = Path(
+    "/data/qlyu/anaconda3/envs/rfdiffusion2/lib/python3.11/site-packages"
+)
+if RFANTIBODY_SITE_PACKAGES.is_dir():
+    sys.path.insert(0, str(RFANTIBODY_SITE_PACKAGES))
 
 
 def parse_args() -> argparse.Namespace:
@@ -49,6 +60,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--per-set", type=int, default=250)
     parser.add_argument("--initial-sibling-cap", type=int, default=5)
     parser.add_argument("--leakage-reference", type=Path, default=None)
+    parser.add_argument("--expected-backbones-per-set", type=int, default=50)
+    parser.add_argument("--expected-sequences-per-backbone", type=int, default=8)
     return parser.parse_args()
 
 
@@ -84,7 +97,15 @@ def parse_pdb(path: Path) -> tuple[str, dict[str, str], list[str]]:
             altloc = line[16]
             if altloc not in (" ", "A"):
                 continue
-            key = (line[21], int(line[22:26]), line[26])
+            try:
+                residue_id = int(line[22:26])
+            except ValueError:
+                errors.append("malformed_atom_residue_number")
+                continue
+            insertion_code = line[26]
+            if insertion_code != " ":
+                errors.append("unsupported_insertion_code")
+            key = (line[21], residue_id, insertion_code)
             aa = AA3_TO_1.get(line[17:20].strip())
             if aa is None:
                 errors.append(f"unknown_residue:{line[17:20].strip()}")
@@ -93,10 +114,18 @@ def parse_pdb(path: Path) -> tuple[str, dict[str, str], list[str]]:
         elif line.startswith("REMARK PDBinfo-LABEL:"):
             parts = line.split()
             if len(parts) >= 4:
-                labels[parts[-1]].append(int(parts[-2]))
+                try:
+                    labels[parts[-1]].append(int(parts[-2]))
+                except ValueError:
+                    errors.append("malformed_cdr_label")
+            else:
+                errors.append("malformed_cdr_label")
 
     ordered = sorted(residues.items(), key=lambda item: (item[0][1], item[0][2]))
     sequence = "".join(aa for _, aa in ordered)
+    residue_number_counts = Counter(key[1] for key, _ in ordered)
+    if any(count > 1 for count in residue_number_counts.values()):
+        errors.append("duplicate_H_chain_residue_number")
     by_resid = {key[1]: aa for key, aa in ordered}
     cdrs = {
         cdr: "".join(by_resid[n] for n in sorted(set(labels.get(cdr, []))) if n in by_resid)
@@ -112,6 +141,12 @@ def parse_pdb(path: Path) -> tuple[str, dict[str, str], list[str]]:
     for cdr in ("H1", "H2", "H3"):
         if not cdrs[cdr]:
             errors.append(f"missing_{cdr}")
+    if len(cdrs["H1"]) != 7:
+        errors.append("unexpected_H1_length")
+    if len(cdrs["H2"]) != 6:
+        errors.append("unexpected_H2_length")
+    if not 5 <= len(cdrs["H3"]) <= 13:
+        errors.append("unexpected_H3_length")
 
     return sequence, cdrs, errors
 
@@ -119,17 +154,16 @@ def parse_pdb(path: Path) -> tuple[str, dict[str, str], list[str]]:
 def load_trb(path: Path) -> dict[str, object]:
     with path.open("rb") as handle:
         data = pickle.load(handle)
-    plddt = data.get("plddt")
-    final_plddt_mean = None
-    if plddt is not None:
-        try:
-            final_plddt_mean = float(plddt[-1].mean())
-        except (IndexError, TypeError, AttributeError):
-            pass
-    mindist = float(data["mindist"]) if "mindist" in data else None
-    if mindist is None:
-        distance_bin = "missing"
-    elif mindist <= 8.0:
+    required = {"plddt", "mindist", "averagemin", "H1_len", "H2_len", "H3_len"}
+    missing = sorted(required - set(data))
+    if missing:
+        raise RuntimeError(f"{path} is missing TRB keys: {','.join(missing)}")
+    try:
+        final_plddt_mean = float(data["plddt"][-1].mean())
+    except (IndexError, TypeError, AttributeError) as exc:
+        raise RuntimeError(f"Cannot decode final pLDDT from {path}: {exc}") from exc
+    mindist = float(data["mindist"])
+    if mindist <= 8.0:
         distance_bin = "le_8A"
     elif mindist <= 10.0:
         distance_bin = "8_to_10A"
@@ -137,12 +171,12 @@ def load_trb(path: Path) -> dict[str, object]:
         distance_bin = "gt_10A"
     return {
         "rfd_mindist": mindist,
-        "rfd_averagemin": float(data["averagemin"]) if "averagemin" in data else None,
+        "rfd_averagemin": float(data["averagemin"]),
         "rfd_hotspot_distance_bin": distance_bin,
         "rfd_final_plddt_mean": final_plddt_mean,
-        "h1_len": int(data["H1_len"]) if "H1_len" in data else None,
-        "h2_len": int(data["H2_len"]) if "H2_len" in data else None,
-        "h3_len": int(data["H3_len"]) if "H3_len" in data else None,
+        "h1_len": int(data["H1_len"]),
+        "h2_len": int(data["H2_len"]),
+        "h3_len": int(data["H3_len"]),
     }
 
 
