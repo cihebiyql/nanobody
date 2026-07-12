@@ -282,14 +282,41 @@ def docking_runs_from_features(features: list[dict[str, object]], explicit_rows:
     return [rows[key] for key in sorted(rows)]
 
 
-def split_key(candidate: dict[str, object]) -> tuple[str, str, str]:
-    return (str(candidate["backbone_group_id"]), str(candidate["arm_id"]), str(candidate["sequence_group_id"]))
+def split_tokens(candidate: dict[str, object]) -> tuple[str, str, str]:
+    return (
+        f"backbone:{candidate['backbone_group_id']}",
+        f"arm:{candidate['arm_id']}",
+        f"sequence_family:{candidate['sequence_group_id']}",
+    )
 
 
 def assign_splits(candidates: list[dict[str, object]]) -> dict[str, str]:
-    groups: defaultdict[tuple[str, str, str], list[dict[str, object]]] = defaultdict(list)
+    # Union by all leakage keys so any shared backbone, arm, or near-sequence family stays in one split.
+    parent: dict[str, str] = {}
+
+    def find(token: str) -> str:
+        parent.setdefault(token, token)
+        if parent[token] != token:
+            parent[token] = find(parent[token])
+        return parent[token]
+
+    def union(left: str, right: str) -> None:
+        root_left, root_right = find(left), find(right)
+        if root_left != root_right:
+            parent[root_right] = root_left
+
+    candidate_tokens: dict[str, tuple[str, str, str]] = {}
     for candidate in candidates:
-        groups[split_key(candidate)].append(candidate)
+        cid = str(candidate["candidate_id"])
+        tokens = split_tokens(candidate)
+        candidate_tokens[cid] = tokens
+        union(tokens[0], tokens[1])
+        union(tokens[0], tokens[2])
+
+    groups: defaultdict[str, list[dict[str, object]]] = defaultdict(list)
+    for candidate in candidates:
+        groups[find(candidate_tokens[str(candidate["candidate_id"])][0])].append(candidate)
+
     assignments: dict[str, str] = {}
     split_cycle = (TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, "validation", "test", TRAIN_SPLIT)
     for index, key in enumerate(sorted(groups)):
