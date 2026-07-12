@@ -97,6 +97,19 @@ Node1 根目录：
 
 首次施加该运行时参数时曾原地改写正在被 Bash 读取的 `run_task.sh`，导致 7 个已完成 RFdiffusion 的 task 在进入 ProteinMPNN 时以 `rc=127` 退出。这 7 个 task 的 84 个 backbone 全部保留，没有 `failed.json`，也没有删除任何输出。随后启动了覆盖所有 205 个未完成 task 的受锁 recovery worker：七个异常 task 已全部恢复为 `complete`，每个均有 `12 backbone + 36 sequence PDB`。运行脚本不再在存活 task 期间修改；原脚本、当前脚本和 recovery plan 的哈希/审计文件均保存在 Node1 生产目录。恢复后快照为 `42/240 complete、0 failed marker、682 backbone、1,512 sequence PDB`。
 
+所有旧的 100-thread RFdiffusion 进程退出后，新进程均为 `OMP=1`、每进程 5–6 threads，CPU pressure 从约 95% 降至约 27%。在 GPU 利用率与显存允许的范围内将 worker 平衡到 20 个后，`2026-07-13 03:03–03:23 +08:00` 从 `68` 增至 `89/240 complete`，稳态吞吐约为 60 task/小时，仍为 `0 failed marker`、无 failed status。
+
+本地轻量审计证据：
+
+```text
+experiments/phase2_5080_v1/audits/pvrig_formal_generation_recovery_plan_20260713.json
+experiments/phase2_5080_v1/audits/pvrig_formal_generation_run_task_sha256_20260713.tsv
+experiments/phase2_5080_v1/audits/pvrig_formal_generation_balanced_boost_plan_20260713.json
+experiments/phase2_5080_v1/logs/pvrig_formal_teacher_pipeline_full_unittest_20260713T0304.log
+```
+
+完整本地回归为 `255 tests / 9.115s / OK`。
+
 最终门仍是 `240/240 task、0 failed、2,880 backbone、8,640 raw sequence records`。不会因为 partial 计数正常就提前宣称生成完成。
 
 自动接管控制器已改为独立 session 运行，对瞬时 SSH 错误和非法返回格式会重试，不会因一次轮询失败而丢失 `240/240` 后的最终化接管：
