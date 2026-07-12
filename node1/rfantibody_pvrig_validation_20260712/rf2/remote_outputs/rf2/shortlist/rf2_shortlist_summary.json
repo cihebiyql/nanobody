@@ -1,0 +1,18 @@
+{
+  "all_checks_passed": true,
+  "eligible_backbones": 39,
+  "eligible_by_set": {
+    "A": 24,
+    "B": 14,
+    "C": 18,
+    "D": 22
+  },
+  "eligible_candidates": 78,
+  "generated_at": "2026-07-12T12:06:01.288930+00:00",
+  "pose_shortlist_candidates": 78,
+  "rejected_by_reason": {},
+  "rejected_candidates": 0,
+  "schema_version": 1,
+  "scientific_boundary": "Eligibility combines sequence QC and design-pose triage; it does not imply binding or blocking.",
+  "sequence_policy": "RF2 uses original pose sequence; QC/synthesis sequence restores one terminal FR4 serine."
+}

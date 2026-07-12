@@ -1,0 +1,23 @@
+{
+  "all_checks_passed": true,
+  "candidate_count": 30,
+  "evidence_boundary": "guided_docking_geometry_proxy_not_binding_or_blocker_proof",
+  "generated_at": "2026-07-12T12:19:00.954286+00:00",
+  "hotspot_set_counts": {
+    "A": 10,
+    "B": 4,
+    "C": 7,
+    "D": 9
+  },
+  "restraint_policy": "all_cdr_residues_to_full_8x6b_interface_hotspot_union_confirmatory",
+  "schema_version": 1,
+  "shard_counts": {
+    "0": 8,
+    "1": 8,
+    "2": 7,
+    "3": 7
+  },
+  "shards": 4,
+  "top_tsv": "/data/qlyu/projects/pvrig_rfantibody_validation_20260712/rf2/results/rf2_diagnostic_docking_top.tsv",
+  "top_tsv_sha256": "92af0dd65e48bbbebcc814e6889d1040f304ce6c2a6fa045b0a7e376d4bb9452"
+}

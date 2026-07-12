@@ -1,0 +1,30 @@
+{
+  "all_checks_passed": true,
+  "candidate_count": 78,
+  "candidates_by_gpu": {
+    "1": 13,
+    "2": 13,
+    "3": 13,
+    "4": 13,
+    "6": 13,
+    "7": 13
+  },
+  "generated_at": "2026-07-12T12:06:01.715153+00:00",
+  "gpu_ids": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7
+  ],
+  "input_policy": "symlink_to_immutable_rfantibody_mpnn_pose",
+  "rf2_parameters": {
+    "hotspot_show_prop": 0.0,
+    "num_recycles": 10,
+    "seed": 42
+  },
+  "schema_version": 1,
+  "shortlist_tsv": "/data/qlyu/projects/pvrig_rfantibody_validation_20260712/rf2/shortlist/rf2_shortlist_final.tsv",
+  "shortlist_tsv_sha256": "f5705a0f23bb1b754fbf34850ffcd39055f69634ebf9cdb43d1942567bfbea43"
+}

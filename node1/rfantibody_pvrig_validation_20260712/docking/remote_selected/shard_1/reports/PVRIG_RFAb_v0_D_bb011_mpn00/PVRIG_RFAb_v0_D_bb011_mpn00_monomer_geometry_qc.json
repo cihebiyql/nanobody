@@ -1,0 +1,27 @@
+{
+  "pdb": "monomer/PVRIG_RFAb_v0_D_bb011_mpn00/PVRIG_RFAb_v0_D_bb011_mpn00_nanobodybuilder2_chainA.pdb",
+  "bad_coord_lines": 0,
+  "chains": {
+    "A": {
+      "atom_count": 1754,
+      "ca_count": 121,
+      "adjacent_ca_distance_min": 3.767091716430594,
+      "adjacent_ca_distance_median": 3.8350262059078553,
+      "adjacent_ca_distance_max": 3.9051126744307907,
+      "adjacent_ca_distance_gt_6A": 0,
+      "bbox": {
+        "min": [
+          -18.486,
+          -17.903,
+          -20.469
+        ],
+        "max": [
+          22.563,
+          15.98,
+          16.371
+        ]
+      },
+      "likely_sane_backbone": true
+    }
+  }
+}
