@@ -24,11 +24,11 @@ Output: `/data/qlyu/software/vhh_eval_tools/runs/pvrig_v24_top50_audit_20260712`
       "updated_epoch": 1783835639.0982845
     },
     "finalize": {
-      "docking_imported": 0,
-      "final_positive_high": 0,
+      "docking_imported": 4,
+      "final_positive_high": 2,
       "geometry_candidates": 29,
       "status": "complete",
-      "updated_epoch": 1783835911.5154176
+      "updated_epoch": 1783836022.6912477
     },
     "full": {
       "chunks": 1,
