@@ -1,0 +1,152 @@
+{
+  "acceptance_gates": {
+    "bootstrap": "bootstrap 95% CI lower bound for ensemble delta is greater than zero",
+    "contact_replay": "contact AUPRC and paratope AUPRC retain at least 90% of the source-checkpoint validation value",
+    "null_controls": "label-shuffle and target-shuffle controls must not satisfy the primary gate",
+    "primary": "three-seed ensemble test macro target AUPRC exceeds the strongest eligible mean-pooled baseline",
+    "seed_consistency": "at least two of three residue-model seeds exceed the strongest baseline",
+    "target_dependence": "positive true-minus-cross-family-swap is greater than zero and observed target-contrast win rate is at least 0.55"
+  },
+  "claim_boundary": "generic binding prior, not affinity, PVRIG binding, docking correctness, or blocking truth",
+  "data": {
+    "cluster_policy": {
+      "coverage": 0.8,
+      "coverage_mode": 0,
+      "min_sequence_identity": 0.85
+    },
+    "counts": {
+      "cluster_fraction_delta": {
+        "dev": -0.0020819778789850363,
+        "test": -0.00013012361743656997,
+        "train": 0.0022121014964215924
+      },
+      "clusters": 18444,
+      "clusters_by_split": {
+        "dev": 1806,
+        "test": 1842,
+        "train": 14796
+      },
+      "row_fraction_delta": {
+        "dev": 0.00029080229762606935,
+        "test": -0.000760116896765195,
+        "train": 0.00046931459913901463
+      },
+      "rows": 138926,
+      "rows_by_split": {
+        "dev": 13933,
+        "test": 13787,
+        "train": 111206
+      },
+      "sequence_fraction_delta": {
+        "dev": 0.0011174481066383718,
+        "test": 0.0010511307115856489,
+        "train": -0.002168578818224076
+      },
+      "unique_vhh": 60316,
+      "unique_vhh_by_split": {
+        "dev": 6099,
+        "test": 6095,
+        "train": 48122
+      }
+    },
+    "external_hTNFa_protection": {
+      "excluded_development_rows": 18581,
+      "excluded_development_unique_vhh": 7833,
+      "retained_external_cluster_overlap": 0,
+      "touching_cluster_count": 3252
+    },
+    "paths": {
+      "binding_csv": "experiments/phase2_5080_v1/prepared/phase2_v3_g2/binding_cluster_safe_v1.csv",
+      "cache_manifest": "experiments/phase2_5080_v1/prepared/phase2_v3_g2/esm2_8m_residue_cache_v1/manifest.csv",
+      "cdr_mask_csv": "experiments/phase2_5080_v1/prepared/phase2_v3_g2/vhh_cdr_type_masks_v1.csv",
+      "data_audit_json": "experiments/phase2_5080_v1/prepared/phase2_v3_g2/prepare_audit_v1.json",
+      "source_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt"
+    },
+    "sha256": {
+      "binding_csv": "8cbb0367650871c453c898204e79417cad087a66cc4d445315547fe14df15678",
+      "cache_manifest": "958a0f28a7d6fdebbf08c8cd4934c7aa1ed60b3dc73dd492dc322fe99e4314fb",
+      "cdr_mask_csv": "b07a011a4de4ecdd31d428380d40a8ef0612b5c79b46ba4aad78e62ae128f443",
+      "data_audit_json": "b1438e57e64df31e440c31557374d52a81b7b673b32f1b5b7a35074aca891dec",
+      "source_checkpoint": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9"
+    }
+  },
+  "development_policy": {
+    "checkpoint_selection": "dev macro target AUPRC plus preregistered small target-dependence terms",
+    "test_access_history": [
+      {
+        "event": "integration_smoke_before_preregistration",
+        "impact": "engineering smoke only; no formal hyperparameter selection was based on these rows",
+        "rows_viewed": 24,
+        "scope": "first two deterministic test mini-batches"
+      }
+    ],
+    "test_use": "one final evaluation per frozen seed; no hyperparameter changes under the same version after test synthesis"
+  },
+  "downstream_rule": "Only a passing V3-G version may contribute a generic prior to V3-P; it never directly decides submission.",
+  "eligible_baselines": [
+    "source V2.3 checkpoint",
+    "mean-pooled vhh_only",
+    "mean-pooled esm2_pair",
+    "mean-pooled v3_full"
+  ],
+  "frozen_at": "2026-07-12T16:00:45.816062+00:00",
+  "model": {
+    "frozen": "ESM2-8M residue embeddings and language-model weights",
+    "losses": [
+      "real binary binding BCE",
+      "cross-family low-weight contrast",
+      "observed within-VHH target contrast",
+      "contact/site replay"
+    ],
+    "name": "V3-G2 residue-level generic binding prior",
+    "starting_backbone": "V2.3 strict seed67 contact/site checkpoint",
+    "trainable": "cross-attention, sequence encoders, contact/site heads through replay, and pair head"
+  },
+  "objective": "Train a generic residue-level VHH-antigen binding/contact prior for later PVRIG frontscreen transfer.",
+  "schema_version": "phase2_v3_g2_preregistration_v1",
+  "seeds": [
+    83,
+    89,
+    97
+  ],
+  "status": "FROZEN_BEFORE_FULL_MULTI_SEED_TRAINING",
+  "training_implementation": {
+    "path": "experiments/phase2_5080_v1/src/train_phase2_v3_g2_generic.py",
+    "resolved_default_config": {
+      "backbone_learning_rate": 3e-05,
+      "batch_size": 64,
+      "binding_csv": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_g2/binding_cluster_safe_v1.csv",
+      "cache_manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_g2/esm2_8m_residue_cache_v1/manifest.csv",
+      "cdr_mask_csv": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_g2/vhh_cdr_type_masks_v1.csv",
+      "contact_jsonl": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/structure_contact_maps_v3_clustered.jsonl",
+      "contrast_batch_size": 24,
+      "data_audit_json": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_g2/prepare_audit_v1.json",
+      "device": "cuda",
+      "early_stopping_patience": 2,
+      "epochs": 4,
+      "head_learning_rate": 0.0002,
+      "log_every_steps": 100,
+      "max_cached_shards": 0,
+      "max_eval_batches": 0,
+      "max_train_batches": 0,
+      "num_workers": 0,
+      "observed_contrast_every": 4,
+      "observed_contrast_margin": 0.15,
+      "observed_contrast_weight": 0.25,
+      "out_root": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/phase2_v3_g2_generic",
+      "replay_batch_size": 16,
+      "replay_every": 4,
+      "replay_weight": 0.3,
+      "seed": 83,
+      "site_csv": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/zym_site_split_manifest_v2_clustered.csv",
+      "source_checkpoint": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "target_swap_margin": 0.1,
+      "target_swap_weight": 0.1,
+      "use_amp": true,
+      "weight_decay": 0.0001
+    },
+    "sha256": "ebbdc365496d0257367bd03bd80f8cab360bdf916d8751bbfc9102c854b76b48",
+    "validated_smoke_summary": "experiments/phase2_5080_v1/runs/phase2_v3_g2_generic_smoke/phase2_v3_g2_generic_20260713_000044_seed83/summary.json",
+    "validated_smoke_summary_sha256": "2ee1ea312b602753cdd52e83612ece78a6c4e8882e6fb5ad1109101986d74709"
+  }
+}

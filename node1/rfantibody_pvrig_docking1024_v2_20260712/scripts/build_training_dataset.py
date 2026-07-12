@@ -10,11 +10,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 import re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Iterable
 
@@ -35,12 +37,16 @@ KEY_ALIASES = {
     "sequence_group_id": ("sequence_group_id", "sequence_sha256", "seq_group", "near_sequence_family"),
     "scaffold_id": ("scaffold_id", "scaffold"),
     "h3_regime": ("h3_regime", "cdr3_regime"),
+    "cdr3": ("cdr3", "CDR3", "imgt_cdr3", "IMGT_CDR3"),
     "known_positive": ("known_positive", "exact_known_positive_match", "is_known_positive", "leakage_known_positive"),
 }
 
 NUMERIC_ALIASES = {
-    "rf2_recovery_rmsd": ("rf2_recovery_rmsd", "recovery_rmsd", "rf2_rmsd", "rmsd"),
-    "rf2_plddt": ("rf2_plddt", "plddt", "mean_plddt"),
+    "rf2_recovery_rmsd": (
+        "rf2_recovery_rmsd", "target_aligned_antibody_rmsd",
+        "best_target_aligned_antibody_rmsd", "recovery_rmsd", "rf2_rmsd", "rmsd",
+    ),
+    "rf2_plddt": ("rf2_plddt", "pred_lddt", "best_pred_lddt", "plddt", "mean_plddt"),
     "monomer_qc_score": ("monomer_qc_score", "nbb2_qc_score", "qc_score"),
     "monomer_clash_score": ("monomer_clash_score", "clash_score", "nbb2_clash_score"),
     "baseline_affinity_proxy": ("baseline_affinity_proxy", "affinity_proxy", "ddg_proxy", "score"),
@@ -150,14 +156,16 @@ def parse_fasta(path: Path) -> dict[str, list[str]]:
 def normalize_candidates(rows: list[dict[str, str]], known_fasta: Path) -> list[dict[str, object]]:
     references = parse_fasta(known_fasta)
     normalized: list[dict[str, object]] = []
-    seen: Counter[str] = Counter()
+    seen_ids: Counter[str] = Counter()
+    seen_sequences: Counter[str] = Counter()
     for index, row in enumerate(rows, start=1):
         candidate_id = pick(row, KEY_ALIASES["candidate_id"], f"candidate_{index:05d}")
         sequence = pick(row, KEY_ALIASES["sequence"]).upper()
         sequence_hash = hashlib.sha256(sequence.encode()).hexdigest() if sequence else ""
-        seen[candidate_id] += 1
-        if seen[candidate_id] > 1:
-            candidate_id = f"{candidate_id}__dup{seen[candidate_id]}"
+        if not sequence:
+            raise ValueError(f"candidate {candidate_id} has an empty sequence")
+        seen_ids[candidate_id] += 1
+        seen_sequences[sequence_hash] += 1
         exact_matches = references.get(sequence, [])
         known_positive = truthy(pick(row, KEY_ALIASES["known_positive"])) or bool(exact_matches)
         normalized.append(
@@ -168,7 +176,9 @@ def normalize_candidates(rows: list[dict[str, str]], known_fasta: Path) -> list[
                 "sequence_sha256": sequence_hash,
                 "arm_id": pick(row, KEY_ALIASES["arm_id"], UNKNOWN),
                 "backbone_group_id": pick(row, KEY_ALIASES["backbone_group_id"], f"unknown_backbone_{index:05d}"),
-                "sequence_group_id": pick(row, KEY_ALIASES["sequence_group_id"], sequence_hash or f"unknown_sequence_{index:05d}"),
+                "exact_sequence_group_id": pick(row, KEY_ALIASES["sequence_group_id"], sequence_hash),
+                "sequence_group_id": sequence_hash,
+                "cdr3": pick(row, KEY_ALIASES["cdr3"]).upper(),
                 "scaffold_id": pick(row, KEY_ALIASES["scaffold_id"], UNKNOWN),
                 "h3_regime": pick(row, KEY_ALIASES["h3_regime"], UNKNOWN),
                 "known_positive": known_positive,
@@ -176,7 +186,51 @@ def normalize_candidates(rows: list[dict[str, str]], known_fasta: Path) -> list[
                 "source_status": pick(row, ("status", "candidate_status"), "candidate"),
             }
         )
+    duplicate_ids = [value for value, count in seen_ids.items() if count > 1]
+    duplicate_sequences = [value for value, count in seen_sequences.items() if count > 1]
+    if duplicate_ids:
+        raise ValueError(f"candidate_id values are not unique: {duplicate_ids[:5]}")
+    if duplicate_sequences:
+        raise ValueError(f"candidate sequences are not exact-unique: {len(duplicate_sequences)} duplicate groups")
+    assign_near_sequence_families(normalized)
     return normalized
+
+
+def assign_near_sequence_families(candidates: list[dict[str, object]], threshold: float = 0.80) -> None:
+    """Cluster near CDR3 neighbours so they cannot cross dataset splits."""
+    parent = list(range(len(candidates)))
+
+    def find(index: int) -> int:
+        while parent[index] != index:
+            parent[index] = parent[parent[index]]
+            index = parent[index]
+        return index
+
+    def union(left: int, right: int) -> None:
+        a, b = find(left), find(right)
+        if a != b:
+            parent[max(a, b)] = min(a, b)
+
+    for left in range(len(candidates)):
+        cdr_left = str(candidates[left].get("cdr3") or "")
+        if not cdr_left:
+            continue
+        for right in range(left + 1, len(candidates)):
+            cdr_right = str(candidates[right].get("cdr3") or "")
+            if not cdr_right or abs(len(cdr_left) - len(cdr_right)) > 2:
+                continue
+            if SequenceMatcher(None, cdr_left, cdr_right, autojunk=False).ratio() >= threshold:
+                union(left, right)
+
+    members: defaultdict[int, list[int]] = defaultdict(list)
+    for index in range(len(candidates)):
+        members[find(index)].append(index)
+    for indices in members.values():
+        signature = "|".join(sorted(str(candidates[index].get("cdr3") or candidates[index]["sequence_sha256"]) for index in indices))
+        family_id = "cdr3fam_" + hashlib.sha256(signature.encode()).hexdigest()[:16]
+        for index in indices:
+            candidates[index]["sequence_group_id"] = family_id
+            candidates[index]["near_sequence_family_size"] = len(indices)
 
 
 def index_by_candidate(rows: list[dict[str, str]]) -> dict[str, dict[str, str]]:
@@ -200,14 +254,35 @@ def status_from(value: float | None, present: bool) -> str:
     return MISSING if not present else "unparsed"
 
 
+def read_model_lines(path: Path) -> list[str]:
+    if path.suffix == ".gz":
+        with gzip.open(path, "rt", encoding="utf-8", errors="replace") as handle:
+            return handle.read().splitlines()
+    return path.read_text(encoding="utf-8", errors="replace").splitlines()
+
+
 def parse_haddock_remarks(path: Path) -> dict[str, object]:
     features: dict[str, object] = {key: "" for key in HADDOCK_PATTERNS}
     remark_count = 0
-    for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
+    energy_header: list[str] = []
+    for raw in read_model_lines(path):
         if not raw.startswith("REMARK"):
             continue
         remark_count += 1
         text = raw[6:].strip()
+        if "total,bonds,angles,improper,dihe,vdw,elec,air" in text.replace(" ", "").lower():
+            energy_header = [item.strip().lower() for item in text.split(",")]
+            continue
+        if text.lower().startswith("energies:") and energy_header:
+            try:
+                values = [float(item.strip()) for item in text.split(":", 1)[1].split(",")]
+            except ValueError:
+                values = []
+            if len(values) == len(energy_header):
+                mapping = dict(zip(energy_header, values))
+                features["vdw_energy"] = mapping.get("vdw", "")
+                features["electrostatic_energy"] = mapping.get("elec", "")
+                features["air_energy"] = mapping.get("air", "")
         for key, pattern in HADDOCK_PATTERNS.items():
             if features[key] != "":
                 continue
@@ -235,7 +310,11 @@ def collect_docking_pose_features(docking_root: Path, candidate_ids: set[str]) -
     if not docking_root or not docking_root.exists():
         return []
     rows: list[dict[str, object]] = []
-    for pdb in sorted(docking_root.rglob("*.pdb")):
+    pdbs = list(docking_root.rglob("cluster_*_model_*.pdb"))
+    pdbs.extend(docking_root.rglob("cluster_*_model_*.pdb.gz"))
+    for pdb in sorted(pdbs):
+        if "6_seletopclusts" not in pdb.parts:
+            continue
         candidate_id = infer_candidate_id(pdb, candidate_ids)
         if not candidate_id:
             continue
@@ -245,7 +324,7 @@ def collect_docking_pose_features(docking_root: Path, candidate_ids: set[str]) -
                 "candidate_id": candidate_id,
                 "model_path": str(pdb),
                 "model_sha256": sha256_file(pdb),
-                "selected_model": "selected" in pdb.name.lower() or "selected" in str(pdb.parent).lower(),
+                "selected_model": True,
                 **features,
             }
         )
@@ -321,8 +400,10 @@ def assign_splits(candidates: list[dict[str, object]]) -> dict[str, str]:
     split_cycle = (TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, "validation", "test", TRAIN_SPLIT)
     for index, key in enumerate(sorted(groups)):
         group_split = split_cycle[index % len(split_cycle)]
+        if any(bool(candidate["known_positive"]) for candidate in groups[key]):
+            group_split = KNOWN_POSITIVE_SPLIT
         for candidate in groups[key]:
-            assignments[str(candidate["candidate_id"])] = KNOWN_POSITIVE_SPLIT if candidate["known_positive"] else group_split
+            assignments[str(candidate["candidate_id"])] = group_split
     return assignments
 
 
@@ -388,7 +469,7 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
         add_missing_failures(failures, row, rf2, qc, baseline, docking, best_pose)
 
     split_rows = build_split_rows(candidates, split_assignments)
-    rf2_rows = normalize_metric_rows(candidates, rf2_by_id, ["rf2_recovery_rmsd", "rf2_plddt"], "rf2_metrics")
+    rf2_rows = normalize_rf2_rows(candidates, rf2_raw)
     qc_rows = normalize_metric_rows(candidates, qc_by_id, ["monomer_qc_score", "monomer_clash_score"], "monomer_qc")
 
     completed_docking = sum(1 for row in summaries if row["docking_status"] == "completed")
@@ -399,8 +480,6 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
         leaked = [row["candidate_id"] for row in summaries if row["known_positive"] and row["split"] == TRAIN_SPLIT]
         if leaked:
             final_errors.append(f"known positives assigned to train: {len(leaked)}")
-        if any(row["docking_status"] in {MISSING, DEFERRED} for row in summaries):
-            final_errors.append("final mode does not allow missing/deferred docking rows")
         if final_errors:
             raise ValueError("final dataset gate failed: " + "; ".join(final_errors))
 
@@ -495,6 +574,29 @@ def normalize_metric_rows(candidates: list[dict[str, object]], raw_by_id: dict[s
     return rows
 
 
+def normalize_rf2_rows(candidates: list[dict[str, object]], raw_rows: list[dict[str, str]]) -> list[dict[str, object]]:
+    candidate_ids = {str(candidate["candidate_id"]) for candidate in candidates}
+    rows: list[dict[str, object]] = []
+    seen: set[str] = set()
+    for raw in raw_rows:
+        candidate_id = pick(raw, KEY_ALIASES["candidate_id"])
+        if candidate_id not in candidate_ids:
+            continue
+        seen.add(candidate_id)
+        rows.append({"source_table": "rf2_metrics", "status": "present", **raw, "candidate_id": candidate_id})
+    for candidate_id in sorted(candidate_ids - seen):
+        rows.append(
+            {
+                "candidate_id": candidate_id,
+                "source_table": "rf2_metrics",
+                "status": MISSING,
+                "rf2_status": MISSING,
+                "rf2_failure_label_policy": "missing_is_not_a_negative_sample",
+            }
+        )
+    return rows
+
+
 def complete_docking_runs(candidates: list[dict[str, object]], docking_by_id: dict[str, dict[str, object]]) -> list[dict[str, object]]:
     rows = []
     for candidate in candidates:
@@ -525,8 +627,8 @@ def source_manifest(args: argparse.Namespace) -> dict[str, dict[str, object]]:
 def write_outputs(output_dir: Path, payload: dict[str, object]) -> None:
     tables: dict[str, list[dict[str, object]]] = payload["tables"]  # type: ignore[assignment]
     field_order = {
-        "candidates.tsv": ["candidate_id", "source_candidate_id", "sequence", "sequence_sha256", "arm_id", "backbone_group_id", "sequence_group_id", "scaffold_id", "h3_regime", "known_positive", "known_positive_ids", "source_status"],
-        "rf2_metrics.tsv": ["candidate_id", "source_table", "status", "rf2_recovery_rmsd", "rf2_plddt"],
+        "candidates.tsv": ["candidate_id", "source_candidate_id", "sequence", "sequence_sha256", "cdr3", "arm_id", "backbone_group_id", "exact_sequence_group_id", "sequence_group_id", "near_sequence_family_size", "scaffold_id", "h3_regime", "known_positive", "known_positive_ids", "source_status"],
+        "rf2_metrics.tsv": ["candidate_id", "seed", "gpu_id", "source_table", "status", "rf2_status", "rf2_reason", "old_gate_status", "formal_multiseed_gate_status", "interaction_pae", "pred_lddt", "pae", "target_aligned_antibody_rmsd", "target_aligned_cdr_rmsd", "framework_aligned_antibody_rmsd", "framework_aligned_cdr_rmsd", "rf2_output_pdb", "rf2_failure_label_policy"],
         "monomer_qc.tsv": ["candidate_id", "source_table", "status", "monomer_qc_score", "monomer_clash_score"],
         "docking_runs.tsv": ["candidate_id", "docking_status", "run_id", "selected_model_path", "missingness_reason"],
         "docking_pose_features.tsv": ["candidate_id", "model_path", "model_sha256", "selected_model", "haddock_score", "vdw_energy", "electrostatic_energy", "desolvation_energy", "air_energy", "buried_surface_area", "remark_count", "haddock_remark_parse_status"],

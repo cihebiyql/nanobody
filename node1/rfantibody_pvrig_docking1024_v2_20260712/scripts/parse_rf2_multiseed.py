@@ -72,19 +72,44 @@ def old_gate(seed: int, rf2_status: str) -> str:
     return "OLD_GATE_FAIL_OR_MISSING_STRICT_SEED42"
 
 
-def best_recovered(rows: list[dict[str, object]]) -> dict[str, object] | None:
-    recovered = [row for row in rows if row["rf2_status"] == "RF2_POSE_RECOVERED"]
-    if not recovered:
+def finite_metric(row: dict[str, object], key: str) -> float | None:
+    try:
+        value = float(row.get(key, ""))
+    except (TypeError, ValueError):
+        return None
+    return value if math.isfinite(value) else None
+
+
+def best_metric_row(rows: list[dict[str, object]]) -> dict[str, object] | None:
+    complete = [row for row in rows if all(finite_metric(row, key) is not None for key in REQUIRED_METRICS)]
+    if not complete:
         return None
     return sorted(
-        recovered,
+        complete,
         key=lambda row: (
-            float(row.get("interaction_pae") or 999),
-            max(float(row.get("target_aligned_antibody_rmsd") or 999), float(row.get("target_aligned_cdr_rmsd") or 999)),
-            -float(row.get("pred_lddt") or -999),
+            finite_metric(row, "interaction_pae") or 999,
+            max(
+                finite_metric(row, "target_aligned_antibody_rmsd") or 999,
+                finite_metric(row, "target_aligned_cdr_rmsd") or 999,
+            ),
+            -(finite_metric(row, "pred_lddt") or -999),
             int(row["seed"]),
         ),
     )[0]
+
+
+def moderate_pose(row: dict[str, object]) -> bool:
+    interaction = finite_metric(row, "interaction_pae")
+    antibody = finite_metric(row, "target_aligned_antibody_rmsd")
+    cdr = finite_metric(row, "target_aligned_cdr_rmsd")
+    return interaction is not None and antibody is not None and cdr is not None and interaction < 10.0 and antibody < 2.5 and cdr < 2.5
+
+
+def calibration_near_pose(row: dict[str, object]) -> bool:
+    interaction = finite_metric(row, "interaction_pae")
+    antibody = finite_metric(row, "target_aligned_antibody_rmsd")
+    cdr = finite_metric(row, "target_aligned_cdr_rmsd")
+    return interaction is not None and antibody is not None and cdr is not None and interaction < 12.0 and antibody < 4.0 and cdr < 4.0
 
 
 def parse(manifest_tsv: Path, output_dir: Path, min_seed42_outputs: int = 1000) -> dict[str, object]:
@@ -129,17 +154,21 @@ def parse(manifest_tsv: Path, output_dir: Path, min_seed42_outputs: int = 1000) 
     candidate_rows: list[dict[str, object]] = []
     for candidate_id, rows in sorted(by_candidate.items()):
         seed42 = next((row for row in rows if int(row["seed"]) == 42), None)
-        best = best_recovered(rows)
+        best = best_metric_row(rows)
         old_status = str(seed42["old_gate_status"]) if seed42 else "OLD_GATE_FAIL_OR_MISSING_STRICT_SEED42"
         recovered_seeds = [str(row["seed"]) for row in rows if row["rf2_status"] == "RF2_POSE_RECOVERED"]
         missing_seeds = [str(row["seed"]) for row in rows if row["rf2_status"] == "RF2_FAILED_MISSING_OUTPUT"]
         failed_seeds = [str(row["seed"]) for row in rows if str(row["rf2_status"]).startswith("RF2_FAILED")]
-        if best is None:
-            formal_status = "FORMAL_MULTI_SEED_NO_RECOVERED_POSE"
-        elif int(best["seed"]) == 42:
-            formal_status = "FORMAL_MULTI_SEED_PASS_PRIMARY_SEED42"
+        moderate_seeds = [str(row["seed"]) for row in rows if moderate_pose(row)]
+        near_seeds = [str(row["seed"]) for row in rows if calibration_near_pose(row)]
+        if missing_seeds:
+            formal_status = "FORMAL_MULTI_SEED_PENDING_INCOMPLETE_SEEDS"
+        elif len(moderate_seeds) >= 2 and recovered_seeds:
+            formal_status = "FORMAL_MULTI_SEED_PASS_2OF3_WITH_STRICT_SUPPORT"
+        elif near_seeds:
+            formal_status = "RF2_NEAR_PASS_CALIBRATION_ONLY"
         else:
-            formal_status = "FORMAL_MULTI_SEED_PASS_ENRICHMENT_SEED"
+            formal_status = "FORMAL_MULTI_SEED_FAIL_COMPLETE"
         candidate_rows.append(
             {
                 "candidate_id": candidate_id,
@@ -149,6 +178,8 @@ def parse(manifest_tsv: Path, output_dir: Path, min_seed42_outputs: int = 1000) 
                 "best_interaction_pae": best.get("interaction_pae", "") if best else "",
                 "best_pred_lddt": best.get("pred_lddt", "") if best else "",
                 "recovered_seeds": ",".join(recovered_seeds),
+                "moderate_2p5A_seeds": ",".join(moderate_seeds),
+                "near_calibration_seeds": ",".join(near_seeds),
                 "missing_seeds": ",".join(missing_seeds),
                 "failed_seeds": ",".join(failed_seeds),
                 "seed42_outputs_global": seed42_outputs,
@@ -169,7 +200,8 @@ def parse(manifest_tsv: Path, output_dir: Path, min_seed42_outputs: int = 1000) 
         candidate_rows,
         [
             "candidate_id", "old_gate_status", "formal_multiseed_gate_status", "best_seed",
-            "best_interaction_pae", "best_pred_lddt", "recovered_seeds", "missing_seeds", "failed_seeds",
+            "best_interaction_pae", "best_pred_lddt", "recovered_seeds", "moderate_2p5A_seeds",
+            "near_calibration_seeds", "missing_seeds", "failed_seeds",
             "enrichment_allowed_by_seed42_outputs", "rf2_failure_label_policy",
         ],
     )
