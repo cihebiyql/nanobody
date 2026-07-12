@@ -83,6 +83,32 @@ def test_generation_status_does_not_report_global_complete_from_controller_marke
     assert payload["sequence_pdb_count"] == 0
 
 
+def test_generation_status_uses_active_arm_table_marker(tmp_path: Path) -> None:
+    full = [
+        {"arm_id": "unused", "gpu_id": "1", "target_backbones": "8", "seqs_per_backbone": "4"},
+        {"arm_id": "active", "gpu_id": "2", "target_backbones": "2", "seqs_per_backbone": "3"},
+    ]
+    active = [full[1]]
+    write_tsv(tmp_path / "config" / "generation_arms.tsv", full)
+    active_path = tmp_path / "config" / "generation_arms_primary.tsv"
+    write_tsv(active_path, active)
+    (tmp_path / "status").mkdir()
+    (tmp_path / "status" / "active_generation_arm_table.txt").write_text(str(active_path) + "\n", encoding="utf-8")
+
+    result = subprocess.run(
+        ["python3", str(ROOT / "scripts" / "status_generation.py"), "--run-root", str(tmp_path)],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    payload = json.loads(result.stdout)
+
+    assert payload["arm_count"] == 1
+    assert payload["expected_backbones"] == 2
+    assert payload["expected_sequences"] == 6
+    assert payload["arm_table_path"] == str(active_path)
+
+
 def test_primary_arm_table_can_drive_generation_and_freeze() -> None:
     controller = (ROOT / "scripts" / "run_generation_controller.sh").read_text(encoding="utf-8")
     collector = (ROOT / "scripts" / "collect_and_freeze_candidates.py").read_text(encoding="utf-8")

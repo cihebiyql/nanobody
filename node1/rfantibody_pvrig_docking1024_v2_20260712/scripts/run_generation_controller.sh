@@ -100,6 +100,8 @@ if [[ ! -s "$RUN_ROOT/smoke_fr4/status/smoke.complete" ]]; then
   SMOKE_ROOT="$RUN_ROOT/smoke_fr4" bash "$RUN_ROOT/scripts/run_generation_smoke.sh"
 fi
 
+printf '%s\n' "$GENERATION_ARM_TABLE" > "$RUN_ROOT/status/active_generation_arm_table.txt.tmp"
+mv "$RUN_ROOT/status/active_generation_arm_table.txt.tmp" "$RUN_ROOT/status/active_generation_arm_table.txt"
 generation_arm_count=$(awk 'NR > 1 { count++ } END { print count+0 }' "$GENERATION_ARM_TABLE")
 write_state full_generation "running $generation_arm_count arms on six GPU lanes"
 ARM_TABLE="$GENERATION_ARM_TABLE" bash "$RUN_ROOT/scripts/launch_generation_multi_gpu.sh"

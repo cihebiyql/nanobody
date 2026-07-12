@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -13,8 +14,18 @@ from pathlib import Path
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-root", type=Path, default=Path("/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712"))
+    parser.add_argument("--arms-path", type=Path)
     args = parser.parse_args()
-    with (args.run_root / "config" / "generation_arms.tsv").open(newline="", encoding="utf-8") as handle:
+    marker = args.run_root / "status" / "active_generation_arm_table.txt"
+    if args.arms_path is not None:
+        arms_path = args.arms_path
+    elif marker.is_file():
+        arms_path = Path(marker.read_text(encoding="utf-8").strip())
+    else:
+        arms_path = args.run_root / "config" / "generation_arms.tsv"
+    if not arms_path.is_absolute():
+        arms_path = args.run_root / arms_path
+    with arms_path.open(newline="", encoding="utf-8") as handle:
         arms = list(csv.DictReader(handle, delimiter="\t"))
     rows = []
     for arm in arms:
@@ -36,6 +47,8 @@ def main() -> int:
             }
         )
     payload = {
+        "arm_table_path": str(arms_path),
+        "arm_table_sha256": hashlib.sha256(arms_path.read_bytes()).hexdigest(),
         "arm_count": len(rows),
         "state_counts": dict(sorted(Counter(row["state"] for row in rows).items())),
         "backbone_pdb_count": sum(row["backbones"] for row in rows),

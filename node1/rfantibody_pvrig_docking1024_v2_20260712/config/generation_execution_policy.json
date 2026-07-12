@@ -22,7 +22,11 @@
     },
     "generation_controller": {
       "path": "scripts/run_generation_controller.sh",
-      "sha256": "85f98e227274ff1d9752a38325081e35c31d61baed172e722073b53ea687e171"
+      "sha256": "9fc7311d4d875632e96b8ad87ea02d3a723992b5f5c1503f45d92d45a455f8ad"
+    },
+    "generation_status": {
+      "path": "scripts/status_generation.py",
+      "sha256": "00410b17628d5a088394e758743f7a0dbbccbd109ec728b87664d413a08c4b5d"
     },
     "transition_controller": {
       "path": "scripts/transition_generation_to_primary_only.sh",

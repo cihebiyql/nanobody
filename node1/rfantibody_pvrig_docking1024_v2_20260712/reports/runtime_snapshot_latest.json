@@ -1,10 +1,68 @@
 {
-  "captured_at": "2026-07-12T17:43:01.995572+00:00",
+  "captured_at": "2026-07-12T18:21:58.102923+00:00",
   "downstream_controller": {
     "message": "waiting for frozen 1024-candidate cohort",
-    "pid": 3199367,
+    "pid": 3296328,
     "state": "waiting_for_generation",
-    "updated_at": "2026-07-12T17:42:05.673882+00:00"
+    "updated_at": "2026-07-12T18:20:29.999507+00:00"
+  },
+  "execution_policy": {
+    "active_cohort_source": {
+      "arm_count": 36,
+      "backbone_count": 288,
+      "scaffolds": [
+        "qrg",
+        "ekg",
+        "qkg"
+      ],
+      "sequence_record_count": 1152
+    },
+    "claim_boundary": "Generation and docking records are computational training data, not experimental binder, affinity, or blockade labels.",
+    "created_at": "2026-07-12T18:19:32.717869+00:00",
+    "files": {
+      "active_primary_arm_table": {
+        "path": "config/generation_arms_primary.tsv",
+        "sha256": "40e0dd3b1bdcf7bbcacc24ec2336eb7b42eb92457873ad4580981e82c988e0aa"
+      },
+      "full_design_arm_table": {
+        "path": "config/generation_arms.tsv",
+        "sha256": "53e0699e1726c063288913a28ed471aa15110af737090c6ac0bb8fc9bf3b9344"
+      },
+      "generation_controller": {
+        "path": "scripts/run_generation_controller.sh",
+        "sha256": "85f98e227274ff1d9752a38325081e35c31d61baed172e722073b53ea687e171"
+      },
+      "transition_controller": {
+        "path": "scripts/transition_generation_to_primary_only.sh",
+        "sha256": "73bed337f88ea2f78bf8291dab8bf3bdbcd124eacd5ac49794cde6e205ec51b1"
+      }
+    },
+    "freeze_target": {
+      "candidate_count": 1024,
+      "exact_unique_required": true,
+      "source_lane": "primary_vhhified"
+    },
+    "full_design_matrix": {
+      "arm_count": 48,
+      "backbone_count": 384,
+      "sequence_record_count": 1536
+    },
+    "policy_id": "pvrig_rfantibody_v2_primary_only_after_p1_diagnostic",
+    "pruned_diagnostic_work": {
+      "arm_count": 10,
+      "backbone_count": 80,
+      "sequence_record_count": 320
+    },
+    "rationale": "Original-scaffold arms are excluded by the frozen cohort selector; retain P1 short/long controls and spend remaining RFdiffusion capacity on cohort-producing VHHified arms.",
+    "retained_diagnostic_baseline": {
+      "arm_ids": [
+        "P1_orig_S",
+        "P1_orig_L"
+      ],
+      "backbone_count": 16,
+      "sequence_record_count": 64
+    },
+    "schema_version": 1
   },
   "generation_controller": {
     "message": "running 48 arms on six GPU lanes",
@@ -13,8 +71,8 @@
     "updated_at": "2026-07-12T17:22:30.638402+00:00"
   },
   "generation_counts": {
-    "backbone_pdb_count": 6,
-    "backbone_trb_count": 6,
+    "backbone_pdb_count": 16,
+    "backbone_trb_count": 16,
     "sequence_pdb_count": 0,
     "state_counts": {
       "pending": 42,
@@ -22,12 +80,16 @@
     }
   },
   "hostname": "node1",
-  "loadavg": "317.19 298.52 292.37 281/6070 3233458",
+  "loadavg": "391.83 430.27 437.04 358/6858 3302920",
   "postprocess_controller": {
     "message": "waiting for at least 1000 completed HADDOCK candidates",
-    "pid": 3112657,
+    "pid": 3235532,
     "state": "waiting_for_docking",
-    "updated_at": "2026-07-12T17:23:09.722227+00:00"
+    "updated_at": "2026-07-12T18:20:15.246844+00:00"
+  },
+  "primary_only_transition": {
+    "complete": false,
+    "pid": 3278041
   },
   "resource_policy": {
     "gpu_ids": [
