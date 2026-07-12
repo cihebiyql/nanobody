@@ -35,7 +35,7 @@ ROOT={remote_root!r}
 test -f "$ROOT/docking.complete"
 cd "$ROOT"
 {{
-  find shard_0 shard_1 shard_2 shard_3 -type f \
+  find shard_* -type f \
     \( -path '*/run_*_pvrig_hotspot/6_seletopclusts/cluster_*_model_*.pdb*' \
        -o -path '*/run_*_pvrig_hotspot/traceback/consensus.tsv' \
        -o -path '*/reports/*/*_sequence_validation.json' \

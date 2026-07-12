@@ -1,6 +1,6 @@
 # PVRIG V3-G / V3-P 执行规划与当前状态
 
-更新时间：2026-07-13 00:15（Asia/Shanghai）
+更新时间：2026-07-13 01:27（Asia/Shanghai）
 
 ## 一、当前结论
 
@@ -83,7 +83,16 @@ Node1 根目录：
 覆盖 H3 最长 20 aa 和 H1+H3
 ```
 
-正式生产已经启动，使用 7 个 GPU worker。本文档快照时已有 7 个 task 完成、0 失败；最终门是 240/240 task、2,880 backbone、8,640 raw sequence records。
+正式生产已经启动，主 worker 和反向尾部 worker 在 GPU 1-7 上并行，每个 task 均使用文件锁防止重复写入。本文档快照时：
+
+```text
+21/240 task complete
+0 failed
+363/2,880 backbone PDB 已生成
+780/8,640 ProteinMPNN sequence PDB 已生成
+```
+
+最终门仍是 `240/240 task、0 failed、2,880 backbone、8,640 raw sequence records`。不会因为 partial 计数正常就提前宣称生成完成。
 
 ### 3.3 候选收集器已验证
 
@@ -104,16 +113,30 @@ CDR1/2/3 before and after
 source PDB and SHA256
 ```
 
-对首批 7 个完成 task 的部分收集验证结果：
+收集器已对 21 个完成 task 重跑部分验证：
 
 ```text
-252 raw records
-224 exact-unique sequences
-28 exact duplicate records
+756 raw records
+709 exact-unique sequences
+47 exact duplicate records
+4 个 parent 已覆盖
 0 framework/CDR/provenance parse error
 ```
 
 这只是 collector 验证，不是正式候选集；正式收集必须等到 240/240 完成后重跑且得到 `PASS_COMPLETE_COLLECTION`。
+
+同一 partial 集的 fast gate 集成验证：
+
+```text
+FORMAL_ELIGIBLE = 603 / 709（85.0%）
+HARD_FAIL       = 106 / 709
+
+主要失败：
+CDR N-linked glyco motif = 101
+CDR homopolymer >=5      = 7
+```
+
+这一结果说明生成库的大多数序列可进入模型前筛，但不能取消正式全库 fast gate。
 
 ### 3.4 正式 teacher 不是全 8,640 条 docking
 
@@ -146,6 +169,21 @@ train/dev/test 沿用 Parent40 的 28/6/6，不按候选行随机拆分
 ```
 
 这里必须修正原规划中的一个算术冲突：40 个 parent 若硬性限制每个最多 10 条，最多只能得到 400 条，不可能抽到 500 条。正式 500 配额按 `350/75/75` 分配到 train/dev/test，平均每个 parent 为 12.5 条，因此绝对上限设为 13；其中常规高分配额仍优先不超过 10，额外 100 条只用于边界、多样性和不确定性层。
+
+目前已有可执行实现：
+
+```text
+fast_gate_pvrig_formal_candidates.py
+prepare_pvrig_formal_candidate_meanpool_inputs.py
+score_pvrig_formal_candidates_meanpool.py
+select_pvrig_formal_teacher500.py
+build_pvrig_formal_teacher500_package.py
+run_pvrig_formal_teacher500_finalize.sh
+```
+
+21-task partial 数据已完成真实 VHHBERT/ESM2 embedding 和三种子 `v3_full` 评分集成测试：`603/603` 条序列成功输出 generic prior、seed uncertainty、rank disagreement 和 cheap QC score。不使用 hash embedding 冒充正式分数。
+
+该 partial 集还显示 mean-pooled 高分明显被 parent framework 主导：前 10 全部来自同一 parent。这正是 Teacher500 不能机械取 Top 500、必须实施 parent/patch/mode 配额和 40% 左右非高分抽样的实证。
 
 ### 3.5 正式 Node1 teacher 字段
 
@@ -301,7 +339,23 @@ contact/paratope replay 指标保留源 checkpoint 的至少 90%
 label-shuffle / target-shuffle 不得通过主门
 ```
 
-Seed 83 已启动。只有正式评估通过后，该模型才可作为 V3-P 和候选分层抽样的通用 prior；失败则继续使用冻结的最强 baseline，不强行升级版本。
+Seed 83 和 89 已完成，Seed 97 正在训练。当前结果：
+
+| seed | best epoch | dev macro target AP | test macro target AP | test overall AP |
+| ---: | ---: | ---: | ---: | ---: |
+| 83 | 2 | 0.2649 | 0.2315 | 0.3071 |
+| 89 | 2 | 0.2660 | 0.2476 | 0.3283 |
+| mean-pooled `v3_full` baseline | - | 0.3951 | 0.3415 | 0.4813 |
+
+两个已完成 seed 都明显低于 baseline，83+89 两种子 ensemble 的 test macro target AP 也只有 `0.2416`。因此 V3-G2 当前大概率将得到 `FAIL_FALLBACK_TO_MEANPOOL_V3_FULL`；但仍会按预注册完成 Seed 97、cluster bootstrap、target-dependence、contact/paratope replay 和 external hTNFa 描述性比较，不用预判替代正式结果。
+
+正式判定器：
+
+```text
+experiments/phase2_5080_v1/src/evaluate_phase2_v3_g2_final.py
+```
+
+external hTNFa 已准备 `5,571` 条、其中 `677` binder，与保留开发集 exact VHH overlap 为 `0`。但它在旧 V3 中已经解封，因此只能写成 external comparison，不能冒充新的 pristine formal test。
 
 ## 五、V3-P 训练顺序
 
@@ -341,7 +395,7 @@ binding prior 与 geometry surrogate 冲突
 ## 六、接下来按此顺序执行
 
 1. 保持 Node1 RFantibody 生产运行，直到 240/240 task 完成且 0 失败。
-2. 完成 V3-G2 seeds 83/89/97、mean-pool 对照、null controls 和正式门判定。
+2. 完成正在运行的 Seed 97，随后执行 V3-G2 三种子正式门判定；若主门已失败，null controls 记为不必要的后续晋级计算，不将其伪装为 PASS。
 3. 对 8,640 raw 输出运行 collector，冻结 exact-dedup candidate manifest。
 4. 运行快速 hard gate 和通用 prior；按预注册配额抽取约 500 条 teacher，不机械取模型 Top 500。
 5. 生成正式 monomer + HADDOCK + 8X6B/9E6Y + contact-frequency teacher 包。
