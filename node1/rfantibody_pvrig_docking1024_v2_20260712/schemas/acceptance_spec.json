@@ -45,8 +45,11 @@
     },
     "final_mode": {
       "type": "object",
-      "required": ["min_completed_docking_candidates", "forbid_known_positive_train_leakage", "require_docking_completion"],
+      "required": ["required_candidate_count", "min_completed_rf2_candidates", "min_successful_nbb2_candidates", "min_completed_docking_candidates", "forbid_known_positive_train_leakage", "require_docking_completion"],
       "properties": {
+        "required_candidate_count": {"const": 1024},
+        "min_completed_rf2_candidates": {"const": 1000},
+        "min_successful_nbb2_candidates": {"const": 1000},
         "min_completed_docking_candidates": {"const": 1000},
         "forbid_known_positive_train_leakage": {"const": true},
         "require_docking_completion": {"const": true}
@@ -105,7 +108,7 @@
         "rf2_recovery": "RF2 recovery and structure consistency axis"
       },
       "partial_mode": {"allow_missing_inputs": true, "missingness_table": "failures.tsv", "keep_deferred_candidates": true},
-      "final_mode": {"min_completed_docking_candidates": 1000, "forbid_known_positive_train_leakage": true, "require_docking_completion": true},
+      "final_mode": {"required_candidate_count": 1024, "min_completed_rf2_candidates": 1000, "min_successful_nbb2_candidates": 1000, "min_completed_docking_candidates": 1000, "forbid_known_positive_train_leakage": true, "require_docking_completion": true},
       "split_contract": {"grouping_keys": ["backbone_group_id", "arm_id", "sequence_group_id"], "allowed_splits": ["train", "validation", "test", "calibration_holdout", "deferred"]},
       "known_positive_contract": {"allowed_splits": ["calibration_holdout"], "never_training_positive": true},
       "haddock_remark_contract": {"raw_pdb_remark_fields": ["haddock_score", "vdw_energy", "electrostatic_energy", "desolvation_energy", "air_energy", "buried_surface_area"], "required_parser_output": "docking_pose_features.tsv"}

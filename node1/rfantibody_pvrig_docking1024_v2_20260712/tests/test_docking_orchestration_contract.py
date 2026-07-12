@@ -23,7 +23,10 @@ def write_minimal_inputs(run_root: Path) -> None:
     (inputs / "hotspot_residues_8x6b.txt").write_text("33\n34\n101\n106\n", encoding="ascii")
     (inputs / "PVRIG_hotspot_set_v1.csv").write_text("hotspot_id,pdb_8x6b_ref\nh1,T:33S\n", encoding="ascii")
     (inputs / "pvrig_8x6b_chainT.pdb").write_text(
-        "ATOM      1  CA  SER T  33      0.000   0.000   0.000  1.00 20.00           C\nEND\n",
+        "ATOM      1  CA  SER T  33      0.000   0.000   0.000  1.00 20.00           C\n"
+        "ATOM      2  CA  SER T  34      1.000   0.000   0.000  1.00 20.00           C\n"
+        "ATOM      3  CA  SER T 101      2.000   0.000   0.000  1.00 20.00           C\n"
+        "ATOM      4  CA  SER T 106      3.000   0.000   0.000  1.00 20.00           C\nEND\n",
         encoding="ascii",
     )
 

@@ -431,6 +431,34 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
     for row in pose_features:
         features_by_id[str(row["candidate_id"])].append(row)
 
+    rf2_completed_ids = {
+        pick(row, KEY_ALIASES["candidate_id"])
+        for row in rf2_raw
+        if pick(row, KEY_ALIASES["candidate_id"])
+        and not pick(row, ("rf2_status", "status"), "").startswith("RF2_FAILED")
+        and (
+            pick(row, ("rf2_status", "status"), "")
+            or pick(row, ("pred_lddt", "rf2_plddt", "plddt"), "")
+        )
+    }
+    nbb2_success_ids = {
+        pick(row, KEY_ALIASES["candidate_id"])
+        for row in qc_raw
+        if pick(row, KEY_ALIASES["candidate_id"])
+        and (
+            pick(row, ("nbb2_status", "status"), "") == "success"
+            or parse_float(pick(row, ("monomer_qc_score", "nbb2_qc_score"), "")) == 1.0
+        )
+    }
+    for source_name, source_ids in (
+        ("rf2", {pick(row, KEY_ALIASES["candidate_id"]) for row in rf2_raw if pick(row, KEY_ALIASES["candidate_id"])}),
+        ("monomer_qc", {pick(row, KEY_ALIASES["candidate_id"]) for row in qc_raw if pick(row, KEY_ALIASES["candidate_id"])}),
+        ("docking", {pick(row, KEY_ALIASES["candidate_id"]) for row in docking_explicit if pick(row, KEY_ALIASES["candidate_id"])}),
+    ):
+        unknown_ids = sorted(source_ids - candidate_ids)
+        if unknown_ids:
+            raise ValueError(f"{source_name} table contains candidate IDs outside the frozen cohort: {unknown_ids[:5]}")
+
     split_assignments = assign_splits(candidates)
     failures: list[dict[str, object]] = []
     summaries: list[dict[str, object]] = []
@@ -478,6 +506,12 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
     completed_docking = sum(1 for row in summaries if row["docking_status"] == "completed")
     if args.mode == "final":
         final_errors = []
+        if len(candidates) != 1024:
+            final_errors.append(f"frozen candidate count {len(candidates)} != 1024")
+        if len(rf2_completed_ids) < 1000:
+            final_errors.append(f"completed RF2 candidates {len(rf2_completed_ids)} < 1000")
+        if len(nbb2_success_ids) < 1000:
+            final_errors.append(f"successful NBB2 candidates {len(nbb2_success_ids)} < 1000")
         if completed_docking < MIN_FINAL_COMPLETED_DOCKING:
             final_errors.append(f"completed docking candidates {completed_docking} < {MIN_FINAL_COMPLETED_DOCKING}")
         leaked = [row["candidate_id"] for row in summaries if row["known_positive"] and row["split"] == TRAIN_SPLIT]
@@ -504,6 +538,8 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
         "output_files": {},
         "candidate_count": len(candidates),
         "completed_docking_candidates": completed_docking,
+        "completed_rf2_candidates": len(rf2_completed_ids),
+        "successful_nbb2_candidates": len(nbb2_success_ids),
         "known_positive_count": sum(1 for row in candidates if row["known_positive"]),
         "split_counts": dict(sorted(Counter(split_assignments.values()).items())),
         "missingness_counts": dict(sorted(Counter(row["failure_type"] for row in failures).items())),
@@ -514,7 +550,12 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
             "blocker_geometry": "hotspot/interface geometry proxy kept separate from affinity and binder axes",
             "rf2_recovery": "RF2 recovery metrics kept separate from docking and blocker axes",
         },
-        "final_gate": {"min_completed_docking_candidates": MIN_FINAL_COMPLETED_DOCKING},
+        "final_gate": {
+            "required_candidate_count": 1024,
+            "min_completed_rf2_candidates": 1000,
+            "min_successful_nbb2_candidates": 1000,
+            "min_completed_docking_candidates": MIN_FINAL_COMPLETED_DOCKING,
+        },
     }
     return {"tables": output_tables, "manifest": manifest}
 
@@ -681,7 +722,9 @@ def parse_args() -> argparse.Namespace:
     args.rf2_metrics = args.rf2_metrics or default_path(args.input_dir, "rf2_metrics.tsv")
     args.monomer_qc = args.monomer_qc or default_path(args.input_dir, "monomer_qc.tsv", "nbb2_qc.tsv")
     args.docking_runs = args.docking_runs or default_path(args.input_dir, "docking_runs.tsv")
-    args.haddock_root = args.haddock_root or project_root / "docking" / "haddock"
+    if args.haddock_root is None:
+        input_haddock = default_path(args.input_dir, "haddock_runs", "docking_runs_raw")
+        args.haddock_root = input_haddock if input_haddock.exists() else project_root / "docking" / "haddock"
     args.baseline_postprocess = args.baseline_postprocess or default_path(args.input_dir, "baseline_postprocess.tsv", "dual_baseline_postprocess.tsv")
     return args
 
