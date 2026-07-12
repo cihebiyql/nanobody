@@ -1,5 +1,7 @@
 # Phase 2 V3-G / V3-P 与 PVRIG Docking Teacher 执行计划
 
+> 状态更新（2026-07-12 22:35）：pilot96 的 96/96 docking、813/813 双参考/contact 聚合和 V3-P1 smoke 已完成。正式下一阶段见 `PVRIG_DOCKING_TEACHER_DECISION_AND_FORMAL_NEXT_STEPS_ZH.md`。
+
 ## 1. 当前决策
 
 当前应当先生成 PVRIG 微调所需的 docking teacher 数据，同时继续完成 V3-G 通用绑定先验。原因是 V3-P 的主要瓶颈不是模型代码，而是缺少对应同一批候选的：
@@ -69,14 +71,17 @@ V3-P 是前筛代理，不能替代 Node1 docking，也不能声称已证明 bin
 
 ### 3.2 Prospective pilot96
 
-已冻结 96 条 RFantibody 候选，A/B/C/D 四个 hotspot set 各 24 条。截至 2026-07-12：
+已冻结并完成 96 条 RFantibody 候选，A/B/C/D 四个 hotspot set 各 24 条：
 
 - 96/96 NanoBodyBuilder2 raw monomer 已生成；
 - 96/96 规范化完成；
 - 96/96 序列校验通过；
 - 96/96 monomer geometry QC 完成；
 - 96/96 PVRIG receptor geometry QC 完成；
-- HADDOCK 受 Node1 `load1 <= 48` 安全门控，等待自动启动。
+- 96/96 HADDOCK 完成；
+- 813 个 unique selected poses 完成 8X6B/9E6Y 和 contact 聚合；
+- selection/candidate/pose/contact/teacher manifest ID 闭包 PASS；
+- 与 11 条已知阳性的 exact-sequence 重叠为 0。
 
 这 96 条全部来自 `h-NbBCII10` 单一 parent framework，因此只能验证管线和 V3-P1 smoke，不能支撑 unseen-parent 正式结论。
 
@@ -96,7 +101,7 @@ V3-P 是前筛代理，不能替代 Node1 docking，也不能声称已证明 bin
 
 ## 4. 立即执行顺序
 
-### Step 1: 完成 pilot96 HADDOCK
+### Step 1: 完成 pilot96 HADDOCK（已完成）
 
 Node1 controller 保持可恢复和负载门控：
 
@@ -109,7 +114,7 @@ Node1 controller 保持可恢复和负载门控：
 
 不强制绕过负载门。已完成的 raw monomer 和 HADDOCK run 由 runner 自动跳过。
 
-### Step 2: 同步最小必要运行证据
+### Step 2: 同步最小必要运行证据（已完成）
 
 完成标记出现后运行：
 
@@ -126,7 +131,7 @@ python experiments/phase2_5080_v1/src/sync_pvrig_teacher_pilot96_outputs.py
 - run/controller logs；
 - completion markers。
 
-### Step 3: 运行双参考几何后处理
+### Step 3: 运行双参考几何后处理（已完成）
 
 ```bash
 python experiments/phase2_5080_v1/src/process_pvrig_teacher_pilot96.py --workers 4
@@ -140,7 +145,7 @@ python experiments/phase2_5080_v1/src/process_pvrig_teacher_pilot96.py --workers
 - consensus class；
 - aligned pose 和 per-model score。
 
-### Step 4: 聚合 teacher labels
+### Step 4: 聚合 teacher labels（已完成）
 
 ```bash
 python experiments/phase2_5080_v1/src/build_pvrig_teacher_pilot96.py
@@ -167,9 +172,9 @@ pilot 验收线：
 96/96 COMPLETE candidate summaries
 ```
 
-### Step 5: V3-P1 pipeline smoke
+### Step 5: V3-P1 pipeline smoke（已完成）
 
-第一版只做工程验证：
+第一版只做工程验证，当前状态为 `PASS_PIPELINE_SMOKE_COMPLETED` / `NOT_READY_SINGLE_PARENT_PILOT_ONLY`：
 
 ```text
 frozen V2.3/V3-G residue backbone
@@ -204,7 +209,9 @@ pilot96 通过后，立即切换到多 parent 数据：
 - 中间决策边界；
 - 低分但 QC 通过的失败模式；
 - parent/patch/method/CDR3 多样性；
-- 少量校准突变和方法外探索。
+- 模型冲突、高不确定性和方法外探索。
+
+已知阳性家族的校准突变另设 `calibration-only` 批次，不占 400-600 条 prospective teacher 配额，也不进入正式 train/dev/test。
 
 第二批主动学习再增加 300-500 条，最终形成约 800-1,000 条 PVRIG-specific teacher candidates。
 
@@ -223,10 +230,9 @@ V3-P formal 必须同时满足：
 ## 7. 当前最短路径
 
 ```text
-完成 pilot96 HADDOCK
-→ 聚合 96 x Top-10 prospective teacher
-→ V3-P1 pipeline smoke
-→ 生成多 parent 400-600 正式 teacher
+生成多 parent 8,000-12,000 候选母库
+→ 预注册并抽取 400-600 条正式 teacher
+→ Node1 docking 与 teacher 聚合
 → 完成 V3-G target-dependence 加强
 → 训练 V3-P formal
 → 主动学习扩展到 800-1,000
