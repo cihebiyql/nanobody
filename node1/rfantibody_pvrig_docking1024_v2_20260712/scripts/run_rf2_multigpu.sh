@@ -11,6 +11,8 @@ ENABLE_ENRICHMENT_SEEDS=${ENABLE_ENRICHMENT_SEEDS:-0}
 MIN_SEED42_OUTPUTS=${MIN_SEED42_OUTPUTS:-1000}
 MAX_LOAD1=${MAX_LOAD1:-240}
 MAX_GPU_USED_MB=${MAX_GPU_USED_MB:-12000}
+GPU_WAIT_SECONDS=${GPU_WAIT_SECONDS:-60}
+LOAD_WAIT_SECONDS=${LOAD_WAIT_SECONDS:-60}
 CPU_NICE=${CPU_NICE:-10}
 export OMP_NUM_THREADS=${OMP_NUM_THREADS:-2}
 export MKL_NUM_THREADS=${MKL_NUM_THREADS:-2}
@@ -19,11 +21,19 @@ export OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-2}
 [[ -x "$RF2_BIN" ]] || { echo "Missing RF2 executable: $RF2_BIN" >&2; exit 2; }
 [[ -f "$MANIFEST" ]] || { echo "Missing RF2 multiseed manifest: $MANIFEST" >&2; exit 2; }
 
-load1=$(cut -d' ' -f1 /proc/loadavg)
-if ! awk -v load="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(load < limit) }'; then
-  echo "Refusing RF2 launch: load1=$load1 is not below gate $MAX_LOAD1" >&2
-  exit 3
-fi
+wait_for_load() {
+  local load1
+  while true; do
+    load1=$(cut -d' ' -f1 /proc/loadavg)
+    if awk -v load="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(load < limit) }'; then
+      return
+    fi
+    echo "RF2_LOAD_WAIT load1=$load1 threshold=$MAX_LOAD1 time=$(date -Is)"
+    sleep "$LOAD_WAIT_SECONDS"
+  done
+}
+
+wait_for_load
 
 mkdir -p "$BATCH_ROOT/manifests"
 {
@@ -53,45 +63,37 @@ IFS=',' read -r -a seed_array <<< "$SEEDS"
 IFS=',' read -r -a gpu_array <<< "$GPU_IDS"
 launched=0
 skipped_enrichment=0
+SHARD_BUSY=0
 
-for seed in "${seed_array[@]}"; do
-  seed=${seed//[[:space:]]/}
-  [[ -n "$seed" ]] || continue
-  if [[ "$seed" != "42" ]]; then
-    if [[ "$ENABLE_ENRICHMENT_SEEDS" != "1" || "$seed42_ready" != "1" ]]; then
-      echo "Skipping seed_$seed enrichment: seed42_outputs=$seed42_outputs min_required=$MIN_SEED42_OUTPUTS enable=$ENABLE_ENRICHMENT_SEEDS"
-      skipped_enrichment=$((skipped_enrichment + 1))
-      continue
+launch_shard() {
+  local seed=$1 gpu_id=$2
+  local shard input_dir output_dir todo_dir log_dir pid_file exit_file used_mb todo_count pid command_file
+  SHARD_BUSY=0
+  shard="$BATCH_ROOT/seeds/seed_$seed/shards/gpu_$gpu_id"
+  input_dir="$shard/input"
+  output_dir="$shard/output"
+  todo_dir="$shard/todo_input"
+  log_dir="$shard/logs"
+  pid_file="$shard/rf2.pid"
+  exit_file="$shard/rf2.exit_code"
+  [[ -d "$input_dir" ]] || return 0
+  if [[ -s "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+    echo "seed_$seed/gpu_$gpu_id already running pid=$(cat "$pid_file")"
+    return 0
+  fi
+
+  if command -v nvidia-smi >/dev/null 2>&1; then
+    used_mb=$(nvidia-smi --id="$gpu_id" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ' || echo 999999)
+    if [[ "$used_mb" -ge "$MAX_GPU_USED_MB" ]]; then
+      echo "RF2_GPU_LANE_WAIT seed=$seed gpu=$gpu_id memory_used_mb=$used_mb threshold=$MAX_GPU_USED_MB time=$(date -Is)"
+      SHARD_BUSY=1
+      return 0
     fi
   fi
 
-  for gpu_id in "${gpu_array[@]}"; do
-    gpu_id=${gpu_id//[[:space:]]/}
-    [[ -n "$gpu_id" ]] || continue
-    shard="$BATCH_ROOT/seeds/seed_$seed/shards/gpu_$gpu_id"
-    input_dir="$shard/input"
-    output_dir="$shard/output"
-    todo_dir="$shard/todo_input"
-    log_dir="$shard/logs"
-    pid_file="$shard/rf2.pid"
-    exit_file="$shard/rf2.exit_code"
-    [[ -d "$input_dir" ]] || continue
-    if [[ -s "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
-      echo "seed_$seed/gpu_$gpu_id already running pid=$(cat "$pid_file")"
-      continue
-    fi
-
-    if command -v nvidia-smi >/dev/null 2>&1; then
-      used_mb=$(nvidia-smi --id="$gpu_id" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ' || echo 999999)
-      if [[ "$used_mb" -ge "$MAX_GPU_USED_MB" ]]; then
-        echo "Skipping seed_$seed/gpu_$gpu_id: memory.used=${used_mb}MiB" >&2
-        continue
-      fi
-    fi
-
-    mkdir -p "$todo_dir" "$output_dir" "$log_dir"
-    find "$todo_dir" -maxdepth 1 -type l -name '*.pdb' -delete
-    python3 - "$MANIFEST" "$seed" "$gpu_id" "$todo_dir" <<'PY'
+  mkdir -p "$todo_dir" "$output_dir" "$log_dir"
+  find "$todo_dir" -maxdepth 1 -type l -name '*.pdb' -delete
+  python3 - "$MANIFEST" "$seed" "$gpu_id" "$todo_dir" <<'PY'
 import csv
 import os
 import sys
@@ -113,36 +115,66 @@ with open(manifest, newline='', encoding='utf-8') as handle:
         queued += 1
 print(queued)
 PY
-    todo_count=$(find "$todo_dir" -maxdepth 1 -type l -name '*.pdb' | wc -l | tr -d ' ')
-    if [[ "$todo_count" -eq 0 ]]; then
-      echo "seed_$seed/gpu_$gpu_id complete: no missing outputs to queue"
-      continue
-    fi
+  todo_count=$(find "$todo_dir" -maxdepth 1 -type l -name '*.pdb' | wc -l | tr -d ' ')
+  if [[ "$todo_count" -eq 0 ]]; then
+    echo "seed_$seed/gpu_$gpu_id complete: no missing outputs to queue"
+    return 0
+  fi
 
-    rm -f "$exit_file"
-    command_file="$shard/rf2_command.sh"
-    cat > "$command_file" <<EOF
+  rm -f "$exit_file"
+  command_file="$shard/rf2_command.sh"
+  cat > "$command_file" <<EOF
 CUDA_VISIBLE_DEVICES=$gpu_id nice -n $CPU_NICE $RF2_BIN --input-dir $todo_dir --output-dir $output_dir --num-recycles 10 --hotspot-show-prop 0 --seed $seed
 EOF
-    (
-      export CUDA_VISIBLE_DEVICES="$gpu_id"
-      set +e
-      nice -n "$CPU_NICE" "$RF2_BIN" \
-        --input-dir "$todo_dir" \
-        --output-dir "$output_dir" \
-        --num-recycles 10 \
-        --hotspot-show-prop 0 \
-        --seed "$seed"
-      rc=$?
-      set -e
-      echo "$rc" > "$exit_file"
-      exit "$rc"
-    ) > "$log_dir/rf2_seed_${seed}.log" 2>&1 < /dev/null &
-    pid=$!
-    echo "$pid" > "$pid_file"
-    echo "launched seed_$seed/gpu_$gpu_id pid=$pid queued_missing=$todo_count existing_seed42_outputs=$seed42_outputs"
-    launched=$((launched + 1))
-    sleep 2
+  (
+    export CUDA_VISIBLE_DEVICES="$gpu_id"
+    set +e
+    nice -n "$CPU_NICE" "$RF2_BIN" \
+      --input-dir "$todo_dir" \
+      --output-dir "$output_dir" \
+      --num-recycles 10 \
+      --hotspot-show-prop 0 \
+      --seed "$seed"
+    rc=$?
+    set -e
+    echo "$rc" > "$exit_file"
+    exit "$rc"
+  ) > "$log_dir/rf2_seed_${seed}.log" 2>&1 < /dev/null &
+  pid=$!
+  echo "$pid" > "$pid_file"
+  echo "launched seed_$seed/gpu_$gpu_id pid=$pid queued_missing=$todo_count existing_seed42_outputs=$seed42_outputs"
+  launched=$((launched + 1))
+  sleep 2
+}
+
+for seed in "${seed_array[@]}"; do
+  seed=${seed//[[:space:]]/}
+  [[ -n "$seed" ]] || continue
+  if [[ "$seed" != "42" ]]; then
+    if [[ "$ENABLE_ENRICHMENT_SEEDS" != "1" || "$seed42_ready" != "1" ]]; then
+      echo "Skipping seed_$seed enrichment: seed42_outputs=$seed42_outputs min_required=$MIN_SEED42_OUTPUTS enable=$ENABLE_ENRICHMENT_SEEDS"
+      skipped_enrichment=$((skipped_enrichment + 1))
+      continue
+    fi
+  fi
+
+  pending=("${gpu_array[@]}")
+  while [[ ${#pending[@]} -gt 0 ]]; do
+    next_pending=()
+    for gpu_id in "${pending[@]}"; do
+      gpu_id=${gpu_id//[[:space:]]/}
+      [[ -n "$gpu_id" ]] || continue
+      launch_shard "$seed" "$gpu_id"
+      if [[ $SHARD_BUSY -eq 1 ]]; then
+        next_pending+=("$gpu_id")
+      fi
+    done
+    pending=("${next_pending[@]}")
+    if [[ ${#pending[@]} -gt 0 ]]; then
+      echo "RF2_WAITING_LANES seed=$seed gpus=${pending[*]} time=$(date -Is)"
+      sleep "$GPU_WAIT_SECONDS"
+      wait_for_load
+    fi
   done
 done
 

@@ -52,19 +52,6 @@ wait_for_load() {
   done
 }
 
-wait_for_gpus() {
-  while true; do
-    busy=()
-    for gpu in 1 2 3 4 5 7; do
-      used=$(nvidia-smi --id="$gpu" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ')
-      [[ "$used" -lt "$GPU_MEMORY_GATE_MB" ]] || busy+=("$gpu:$used")
-    done
-    [[ ${#busy[@]} -eq 0 ]] && return
-    echo "GPU_WAIT busy=${busy[*]} time=$(date -Is)"
-    sleep "$POLL_SECONDS"
-  done
-}
-
 rf2_count() {
   local seed=$1
   find "$BATCH_ROOT/seeds/seed_$seed/shards" -path '*/output/*_best.pdb' -type f 2>/dev/null | wc -l | tr -d ' '
@@ -94,8 +81,7 @@ run_rf2_seed42() {
   local count=0
   for attempt in 1 2 3; do
     wait_for_load
-    wait_for_gpus
-    RUN_ROOT="$RUN_ROOT" BATCH_ROOT="$BATCH_ROOT" SEEDS=42 \
+    RUN_ROOT="$RUN_ROOT" BATCH_ROOT="$BATCH_ROOT" SEEDS=42 MAX_GPU_USED_MB="$GPU_MEMORY_GATE_MB" \
       bash "$RUN_ROOT/scripts/run_rf2_multigpu.sh"
     wait_rf2_seed 42
     count=$(rf2_count 42)
@@ -110,13 +96,11 @@ run_rf2_seed42() {
 
 run_rf2_enrichment() {
   wait_for_load
-  wait_for_gpus
-  RUN_ROOT="$RUN_ROOT" BATCH_ROOT="$BATCH_ROOT" SEEDS=43 ENABLE_ENRICHMENT_SEEDS=1 \
+  RUN_ROOT="$RUN_ROOT" BATCH_ROOT="$BATCH_ROOT" SEEDS=43 ENABLE_ENRICHMENT_SEEDS=1 MAX_GPU_USED_MB="$GPU_MEMORY_GATE_MB" \
     bash "$RUN_ROOT/scripts/run_rf2_multigpu.sh"
   wait_rf2_seed 43
   wait_for_load
-  wait_for_gpus
-  RUN_ROOT="$RUN_ROOT" BATCH_ROOT="$BATCH_ROOT" SEEDS=44 ENABLE_ENRICHMENT_SEEDS=1 \
+  RUN_ROOT="$RUN_ROOT" BATCH_ROOT="$BATCH_ROOT" SEEDS=44 ENABLE_ENRICHMENT_SEEDS=1 MAX_GPU_USED_MB="$GPU_MEMORY_GATE_MB" \
     bash "$RUN_ROOT/scripts/run_rf2_multigpu.sh"
   wait_rf2_seed 44
   python3 "$RUN_ROOT/scripts/parse_rf2_multiseed.py" \
@@ -157,7 +141,6 @@ python3 "$RUN_ROOT/scripts/build_docking_package.py" --run-root "$RUN_ROOT" --ex
 
 write_state nbb2_haddock_smoke "validating one exact sequence through NBB2 and HADDOCK"
 wait_for_load
-wait_for_gpus
 RUN_ROOT="$RUN_ROOT" CANDIDATE_LIMIT=1 bash "$RUN_ROOT/scripts/run_nbb2_multigpu.sh"
 SMOKE_CID=$(awk -F $'\t' 'NR==2 {print $1}' "$RUN_ROOT/docking/manifests/docking_candidates.tsv")
 wait_for_load
@@ -167,7 +150,6 @@ RUN_ROOT="$RUN_ROOT" MAX_LOAD1="$HADDOCK_MAX_LOAD1" \
 write_state nbb2_full "running NBB2 on the full frozen cohort"
 for attempt in 1 2 3; do
   wait_for_load
-  wait_for_gpus
   RUN_ROOT="$RUN_ROOT" bash "$RUN_ROOT/scripts/run_nbb2_multigpu.sh"
   nbb2_count=$(nbb2_success_count)
   echo "NBB2_PROGRESS success=$nbb2_count attempt=$attempt"

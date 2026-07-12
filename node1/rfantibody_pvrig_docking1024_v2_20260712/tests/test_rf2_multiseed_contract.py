@@ -3,6 +3,8 @@ from __future__ import annotations
 import csv
 import importlib.util
 import inspect
+import os
+import subprocess
 import tempfile
 from pathlib import Path
 
@@ -125,6 +127,93 @@ def test_parse_keeps_old_seed42_gate_separate_from_formal_multiseed_gate(tmp_pat
     missing = [row for row in metrics if row["rf2_status"] == "RF2_FAILED_MISSING_OUTPUT"]
     assert missing
     assert {row["rf2_failure_label_policy"] for row in missing} == {"not_negative_sample"}
+
+
+def test_rf2_launcher_waits_per_lane_instead_of_requiring_all_gpus_idle() -> None:
+    launcher = (ROOT / "scripts" / "run_rf2_multigpu.sh").read_text(encoding="utf-8")
+    controller = (ROOT / "scripts" / "run_downstream_controller.sh").read_text(encoding="utf-8")
+
+    assert "RF2_GPU_LANE_WAIT" in launcher
+    assert "RF2_WAITING_LANES" in launcher
+    assert "SHARD_BUSY=1" in launcher
+    assert "wait_for_gpus" not in controller
+
+
+def test_rf2_launcher_starts_free_lane_before_waiting_lane(tmp_path: Path) -> None:
+    batch = tmp_path / "batch"
+    staged = tmp_path / "staged"
+    staged.mkdir()
+    rows = []
+    for gpu in (1, 2):
+        shard = batch / "seeds" / "seed_42" / "shards" / f"gpu_{gpu}"
+        (shard / "input").mkdir(parents=True)
+        pdb = staged / f"cand_gpu{gpu}.pdb"
+        pdb.write_text("END\n", encoding="ascii")
+        rows.append(
+            {
+                "seed": "42",
+                "gpu_id": str(gpu),
+                "staged_pdb": str(pdb),
+                "expected_output_pdb": str(shard / "output" / f"cand_gpu{gpu}_best.pdb"),
+            }
+        )
+    manifest = batch / "rf2_multiseed_manifest.tsv"
+    write_path = manifest
+    write_path.parent.mkdir(parents=True, exist_ok=True)
+    with write_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), delimiter="\t", lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    state = tmp_path / "gpu2_queries"
+    state.write_text("0\n", encoding="ascii")
+    nvidia = fake_bin / "nvidia-smi"
+    nvidia.write_text(
+        "#!/usr/bin/env bash\n"
+        f"state={state!s}\n"
+        "case \" $* \" in\n"
+        "  *\" --id=2 \"*) n=$(cat \"$state\"); echo $((n+1)) > \"$state\"; "
+        "if [[ $n -eq 0 ]]; then echo 13000; else echo 0; fi ;;\n"
+        "  *\" --id=1 \"*) echo 0 ;;\n"
+        "  *) echo '0, Fake GPU, 0, 24000, 0' ;;\n"
+        "esac\n",
+        encoding="ascii",
+    )
+    nvidia.chmod(0o755)
+    rf2 = fake_bin / "rf2"
+    rf2.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="ascii")
+    rf2.chmod(0o755)
+
+    env = os.environ.copy()
+    env.update(
+        {
+            "PATH": f"{fake_bin}:{env['PATH']}",
+            "RUN_ROOT": str(tmp_path),
+            "BATCH_ROOT": str(batch),
+            "MANIFEST": str(manifest),
+            "RF2_BIN": str(rf2),
+            "GPU_IDS": "1,2",
+            "SEEDS": "42",
+            "MAX_LOAD1": "99999",
+            "MAX_GPU_USED_MB": "12000",
+            "GPU_WAIT_SECONDS": "0",
+            "LOAD_WAIT_SECONDS": "0",
+        }
+    )
+    result = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "run_rf2_multigpu.sh")],
+        env=env,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert "launched seed_42/gpu_1" in result.stdout
+    assert "RF2_WAITING_LANES seed=42 gpus=2" in result.stdout
+    assert "launched seed_42/gpu_2" in result.stdout
+    assert "launched_shards=2" in result.stdout
 
 
 if __name__ == "__main__":
