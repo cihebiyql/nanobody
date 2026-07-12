@@ -1,0 +1,17 @@
+{
+  "complete_excluded": 63,
+  "eligible_unique": 163,
+  "gpu_assignment": [
+    1,
+    1,
+    7,
+    7
+  ],
+  "per_worker_rows": [
+    41,
+    41,
+    41,
+    40
+  ],
+  "running_excluded": 14
+}

@@ -1,0 +1,46 @@
+{
+  "active_old_script_tasks_to_drain": [
+    "PLDNANO_VHH_00371__A_CENTER__H3",
+    "PLDNANO_VHH_00481__C_CROSS__H1H3",
+    "PLDNANO_VHH_00481__C_CROSS__H3",
+    "PLDNANO_VHH_00599__A_CENTER__H1H3",
+    "PLDNANO_VHH_00599__A_CENTER__H3",
+    "PLDNANO_VHH_00599__B_LOWER__H1H3",
+    "PLDNANO_VHH_00599__B_LOWER__H3",
+    "PLDNANO_VHH_00599__C_CROSS__H1H3",
+    "PLDNANO_VHH_00599__C_CROSS__H3",
+    "PLDNANO_VHH_00863__A_CENTER__H1H3",
+    "PLDNANO_VHH_00863__A_CENTER__H3",
+    "PLDNANO_VHH_00863__B_LOWER__H1H3",
+    "PLDNANO_VHH_00863__B_LOWER__H3",
+    "PLDNANO_VHH_00863__C_CROSS__H1H3",
+    "PLDNANO_VHH_00863__C_CROSS__H3",
+    "PLDNANO_VHH_00866__A_CENTER__H1H3",
+    "PLDNANO_VHH_00866__A_CENTER__H3",
+    "PLDNANO_VHH_00866__B_LOWER__H1H3",
+    "PLDNANO_VHH_00866__B_LOWER__H3",
+    "PLDNANO_VHH_00866__C_CROSS__H1H3",
+    "PLDNANO_VHH_00866__C_CROSS__H3"
+  ],
+  "complete_before_recovery": 35,
+  "coverage_unique_rows": 205,
+  "failed_status_to_recover": [
+    "PLDNANO_VHH_00464__C_CROSS__H1H3",
+    "PLDNANO_VHH_00464__C_CROSS__H3",
+    "PLDNANO_VHH_00756__A_CENTER__H1H3",
+    "PLDNANO_VHH_00756__A_CENTER__H3",
+    "PLDNANO_VHH_00756__B_LOWER__H1H3",
+    "PLDNANO_VHH_00756__B_LOWER__H3",
+    "PLDNANO_VHH_00756__C_CROSS__H3"
+  ],
+  "per_worker_rows": [
+    30,
+    30,
+    29,
+    29,
+    29,
+    29,
+    29
+  ],
+  "remaining_after_priority_groups": 177
+}
