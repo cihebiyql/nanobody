@@ -4,7 +4,9 @@
 
 ## 总体状态
 
-`RUNNING_RF2_10RECYCLE_BLIND_RECOVERY`
+`COMPLETE_DIAGNOSTIC_NO_STRICT_RF2_RECOVERY`
+
+正式结构高置信通道的结论是 **no-go for current batch**：RF2 严格姿势恢复为 `0/78`。为了区分“RF2 无法恢复”与“约束下也无法形成 blocker-like 几何”，已额外完成 30 条诊断性 NanoBodyBuilder2 + HADDOCK3 和 8X6B/9E6Y 双基线后处理。
 
 ## 阶段
 
@@ -12,36 +14,65 @@
 |---|---|---|
 | RFantibody 1,000 条交付核验 | complete | 1,000 exact-unique；A/B/C/D 各 250 |
 | canonical QC 输入 | complete | 1,000 个稳定 candidate_id；FASTA/TSV 一一对应 |
-| FR4 末端修复 | complete | 官方 h-NbBCII10 PDB 少 1 个末端 Ser；1,000/1,000 显式映射为完整 `WGQGTLVTVSS` |
-| 1,000 条 sequence QC | full evidence complete | 1,000/1,000 fast hard-pass；300/300 full 无 hard-fail；冗余全局 MUSCLE diversity 尾段主动停止 |
+| FR4 末端修复 | complete | 1,000/1,000 显式补回合成序列末端 Ser；原始 pose PDB 不变 |
+| 1,000 条 sequence QC | evidence complete | 1,000/1,000 fast hard-pass；300/300 full 无 hard-fail |
 | 200-backbone 原始 pose 审计 | preliminary complete | 8X6B 单基线；52 个 backbone 通过三项 occlusion |
-| pose-primary 定向 full QC | complete | 78/78 无 hard-fail；39 个 backbone；共同 scaffold 警报为 `not_vhh_like;hydrophobic_run` |
-| RF2 pose-recovery | running | 78 条，GPU 1/2/3/4/6/7 各 13 条；10 recycles、`hotspot_show_prop=0`、seed 42 |
-| NanoBodyBuilder2/HADDOCK3 | queued | RF2 通过者中按 backbone 多样性选择 Top 50；4 shard、可恢复 |
-| 8X6B/9E6Y consensus | pending | 只有双基线 A/A 可进入最高计算优先级 |
+| pose-primary 定向 full QC | complete | 78/78 无 hard-fail；39 个 backbone；均为 `REVIEW_DEVELOPABILITY` |
+| RF2 blind pose-recovery | complete, strict fail | 78/78 输出完整；0 个 strict recovered；68 low-interaction-confidence + 10 pose-not-recovered |
+| 诊断 fallback 选择 | complete | 30 条、30 个不同 backbone；A/B/C/D = 10/4/7/9 |
+| NanoBodyBuilder2 | complete | 30/30 原始 PDB、序列完全匹配和主链几何 QC 通过 |
+| HADDOCK3 guided docking | complete | 30/30 成功；260 个 selected models；30/30 `rc=0` |
+| 8X6B/9E6Y consensus | complete | 30/30 后处理完成；5 个候选各有 1 个 A/A 模型；无候选有 >=2 个 A/A |
+| 最终计算标签 | complete | 30/30 `FINAL_DIAGNOSTIC_ONLY_RF2_NOT_RECOVERED`；`FINAL_POSITIVE_HIGH=0` |
 
-## 关键限制
-
-- 不对 1,000 条全量运行结构预测或 docking。
-- 不把 sequence-only、RF2 confidence 或 HADDOCK score 单独升级为 blocker 阳性。
-- 原始生成目录只读，所有增强结果写入本目录和对应远端新目录。
-- RFantibody pose PDB 保持原始末端长度；补回的 Ser 仅用于 QC、合成序列和 de novo 单体建模。
-- HADDOCK 使用完整界面 hotspot 的 CDR 引导约束，因此是 confirmatory pose generator；最终必须单独报告该确认偏差。
-
-## 当前计数
+## 关键数据
 
 ```text
-raw sequence-pose records:       1600
-final exact-unique sequences:    1000
-audited RFdiffusion backbones:    200
-pose-pass backbones:               52
-pose-pass backbones in final1000:  39
-RF2 primary candidates:            78
-RF2 sequence-QC hard failures:       0
-RF2 running shards:                  6
+raw sequence-pose records:               1600
+final exact-unique sequences:            1000
+audited RFdiffusion backbones:            200
+pose-pass backbones:                       52
+pose-pass backbones in final1000:          39
+RF2 primary candidates:                    78
+strict RF2 pose-recovered:                  0
+diagnostic docking candidates:             30
+NanoBodyBuilder2 exact/sane:             30/30
+HADDOCK3 candidate success:              30/30
+HADDOCK3 selected models:                  260
+dual-baseline A/A models:                    5
+candidates with >=2 A/A models:              0
+final positive high:                         0
 ```
 
-另一个远端任务 `/data/qlyu/projects/pvrig_teacher_v1_20260712/pilot96` 是独立的 96 条 teacher-pilot；与本批 78 条仅有 14 条 key 重叠，不作为本流程完成证据。
+## 结果口径
+
+- RF2 的 `0/78` 是“严格姿势未恢复”，不是实验不结合证明。
+- HADDOCK 使用每个 CDR 残基到 8X6B 完整 23 位界面集合的歧义约束，属于 confirmatory guided docking。
+- `500/100` 遮挡阈值的单位是 VHH-PVRL2 近接残基对计数，不是埋藏面积 `A^2`。
+- 9E6Y 只在后处理时作为第二 PVRIG-PVRL2 叠合基线；本轮未独立对 9E6Y PVRIG 构象重新 docking。
+- 所有标签均为计算优先级，不是 binder、Kd、competition 或 cell-blockade 证据。
+
+## 主要输出
+
+```text
+RF2 metrics:
+  rf2/results/rf2_metrics.tsv
+  rf2/results/rf2_parse_summary.json
+
+diagnostic docking input:
+  rf2/results/rf2_diagnostic_docking_top.tsv
+  rf2/results/rf2_diagnostic_docking_summary.json
+
+docking evidence:
+  docking/remote_selected/
+  docking/postprocessed/
+  manifests/docking_postprocess_audit.json
+
+final results:
+  reports/final/final_blocker_screen.tsv
+  reports/final/final_blocker_summary.json
+  reports/PVRIG_RFANTIBODY_VALIDATION_FINAL_ZH.md
+```
 
 ## 路径
 
