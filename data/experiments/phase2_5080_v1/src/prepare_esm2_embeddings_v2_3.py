@@ -115,6 +115,7 @@ def collect_unique_sequences(
     contact_maps: Path = DEFAULT_CONTACT_MAPS,
     inference_candidates: Path | None = None,
     target_fasta: Path | None = None,
+    generic_binding_csv: Path | None = None,
 ) -> list[SequenceRecord]:
     records: dict[str, SequenceRecord] = {}
     for path in (site_manifest, pair_manifest):
@@ -159,6 +160,14 @@ def collect_unique_sequences(
             if line.strip() and not line.startswith(">")
         )
         add_sequence(records, sequence, "antigen")
+    if generic_binding_csv is not None and generic_binding_csv.exists():
+        columns = {"vhh_sequence", "target_sequence"}
+        for row in pd.read_csv(
+            generic_binding_csv,
+            usecols=lambda name: name in columns,
+        ).to_dict("records"):
+            add_sequence(records, row.get("vhh_sequence"), "vhh")
+            add_sequence(records, row.get("target_sequence"), "antigen")
 
     return sorted(records.values(), key=lambda item: (item.chain_type, item.sequence_sha256))
 
@@ -361,6 +370,7 @@ def build_cache(
     shard_size: int,
     max_residues: int,
     device_name: str,
+    generic_binding_csv: Path | None = None,
 ) -> dict[str, int | str]:
     if device_name == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA was requested but is not available")
@@ -374,6 +384,7 @@ def build_cache(
         contact_maps,
         inference_candidates,
         target_fasta,
+        generic_binding_csv,
     )
     all_records = apply_prefix_length_policy(source_records, max_residues)
     truncated_count = sum(record.source_length > len(record.sequence) for record in all_records)
@@ -436,6 +447,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contact-maps", type=Path, default=DEFAULT_CONTACT_MAPS)
     parser.add_argument("--inference-candidates", type=Path, default=DEFAULT_INFERENCE_CANDIDATES)
     parser.add_argument("--target-fasta", type=Path, default=DEFAULT_TARGET_FASTA)
+    parser.add_argument(
+        "--generic-binding-csv",
+        type=Path,
+        help="Optional real-label binding CSV with vhh_sequence and target_sequence columns.",
+    )
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument(
         "--attention-budget",
@@ -470,6 +486,7 @@ def main() -> None:
         shard_size=args.shard_size,
         max_residues=args.max_residues,
         device_name=args.device,
+        generic_binding_csv=args.generic_binding_csv,
     )
     print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
 

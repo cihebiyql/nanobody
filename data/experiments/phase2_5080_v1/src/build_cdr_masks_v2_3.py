@@ -304,6 +304,7 @@ def collect_manifest_sequences(
     pair_manifest: Path,
     contact_manifest: Path,
     inference_candidates: Path | None = None,
+    generic_binding_csv: Path | None = None,
 ) -> dict[str, set[str]]:
     sources: dict[str, set[str]] = defaultdict(set)
     for seq in iter_csv_sequences(site_manifest):
@@ -315,6 +316,9 @@ def collect_manifest_sequences(
     if inference_candidates is not None:
         for seq in iter_csv_sequences(inference_candidates):
             sources[seq].add("pvrig_inference")
+    if generic_binding_csv is not None:
+        for seq in iter_csv_sequences(generic_binding_csv, field="vhh_sequence"):
+            sources[seq].add("generic_real_binding")
     return sources
 
 
@@ -363,8 +367,22 @@ def write_manifest(rows: list[dict[str, str]], output: Path) -> None:
         writer.writerows(rows)
 
 
-def build_manifest(site_manifest: Path, pair_manifest: Path, contact_manifest: Path, index: Path, candidates: Path, output: Path) -> dict[str, int]:
-    manifest_sources = collect_manifest_sequences(site_manifest, pair_manifest, contact_manifest, candidates)
+def build_manifest(
+    site_manifest: Path,
+    pair_manifest: Path,
+    contact_manifest: Path,
+    index: Path,
+    candidates: Path,
+    output: Path,
+    generic_binding_csv: Path | None = None,
+) -> dict[str, int]:
+    manifest_sources = collect_manifest_sequences(
+        site_manifest,
+        pair_manifest,
+        contact_manifest,
+        candidates,
+        generic_binding_csv,
+    )
     exact = load_exact_annotations(((index, "model_data/index_v0_samples.csv"), (candidates, "reports/mvp_pvrig_top_candidates_v0.csv")))
     rows = [build_row(seq, manifest_sources[seq], exact) for seq in sorted(manifest_sources, key=sequence_hash)]
     write_manifest(rows, output)
@@ -382,8 +400,21 @@ def main() -> int:
     parser.add_argument("--index", type=Path, default=DEFAULT_INDEX)
     parser.add_argument("--candidates", type=Path, default=DEFAULT_CANDIDATES)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--generic-binding-csv",
+        type=Path,
+        help="Optional real-label binding CSV with a vhh_sequence column.",
+    )
     args = parser.parse_args()
-    counts = build_manifest(args.site_manifest, args.pair_manifest, args.contact_manifest, args.index, args.candidates, args.output)
+    counts = build_manifest(
+        args.site_manifest,
+        args.pair_manifest,
+        args.contact_manifest,
+        args.index,
+        args.candidates,
+        args.output,
+        args.generic_binding_csv,
+    )
     print(json.dumps({"output": str(args.output), **counts}, sort_keys=True))
     return 0
 
