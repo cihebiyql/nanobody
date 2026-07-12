@@ -138,7 +138,7 @@ def pvrig_pdb_to_model_index(reconciliation_csv: Path, target_sequence: str) -> 
         model_index = uniprot_position - 39
         if not 0 <= model_index < len(target_sequence):
             continue
-        if target_sequence[model_index] != row["pdb_aa"]:
+        if target_sequence[model_index] != row["pdb_aa"] and "SEQADV" not in row.get("note", ""):
             raise ValueError(f"8X6B/target residue mismatch at UniProt {uniprot_position}")
         mapping[("B", int(row["pdb_resseq"]), row["pdb_icode"].strip())] = model_index
     if not mapping:
