@@ -1,0 +1,18 @@
+{
+  "claim_boundary": "computational_docking_teacher_proxy_not_binding_or_blocker_proof",
+  "controller": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_package/run_pilot96_controller.sh",
+  "haddock_configs": 96,
+  "package_hash_manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_package/package_sha256.tsv",
+  "records": 96,
+  "remote_root": "/data/qlyu/projects/pvrig_teacher_v1_20260712/pilot96",
+  "schema_version": "pvrig_teacher_pilot96_node1_package_v1",
+  "selection_manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_teacher_pilot96/pvrig_teacher_pilot96_manifest.tsv",
+  "selection_sha256": "f9a929fe55a0710e611574fa1b5459fd389a03ba5a71ce85a0e982269dda5c49",
+  "shard_counts": {
+    "shard_0": 24,
+    "shard_1": 24,
+    "shard_2": 24,
+    "shard_3": 24
+  },
+  "status": "PASS"
+}
