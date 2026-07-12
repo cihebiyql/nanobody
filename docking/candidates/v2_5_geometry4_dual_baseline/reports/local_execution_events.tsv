@@ -1,0 +1,37 @@
+2026-07-11T22:44:21+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpk0f153js/handoff.json
+2026-07-11T22:44:21+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpk0f153js/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_224421.log
+2026-07-11T22:44:42+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpdhc9ilss/handoff.json
+2026-07-11T22:44:42+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpdhc9ilss/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_224442.log
+2026-07-11T22:46:52+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpfpvpavvz/handoff.json
+2026-07-11T22:46:52+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpfpvpavvz/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_224652.log
+2026-07-11T22:48:38+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmp199vmqfw/handoff.json
+2026-07-11T22:48:38+08:00	HADDOCK_START	zym_test_359954	/tmp/tmp199vmqfw/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_224838.log
+2026-07-11T22:49:07+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpox5ddiwk/handoff.json
+2026-07-11T22:49:07+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpox5ddiwk/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_224907.log
+2026-07-11T22:49:24+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpz7a1egde/handoff.json
+2026-07-11T22:49:24+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpz7a1egde/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_224924.log
+2026-07-11T22:51:21+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpindb93x0/handoff.json
+2026-07-11T22:51:21+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpindb93x0/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_225121.log
+2026-07-11T22:53:03+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpa8dyg7fp/handoff.json
+2026-07-11T22:53:03+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpa8dyg7fp/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_225303.log
+2026-07-11T22:54:52+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpjfp585g2/handoff.json
+2026-07-11T22:54:52+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpjfp585g2/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_225452.log
+2026-07-11T22:55:48+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmp0f_aa1fy/handoff.json
+2026-07-11T22:55:48+08:00	HADDOCK_START	zym_test_359954	/tmp/tmp0f_aa1fy/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_225548.log
+2026-07-11T22:56:28+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpa2ye0ir3/handoff.json
+2026-07-11T22:56:28+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpa2ye0ir3/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_225628.log
+2026-07-11T22:59:48+08:00	REMOTE_OWNERSHIP_CLAIMED	-	host=node1 nonce=92748282a2c2f1d139fb52d82e869b50a33236679f400c50054924581c33e781
+2026-07-11T22:59:51+08:00	REMOTE_OWNERSHIP_VERIFIED	-	host=node1 nonce=92748282a2c2f1d139fb52d82e869b50a33236679f400c50054924581c33e781
+2026-07-11T23:01:01+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpkm_y48g6/handoff.json
+2026-07-11T23:01:01+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpkm_y48g6/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_230101.log
+2026-07-11T23:01:05+08:00	REMOTE_OWNERSHIP_VERIFIED	-	host=node1 nonce=92748282a2c2f1d139fb52d82e869b50a33236679f400c50054924581c33e781
+2026-07-11T23:01:05+08:00	LOCAL_RUNNER_START	-	handoff=/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/local_execution_handoff.json
+2026-07-11T23:01:05+08:00	HADDOCK_START	zym_test_359954	/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_230105.log
+2026-07-11T23:02:42+08:00	HADDOCK_COMPLETE	zym_test_359954	/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_359954/run_zym_test_359954_pvrig_hotspot
+2026-07-11T23:02:42+08:00	HADDOCK_START	zym_test_3633872	/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_3633872/logs/zym_test_3633872_haddock3_geometry4_local_20260711_230242.log
+2026-07-11T23:04:17+08:00	HADDOCK_COMPLETE	zym_test_3633872	/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_3633872/run_zym_test_3633872_pvrig_hotspot
+2026-07-11T23:04:17+08:00	HADDOCK_START	zym_test_8787	/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_8787/logs/zym_test_8787_haddock3_geometry4_local_20260711_230417.log
+2026-07-11T23:05:51+08:00	HADDOCK_COMPLETE	zym_test_8787	/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_8787/run_zym_test_8787_pvrig_hotspot
+2026-07-11T23:05:51+08:00	LOCAL_RUNNER_COMPLETE	-	all_candidates_complete
+2026-07-11T23:11:41+08:00	LOCAL_RUNNER_START	-	handoff=/tmp/tmpb64acmfv/handoff.json
+2026-07-11T23:11:41+08:00	HADDOCK_START	zym_test_359954	/tmp/tmpb64acmfv/haddock3/zym_test_359954/logs/zym_test_359954_haddock3_geometry4_local_20260711_231141.log

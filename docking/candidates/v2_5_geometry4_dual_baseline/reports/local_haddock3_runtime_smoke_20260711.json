@@ -1,0 +1,87 @@
+{
+  "candidate_workflow_smoke": {
+    "consensus": "/root/.local/share/pvrig-v25/smoke/geometry4_20260711_223635/run_geometry4_smoke/traceback/consensus.tsv",
+    "consensus_rows": 4,
+    "consensus_sha256": "ae63dd5d9e38c33273dba28a406ae69ec8b3761c00f5f7ad63cebb67e59a85fe",
+    "elapsed_seconds": 67,
+    "isolated_workdir": "/root/.local/share/pvrig-v25/smoke/geometry4_20260711_223635",
+    "modules": [
+      "topoaa",
+      "rigidbody",
+      "seletop",
+      "flexref",
+      "emref",
+      "clustfcc",
+      "seletopclusts"
+    ],
+    "production_directories_modified": false,
+    "result": "PASS_FULL_MODULES_CONSENSUS_AND_TOP_POSES",
+    "smoke_overrides": {
+      "ncores": 2,
+      "rigidbody_sampling": 4,
+      "seletop_select": 4,
+      "top_models": 1
+    },
+    "source_candidate": "zym_test_359954",
+    "top_pose_count": 4,
+    "top_pose_sha256": {
+      "cluster_1_model_1.pdb.gz": "899b4ad4d66e202267d5a5368b299c85de777aea3bd630f197dbdd3012477689",
+      "cluster_2_model_1.pdb.gz": "5283ad8b122544399b832f200c1492c4f00f9ec4f6bbcf5acea7e72651c9a01a",
+      "cluster_3_model_1.pdb.gz": "7740e12b1447b913f4480443d08c3bd376c75ee8ea751d2f62d612d212fdec5a",
+      "cluster_4_model_1.pdb.gz": "bcb77c2efdd7c5368a7a1b67a2e64b7905a8b1dc64763f59dc091348331c6623"
+    }
+  },
+  "claim_boundary": "runtime_and_computational_workflow_readiness_not_experimental_binding_or_blocking_truth",
+  "cns": {
+    "architecture": "x86_64-linux-static",
+    "binary": "/root/.local/share/pvrig-v25/haddock3-2025.11.0/lib/python3.11/site-packages/haddock/cns/bin/x86_64-linux.bin",
+    "binary_sha256": "ce6b0c6b9d38e09991fb15431402e92cb38c723544b2dcca7a8dc28b66643927",
+    "explicit_stop_smoke": "PASS_EXIT_0_PROGRAM_STOPPED",
+    "note": "CNS requires the explicit stop command; EOF is not the supported startup smoke contract."
+  },
+  "generated_at": "2026-07-11T22:51:05+08:00",
+  "installation": {
+    "haddock_version": "2025.11.0",
+    "method": "isolated_uv_venv_from_exact_pypi_sdist",
+    "pip_check": "PASS_NO_BROKEN_REQUIREMENTS",
+    "pip_freeze": [
+      "PyYAML==6.0.3",
+      "biopython==1.87",
+      "freesasa==2.2.1",
+      "haddock3 @ file:///tmp/pvrig_haddock_dist_inspect/haddock3-2025.11.0.tar.gz",
+      "jsonpickle==4.1.2",
+      "narwhals==2.23.0",
+      "numpy==2.4.6",
+      "packaging==26.2",
+      "pandas==2.3.3",
+      "pdb-tools==2.7.0",
+      "plotly==6.4.0",
+      "prodigy-lig==1.1.4",
+      "prodigy-prot==2.3.0",
+      "python-dateutil==2.9.0.post0",
+      "pytz==2026.2",
+      "scipy==1.17.1",
+      "six==1.17.0",
+      "toml==0.10.2",
+      "tzdata==2026.3"
+    ],
+    "project_dependency_changed": false,
+    "python_version": "3.11.15",
+    "runtime_root": "/root/.local/share/pvrig-v25/haddock3-2025.11.0",
+    "sdist": "/tmp/pvrig_haddock_dist_inspect/haddock3-2025.11.0.tar.gz",
+    "sdist_sha256": "f03105bdd2d9e3dc8a1194aa786f338dd5b6f4a0c194b82fdac58e3f3053a2af"
+  },
+  "production_gate": {
+    "launcher_plan": "PASS_READY_FOR_REMOTE_HANDOFF",
+    "local_launcher": "docking/candidates/v2_5_geometry4_dual_baseline/scripts/run_pending_haddock3_local.py",
+    "pending_local_run_directories": {
+      "zym_test_359954": "ABSENT",
+      "zym_test_3633872": "ABSENT",
+      "zym_test_8787": "ABSENT"
+    },
+    "remote_waiter_untouched_during_smoke": true,
+    "required_before_execute": "live SSH claim, frozen waiter recheck, stopped session, remote owner nonce, all remote runs absent"
+  },
+  "schema_version": "pvrig_v2_5_local_haddock3_runtime_smoke_v1",
+  "status": "PASS_READY_FOR_REMOTE_HANDOFF"
+}

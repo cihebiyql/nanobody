@@ -23,7 +23,7 @@ Final audit: `data/experiments/phase2_5080_v1/audits/PHASE2_V2_5_FINAL_AUDIT_V1.
 | One-shot generic formal | LIMITED | `data/experiments/phase2_5080_v1/reports/PHASE2_V2_5_STRICT_EVALUATION_V1.md` | Mean delta +0.136508, paired CI [-0.017460, 0.290476], permutation p=0.301940; 3/3 positive seeds but strict CI/permutation gates fail. |
 | Formal label identity | PASS with future schema requirement | `data/experiments/phase2_5080_v1/audits/phase2_v2_5_formal_label_binding_audit_v1.json` | 29/29 labels independently rebuilt from raw NanoBind and pair-bound; V2.6 must put sequence/target hashes or a row digest in sealed labels before unseal. |
 | Node1 structure lane | PASS / coverage-limited | `data/experiments/phase2_5080_v1/audits/phase2_v2_5_pose_coverage_audit.json`, `docking/candidates/v2_5_pose_batch/` | 8/8 new NBB2 monomers pass sequence and geometry QC; exact complex coverage remains 2/50 (4%); HADDOCK3 load gate refused load1 106.98 > 64. |
-| Model-to-cascade funnel | OPERATIONAL / 1 DUAL-BASELINE HIGH / 3 DOCKING QUEUED BEHIND LOAD GATE | `data/docs/phase2_5080_training/PVRIG_MODEL_TO_CASCADE_SCREENING_FUNNEL.md`, `data/experiments/phase2_5080_v1/audits/PVRIG_V2_5_SCREENING_FUNNEL_AUDIT_20260711.md` | Model score is a relative front-screen priority only. The blinded run completed 24 -> 4 -> 4 in 132 seconds; finalize imported one A/A geometry row as computational `FINAL_POSITIVE_HIGH`, while a bounded Node1 waiter holds the other three until `load1 < 64`. |
+| Model-to-cascade funnel | COMPLETE / 4 DUAL-BASELINE IMPORTS / 2 COMPUTATIONAL HIGH | `data/docs/phase2_5080_training/PVRIG_MODEL_TO_CASCADE_SCREENING_FUNNEL.md`, `data/experiments/phase2_5080_v1/audits/PVRIG_V2_5_SCREENING_FUNNEL_AUDIT_20260711.md` | Model score remains a relative front-screen priority only. The blinded run completed 24 -> 4 -> 4 in 132 seconds; a guarded local HADDOCK3 failover completed the three missing runs, and finalize now reports 2 `FINAL_POSITIVE_HIGH`, 1 `FINAL_RECHECK_SINGLE_BASELINE`, and 1 `FINAL_POSITIVE_PLAUSIBLE`. |
 | Prospective assay design | PANEL FROZEN / MEASUREMENTS PENDING | `data/experiments/phase2_5080_v1/data_splits/pvrig_v2_5_prospective_assay_panel.csv` | 24 pairs across 8 groups; all proposed negatives remain unmeasured, not verified. |
 | Assay execution and intake | READY FOR LAB PREREGISTRATION | `data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/` | 24 blinded IDs, 3 randomized day blocks, 72 sample-run slots, 10 manifest artifacts, mandatory functional concentration/viability gates, raw-data SHA gates, and 0 current E6 review rows. |
 
@@ -64,43 +64,46 @@ probability. Node1 `vhh-large-scale-screen` then performs strict sequence QC,
 positive-CDR novelty checks, full shortlist validation, bounded exact
 diversity, and geometry-queue ranking. The first blinded integration run took
 132 seconds for 24 inputs and selected four geometry candidates. Dual-baseline
-finalize now imports one complete A/A row and leaves three rows missing docking.
+finalize now imports all four rows with complete sequence provenance and all
+four conservative geometry metrics.
 
 For `zym_test_108006`, HADDOCK rank-1 pose `cluster_1_model_1` is
 `BLOCKER_LIKE_A` against both the 8X6B and 9E6Y reference interfaces. The
 candidate-level call is `CONSENSUS_BLOCKER_LIKE_A`, with conservative metrics
 15 hotspot overlaps, 610 total PVRL2 occlusion pairs, 106 CDR3 occlusion pairs,
-and a 0.17377 CDR3 fraction. Its blinded ID `PV25-25F7D6778F87` is therefore
-the sole computational `FINAL_POSITIVE_HIGH`. This is not experimental binder
-or blocker truth. The other three geometry candidates have monomer/QC/8X6B
-preparation assets, but their docking jobs remain governed by the fixed Node1
-load gate.
+and a 0.17377 CDR3 fraction. Its blinded ID `PV25-25F7D6778F87` remains a
+computational `FINAL_POSITIVE_HIGH`, but is now ranked second after completion
+of all four candidates. This is not experimental binder or blocker truth.
 
-The final Node1 preflight at 2026-07-11 17:14:51 +08:00 returned exit 20 at
-load1 `101.38`; a follow-up check at 17:15:11 reported load1 `100.92`, still
-above the fixed launch threshold 64. No new HADDOCK3 job was
-forced despite idle-looking individual GPUs; the host load gate remains the
-authoritative admission control.
+Node1 remained near load1 120-130, so the fixed remote gate was not weakened.
+Instead, an isolated local HADDOCK3 2025.11.0 runtime passed package, CNS `stop`,
+and full-module candidate smoke tests. A reviewed takeover protocol acquired an
+ownership lock, froze and rechecked the remote waiter, stopped it with all three
+remote run directories absent, wrote a nonce-bound local-owner sentinel, and
+then ran the three production configs sequentially. They completed in 96, 94,
+and 93 seconds and produced 10, 9, and 8 non-empty top poses respectively.
 
-At 2026-07-11 17:42:09 +08:00, a guarded Node1 waiter was deployed on an
-independent tmux socket. It uses `flock`, polls every 60 seconds, expires after
-24 hours, and rechecks the strict gate before each candidate. Its initial state
-was `WAITING_FOR_LOAD` at load1 96.97. After a controlled timeout-order
-hardening restart, the 17:49:21 status remained `WAITING_FOR_LOAD` at load1
-103.44, so no docking run was started.
+Final dual-baseline ranking is: `PV25-0B63D218E0F3` high rank 1,
+`PV25-25F7D6778F87` high rank 2, `PV25-8E96BF37FD37` single-baseline recheck
+rank 3, and `PV25-EF3F71502C71` plausible rank 4. The remote and local canonical
+cascade artifacts are SHA256-identical, and the immutable local snapshot is
+`geometry4_complete_finalize_20260711_230812`.
 
 The 24-sample panel remains frozen even when a candidate fails the cascade.
 That disagreement is prospective evidence, not a reason to manufacture a
-negative label. The next gates are dual-baseline geometry, lab-specific
-preregistration freeze, and physical expression/binding/competition/functional
+negative label. The next gates are lab-specific preregistration freeze and
+physical expression/binding/competition/functional
 measurements. Any resulting E6 rows remain review-only until a new V2.6
 registry, split, seal, readiness audit, and formal protocol exist.
 
 The Phase 2 codebase currently passes 160/160 unit tests; the geometry-4 package
-passes 13/13 tests, and both existing success-case regression scripts pass.
+passes 41/41 tests, and both existing success-case regression scripts pass.
 Coverage includes functional `INCONCLUSIVE` evidence gates, strict rejection of
 stale recheck labels in per-baseline inputs, VHH input-PDB sequence provenance,
-and complete two-baseline finalize filtering.
+complete two-baseline finalize filtering, and executable guarded-waiter failure
+scenarios. The existing lightweight sync allowlist selects the new source and
+test files without modifying the catch-all `.gitignore`; final follow-up review
+reports 0 remaining findings and APPROVE.
 
 ## Previous Phase 2 Model Update - 2026-07-11 (V2.4)
 

@@ -55,6 +55,27 @@ if [[ "$MODE" == "--status" ]]; then
   exit 0
 fi
 
+python3 - "$MAX_LOAD1" "$POLL_SECONDS" "$MAX_WAIT_SECONDS" <<'PY'
+import math
+import re
+import sys
+
+try:
+    threshold = float(sys.argv[1])
+except ValueError as exc:
+    raise SystemExit("GEOMETRY4_MAX_LOAD1 must be numeric") from exc
+if not math.isfinite(threshold) or threshold <= 0 or threshold > 64:
+    raise SystemExit("GEOMETRY4_MAX_LOAD1 must be in (0, 64]")
+if not re.fullmatch(r"[1-9][0-9]*", sys.argv[2]) or not re.fullmatch(r"[1-9][0-9]*", sys.argv[3]):
+    raise SystemExit("GEOMETRY4_POLL_SECONDS and GEOMETRY4_MAX_WAIT_SECONDS must be positive base-10 integers")
+poll_seconds = int(sys.argv[2])
+max_wait_seconds = int(sys.argv[3])
+if poll_seconds < 10:
+    raise SystemExit("GEOMETRY4_POLL_SECONDS must be >= 10")
+if max_wait_seconds < poll_seconds:
+    raise SystemExit("GEOMETRY4_MAX_WAIT_SECONDS must be >= GEOMETRY4_POLL_SECONDS")
+PY
+
 test -s "$LOCAL_RUNNER" || { echo "missing local runner: $LOCAL_RUNNER" >&2; exit 3; }
 local_sha=$(sha256sum "$LOCAL_RUNNER" | cut -d ' ' -f1)
 
@@ -83,8 +104,11 @@ fi
 mkdir -p "$root/logs" "$root/geometry4_waiter"
 log="$root/logs/geometry4_guarded_waiter_$(date +%Y%m%d_%H%M%S).log"
 printf '%s\n' "$log" > "$root/geometry4_waiter/latest_log.txt"
+printf -v launch_command \
+  'GEOMETRY4_MAX_LOAD1=%q GEOMETRY4_POLL_SECONDS=%q GEOMETRY4_MAX_WAIT_SECONDS=%q bash %q >> %q 2>&1' \
+  "$max_load1" "$poll_seconds" "$max_wait_seconds" "$runner" "$log"
 tmux -L "$socket" new-session -d -s "$session" \
-  "GEOMETRY4_MAX_LOAD1='$max_load1' GEOMETRY4_POLL_SECONDS='$poll_seconds' GEOMETRY4_MAX_WAIT_SECONDS='$max_wait_seconds' bash '$runner' >> '$log' 2>&1"
+  "$launch_command"
 echo "WAITER_DEPLOYED socket=$socket session=$session log=$log threshold=$max_load1 poll=$poll_seconds max_wait=$max_wait_seconds"
 REMOTE
 

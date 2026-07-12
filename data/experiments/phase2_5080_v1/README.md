@@ -155,10 +155,10 @@ The production responsibility split is now fixed:
 score into the cascade field `binder_score`. This is a within-input rank
 percentile, not a binding or blocker probability. The first blinded integration
 run completed in 132 seconds: 24 inputs -> 4 fast/full survivors -> 4 geometry
-candidates. The later dual-baseline finalize imported one complete A/A summary:
-`PV25-25F7D6778F87` (`zym_test_108006`) is now the sole computational
-`FINAL_POSITIVE_HIGH`, while the other three remain
-`FINAL_INCOMPLETE_NEEDS_DOCKING`.
+candidates. Guarded local HADDOCK3 failover completed the three missing runs,
+and the final dual-baseline import now contains all four candidates: two
+`FINAL_POSITIVE_HIGH`, one `FINAL_RECHECK_SINGLE_BASELINE`, and one
+`FINAL_POSITIVE_PLAUSIBLE`.
 
 The high label is a docking/overlay geometry priority only. It is not measured
 binding, blocking, or functional evidence and is not an ordinary training
@@ -169,10 +169,11 @@ collapse to A, every complete row is bound to the manifest by reconstructing
 chain A from the actual VHH input PDB, and the finalize export requires a RUN
 record with two baselines and all four geometry metrics.
 
-The remaining three geometry candidates are queued behind the unchanged Node1
-`load1 < 64` gate by a bounded tmux waiter. It uses `flock`, a 60-second poll,
-and a 24-hour timeout; its initial 2026-07-11 state was `WAITING_FOR_LOAD`, so
-no high-load HADDOCK3 process was forced.
+Node1 remained above the unchanged `load1 < 64` gate, so no high-load remote
+HADDOCK3 process was forced. An isolated local 2025.11.0 runtime instead passed
+CNS and full-module smoke tests; a dual-lock, freeze/recheck, nonce-bound handoff
+stopped the waiter only after proving all three remote runs absent. The three
+production runs then completed sequentially in 96, 94, and 93 seconds.
 
 The frozen 24-sample assay panel is not pruned by cascade outcomes. Sequence
 rejects, capacity deferrals, missing docking, and computational binder/blocker

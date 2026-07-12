@@ -1,0 +1,21 @@
+{
+  "archive_sha256": "2ca58b9bcccdee9d2db76492db9d7edf8f1087d5309fb50ab0088cbba1736d74",
+  "archive_source": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450/pvrig_v25_geometry4_complete_20260711_230812.tar.gz",
+  "artifact_sha256": {
+    "cascade_state.json": "243aea4d40c3da0f65c9eb1d12799a603277824b09fc40e5eb0ec0eb6dc4badd",
+    "docking_consensus_geometry4_20260711.csv": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+    "final_blocker_screen.tsv": "b5396942ddd74769e4b616f94ce6e8b627af6a0755fb977612bfb39f7ff0a14e",
+    "final_positive_high.fasta": "8dd375c181bc44d9da5eb6e1f4b8141118af26e9a31c292b98b233ea03741e29"
+  },
+  "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+  "created_at": "2026-07-11T23:10:23+08:00",
+  "finalize_csv_sha256": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+  "immutable": true,
+  "label_counts": {
+    "FINAL_POSITIVE_HIGH": 2,
+    "FINAL_POSITIVE_PLAUSIBLE": 1,
+    "FINAL_RECHECK_SINGLE_BASELINE": 1
+  },
+  "schema_version": "pvrig_v2_5_geometry4_complete_finalize_snapshot_v1",
+  "transfer_method": "scp_windows_openssh_tar_archive_after_rsync_pipe_incompatibility"
+}

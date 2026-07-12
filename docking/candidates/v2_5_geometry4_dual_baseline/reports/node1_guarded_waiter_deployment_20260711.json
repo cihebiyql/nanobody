@@ -1,18 +1,47 @@
 {
   "artifact_sha256": {
-    "reports/node1_guarded_waiter_events_20260711.tsv": "35f95eff6a62d9a82003869f769d2a36923a8102ec674e0570d0021711ae1ae4",
-    "reports/node1_guarded_waiter_status_20260711.env": "b01ab4e8107fc79924fd55bf410b2ecb3d6d4367f07506815af8d0ba3082f29e",
-    "scripts/deploy_guarded_haddock3_waiter_node1.sh": "0b16a51d91307e4fa2b253cd2d71fb46706a04210b8b48d95ac2236d16ae841e",
-    "scripts/node1_guarded_haddock3_waiter.sh": "49d4dd938768ef1d8a42d10fb1f04464422083f34a90b32de2fc4e3383a482de"
+    "reports/lightweight_sync_allowlist_check_20260711.txt": "2be70375fd63008156d68b59564747f6f4e7869472f6096abff62c63f4dcbe94",
+    "reports/node1_guarded_waiter_events_20260711.tsv": "74a3392836f5c59a22dccaa9c49d832b5dc96203aeb0b5a477c2cb09ed21f8a1",
+    "reports/node1_guarded_waiter_remote_verification_20260711.txt": "714f87edb8660d552acdfb20bf6167f5e3da54d239e8fd06e49689d1e0341f1d",
+    "reports/node1_guarded_waiter_status_20260711.env": "3ad6406bf3f08c6363b60b5f665cb3e0a00ec1fbdfb1dc464a308bd43bfef433",
+    "reports/test_logs/geometry4_unittest_20260711.log": "3de1c2c4b7bcd75ae3956a8219d900d5ec1c19735f89023d629bf4b390df2a1d",
+    "scripts/deploy_guarded_haddock3_waiter_node1.sh": "e6e741a03af83ebfa22b4241f0c613f450b69b5b5ef19cb760f24c8b55c260df",
+    "scripts/node1_guarded_haddock3_waiter.sh": "1084c07eb9560d2fbe41ed7464e7532d024a5abc4fdb60950831470cc17d2a4c",
+    "scripts/run_pending_haddock3_node1.sh": "6f42d105730b079d155451e0365b6da2ef185b49b236bcf9c186fe785e114965",
+    "tests/test_geometry4_package.py": "a53e0fceb316ff927628fdd7c8d516749d4befa32e8458b51a4e51be81241735",
+    "tests/test_guarded_waiter_behavior.py": "938953fced0c36afd2cbfa9027a731fc8ee4f70b98f4f76aa15593cdd8511ae6"
   },
+  "behavioral_tests": [
+    "low_load_three_candidate_completion",
+    "high_load_timeout_without_start",
+    "signal_interrupted_not_complete",
+    "invalid_and_leading_zero_override_rejection",
+    "candidate_lock_collision",
+    "incomplete_run_refusal",
+    "deploy_rejects_bad_values_before_ssh",
+    "direct_launcher_nan_rejected_before_ssh"
+  ],
   "candidate": "zym_test_359954",
   "claim_boundary": "queued_computational_work_not_completed_docking_or_experimental_evidence",
-  "controlled_restart": "runner was restarted while WAITING_FOR_LOAD with no run directory after moving timeout enforcement before gate acceptance",
-  "current_runner_started_at": "2026-07-11T17:48:21+08:00",
-  "deployment_recovery": "default_tmux_server exited; independent named tmux socket validated and used",
-  "first_deployed_at": "2026-07-11T17:42:09+08:00",
+  "corrected_runner_started_at": "2026-07-11T18:03:11+08:00",
   "haddock_started_at_status_check": false,
-  "load1": 103.44,
+  "idempotent_redeploy_check": "PASS_WAITER_ALREADY_RUNNING_NO_DUPLICATE_SESSION",
+  "initial_deployment_at": "2026-07-11T17:42:09+08:00",
+  "lightweight_sync_allowlist": "SELECTED_ALL_SOURCE_AND_TEST_FILES",
+  "live_hup_validation_at": "2026-07-11T18:02:57+08:00",
+  "live_signal_validation": {
+    "all_run_directories_absent": true,
+    "exit_code": 129,
+    "false_complete": false,
+    "signal": "HUP",
+    "status": "INTERRUPTED"
+  },
+  "load1": 100.65,
+  "lock_status": {
+    "zym_test_359954": "held_by_waiter",
+    "zym_test_3633872": "free",
+    "zym_test_8787": "free"
+  },
   "max_wait_seconds": 86400,
   "pending_candidates": [
     "zym_test_359954",
@@ -20,22 +49,41 @@
     "zym_test_8787"
   ],
   "poll_seconds": 60,
-  "remote_log": "/data/qlyu/projects/pvrig_v2_5_pose_batch/logs/geometry4_guarded_waiter_20260711_174821.log",
+  "remote_log": "/data/qlyu/projects/pvrig_v2_5_pose_batch/logs/geometry4_guarded_waiter_20260711_180311.log",
   "remote_runner": "/data/qlyu/projects/pvrig_v2_5_pose_batch/scripts/node1_guarded_haddock3_waiter.sh",
-  "runner_selftest": "expected timeout exit 31 at high load without starting HADDOCK3",
+  "remote_runner_hash_match": true,
+  "review_findings_fixed": [
+    "signal_cannot_report_false_complete",
+    "poll_and_timeout_are_finite_positive_base10_integers",
+    "deploy_values_validated_before_ssh_and_printf_q_escaped",
+    "per_candidate_lock_shared_with_direct_launcher",
+    "behavioral_tests_replace_string_only_safety_claims",
+    "direct_launcher_rejects_nonfinite_threshold_before_ssh"
+  ],
+  "review_stop_for_fix_at": "2026-07-11T17:54:48+08:00",
+  "run_directory_status": {
+    "zym_test_359954": "NO_RUN_DIR",
+    "zym_test_3633872": "NO_RUN_DIR",
+    "zym_test_8787": "NO_RUN_DIR"
+  },
   "safety_controls": [
-    "flock_single_instance",
+    "global_waiter_flock",
+    "shared_per_candidate_flock",
     "strict_load_gate_before_each_candidate",
+    "explicit_signal_state",
     "timeout_checked_before_gate_acceptance",
+    "finite_positive_base10_integer_time_validation",
+    "deploy_side_validation_and_shell_escaping",
     "24_hour_timeout",
     "refuse_incomplete_existing_run",
     "never_delete_run"
   ],
-  "schema_version": "pvrig_v2_5_geometry4_guarded_waiter_deployment_v1",
+  "schema_version": "pvrig_v2_5_geometry4_guarded_waiter_deployment_v2",
   "session_status": "RUNNING",
   "state": "WAITING_FOR_LOAD",
-  "status_checked_at": "2026-07-11T17:49:21+08:00",
+  "status_checked_at": "2026-07-11T18:17:17+08:00",
   "strict_launch_condition": "load1 < 64",
+  "test_result": "21/21 PASS",
   "tmux_session": "pvrig_v25_geometry4_waiter",
   "tmux_socket": "pvrig_v25_geometry4"
 }

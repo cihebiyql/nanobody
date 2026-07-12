@@ -2,19 +2,19 @@
 
 ## Decision
 
-`ONE_DUAL_BASELINE_COMPUTATIONAL_HIGH_THREE_DOCKING_PENDING_WET_LAB_PENDING`
+`FOUR_DUAL_BASELINE_IMPORTS_TWO_COMPUTATIONAL_HIGH_WET_LAB_PENDING`
 
 The model-to-cascade interface is operational. The V2.4 multi-seed candidate
 score is converted into the cascade-compatible `binder_score`, the 24-sample
 blinded panel completed the new sequence cascade, and the prospective assay
-package was rebuilt under the strengthened preregistration contract. One
-geometry candidate now has complete dual-baseline evidence and has been
-imported through the cascade finalize stage; the other three remain pending.
+package was rebuilt under the strengthened preregistration contract. All four
+geometry candidates now have complete importable evidence and have been
+published through the cascade finalize stage.
 
 No computational result in this audit is a measured binding, blocking, or
 functional label. `FINAL_POSITIVE_HIGH` means only a high-priority A/A
-dual-baseline geometry call. The current stop condition is three remaining
-docking jobs plus all prospective laboratory measurements.
+dual-baseline geometry call. The computational screening stop condition is now
+met; all prospective laboratory measurements remain pending.
 
 Machine-readable evidence:
 `audits/pvrig_v2_5_screening_funnel_audit_20260711.json`.
@@ -58,18 +58,20 @@ Remote run:
 | Full-QC shortlist | 4 |
 | Full hard-pass | 4 |
 | Geometry shortlist | 4 |
-| Docking rows imported after finalize | 1 |
-| `FINAL_POSITIVE_HIGH` after finalize | 1 |
-| `FINAL_INCOMPLETE_NEEDS_DOCKING` after finalize | 3 |
+| Docking rows imported after finalize | 4 |
+| `FINAL_POSITIVE_HIGH` after finalize | 2 |
+| `FINAL_RECHECK_SINGLE_BASELINE` after finalize | 1 |
+| `FINAL_POSITIVE_PLAUSIBLE` after finalize | 1 |
+| Incomplete docking rows after finalize | 0 |
 
 The current candidate-level state after dual-baseline finalize is:
 
 | Blinded ID | Coordinator-only candidate ID | Model rank | Docking evidence | Current final label |
 | --- | --- | ---: | --- | --- |
-| `PV25-EF3F71502C71` | `zym_test_359954` | 1 | Missing | `FINAL_INCOMPLETE_NEEDS_DOCKING` |
-| `PV25-8E96BF37FD37` | `zym_test_3633872` | 4 | Missing | `FINAL_INCOMPLETE_NEEDS_DOCKING` |
-| `PV25-0B63D218E0F3` | `zym_test_8787` | 5 | Missing | `FINAL_INCOMPLETE_NEEDS_DOCKING` |
-| `PV25-25F7D6778F87` | `zym_test_108006` | 6 | Imported A/A | `FINAL_POSITIVE_HIGH` |
+| `PV25-0B63D218E0F3` | `zym_test_8787` | 5 | Imported A/A | `FINAL_POSITIVE_HIGH` (rank 1) |
+| `PV25-25F7D6778F87` | `zym_test_108006` | 6 | Imported A/A | `FINAL_POSITIVE_HIGH` (rank 2) |
+| `PV25-8E96BF37FD37` | `zym_test_3633872` | 4 | Imported single-baseline A | `FINAL_RECHECK_SINGLE_BASELINE` (rank 3) |
+| `PV25-EF3F71502C71` | `zym_test_359954` | 1 | Imported B | `FINAL_POSITIVE_PLAUSIBLE` (rank 4) |
 
 The coordinator-only mapping must not be copied into operator schedules.
 
@@ -85,18 +87,17 @@ setup once, then aligns and scores the same top poses independently against the
 8X6B and 9E6Y PVRIG/PVRL2 references. It does not claim two independent docking
 runs.
 
-For `zym_test_108006`, representative pose `cluster_1_model_1` is HADDOCK rank
-1 and is `BLOCKER_LIKE_A` against both references. The candidate-level class is
-therefore `CONSENSUS_BLOCKER_LIKE_A`. Conservative cross-baseline metrics are:
+Node1 remained above the fixed load gate, so the threshold was not bypassed.
+An isolated local HADDOCK3 2025.11.0 runtime passed CNS and a full-module
+candidate smoke. A reviewed ownership protocol then froze/rechecked the remote
+waiter, proved all remote runs absent, stopped it, and wrote a nonce-bound owner
+sentinel before local execution. The three missing runs completed sequentially
+in 96, 94, and 93 seconds with 10, 9, and 8 non-empty top poses.
 
-- hotspot overlap: 15;
-- total PVRL2 occlusion: 610;
-- CDR3 PVRL2 occlusion: 106;
-- CDR3 occlusion fraction: 0.17377.
-
-The import CSV contains only this complete candidate. Single-baseline A, A/B,
-missing, malformed, or provenance-invalid evidence cannot be upgraded to
-`FINAL_POSITIVE_HIGH`.
+Candidate-level classes are two `CONSENSUS_BLOCKER_LIKE_A`, one
+`SINGLE_BASELINE_BLOCKER_RECHECK`, and one `BLOCKER_PLAUSIBLE_B`. The import CSV
+contains all four complete rows. Single-baseline A, malformed, or provenance-
+invalid evidence still cannot be upgraded to `FINAL_POSITIVE_HIGH`.
 
 ## Prospective Assay Package
 
@@ -120,7 +121,7 @@ real SOP-dependent values and run the freeze command before any measurement.
 ## Verification
 
 - Phase 2 unittest discovery: 160 tests, all passed.
-- Geometry-4 package: 13 tests, all passed; two existing success-case regression
+- Geometry-4 package: 41 tests, all passed; two existing success-case regression
   scripts also passed.
 - Review hardening rejects per-baseline recheck/consensus labels instead of
   collapsing them to A, binds every complete import to the chain-A sequence
@@ -128,36 +129,35 @@ real SOP-dependent values and run the freeze command before any measurement.
   metric completeness before writing the finalize CSV.
 - Independent closure review reports 0 critical/high/medium/low findings and
   APPROVE; the independent artifact verifier reports PASS.
-- Cascade outputs report one docking import, one computational high-priority
-  call, and three candidates still missing docking evidence.
-- Five synchronized finalize artifacts have matching local/remote SHA256
-  values.
+- Guarded-waiter/local-takeover follow-up review reports 0 remaining findings
+  and APPROVE after zero-byte-pose, ownership-lock, freeze/recheck, nonce, and
+  interrupted-state regression coverage.
+- Cascade outputs report four docking imports, two computational high-priority
+  calls, one single-baseline recheck, one plausible call, and zero incomplete rows.
+- The four canonical cascade artifacts have matching local/remote SHA256 values;
+  the finalize CSV hash is
+  `38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8`.
 - No known software error remains in the completed model-to-cascade and assay
   package branch.
-- The final Node1 preflight at 2026-07-11 17:14:51 +08:00 correctly returned
-  exit 20 at load1 `101.38`; a follow-up check at 17:15:11 reported load
-  averages `100.92 / 99.85 / 98.44`. The fixed launch threshold is 64, so no new
-  HADDOCK3 task was started.
-- A bounded guarded waiter was deployed on an independent Node1 tmux socket at
-  17:42:09. It uses `flock`, a 60-second poll, a 24-hour timeout, and the same
-  strict `load1 < 64` rule before each candidate. Initial state was
-  `WAITING_FOR_LOAD` at load1 96.97. After a controlled restart that moved
-  timeout enforcement before gate acceptance, the 17:49:21 status was still
-  `WAITING_FOR_LOAD` at load1 103.44; no docking run had started.
+- The remote waiter was interrupted at 22:59:48 only after a SIGSTOP/recheck
+  proved state `WAITING_FOR_LOAD`, no candidate run directory, and no candidate
+  HADDOCK process. Its final remote state is `INTERRUPTED`; owner remains `local`
+  with `state=COMPLETE_LOCAL`, preventing duplicate remote work.
+- Remote finalize ran in a staged copy with rollback protection. Binary rsync
+  over Windows OpenSSH was rejected after protocol incompatibility; a SHA256-
+  verified SCP tar archive was used instead. The immutable local snapshot is
+  `geometry4_complete_finalize_20260711_230812`.
+- The existing lightweight-sync allowlist selects the waiter/deployer/direct
+  launcher and all geometry tests, including the behavioral suite; the global
+  catch-all `.gitignore` was not changed.
 
 ## Required Next Gates
 
 1. Keep the frozen 24-sample prospective panel intact; sequence/cascade rejects
    are not experimental negatives.
-2. Let the guarded waiter launch the three pending HADDOCK3 jobs only after the
-   Node1 load gate passes; do not bypass the fixed load threshold.
-3. Produce and validate dual-baseline evidence for the three remaining geometry
-   candidates, then rebuild the candidate-level docking summary.
-4. Re-run `vhh-large-scale-screen --stage finalize` with the expanded summary;
-   retain `zym_test_108006` as a computational priority, not experimental truth.
-5. Fill and freeze laboratory-specific preregistration values before the first
+2. Fill and freeze all 13 laboratory-specific preregistration values before the first
    physical measurement.
-6. Execute expression/SEC, binding, competition, and functional assays in the
+3. Execute expression/SEC, binding, competition, and functional assays in the
    preregistered order.
-7. Treat any resulting E6 rows as review-only. Before model training, create a
+4. Treat any resulting E6 rows as review-only. Before model training, create a
    new V2.6 registry, split, seal, readiness audit, and formal protocol.

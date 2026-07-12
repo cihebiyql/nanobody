@@ -1,0 +1,51 @@
+{
+  "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+  "created_at": "2026-07-11T22:59:48+08:00",
+  "execution_owner": "local",
+  "host": "node1",
+  "local_inputs": {
+    "zym_test_359954": {
+      "config_sha256": "7d35df70a2488589b27b5980c17a83184003e07850a3776a43295b51d4acf53a",
+      "receptor_sha256": "b8560ca059ca5f16b85a8e17219864a644089fbdc51d0b4f98cc71e469c56b10",
+      "restraints_sha256": "9eedde51724d848d5b58151c5ccb775b8b92bf91879465f5a81e5aecbcb1a49a",
+      "run_state": "ABSENT",
+      "vhh_sha256": "d7f92cf5a51371d1b6977f1fb3e8912b0de23821570a64f6d6517d0160ad2ace"
+    },
+    "zym_test_3633872": {
+      "config_sha256": "d017da39a95e48e81dcc265537762984327eea24e5c64474f8f24c83f3432e36",
+      "receptor_sha256": "b8560ca059ca5f16b85a8e17219864a644089fbdc51d0b4f98cc71e469c56b10",
+      "restraints_sha256": "9eedde51724d848d5b58151c5ccb775b8b92bf91879465f5a81e5aecbcb1a49a",
+      "run_state": "ABSENT",
+      "vhh_sha256": "43239d2c8fb79a1355a5b989828d7184686a869e7790a72e9be528c8aa569b9b"
+    },
+    "zym_test_8787": {
+      "config_sha256": "69b31247fd0b17faab13aaa2efebcfb9c7c1b0bc5b42a1a48898c3808bc52169",
+      "receptor_sha256": "b8560ca059ca5f16b85a8e17219864a644089fbdc51d0b4f98cc71e469c56b10",
+      "restraints_sha256": "9eedde51724d848d5b58151c5ccb775b8b92bf91879465f5a81e5aecbcb1a49a",
+      "run_state": "ABSENT",
+      "vhh_sha256": "19ca7908e94185bfc5d1749d4f2ded51a94bd8c990dd32a81f23051734f94c29"
+    }
+  },
+  "nonce": "92748282a2c2f1d139fb52d82e869b50a33236679f400c50054924581c33e781",
+  "remote_runs": {
+    "zym_test_359954": "ABSENT",
+    "zym_test_3633872": "ABSENT",
+    "zym_test_8787": "ABSENT"
+  },
+  "remote_waiter": {
+    "owner_file": "/data/qlyu/projects/pvrig_v2_5_pose_batch/geometry4_waiter/execution_owner.env",
+    "session": "pvrig_v25_geometry4_waiter",
+    "session_running": false,
+    "socket": "pvrig_v25_geometry4",
+    "state": "INTERRUPTED",
+    "was_running": true
+  },
+  "runtime": {
+    "cns_bin": "/root/.local/share/pvrig-v25/haddock3-2025.11.0/lib/python3.11/site-packages/haddock/cns/bin/x86_64-linux.bin",
+    "cns_smoke": "PASS_STOP",
+    "haddock_bin": "/root/.local/share/pvrig-v25/haddock3-2025.11.0/bin/haddock3",
+    "haddock_version": "2025.11.0",
+    "rigidbody_cfg": "PASS"
+  },
+  "schema_version": "pvrig_v2_5_geometry4_local_handoff_v1"
+}

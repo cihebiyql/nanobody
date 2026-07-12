@@ -1,0 +1,16 @@
+{
+  "schema_version": "phase2_v3_binding_prior_config_v1",
+  "seeds": [43, 53, 67],
+  "epochs": 20,
+  "batch_size": 1024,
+  "learning_rate": 0.0005,
+  "weight_decay": 0.0001,
+  "latent_dim": 192,
+  "hidden_dim": 256,
+  "dropout": 0.1,
+  "pairwise_loss_weight": 0.25,
+  "early_stopping_patience": 5,
+  "device": "cuda",
+  "variants": ["vhh_only", "esm2_pair", "v3_full"],
+  "primary_formal_block": "external_hTNFa"
+}

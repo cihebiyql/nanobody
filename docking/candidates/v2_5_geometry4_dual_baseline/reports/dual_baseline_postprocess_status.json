@@ -1,28 +1,31 @@
 {
   "audit_csv": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/candidate_level_8x6b_9e6y_audit.csv",
-  "audit_csv_sha256": "78d2202b826a785bd17044b90bad4bc9b3c2afd099ce10cd8fb304f26170e877",
+  "audit_csv_sha256": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
   "candidate_count": 4,
   "candidate_status": [
     {
       "candidate_id": "PV25-EF3F71502C71",
       "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_359954/reports/zym_test_359954_8x6b_9e6y_consensus.csv",
+      "consensus_sha256": "9c9c4ebf4c24416fea57d3cc2a34ebd9e9f4c3595d624bdc1f96eea080823763",
       "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_359954/run_zym_test_359954_pvrig_hotspot",
       "source_candidate_id": "zym_test_359954",
-      "status": "PENDING_HADDOCK3"
+      "status": "REUSED_COMPLETE_CONSENSUS"
     },
     {
       "candidate_id": "PV25-8E96BF37FD37",
       "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_3633872/reports/zym_test_3633872_8x6b_9e6y_consensus.csv",
+      "consensus_sha256": "5e339d9b257df1b317e7ffae7814fdee8643a13533479483f60127fb06d84ec3",
       "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_3633872/run_zym_test_3633872_pvrig_hotspot",
       "source_candidate_id": "zym_test_3633872",
-      "status": "PENDING_HADDOCK3"
+      "status": "REUSED_COMPLETE_CONSENSUS"
     },
     {
       "candidate_id": "PV25-0B63D218E0F3",
       "consensus": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_8787/reports/zym_test_8787_8x6b_9e6y_consensus.csv",
+      "consensus_sha256": "3bce51ca956e4561b8e6e544751a53d86c9f603df51f0c5def3518486f410f84",
       "run_dir": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_pose_batch/remote_sync/haddock3/zym_test_8787/run_zym_test_8787_pvrig_hotspot",
       "source_candidate_id": "zym_test_8787",
-      "status": "PENDING_HADDOCK3"
+      "status": "REUSED_COMPLETE_CONSENSUS"
     },
     {
       "candidate_id": "PV25-25F7D6778F87",
@@ -35,8 +38,8 @@
   ],
   "claim_boundary": "dual_baseline_geometry_priority_not_experimental_binding_or_blocking_truth",
   "finalize_csv": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/cascade_finalize_docking_summary.csv",
-  "finalize_csv_sha256": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
-  "importable_candidate_count": 1,
+  "finalize_csv_sha256": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+  "importable_candidate_count": 4,
   "manifest": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/manifests/geometry4_candidates.tsv",
   "manifest_sha256": "66b25ab9051fc967d1dc6e9ebbf78fcf6f4055d80e4e29592606fc5516f7fe7b",
   "schema_version": "pvrig_v2_5_geometry4_postprocess_status_v1"

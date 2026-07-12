@@ -1,0 +1,58 @@
+{
+  "schema_version": "phase2_v3_test_spec_v1",
+  "required_suites": {
+    "contracts": [
+      "sequence normalization is deterministic and records every trim",
+      "invalid residues and out-of-range VHH lengths are rejected",
+      "stable pair IDs are invariant to row order",
+      "conflicting duplicate labels are dropped and audited"
+    ],
+    "splits_and_seals": [
+      "exact VHH-target pairs cannot cross development and formal",
+      "formal blinded manifests expose no label column",
+      "sealed labels exactly match formal sample IDs",
+      "formal input fingerprints are unchanged by unsealing",
+      "primary external hTNFa VHHs do not overlap development VHH hashes"
+    ],
+    "embeddings": [
+      "hash backend supports deterministic CPU unit tests",
+      "real backend records model and source hashes",
+      "shards resume only when configuration hashes match",
+      "VHHBERT is never applied to antigen-only records",
+      "antigens longer than the encoder limit use deterministic chunk pooling"
+    ],
+    "training": [
+      "all variants consume only declared feature blocks",
+      "weighted BCE and within-target pair loss are finite",
+      "checkpoint selection consults development metrics only",
+      "three seeds produce hash-bound checkpoints",
+      "formal labels are inaccessible in train mode"
+    ],
+    "metrics_and_gate": [
+      "average precision and AUROC match hand-computed fixtures",
+      "strongest baseline is selected on development only",
+      "gate fails when CI crosses zero or p is not below threshold",
+      "gate fails if any seed delta is non-positive",
+      "null and shuffled controls cannot produce a deployable decision",
+      "formal unseal cannot run twice"
+    ],
+    "candidate_scoring": [
+      "candidate ID and sequence hashes are preserved",
+      "known calibration rows are never converted into training positives",
+      "output carries model, data, preregistration, and checkpoint hashes",
+      "claim boundary forbids binding or blocking truth",
+      "node1 handoff is separate from the canonical V2.5 cascade"
+    ],
+    "final_validation": [
+      "all declared artifacts exist and match hashes",
+      "formal decision agrees with preregistered gate",
+      "PVRIG panel cardinality is preserved",
+      "no formal label is present in training artifacts",
+      "project documentation reports both successes and failed gates"
+    ]
+  },
+  "required_commands": [
+    "python -m unittest discover -s experiments/phase2_5080_v1/src -p 'test_phase2_v3*.py'",
+    "python experiments/phase2_5080_v1/src/validate_phase2_v3_final.py"
+  ]
+}

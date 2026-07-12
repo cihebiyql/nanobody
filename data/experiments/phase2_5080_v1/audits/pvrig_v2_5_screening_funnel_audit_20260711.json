@@ -1,235 +1,187 @@
 {
   "artifact_sha256": {
-    "assays/pvrig_v2_5_prospective_v1/assay_analysis_summary.json": "a7f8d815f7d9c7e18e1b7a46538772913d8e84e6e245befdb5f3a292a1786a56",
-    "assays/pvrig_v2_5_prospective_v1/assay_preregistration.json": "515987f2edfe680b7156b1b3c83298048384d28390fe85941c8bb3f5ffed5e56",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/CASCADE_RUN_REPORT.md": "a0777d1b6ef19c693f18e0359d7f4c3045ec694e4ed26545a86cecbad0cd16ce",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/cascade_manifest.json": "4aedd4281520770c1a49789210995c9c3f2ab4701117ca53d950412f554ef73e",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/cascade_state.json": "98fb49b73608766c397d7d5197b77273852a0f9b054fb80d0a707b8af2af8ce2",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/final_blocker_screen.tsv": "d11de76c910c9133fa8bf833465a198afbd8e9dd314e70a9ef2acacce3c4f710",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/final_positive_high.fasta": "947aa3caa246d1afdc4202d028dce1ed6d9d44eefab9f65ab860e67e7ec74bb6",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/geometry_shortlist.tsv": "32c23b817975ce69824f4bb2d0e93f184f6610dcd757d1956daf34d2b6f8f1fd",
-    "assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/dual_baseline_finalize_20260711/docking_consensus_geometry4_20260711.csv": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
-    "assays/pvrig_v2_5_prospective_v1/model_frontscreen_summary_blinded.csv": "93e5e642286fbed535858782307b3c757dd70d9feb261c686e8705097d9da362",
-    "assays/pvrig_v2_5_prospective_v1/package_manifest.json": "c5f65809461430d151a941ac0670ec1d501aa5e9d8e1676dfe63948bfe391ec0",
-    "logs/phase2_v2_5_full_unittest_20260711_final.log": "872be9c163d2d911a8f598e5c9fbf0b2ba07ad54f07c6bc05c93da18423cd719",
-    "predictions/pvrig_model_frontscreen_summary_v1.csv": "f31d147d3d661d23c67c283de612bedbe78ced6a9d4efc4dd1a4156058ab41ea"
+    "PROJECT_PROGRESS.md": "5e70ee403180a6ac4b18b960df56ca9ab47f24884c82a22522eaa9f7fdf74883",
+    "data/docs/phase2_5080_training/PVRIG_MODEL_TO_CASCADE_SCREENING_FUNNEL.md": "7f7afdab96b1b8e35c9850eeb6f7ab01927dddea40e0ae08bc1c6866fc016d58",
+    "data/experiments/phase2_5080_v1/README.md": "4bb90151d8bffefbae82a0bb59030267ae514c020267a630f73d05180680f974",
+    "data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/cascade_state.json": "243aea4d40c3da0f65c9eb1d12799a603277824b09fc40e5eb0ec0eb6dc4badd",
+    "data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/final_blocker_screen.tsv": "b5396942ddd74769e4b616f94ce6e8b627af6a0755fb977612bfb39f7ff0a14e",
+    "data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/cascade/final_positive_high.fasta": "8dd375c181bc44d9da5eb6e1f4b8141118af26e9a31c292b98b233ea03741e29",
+    "data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/geometry4_complete_finalize_20260711_230812/docking_consensus_geometry4_20260711.csv": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+    "data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/geometry4_complete_finalize_20260711_230812/snapshot_metadata.json": "7b36e9d776d18a4353e6eda9acbe96b167b3d19cd7ef8c55aa063dd2d7f07d42",
+    "data/experiments/phase2_5080_v1/audits/PVRIG_V2_5_LAB_PREREGISTRATION_CHECKLIST_20260711.md": "f1cce66ebd5c41070377d3dfc303bf708b10ffff7a9b4d0daeee6e09268b0acd",
+    "data/experiments/phase2_5080_v1/audits/PVRIG_V2_5_SCREENING_FUNNEL_AUDIT_20260711.md": "c4d8904ec3c2148162723708c0e5f27e2932c8e03058f856f519f302f7149b19",
+    "docking/candidates/v2_5_geometry4_dual_baseline/README.md": "3f8f1e74a2cc00799fb4c79c10b4bad315d80134e32577750220205d3196ac02",
+    "docking/candidates/v2_5_geometry4_dual_baseline/manifests/geometry4_candidates.tsv": "66b25ab9051fc967d1dc6e9ebbf78fcf6f4055d80e4e29592606fc5516f7fe7b",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/candidate_level_8x6b_9e6y_audit.csv": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/cascade_finalize_docking_summary.csv": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/dual_baseline_postprocess_status.json": "981699fee8313b2b0d53d0ccc3dfc685314c3d4fe1d1098dd1a1db7c1e349ebe",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/local_execution_handoff.json": "e2e6552d226b18efd17f40f42f56e7518d8824518d5f22dbc64db34b44b79d27",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/local_execution_status.json": "6e32377cec68295b2f6cd1c47179d700714e3b0a1ccd658a446d7f4397fba1e8",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/local_haddock3_runtime_smoke_20260711.json": "af36704fe238fb55e5acd4bbc8e3ef8c0bd9b93e07bf829a6b572c630c563cae",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/post_waiter_finalize_status.json": "4e8418186a729bcd80bb09f5f3c080202d3ed318d72a143c148c8fde93dd4043",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/test_logs/geometry4_unittest_final_20260711.log": "0eb8b2d7b5f535e9698e312d7d0df8d51559cb2212c89945a4de9c7a67f66cbd",
+    "docking/candidates/v2_5_geometry4_dual_baseline/reports/test_logs/phase2_v25_unittest_final_20260711.log": "27bc1a1468812b6e5efdd6e5a5b0c756831780d37ebca40189402bc241674252",
+    "docking/candidates/v2_5_geometry4_dual_baseline/scripts/node1_guarded_haddock3_waiter.sh": "8a1e29aca73ad800b60932afd4dbd81dfb315de842a005adfed919d1df5ae161",
+    "docking/candidates/v2_5_geometry4_dual_baseline/scripts/run_dual_baseline_postprocess.py": "e9d9c74046876373b45180eb5f1a351568fa9d0befe24bf2df646514a2d272cc",
+    "docking/candidates/v2_5_geometry4_dual_baseline/scripts/run_pending_haddock3_local.py": "a3cb22b031782700167e0e7f53c4b487d84b6252988744eaed793d4a8263eb2f",
+    "docking/candidates/v2_5_geometry4_dual_baseline/scripts/run_pending_haddock3_node1.sh": "064cbe487b83acff44e7d54d4e5df0ca10e08a926c33efa14c3597a02cdc793a",
+    "docking/candidates/v2_5_geometry4_dual_baseline/tests/test_guarded_waiter_behavior.py": "bfa1133a3556dd164d7c6ad21c57502c13bcea52c3d3c846dc4ace31170915f9",
+    "docking/candidates/v2_5_geometry4_dual_baseline/tests/test_local_haddock3_launcher.py": "507a1a318926763797f14b8dddfbf1f3af1463744b670460fbd96bada98a20b6"
   },
   "audit_date": "2026-07-11",
   "claim_boundary": "model_and_cascade_prioritize_candidates_but_do_not_create_binding_or_blocker_truth",
-  "decision": "ONE_DUAL_BASELINE_COMPUTATIONAL_HIGH_THREE_DOCKING_GUARDED_WAITING_WET_LAB_PENDING",
-  "dual_baseline_geometry": {
-    "artifact_sha256": {
-      "docking/candidates/v2_4_top2/remote_sync/haddock3/zym_test_108006/data/zym_test_108006_vhh_chainA.pdb": "4a23b10e63df0985daa802a61a4bf5f5cf9cb10a5bbcb1a35de12614127c7b5b",
-      "docking/candidates/v2_4_top2/remote_sync/haddock3/zym_test_108006/reports/zym_test_108006_8x6b_9e6y_consensus.csv": "e46a512d3bc09378ff56fd2328c3c41be66ab482095aed7ed723ec07109855d0",
-      "docking/candidates/v2_5_geometry4_dual_baseline/README.md": "df8d2c91e9d3906a5ef89dbddfd4590547fa7a8f89807344e5bc8728eff83bca",
-      "docking/candidates/v2_5_geometry4_dual_baseline/manifests/geometry4_candidates.tsv": "66b25ab9051fc967d1dc6e9ebbf78fcf6f4055d80e4e29592606fc5516f7fe7b",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/candidate_level_8x6b_9e6y_audit.csv": "78d2202b826a785bd17044b90bad4bc9b3c2afd099ce10cd8fb304f26170e877",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/cascade_finalize_docking_summary.csv": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/dual_baseline_postprocess_status.json": "47168d3af9ab4f272ed17d2bbdb05318d6c9c466a053c92f8a531bd5cbd8ac42",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/node1_guarded_waiter_deployment_20260711.json": "3d3c3dd831f97afbdc779122f455cbd98e34d1b210510edd995844af5a35e719",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/node1_guarded_waiter_events_20260711.tsv": "35f95eff6a62d9a82003869f769d2a36923a8102ec674e0570d0021711ae1ae4",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/node1_guarded_waiter_status_20260711.env": "b01ab4e8107fc79924fd55bf410b2ecb3d6d4367f07506815af8d0ba3082f29e",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/node1_preflight_final_20260711.log": "03e1406f6e9571fc28ef10653bc8fc7292b5a2d9afb046d8d3529cf94dc00571",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/review_closure_20260711.json": "d00c55a8dc125b634e7fa98f028ef2597f5376a3154345bb1fdb3dabc1afedef",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/test_logs/geometry4_unittest_20260711.log": "fc1a872a51fac5a58205b5d552642c775ad059060e6a6c89c51f717d506f370a",
-      "docking/candidates/v2_5_geometry4_dual_baseline/reports/test_logs/success_case_regressions_20260711.log": "511740a2b8efffc18905e9e55c11a96b59670d2f41acd28bdfe5a03f9a3d8d7b",
-      "docking/candidates/v2_5_geometry4_dual_baseline/scripts/build_candidate_level_docking_summary.py": "5a9671fc3ae681002787d694db1240a5cf3032b925fb9dc4ec36dca8d14038cf",
-      "docking/candidates/v2_5_geometry4_dual_baseline/scripts/deploy_guarded_haddock3_waiter_node1.sh": "0b16a51d91307e4fa2b253cd2d71fb46706a04210b8b48d95ac2236d16ae841e",
-      "docking/candidates/v2_5_geometry4_dual_baseline/scripts/node1_guarded_haddock3_waiter.sh": "49d4dd938768ef1d8a42d10fb1f04464422083f34a90b32de2fc4e3383a482de",
-      "docking/candidates/v2_5_geometry4_dual_baseline/scripts/run_dual_baseline_postprocess.py": "e9d9c74046876373b45180eb5f1a351568fa9d0befe24bf2df646514a2d272cc",
-      "docking/candidates/v2_5_geometry4_dual_baseline/scripts/run_pending_haddock3_node1.sh": "277d34719a59dc04be6bddf36132b5b43b0b689090815a179a85a8a5677c6806",
-      "docking/candidates/v2_5_geometry4_dual_baseline/tests/test_candidate_level_docking_summary.py": "ec025e9e7db8f58a8bc06e311c675dd715524f62ee493d5bb1a4a94daa286195",
-      "docking/candidates/v2_5_geometry4_dual_baseline/tests/test_geometry4_package.py": "d0cc9a54d6b25c7e4fcd18acf3ff138bdfd9ee818d4559b64a283f4e9d2d09a4"
-    },
-    "baseline_classes": "8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_LIKE_A",
-    "best_haddock_rank": 1,
-    "blocker_class": "CONSENSUS_BLOCKER_LIKE_A",
-    "candidate_id": "PV25-25F7D6778F87",
-    "candidate_id_coordinator_only": "zym_test_108006",
-    "claim_boundary": "computational_pose_qc_proxy_not_binding_or_blocker_proof",
-    "conservative_metrics": {
-      "cdr3_occlusion_fraction": 0.17377,
-      "cdr3_pvrl2_residue_pair_occlusion": 106,
-      "hotspot_overlap_count": 15,
-      "total_vhh_pvrl2_residue_pair_occlusion": 610
-    },
-    "protocol": "8X6B_HADDOCK3_then_same_pose_alignment_and_scoring_against_8X6B_and_9E6Y",
-    "safety_hardening": [
-      "reject_noncanonical_or_recheck_labels_in_per_baseline_classification_inputs",
-      "compare_full_canonical_consensus_classes_instead_of_collapsing_to_A_B_C",
-      "require_complete_two_baseline_RUN_status_and_all_four_geometry_metrics_for_finalize_import"
-    ],
-    "sequence_provenance": {
-      "binding_status": "MATCH",
-      "input_vhh_pdb_sha256": "4a23b10e63df0985daa802a61a4bf5f5cf9cb10a5bbcb1a35de12614127c7b5b",
-      "input_vhh_sequence_sha256": "76413dbdc48ab17b144ab10be41e5ebc07b20faeab5865f6b893aea2d5ddf0bb",
-      "manifest_vhh_sequence_sha256": "76413dbdc48ab17b144ab10be41e5ebc07b20faeab5865f6b893aea2d5ddf0bb",
-      "policy": "complete_import_requires_chain_A_sequence_hash_from_input_PDB_to_match_manifest"
-    },
-    "top_model": "cluster_1_model_1"
-  },
-  "guarded_waiter": {
-    "candidate": "zym_test_359954",
-    "controlled_restart": "timeout enforcement moved before gate acceptance while no run existed",
-    "current_runner_started_at": "2026-07-11T17:48:21+08:00",
-    "deployed_at": "2026-07-11T17:42:09+08:00",
-    "haddock_started": false,
-    "last_observed_at": "2026-07-11T17:49:21+08:00",
-    "load1": 103.44,
-    "max_wait_seconds": 86400,
-    "pending_candidates": [
-      "zym_test_359954",
-      "zym_test_3633872",
-      "zym_test_8787"
-    ],
-    "poll_seconds": 60,
-    "safety_controls": [
-      "flock_single_instance",
-      "strict_gate_before_each_candidate",
-      "bounded_timeout",
-      "refuse_incomplete_run",
-      "no_run_deletion"
-    ],
-    "session_status": "RUNNING",
-    "state": "WAITING_FOR_LOAD",
-    "strict_launch_condition": "load1 < 64",
-    "tmux_session": "pvrig_v25_geometry4_waiter",
-    "tmux_socket": "pvrig_v25_geometry4"
-  },
+  "completed_at": "2026-07-11T23:10:26+08:00",
+  "decision": "FOUR_DUAL_BASELINE_IMPORTS_TWO_COMPUTATIONAL_HIGH_WET_LAB_PENDING",
   "large_scale_cascade": {
-    "docking_imported": 1,
+    "docking_imported": 4,
     "fast_hard_pass": 4,
     "final_label_counts": {
-      "FINAL_INCOMPLETE_NEEDS_DOCKING": 3,
-      "FINAL_POSITIVE_HIGH": 1
+      "FINAL_POSITIVE_HIGH": 2,
+      "FINAL_POSITIVE_PLAUSIBLE": 1,
+      "FINAL_RECHECK_SINGLE_BASELINE": 1
     },
-    "final_positive_high": 1,
-    "finished": "2026-07-11T15:42:11+08:00",
+    "final_positive_high": 2,
+    "finalize_csv_sha256": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
     "full_hard_pass": 4,
     "full_shortlist": 4,
-    "geometry_pool": 4,
     "geometry_shortlist": 4,
+    "immutable_local_snapshot": "data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/geometry4_complete_finalize_20260711_230812",
+    "initial_wall_seconds": 132,
     "input_records": 24,
-    "latest_finalize": {
-      "completed_at": "2026-07-11T17:07:24+08:00",
-      "docking_summary": "docking/candidates/v2_5_geometry4_dual_baseline/reports/cascade_finalize_docking_summary.csv",
-      "docking_summary_sha256": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
-      "remote_log": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450/finalize_geometry4_provenance_hardened_20260711.log",
-      "remote_status": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450/finalize_geometry4_provenance_hardened_20260711_status.txt",
-      "result": "1_FINAL_POSITIVE_HIGH_3_FINAL_INCOMPLETE_NEEDS_DOCKING"
-    },
-    "remote_run_dir": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450",
-    "shortlist": [
+    "ranking": [
+      {
+        "assay_sample_id": "PV25-0B63D218E0F3",
+        "blocker_class": "CONSENSUS_BLOCKER_LIKE_A",
+        "candidate_id_coordinator_only": "zym_test_8787",
+        "cascade_full_rank": 3,
+        "cdr3_occlusion_fraction": 0.219902,
+        "cdr3_pvrl2_residue_pair_occlusion": 179,
+        "docking_evidence_status": "IMPORTED",
+        "final_blocker_label": "FINAL_POSITIVE_HIGH",
+        "final_rank": 1,
+        "geometry_rank": 3,
+        "hotspot_overlap_count": 14,
+        "model_frontscreen_rank": 5,
+        "total_vhh_pvrl2_residue_pair_occlusion": 775
+      },
       {
         "assay_sample_id": "PV25-25F7D6778F87",
         "blocker_class": "CONSENSUS_BLOCKER_LIKE_A",
         "candidate_id_coordinator_only": "zym_test_108006",
         "cascade_full_rank": 4,
+        "cdr3_occlusion_fraction": 0.17377,
+        "cdr3_pvrl2_residue_pair_occlusion": 106,
         "docking_evidence_status": "IMPORTED",
-        "external_binder_score": 0.897959,
         "final_blocker_label": "FINAL_POSITIVE_HIGH",
-        "final_rank": 1,
-        "geometry_rank": 4,
-        "model_frontscreen_rank": 6
-      },
-      {
-        "assay_sample_id": "PV25-EF3F71502C71",
-        "blocker_class": "NOT_RUN",
-        "candidate_id_coordinator_only": "zym_test_359954",
-        "cascade_full_rank": 1,
-        "docking_evidence_status": "MISSING",
-        "external_binder_score": 1.0,
-        "final_blocker_label": "FINAL_INCOMPLETE_NEEDS_DOCKING",
         "final_rank": 2,
-        "geometry_rank": 1,
-        "model_frontscreen_rank": 1
+        "geometry_rank": 4,
+        "hotspot_overlap_count": 15,
+        "model_frontscreen_rank": 6,
+        "total_vhh_pvrl2_residue_pair_occlusion": 610
       },
       {
         "assay_sample_id": "PV25-8E96BF37FD37",
-        "blocker_class": "NOT_RUN",
+        "blocker_class": "SINGLE_BASELINE_BLOCKER_RECHECK",
         "candidate_id_coordinator_only": "zym_test_3633872",
         "cascade_full_rank": 2,
-        "docking_evidence_status": "MISSING",
-        "external_binder_score": 0.938776,
-        "final_blocker_label": "FINAL_INCOMPLETE_NEEDS_DOCKING",
+        "cdr3_occlusion_fraction": 0.176471,
+        "cdr3_pvrl2_residue_pair_occlusion": 99,
+        "docking_evidence_status": "IMPORTED",
+        "final_blocker_label": "FINAL_RECHECK_SINGLE_BASELINE",
         "final_rank": 3,
         "geometry_rank": 2,
-        "model_frontscreen_rank": 4
+        "hotspot_overlap_count": 14,
+        "model_frontscreen_rank": 4,
+        "total_vhh_pvrl2_residue_pair_occlusion": 561
       },
       {
-        "assay_sample_id": "PV25-0B63D218E0F3",
-        "blocker_class": "NOT_RUN",
-        "candidate_id_coordinator_only": "zym_test_8787",
-        "cascade_full_rank": 3,
-        "docking_evidence_status": "MISSING",
-        "external_binder_score": 0.918367,
-        "final_blocker_label": "FINAL_INCOMPLETE_NEEDS_DOCKING",
+        "assay_sample_id": "PV25-EF3F71502C71",
+        "blocker_class": "BLOCKER_PLAUSIBLE_B",
+        "candidate_id_coordinator_only": "zym_test_359954",
+        "cascade_full_rank": 1,
+        "cdr3_occlusion_fraction": 0.227348,
+        "cdr3_pvrl2_residue_pair_occlusion": 138,
+        "docking_evidence_status": "IMPORTED",
+        "final_blocker_label": "FINAL_POSITIVE_PLAUSIBLE",
         "final_rank": 4,
-        "geometry_rank": 3,
-        "model_frontscreen_rank": 5
+        "geometry_rank": 1,
+        "hotspot_overlap_count": 10,
+        "model_frontscreen_rank": 1,
+        "total_vhh_pvrl2_residue_pair_occlusion": 597
       }
     ],
-    "started": "2026-07-11T15:39:59+08:00",
-    "unique_records": 24,
-    "wall_seconds": 132
+    "remote_finalize_mode": "FINALIZED_STAGED_ATOMIC_WITH_ROLLBACK",
+    "remote_run_dir": "/data/qlyu/software/vhh_eval_tools/runs/pvrig_v25_panel_cascade_20260711_1450",
+    "transfer_archive_sha256": "2ca58b9bcccdee9d2db76492db9d7edf8f1087d5309fb50ab0088cbba1736d74",
+    "unique_records": 24
   },
-  "legacy_full_qc_control": {
-    "finished": "2026-07-11T14:41:25+08:00",
-    "input_rows": 24,
-    "interpretation": "historical_comparator_not_panel_pruning_truth",
-    "recommendation_counts": {
-      "REJECT_HARD_GATE": 22,
-      "REVIEW_RISK": 2
+  "local_haddock3_failover": {
+    "independent_review": "APPROVE_ZERO_REMAINING_FINDINGS",
+    "local_execution_status": "COMPLETE",
+    "node1_gate_bypassed": false,
+    "postprocess_resume": "PASS_4_REUSED_HASH_STABLE",
+    "reason": "node1_load_remained_above_fixed_64_threshold",
+    "remote_candidate_runs_after_handoff": {
+      "zym_test_359954": "ABSENT",
+      "zym_test_3633872": "ABSENT",
+      "zym_test_8787": "ABSENT"
     },
-    "started": "2026-07-11T14:14:16+08:00",
-    "wall_seconds": 1629
-  },
-  "model_frontscreen": {
-    "blinded_panel_rows_with_scores": 6,
-    "not_probability": true,
-    "rows": 50,
-    "score_field": "binder_score",
-    "score_semantics": "within_input_rank_percentile_higher_is_better"
+    "remote_owner_state": "COMPLETE_LOCAL",
+    "remote_waiter_terminal_state": "INTERRUPTED",
+    "runs": {
+      "zym_test_359954": {
+        "consensus_rows": 10,
+        "top_pose_count": 10,
+        "wall_seconds": 96
+      },
+      "zym_test_3633872": {
+        "consensus_rows": 9,
+        "top_pose_count": 9,
+        "wall_seconds": 94
+      },
+      "zym_test_8787": {
+        "consensus_rows": 8,
+        "top_pose_count": 8,
+        "wall_seconds": 93
+      }
+    },
+    "runtime_smoke": "PASS_CNS_STOP_AND_FULL_MODULE_CANDIDATE",
+    "runtime_version": "2025.11.0",
+    "takeover_protocol": "ownership_lock_freeze_recheck_stop_runner_lock_nonce_owner"
   },
   "next_required_gates": [
-    "do_not_change_the_frozen_24_candidate_panel_based_on_computational_results",
-    "retain_zym_test_108006_as_computational_priority_not_experimental_truth",
-    "guarded_waiter_may_launch_remaining_three_only_when_node1_load1_is_below_64",
-    "sync_completed_runs_then_rerun_dual_baseline_postprocess",
-    "rerun_candidate_summary_and_finalize_after_new_complete_candidates",
-    "freeze_lab_specific_preregistration_before_any_measurement",
-    "execute_expression_binding_competition_and_functional_assays",
+    "keep_the_frozen_24_candidate_panel_intact",
+    "lab_owner_fill_and_freeze_all_13_preregistration_parameters_before_measurement",
+    "execute_expression_sec_then_binding_then_verified_binder_competition_then_verified_blocker_functional_assays",
     "review_E6_then_create_new_V2_6_split_seal_readiness_and_formal_protocol_before_training_use"
   ],
-  "node1_runtime_gate": {
-    "checked_at": "2026-07-11T17:15:11+08:00",
-    "decision": "REFUSE_REMAINING_THREE_HADDOCK_LAUNCH_LOAD_GATE",
-    "fixed_launch_threshold": 64.0,
-    "guarded_waiter_state": "WAITING_FOR_LOAD",
-    "latest_waiter_load1": 103.44,
-    "latest_waiter_observation_at": "2026-07-11T17:49:21+08:00",
-    "load1": 100.92,
-    "load15": 98.44,
-    "load5": 99.85,
-    "preflight_checked_at": "2026-07-11T17:14:51+08:00",
-    "preflight_exit_code": 20,
-    "preflight_load1": 101.38
-  },
   "prospective_assay_package": {
-    "artifact_count": 10,
     "e6_candidate_rows": 0,
-    "measurement_status": "NO_EXPERIMENTAL_RESULTS_RECORDED",
+    "next_gate": "LAB_OWNER_FILL_AND_FREEZE_13_SOP_DEPENDENT_PARAMETERS_BEFORE_MEASUREMENT",
+    "null_lab_parameter_count": 13,
+    "null_lab_parameters": [
+      "binding_fit_qc_rule",
+      "binding_max_analyte_concentration_nM",
+      "binding_response_detection_rule",
+      "competition_effect_rule",
+      "competition_max_analyte_concentration_nM",
+      "functional_effect_rule",
+      "functional_max_analyte_concentration_nM",
+      "functional_viability_rule",
+      "maximum_aggregation_fraction",
+      "minimum_expression_yield_mg_per_l",
+      "minimum_functional_viability_fraction",
+      "minimum_purity_fraction",
+      "minimum_sec_monomer_fraction"
+    ],
     "panel_candidates": 24,
     "preregistration_complete": false,
-    "scheduled_day_blocks": 3,
-    "scheduled_runs": 3,
-    "scheduled_sample_runs": 72,
     "status": "READY_FOR_LAB_PREREGISTRATION",
     "truth_status_counts": {
       "PENDING_EXPRESSION_QC": 24
     }
   },
-  "schema_version": "pvrig_v2_5_screening_funnel_audit_v1",
+  "schema_version": "pvrig_v2_5_screening_funnel_audit_v2",
   "stage_roles": {
     "cascade_sequence_qc": "strict_shortlist_validation_and_computational_ranking",
     "docking_consensus": "8X6B_and_9E6Y_geometry_evidence_only",
@@ -237,13 +189,13 @@
     "prospective_assays": "only_source_of_new_expression_binding_blocking_and_functional_truth"
   },
   "verification": {
-    "geometry4_unittest_count": 13,
-    "independent_artifact_verification": "PASS",
-    "independent_code_review": "APPROVE_NO_FINDINGS",
+    "geometry4_unittest_count": 41,
     "known_errors": 0,
     "phase2_unittest_count": 160,
+    "postprocess_candidates_imported": 4,
+    "remote_local_canonical_hashes": "4_OF_4_IDENTICAL",
     "success_case_regression_scripts_passed": 2,
-    "unittest_count": 173,
+    "unittest_count": 201,
     "unittest_result": "PASS"
   }
 }

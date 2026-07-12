@@ -1,0 +1,93 @@
+{
+  "artifacts": {
+    "docking/candidates/v2_5_geometry4_dual_baseline/README.md": "0dcf8a9ed7e5ba1aff58ca140637dcc923156a842c126e5f87bdf4eccce18f7c",
+    "docking/candidates/v2_5_geometry4_dual_baseline/scripts/watch_and_finalize_geometry4.py": "0e96afaad963f6821851b307ea35910d64ca2a6c609150b73dbf3e433e0085e9",
+    "docking/candidates/v2_5_geometry4_dual_baseline/tests/test_post_waiter_finalize.py": "972e6bf19a2c3eb4b13ab610d2e671d29a3753a4d4467ab0a2127757a7c019ec"
+  },
+  "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+  "current_cascade_label_counts": {
+    "FINAL_INCOMPLETE_NEEDS_DOCKING": 3,
+    "FINAL_POSITIVE_HIGH": 1
+  },
+  "generated_at": "2026-07-11T19:48:35+08:00",
+  "pending_candidates": {
+    "PV25-0B63D218E0F3": "zym_test_8787",
+    "PV25-8E96BF37FD37": "zym_test_3633872",
+    "PV25-EF3F71502C71": "zym_test_359954"
+  },
+  "production_state": {
+    "local_finalizer": {
+      "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+      "detail": "Node1 load gate or docking is still active",
+      "pid": 614316,
+      "remote_waiter": {
+        "candidate": "zym_test_359954",
+        "detail": "elapsed_seconds=6308",
+        "load1": "96.33",
+        "pid": "2026499",
+        "session_running": "1",
+        "state": "WAITING_FOR_LOAD",
+        "threshold": "64",
+        "updated_at": "2026-07-11T19:48:19+08:00"
+      },
+      "schema_version": "pvrig_v2_5_geometry4_post_waiter_finalize_v1",
+      "state": "WAITING_FOR_REMOTE",
+      "updated_at": "2026-07-11T19:48:23+08:00"
+    },
+    "local_tmux": {
+      "latest_log": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/post_waiter_finalizer_20260711_194452.log",
+      "pane": "pane=%0 pid=614316 dead=0 command=python3",
+      "session": "pvrig_v25_geometry4_finalizer",
+      "socket": "pvrig_v25_geometry4_finalizer"
+    },
+    "remote_candidate_runs": [
+      "zym_test_359954=absent",
+      "zym_test_3633872=absent",
+      "zym_test_8787=absent"
+    ],
+    "remote_waiter": {
+      "candidate": "zym_test_359954",
+      "detail": "elapsed_seconds=6308",
+      "load1": "96.33",
+      "pid": "2026499",
+      "session_running": "1",
+      "state": "WAITING_FOR_LOAD",
+      "threshold": "64",
+      "updated_at": "2026-07-11T19:48:19+08:00"
+    }
+  },
+  "remaining_work": "automatic after Node1 load gate accepts: HADDOCK3 x3 -> sync -> dual-baseline postprocess -> staged cascade finalize -> immutable local snapshot",
+  "safety_invariants": [
+    "Node1 HADDOCK3 remains exclusively gated by exact load1 < 64",
+    "the local watcher never starts HADDOCK3 and proceeds only on exact remote COMPLETE",
+    "candidate runs are rsynced into staging and promoted only after consensus and top-pose checks",
+    "existing incomplete local runs are never overwritten",
+    "audit and uploaded finalize rows must be field-identical after sequence provenance validation",
+    "remote cascade finalize runs in a staged copy and publishes only after validation under flock",
+    "remote live publish has rollback protection and a fixed final-label allowlist",
+    "all labels remain computational priorities rather than measured binding or blocking truth"
+  ],
+  "schema_version": "pvrig_v2_5_geometry4_post_waiter_verification_v1",
+  "status": "PASS_GUARDED_WAITING",
+  "verification": {
+    "blocker_screening_robustness_regression": "PASS",
+    "code_review": {
+      "remaining_findings": 0,
+      "result": "APPROVE",
+      "reviewed_test_sha256": "972e6bf19a2c3eb4b13ab610d2e671d29a3753a4d4467ab0a2127757a7c019ec",
+      "reviewed_watcher_sha256": "0e96afaad963f6821851b307ea35910d64ca2a6c609150b73dbf3e433e0085e9"
+    },
+    "geometry4_unit_tests": {
+      "count": 29,
+      "result": "PASS"
+    },
+    "git_diff_check": "PASS",
+    "lightweight_allowlist": "watcher_test_and_readme_selected",
+    "live_once_probe": {
+      "exit_code": 10,
+      "result": "PASS_WAITING_NO_SIDE_EFFECTS"
+    },
+    "python_compile": "PASS",
+    "success_case_workflow_regression": "PASS"
+  }
+}

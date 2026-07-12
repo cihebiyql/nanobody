@@ -14,11 +14,48 @@
     "status": "APPROVE",
     "tests": "12/12 PASS"
   },
+  "guarded_waiter_review": {
+    "closed_findings": [
+      "signal_false_complete",
+      "fractional_nonfinite_or_leading_zero_time_values",
+      "tmux_launch_quoting",
+      "official_launcher_TOCTOU",
+      "string_only_test_gap",
+      "direct_launcher_nan_threshold",
+      "ignored_test_durability_via_existing_lightweight_allowlist"
+    ],
+    "current_sha256": {
+      "scripts/deploy_guarded_haddock3_waiter_node1.sh": "e6e741a03af83ebfa22b4241f0c613f450b69b5b5ef19cb760f24c8b55c260df",
+      "scripts/node1_guarded_haddock3_waiter.sh": "8a1e29aca73ad800b60932afd4dbd81dfb315de842a005adfed919d1df5ae161",
+      "scripts/run_pending_haddock3_node1.sh": "064cbe487b83acff44e7d54d4e5df0ca10e08a926c33efa14c3597a02cdc793a",
+      "tests/test_guarded_waiter_behavior.py": "bfa1133a3556dd164d7c6ad21c57502c13bcea52c3d3c846dc4ace31170915f9"
+    },
+    "initial_findings": {
+      "high": 1,
+      "low": 1,
+      "medium": 4
+    },
+    "remaining_findings": 0,
+    "second_review_findings": {
+      "high": 1,
+      "medium": 1
+    },
+    "status": "APPROVE",
+    "validation": [
+      "bash_n_PASS",
+      "py_compile_PASS",
+      "geometry_unittest_41_of_41_PASS",
+      "lightweight_sync_allowlist_SELECTS_ALL_SOURCE_AND_TEST_FILES"
+    ],
+    "validation_gap": "OMX_lsp_diagnostics_transport_closed"
+  },
   "independent_verifier": {
-    "cascade_result": "1_FINAL_POSITIVE_HIGH_3_FINAL_INCOMPLETE_NEEDS_DOCKING",
-    "finalize_csv_sha256": "5740f2525dcc64d6150ad2eda7e8efd6adc57090c40ae40647b6fc96b7051f76",
-    "prospective_state": "24_PENDING_EXPRESSION_QC_0_E6",
-    "remote_local_hashes": "5/5 MATCH",
+    "cascade_result": "2_FINAL_POSITIVE_HIGH_1_FINAL_RECHECK_SINGLE_BASELINE_1_FINAL_POSITIVE_PLAUSIBLE",
+    "docking_imported": 4,
+    "finalize_csv_sha256": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+    "prospective_state": "24_PENDING_EXPRESSION_QC_0_E6_13_PREREGISTRATION_NULLS",
+    "remaining_incomplete": 0,
+    "remote_local_hashes": "4/4 CANONICAL MATCH",
     "status": "PASS"
   },
   "initial_findings": {
@@ -29,7 +66,36 @@
       "complete_rows_not_strongly_bound_to_manifest_sequence_when_source_CSV_hashes_absent"
     ]
   },
-  "reviewed_at": "2026-07-11",
-  "schema_version": "pvrig_v2_5_geometry4_review_closure_v1",
+  "local_failover_review": {
+    "closed_findings": [
+      "zero_byte_top_pose_false_completion",
+      "takeover_owner_sentinel_lock_race"
+    ],
+    "current_sha256": {
+      "scripts/node1_guarded_haddock3_waiter.sh": "8a1e29aca73ad800b60932afd4dbd81dfb315de842a005adfed919d1df5ae161",
+      "scripts/run_pending_haddock3_local.py": "a3cb22b031782700167e0e7f53c4b487d84b6252988744eaed793d4a8263eb2f",
+      "scripts/run_pending_haddock3_node1.sh": "064cbe487b83acff44e7d54d4e5df0ca10e08a926c33efa14c3597a02cdc793a",
+      "tests/test_guarded_waiter_behavior.py": "bfa1133a3556dd164d7c6ad21c57502c13bcea52c3d3c846dc4ace31170915f9",
+      "tests/test_local_haddock3_launcher.py": "507a1a318926763797f14b8dddfbf1f3af1463744b670460fbd96bada98a20b6"
+    },
+    "initial_findings": {
+      "high": 1,
+      "medium": 1
+    },
+    "remaining_findings": 0,
+    "safety_protocol": [
+      "nonempty_consensus_and_nonempty_top_pose",
+      "ownership_lock_before_freeze",
+      "waiter_pid_lineage_validation",
+      "SIGSTOP_then_state_run_process_recheck",
+      "runner_lock_before_owner_sentinel",
+      "nonce_bound_live_remote_verification",
+      "direct_remote_launcher_respects_local_owner"
+    ],
+    "status": "APPROVE",
+    "tests": "41/41 geometry package PASS"
+  },
+  "reviewed_at": "2026-07-11T23:15:00+08:00",
+  "schema_version": "pvrig_v2_5_geometry4_review_closure_v2",
   "status": "APPROVED"
 }

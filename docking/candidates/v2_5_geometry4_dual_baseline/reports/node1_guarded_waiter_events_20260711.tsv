@@ -14,3 +14,30 @@
 2026-07-11T17:48:21+08:00	RUNNER_START	-	100.13	threshold=64 poll_seconds=60 max_wait_seconds=86400
 2026-07-11T17:48:21+08:00	LOAD_GATE_WAIT	zym_test_359954	100.13	threshold=64 elapsed_seconds=0
 2026-07-11T17:49:21+08:00	LOAD_GATE_WAIT	zym_test_359954	103.44	threshold=64 elapsed_seconds=60
+2026-07-11T17:50:21+08:00	LOAD_GATE_WAIT	zym_test_359954	107.23	threshold=64 elapsed_seconds=120
+2026-07-11T17:51:21+08:00	LOAD_GATE_WAIT	zym_test_359954	101.60	threshold=64 elapsed_seconds=180
+2026-07-11T17:52:21+08:00	LOAD_GATE_WAIT	zym_test_359954	97.93	threshold=64 elapsed_seconds=240
+2026-07-11T17:53:21+08:00	LOAD_GATE_WAIT	zym_test_359954	96.71	threshold=64 elapsed_seconds=300
+2026-07-11T17:54:21+08:00	LOAD_GATE_WAIT	zym_test_359954	100.06	threshold=64 elapsed_seconds=360
+2026-07-11T17:54:48+08:00	STOPPED_FOR_FIX	-	98.95	code_review_high_signal_status_bug
+2026-07-11T17:54:48+08:00	RUNNER_COMPLETE	-	98.95	all_candidates_complete
+2026-07-11T17:59:19+08:00	RUNNER_START	-	100.35	threshold=64 poll_seconds=60 max_wait_seconds=86400
+2026-07-11T17:59:19+08:00	LOAD_GATE_WAIT	zym_test_359954	100.35	threshold=64 elapsed_seconds=0
+2026-07-11T18:00:19+08:00	LOAD_GATE_WAIT	zym_test_359954	97.85	threshold=64 elapsed_seconds=60
+2026-07-11T18:01:19+08:00	LOAD_GATE_WAIT	zym_test_359954	94.53	threshold=64 elapsed_seconds=120
+2026-07-11T18:02:19+08:00	LOAD_GATE_WAIT	zym_test_359954	90.08	threshold=64 elapsed_seconds=180
+2026-07-11T18:02:57+08:00	RUNNER_INTERRUPTED	-	92.48	signal=HUP exit_code=129
+2026-07-11T18:03:11+08:00	RUNNER_START	-	93.21	threshold=64 poll_seconds=60 max_wait_seconds=86400
+2026-07-11T18:03:11+08:00	LOAD_GATE_WAIT	zym_test_359954	93.21	threshold=64 elapsed_seconds=0
+2026-07-11T18:04:11+08:00	LOAD_GATE_WAIT	zym_test_359954	97.52	threshold=64 elapsed_seconds=60
+2026-07-11T18:05:12+08:00	LOAD_GATE_WAIT	zym_test_359954	94.86	threshold=64 elapsed_seconds=120
+2026-07-11T18:06:12+08:00	LOAD_GATE_WAIT	zym_test_359954	91.53	threshold=64 elapsed_seconds=181
+2026-07-11T18:07:12+08:00	LOAD_GATE_WAIT	zym_test_359954	97.51	threshold=64 elapsed_seconds=241
+2026-07-11T18:08:12+08:00	LOAD_GATE_WAIT	zym_test_359954	96.51	threshold=64 elapsed_seconds=301
+2026-07-11T18:09:12+08:00	LOAD_GATE_WAIT	zym_test_359954	99.21	threshold=64 elapsed_seconds=361
+2026-07-11T18:10:12+08:00	LOAD_GATE_WAIT	zym_test_359954	99.63	threshold=64 elapsed_seconds=421
+2026-07-11T18:11:12+08:00	LOAD_GATE_WAIT	zym_test_359954	100.98	threshold=64 elapsed_seconds=481
+2026-07-11T18:12:12+08:00	LOAD_GATE_WAIT	zym_test_359954	103.59	threshold=64 elapsed_seconds=541
+2026-07-11T18:13:12+08:00	LOAD_GATE_WAIT	zym_test_359954	97.56	threshold=64 elapsed_seconds=601
+2026-07-11T18:14:12+08:00	LOAD_GATE_WAIT	zym_test_359954	97.63	threshold=64 elapsed_seconds=661
+2026-07-11T18:15:12+08:00	LOAD_GATE_WAIT	zym_test_359954	99.26	threshold=64 elapsed_seconds=721

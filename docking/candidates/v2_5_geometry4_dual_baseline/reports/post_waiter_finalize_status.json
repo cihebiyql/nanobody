@@ -1,0 +1,36 @@
+{
+  "candidate_classes": {
+    "PV25-0B63D218E0F3": "CONSENSUS_BLOCKER_LIKE_A",
+    "PV25-25F7D6778F87": "CONSENSUS_BLOCKER_LIKE_A",
+    "PV25-8E96BF37FD37": "SINGLE_BASELINE_BLOCKER_RECHECK",
+    "PV25-EF3F71502C71": "BLOCKER_PLAUSIBLE_B"
+  },
+  "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+  "detail": "four-candidate local docking, dual-baseline postprocess, remote cascade finalize, and scp snapshot are verified",
+  "execution_path": "LOCAL_FAILOVER_VERIFIED",
+  "final_label_counts": {
+    "FINAL_POSITIVE_HIGH": 2,
+    "FINAL_POSITIVE_PLAUSIBLE": 1,
+    "FINAL_RECHECK_SINGLE_BASELINE": 1
+  },
+  "finalize_csv_sha256": "38523a3d3dbcbc99c1713af45d1ede6c7fcce105dcb3b0d385a6bd4e8d6809d8",
+  "local_cascade_snapshot": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/assays/pvrig_v2_5_prospective_v1/computational_preqc/large_scale_cascade_20260711/geometry4_complete_finalize_20260711_230812",
+  "local_execution_status": {
+    "claim_boundary": "computational_geometry_priority_not_experimental_binding_or_blocking_truth",
+    "completed": [
+      "zym_test_359954",
+      "zym_test_3633872",
+      "zym_test_8787"
+    ],
+    "detail": "all three local Geometry-4 HADDOCK3 runs are complete",
+    "handoff": "/mnt/d/work/\u6297\u4f53/docking/candidates/v2_5_geometry4_dual_baseline/reports/local_execution_handoff.json",
+    "schema_version": "pvrig_v2_5_geometry4_local_execution_v1",
+    "state": "COMPLETE",
+    "updated_at": "2026-07-11T23:05:51+08:00"
+  },
+  "pid": 95610,
+  "schema_version": "pvrig_v2_5_geometry4_post_waiter_finalize_v1",
+  "state": "COMPLETE",
+  "transfer_archive_sha256": "2ca58b9bcccdee9d2db76492db9d7edf8f1087d5309fb50ab0088cbba1736d74",
+  "updated_at": "2026-07-11T23:10:23+08:00"
+}

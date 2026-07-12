@@ -52,6 +52,8 @@ class Geometry4PackageTests(unittest.TestCase):
         self.assertIn("value > 64", script)
         self.assertIn("LOAD_GATE_REFUSE", script)
         self.assertIn("REFUSE_INCOMPLETE_EXISTING_RUN", script)
+        self.assertIn("REFUSE_CANDIDATE_LOCK_BUSY", script)
+        self.assertIn(".geometry4_haddock.lock", script)
         self.assertNotIn("rm -rf", script)
         for candidate in ("zym_test_359954", "zym_test_3633872", "zym_test_8787"):
             self.assertIn(candidate, script)
