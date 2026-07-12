@@ -7,11 +7,13 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import pickle
 import re
 import statistics
 import sys
 from collections import Counter, defaultdict
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -180,6 +182,81 @@ def load_trb(path: Path) -> dict[str, object]:
     }
 
 
+def validate_generation_shape(
+    run_root: Path,
+    expected_backbones: int,
+    expected_sequences: int,
+) -> None:
+    errors: list[str] = []
+    expected_backbone_indices = set(range(expected_backbones))
+    expected_pairs = {
+        (backbone_index, mpnn_index)
+        for backbone_index in range(expected_backbones)
+        for mpnn_index in range(expected_sequences)
+    }
+
+    for set_id in SETS:
+        set_dir = run_root / "sets" / f"set_{set_id}"
+        backbone_dir = set_dir / "backbones"
+        sequence_dir = set_dir / "sequences"
+        if not (set_dir / "complete.json").is_file():
+            errors.append(f"set_{set_id}:missing_complete_marker")
+
+        pdb_indices: set[int] = set()
+        for path in backbone_dir.glob("design_*.pdb"):
+            match = BACKBONE_PDB_RE.fullmatch(path.name)
+            if match is None:
+                errors.append(f"set_{set_id}:malformed_backbone_pdb:{path.name}")
+            else:
+                pdb_indices.add(int(match.group(1)))
+
+        trb_indices: set[int] = set()
+        for path in backbone_dir.glob("design_*.trb"):
+            match = BACKBONE_TRB_RE.fullmatch(path.name)
+            if match is None:
+                errors.append(f"set_{set_id}:malformed_backbone_trb:{path.name}")
+            else:
+                trb_indices.add(int(match.group(1)))
+
+        sequence_pairs: set[tuple[int, int]] = set()
+        for path in sequence_dir.glob("design_*_dldesign_*.pdb"):
+            match = TAG_RE.fullmatch(path.name)
+            if match is None:
+                errors.append(f"set_{set_id}:malformed_sequence_pdb:{path.name}")
+            else:
+                sequence_pairs.add((int(match.group(1)), int(match.group(2))))
+
+        if pdb_indices != expected_backbone_indices:
+            errors.append(
+                f"set_{set_id}:backbone_pdb_indices="
+                f"missing{sorted(expected_backbone_indices - pdb_indices)}:"
+                f"extra{sorted(pdb_indices - expected_backbone_indices)}"
+            )
+        if trb_indices != expected_backbone_indices:
+            errors.append(
+                f"set_{set_id}:backbone_trb_indices="
+                f"missing{sorted(expected_backbone_indices - trb_indices)}:"
+                f"extra{sorted(trb_indices - expected_backbone_indices)}"
+            )
+        if sequence_pairs != expected_pairs:
+            errors.append(
+                f"set_{set_id}:sequence_indices="
+                f"missing{sorted(expected_pairs - sequence_pairs)}:"
+                f"extra{sorted(sequence_pairs - expected_pairs)}"
+            )
+
+        for index in sorted(trb_indices & expected_backbone_indices):
+            try:
+                load_trb(backbone_dir / f"design_{index}.trb")
+            except Exception as exc:
+                errors.append(f"set_{set_id}:invalid_trb_{index}:{exc}")
+
+    if errors:
+        preview = "\n".join(errors[:40])
+        suffix = "" if len(errors) <= 40 else f"\n... {len(errors) - 40} more errors"
+        raise RuntimeError(f"Generation preflight failed:\n{preview}{suffix}")
+
+
 def collect(run_root: Path, leakage_reference: dict[str, list[str]]) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
     for set_id in SETS:
@@ -194,7 +271,15 @@ def collect(run_root: Path, leakage_reference: dict[str, list[str]]) -> list[dic
             leakage_ids = leakage_reference.get(sequence, [])
             backbone_path = backbone_dir / f"design_{backbone_index}.pdb"
             trb_path = backbone_dir / f"design_{backbone_index}.trb"
-            trb = load_trb(trb_path) if trb_path.exists() else {}
+            trb = load_trb(trb_path)
+            expected_cdr_lengths = {
+                "H1": int(trb["h1_len"]),
+                "H2": int(trb["h2_len"]),
+                "H3": int(trb["h3_len"]),
+            }
+            for cdr, expected_length in expected_cdr_lengths.items():
+                if len(cdrs[cdr]) != expected_length:
+                    errors.append(f"{cdr}_length_disagrees_with_trb")
             rows.append({
                 "candidate_id": f"PVRIG_RFAb_v0_{set_id}_bb{backbone_index:03d}_mpn{mpnn_index:02d}",
                 "hotspot_set": set_id,
@@ -227,44 +312,141 @@ def collect(run_root: Path, leakage_reference: dict[str, list[str]]) -> list[dic
     return rows
 
 
+@dataclass
+class FlowEdge:
+    to: int
+    reverse: int
+    capacity: int
+    original_capacity: int
+
+
+class Dinic:
+    def __init__(self) -> None:
+        self.graph: list[list[FlowEdge]] = []
+
+    def node(self) -> int:
+        self.graph.append([])
+        return len(self.graph) - 1
+
+    def add_edge(self, source: int, target: int, capacity: int) -> FlowEdge:
+        forward = FlowEdge(target, len(self.graph[target]), capacity, capacity)
+        reverse = FlowEdge(source, len(self.graph[source]), 0, 0)
+        self.graph[source].append(forward)
+        self.graph[target].append(reverse)
+        return forward
+
+    def max_flow(self, source: int, target: int) -> int:
+        flow = 0
+        while True:
+            level = [-1] * len(self.graph)
+            level[source] = 0
+            queue = [source]
+            for node in queue:
+                for edge in self.graph[node]:
+                    if edge.capacity > 0 and level[edge.to] < 0:
+                        level[edge.to] = level[node] + 1
+                        queue.append(edge.to)
+            if level[target] < 0:
+                return flow
+
+            cursor = [0] * len(self.graph)
+
+            def send(node: int, amount: int) -> int:
+                if node == target:
+                    return amount
+                while cursor[node] < len(self.graph[node]):
+                    edge = self.graph[node][cursor[node]]
+                    if edge.capacity > 0 and level[node] + 1 == level[edge.to]:
+                        pushed = send(edge.to, min(amount, edge.capacity))
+                        if pushed:
+                            edge.capacity -= pushed
+                            self.graph[edge.to][edge.reverse].capacity += pushed
+                            return pushed
+                    cursor[node] += 1
+                return 0
+
+            while True:
+                pushed = send(source, 10**9)
+                if not pushed:
+                    break
+                flow += pushed
+
+
 def select_balanced(
     rows: list[dict[str, object]], per_set: int, initial_sibling_cap: int
 ) -> list[dict[str, object]]:
-    selected: list[dict[str, object]] = []
-    selected_hashes: set[str] = set()
+    candidates = [
+        row for row in rows
+        if row["valid_sequence"] and not row["exact_known_positive_match"]
+    ]
+    candidates.sort(
+        key=lambda row: (
+            str(row["hotspot_set"]),
+            int(row["mpnn_index"]),
+            int(row["backbone_index"]),
+        )
+    )
+    row_by_edge_key: dict[tuple[str, int, str], dict[str, object]] = {}
+    for row in candidates:
+        key = (
+            str(row["hotspot_set"]),
+            int(row["backbone_index"]),
+            str(row["sequence_sha256"]),
+        )
+        row_by_edge_key.setdefault(key, row)
 
-    for set_id in SETS:
-        candidates = [
-            row for row in rows
-            if row["hotspot_set"] == set_id
-            and row["valid_sequence"]
-            and not row["exact_known_positive_match"]
-        ]
-        candidates.sort(key=lambda row: (row["mpnn_index"], row["backbone_index"]))
-        set_selected: list[dict[str, object]] = []
-        sibling_counts: Counter[int] = Counter()
+    target_total = per_set * len(SETS)
+    for sibling_cap in range(initial_sibling_cap, 9):
+        flow = Dinic()
+        source = flow.node()
+        sink = flow.node()
+        set_nodes = {set_id: flow.node() for set_id in SETS}
+        backbone_nodes = {
+            (set_id, backbone_index): flow.node()
+            for set_id, backbone_index, _ in row_by_edge_key
+        }
+        digest_nodes = {
+            digest: flow.node() for _, _, digest in row_by_edge_key
+        }
 
-        for cap in range(initial_sibling_cap, 9):
-            for row in candidates:
-                if len(set_selected) >= per_set:
-                    break
-                digest = str(row["sequence_sha256"])
-                bb = int(row["backbone_index"])
-                if digest in selected_hashes or sibling_counts[bb] >= cap:
-                    continue
-                selected_hashes.add(digest)
-                sibling_counts[bb] += 1
-                set_selected.append(row)
-            if len(set_selected) >= per_set:
-                break
-
-        if len(set_selected) < per_set:
-            raise RuntimeError(
-                f"hotspot set {set_id} has only {len(set_selected)} selectable unique sequences; "
-                "run a top-up before finalizing"
+        for set_id in SETS:
+            flow.add_edge(source, set_nodes[set_id], per_set)
+        for set_id, backbone_index in backbone_nodes:
+            flow.add_edge(
+                set_nodes[set_id], backbone_nodes[(set_id, backbone_index)], sibling_cap
             )
-        selected.extend(set_selected[:per_set])
-    return selected
+        for digest, node in digest_nodes.items():
+            flow.add_edge(node, sink, 1)
+
+        candidate_edges: list[tuple[FlowEdge, dict[str, object]]] = []
+        for key, row in row_by_edge_key.items():
+            set_id, backbone_index, digest = key
+            edge = flow.add_edge(
+                backbone_nodes[(set_id, backbone_index)], digest_nodes[digest], 1
+            )
+            candidate_edges.append((edge, row))
+
+        achieved = flow.max_flow(source, sink)
+        if achieved == target_total:
+            selected = [
+                row for edge, row in candidate_edges
+                if edge.original_capacity == 1 and edge.capacity == 0
+            ]
+            selected.sort(
+                key=lambda row: (
+                    str(row["hotspot_set"]),
+                    int(row["backbone_index"]),
+                    int(row["mpnn_index"]),
+                )
+            )
+            return selected
+
+    available = Counter(str(row["hotspot_set"]) for row in candidates)
+    raise RuntimeError(
+        f"Could not assign {per_set} globally unique sequences to every hotspot set; "
+        f"maximum flow remained below {target_total}; available={dict(available)}. "
+        "Run a top-up before finalizing."
+    )
 
 
 def write_tsv(path: Path, rows: list[dict[str, object]]) -> None:
@@ -297,16 +479,29 @@ def main() -> None:
     final_dir = args.run_root / "final"
     final_dir.mkdir(parents=True, exist_ok=True)
     leakage_path = args.leakage_reference or args.run_root / "inputs" / "leakage_reference.fasta"
-    leakage_reference = parse_fasta(leakage_path) if leakage_path.exists() else {}
+    if not leakage_path.is_file():
+        raise RuntimeError(f"Required leakage reference is missing: {leakage_path}")
+    leakage_reference = parse_fasta(leakage_path)
+    if not leakage_reference:
+        raise RuntimeError(f"Leakage reference contains no sequences: {leakage_path}")
+
+    validate_generation_shape(
+        args.run_root,
+        args.expected_backbones_per_set,
+        args.expected_sequences_per_backbone,
+    )
+
+    staging_dir = final_dir / f".staging-{os.getpid()}"
+    staging_dir.mkdir(parents=False, exist_ok=False)
     rows = collect(args.run_root, leakage_reference)
-    write_tsv(final_dir / "raw_candidates.tsv", rows)
+    write_tsv(staging_dir / "raw_candidates.tsv", rows)
 
     selected = select_balanced(rows, args.per_set, args.initial_sibling_cap)
     if len(selected) != args.target_count:
         raise RuntimeError(f"selected {len(selected)} rows, expected {args.target_count}")
 
-    write_tsv(final_dir / "pvrig_rfantibody_1000.tsv", selected)
-    with (final_dir / "pvrig_rfantibody_1000.fasta").open("w") as handle:
+    write_tsv(staging_dir / "pvrig_rfantibody_1000.tsv", selected)
+    with (staging_dir / "pvrig_rfantibody_1000.fasta").open("w") as handle:
         for row in selected:
             handle.write(
                 f">{row['candidate_id']}|hotspot_set={row['hotspot_set']}|"
@@ -361,6 +556,9 @@ def main() -> None:
     summary = {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "run_root": str(args.run_root),
+        "generation_shape_validated": True,
+        "expected_backbones_per_hotspot_set": args.expected_backbones_per_set,
+        "expected_sequences_per_backbone": args.expected_sequences_per_backbone,
         "raw_pdb_records": len(rows),
         "raw_valid_records": sum(bool(row["valid_sequence"]) for row in rows),
         "raw_unique_sequences": len(raw_hash_counts),
@@ -386,13 +584,22 @@ def main() -> None:
         "rf2_status": "not_run_by_generation_plan",
         "scientific_boundary": "Generated hotspot-conditioned candidates are not validated binders or blockers.",
     }
-    (final_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    (staging_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
 
-    manifest = []
-    for path in sorted(final_dir.glob("*")):
-        if path.is_file() and path.name != "sha256sums.txt":
-            manifest.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}")
-    (final_dir / "sha256sums.txt").write_text("\n".join(manifest) + "\n")
+    deliverables = [
+        "raw_candidates.tsv",
+        "pvrig_rfantibody_1000.tsv",
+        "pvrig_rfantibody_1000.fasta",
+        "summary.json",
+    ]
+    manifest = [
+        f"{hashlib.sha256((staging_dir / name).read_bytes()).hexdigest()}  {name}"
+        for name in deliverables
+    ]
+    (staging_dir / "sha256sums.txt").write_text("\n".join(manifest) + "\n")
+
+    for name in [*deliverables, "sha256sums.txt"]:
+        (staging_dir / name).replace(final_dir / name)
     print(json.dumps(summary, indent=2))
 
 
