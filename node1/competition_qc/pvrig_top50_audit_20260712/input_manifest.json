@@ -1,0 +1,7 @@
+{
+  "records": 50,
+  "unique_sequences": 50,
+  "source_rank_path": "data/experiments/phase2_5080_v1/predictions/pvrig_candidate_ranking_ai_prior_v2_4_multiseed_ensemble.csv",
+  "source_pool_path": "data/model_data/mvp_candidates_v0.csv",
+  "claim_boundary": "public_dataset_sequences_for_pipeline_audit_not_submission_ready_designs"
+}
