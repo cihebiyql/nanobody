@@ -1587,6 +1587,7 @@ node1/competition_qc/test_vhh_large_scale_screen.py
 node1/competition_qc/vhh_competition_qc.py
 node1/competition_qc/vhh_large_scale_screen.py
 node1/rfantibody_pvrig_1000/README.md
+node1/rfantibody_pvrig_1000/RUN_STATUS.md
 node1/rfantibody_pvrig_1000/config/hotspot_sets.tsv
 node1/rfantibody_pvrig_1000/inputs/pvrig_8x6b_chainT.pdb
 node1/rfantibody_pvrig_1000/scripts/collect_sequences.py

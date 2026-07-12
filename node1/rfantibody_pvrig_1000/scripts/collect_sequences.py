@@ -9,6 +9,7 @@ import hashlib
 import json
 import pickle
 import re
+import statistics
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -202,6 +203,18 @@ def write_tsv(path: Path, rows: list[dict[str, object]]) -> None:
         writer.writerows(rows)
 
 
+def summarize_numeric(values: list[float]) -> dict[str, float | int | None]:
+    clean = [float(value) for value in values if value is not None]
+    if not clean:
+        return {"count": 0, "min": None, "median": None, "max": None}
+    return {
+        "count": len(clean),
+        "min": min(clean),
+        "median": statistics.median(clean),
+        "max": max(clean),
+    }
+
+
 def main() -> None:
     args = parse_args()
     if args.target_count != args.per_set * len(SETS):
@@ -231,6 +244,44 @@ def main() -> None:
     selected_by_backbone = Counter(
         (str(row["hotspot_set"]), int(row["backbone_index"])) for row in selected
     )
+    raw_valid_by_set = Counter(
+        str(row["hotspot_set"]) for row in rows if row["valid_sequence"]
+    )
+    raw_unique_by_set = {
+        set_id: len({
+            str(row["sequence_sha256"])
+            for row in rows
+            if row["hotspot_set"] == set_id and row["valid_sequence"]
+        })
+        for set_id in SETS
+    }
+    pose_distance_summary = {
+        set_id: {
+            "mindist": summarize_numeric([
+                row["rfd_mindist"] for row in rows
+                if row["hotspot_set"] == set_id
+            ]),
+            "averagemin": summarize_numeric([
+                row["rfd_averagemin"] for row in rows
+                if row["hotspot_set"] == set_id
+            ]),
+            "backbones_mindist_le_8A": len({
+                int(row["backbone_index"])
+                for row in rows
+                if row["hotspot_set"] == set_id
+                and row["rfd_mindist"] is not None
+                and float(row["rfd_mindist"]) <= 8.0
+            }),
+            "backbones_mindist_le_10A": len({
+                int(row["backbone_index"])
+                for row in rows
+                if row["hotspot_set"] == set_id
+                and row["rfd_mindist"] is not None
+                and float(row["rfd_mindist"]) <= 10.0
+            }),
+        }
+        for set_id in SETS
+    }
     summary = {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "run_root": str(args.run_root),
@@ -238,6 +289,15 @@ def main() -> None:
         "raw_valid_records": sum(bool(row["valid_sequence"]) for row in rows),
         "raw_unique_sequences": len(raw_hash_counts),
         "raw_duplicate_records": sum(count - 1 for count in raw_hash_counts.values()),
+        "raw_valid_by_hotspot_set": dict(sorted(raw_valid_by_set.items())),
+        "raw_unique_by_hotspot_set": raw_unique_by_set,
+        "raw_sequence_length_distribution": dict(sorted(Counter(
+            int(row["sequence_length"]) for row in rows if row["valid_sequence"]
+        ).items())),
+        "raw_cdr3_length_distribution": dict(sorted(Counter(
+            len(str(row["cdr3"])) for row in rows if row["valid_sequence"]
+        ).items())),
+        "rf_diffusion_hotspot_distance_summary": pose_distance_summary,
         "selected_records": len(selected),
         "selected_unique_sequences": len({row["sequence_sha256"] for row in selected}),
         "selected_by_hotspot_set": dict(sorted(selected_by_set.items())),
