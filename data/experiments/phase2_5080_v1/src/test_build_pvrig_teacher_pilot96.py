@@ -23,6 +23,9 @@ class BuildPilot96TeacherTest(unittest.TestCase):
         self.assertEqual({row["parent_framework_cluster"] for row in rows}, {"h-NbBCII10"})
         self.assertEqual(Counter(row["hotspot_set"] for row in rows), Counter({key: 24 for key in "ABCD"}))
         self.assertEqual({row["formal_model_eligible"] for row in rows}, {"false_single_framework_pilot"})
+        positives = set(MOD.known_positive_sequences(MOD.base.DEFAULT_POSITIVE_ROOT).values())
+        self.assertTrue(positives)
+        self.assertFalse({row["sequence"] for row in rows} & positives)
 
     def test_update_common_preserves_metadata_and_claim_boundary(self) -> None:
         source = {field: f"value_{field}" for field in MOD.METADATA_FIELDS}

@@ -68,6 +68,15 @@ def metadata(row: dict[str, str]) -> dict[str, str]:
     return {field: row.get(field, "") for field in METADATA_FIELDS}
 
 
+def known_positive_sequences(positive_root: Path) -> dict[str, str]:
+    sequences: dict[str, str] = {}
+    for row in base.read_csv(positive_root / "batch_manifest.csv"):
+        candidate_id = base.clean(row["calibration_name"])
+        fasta = base.find_one(positive_root / candidate_id / "inputs", "*.fasta")
+        sequences[candidate_id] = base.read_single_fasta(fasta)
+    return sequences
+
+
 def make_case(row: dict[str, str], work_root: Path) -> base.Case:
     candidate_id = row["candidate_id"]
     workdir = work_root / candidate_id
@@ -134,6 +143,8 @@ def write_audit_markdown(path: Path, audit: dict[str, object]) -> None:
         f"- Pose rows: `{audit['pose_count']}` (maximum `{audit['maximum_pose_count']}`).",
         f"- Contact extraction: `{audit['contact_pose_success_count']}/{audit['pose_count']}`.",
         f"- Complete candidate summaries: `{audit['complete_candidate_count']}/96`.",
+        f"- Candidate ID set consistency: `{audit['candidate_id_set_consistency']}`.",
+        f"- Exact known-positive sequence overlap: `{audit['exact_known_positive_sequence_overlap_count']}`.",
         f"- Parent framework clusters: `{audit['parent_framework_cluster_count']}`.",
         f"- Claim boundary: `{CLAIM_BOUNDARY}`.",
         "",
@@ -207,6 +218,28 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     pose_count_distribution = Counter(int(row["pose_count"]) for row in candidate_rows)
     pose_classes = Counter(base.clean(row["consensus_class"]) for row in pose_rows)
     parent_clusters = {row["parent_framework_cluster"] for row in selection}
+    selection_ids = {row["candidate_id"] for row in selection}
+    candidate_ids = {base.clean(row["candidate_id"]) for row in candidate_rows}
+    pose_ids = {base.clean(row["candidate_id"]) for row in pose_rows}
+    contact_ids = {base.clean(row["candidate_id"]) for row in contact_rows}
+    manifest_ids = {row["candidate_id"] for row in manifest_rows}
+    id_sets = {
+        "selection": selection_ids,
+        "candidate_summary": candidate_ids,
+        "pose_summary": pose_ids,
+        "contact_frequency": contact_ids,
+        "teacher_manifest": manifest_ids,
+    }
+    id_set_consistency = all(values == selection_ids for values in id_sets.values())
+    positives = known_positive_sequences(args.positive_root)
+    positive_sequence_to_ids: dict[str, list[str]] = {}
+    for positive_id, sequence in positives.items():
+        positive_sequence_to_ids.setdefault(sequence, []).append(positive_id)
+    exact_positive_overlaps = {
+        row["candidate_id"]: sorted(positive_sequence_to_ids[row["sequence"]])
+        for row in selection
+        if row["sequence"] in positive_sequence_to_ids
+    }
     audit: dict[str, object] = {
         "status": "PASS",
         "schema_version": SCHEMA_VERSION,
@@ -223,6 +256,22 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "parent_framework_clusters": sorted(parent_clusters),
         "hotspot_counts": dict(sorted(Counter(row["hotspot_set"] for row in selection).items())),
         "formal_model_eligible_counts": dict(sorted(Counter(row["formal_model_eligible"] for row in selection).items())),
+        "candidate_id_counts": {name: len(values) for name, values in id_sets.items()},
+        "candidate_id_set_consistency": id_set_consistency,
+        "unique_candidate_sequence_count": len({row["sequence"] for row in selection}),
+        "known_positive_sequence_count": len(positives),
+        "known_positive_unique_sequence_count": len(set(positives.values())),
+        "exact_known_positive_sequence_overlap_count": len(exact_positive_overlaps),
+        "exact_known_positive_sequence_overlaps": exact_positive_overlaps,
+        "leakage_check_status": (
+            "PASS_NO_EXACT_KNOWN_POSITIVE_SEQUENCE_OVERLAP"
+            if not exact_positive_overlaps
+            else "FAIL_EXACT_KNOWN_POSITIVE_SEQUENCE_OVERLAP"
+        ),
+        "input_sha256": {
+            str(args.selection): sha256_file(args.selection),
+            str(args.positive_root / "batch_manifest.csv"): sha256_file(args.positive_root / "batch_manifest.csv"),
+        },
         "output_sha256": {
             str(candidate_path): sha256_file(candidate_path),
             str(pose_path): sha256_file(pose_path),
@@ -238,6 +287,10 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         audit["status"] = "FAIL_INCOMPLETE_CANDIDATE_SUMMARIES"
     if not args.skip_contacts and audit["contact_pose_failure_count"]:
         audit["status"] = "FAIL_CONTACT_EXTRACTION_INCOMPLETE"
+    if not id_set_consistency:
+        audit["status"] = "FAIL_CANDIDATE_ID_SET_MISMATCH"
+    if exact_positive_overlaps:
+        audit["status"] = "FAIL_EXACT_KNOWN_POSITIVE_SEQUENCE_LEAKAGE"
 
     args.audit_json.parent.mkdir(parents=True, exist_ok=True)
     args.audit_json.write_text(json.dumps(audit, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -251,6 +304,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--selection", type=Path, default=DEFAULT_SELECTION)
     parser.add_argument("--work-root", type=Path, default=DEFAULT_WORK_ROOT)
+    parser.add_argument("--positive-root", type=Path, default=base.DEFAULT_POSITIVE_ROOT)
     parser.add_argument("--prepared-out", type=Path, default=DEFAULT_PREPARED)
     parser.add_argument("--manifest-out", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--audit-json", type=Path, default=DEFAULT_AUDIT_JSON)

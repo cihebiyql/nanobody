@@ -1,5 +1,13 @@
 {
   "candidate_count": 96,
+  "candidate_id_counts": {
+    "candidate_summary": 96,
+    "contact_frequency": 96,
+    "pose_summary": 96,
+    "selection": 96,
+    "teacher_manifest": 96
+  },
+  "candidate_id_set_consistency": true,
   "candidate_pose_count_distribution": {
     "4": 3,
     "5": 6,
@@ -13,6 +21,8 @@
   "complete_candidate_count": 96,
   "contact_pose_failure_count": 0,
   "contact_pose_success_count": 813,
+  "exact_known_positive_sequence_overlap_count": 0,
+  "exact_known_positive_sequence_overlaps": {},
   "formal_model_eligible_counts": {
     "false_single_framework_pilot": 96
   },
@@ -22,6 +32,13 @@
     "C": 24,
     "D": 24
   },
+  "input_sha256": {
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_teacher_pilot96/pvrig_teacher_pilot96_manifest.tsv": "f9a929fe55a0710e611574fa1b5459fd389a03ba5a71ce85a0e982269dda5c49",
+    "/mnt/d/work/\u6297\u4f53/docking/calibration/patent_success_validation/batch_manifest.csv": "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8"
+  },
+  "known_positive_sequence_count": 11,
+  "known_positive_unique_sequence_count": 11,
+  "leakage_check_status": "PASS_NO_EXACT_KNOWN_POSITIVE_SEQUENCE_OVERLAP",
   "maximum_pose_count": 960,
   "minimum_required_pose_count": 384,
   "output_sha256": {
@@ -43,5 +60,6 @@
   },
   "pose_count": 813,
   "schema_version": "pvrig_teacher_pilot96_geometry_v1",
-  "status": "PASS"
+  "status": "PASS",
+  "unique_candidate_sequence_count": 96
 }

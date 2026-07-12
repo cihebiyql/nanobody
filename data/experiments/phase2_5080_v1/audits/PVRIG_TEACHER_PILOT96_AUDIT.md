@@ -5,6 +5,8 @@
 - Pose rows: `813` (maximum `960`).
 - Contact extraction: `813/813`.
 - Complete candidate summaries: `96/96`.
+- Candidate ID set consistency: `True`.
+- Exact known-positive sequence overlap: `0`.
 - Parent framework clusters: `1`.
 - Claim boundary: `prospective_docking_geometry_surrogate_not_binding_or_blocker_proof`.
 
