@@ -47,6 +47,16 @@ class V3P1PilotSmokeTest(unittest.TestCase):
         self.assertEqual(int((weights > 0).sum()), 23)
         self.assertGreater(len(mapping), 100)
 
+    def test_group_split_balances_hotspots(self) -> None:
+        rows = MOD.read_csv(MOD.DEFAULT_SELECTION, delimiter="\t")
+        splits = MOD.pilot_group_splits(rows)
+        counts = {hotspot: 0 for hotspot in "ABCD"}
+        for row in rows:
+            group = f"{row['hotspot_set']}:{row['backbone_index']}"
+            if splits[group] == "dev":
+                counts[row["hotspot_set"]] += 1
+        self.assertTrue(all(5 <= count <= 6 for count in counts.values()))
+
 
 if __name__ == "__main__":
     unittest.main()

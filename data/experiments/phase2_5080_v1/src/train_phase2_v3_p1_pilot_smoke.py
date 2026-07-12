@@ -117,9 +117,27 @@ def read_fasta(path: Path) -> str:
     )
 
 
-def stable_split(group: str) -> str:
-    value = int(hashlib.sha256(f"v3p1-pilot-split\t{group}".encode()).hexdigest()[:8], 16)
-    return "dev" if value % 5 == 0 else "train"
+def pilot_group_splits(rows: Sequence[dict[str, str]], dev_fraction: float = 0.2) -> dict[str, str]:
+    by_hotspot: dict[str, dict[str, int]] = {}
+    for row in rows:
+        hotspot = row["hotspot_set"]
+        group = f"{hotspot}:{row['backbone_index']}"
+        groups = by_hotspot.setdefault(hotspot, {})
+        groups[group] = groups.get(group, 0) + 1
+    splits: dict[str, str] = {}
+    for hotspot, groups in sorted(by_hotspot.items()):
+        target = max(1, round(sum(groups.values()) * dev_fraction))
+        selected = 0
+        ordered = sorted(
+            groups,
+            key=lambda group: hashlib.sha256(f"v3p1-pilot-split\t{group}".encode()).hexdigest(),
+        )
+        for group in ordered:
+            split = "dev" if selected < target else "train"
+            splits[group] = split
+            if split == "dev":
+                selected += groups[group]
+    return splits
 
 
 def parse_residue_label(label: str) -> tuple[str, int, str, str]:
@@ -232,6 +250,7 @@ class PilotTeacherDataset(Dataset):
         contacts: dict[str, dict[str, Any]],
         target_sequence: str,
         pvrig_mapping: dict[tuple[str, int, str], int],
+        group_splits: dict[str, str],
     ):
         self.rows: list[dict[str, Any]] = []
         self.cfg = cfg
@@ -242,7 +261,7 @@ class PilotTeacherDataset(Dataset):
             candidate_id = teacher["candidate_id"]
             source = selection[candidate_id]
             group = f"{source['hotspot_set']}:{source['backbone_index']}"
-            if stable_split(group) != split:
+            if group_splits[group] != split:
                 continue
             if teacher["teacher_completeness"] != "COMPLETE":
                 continue
@@ -523,6 +542,7 @@ def train(cfg: SmokeConfig) -> dict[str, Any]:
     target_sequence = read_fasta(Path(cfg.target_fasta))
     pdb_mapping = pvrig_pdb_to_model_index(Path(cfg.reconciliation_csv), target_sequence)
     hotspot = target_weights(Path(cfg.target_mapping_csv), target_sequence)
+    group_splits = pilot_group_splits(selection_rows)
     datasets = {
         split: PilotTeacherDataset(
             split,
@@ -534,6 +554,7 @@ def train(cfg: SmokeConfig) -> dict[str, Any]:
             contacts,
             target_sequence,
             pdb_mapping,
+            group_splits,
         )
         for split in ("train", "dev")
     }
