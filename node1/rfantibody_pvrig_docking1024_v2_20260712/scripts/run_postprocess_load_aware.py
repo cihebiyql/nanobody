@@ -54,6 +54,16 @@ def allowed_parallel(current_load: float, max_load: float, cores_per_job: int, l
     return max(0, min(limit, int((max_load - current_load) // max(cores_per_job, 1))))
 
 
+def pid_alive(value: object) -> bool:
+    try:
+        os.kill(int(value), 0)
+        return True
+    except (TypeError, ValueError, ProcessLookupError):
+        return False
+    except PermissionError:
+        return True
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-root", type=Path, required=True)
@@ -116,6 +126,9 @@ def main() -> int:
                 continue
             if expected == 0:
                 write_json(state_path, {"candidate_id": candidate, "stage": "dual_baseline_postprocess", "status": "missing", "attempt": state.get("attempt", 0), "message": "no selected HADDOCK model", "updated_at": now()})
+                continue
+            if state.get("status") == "running" and pid_alive(state.get("pid")):
+                pending += 1
                 continue
             attempt = int(state.get("attempt", 0) or 0)
             if state.get("status") == "failed" and attempt >= args.max_attempts:

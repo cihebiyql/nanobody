@@ -75,6 +75,8 @@ def mapped_fit_points(
     mobile_column: str,
     reference_column: str,
     atom_name: str,
+    mobile_chain_override: str | None = None,
+    reference_chain_override: str | None = None,
 ):
     mobile_atoms = atom_lookup(mobile_pdb, atom_name)
     reference_atoms = atom_lookup(reference_pdb, atom_name)
@@ -89,8 +91,10 @@ def mapped_fit_points(
             if not mobile_ref or not reference_ref:
                 skipped += 1
                 continue
-            mobile_atom = mobile_atoms.get((mobile_ref[0], mobile_ref[1]))
-            reference_atom = reference_atoms.get((reference_ref[0], reference_ref[1]))
+            mobile_chain = mobile_chain_override or mobile_ref[0]
+            reference_chain = reference_chain_override or reference_ref[0]
+            mobile_atom = mobile_atoms.get((mobile_chain, mobile_ref[1]))
+            reference_atom = reference_atoms.get((reference_chain, reference_ref[1]))
             if mobile_atom is None or reference_atom is None:
                 skipped += 1
                 continue
@@ -160,6 +164,8 @@ def main() -> None:
             args.mobile_ref_column,
             args.reference_ref_column,
             args.atom_name,
+            args.mobile_chain,
+            args.reference_chain,
         )
         print(
             f'using mapped residue pairs from {args.pair_map_csv}: '

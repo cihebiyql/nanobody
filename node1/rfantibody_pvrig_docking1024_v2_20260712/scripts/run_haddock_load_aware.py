@@ -151,7 +151,20 @@ def main() -> int:
                     },
                 )
                 continue
-            if nbb2_state.get("status") != "success" or not (docking_root / "haddock" / cid / "data" / f"{cid}_vhh_chainA.pdb").is_file():
+            monomer = docking_root / "haddock" / cid / "data" / f"{cid}_vhh_chainA.pdb"
+            if nbb2_state.get("status") == "success" and not monomer.is_file():
+                write_json_atomic(
+                    state_dir / f"{cid}.json",
+                    {
+                        "candidate_id": cid,
+                        "stage": "haddock",
+                        "status": "missing",
+                        "message": "NBB2 state is success but normalized monomer is absent",
+                        "updated_at": utc_now(),
+                    },
+                )
+                continue
+            if nbb2_state.get("status") != "success" or not monomer.is_file():
                 continue
             command = ["bash", str(script), cid]
             print(f"HADDOCK_QUEUE_START cid={cid} load1={current:.2f} time={utc_now()}", flush=True)
