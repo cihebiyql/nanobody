@@ -12,7 +12,7 @@ import pickle
 import re
 import statistics
 import sys
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -258,46 +258,87 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
                 row_by_arm_digest[(arm_id, digest)] = row
         ordered_digests[arm_id] = order
 
-    # Match arm quota slots to globally unique sequence digests. Reassignment avoids
-    # starving later arms when the same MPNN sequence appears in multiple arms.
-    digest_owner: dict[str, tuple[str, int]] = {}
-    sys.setrecursionlimit(max(sys.getrecursionlimit(), target * 2 + 100))
+    class Dinic:
+        def __init__(self, node_count: int) -> None:
+            self.graph: list[list[list[int]]] = [[] for _ in range(node_count)]
 
-    def assign(slot: tuple[str, int], visited: set[str]) -> bool:
-        arm_id = slot[0]
+        def add_edge(self, source: int, target_node: int, capacity: int) -> list[int]:
+            forward = [target_node, len(self.graph[target_node]), capacity]
+            reverse = [source, len(self.graph[source]), 0]
+            self.graph[source].append(forward)
+            self.graph[target_node].append(reverse)
+            return forward
+
+        def max_flow(self, source: int, sink: int, limit: int) -> int:
+            total = 0
+            while total < limit:
+                level = [-1] * len(self.graph)
+                level[source] = 0
+                queue = deque([source])
+                while queue:
+                    node = queue.popleft()
+                    for edge in self.graph[node]:
+                        if edge[2] and level[edge[0]] < 0:
+                            level[edge[0]] = level[node] + 1
+                            queue.append(edge[0])
+                if level[sink] < 0:
+                    break
+                cursor = [0] * len(self.graph)
+
+                def send(node: int, amount: int) -> int:
+                    if node == sink:
+                        return amount
+                    while cursor[node] < len(self.graph[node]):
+                        edge = self.graph[node][cursor[node]]
+                        if edge[2] and level[edge[0]] == level[node] + 1:
+                            pushed = send(edge[0], min(amount, edge[2]))
+                            if pushed:
+                                edge[2] -= pushed
+                                self.graph[edge[0]][edge[1]][2] += pushed
+                                return pushed
+                        cursor[node] += 1
+                    return 0
+
+                while total < limit:
+                    pushed = send(source, limit - total)
+                    if not pushed:
+                        break
+                    total += pushed
+            return total
+
+    all_digests = sorted({digest for digests in ordered_digests.values() for digest in digests})
+    source = 0
+    arm_node = {arm_id: index + 1 for index, arm_id in enumerate(arm_ids)}
+    digest_offset = 1 + len(arm_ids)
+    digest_node = {digest: digest_offset + index for index, digest in enumerate(all_digests)}
+    sink = digest_offset + len(all_digests)
+    flow = Dinic(sink + 1)
+    arm_digest_edges: dict[str, list[tuple[str, list[int]]]] = defaultdict(list)
+
+    for arm_id in arm_ids:
+        flow.add_edge(source, arm_node[arm_id], base)
         for digest in ordered_digests[arm_id]:
-            if digest in visited:
-                continue
-            visited.add(digest)
-            owner = digest_owner.get(digest)
-            if owner is None or assign(owner, visited):
-                digest_owner[digest] = slot
-                return True
-        return False
+            edge = flow.add_edge(arm_node[arm_id], digest_node[digest], 1)
+            arm_digest_edges[arm_id].append((digest, edge))
+    for digest in all_digests:
+        flow.add_edge(digest_node[digest], sink, 1)
 
-    # Allocate slots round-by-round across all arms. This prevents earlier arms
-    # from consuming cross-arm duplicate digests before later arms get a slot.
-    max_rounds = max((len(digests) for digests in ordered_digests.values()), default=0)
-    for slot_index in range(max_rounds):
-        progress = False
-        for arm_id in arm_ids:
-            if len(digest_owner) == target:
-                break
-            if assign((arm_id, slot_index), set()):
-                progress = True
-        if len(digest_owner) == target:
-            break
-        if not progress:
-            break
+    base_target = base * len(arm_ids)
+    base_flow = flow.max_flow(source, sink, base_target)
+    if base_flow != base_target:
+        raise ValueError(f"could not assign balanced base quota: matched={base_flow}/{base_target}")
+    for arm_id in arm_ids:
+        flow.add_edge(source, arm_node[arm_id], 1)
+    extra_flow = flow.max_flow(source, sink, extra)
+    if extra_flow != extra:
+        raise ValueError(f"could not assign balanced extra quota: matched={extra_flow}/{extra}")
 
-    if len(digest_owner) != target:
-        matched_by_arm = Counter(owner[0] for owner in digest_owner.values())
-        raise ValueError(
-            "could not satisfy balanced exact-unique cohort target; "
-            f"matched={len(digest_owner)}/{target} matched_by_arm={dict(sorted(matched_by_arm.items()))}"
-        )
-
-    selected = [row_by_arm_digest[(slot[0], digest)] for digest, slot in digest_owner.items()]
+    selected = [
+        row_by_arm_digest[(arm_id, digest)]
+        for arm_id in arm_ids
+        for digest, edge in arm_digest_edges[arm_id]
+        if edge[2] == 0
+    ]
     selected_sequences = {str(row["sequence_sha256"]) for row in selected}
     selected_by_arm = Counter(str(row["arm_id"]) for row in selected)
     allowed_arm_counts = {base, base + bool(extra)}
