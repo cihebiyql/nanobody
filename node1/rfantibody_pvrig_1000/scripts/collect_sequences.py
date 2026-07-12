@@ -48,7 +48,28 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target-count", type=int, default=1000)
     parser.add_argument("--per-set", type=int, default=250)
     parser.add_argument("--initial-sibling-cap", type=int, default=5)
+    parser.add_argument("--leakage-reference", type=Path, default=None)
     return parser.parse_args()
+
+
+def parse_fasta(path: Path) -> dict[str, list[str]]:
+    by_sequence: dict[str, list[str]] = defaultdict(list)
+    name: str | None = None
+    chunks: list[str] = []
+    for raw_line in path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line.startswith(">"):
+            if name is not None:
+                by_sequence["".join(chunks).upper()].append(name)
+            name = line[1:]
+            chunks = []
+        else:
+            chunks.append(line.replace(" ", ""))
+    if name is not None:
+        by_sequence["".join(chunks).upper()].append(name)
+    return by_sequence
 
 
 def parse_pdb(path: Path) -> tuple[str, dict[str, str], list[str]]:
@@ -125,7 +146,7 @@ def load_trb(path: Path) -> dict[str, object]:
     }
 
 
-def collect(run_root: Path) -> list[dict[str, object]]:
+def collect(run_root: Path, leakage_reference: dict[str, list[str]]) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
     for set_id in SETS:
         sequence_dir = run_root / "sets" / f"set_{set_id}" / "sequences"
@@ -136,6 +157,7 @@ def collect(run_root: Path) -> list[dict[str, object]]:
                 continue
             backbone_index, mpnn_index = map(int, match.groups())
             sequence, cdrs, errors = parse_pdb(pdb_path)
+            leakage_ids = leakage_reference.get(sequence, [])
             backbone_path = backbone_dir / f"design_{backbone_index}.pdb"
             trb_path = backbone_dir / f"design_{backbone_index}.trb"
             trb = load_trb(trb_path) if trb_path.exists() else {}
@@ -155,11 +177,17 @@ def collect(run_root: Path) -> list[dict[str, object]]:
                 "sequence_sha256": hashlib.sha256(sequence.encode()).hexdigest(),
                 "valid_sequence": not errors,
                 "validation_errors": ";".join(sorted(set(errors))),
+                "exact_known_positive_match": bool(leakage_ids),
+                "exact_known_positive_ids": ";".join(leakage_ids),
                 "backbone_pdb": str(backbone_path),
                 "backbone_trb": str(trb_path),
                 "mpnn_pdb": str(pdb_path),
                 "rf2_status": "not_run_by_generation_plan",
-                "final_label": "PASS_SEQUENCE_GENERATION_NEEDS_RF2_DOCKING" if not errors else "FAIL_SEQUENCE_FORMAT",
+                "final_label": (
+                    "FAIL_SEQUENCE_FORMAT" if errors
+                    else "EXCLUDE_EXACT_KNOWN_POSITIVE_CONTROL" if leakage_ids
+                    else "PASS_SEQUENCE_GENERATION_NEEDS_RF2_DOCKING"
+                ),
                 **trb,
             })
     return rows
@@ -174,7 +202,9 @@ def select_balanced(
     for set_id in SETS:
         candidates = [
             row for row in rows
-            if row["hotspot_set"] == set_id and row["valid_sequence"]
+            if row["hotspot_set"] == set_id
+            and row["valid_sequence"]
+            and not row["exact_known_positive_match"]
         ]
         candidates.sort(key=lambda row: (row["mpnn_index"], row["backbone_index"]))
         set_selected: list[dict[str, object]] = []
@@ -232,7 +262,9 @@ def main() -> None:
 
     final_dir = args.run_root / "final"
     final_dir.mkdir(parents=True, exist_ok=True)
-    rows = collect(args.run_root)
+    leakage_path = args.leakage_reference or args.run_root / "inputs" / "leakage_reference.fasta"
+    leakage_reference = parse_fasta(leakage_path) if leakage_path.exists() else {}
+    rows = collect(args.run_root, leakage_reference)
     write_tsv(final_dir / "raw_candidates.tsv", rows)
 
     selected = select_balanced(rows, args.per_set, args.initial_sibling_cap)
@@ -299,6 +331,10 @@ def main() -> None:
         "raw_valid_records": sum(bool(row["valid_sequence"]) for row in rows),
         "raw_unique_sequences": len(raw_hash_counts),
         "raw_duplicate_records": sum(count - 1 for count in raw_hash_counts.values()),
+        "exact_known_positive_reference_sequences": len(leakage_reference),
+        "exact_known_positive_matches": sum(
+            bool(row["exact_known_positive_match"]) for row in rows
+        ),
         "raw_valid_by_hotspot_set": dict(sorted(raw_valid_by_set.items())),
         "raw_unique_by_hotspot_set": raw_unique_by_set,
         "raw_sequence_length_distribution": dict(sorted(Counter(
