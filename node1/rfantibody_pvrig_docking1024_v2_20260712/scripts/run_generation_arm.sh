@@ -13,6 +13,7 @@ SEQS_PER_BACKBONE_OVERRIDE=${SEQS_PER_BACKBONE_OVERRIDE:-}
 export OMP_NUM_THREADS=${OMP_NUM_THREADS:-2}
 export MKL_NUM_THREADS=${MKL_NUM_THREADS:-2}
 export OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-2}
+CPU_NICE=${CPU_NICE:-10}
 
 [[ -s "$ARM_TABLE" ]] || { echo "Missing arm table: $ARM_TABLE" >&2; exit 2; }
 line=$(awk -F $'\t' -v arm="$ARM_ID" 'NR > 1 && $1 == arm { print; found=1; exit } END { if (!found) exit 3 }' "$ARM_TABLE") || {
@@ -106,7 +107,7 @@ missing_backbones=$((target_backbones - existing_backbones))
 if (( missing_backbones > 0 )); then
   echo "[$(date -Is)] arm=$ARM_ID stage=rfdiffusion missing=$missing_backbones gpu=$GPU_ID"
   cd "$RF_ROOT"
-  CUDA_VISIBLE_DEVICES="$GPU_ID" bin/rfdiffusion \
+  CUDA_VISIBLE_DEVICES="$GPU_ID" nice -n "$CPU_NICE" bin/rfdiffusion \
     --target "$TARGET" \
     --framework "$FRAMEWORK" \
     --output "$BACKBONE_DIR/design" \
@@ -147,7 +148,7 @@ pending_count=$(find "$pending_dir" -maxdepth 1 -type l -name 'design_*.pdb' | w
 if (( pending_count > 0 )); then
   echo "[$(date -Is)] arm=$ARM_ID stage=proteinmpnn pending=$pending_count gpu=$GPU_ID"
   cd "$mpnn_work_dir"
-  PYTHONHASHSEED=0 CUDA_VISIBLE_DEVICES="$GPU_ID" "$RF_ROOT/bin/rfantibody-env" \
+  PYTHONHASHSEED=0 CUDA_VISIBLE_DEVICES="$GPU_ID" nice -n "$CPU_NICE" "$RF_ROOT/bin/rfantibody-env" \
     "$RF_ROOT/scripts/proteinmpnn_interface_design.py" \
     -pdbdir "$pending_dir" \
     -outpdbdir "$SEQUENCE_DIR" \

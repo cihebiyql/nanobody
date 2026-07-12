@@ -6,6 +6,7 @@ RUN_ROOT=${RUN_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}
 DOCKING_ROOT=${DOCKING_ROOT:-$RUN_ROOT/docking}
 HADDOCK3=${HADDOCK3:-/data/qlyu/anaconda3/envs/haddock3/bin/haddock3}
 BOLTZ_BIN=${BOLTZ_BIN:-/data/qlyu/anaconda3/envs/boltz/bin}
+CPU_NICE=${CPU_NICE:-15}
 CFG=${CFG:-$DOCKING_ROOT/haddock/$CID/${CID}_pvrig_8x6b_full_interface.cfg}
 LOCKDIR="$DOCKING_ROOT/locks/haddock/$CID.lock"
 STATE="$DOCKING_ROOT/state/haddock/$CID.json"
@@ -70,7 +71,7 @@ fi
 write_state running 0 ""
 echo "HADDOCK_START cid=$CID time=$(date -Is)" | tee -a "$LOG"
 set +e
-(cd "$DOCKING_ROOT/haddock/$CID" && PATH="$BOLTZ_BIN:$PATH" "$HADDOCK3" "$(basename "$CFG")" >>"$LOG" 2>&1)
+(cd "$DOCKING_ROOT/haddock/$CID" && PATH="$BOLTZ_BIN:$PATH" nice -n "$CPU_NICE" "$HADDOCK3" "$(basename "$CFG")" >>"$LOG" 2>&1)
 rc=$?
 set -e
 if [[ $rc -eq 0 ]] && find "$RUN_DIR" -type f \( -name 'cluster_*_model_*.pdb' -o -name 'cluster_*_model_*.pdb.gz' \) -print -quit 2>/dev/null | grep -q .; then

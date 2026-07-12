@@ -2,9 +2,10 @@
 set -Eeuo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
-MAX_LOAD1=${MAX_LOAD1:-72}
-GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-1000}
+MAX_LOAD1=${MAX_LOAD1:-240}
+GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-12000}
 POLL_SECONDS=${POLL_SECONDS:-60}
+export MAX_LOAD1 GPU_MEMORY_GATE_MB
 mkdir -p "$RUN_ROOT"/{logs,status}
 
 exec 9>"$RUN_ROOT/status/generation_controller.lock"

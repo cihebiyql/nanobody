@@ -2,12 +2,14 @@
 set -Eeuo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
-MAX_LOAD1=${MAX_LOAD1:-64}
-GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-1000}
+MAX_LOAD1=${MAX_LOAD1:-240}
+GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-12000}
 POLL_SECONDS=${POLL_SECONDS:-120}
 RF2_MIN_COMPLETE=${RF2_MIN_COMPLETE:-1000}
 NBB2_MIN_SUCCESS=${NBB2_MIN_SUCCESS:-1000}
 HADDOCK_MIN_SUCCESS=${HADDOCK_MIN_SUCCESS:-1000}
+HADDOCK_MAX_PARALLEL=${HADDOCK_MAX_PARALLEL:-2}
+export MAX_LOAD1 GPU_MEMORY_GATE_MB
 BATCH_ROOT="$RUN_ROOT/rf2/multiseed"
 mkdir -p "$RUN_ROOT"/{logs,status,data,rf2,docking,qc,reports}
 
@@ -179,7 +181,7 @@ run_rf2_enrichment >"$RUN_ROOT/logs/rf2_enrichment_controller.log" 2>&1 &
 enrichment_pid=$!
 python3 "$RUN_ROOT/scripts/run_haddock_load_aware.py" \
   --run-root "$RUN_ROOT" --max-load1 "$MAX_LOAD1" --cores-per-job 4 \
-  --max-parallel 8 --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 3 \
+  --max-parallel "$HADDOCK_MAX_PARALLEL" --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 3 \
   >"$RUN_ROOT/logs/haddock_load_aware.log" 2>&1
 wait "$enrichment_pid" || true
 cp "$RUN_ROOT/rf2/results/rf2_multiseed_metrics.tsv" "$RUN_ROOT/data/rf2_metrics.tsv"
@@ -190,7 +192,7 @@ if [[ "$haddock_count" -lt "$HADDOCK_MIN_SUCCESS" ]]; then
   write_state docking_retry "retrying failed HADDOCK candidates up to five attempts"
   python3 "$RUN_ROOT/scripts/run_haddock_load_aware.py" \
     --run-root "$RUN_ROOT" --max-load1 "$MAX_LOAD1" --cores-per-job 4 \
-    --max-parallel 8 --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 5 \
+    --max-parallel "$HADDOCK_MAX_PARALLEL" --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 5 \
     >>"$RUN_ROOT/logs/haddock_load_aware.log" 2>&1
   haddock_count=$(haddock_success_count)
 fi

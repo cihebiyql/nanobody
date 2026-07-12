@@ -3,9 +3,9 @@ set -Eeuo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
 GPU_IDS=${GPU_IDS:-1,2,3,4,5,7}
-GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-1000}
+GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-12000}
 GPU_WAIT_SECONDS=${GPU_WAIT_SECONDS:-60}
-MAX_LOAD1=${MAX_LOAD1:-72}
+MAX_LOAD1=${MAX_LOAD1:-240}
 ARM_TABLE=${ARM_TABLE:-$RUN_ROOT/config/generation_arms.tsv}
 mkdir -p "$RUN_ROOT/logs/generation" "$RUN_ROOT/status/generation"
 

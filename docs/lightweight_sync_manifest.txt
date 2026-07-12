@@ -528,6 +528,7 @@ data/experiments/phase2_5080_v1/src/evaluate_phase2_v2_5_readiness.py
 data/experiments/phase2_5080_v1/src/evaluate_phase2_v3_formal.py
 data/experiments/phase2_5080_v1/src/evaluate_phase2_v3_g2_meanpool_baselines.py
 data/experiments/phase2_5080_v1/src/extract_p3_pose_geometry_features.py
+data/experiments/phase2_5080_v1/src/fast_gate_pvrig_formal_candidates.py
 data/experiments/phase2_5080_v1/src/freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/fuse_phase2_v2_4_p3.py
 data/experiments/phase2_5080_v1/src/fuse_pvrig_v3_structure_evidence.py
@@ -579,6 +580,7 @@ data/experiments/phase2_5080_v1/src/test_build_pvrig_v2_5_assay_execution_packag
 data/experiments/phase2_5080_v1/src/test_collect_pvrig_formal_rfantibody_candidates.py
 data/experiments/phase2_5080_v1/src/test_evaluate_phase2_v3_g2_meanpool_baselines.py
 data/experiments/phase2_5080_v1/src/test_extract_p3_pose_geometry_features.py
+data/experiments/phase2_5080_v1/src/test_fast_gate_pvrig_formal_candidates.py
 data/experiments/phase2_5080_v1/src/test_freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/test_make_rfantibody_hlt_framework.py
 data/experiments/phase2_5080_v1/src/test_phase2_v2_4_pose_fusion.py

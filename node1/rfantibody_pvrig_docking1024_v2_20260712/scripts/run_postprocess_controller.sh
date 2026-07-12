@@ -2,9 +2,10 @@
 set -Eeuo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
-MAX_LOAD1=${MAX_LOAD1:-64}
+MAX_LOAD1=${MAX_LOAD1:-240}
 POLL_SECONDS=${POLL_SECONDS:-120}
 MIN_SUCCESS=${MIN_SUCCESS:-1000}
+POSTPROCESS_MAX_PARALLEL=${POSTPROCESS_MAX_PARALLEL:-2}
 PYTHON=${PYTHON:-/data/qlyu/anaconda3/envs/boltz/bin/python}
 mkdir -p "$RUN_ROOT"/{logs,status,data,reports}
 
@@ -67,7 +68,7 @@ fi
 write_state postprocess_full "running load-aware dual-reference scoring"
 "$PYTHON" "$RUN_ROOT/scripts/run_postprocess_load_aware.py" \
   --run-root "$RUN_ROOT" --python "$PYTHON" --max-load1 "$MAX_LOAD1" \
-  --cores-per-job 2 --max-parallel 8 --poll-seconds "$POLL_SECONDS" --max-attempts 3 \
+  --cores-per-job 2 --max-parallel "$POSTPROCESS_MAX_PARALLEL" --poll-seconds "$POLL_SECONDS" --max-attempts 3 \
   >"$RUN_ROOT/logs/postprocess_load_aware.log" 2>&1
 
 "$PYTHON" "$RUN_ROOT/scripts/aggregate_dual_baseline.py" --run-root "$RUN_ROOT" \

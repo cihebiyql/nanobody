@@ -9,8 +9,9 @@ GPU_IDS=${GPU_IDS:-1,2,3,4,5,7}
 SEEDS=${SEEDS:-42}
 ENABLE_ENRICHMENT_SEEDS=${ENABLE_ENRICHMENT_SEEDS:-0}
 MIN_SEED42_OUTPUTS=${MIN_SEED42_OUTPUTS:-1000}
-MAX_LOAD1=${MAX_LOAD1:-64}
-MAX_GPU_USED_MB=${MAX_GPU_USED_MB:-1000}
+MAX_LOAD1=${MAX_LOAD1:-240}
+MAX_GPU_USED_MB=${MAX_GPU_USED_MB:-12000}
+CPU_NICE=${CPU_NICE:-10}
 export OMP_NUM_THREADS=${OMP_NUM_THREADS:-2}
 export MKL_NUM_THREADS=${MKL_NUM_THREADS:-2}
 export OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-2}
@@ -121,12 +122,12 @@ PY
     rm -f "$exit_file"
     command_file="$shard/rf2_command.sh"
     cat > "$command_file" <<EOF
-CUDA_VISIBLE_DEVICES=$gpu_id $RF2_BIN --input-dir $todo_dir --output-dir $output_dir --num-recycles 10 --hotspot-show-prop 0 --seed $seed
+CUDA_VISIBLE_DEVICES=$gpu_id nice -n $CPU_NICE $RF2_BIN --input-dir $todo_dir --output-dir $output_dir --num-recycles 10 --hotspot-show-prop 0 --seed $seed
 EOF
     (
       export CUDA_VISIBLE_DEVICES="$gpu_id"
       set +e
-      "$RF2_BIN" \
+      nice -n "$CPU_NICE" "$RF2_BIN" \
         --input-dir "$todo_dir" \
         --output-dir "$output_dir" \
         --num-recycles 10 \

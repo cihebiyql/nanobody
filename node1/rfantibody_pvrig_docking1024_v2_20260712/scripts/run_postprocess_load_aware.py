@@ -148,7 +148,13 @@ def main() -> int:
                 "--top-n", "4",
             ]
             log_handle = (log_dir / f"{candidate}.attempt_{attempt}.log").open("wb")
-            process = subprocess.Popen(command, cwd=root, stdout=log_handle, stderr=subprocess.STDOUT)
+            process = subprocess.Popen(
+                command,
+                cwd=root,
+                stdout=log_handle,
+                stderr=subprocess.STDOUT,
+                preexec_fn=lambda: os.nice(10),
+            )
             children[candidate] = (process, log_handle, attempt)
             write_json(state_path, {"candidate_id": candidate, "stage": "dual_baseline_postprocess", "status": "running", "attempt": attempt, "pid": process.pid, "updated_at": now()})
             slots -= 1
