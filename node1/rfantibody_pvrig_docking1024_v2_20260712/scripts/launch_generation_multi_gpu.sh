@@ -97,7 +97,17 @@ for pid in "${pids[@]}"; do
   wait "$pid" || rc=1
 done
 expected_arms=$(awk 'NR > 1 { count++ } END { print count+0 }' "$ARM_TABLE")
-complete_arms=$(find "$RUN_ROOT/generation/arms" -mindepth 2 -maxdepth 2 -type f -name complete.json 2>/dev/null | wc -l | tr -d ' ')
+complete_arms=$(python3 - "$RUN_ROOT" "$ARM_TABLE" <<'PY'
+import csv
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+with open(sys.argv[2], newline="", encoding="utf-8") as handle:
+    arms = list(csv.DictReader(handle, delimiter="\t"))
+print(sum((root / "generation" / "arms" / row["arm_id"] / "complete.json").is_file() for row in arms))
+PY
+)
 if [[ "$rc" -eq 0 && "$complete_arms" -eq "$expected_arms" ]]; then
   date -Is > "$RUN_ROOT/status/generation/all.complete"
 else

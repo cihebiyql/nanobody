@@ -24,6 +24,10 @@
       "path": "scripts/run_generation_controller.sh",
       "sha256": "9fc7311d4d875632e96b8ad87ea02d3a723992b5f5c1503f45d92d45a455f8ad"
     },
+    "generation_launcher": {
+      "path": "scripts/launch_generation_multi_gpu.sh",
+      "sha256": "dac7778ac531572921a0f7060a820df1c43d20f76d9590684f17f282cd1bb270"
+    },
     "generation_status": {
       "path": "scripts/status_generation.py",
       "sha256": "00410b17628d5a088394e758743f7a0dbbccbd109ec728b87664d413a08c4b5d"
