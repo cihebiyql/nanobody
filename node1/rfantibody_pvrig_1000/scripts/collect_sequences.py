@@ -105,9 +105,19 @@ def load_trb(path: Path) -> dict[str, object]:
             final_plddt_mean = float(plddt[-1].mean())
         except (IndexError, TypeError, AttributeError):
             pass
+    mindist = float(data["mindist"]) if "mindist" in data else None
+    if mindist is None:
+        distance_bin = "missing"
+    elif mindist <= 8.0:
+        distance_bin = "le_8A"
+    elif mindist <= 10.0:
+        distance_bin = "8_to_10A"
+    else:
+        distance_bin = "gt_10A"
     return {
-        "rfd_mindist": float(data["mindist"]) if "mindist" in data else None,
+        "rfd_mindist": mindist,
         "rfd_averagemin": float(data["averagemin"]) if "averagemin" in data else None,
+        "rfd_hotspot_distance_bin": distance_bin,
         "rfd_final_plddt_mean": final_plddt_mean,
         "h1_len": int(data["H1_len"]) if "H1_len" in data else None,
         "h2_len": int(data["H2_len"]) if "H2_len" in data else None,
