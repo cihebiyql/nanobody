@@ -1586,6 +1586,7 @@ node1/competition_qc/test_vhh_competition_qc.py
 node1/competition_qc/test_vhh_large_scale_screen.py
 node1/competition_qc/vhh_competition_qc.py
 node1/competition_qc/vhh_large_scale_screen.py
+node1/rfantibody_pvrig_1000/inputs/pvrig_8x6b_chainT.pdb
 positives/known_positive_CDR_table.csv
 positives/known_positive_antibodies.fasta
 positives/mechanism_reference_table.csv
