@@ -85,6 +85,7 @@ def test_generation_status_does_not_report_global_complete_from_controller_marke
 
 def test_primary_arm_table_can_drive_generation_and_freeze() -> None:
     controller = (ROOT / "scripts" / "run_generation_controller.sh").read_text(encoding="utf-8")
+    collector = (ROOT / "scripts" / "collect_and_freeze_candidates.py").read_text(encoding="utf-8")
     rows = read_tsv(ROOT / "config" / "generation_arms_primary.tsv")
 
     assert len(rows) == 36
@@ -92,6 +93,8 @@ def test_primary_arm_table_can_drive_generation_and_freeze() -> None:
     assert "GENERATION_ARM_TABLE" in controller
     assert 'ARM_TABLE="$GENERATION_ARM_TABLE"' in controller
     assert '--arms-path "$GENERATION_ARM_TABLE"' in controller
+    assert '"arm_table_path": str(arms_path)' in collector
+    assert '"generation_execution_policy_sha256"' in collector
 
 
 def test_partial_rf_outputs_do_not_overwrite_existing_frozen_candidates(tmp_path: Path) -> None:

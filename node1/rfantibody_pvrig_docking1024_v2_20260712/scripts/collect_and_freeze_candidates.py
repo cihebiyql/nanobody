@@ -322,6 +322,7 @@ def main() -> int:
     args = parser.parse_args()
 
     arms_path = args.arms_path or args.run_root / "config" / "generation_arms.tsv"
+    execution_policy_path = args.run_root / "config" / "generation_execution_policy.json"
     leakage_path = args.run_root / "inputs" / "leakage_reference.fasta"
     arms = read_tsv(arms_path)
     references = parse_fasta(leakage_path)
@@ -359,7 +360,16 @@ def main() -> int:
         "schema_version": 1,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "run_root": str(args.run_root),
+        "arm_table_path": str(arms_path),
         "arm_table_sha256": sha256_file(arms_path),
+        "generation_execution_policy_path": str(execution_policy_path),
+        "generation_execution_policy_sha256": sha256_file(execution_policy_path) if execution_policy_path.is_file() else "",
+        "arm_count": len(arms),
+        "arm_counts_by_lane": dict(sorted(Counter(row["scaffold_lane"] for row in arms).items())),
+        "expected_backbones_from_arm_table": sum(int(row["target_backbones"]) for row in arms),
+        "expected_sequence_records_from_arm_table": sum(
+            int(row["target_backbones"]) * int(row["seqs_per_backbone"]) for row in arms
+        ),
         "raw_records": len(rows),
         "raw_valid_records": sum(bool(row["valid_sequence"]) for row in rows),
         "raw_unique_sequences": len({row["sequence_sha256"] for row in rows if row["valid_sequence"]}),
