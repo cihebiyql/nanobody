@@ -32,6 +32,11 @@ class Pilot96PackageTest(unittest.TestCase):
         source = 'mode = "local"\nncores = 8\n'
         self.assertEqual(MOD.patch_haddock_config(source), 'mode = "local"\nncores = 4\n')
 
+    def test_controller_uses_same_internal_load_gate(self) -> None:
+        controller = MOD.controller_script()
+        self.assertIn("PVRIG_DOCKING_START_MAX_LOAD1:-48", controller)
+        self.assertIn("PVRIG_INTERNAL_MAX_LOAD1:-48", controller)
+
     def test_current_selection_has_96_rows(self) -> None:
         rows = MOD.read_tsv(MOD.DEFAULT_SELECTION)
         self.assertEqual(len(rows), 96)
