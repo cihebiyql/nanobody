@@ -18,7 +18,7 @@
     },
     "candidate_freezer": {
       "path": "scripts/collect_and_freeze_candidates.py",
-      "sha256": "3f472e7d422bab43dd918e5f610c8be4884fb948ba0c5838dfb6a4d3468a5c9f"
+      "sha256": "01cb37b39bb15c357baa6928159848a839c90ba3754ef1fb729315113fd4d847"
     },
     "full_design_arm_table": {
       "path": "config/generation_arms.tsv",

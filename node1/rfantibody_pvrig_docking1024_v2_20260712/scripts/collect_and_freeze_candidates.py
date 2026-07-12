@@ -221,7 +221,7 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
     if len(arm_ids) != 36:
         raise ValueError(f"expected 36 primary VHHified arms, found {len(arm_ids)}")
 
-    base, extra = divmod(target, len(arm_ids))
+    ideal_base, _ = divmod(target, len(arm_ids))
 
     def priority(row: dict[str, object]) -> tuple[object, ...]:
         return (
@@ -312,26 +312,42 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
     digest_offset = 1 + len(arm_ids)
     digest_node = {digest: digest_offset + index for index, digest in enumerate(all_digests)}
     sink = digest_offset + len(all_digests)
-    flow = Dinic(sink + 1)
-    arm_digest_edges: dict[str, list[tuple[str, list[int]]]] = defaultdict(list)
+    def build_network(base_capacity: int) -> tuple[Dinic, dict[str, list[tuple[str, list[int]]]]]:
+        network = Dinic(sink + 1)
+        edge_map: dict[str, list[tuple[str, list[int]]]] = defaultdict(list)
+        for arm_id in arm_ids:
+            network.add_edge(source, arm_node[arm_id], base_capacity)
+            for digest in ordered_digests[arm_id]:
+                edge = network.add_edge(arm_node[arm_id], digest_node[digest], 1)
+                edge_map[arm_id].append((digest, edge))
+        for digest in all_digests:
+            network.add_edge(digest_node[digest], sink, 1)
+        return network, edge_map
 
-    for arm_id in arm_ids:
-        flow.add_edge(source, arm_node[arm_id], base)
-        for digest in ordered_digests[arm_id]:
-            edge = flow.add_edge(arm_node[arm_id], digest_node[digest], 1)
-            arm_digest_edges[arm_id].append((digest, edge))
-    for digest in all_digests:
-        flow.add_edge(digest_node[digest], sink, 1)
+    base_capacity = ideal_base
+    while base_capacity >= 0:
+        flow, arm_digest_edges = build_network(base_capacity)
+        base_target = base_capacity * len(arm_ids)
+        if flow.max_flow(source, sink, base_target) == base_target:
+            break
+        base_capacity -= 1
+    if base_capacity < 0:
+        raise ValueError("could not construct a balanced exact-unique base cohort")
 
-    base_target = base * len(arm_ids)
-    base_flow = flow.max_flow(source, sink, base_target)
-    if base_flow != base_target:
-        raise ValueError(f"could not assign balanced base quota: matched={base_flow}/{base_target}")
-    for arm_id in arm_ids:
-        flow.add_edge(source, arm_node[arm_id], 1)
-    extra_flow = flow.max_flow(source, sink, extra)
-    if extra_flow != extra:
-        raise ValueError(f"could not assign balanced extra quota: matched={extra_flow}/{extra}")
+    remaining = target - base_capacity * len(arm_ids)
+    extra_rounds = 0
+    while remaining > 0:
+        for arm_id in arm_ids:
+            flow.add_edge(source, arm_node[arm_id], 1)
+        gained = flow.max_flow(source, sink, min(remaining, len(arm_ids)))
+        extra_rounds += 1
+        remaining -= gained
+        if gained == 0:
+            break
+    if remaining:
+        raise ValueError(
+            f"could not reach exact-unique cohort target after balanced relaxation: missing={remaining} target={target}"
+        )
 
     selected = [
         row_by_arm_digest[(arm_id, digest)]
@@ -341,12 +357,12 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
     ]
     selected_sequences = {str(row["sequence_sha256"]) for row in selected}
     selected_by_arm = Counter(str(row["arm_id"]) for row in selected)
-    allowed_arm_counts = {base, base + bool(extra)}
     if (
         len(selected) != target
         or len(selected_sequences) != target
-        or set(selected_by_arm.values()) - allowed_arm_counts
         or len(selected_by_arm) != len(arm_ids)
+        or min(selected_by_arm.values()) < base_capacity
+        or max(selected_by_arm.values()) > base_capacity + extra_rounds
     ):
         raise ValueError(
             f"invalid matched cohort: selected={len(selected)} unique={len(selected_sequences)} "
@@ -356,7 +372,7 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
     for rank, row in enumerate(selected, start=1):
         row["docking_cohort_rank"] = rank
         row["selected_for_docking"] = True
-        row["selection_policy"] = "primary_vhhified_balanced_round_robin_bipartite_exact_unique_backbone_rfd_geometry_priority"
+        row["selection_policy"] = "primary_vhhified_adaptive_balanced_maxflow_exact_unique_backbone_round_robin_rfd_geometry_priority"
     return selected
 
 
@@ -449,6 +465,7 @@ def main() -> int:
         "selected_exact_unique_sequences": len({row["sequence_sha256"] for row in selected}),
         "selected_unique_backbones": len(selected_backbones),
         "selected_max_siblings_per_backbone": max(selected_backbones.values()),
+        "selected_by_arm": dict(sorted(Counter(str(row["arm_id"]) for row in selected).items())),
         "selected_by_patch": dict(sorted(Counter(str(row["patch_id"]) for row in selected).items())),
         "selected_by_scaffold": dict(sorted(Counter(str(row["scaffold_id"]) for row in selected).items())),
         "selected_by_h3_regime": dict(sorted(Counter(str(row["h3_regime"]) for row in selected).items())),
