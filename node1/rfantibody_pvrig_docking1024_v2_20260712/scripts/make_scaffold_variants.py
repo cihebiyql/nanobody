@@ -68,11 +68,13 @@ def label_lines(path: Path) -> list[str]:
 
 
 def restore_labels(path: Path, labels: list[str]) -> None:
-    lines = [
-        line
-        for line in path.read_text(encoding="ascii", errors="replace").splitlines()
-        if not line.startswith("REMARK PDBinfo-LABEL:") and line != "END"
-    ]
+    lines = []
+    for line in path.read_text(encoding="ascii", errors="replace").splitlines():
+        if line.startswith("REMARK PDBinfo-LABEL:") or line == "END":
+            continue
+        if line.startswith(("ATOM  ", "HETATM")) and len(line) > 21:
+            line = line[:21] + "H" + line[22:]
+        lines.append(line)
     lines.extend(labels)
     lines.append("END")
     path.write_text("\n".join(lines) + "\n", encoding="ascii")
@@ -90,8 +92,10 @@ def ensure_terminal_vtvss(pose) -> bool:
     pose.append_residue_by_bond(ResidueFactory.create_residue(serine_type), True)
     new_terminal = pose.size()
     add_variant_type_to_pose_residue(pose, VariantType.UPPER_TERMINUS_VARIANT, new_terminal)
-    pose.pdb_info().chain(new_terminal, "H")
-    pose.pdb_info().number(new_terminal, pose.pdb_info().number(terminal) + 1)
+    # Appending can rebuild PDBInfo and reset the whole single chain to A.
+    for index in range(1, pose.size() + 1):
+        pose.pdb_info().chain(index, "H")
+        pose.pdb_info().number(index, index)
     return True
 
 
