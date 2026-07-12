@@ -8,6 +8,17 @@ RUN_LABEL=${RUN_LABEL:-sequence_qc_fr4_restored}
 TOOL=${TOOL:-/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen}
 POSITIVE_CDRS=${POSITIVE_CDRS:-/data/qlyu/software/vhh_eval_tools/references/local_pvrig_positive_vhh_cdrs.csv}
 MAX_LOAD1=${MAX_LOAD1:-64}
+FAST_CHUNK_SIZE=${FAST_CHUNK_SIZE:-250}
+CHUNK_JOBS=${CHUNK_JOBS:-2}
+FULL_QC_LIMIT=${FULL_QC_LIMIT:-300}
+FULL_CHUNK_SIZE=${FULL_CHUNK_SIZE:-100}
+FULL_CHUNK_JOBS=${FULL_CHUNK_JOBS:-1}
+GEOMETRY_POOL_SIZE=${GEOMETRY_POOL_SIZE:-150}
+GEOMETRY_LIMIT=${GEOMETRY_LIMIT:-50}
+GEOMETRY_CLUSTER_LIMIT=${GEOMETRY_CLUSTER_LIMIT:-3}
+WORKERS=${WORKERS:-16}
+TNP_NCORES=${TNP_NCORES:-4}
+IDENTITY_CACHE_SIZE=${IDENTITY_CACHE_SIZE:-500000}
 LOG_DIR=$RUN_ROOT/logs
 PID_FILE=$RUN_ROOT/manifests/$RUN_LABEL.pid
 LOG_FILE=$LOG_DIR/$RUN_LABEL.log
@@ -60,17 +71,17 @@ fi
 command=(
   "$TOOL" "$INPUT" -o "$OUT"
   --stage all
-  --fast-chunk-size 250
-  --chunk-jobs 2
-  --full-qc-limit 300
-  --full-chunk-size 100
-  --full-chunk-jobs 1
-  --geometry-pool-size 150
-  --geometry-limit 50
-  --geometry-cluster-limit 3
-  --workers 16
-  --tnp-ncores 4
-  --identity-cache-size 500000
+  --fast-chunk-size "$FAST_CHUNK_SIZE"
+  --chunk-jobs "$CHUNK_JOBS"
+  --full-qc-limit "$FULL_QC_LIMIT"
+  --full-chunk-size "$FULL_CHUNK_SIZE"
+  --full-chunk-jobs "$FULL_CHUNK_JOBS"
+  --geometry-pool-size "$GEOMETRY_POOL_SIZE"
+  --geometry-limit "$GEOMETRY_LIMIT"
+  --geometry-cluster-limit "$GEOMETRY_CLUSTER_LIMIT"
+  --workers "$WORKERS"
+  --tnp-ncores "$TNP_NCORES"
+  --identity-cache-size "$IDENTITY_CACHE_SIZE"
   --local-positive-cdr-csv "$POSITIVE_CDRS"
 )
 
