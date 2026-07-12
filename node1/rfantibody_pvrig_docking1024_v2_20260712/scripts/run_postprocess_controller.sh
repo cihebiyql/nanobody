@@ -84,5 +84,8 @@ write_state final_dataset "building leakage-safe final training tables"
   --haddock-root "$RUN_ROOT/docking/haddock" --mode final \
   >"$RUN_ROOT/logs/build_training_dataset_final.log" 2>&1
 
+"$PYTHON" "$RUN_ROOT/scripts/write_final_report.py" --run-root "$RUN_ROOT" \
+  >"$RUN_ROOT/logs/write_final_report.log" 2>&1
+
 write_state complete "raw docking and dual-reference training dataset complete"
 date -Is > "$RUN_ROOT/status/postprocess_controller.complete"

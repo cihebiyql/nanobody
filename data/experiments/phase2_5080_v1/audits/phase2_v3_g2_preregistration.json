@@ -83,6 +83,11 @@
         "event": "aborted_seed83_start_before_first_training_step",
         "impact": "no epoch, checkpoint, prediction, or test metric was produced; restarted after path-resolution cache optimization",
         "scope": "cache-loading and baseline-evaluation startup only"
+      },
+      {
+        "event": "aborted_seed83_start_before_first_training_step",
+        "impact": "no epoch, checkpoint, prediction, or test metric was produced; restarted from a hash-identical native-filesystem cache mirror",
+        "scope": "cache-loading and baseline-evaluation startup only"
       }
     ],
     "test_use": "one final evaluation per frozen seed; no hyperparameter changes under the same version after test synthesis"
@@ -151,6 +156,12 @@
       "target_swap_weight": 0.1,
       "use_amp": true,
       "weight_decay": 0.0001
+    },
+    "runtime_cache_mirror": {
+      "path": "/tmp/pvrig_v3_g2_residue_cache_v1/manifest.csv",
+      "policy": "runtime-only dereferenced mirror on WSL native filesystem; manifest and tensor contents unchanged",
+      "sha256": "958a0f28a7d6fdebbf08c8cd4934c7aa1ed60b3dc73dd492dc322fe99e4314fb",
+      "source_sha256": "958a0f28a7d6fdebbf08c8cd4934c7aa1ed60b3dc73dd492dc322fe99e4314fb"
     },
     "sha256": "2f9f1f9041e2c315b1c97ec6aa91b04e05773c83f6416a7486607045c531828a",
     "validated_smoke_summary": "experiments/phase2_5080_v1/runs/phase2_v3_g2_generic_smoke/phase2_v3_g2_generic_20260713_002325_seed83/summary.json",
