@@ -182,6 +182,8 @@ python3 "$RUN_ROOT/scripts/run_haddock_load_aware.py" \
   --max-parallel 8 --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 3 \
   >"$RUN_ROOT/logs/haddock_load_aware.log" 2>&1
 wait "$enrichment_pid" || true
+cp "$RUN_ROOT/rf2/results/rf2_multiseed_metrics.tsv" "$RUN_ROOT/data/rf2_metrics.tsv"
+cp "$RUN_ROOT/rf2/results/rf2_multiseed_candidate_gates.tsv" "$RUN_ROOT/data/rf2_candidate_gates.tsv"
 
 haddock_count=$(haddock_success_count)
 if [[ "$haddock_count" -lt "$HADDOCK_MIN_SUCCESS" ]]; then
