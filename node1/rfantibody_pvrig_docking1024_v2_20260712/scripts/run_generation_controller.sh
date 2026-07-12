@@ -24,7 +24,7 @@ wait_for_capacity() {
       used=$(nvidia-smi --id="$gpu" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ')
       [[ "$used" -lt "$GPU_MEMORY_GATE_MB" ]] || busy+=("$gpu:$used")
     done
-    if awk -v load="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(load < limit) }' && [[ ${#busy[@]} -eq 0 ]]; then
+    if awk -v current="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(current < limit) }' && [[ ${#busy[@]} -eq 0 ]]; then
       return
     fi
     echo "CAPACITY_WAIT load1=$load1 max_load1=$MAX_LOAD1 busy_gpus=${busy[*]:-none} time=$(date -Is)"

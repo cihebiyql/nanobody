@@ -46,7 +46,7 @@ wait_for_generation() {
 wait_for_load() {
   while true; do
     load1=$(cut -d' ' -f1 /proc/loadavg)
-    if awk -v load="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(load < limit) }'; then return; fi
+    if awk -v current="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(current < limit) }'; then return; fi
     echo "LOAD_WAIT load1=$load1 threshold=$MAX_LOAD1 time=$(date -Is)"
     sleep "$POLL_SECONDS"
   done

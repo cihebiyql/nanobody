@@ -25,7 +25,7 @@ wait_for_load() {
   local load1
   while true; do
     load1=$(cut -d' ' -f1 /proc/loadavg)
-    if awk -v load="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(load < limit) }'; then
+    if awk -v current="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(current < limit) }'; then
       return
     fi
     echo "RF2_LOAD_WAIT load1=$load1 threshold=$MAX_LOAD1 time=$(date -Is)"
