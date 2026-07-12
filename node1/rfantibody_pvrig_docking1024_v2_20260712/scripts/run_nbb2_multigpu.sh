@@ -13,6 +13,7 @@ NBB2_THREADS=${NBB2_THREADS:-2}
 MAX_LOAD1=${MAX_LOAD1:-48}
 LOAD_WAIT_SECONDS=${LOAD_WAIT_SECONDS:-60}
 HELPERS=${HELPERS:-$RUN_ROOT/scripts/docking_helpers}
+CANDIDATE_LIMIT=${CANDIDATE_LIMIT:-0}
 
 mkdir -p "$DOCKING_ROOT"/{locks/nbb2,state/nbb2,logs/nbb2,monomer,reports}
 [[ -s "$MANIFEST" ]] || { echo "Missing manifest: $MANIFEST" >&2; exit 2; }
@@ -148,6 +149,9 @@ run_gpu_lane() {
   while IFS=$'\t' read -r cid seq _rest; do
     [[ "$cid" == candidate_id ]] && continue
     [[ -z "$cid" ]] && continue
+    if (( CANDIDATE_LIMIT > 0 && index >= CANDIDATE_LIMIT )); then
+      break
+    fi
     if (( index % total == ordinal )); then
       run_candidate "$cid" "$seq" "$gpu"
     fi

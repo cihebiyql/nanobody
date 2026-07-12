@@ -664,6 +664,7 @@ def default_path(root: Path, *names: str) -> Path:
 
 
 def parse_args() -> argparse.Namespace:
+    project_root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input-dir", type=Path, default=Path("data"))
     parser.add_argument("--output-dir", type=Path, default=Path("data/training_dataset"))
@@ -680,7 +681,7 @@ def parse_args() -> argparse.Namespace:
     args.rf2_metrics = args.rf2_metrics or default_path(args.input_dir, "rf2_metrics.tsv")
     args.monomer_qc = args.monomer_qc or default_path(args.input_dir, "monomer_qc.tsv", "nbb2_qc.tsv")
     args.docking_runs = args.docking_runs or default_path(args.input_dir, "docking_runs.tsv")
-    args.haddock_root = args.haddock_root or default_path(args.input_dir, "haddock_runs", "docking_runs_raw")
+    args.haddock_root = args.haddock_root or project_root / "docking" / "haddock"
     args.baseline_postprocess = args.baseline_postprocess or default_path(args.input_dir, "baseline_postprocess.tsv", "dual_baseline_postprocess.tsv")
     return args
 

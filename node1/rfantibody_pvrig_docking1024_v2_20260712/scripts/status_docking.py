@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -30,11 +31,37 @@ def status_for(path: Path) -> str:
     return status if status in STATES else "pending"
 
 
+def write_tsv(path: Path, rows: list[dict[str, object]], fields: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, delimiter="\t", extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+    os.replace(tmp, path)
+
+
+def geometry_metrics(path: Path) -> dict[str, object]:
+    report = read_json(path)
+    chain = report.get("chains", {}).get("A", {}) if isinstance(report.get("chains"), dict) else {}
+    return {
+        "monomer_qc_score": 1.0 if chain.get("likely_sane_backbone") else 0.0,
+        "monomer_clash_score": "",
+        "ca_count": chain.get("ca_count", ""),
+        "adjacent_ca_distance_min": chain.get("adjacent_ca_distance_min", ""),
+        "adjacent_ca_distance_median": chain.get("adjacent_ca_distance_median", ""),
+        "adjacent_ca_distance_max": chain.get("adjacent_ca_distance_max", ""),
+        "adjacent_ca_distance_gt_6A": chain.get("adjacent_ca_distance_gt_6A", ""),
+        "likely_sane_backbone": chain.get("likely_sane_backbone", False),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--manifest", type=Path, default=None)
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--export-dir", type=Path, default=None)
     args = parser.parse_args()
     run_root = args.run_root.resolve()
     docking_root = run_root / "docking"
@@ -42,6 +69,8 @@ def main() -> int:
     rows = read_manifest(manifest) if manifest.is_file() else []
     candidate_ids = [row["candidate_id"] for row in rows]
     per_candidate = []
+    monomer_rows: list[dict[str, object]] = []
+    docking_rows: list[dict[str, object]] = []
     nbb2_counts: Counter[str] = Counter()
     haddock_counts: Counter[str] = Counter()
     for cid in candidate_ids:
@@ -58,6 +87,33 @@ def main() -> int:
             "cfg_present": bool(list((docking_root / "haddock" / cid).glob("*.cfg"))),
         }
         per_candidate.append(row)
+        geometry_path = docking_root / "reports" / f"{cid}_monomer_geometry_qc.json"
+        seq_path = docking_root / "reports" / f"{cid}_sequence_validation.json"
+        monomer_rows.append(
+            {
+                "candidate_id": cid,
+                "nbb2_status": nbb2,
+                "monomer_pdb": str(docking_root / "monomer" / cid / f"{cid}_vhh_chainA.pdb"),
+                "geometry_report": str(geometry_path),
+                "sequence_validation_report": str(seq_path),
+                "sequence_exact_match": bool(read_json(seq_path).get("exact_match")),
+                **geometry_metrics(geometry_path),
+            }
+        )
+        run_dir = docking_root / "haddock" / cid / f"run_{cid}_pvrig_8x6b_full_interface"
+        selected = sorted(run_dir.rglob("cluster_*_model_*.pdb")) + sorted(run_dir.rglob("cluster_*_model_*.pdb.gz"))
+        docking_rows.append(
+            {
+                "candidate_id": cid,
+                "docking_status": "completed" if haddock == "success" and selected else haddock,
+                "run_id": f"{cid}_pvrig_8x6b_full_interface",
+                "run_dir": str(run_dir),
+                "selected_model_count": len(selected),
+                "selected_model_path": str(selected[0]) if selected else "",
+                "state_file": str(docking_root / "state" / "haddock" / f"{cid}.json"),
+                "missingness_reason": "" if selected else "no_selected_haddock_model",
+            }
+        )
     payload = {
         "schema_version": 1,
         "updated_at": datetime.now(timezone.utc).isoformat(),
@@ -73,6 +129,30 @@ def main() -> int:
         },
         "candidates": per_candidate,
     }
+    if args.export_dir:
+        write_tsv(
+            args.export_dir / "monomer_qc.tsv",
+            monomer_rows,
+            [
+                "candidate_id", "nbb2_status", "monomer_pdb", "geometry_report",
+                "sequence_validation_report", "sequence_exact_match", "monomer_qc_score",
+                "monomer_clash_score", "ca_count", "adjacent_ca_distance_min",
+                "adjacent_ca_distance_median", "adjacent_ca_distance_max",
+                "adjacent_ca_distance_gt_6A", "likely_sane_backbone",
+            ],
+        )
+        write_tsv(
+            args.export_dir / "docking_runs.tsv",
+            docking_rows,
+            [
+                "candidate_id", "docking_status", "run_id", "run_dir",
+                "selected_model_count", "selected_model_path", "state_file", "missingness_reason",
+            ],
+        )
+        payload["exports"] = {
+            "monomer_qc": str(args.export_dir / "monomer_qc.tsv"),
+            "docking_runs": str(args.export_dir / "docking_runs.tsv"),
+        }
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:

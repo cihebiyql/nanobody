@@ -13,10 +13,20 @@ LOG="$DOCKING_ROOT/logs/haddock/${CID}.log"
 RUN_DIR="$DOCKING_ROOT/haddock/$CID/run_${CID}_pvrig_8x6b_full_interface"
 
 mkdir -p "$DOCKING_ROOT"/{locks/haddock,state/haddock,logs/haddock,reports}
+PREVIOUS_ATTEMPT=$(python3 - "$STATE" <<'PY'
+import json
+import sys
+try:
+    print(int(json.load(open(sys.argv[1])).get("attempt", 0)))
+except Exception:
+    print(0)
+PY
+)
+ATTEMPT=$((PREVIOUS_ATTEMPT + 1))
 
 write_state() {
   local status=$1 rc=${2:-0} message=${3:-}
-  python3 - "$STATE" "$CID" "$status" "$rc" "$message" <<'PY'
+  python3 - "$STATE" "$CID" "$status" "$rc" "$message" "$ATTEMPT" <<'PY'
 import json, os, sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,6 +38,7 @@ payload = {
     "pid": os.getppid(),
     "return_code": int(sys.argv[4]),
     "message": sys.argv[5],
+    "attempt": int(sys.argv[6]),
     "updated_at": datetime.now(timezone.utc).isoformat(),
 }
 tmp = path.with_name(f".{path.name}.tmp")

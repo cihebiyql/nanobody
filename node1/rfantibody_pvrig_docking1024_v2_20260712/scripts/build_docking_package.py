@@ -78,6 +78,20 @@ def read_hotspots(path: Path) -> list[int]:
     return hotspots
 
 
+def pdb_chain_residues(path: Path) -> dict[str, set[int]]:
+    chains: dict[str, set[int]] = {}
+    for line in path.read_text(encoding="ascii", errors="replace").splitlines():
+        if not line.startswith("ATOM") or len(line) < 27:
+            continue
+        chain = line[21].strip()
+        try:
+            residue = int(line[22:26])
+        except ValueError:
+            continue
+        chains.setdefault(chain, set()).add(residue)
+    return chains
+
+
 def write_restraints(path: Path, cdr_residues: list[int], hotspots: list[int], receptor_chain: str) -> None:
     lines: list[str] = [
         f"! policy: {RESTRAINT_POLICY}",
@@ -183,6 +197,12 @@ def build_package(
         if not path.is_file():
             raise ValueError(f"missing required input asset: {path}")
     hotspots = read_hotspots(hotspot_path)
+    receptor_chains = pdb_chain_residues(receptor_path)
+    if receptor_chain not in receptor_chains:
+        raise ValueError(f"receptor chain {receptor_chain!r} is absent from {receptor_path}")
+    missing_hotspots = sorted(set(hotspots) - receptor_chains[receptor_chain])
+    if missing_hotspots:
+        raise ValueError(f"receptor is missing hotspot residues: {missing_hotspots}")
 
     docking_root = run_root / "docking"
     manifest_rows: list[dict[str, object]] = []

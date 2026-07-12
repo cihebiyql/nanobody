@@ -50,8 +50,12 @@ def pid_alive(pid: object) -> bool:
         return True
 
 
-def terminal_status(state: dict[str, object]) -> str | None:
+def terminal_status(
+    state: dict[str, object], retry_failed: bool = False, max_attempts: int = 1
+) -> str | None:
     status = str(state.get("status") or "")
+    if status == "failed" and retry_failed and int(state.get("attempt", 0) or 0) < max_attempts:
+        return None
     if status in {"success", "failed", "missing"}:
         return status
     if status == "running" and pid_alive(state.get("pid")):
@@ -85,6 +89,8 @@ def main() -> int:
     parser.add_argument("--poll-seconds", type=float, default=60.0)
     parser.add_argument("--once", action="store_true", help="perform one scheduling pass, useful for tests")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--retry-failed", action="store_true")
+    parser.add_argument("--max-attempts", type=int, default=2)
     args = parser.parse_args()
 
     run_root = args.run_root.resolve()
@@ -126,7 +132,7 @@ def main() -> int:
                 break
             cid = row["candidate_id"]
             state = read_json(state_dir / f"{cid}.json")
-            status = terminal_status(state)
+            status = terminal_status(state, args.retry_failed, args.max_attempts)
             if status in {"success", "failed", "missing", "running"}:
                 continue
             if completed_haddock_model(run_root, cid):
@@ -144,7 +150,14 @@ def main() -> int:
             launched_this_pass += 1
             launched_once = True
 
-        all_states = [terminal_status(read_json(state_dir / f"{row['candidate_id']}.json")) for row in rows]
+        all_states = [
+            terminal_status(
+                read_json(state_dir / f"{row['candidate_id']}.json"),
+                args.retry_failed,
+                args.max_attempts,
+            )
+            for row in rows
+        ]
         if all(status in {"success", "failed", "missing"} for status in all_states) and not children:
             return 0
         if args.once or (args.dry_run and launched_once):

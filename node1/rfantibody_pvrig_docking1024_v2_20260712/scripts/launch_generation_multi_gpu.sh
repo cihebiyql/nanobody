@@ -9,6 +9,32 @@ MAX_LOAD1=${MAX_LOAD1:-56}
 ARM_TABLE=${ARM_TABLE:-$RUN_ROOT/config/generation_arms.tsv}
 mkdir -p "$RUN_ROOT/logs/generation" "$RUN_ROOT/status/generation"
 
+python3 - "$RUN_ROOT" "$ARM_TABLE" <<'PY'
+import csv
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+manifest = json.loads((root / "inputs/scaffolds/scaffold_manifest.json").read_text())
+by_id = {row["scaffold_id"]: row for row in manifest["variants"]}
+with open(sys.argv[2], newline="", encoding="utf-8") as handle:
+    arms = list(csv.DictReader(handle, delimiter="\t"))
+for arm in arms:
+    scaffold = root / arm["framework_relpath"]
+    row = by_id[arm["scaffold_id"]]
+    digest = hashlib.sha256(scaffold.read_bytes()).hexdigest()
+    if digest != row["sha256"]:
+        raise SystemExit(f"scaffold SHA mismatch: {scaffold}")
+    text = scaffold.read_text(encoding="ascii", errors="replace")
+    if not all(f" {label}" in text for label in ("H1", "H2", "H3")):
+        raise SystemExit(f"scaffold labels missing: {scaffold}")
+    if arm["scaffold_lane"] == "primary_vhhified" and not row["sequence"].endswith("VTVSS"):
+        raise SystemExit(f"primary scaffold lacks VTVSS: {scaffold}")
+print(f"generation preflight passed for {len(arms)} arms")
+PY
+
 wait_for_gpu() {
   local gpu=$1
   while true; do
