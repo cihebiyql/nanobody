@@ -7,6 +7,7 @@ GPU_ID=${DOCKING_GPU_ID:-1}
 MAX_LOAD1=${DOCKING_MAX_LOAD1:-64}
 LOAD_WAIT_SECONDS=${DOCKING_LOAD_WAIT_SECONDS:-60}
 NBB2=/data/qlyu/anaconda3/envs/boltz/bin/NanoBodyBuilder2
+BOLTZ_BIN=/data/qlyu/anaconda3/envs/boltz/bin
 HADDOCK3=/data/qlyu/anaconda3/envs/haddock3/bin/haddock3
 EVIDENCE_BOUNDARY=guided_docking_geometry_proxy_not_binding_or_blocker_proof
 
@@ -48,10 +49,12 @@ if [[ "$MODE" == "monomer" || "$MODE" == "all" ]]; then
       wait_for_load
       wait_for_gpu
       echo "NBB2_START cid=$cid gpu=$GPU_ID time=$(date -Is)"
-      CUDA_VISIBLE_DEVICES="$GPU_ID" "$NBB2" -H "$seq" -o "$raw" --n_threads 2 -v >"logs/${cid}_nanobodybuilder2.log" 2>&1
+      CUDA_VISIBLE_DEVICES="$GPU_ID" PATH="$BOLTZ_BIN:$PATH" \
+        "$NBB2" -H "$seq" -o "$raw" --n_threads 2 -v >"logs/${cid}_nanobodybuilder2.log" 2>&1
       rc=$?
       if [[ $rc -ne 0 ]]; then
-        CUDA_VISIBLE_DEVICES="$GPU_ID" "$NBB2" -H "$seq" -o "$raw" --n_threads 2 -u -v >"logs/${cid}_nanobodybuilder2_unrefined.log" 2>&1
+        CUDA_VISIBLE_DEVICES="$GPU_ID" PATH="$BOLTZ_BIN:$PATH" \
+          "$NBB2" -H "$seq" -o "$raw" --n_threads 2 -u -v >"logs/${cid}_nanobodybuilder2_unrefined.log" 2>&1
         rc=$?
       fi
       echo "NBB2_EXIT cid=$cid rc=$rc time=$(date -Is)"
