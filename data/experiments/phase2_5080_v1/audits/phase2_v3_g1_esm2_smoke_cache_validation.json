@@ -1,0 +1,32 @@
+{
+  "chain_type_counts": {
+    "antigen": 2430,
+    "mixed": 213,
+    "vhh": 7913
+  },
+  "dtype_counts": {
+    "torch.float16": 10556
+  },
+  "expected_embedding_dim": 320,
+  "manifest": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/phase2_v3_g1/esm2_8m_smoke_cache/manifest.csv",
+  "manifest_rows": 10556,
+  "manifest_sha256": "372f7582ec15227f95a48c13d36691e0b56bbde45f15714198ac48ced01e725b",
+  "max_cached_length": 1024,
+  "max_sequence_length": 4327,
+  "model_paths": [
+    "/mnt/d/work/抗体/code/downloaded_models/NanoBind/models/esm2_t6_8M_UR50D"
+  ],
+  "model_sha256_values": [
+    "cbf069e9aea56e93cf87a8ee7e0bbdf5d9ae04e6004d0af006b9670b079dd410"
+  ],
+  "orphan_shard_keys": 0,
+  "shard_count": 32,
+  "status": "PASS",
+  "total_cached_residues": 1816776,
+  "truncation_policy_counts": {
+    "none": 10454,
+    "prefix_1024": 102
+  },
+  "unique_sequence_hashes": 10556,
+  "validated_tensor_keys": 10556
+}
