@@ -139,6 +139,18 @@ def main() -> int:
                 write_json_atomic(state_dir / f"{cid}.json", {"candidate_id": cid, "stage": "haddock", "status": "success", "message": "existing cluster model found", "updated_at": utc_now()})
                 continue
             nbb2_state = read_json(docking_root / "state" / "nbb2" / f"{cid}.json")
+            if nbb2_state.get("status") in {"failed", "missing"}:
+                write_json_atomic(
+                    state_dir / f"{cid}.json",
+                    {
+                        "candidate_id": cid,
+                        "stage": "haddock",
+                        "status": "missing",
+                        "message": "NBB2 did not produce a validated monomer",
+                        "updated_at": utc_now(),
+                    },
+                )
+                continue
             if nbb2_state.get("status") != "success" or not (docking_root / "haddock" / cid / "data" / f"{cid}_vhh_chainA.pdb").is_file():
                 continue
             command = ["bash", str(script), cid]

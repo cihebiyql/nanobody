@@ -73,10 +73,16 @@ set +e
 (cd "$DOCKING_ROOT/haddock/$CID" && PATH="$BOLTZ_BIN:$PATH" "$HADDOCK3" "$(basename "$CFG")" >>"$LOG" 2>&1)
 rc=$?
 set -e
-if [[ $rc -eq 0 ]]; then
-  write_state success 0 ""
+if [[ $rc -eq 0 ]] && find "$RUN_DIR" -type f \( -name 'cluster_*_model_*.pdb' -o -name 'cluster_*_model_*.pdb.gz' \) -print -quit 2>/dev/null | grep -q .; then
+  write_state success 0 "selected HADDOCK cluster model verified"
 else
-  write_state failed "$rc" "HADDOCK3 exited non-zero"
+  if [[ $rc -eq 0 ]]; then
+    rc=4
+    message="HADDOCK3 exited zero but no selected cluster model was produced"
+  else
+    message="HADDOCK3 exited non-zero"
+  fi
+  write_state failed "$rc" "$message"
 fi
 echo "HADDOCK_EXIT cid=$CID rc=$rc time=$(date -Is)" | tee -a "$LOG"
 exit "$rc"
