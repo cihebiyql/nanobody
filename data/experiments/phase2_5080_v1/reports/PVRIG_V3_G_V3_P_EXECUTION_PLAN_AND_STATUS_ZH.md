@@ -1,0 +1,362 @@
+# PVRIG V3-G / V3-P 执行规划与当前状态
+
+更新时间：2026-07-13 00:15（Asia/Shanghai）
+
+## 一、当前结论
+
+**是的，当前必须先开始生成用于 V3-P 微调监督的 PVRIG docking teacher 数据。**
+
+原因不是 docking 标签等同于真实阻断，而是：
+
+1. V3-P 的监督目标是 PVRIG 界面几何、遮挡层级和 pose 稳定性；没有 Node1 teacher，V3-P 没有可训练的靶点专用标签。
+2. 通用 V3-G 只能学习 VHH 如何识别抗原，不能凭通用 binder 标签推出 PVRIG-PVRL2 阻断几何。
+3. docking teacher 生成是当前耗时最长的路径，应尽早启动；但不需要等待它全部完成后才处理 V3-G。正确方式是两条路径并行，最终在 V3-P 汇合。
+
+当前实际执行顺序为：
+
+```text
+路径 A：PVRIG 候选生成 -> 分层抽样 -> Node1 docking teacher
+路径 B：cluster-safe 通用数据 -> mean-pool 基线 -> residue-level V3-G
+                         路径 A + 路径 B
+                                  ↓
+                     V3-P PVRIG geometry surrogate
+```
+
+## 二、证据边界
+
+全流程必须保持以下证据分离：
+
+| 证据 | 能说明什么 | 不能说明什么 |
+| --- | --- | --- |
+| 通用真实 binder/non-binder | 通用结合先验 | PVRIG 结合、亲和力或阻断 |
+| 结构 contact/site | paratope、epitope、残基接触能力 | 真实功能阻断 |
+| Node1 docking teacher | 计算几何、遮挡和 pose 稳定性代理 | 实验结合或实验阻断真值 |
+| 已知 PVRIG 阳性 | 阈值、机制和校准 anchor | 普通训练正样本或候选来源 |
+| 最终实验 | BLI、表达、纯度和功能 | 才是提交决策的最高证据 |
+
+已知 PVRIG 阳性及其衍生突变继续保持 `calibration-only / leakage-excluded`；CDR 阳性相似度仅用于模型外 hard gate，不作为模型输入。
+
+## 三、PVRIG docking teacher 路径
+
+### 3.1 Parent40 已冻结
+
+正式父序列清单：
+
+```text
+experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/parent40_manifest.tsv
+```
+
+审计结果：
+
+```text
+40 个 parent framework cluster
+train/dev/test parent clusters = 28/6/6
+4 个 CDR3 长度区间，各 10 条
+known-positive exact overlap = 0
+max positive CDR identity <75%
+```
+
+### 3.2 RFantibody 正式候选库正在生成
+
+设计规模：
+
+```text
+40 parents
+× 3 PVRIG patches
+× 2 design modes（H3 / H1H3）
+× 12 RFdiffusion backbones
+× 3 ProteinMPNN sequences
+= 8,640 raw candidates
+```
+
+Node1 根目录：
+
+```text
+/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/rfantibody_generation
+```
+
+预验证已经通过：
+
+```text
+8/8 validation tasks complete
+0 failed
+覆盖 H3 最长 20 aa 和 H1+H3
+```
+
+正式生产已经启动，使用 7 个 GPU worker。本文档快照时已有 7 个 task 完成、0 失败；最终门是 240/240 task、2,880 backbone、8,640 raw sequence records。
+
+### 3.3 候选收集器已验证
+
+脚本：
+
+```text
+experiments/phase2_5080_v1/src/collect_pvrig_formal_rfantibody_candidates.py
+```
+
+它从 RFantibody 输出 PDB 的 H chain 直接重建完整 VHH，并保留：
+
+```text
+parent_id / parent_sequence
+parent framework cluster / formal split
+patch / hotspots / design mode
+backbone index / ProteinMPNN index
+CDR1/2/3 before and after
+source PDB and SHA256
+```
+
+对首批 7 个完成 task 的部分收集验证结果：
+
+```text
+252 raw records
+224 exact-unique sequences
+28 exact duplicate records
+0 framework/CDR/provenance parse error
+```
+
+这只是 collector 验证，不是正式候选集；正式收集必须等到 240/240 完成后重跑且得到 `PASS_COMPLETE_COLLECTION`。
+
+### 3.4 正式 teacher 不是全 8,640 条 docking
+
+完整生成后执行：
+
+```text
+8,640 raw
+-> exact dedup
+-> sequence / CDR / framework hard gate
+-> V3-G generic prior + cheap QC
+-> 分层抽取约 500 条 prospective teacher
+```
+
+500 条建议配额：
+
+| 抽样层 | 数量 | 目的 |
+| --- | ---: | --- |
+| 高 generic contact/binding prior | 140 | 提高成功候选密度 |
+| 决策边界 | 100 | 学习排序边界 |
+| 低分但 QC 通过 | 60 | 学习真实计算失败模式 |
+| parent/patch/method/embedding 多样性 | 120 | 覆盖搜索空间 |
+| 模型冲突或高不确定性 | 80 | 支持主动学习 |
+
+约束：
+
+```text
+同一 parent <= 8-10
+同一 parent + patch + mode <= 3-4
+train/dev/test 沿用 Parent40 的 28/6/6，不按候选行随机拆分
+```
+
+### 3.5 正式 Node1 teacher 字段
+
+每条候选执行：
+
+```text
+VHH 单体结构
+-> HADDOCK top poses
+-> 8X6B 几何评分
+-> 9E6Y 参考界面重评分
+-> residue-pair contact frequency
+-> top-k pose/cluster 稳定性
+```
+
+必须输出：
+
+```text
+8X6B / 9E6Y per-pose metrics
+G1-G5 ordinal tier
+top10_AA_fraction
+top10_A_or_B_fraction
+blocker_supporting_cluster_count
+median_hotspot_overlap
+median_total_occlusion
+pose_cluster_entropy
+best_pose_vs_median_gap
+PVRIG-specific contact-frequency matrix
+```
+
+不能使用 `A/A=1、其他=0`，也不能只学习 rank-1 pose。9E6Y 重评分仍不等于独立 9E6Y docking；该限制必须写入 teacher manifest。
+
+## 四、V3-G 通用模型路径
+
+### 4.1 Cluster-safe 数据已完成
+
+正式数据脚本：
+
+```text
+experiments/phase2_5080_v1/src/prepare_phase2_v3_g2_cluster_safe_data.py
+```
+
+数据目录：
+
+```text
+experiments/phase2_5080_v1/prepared/phase2_v3_g2/
+```
+
+使用 MMseqs2：
+
+```text
+VHH identity >=85%
+coverage >=80%
+cov-mode = 0
+```
+
+并将与 sealed external hTNFa 同 cluster 的开发序列整簇排除。最终审计：
+
+```text
+138,926 real assay pairs
+60,316 unique VHH
+18,444 VHH clusters
+train/dev/test rows = 111,206 / 13,933 / 13,787
+train/dev/test VHH = 48,122 / 6,099 / 6,095
+exact pair overlap = 0
+exact VHH overlap = 0
+MMseqs cluster overlap = 0
+所有 target × label × split 均有覆盖
+```
+
+为保护 external hTNFa：
+
+```text
+排除 18,581 development rows
+对应 7,833 unique VHH
+retained external cluster overlap = 0
+```
+
+审计文件：
+
+```text
+experiments/phase2_5080_v1/prepared/phase2_v3_g2/prepare_audit_v1.json
+```
+
+### 4.2 Residue cache 和 CDR masks 已完成
+
+```text
+ESM2-8M residue cache：65,922 sequences，141 shards，约 4.1 GB
+CDR mask manifest：62,833 VHH
+exact annotation：511
+motif heuristic：56,044
+unresolved：6,278
+```
+
+未解析 CDR 不被伪造为负标签；训练器保留其完整序列表征并单独报告 unresolved 行数。
+
+### 4.3 Mean-pooled 基线已重跑
+
+同一 cluster-safe split 上，development 选择出的最强基线是 `v3_full`：
+
+```text
+dev macro target AP = 0.3951
+test macro target AP = 0.3415
+test overall AP = 0.4813
+```
+
+因此 residue-level V3-G 不能只证明“能运行”，而必须在冻结门下显著超过这一基线。
+
+基线结果：
+
+```text
+experiments/phase2_5080_v1/runs/phase2_v3_g2_meanpool_baselines/
+```
+
+### 4.4 Residue-level V3-G2 已进入正式训练
+
+训练脚本：
+
+```text
+experiments/phase2_5080_v1/src/train_phase2_v3_g2_generic.py
+```
+
+训练目标：
+
+```text
+真实 binder/non-binder BCE
++ 跨抗原家族低权重 contrast
++ 同一 VHH 的真实 target label contrast
++ contact/site replay
+```
+
+语言模型和 residue embedding 冻结；训练 cross-attention、contact/site replay 层和 pair head。4-batch smoke 已通过，并实际触发 binding、target contrast 和 replay 三条损失。
+
+正式预注册：
+
+```text
+experiments/phase2_5080_v1/audits/phase2_v3_g2_preregistration.json
+```
+
+冻结 seeds：
+
+```text
+83 / 89 / 97
+```
+
+主要门：
+
+```text
+三种子 ensemble test macro target AP > 最强 mean-pooled baseline
+至少 2/3 seeds 单独超过 baseline
+ensemble delta bootstrap 95% CI lower bound > 0
+observed target-contrast win rate >= 0.55
+contact/paratope replay 指标保留源 checkpoint 的至少 90%
+label-shuffle / target-shuffle 不得通过主门
+```
+
+Seed 83 已启动。只有正式评估通过后，该模型才可作为 V3-P 和候选分层抽样的通用 prior；失败则继续使用冻结的最强 baseline，不强行升级版本。
+
+## 五、V3-P 训练顺序
+
+V3-P 必须等首批正式 Node1 teacher 标签可用后训练：
+
+```text
+V3-G frozen residue representation
++ PVRIG 8X6B/9E6Y fixed features
++ Node1 per-pose/contact-frequency teacher
+-> ordinal G1-G5 head
+-> continuous geometry heads
+-> within-parent/campaign rank loss
+-> ensemble uncertainty
+```
+
+第一轮：
+
+```text
+约 500 条 teacher
+冻结 ESM2/VHHBERT
+低学习率训练 PVRIG cross-attention/pooling
++ ordinal MLP 或 LambdaMART
+```
+
+第二轮主动学习：
+
+```text
+高分
+高不确定性
+seed disagreement
+binding prior 与 geometry surrogate 冲突
+新 parent / patch / method
+```
+
+再增加 300-500 条 teacher，目标总量约 800-1,000 条。
+
+## 六、接下来按此顺序执行
+
+1. 保持 Node1 RFantibody 生产运行，直到 240/240 task 完成且 0 失败。
+2. 完成 V3-G2 seeds 83/89/97、mean-pool 对照、null controls 和正式门判定。
+3. 对 8,640 raw 输出运行 collector，冻结 exact-dedup candidate manifest。
+4. 运行快速 hard gate 和通用 prior；按预注册配额抽取约 500 条 teacher，不机械取模型 Top 500。
+5. 生成正式 monomer + HADDOCK + 8X6B/9E6Y + contact-frequency teacher 包。
+6. 用 parent-cluster split 训练 V3-P，并做 leave-parent/method challenge。
+7. V3-P 只负责进入昂贵 Node1 的前筛排序；最终提交仍由结构、docking、开发性和 portfolio 多样性共同决定。
+
+## 七、当前停止条件
+
+在下列条件全部满足前，不得声称 V3-P 或最终候选准备完成：
+
+```text
+RFantibody 240/240 complete
+正式 candidate manifest 和 fast-gate audit PASS
+约 500 条第一轮 prospective teacher 完整生成
+teacher per-pose/contact-frequency 字段完整
+V3-G formal gate 有明确 PASS/FAIL
+V3-P parent-cluster test 和 target-dependence controls 完成
+```
+
+因此，当前的直接答案是：**先生成 PVRIG docking teacher 数据是正确且必要的，但它应与 V3-G 通用数据处理和训练并行推进，而不是让两条路径串行等待。**
