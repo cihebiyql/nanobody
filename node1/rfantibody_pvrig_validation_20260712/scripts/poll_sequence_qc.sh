@@ -3,12 +3,14 @@ set -euo pipefail
 
 REMOTE_HOST=${REMOTE_HOST:-node1}
 REMOTE_ROOT=${REMOTE_ROOT:-/data/qlyu/projects/pvrig_rfantibody_validation_20260712}
+RUN_LABEL=${RUN_LABEL:-sequence_qc_fr4_restored}
+OUT_NAME=${OUT_NAME:-cascade_fr4_restored}
 
-ssh.exe "$REMOTE_HOST" "REMOTE_ROOT='$REMOTE_ROOT' bash -s" <<'REMOTE'
+ssh.exe "$REMOTE_HOST" "REMOTE_ROOT='$REMOTE_ROOT' RUN_LABEL='$RUN_LABEL' OUT_NAME='$OUT_NAME' bash -s" <<'REMOTE'
 set -euo pipefail
-pid_file=$REMOTE_ROOT/manifests/sequence_qc.pid
-log_file=$REMOTE_ROOT/logs/sequence_qc.log
-out=$REMOTE_ROOT/qc/cascade
+pid_file=$REMOTE_ROOT/manifests/$RUN_LABEL.pid
+log_file=$REMOTE_ROOT/logs/$RUN_LABEL.log
+out=$REMOTE_ROOT/qc/$OUT_NAME
 
 if [[ -s "$pid_file" ]]; then
   pid=$(cat "$pid_file")
@@ -27,4 +29,3 @@ echo "--- recent log ---"
 echo "--- output files ---"
 find "$out" -maxdepth 1 -type f -printf '%f %s bytes\n' 2>/dev/null | sort || true
 REMOTE
-

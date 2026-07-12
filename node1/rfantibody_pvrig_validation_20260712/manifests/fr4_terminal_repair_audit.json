@@ -1,0 +1,18 @@
+{
+  "actions": {
+    "APPEND_TERMINAL_S": 1000
+  },
+  "all_checks_passed": true,
+  "generated_at": "2026-07-12T11:31:37.500277+00:00",
+  "input_fasta": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/pvrig_rfantibody_1000.canonical.fasta",
+  "input_fasta_sha256": "03bc819cb0f198c3044468c62a57b8d7ff6297f013cb678e229e4b8d9200a682",
+  "mapping_tsv": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/manifests/fr4_terminal_repair_mapping.tsv",
+  "mapping_tsv_sha256": "96da81c17ba0e9fd1fd1b45f68b53fb6279fd7b9a8362099e97a8468139732cf",
+  "output_fasta": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/pvrig_rfantibody_1000.fr4_restored.fasta",
+  "output_fasta_sha256": "de5166605243a49744ad105c5734e28735b8b30b1db2e21fbcf8deed2bb6d138",
+  "pose_boundary": "RFantibody design-pose PDBs remain unchanged and omit this terminal residue; the restored sequence is for sequence QC, synthesis planning, and de novo monomer modeling.",
+  "reason": "The official RFantibody h-NbBCII10 structural template ends WGQGTLVTVS. The local VHH L1 gate requires the complete FR4 ending WGQGTLVTVSS.",
+  "record_count": 1000,
+  "schema_version": 1,
+  "unique_output_sequences": 1000
+}

@@ -1,0 +1,73 @@
+{
+  "claim_boundary": "dual_baseline_docking_geometry_proxy_not_binding_or_blocker_proof",
+  "complete_candidates": 4,
+  "failed_candidates": 0,
+  "manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_teacher_pilot96/pvrig_teacher_pilot96_manifest.tsv",
+  "min_models": 8,
+  "processed_candidates": 4,
+  "requested_candidates": 4,
+  "results": [
+    {
+      "aligned_8x6b_models": 10,
+      "aligned_9e6y_models": 10,
+      "candidate_id": "PVRIG_RFAb_v1_A_bb021_mpn01",
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "expected_models": 10,
+      "log": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_postprocessed/PVRIG_RFAb_v1_A_bb021_mpn01/postprocess.log",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_node1_selected/shard_2/haddock3/PVRIG_RFAb_v1_A_bb021_mpn01/run_PVRIG_RFAb_v1_A_bb021_mpn01_pvrig_hotspot",
+      "seconds": 18.432,
+      "status": "PASS"
+    },
+    {
+      "aligned_8x6b_models": 10,
+      "aligned_9e6y_models": 10,
+      "candidate_id": "PVRIG_RFAb_v1_A_bb021_mpn03",
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "expected_models": 10,
+      "log": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_postprocessed/PVRIG_RFAb_v1_A_bb021_mpn03/postprocess.log",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_node1_selected/shard_3/haddock3/PVRIG_RFAb_v1_A_bb021_mpn03/run_PVRIG_RFAb_v1_A_bb021_mpn03_pvrig_hotspot",
+      "seconds": 18.348,
+      "status": "PASS"
+    },
+    {
+      "aligned_8x6b_models": 10,
+      "aligned_9e6y_models": 10,
+      "candidate_id": "PVRIG_RFAb_v1_A_bb034_mpn00",
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "expected_models": 10,
+      "log": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_postprocessed/PVRIG_RFAb_v1_A_bb034_mpn00/postprocess.log",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_node1_selected/shard_0/haddock3/PVRIG_RFAb_v1_A_bb034_mpn00/run_PVRIG_RFAb_v1_A_bb034_mpn00_pvrig_hotspot",
+      "seconds": 18.339,
+      "status": "PASS"
+    },
+    {
+      "aligned_8x6b_models": 9,
+      "aligned_9e6y_models": 9,
+      "candidate_id": "PVRIG_RFAb_v1_A_bb034_mpn04",
+      "classification_8x6b_rows": 9,
+      "classification_9e6y_rows": 9,
+      "complete": true,
+      "consensus_rows": 9,
+      "expected_models": 9,
+      "log": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_postprocessed/PVRIG_RFAb_v1_A_bb034_mpn04/postprocess.log",
+      "run_dir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_node1_selected/shard_1/haddock3/PVRIG_RFAb_v1_A_bb034_mpn04/run_PVRIG_RFAb_v1_A_bb034_mpn04_pvrig_hotspot",
+      "seconds": 16.725,
+      "status": "PASS"
+    }
+  ],
+  "resumed_candidates": 0,
+  "schema_version": "pvrig_teacher_pilot96_postprocess_audit_v1",
+  "status": "PASS",
+  "sync_root": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_node1_selected",
+  "top_n": 10,
+  "work_root": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_postprocessed"
+}

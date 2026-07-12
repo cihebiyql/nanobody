@@ -4,12 +4,13 @@ set -euo pipefail
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_validation_20260712}
 INPUT=${INPUT:-$RUN_ROOT/inputs/pvrig_rfantibody_1000.canonical.fasta}
 OUT=${OUT:-$RUN_ROOT/qc/cascade}
+RUN_LABEL=${RUN_LABEL:-sequence_qc}
 TOOL=${TOOL:-/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen}
 POSITIVE_CDRS=${POSITIVE_CDRS:-/data/qlyu/software/vhh_eval_tools/references/local_pvrig_positive_vhh_cdrs.csv}
 MAX_LOAD1=${MAX_LOAD1:-64}
 LOG_DIR=$RUN_ROOT/logs
-PID_FILE=$RUN_ROOT/manifests/sequence_qc.pid
-LOG_FILE=$LOG_DIR/sequence_qc.log
+PID_FILE=$RUN_ROOT/manifests/$RUN_LABEL.pid
+LOG_FILE=$LOG_DIR/$RUN_LABEL.log
 
 mkdir -p "$RUN_ROOT"/{inputs,config,manifests,scripts,qc,logs}
 
@@ -54,7 +55,7 @@ fi
   sha256sum "$INPUT" "$TOOL" "$POSITIVE_CDRS"
   df -h "$RUN_ROOT" | tail -n 1
   nvidia-smi --query-gpu=index,name,memory.used,memory.total,utilization.gpu --format=csv,noheader
-} > "$RUN_ROOT/manifests/sequence_qc_launch_snapshot.txt"
+} > "$RUN_ROOT/manifests/${RUN_LABEL}_launch_snapshot.txt"
 
 command=(
   "$TOOL" "$INPUT" -o "$OUT"
@@ -76,10 +77,9 @@ command=(
 {
   printf '%q ' "${command[@]}"
   printf '\n'
-} > "$RUN_ROOT/manifests/sequence_qc_command.sh"
+} > "$RUN_ROOT/manifests/${RUN_LABEL}_command.sh"
 
 nohup "${command[@]}" > "$LOG_FILE" 2>&1 < /dev/null &
 pid=$!
 echo "$pid" > "$PID_FILE"
 echo "Started sequence QC: PID=$pid LOG=$LOG_FILE OUT=$OUT"
-
