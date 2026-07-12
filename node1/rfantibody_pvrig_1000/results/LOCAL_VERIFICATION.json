@@ -1,0 +1,46 @@
+{
+  "verified_at": "2026-07-12T08:16:36.404085+00:00",
+  "verification_scope": "Independent local validation of synced RFantibody generation deliverables",
+  "all_checks_passed": true,
+  "remote_root": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712",
+  "rfantibody_reference_commit": "8fe311415754e0276d1a39c87c57e69c88927a2d",
+  "counts": {
+    "raw_records": 1600,
+    "raw_exact_unique_sequences": 1494,
+    "raw_duplicate_records": 106,
+    "final_records": 1000,
+    "final_exact_unique_sequences": 1000,
+    "fasta_records": 1000,
+    "represented_backbones": 171,
+    "max_siblings_per_backbone": 6,
+    "known_positive_exact_matches": 0
+  },
+  "hotspot_set_quota": {
+    "A": 250,
+    "B": 250,
+    "C": 250,
+    "D": 250
+  },
+  "sequence_length_range": [
+    113,
+    121
+  ],
+  "cdr3_length_range": [
+    5,
+    13
+  ],
+  "rf2_status": "not_run_by_generation_plan",
+  "sha256_verified_files": {
+    "raw_candidates.tsv": "07fbc29c43e4285a953ada5270049392f74c2638f4260893cf19e3392a286a82",
+    "pvrig_rfantibody_1000.tsv": "65d66b50ead7b9554211f8cb91855287dcf60729255d58073d7ac6d6978dab6f",
+    "pvrig_rfantibody_1000.fasta": "724e09b252b9cb33fb118cfbaf2385d231d1a6c1ddf306a01191a54c8f2a3d3a",
+    "summary.json": "57fe981108cad9e72c997e3b4e196b9e2784bcf10c62645cc5205ed3b90da506"
+  },
+  "complete_sets": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "scientific_boundary": "Generated hotspot-conditioned candidates are not validated binders or blockers."
+}
