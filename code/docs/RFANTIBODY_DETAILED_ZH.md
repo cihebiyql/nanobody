@@ -138,11 +138,11 @@ MD5：e2eb7b90e3733e0ac9247dd53857c5aa
 
 三份主权重的本地检查结果：
 
-| 权重 | 文件大小 | state 条目 | 参数量 |
-|---|---:|---:|---:|
-| `RFdiffusion_Ab.pt` | 483,452,922 bytes | 5,998 | 59,808,302 |
-| `ProteinMPNN_v48_noise_0.2.pt` | 6,681,301 bytes | 118 | 1,660,485 |
-| `RF2_ab.pt` | 294,759,918 bytes | 8,044 | 72,899,168 |
+| 权重 | 文件大小 | MD5 | state 条目 | 参数量 |
+|---|---:|---|---:|---:|
+| `RFdiffusion_Ab.pt` | 483,452,922 bytes | `5614b1fc623b9cbc7e18190d0c2dc131` | 5,998 | 59,808,302 |
+| `ProteinMPNN_v48_noise_0.2.pt` | 6,681,301 bytes | `91d54c97a68bf551114f8c74c785e90f` | 118 | 1,660,485 |
+| `RF2_ab.pt` | 294,759,918 bytes | `7c230a10e6e5243aea81c32b8ed40193` | 8,044 | 72,899,168 |
 
 部署细节和已通过的命令见：
 
@@ -936,6 +936,35 @@ RF2 过滤并没有在所有 target 上稳定区分 binder。论文 retrospectiv
 
 建议第一轮以 8X6B 的 PVRIG chain B 为 target，提取 PVRIG extracellular IgV domain，并把链名改为 `T`。保留原始 PDB residue numbering，避免热点映射再次偏移。
 
+可用下面的无第三方依赖脚本生成 protein-only target：
+
+```bash
+cd /mnt/d/work/抗体/code
+mkdir -p prepared_inputs
+
+python - <<'PY'
+from pathlib import Path
+
+src = Path('../data/structures/8X6B.pdb')
+dst = Path('prepared_inputs/pvrig_8x6b_chainT.pdb')
+
+out = []
+for line in src.read_text().splitlines(keepends=True):
+    if line.startswith('ATOM  ') and len(line) >= 22 and line[21] == 'B':
+        out.append(line[:21] + 'T' + line[22:])
+
+out.extend(['TER\n', 'END\n'])
+dst.write_text(''.join(out))
+print(dst, 'ATOM records:', sum(x.startswith('ATOM  ') for x in out))
+PY
+
+# 应只看到 target chain T；热点残基号仍应包含 57、62、97、101、105、106。
+awk '/^ATOM/ {print substr($0,22,1), substr($0,23,4)}' \
+  prepared_inputs/pvrig_8x6b_chainT.pdb | sort -u | head
+```
+
+该脚本故意只保留 `ATOM`，因此不会把 PVRL2、水和 NAG 放进 RFantibody target；原始含糖复合物仍必须保留给后续 blocker/glycan clash 复核。正式运行前还应检查 altloc、缺失残基和链终止是否符合当前 parser 预期。
+
 8X6B 中 PVRIG chain B 的 NAG 与 ASN B91 相连。RFantibody 本身没有显式解决 glycan-aware design：
 
 - 生成时可先使用 protein-only PVRIG；
@@ -1001,6 +1030,8 @@ pilot 通过后，再把最好的 1-2 组扩大到：
 /data/qlyu/software/RFantibody/inputs/pvrig_8x6b_chainT.pdb
 /data/qlyu/software/RFantibody/scripts/examples/example_inputs/h-NbBCII10.pdb
 ```
+
+截至 2026-07-12，framework 已存在，但 node1 上的 `inputs/pvrig_8x6b_chainT.pdb` 还没有建立；所以下列命令是完成 PVRIG 链提取和编号核验后的可执行模板，不是已经跑完的 PVRIG 结果。
 
 先运行小规模：
 

@@ -1,0 +1,22 @@
+{
+  "config": {
+    "fast_chunk_size": 50,
+    "full_chunk_size": 50,
+    "full_qc_limit": 0,
+    "full_run_tnp": false,
+    "geometry_cluster_limit": 3,
+    "geometry_limit": 50,
+    "geometry_pool_size": 50,
+    "length_max": 160,
+    "length_min": 95,
+    "skip_final_diversity": false
+  },
+  "duplicates": 0,
+  "fast_chunks": 1,
+  "input_digest": "afcd260f8aa4feb55e3d9346b6a431413419c67a35d541363b54a2d996f92877",
+  "input_fasta": "/data/qlyu/projects/pvrig_competition_audit_20260712/top50_model_ranked_public_sequences.fasta",
+  "input_records": 50,
+  "quick_rejects": 0,
+  "schema_version": 1,
+  "unique_ready": 50
+}
