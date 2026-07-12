@@ -8,7 +8,8 @@ REMOTE_HOST=${REMOTE_HOST:-node1}
 input_local=$LOCAL_ROOT/inputs/rf2_primary_78.fr4_restored.fasta
 audit_local=$LOCAL_ROOT/manifests/rf2_primary_78_sequence_audit.json
 runner_local=$LOCAL_ROOT/scripts/run_sequence_qc_node1.sh
-for path in "$input_local" "$audit_local" "$runner_local"; do
+scheduler_local=$LOCAL_ROOT/scripts/schedule_rf2_primary_qc_node1.sh
+for path in "$input_local" "$audit_local" "$runner_local" "$scheduler_local"; do
   [[ -f "$path" ]] || { echo "Missing local artifact: $path" >&2; exit 2; }
 done
 
@@ -16,12 +17,5 @@ ssh.exe "$REMOTE_HOST" "mkdir -p '$REMOTE_ROOT'/{inputs,manifests,scripts,qc,log
 ssh.exe "$REMOTE_HOST" "cat > '$REMOTE_ROOT/inputs/rf2_primary_78.fr4_restored.fasta'" < "$input_local"
 ssh.exe "$REMOTE_HOST" "cat > '$REMOTE_ROOT/manifests/rf2_primary_78_sequence_audit.json'" < "$audit_local"
 ssh.exe "$REMOTE_HOST" "cat > '$REMOTE_ROOT/scripts/run_sequence_qc_node1.sh'" < "$runner_local"
-ssh.exe "$REMOTE_HOST" "chmod +x '$REMOTE_ROOT/scripts/run_sequence_qc_node1.sh' && \
-  RUN_LABEL=rf2_primary_78_qc \
-  INPUT='$REMOTE_ROOT/inputs/rf2_primary_78.fr4_restored.fasta' \
-  OUT='$REMOTE_ROOT/qc/rf2_primary_78_full' \
-  FAST_CHUNK_SIZE=78 CHUNK_JOBS=1 FULL_QC_LIMIT=0 FULL_CHUNK_SIZE=78 FULL_CHUNK_JOBS=1 \
-  GEOMETRY_POOL_SIZE=78 GEOMETRY_LIMIT=50 GEOMETRY_CLUSTER_LIMIT=2 \
-  WORKERS=4 TNP_NCORES=2 \
-  '$REMOTE_ROOT/scripts/run_sequence_qc_node1.sh'"
-
+ssh.exe "$REMOTE_HOST" "cat > '$REMOTE_ROOT/scripts/schedule_rf2_primary_qc_node1.sh'" < "$scheduler_local"
+ssh.exe "$REMOTE_HOST" "chmod +x '$REMOTE_ROOT/scripts/run_sequence_qc_node1.sh' '$REMOTE_ROOT/scripts/schedule_rf2_primary_qc_node1.sh' && '$REMOTE_ROOT/scripts/schedule_rf2_primary_qc_node1.sh'"

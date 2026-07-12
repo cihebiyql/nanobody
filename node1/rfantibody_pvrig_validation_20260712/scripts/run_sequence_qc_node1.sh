@@ -21,6 +21,7 @@ TNP_NCORES=${TNP_NCORES:-4}
 IDENTITY_CACHE_SIZE=${IDENTITY_CACHE_SIZE:-500000}
 LOG_DIR=$RUN_ROOT/logs
 PID_FILE=$RUN_ROOT/manifests/$RUN_LABEL.pid
+EXIT_FILE=$RUN_ROOT/manifests/$RUN_LABEL.exit_code
 LOG_FILE=$LOG_DIR/$RUN_LABEL.log
 
 mkdir -p "$RUN_ROOT"/{inputs,config,manifests,scripts,qc,logs}
@@ -90,7 +91,14 @@ command=(
   printf '\n'
 } > "$RUN_ROOT/manifests/${RUN_LABEL}_command.sh"
 
-nohup "${command[@]}" > "$LOG_FILE" 2>&1 < /dev/null &
+rm -f "$EXIT_FILE"
+(
+  set +e
+  "${command[@]}"
+  rc=$?
+  echo "$rc" > "$EXIT_FILE"
+  exit "$rc"
+) > "$LOG_FILE" 2>&1 < /dev/null &
 pid=$!
 echo "$pid" > "$PID_FILE"
 echo "Started sequence QC: PID=$pid LOG=$LOG_FILE OUT=$OUT"
