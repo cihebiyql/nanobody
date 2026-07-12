@@ -16,6 +16,10 @@
       "path": "config/generation_arms_primary.tsv",
       "sha256": "40e0dd3b1bdcf7bbcacc24ec2336eb7b42eb92457873ad4580981e82c988e0aa"
     },
+    "candidate_freezer": {
+      "path": "scripts/collect_and_freeze_candidates.py",
+      "sha256": "2e3018850c1def3fbe0c2dcd7fda3e2836d292ba93439c4ffeafb822fa143612"
+    },
     "full_design_arm_table": {
       "path": "config/generation_arms.tsv",
       "sha256": "53e0699e1726c063288913a28ed471aa15110af737090c6ac0bb8fc9bf3b9344"

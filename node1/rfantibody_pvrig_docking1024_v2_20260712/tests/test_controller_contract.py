@@ -6,6 +6,7 @@ import inspect
 import json
 import subprocess
 import tempfile
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -153,7 +154,7 @@ def test_balanced_selector_reassigns_cross_arm_duplicate() -> None:
         {
             "candidate_id": "arm_00_shared_first",
             "arm_id": "arm_00",
-            "backbone_group_id": "arm_00_bb1",
+            "backbone_group_id": "arm_00_aa",
             "sequence_sha256": shared,
             "valid_sequence": True,
             "exact_known_positive_match": False,

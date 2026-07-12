@@ -222,7 +222,6 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
         raise ValueError(f"expected 36 primary VHHified arms, found {len(arm_ids)}")
 
     base, extra = divmod(target, len(arm_ids))
-    quotas = {arm_id: base + (index < extra) for index, arm_id in enumerate(arm_ids)}
 
     def priority(row: dict[str, object]) -> tuple[object, ...]:
         return (
@@ -261,8 +260,8 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
 
     # Match arm quota slots to globally unique sequence digests. Reassignment avoids
     # starving later arms when the same MPNN sequence appears in multiple arms.
-    slots = [(arm_id, slot_index) for arm_id in arm_ids for slot_index in range(quotas[arm_id])]
     digest_owner: dict[str, tuple[str, int]] = {}
+    sys.setrecursionlimit(max(sys.getrecursionlimit(), target * 2 + 100))
 
     def assign(slot: tuple[str, int], visited: set[str]) -> bool:
         arm_id = slot[0]
@@ -276,19 +275,38 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
                 return True
         return False
 
-    for slot in slots:
-        if not assign(slot, set()):
-            matched_by_arm = Counter(owner[0] for owner in digest_owner.values())
-            raise ValueError(
-                "could not satisfy exact-unique arm quotas; "
-                f"matched={len(digest_owner)}/{target} arm={slot[0]} "
-                f"available={len(ordered_digests[slot[0]])} matched_by_arm={dict(sorted(matched_by_arm.items()))}"
-            )
+    # Allocate slots round-by-round across all arms. This prevents earlier arms
+    # from consuming cross-arm duplicate digests before later arms get a slot.
+    max_rounds = max((len(digests) for digests in ordered_digests.values()), default=0)
+    for slot_index in range(max_rounds):
+        progress = False
+        for arm_id in arm_ids:
+            if len(digest_owner) == target:
+                break
+            if assign((arm_id, slot_index), set()):
+                progress = True
+        if len(digest_owner) == target:
+            break
+        if not progress:
+            break
+
+    if len(digest_owner) != target:
+        matched_by_arm = Counter(owner[0] for owner in digest_owner.values())
+        raise ValueError(
+            "could not satisfy balanced exact-unique cohort target; "
+            f"matched={len(digest_owner)}/{target} matched_by_arm={dict(sorted(matched_by_arm.items()))}"
+        )
 
     selected = [row_by_arm_digest[(slot[0], digest)] for digest, slot in digest_owner.items()]
     selected_sequences = {str(row["sequence_sha256"]) for row in selected}
     selected_by_arm = Counter(str(row["arm_id"]) for row in selected)
-    if len(selected) != target or len(selected_sequences) != target or selected_by_arm != Counter(quotas):
+    allowed_arm_counts = {base, base + bool(extra)}
+    if (
+        len(selected) != target
+        or len(selected_sequences) != target
+        or set(selected_by_arm.values()) - allowed_arm_counts
+        or len(selected_by_arm) != len(arm_ids)
+    ):
         raise ValueError(
             f"invalid matched cohort: selected={len(selected)} unique={len(selected_sequences)} "
             f"selected_by_arm={dict(sorted(selected_by_arm.items()))}"
@@ -297,7 +315,7 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
     for rank, row in enumerate(selected, start=1):
         row["docking_cohort_rank"] = rank
         row["selected_for_docking"] = True
-        row["selection_policy"] = "primary_vhhified_arm_quota_bipartite_exact_unique_backbone_round_robin_rfd_geometry_priority"
+        row["selection_policy"] = "primary_vhhified_balanced_round_robin_bipartite_exact_unique_backbone_rfd_geometry_priority"
     return selected
 
 
