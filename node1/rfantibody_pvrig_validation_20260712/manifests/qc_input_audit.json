@@ -1,0 +1,32 @@
+{
+  "all_checks_passed": true,
+  "cdr3_length_distribution": {
+    "10": 96,
+    "11": 120,
+    "12": 96,
+    "13": 119,
+    "5": 92,
+    "6": 118,
+    "7": 49,
+    "8": 134,
+    "9": 176
+  },
+  "generated_at": "2026-07-12T11:16:58.156295+00:00",
+  "header_policy": "candidate_id_only",
+  "hotspot_set_counts": {
+    "A": 250,
+    "B": 250,
+    "C": 250,
+    "D": 250
+  },
+  "output_fasta": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/pvrig_rfantibody_1000.canonical.fasta",
+  "output_fasta_sha256": "03bc819cb0f198c3044468c62a57b8d7ff6297f013cb678e229e4b8d9200a682",
+  "record_count": 1000,
+  "schema_version": 1,
+  "scientific_status": "SEQUENCE_INPUT_ONLY_NOT_BINDER_OR_BLOCKER",
+  "source_tsv": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_1000/results/final/pvrig_rfantibody_1000.tsv",
+  "source_tsv_sha256": "65d66b50ead7b9554211f8cb91855287dcf60729255d58073d7ac6d6978dab6f",
+  "unique_backbones": 171,
+  "unique_candidate_ids": 1000,
+  "unique_exact_sequences": 1000
+}

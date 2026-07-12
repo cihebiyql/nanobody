@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "run_id": "pvrig_rfantibody_validation_20260712",
+  "scientific_target": "Prioritize RFantibody VHH candidates with recoverable PVRIG-PVRL2 blocker-like geometry.",
+  "source": {
+    "local_root": "/mnt/d/work/抗体/node1/rfantibody_pvrig_1000",
+    "remote_root": "/data/qlyu/projects/pvrig_rfantibody_1000_20260712",
+    "expected_candidates": 1000,
+    "expected_hotspot_set_counts": {
+      "A": 250,
+      "B": 250,
+      "C": 250,
+      "D": 250
+    }
+  },
+  "sequence_qc": {
+    "tool": "/data/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen",
+    "stage": "all",
+    "fast_chunk_size": 250,
+    "chunk_jobs": 2,
+    "full_qc_limit": 300,
+    "full_chunk_size": 100,
+    "full_chunk_jobs": 1,
+    "geometry_pool_size": 150,
+    "geometry_limit": 50,
+    "geometry_cluster_limit": 3,
+    "workers": 16,
+    "tnp_ncores": 4,
+    "identity_cache_size": 500000,
+    "full_run_tnp": false
+  },
+  "pose_audit_triage": {
+    "alignment_target": "8X6B PVRIG",
+    "total_pvrl2_occlusion_min_a2": 500.0,
+    "cdr3_pvrl2_occlusion_min_a2": 100.0,
+    "cdr3_occlusion_fraction_min": 0.15,
+    "legacy_hotspot_overlap_min": 14,
+    "legacy_hotspot_overlap_applicability": "report_only_due_to_sparse_generation_hotspots"
+  },
+  "rf2": {
+    "tool": "/data/qlyu/software/RFantibody/bin/rf2",
+    "num_recycles": 10,
+    "hotspot_show_prop": 0,
+    "seed": 42,
+    "interaction_pae_max": 10.0,
+    "target_aligned_antibody_rmsd_max_a": 2.0,
+    "target_aligned_cdr_rmsd_max_a": 2.0,
+    "shortlist_min": 52,
+    "shortlist_max": 104
+  },
+  "docking": {
+    "vhh_builder": "/data/qlyu/anaconda3/envs/boltz/bin/NanoBodyBuilder2",
+    "tool": "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3",
+    "max_candidates": 50,
+    "baselines": ["8X6B", "9E6Y"],
+    "final_high_requires": "CONSENSUS_BLOCKER_LIKE_A"
+  },
+  "resource_gates": {
+    "node1_load1_max_for_launch": 64.0,
+    "preserve_original_outputs": true
+  }
+}
+
