@@ -1,0 +1,29 @@
+{
+  "arm_count": 48,
+  "by_gpu": {
+    "1": 8,
+    "2": 8,
+    "3": 8,
+    "4": 8,
+    "5": 8,
+    "7": 8
+  },
+  "docking_cohort_target": 1024,
+  "gpu_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ],
+  "h3_regime_count": 2,
+  "patch_count": 6,
+  "primary_vhhified_raw_sequences": 1152,
+  "scaffold_count": 4,
+  "schema_version": 1,
+  "scientific_boundary": "hotspot-conditioned generation is not binding or blockade evidence",
+  "selection_policy": "primary_vhhified_only_then_arm_and_backbone_balanced",
+  "total_backbones": 384,
+  "total_raw_sequences": 1536
+}

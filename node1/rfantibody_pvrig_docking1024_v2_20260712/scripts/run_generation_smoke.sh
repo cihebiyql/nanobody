@@ -5,8 +5,8 @@ RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_2026071
 SMOKE_ROOT="$RUN_ROOT/smoke"
 mkdir -p "$SMOKE_ROOT"/{arms,logs,status}
 
-arms=(P1_orig_S P1_qrg_S P1_ekg_S P1_qkg_S)
-gpus=(1 2 3 4)
+arms=(P1_orig_S P1_qrg_S P1_ekg_S P1_qkg_L)
+gpus=(1 3 5 2)
 pids=()
 for i in "${!arms[@]}"; do
   arm=${arms[$i]}
@@ -32,7 +32,7 @@ import sys
 from pathlib import Path
 
 root = Path(sys.argv[1])
-arms = ("P1_orig_S", "P1_qrg_S", "P1_ekg_S", "P1_qkg_S")
+arms = ("P1_orig_S", "P1_qrg_S", "P1_ekg_S", "P1_qkg_L")
 rows = []
 for arm in arms:
     arm_root = root / "arms" / arm
