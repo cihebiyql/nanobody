@@ -5,51 +5,51 @@
   "arms": [
     {
       "arm_id": "P1_orig_S",
-      "backbones": 3,
+      "backbones": 4,
       "gpu_id": 1,
       "sequences": 0,
       "state": "running",
-      "trb": 3
+      "trb": 4
     },
     {
       "arm_id": "P1_orig_L",
-      "backbones": 3,
+      "backbones": 4,
       "gpu_id": 2,
       "sequences": 0,
       "state": "running",
-      "trb": 3
+      "trb": 4
     },
     {
       "arm_id": "P1_qrg_S",
-      "backbones": 3,
+      "backbones": 4,
       "gpu_id": 3,
       "sequences": 0,
       "state": "running",
-      "trb": 3
+      "trb": 4
     },
     {
       "arm_id": "P1_qrg_L",
-      "backbones": 3,
+      "backbones": 4,
       "gpu_id": 4,
       "sequences": 0,
       "state": "running",
-      "trb": 3
+      "trb": 4
     },
     {
       "arm_id": "P1_ekg_S",
-      "backbones": 3,
+      "backbones": 4,
       "gpu_id": 5,
       "sequences": 0,
       "state": "running",
-      "trb": 3
+      "trb": 4
     },
     {
       "arm_id": "P1_ekg_L",
-      "backbones": 3,
+      "backbones": 4,
       "gpu_id": 7,
       "sequences": 0,
       "state": "running",
-      "trb": 3
+      "trb": 4
     },
     {
       "arm_id": "P1_qkg_S",
@@ -388,8 +388,8 @@
       "trb": 0
     }
   ],
-  "backbone_pdb_count": 18,
-  "backbone_trb_count": 18,
+  "backbone_pdb_count": 24,
+  "backbone_trb_count": 24,
   "expected_backbones": 384,
   "expected_sequences": 1536,
   "sequence_pdb_count": 0,
