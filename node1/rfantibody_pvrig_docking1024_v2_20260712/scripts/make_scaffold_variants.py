@@ -22,6 +22,7 @@ AA3_TO_1 = {
     "LEU": "L", "LYS": "K", "MET": "M", "PHE": "F", "PRO": "P",
     "SER": "S", "THR": "T", "TRP": "W", "TYR": "Y", "VAL": "V",
 }
+AA1_TO_3 = {value: key for key, value in AA3_TO_1.items()}
 
 # PDB residues 47, 48, and 50 map to Kabat H44, H45, and H47.
 VARIANTS = {
@@ -110,7 +111,11 @@ def main() -> int:
             if pose_index == 0:
                 raise ValueError(f"chain H residue {pdb_residue} is missing")
             source_aa = pose.residue(pose_index).name1()
-            MutateResidue(pose_index, target_aa).apply(pose)
+            # This PyRosetta build segfaults in the two-argument Python constructor.
+            mover = MutateResidue()
+            mover.set_target(pose_index)
+            mover.set_res_name(AA1_TO_3[target_aa])
+            mover.apply(pose)
             move_map.set_chi(pose_index, True)
             mutation_text.append(f"H{pdb_residue}{source_aa}>{target_aa}")
         MinMover(move_map, scorefxn, "lbfgs_armijo_nonmonotone", 0.001, True).apply(pose)
