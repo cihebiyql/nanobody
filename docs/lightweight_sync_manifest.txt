@@ -578,6 +578,7 @@ data/experiments/phase2_5080_v1/src/test_summarize_phase2_v2_3_multiseed.py
 data/experiments/phase2_5080_v1/src/test_summarize_phase2_v2_5_formal.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v2_3.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v2_4.py
+data/experiments/phase2_5080_v1/src/test_train_phase2_v3_g1_binding_smoke.py
 data/experiments/phase2_5080_v1/src/test_validate_clustered_splits_v2.py
 data/experiments/phase2_5080_v1/src/test_validate_esm2_cache_v2_3.py
 data/experiments/phase2_5080_v1/src/test_validate_p3_structure_fusion.py
@@ -588,6 +589,7 @@ data/experiments/phase2_5080_v1/src/train_phase2_v2_3.py
 data/experiments/phase2_5080_v1/src/train_phase2_v2_4.py
 data/experiments/phase2_5080_v1/src/train_phase2_v2_5_generic.py
 data/experiments/phase2_5080_v1/src/train_phase2_v3_binding_prior.py
+data/experiments/phase2_5080_v1/src/train_phase2_v3_g1_binding_smoke.py
 data/experiments/phase2_5080_v1/src/validate_clustered_splits_v2.py
 data/experiments/phase2_5080_v1/src/validate_esm2_cache_v2_3.py
 data/experiments/phase2_5080_v1/src/validate_p3_structure_fusion.py
