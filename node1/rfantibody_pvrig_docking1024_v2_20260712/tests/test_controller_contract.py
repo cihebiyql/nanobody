@@ -83,6 +83,17 @@ def test_generation_status_does_not_report_global_complete_from_controller_marke
     assert payload["sequence_pdb_count"] == 0
 
 
+def test_primary_arm_table_can_drive_generation_and_freeze() -> None:
+    controller = (ROOT / "scripts" / "run_generation_controller.sh").read_text(encoding="utf-8")
+    rows = read_tsv(ROOT / "config" / "generation_arms_primary.tsv")
+
+    assert len(rows) == 36
+    assert {row["scaffold_lane"] for row in rows} == {"primary_vhhified"}
+    assert "GENERATION_ARM_TABLE" in controller
+    assert 'ARM_TABLE="$GENERATION_ARM_TABLE"' in controller
+    assert '--arms-path "$GENERATION_ARM_TABLE"' in controller
+
+
 def test_partial_rf_outputs_do_not_overwrite_existing_frozen_candidates(tmp_path: Path) -> None:
     write_tsv(
         tmp_path / "config" / "generation_arms.tsv",

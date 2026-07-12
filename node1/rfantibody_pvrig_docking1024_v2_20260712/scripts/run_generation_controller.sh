@@ -2,11 +2,13 @@
 set -Eeuo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
+GENERATION_ARM_TABLE=${GENERATION_ARM_TABLE:-$RUN_ROOT/config/generation_arms.tsv}
 MAX_LOAD1=${MAX_LOAD1:-240}
 GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-12000}
 POLL_SECONDS=${POLL_SECONDS:-60}
 export MAX_LOAD1 GPU_MEMORY_GATE_MB
 mkdir -p "$RUN_ROOT"/{logs,status}
+[[ -s "$GENERATION_ARM_TABLE" ]] || { echo "Missing generation arm table: $GENERATION_ARM_TABLE" >&2; exit 2; }
 
 exec 9>"$RUN_ROOT/status/generation_controller.lock"
 if ! flock -n 9; then
@@ -98,12 +100,14 @@ if [[ ! -s "$RUN_ROOT/smoke_fr4/status/smoke.complete" ]]; then
   SMOKE_ROOT="$RUN_ROOT/smoke_fr4" bash "$RUN_ROOT/scripts/run_generation_smoke.sh"
 fi
 
-write_state full_generation "running 48 arms on six GPU lanes"
-bash "$RUN_ROOT/scripts/launch_generation_multi_gpu.sh"
+generation_arm_count=$(awk 'NR > 1 { count++ } END { print count+0 }' "$GENERATION_ARM_TABLE")
+write_state full_generation "running $generation_arm_count arms on six GPU lanes"
+ARM_TABLE="$GENERATION_ARM_TABLE" bash "$RUN_ROOT/scripts/launch_generation_multi_gpu.sh"
 
 write_state freeze_1024 "collecting and freezing the exact-unique docking cohort"
 /data/qlyu/anaconda3/envs/rfdiffusion2/bin/python \
-  "$RUN_ROOT/scripts/collect_and_freeze_candidates.py" --run-root "$RUN_ROOT" --target 1024 \
+  "$RUN_ROOT/scripts/collect_and_freeze_candidates.py" --run-root "$RUN_ROOT" \
+  --arms-path "$GENERATION_ARM_TABLE" --target 1024 \
   >"$RUN_ROOT/logs/collect_and_freeze_candidates.log" 2>&1
 
 write_state complete "1024-candidate generation cohort frozen"

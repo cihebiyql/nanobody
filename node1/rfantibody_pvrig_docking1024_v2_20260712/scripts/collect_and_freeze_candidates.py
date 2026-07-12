@@ -317,10 +317,11 @@ def main() -> int:
     ensure_runtime()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-root", type=Path, default=Path("/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712"))
+    parser.add_argument("--arms-path", type=Path, help="Arm table to collect; defaults to config/generation_arms.tsv")
     parser.add_argument("--target", type=int, default=1024)
     args = parser.parse_args()
 
-    arms_path = args.run_root / "config" / "generation_arms.tsv"
+    arms_path = args.arms_path or args.run_root / "config" / "generation_arms.tsv"
     leakage_path = args.run_root / "inputs" / "leakage_reference.fasta"
     arms = read_tsv(arms_path)
     references = parse_fasta(leakage_path)
