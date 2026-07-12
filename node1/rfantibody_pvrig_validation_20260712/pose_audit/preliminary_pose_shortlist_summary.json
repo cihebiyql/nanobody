@@ -1,0 +1,29 @@
+{
+  "all_checks_passed": true,
+  "audited_backbones": 200,
+  "generated_at": "2026-07-12T11:25:49.642789+00:00",
+  "per_backbone": 2,
+  "pose_pass_backbones": 52,
+  "pose_pass_backbones_by_set": {
+    "A": 16,
+    "B": 9,
+    "C": 13,
+    "D": 14
+  },
+  "primary_backbones_represented_in_final1000": 39,
+  "primary_candidates": 78,
+  "rescue_backbones_not_in_final1000": 13,
+  "rescue_candidates_needing_sequence_qc": 26,
+  "schema_version": 1,
+  "scientific_boundary": "This is an 8X6B-only preliminary design-pose triage. Primary candidates still require sequence QC and blind RF2 pose recovery; rescue candidates are outside the frozen final 1000.",
+  "source_limitations": [
+    "8X6B baseline only",
+    "one sequence per backbone",
+    "not RF2-relaxed",
+    "not HADDOCK-redocked",
+    "not experimental evidence"
+  ],
+  "source_pose_json": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/pose_audit/source_rfab200_direct_pose_audit_preliminary.json",
+  "source_pose_json_sha256": "6bc4dcea20441a867ea85159678aec635ad2454c465470777a4bec25506adb77",
+  "source_status": "READ_ONLY_PRELIMINARY_AUDIT"
+}
