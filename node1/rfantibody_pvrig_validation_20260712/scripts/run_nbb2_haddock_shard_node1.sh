@@ -25,6 +25,17 @@ wait_for_load() {
   done
 }
 
+wait_for_gpu() {
+  while true; do
+    used_mb=$(nvidia-smi --id="$GPU_ID" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ')
+    if [[ "$used_mb" -lt 1000 ]]; then
+      return
+    fi
+    echo "GPU_GATE_WAIT gpu=$GPU_ID memory_used_mb=$used_mb time=$(date -Is)"
+    sleep "$LOAD_WAIT_SECONDS"
+  done
+}
+
 status=0
 if [[ "$MODE" == "monomer" || "$MODE" == "all" ]]; then
   while IFS=$'\t' read -r cid seq sha cdr3range selection_rank; do
@@ -35,6 +46,7 @@ if [[ "$MODE" == "monomer" || "$MODE" == "all" ]]; then
     mkdir -p "monomer/$cid" "reports/$cid" "haddock3/$cid/data" "haddock3/$cid/logs"
     if [[ ! -s "$raw" ]]; then
       wait_for_load
+      wait_for_gpu
       echo "NBB2_START cid=$cid gpu=$GPU_ID time=$(date -Is)"
       CUDA_VISIBLE_DEVICES="$GPU_ID" "$NBB2" -H "$seq" -o "$raw" --n_threads 2 -v >"logs/${cid}_nanobodybuilder2.log" 2>&1
       rc=$?
