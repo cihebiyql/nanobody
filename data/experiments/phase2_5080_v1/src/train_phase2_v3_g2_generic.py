@@ -66,6 +66,7 @@ class TrainConfig:
     target_swap_margin: float = 0.10
     observed_contrast_weight: float = 0.25
     observed_contrast_margin: float = 0.15
+    observed_contrast_every: int = 4
     replay_weight: float = 0.30
     replay_every: int = 4
     early_stopping_patience: int = 2
@@ -233,6 +234,9 @@ def binding_collate(batch: list[dict[str, Any]]) -> dict[str, Any]:
 
 def build_observed_contrasts(frame: pd.DataFrame, split: str, max_per_vhh: int = 4) -> pd.DataFrame:
     data = frame[frame["split"].astype(str) == split]
+    label_diversity = data.groupby("sequence_sha256")["label"].nunique()
+    eligible = set(label_diversity[label_diversity > 1].index.astype(str))
+    data = data[data["sequence_sha256"].astype(str).isin(eligible)]
     rows = []
     for sequence_sha, group in data.groupby("sequence_sha256", sort=False):
         positives = group[group["label"].astype(int) == 1]
@@ -558,15 +562,23 @@ def train(cfg: TrainConfig) -> dict[str, Any]:
             with torch.amp.autocast(device_type=device.type, enabled=amp_enabled):
                 logits = model.pair_logits(vhh, cdr, antigen)
                 bce = nn.functional.binary_cross_entropy_with_logits(logits, labels, pos_weight=pos_weight)
-                swapped_logits = model.pair_logits(vhh, cdr, swap_antigen)
-                target_swap = (
-                    nn.functional.softplus(cfg.target_swap_margin - (logits[valid_swap] - swapped_logits[valid_swap])).mean()
-                    if valid_swap.any() else logits.sum() * 0.0
-                )
+                if valid_swap.any():
+                    swapped_logits = model.pair_logits(
+                        vhh[valid_swap], cdr[valid_swap], swap_antigen[valid_swap]
+                    )
+                    target_swap = nn.functional.softplus(
+                        cfg.target_swap_margin - (logits[valid_swap] - swapped_logits)
+                    ).mean()
+                else:
+                    target_swap = logits.sum() * 0.0
                 loss = bce + cfg.target_swap_weight * target_swap
 
                 contrast_loss = logits.sum() * 0.0
-                if len(contrast_datasets["train"]):
+                if (
+                    len(contrast_datasets["train"])
+                    and cfg.observed_contrast_every > 0
+                    and step % cfg.observed_contrast_every == 0
+                ):
                     contrast, contrast_iterator = next_or_restart(contrast_iterator, contrast_loaders["train"])
                     cv = contrast["vhh"].to(device=device, dtype=dtype)
                     cc = contrast["cdr"].to(device)

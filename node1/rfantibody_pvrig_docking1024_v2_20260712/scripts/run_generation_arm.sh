@@ -10,6 +10,9 @@ ARM_TABLE=${ARM_TABLE:-$RUN_ROOT/config/generation_arms.tsv}
 ARM_OUTPUT_BASE=${ARM_OUTPUT_BASE:-$RUN_ROOT/generation/arms}
 TARGET_BACKBONES_OVERRIDE=${TARGET_BACKBONES_OVERRIDE:-}
 SEQS_PER_BACKBONE_OVERRIDE=${SEQS_PER_BACKBONE_OVERRIDE:-}
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-2}
+export MKL_NUM_THREADS=${MKL_NUM_THREADS:-2}
+export OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-2}
 
 [[ -s "$ARM_TABLE" ]] || { echo "Missing arm table: $ARM_TABLE" >&2; exit 2; }
 line=$(awk -F $'\t' -v arm="$ARM_ID" 'NR > 1 && $1 == arm { print; found=1; exit } END { if (!found) exit 3 }' "$ARM_TABLE") || {

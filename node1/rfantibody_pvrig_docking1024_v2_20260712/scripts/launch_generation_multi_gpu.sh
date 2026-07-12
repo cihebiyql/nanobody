@@ -5,6 +5,7 @@ RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_2026071
 GPU_IDS=${GPU_IDS:-1,2,3,4,5,7}
 GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-1000}
 GPU_WAIT_SECONDS=${GPU_WAIT_SECONDS:-60}
+MAX_LOAD1=${MAX_LOAD1:-56}
 ARM_TABLE=${ARM_TABLE:-$RUN_ROOT/config/generation_arms.tsv}
 mkdir -p "$RUN_ROOT/logs/generation" "$RUN_ROOT/status/generation"
 
@@ -16,6 +17,17 @@ wait_for_gpu() {
       return
     fi
     echo "GPU_GATE_WAIT gpu=$gpu memory_used_mb=$used time=$(date -Is)"
+    sleep "$GPU_WAIT_SECONDS"
+  done
+}
+
+wait_for_load() {
+  while true; do
+    load1=$(cut -d' ' -f1 /proc/loadavg)
+    if awk -v load="$load1" -v limit="$MAX_LOAD1" 'BEGIN { exit !(load < limit) }'; then
+      return
+    fi
+    echo "LOAD_GATE_WAIT load1=$load1 threshold=$MAX_LOAD1 time=$(date -Is)"
     sleep "$GPU_WAIT_SECONDS"
   done
 }
@@ -32,6 +44,7 @@ run_gpu_lane() {
       echo "ARM_SKIP_COMPLETE arm=$arm_id gpu=$gpu"
       continue
     fi
+    wait_for_load
     wait_for_gpu "$gpu"
     bash "$RUN_ROOT/scripts/run_generation_arm.sh" "$arm_id" "$gpu"
   done < "$ARM_TABLE"

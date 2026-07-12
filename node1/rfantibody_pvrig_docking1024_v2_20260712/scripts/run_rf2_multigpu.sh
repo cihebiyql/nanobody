@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RUN_ROOT=${RUN_ROOT:-/mnt/d/work/抗体/node1/rfantibody_pvrig_docking1024_v2_20260712}
+RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
 BATCH_ROOT=${BATCH_ROOT:-$RUN_ROOT/rf2/multiseed}
 MANIFEST=${MANIFEST:-$BATCH_ROOT/rf2_multiseed_manifest.tsv}
 RF2_BIN=${RF2_BIN:-/data/qlyu/software/RFantibody/bin/rf2}
@@ -10,7 +10,10 @@ SEEDS=${SEEDS:-42}
 ENABLE_ENRICHMENT_SEEDS=${ENABLE_ENRICHMENT_SEEDS:-0}
 MIN_SEED42_OUTPUTS=${MIN_SEED42_OUTPUTS:-1000}
 MAX_LOAD1=${MAX_LOAD1:-64}
-MIN_FREE_GPU_MB=${MIN_FREE_GPU_MB:-1000}
+MAX_GPU_USED_MB=${MAX_GPU_USED_MB:-1000}
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-2}
+export MKL_NUM_THREADS=${MKL_NUM_THREADS:-2}
+export OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-2}
 
 [[ -x "$RF2_BIN" ]] || { echo "Missing RF2 executable: $RF2_BIN" >&2; exit 2; }
 [[ -f "$MANIFEST" ]] || { echo "Missing RF2 multiseed manifest: $MANIFEST" >&2; exit 2; }
@@ -79,7 +82,7 @@ for seed in "${seed_array[@]}"; do
 
     if command -v nvidia-smi >/dev/null 2>&1; then
       used_mb=$(nvidia-smi --id="$gpu_id" --query-gpu=memory.used --format=csv,noheader,nounits | tr -d ' ' || echo 999999)
-      if [[ "$used_mb" -ge "$MIN_FREE_GPU_MB" ]]; then
+      if [[ "$used_mb" -ge "$MAX_GPU_USED_MB" ]]; then
         echo "Skipping seed_$seed/gpu_$gpu_id: memory.used=${used_mb}MiB" >&2
         continue
       fi

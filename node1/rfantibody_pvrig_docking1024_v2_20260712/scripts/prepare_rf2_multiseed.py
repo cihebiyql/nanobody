@@ -15,6 +15,12 @@ from pathlib import Path
 DEFAULT_GPU_IDS = (1, 2, 3, 4, 5, 7)
 DEFAULT_SEEDS = (42, 43, 44)
 SOURCE_FIELDS = ("mpnn_pdb", "source_pdb", "pdb_path", "final_pdb", "staged_pdb")
+AA3_TO_1 = {
+    "ALA": "A", "ARG": "R", "ASN": "N", "ASP": "D", "CYS": "C",
+    "GLN": "Q", "GLU": "E", "GLY": "G", "HIS": "H", "ILE": "I",
+    "LEU": "L", "LYS": "K", "MET": "M", "PHE": "F", "PRO": "P",
+    "SER": "S", "THR": "T", "TRP": "W", "TYR": "Y", "VAL": "V",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -55,6 +61,35 @@ def source_path(row: dict[str, str]) -> Path:
     raise ValueError(f"candidate {row.get('candidate_id', '<missing>')}: no source PDB field in {SOURCE_FIELDS}")
 
 
+def pdb_sequence(path: Path, chain: str) -> str:
+    residues: dict[tuple[int, str], str] = {}
+    for line in path.read_text(encoding="ascii", errors="replace").splitlines():
+        if not line.startswith("ATOM") or len(line) < 27 or line[21] != chain or line[12:16].strip() != "CA":
+            continue
+        residue = line[17:20].strip()
+        if residue not in AA3_TO_1:
+            raise ValueError(f"{path}: unsupported residue {residue!r} in chain {chain}")
+        residues[(int(line[22:26]), line[26])] = AA3_TO_1[residue]
+    return "".join(residues[key] for key in sorted(residues))
+
+
+def validate_source_pdb(path: Path, expected_sequence: str) -> dict[str, object]:
+    text = path.read_text(encoding="ascii", errors="replace")
+    missing_labels = [label for label in ("H1", "H2", "H3") if f" {label}" not in text]
+    if missing_labels:
+        raise ValueError(f"{path}: missing RFantibody labels {missing_labels}")
+    antibody = pdb_sequence(path, "H")
+    target = pdb_sequence(path, "T")
+    if antibody != expected_sequence:
+        raise ValueError(
+            f"{path}: chain H does not match candidate sequence "
+            f"({len(antibody)} residues vs expected {len(expected_sequence)})"
+        )
+    if not target:
+        raise ValueError(f"{path}: target chain T is missing")
+    return {"antibody_length": len(antibody), "target_length": len(target)}
+
+
 def ensure_symlink(link: Path, target: Path) -> None:
     link.parent.mkdir(parents=True, exist_ok=True)
     if link.exists() or link.is_symlink():
@@ -90,6 +125,7 @@ def prepare(
     batch_root.mkdir(parents=True, exist_ok=True)
     manifest_rows: list[dict[str, object]] = []
     seen: set[str] = set()
+    seen_sequences: set[str] = set()
     sorted_candidates = sorted(candidates, key=lambda item: item["candidate_id"])
     for index, row in enumerate(sorted_candidates):
         candidate_id = row["candidate_id"].strip()
@@ -98,10 +134,16 @@ def prepare(
         if not safe_candidate_id(candidate_id):
             raise ValueError(f"unsafe candidate_id for filesystem staging: {candidate_id!r}")
         seen.add(candidate_id)
+        sequence = row["sequence"].strip().upper()
+        sequence_sha = hashlib.sha256(sequence.encode()).hexdigest()
+        if sequence_sha in seen_sequences:
+            raise ValueError(f"candidate cohort is not exact-unique; duplicate sequence at {candidate_id}")
+        seen_sequences.add(sequence_sha)
         src = source_path(row)
         if not src.is_file():
             raise ValueError(f"candidate {candidate_id}: source PDB missing: {src}")
         src_sha = sha256_file(src)
+        validation = validate_source_pdb(src, sequence)
         gpu_id = gpu_ids[index % len(gpu_ids)]
         for seed in seeds:
             seed_name = f"seed_{seed}"
@@ -120,11 +162,13 @@ def prepare(
                     "shard": shard,
                     "source_pdb": str(src),
                     "source_pdb_sha256": src_sha,
+                    "sequence_sha256_verified": sequence_sha,
                     "staged_pdb": str(staged_pdb),
                     "expected_output_pdb": str(output_pdb),
                     "old_gate_status": "PENDING_STRICT_SEED42" if seed == 42 else "NOT_APPLICABLE_ENRICHMENT_SEED",
                     "formal_multiseed_gate_status": "PENDING_SEED42_PRIMARY_BEFORE_ENRICHMENT",
                     "rf2_failure_label_policy": "rf2_fail_or_missing_is_not_a_negative_sample",
+                    **validation,
                 }
             )
 
