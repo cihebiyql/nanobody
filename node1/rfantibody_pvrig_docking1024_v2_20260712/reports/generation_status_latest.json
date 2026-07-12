@@ -1,5 +1,7 @@
 {
   "arm_count": 48,
+  "arm_table_path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/config/generation_arms.tsv",
+  "arm_table_sha256": "53e0699e1726c063288913a28ed471aa15110af737090c6ac0bb8fc9bf3b9344",
   "arms": [
     {
       "arm_id": "P1_orig_S",
@@ -11,11 +13,11 @@
     },
     {
       "arm_id": "P1_orig_L",
-      "backbones": 2,
+      "backbones": 3,
       "gpu_id": 2,
       "sequences": 0,
       "state": "running",
-      "trb": 2
+      "trb": 3
     },
     {
       "arm_id": "P1_qrg_S",
@@ -43,11 +45,11 @@
     },
     {
       "arm_id": "P1_ekg_L",
-      "backbones": 2,
+      "backbones": 3,
       "gpu_id": 7,
       "sequences": 0,
       "state": "running",
-      "trb": 2
+      "trb": 3
     },
     {
       "arm_id": "P1_qkg_S",
@@ -386,8 +388,8 @@
       "trb": 0
     }
   ],
-  "backbone_pdb_count": 16,
-  "backbone_trb_count": 16,
+  "backbone_pdb_count": 18,
+  "backbone_trb_count": 18,
   "expected_backbones": 384,
   "expected_sequences": 1536,
   "sequence_pdb_count": 0,
