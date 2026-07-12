@@ -59,6 +59,14 @@ def cdr_range(sequence: str, cdr: str) -> tuple[int, int]:
 
 
 def patch_runner(source: str) -> str:
+    residue_count_anchor = "--expected-residue-count 130"
+    if residue_count_anchor not in source:
+        raise ValueError("Runner expected residue count anchor not found")
+    source = source.replace(
+        residue_count_anchor,
+        '--expected-residue-count "${#seq}"',
+        1,
+    )
     load_anchor = "MAX_LOAD1=${V2_5_MAX_LOAD1:-32}\n"
     if load_anchor not in source:
         raise ValueError("Runner MAX_LOAD1 anchor not found")

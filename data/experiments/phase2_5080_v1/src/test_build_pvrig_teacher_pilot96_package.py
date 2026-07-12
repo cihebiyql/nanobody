@@ -23,6 +23,8 @@ class Pilot96PackageTest(unittest.TestCase):
     def test_runner_patch_adds_wait_and_resume(self) -> None:
         source = (MOD.DEFAULT_TEMPLATE / "scripts/run_node1_v2_5_pose_batch.sh").read_text(encoding="utf-8")
         patched = MOD.patch_runner(source)
+        self.assertIn('--expected-residue-count "${#seq}"', patched)
+        self.assertNotIn("--expected-residue-count 130", patched)
         self.assertIn("LOAD_GATE_WAIT", patched)
         self.assertIn("HADDOCK_SKIP_COMPLETE", patched)
 
