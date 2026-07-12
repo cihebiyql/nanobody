@@ -71,7 +71,13 @@ class RealBindingDataset(Dataset):
         frame = frame[frame["split"].astype(str) == split].copy()
         keep = frame["vhh_sequence"].astype(str).map(cdrs.has_cdr3)
         self.excluded_unresolved_cdr_rows = int((~keep).sum())
-        self.frame = frame[keep].reset_index(drop=True)
+        frame = frame[keep].copy()
+        if split == "dev":
+            frame["_stable_eval_order"] = frame["sample_id"].astype(str).map(
+                lambda value: hashlib.sha256(f"v3g1-eval\t{value}".encode()).hexdigest()
+            )
+            frame = frame.sort_values("_stable_eval_order").drop(columns=["_stable_eval_order"])
+        self.frame = frame.reset_index(drop=True)
         self.cfg = cfg
         self.cache = cache
         self.cdrs = cdrs
@@ -115,6 +121,22 @@ def freeze_for_binding_head_smoke(model: v23.CrossContactNetV23) -> list[str]:
     return [name for name, parameter in model.named_parameters() if parameter.requires_grad]
 
 
+def target_swap_indices(target_ids: Sequence[str], device: torch.device) -> tuple[torch.Tensor, torch.Tensor]:
+    indices: list[int] = []
+    valid: list[bool] = []
+    for index, target in enumerate(target_ids):
+        replacement = next(
+            (candidate for candidate in range(len(target_ids)) if target_ids[candidate] != target),
+            index,
+        )
+        indices.append(replacement)
+        valid.append(replacement != index)
+    return (
+        torch.tensor(indices, dtype=torch.long, device=device),
+        torch.tensor(valid, dtype=torch.bool, device=device),
+    )
+
+
 def macro_target_auprc(labels: np.ndarray, scores: np.ndarray, targets: Sequence[str]) -> tuple[float, dict[str, float]]:
     values: dict[str, float] = {}
     target_array = np.asarray(targets)
@@ -138,6 +160,7 @@ def evaluate(
     labels: list[float] = []
     scores: list[float] = []
     shuffled_scores: list[float] = []
+    shuffle_valid_rows: list[bool] = []
     target_ids: list[str] = []
     sample_ids: list[str] = []
     with torch.inference_mode():
@@ -147,25 +170,29 @@ def evaluate(
             vhh = batch["vhh"].to(device)
             cdr = batch["cdr"].to(device)
             antigen = batch["antigen"].to(device)
+            swap_indices, swap_valid = target_swap_indices(batch["target_id"], device)
             with torch.amp.autocast(device_type=device.type, enabled=use_amp and device.type == "cuda"):
                 logits = model.pair_logits(vhh, cdr, antigen)
-                shuffled = model.pair_logits(vhh, cdr, antigen.roll(1, dims=0))
+                shuffled = model.pair_logits(vhh, cdr, antigen.index_select(0, swap_indices))
             labels.extend(batch["label"].tolist())
             scores.extend(torch.sigmoid(logits).float().cpu().tolist())
             shuffled_scores.extend(torch.sigmoid(shuffled).float().cpu().tolist())
+            shuffle_valid_rows.extend(swap_valid.cpu().tolist())
             target_ids.extend(batch["target_id"])
             sample_ids.extend(batch["sample_id"])
     y = np.asarray(labels, dtype=np.int64)
     score = np.asarray(scores, dtype=np.float64)
     shuffled = np.asarray(shuffled_scores, dtype=np.float64)
+    shuffle_valid = np.asarray(shuffle_valid_rows, dtype=bool)
     metrics = v23.binary_metrics(y, score)
     macro, per_target = macro_target_auprc(y, score, target_ids)
-    positive = y == 1
+    positive = (y == 1) & shuffle_valid
     metrics.update(
         {
             "macro_target_auprc": macro,
             "per_target_auprc": per_target,
-            "target_shuffle_mean_abs_delta": float(np.mean(np.abs(score - shuffled))),
+            "target_shuffle_valid_rows": int(shuffle_valid.sum()),
+            "target_shuffle_mean_abs_delta": float(np.mean(np.abs(score[shuffle_valid] - shuffled[shuffle_valid]))) if shuffle_valid.any() else 0.0,
             "positive_true_minus_target_shuffle": float(np.mean(score[positive] - shuffled[positive])) if positive.any() else 0.0,
         }
     )
@@ -176,9 +203,10 @@ def evaluate(
             "label": int(label),
             "score": float(value),
             "target_shuffle_score": float(shuffle_value),
+            "target_shuffle_valid": bool(valid),
         }
-        for sample_id, target, label, value, shuffle_value in zip(
-            sample_ids, target_ids, labels, scores, shuffled_scores, strict=True
+        for sample_id, target, label, value, shuffle_value, valid in zip(
+            sample_ids, target_ids, labels, scores, shuffled_scores, shuffle_valid_rows, strict=True
         )
     ]
     return metrics, rows
@@ -262,14 +290,10 @@ def train(cfg: SmokeConfig) -> dict[str, Any]:
                     labels,
                     pos_weight=(negative / positive).clamp(max=10.0),
                 )
-                shuffled_logits = model.pair_logits(vhh, cdr, antigen.roll(1, dims=0))
                 target_ids = batch["target_id"]
-                different = torch.tensor(
-                    [target_ids[index] != target_ids[index - 1] for index in range(len(target_ids))],
-                    dtype=torch.bool,
-                    device=device,
-                )
-                mask = (labels > 0.5) & different
+                swap_indices, swap_valid = target_swap_indices(target_ids, device)
+                shuffled_logits = model.pair_logits(vhh, cdr, antigen.index_select(0, swap_indices))
+                mask = (labels > 0.5) & swap_valid
                 dependence = (
                     nn.functional.softplus(cfg.target_dependence_margin - (logits[mask] - shuffled_logits[mask])).mean()
                     if mask.any()

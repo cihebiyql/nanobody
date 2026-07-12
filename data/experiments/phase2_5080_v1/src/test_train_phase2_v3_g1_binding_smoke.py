@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 
 import numpy as np
+import torch
 
 MODULE_PATH = Path(__file__).with_name("train_phase2_v3_g1_binding_smoke.py")
 SPEC = importlib.util.spec_from_file_location("train_phase2_v3_g1_binding_smoke", MODULE_PATH)
@@ -29,6 +30,13 @@ class V3G1BindingSmokeTest(unittest.TestCase):
     def test_current_inputs_exist(self) -> None:
         for path in (MOD.DEFAULT_BINDING, MOD.DEFAULT_CACHE, MOD.DEFAULT_CDR, MOD.DEFAULT_CHECKPOINT):
             self.assertTrue(path.exists(), path)
+
+    def test_target_swap_uses_different_targets(self) -> None:
+        indices, valid = MOD.target_swap_indices(["a", "a", "b", "c"], torch.device("cpu"))
+        targets = ["a", "a", "b", "c"]
+        for index, replacement in enumerate(indices.tolist()):
+            self.assertTrue(valid[index])
+            self.assertNotEqual(targets[index], targets[replacement])
 
 
 if __name__ == "__main__":
