@@ -24,11 +24,12 @@ AA3_TO_1 = {
 }
 AA1_TO_3 = {value: key for key, value in AA3_TO_1.items()}
 
-# PDB residues 47, 48, and 50 map to Kabat H44, H45, and H47.
+# PDB residues 47, 48, 50, and 53 map to Kabat H44, H45, H47, and H50.
+# H50S breaks the residual VAAIA hydrophobic run left after the hallmark repair.
 VARIANTS = {
-    "qrg": {47: "Q", 48: "R", 50: "G"},
-    "ekg": {47: "E", 48: "K", 50: "G"},
-    "qkg": {47: "Q", 48: "K", 50: "G"},
+    "qrg": {47: "Q", 48: "R", 50: "G", 53: "S"},
+    "ekg": {47: "E", 48: "K", 50: "G", 53: "S"},
+    "qkg": {47: "Q", 48: "K", 50: "G", 53: "S"},
 }
 
 
@@ -144,7 +145,12 @@ def main() -> int:
                 "schema_version": 1,
                 "source": str(args.source),
                 "source_sha256": sha256_file(args.source),
-                "pdb_to_kabat_mapping": {"H47": "H44", "H48": "H45", "H50": "H47"},
+                "pdb_to_kabat_mapping": {
+                    "H47": "H44",
+                    "H48": "H45",
+                    "H50": "H47",
+                    "H53": "H50",
+                },
                 "variants": manifest,
             },
             indent=2,

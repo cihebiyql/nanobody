@@ -65,19 +65,19 @@ SCAFFOLDS = (
     (
         "qrg",
         "inputs/scaffolds/h-NbBCII10_vhh_qrg.pdb",
-        "Kabat_H44Q_H45R_H47G",
+        "Kabat_H44Q_H45R_H47G_H50S",
         "primary_vhhified",
     ),
     (
         "ekg",
         "inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb",
-        "Kabat_H44E_H45K_H47G",
+        "Kabat_H44E_H45K_H47G_H50S",
         "primary_vhhified",
     ),
     (
         "qkg",
         "inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb",
-        "Kabat_H44Q_H45K_H47G",
+        "Kabat_H44Q_H45K_H47G_H50S",
         "primary_vhhified",
     ),
 )
