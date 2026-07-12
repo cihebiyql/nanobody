@@ -69,6 +69,7 @@ Use the fixed wrappers:
 bin/rfdiffusion --help
 bin/proteinmpnn --help
 bin/rf2 --help
+bin/rfantibody-env -c 'import torch; print(torch.__version__)'
 ```
 
 The wrappers set:
@@ -80,6 +81,20 @@ RFANTIBODY_SCRIPTS=/data/qlyu/software/RFantibody/scripts
 PYTHONPATH=/data/qlyu/software/RFantibody/src:/data/qlyu/software/RFantibody/include/SE3Transformer
 PATH=/data/qlyu/anaconda3/envs/rfdiffusion2/bin:/data/qlyu/software/RFantibody/bin:$PATH
 ```
+
+`bin/rfantibody-env` is the generic Python wrapper for source modules that do
+not have a dedicated executable in `bin/`. The current node1 deployment does
+not install Quiver console entry points such as `qvscorefile`; invoke them
+through the wrapper:
+
+```bash
+bin/rfantibody-env -c \
+  'import sys; from rfantibody.cli.quiver import qvscorefile; qvscorefile.main(args=[sys.argv[1]])' \
+  /path/to/designs.qv
+```
+
+This creates `/path/to/designs.sc`; the current `qvscorefile` writes the table
+itself instead of streaming TSV rows to standard output.
 
 Prefer an idle GPU, for example GPU 0:
 
@@ -190,6 +205,21 @@ Observed smoke score:
 Best pLDDT: 0.930
 ```
 
+### 5. Quiver score extraction helper
+
+The `bin/rfantibody-env` invocation above was checked with a synthetic Quiver
+score line on 2026-07-12. It correctly created a score table:
+
+```text
+Wrote 1 scores to /tmp/rfantibody_doc_qv_test.sc
+interaction_pae  pred_lddt  tag
+4.2              0.91       demo
+```
+
+This validates the metadata extraction helper only. A complete GPU
+RFdiffusion -> ProteinMPNN -> RF2 run using Quiver I/O has not yet been added
+to the node1 smoke suite.
+
 ## Current Status
 
 RFantibody is deployed and smoke-tested on node1 using the `rfdiffusion2` conda environment. The three RFantibody components are usable through wrappers:
@@ -198,6 +228,7 @@ RFantibody is deployed and smoke-tested on node1 using the `rfdiffusion2` conda 
 /data/qlyu/software/RFantibody/bin/rfdiffusion
 /data/qlyu/software/RFantibody/bin/proteinmpnn
 /data/qlyu/software/RFantibody/bin/rf2
+/data/qlyu/software/RFantibody/bin/rfantibody-env
 ```
 
 For production nanobody design, use higher `--diffuser-t`, more `--num-designs`, and more RF2 recycles than the smoke settings above.

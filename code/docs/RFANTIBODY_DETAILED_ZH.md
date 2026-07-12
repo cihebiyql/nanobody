@@ -3,6 +3,7 @@
 生成日期：2026-07-12  
 工作目录：`/mnt/d/work/抗体/code`  
 论文：*Atomically accurate de novo design of antibodies with RFdiffusion*  
+期刊信息：*Nature* 649, 183-193 (2026；在线发布日期 2025-11-05)  
 论文 DOI：<https://doi.org/10.1038/s41586-025-09721-5>  
 代码：<https://github.com/RosettaCommons/RFantibody>  
 训练表：<https://doi.org/10.5281/zenodo.15741710>  
@@ -331,10 +332,11 @@ RFdiffusion 的主要任务是生成主链和 dock。ProteinMPNN 的任务是寻
 
 ```text
 VHH/抗体序列
-已知 target 结构
+已知 target backbone/sequence
 可选 hotspot mask
-可选 framework/template 信息
 ```
+
+对当前标准 PDB/Quiver CLI 路径，不应默认认为设计 VHH 的输入坐标会作为 framework template 提供：预处理会 mask antibody coordinates，主要让 RF2 根据抗体序列、target backbone/sequence 和热点重新预测复合物。RF2 架构和训练特征支持某些 binder-template 情形，但只有明确使用相应输入路径时才能把它算作实际输入。
 
 RF2 的核心仍是 1D MSA/sequence、2D residue-pair 和 3D structure 三条信息轨道之间反复交换信息。针对抗体设计，作者加入或修改了：
 
@@ -526,7 +528,7 @@ antigen_type / antigen_name / species
 
 ### 7.7 CSV 中的负样本是什么
 
-RF2 训练中负样本以 50% 概率动态采样，主要有三类：
+补充材料描述并探索了三类负样本策略。released fine-tuning settings 明确写入的是：第一阶段以 50% 概率使用 mismatched binder-target，第二阶段再加入实验 miniprotein binder/nonbinder。CDR-swap 的构造和 loss 处理被详细描述，但现有文字证据不足以单独确认它是否实际进入最终发布 checkpoint；因此下面把它列为“探索过的方法”，而不是确定的最终训练组成。
 
 #### A. 错配 antibody-target
 
@@ -539,7 +541,7 @@ RF2 训练中负样本以 50% 概率动态采样，主要有三类：
 
 这种负样本是“高概率不结合”，但不是实验确认 nonbinder。一个抗体理论上仍可能偶然交叉反应。
 
-#### B. CDR swap
+#### B. CDR swap，探索过但最终 checkpoint 使用情况未明确
 
 把关键 CDR 换成：
 
@@ -676,7 +678,7 @@ examples per epoch：512
 训练设置：
 
 ```text
-negative probability：50%
+明确使用 mismatched binder-target：50% examples
 pseudo-batch size：64
 初始学习率：0.001
 每 10,000 optimizer steps 乘 0.95
@@ -721,7 +723,7 @@ examples per epoch：512
 | `LpAE` | predicted aligned error | 0.01 |
 | `Lbind` | positive/negative binding classification | 1.0 |
 
-对正样本，结构 loss 可作用于整个复合物。对错配负样本，由于没有“正确的复合物刚体方向”，结构 loss 只在 binder 和 target 各自内部计算，不对跨链相对 pose 施加正结构监督。对 CDR-swap 负样本，被替换 loop 上也不施加虚假的真实结构监督。
+对正样本，结构 loss 可作用于整个复合物。对错配负样本，由于没有“正确的复合物刚体方向”，结构 loss 只在 binder 和 target 各自内部计算，不对跨链相对 pose 施加正结构监督。补充材料还说明：若使用 CDR-swap 负样本，被替换 loop 上不施加虚假的真实结构监督。
 
 这一设计非常值得自建 pair model 借鉴：
 
@@ -1060,7 +1062,7 @@ pilot 通过后，再把最好的 1-2 组扩大到：
 /data/qlyu/software/RFantibody/scripts/examples/example_inputs/h-NbBCII10.pdb
 ```
 
-截至 2026-07-12，framework 已存在，但 node1 上的 `inputs/pvrig_8x6b_chainT.pdb` 还没有建立；所以下列命令是完成 PVRIG 链提取和编号核验后的可执行模板，不是已经跑完的 PVRIG 结果。
+截至 2026-07-12，framework 已存在，但 node1 上的 `inputs/pvrig_8x6b_chainT.pdb` 还没有建立；所以下列命令是完成 PVRIG 链提取和编号核验后的可执行模板，不是已经跑完的 PVRIG 结果。三个 Quiver 参数均已由当前 CLI `--help` 核验，`qvscorefile` helper 也已用合成 score line 验证，但 node1 尚未做完整的 RFdiffusion -> ProteinMPNN -> RF2 Quiver GPU smoke run。
 
 先运行小规模：
 
