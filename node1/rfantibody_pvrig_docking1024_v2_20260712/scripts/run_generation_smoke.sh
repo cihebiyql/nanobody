@@ -4,6 +4,11 @@ set -Eeuo pipefail
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
 SMOKE_ROOT="$RUN_ROOT/smoke"
 mkdir -p "$SMOKE_ROOT"/{arms,logs,status}
+exec 8>"$SMOKE_ROOT/smoke.lock"
+if ! flock -n 8; then
+  echo "Generation smoke controller is already running"
+  exit 0
+fi
 
 arms=(P1_orig_S P1_qrg_S P1_ekg_S P1_qkg_L)
 gpus=(1 3 5 2)
