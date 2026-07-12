@@ -115,12 +115,7 @@ def prepare(shortlist_tsv: Path, batch_root: Path, gpu_ids: list[int]) -> dict[s
             staged_pdb.symlink_to(source_pdb)
         manifest_rows.append(
             {
-                "candidate_id": candidate_id,
-                "hotspot_set": row["hotspot_set"],
-                "backbone_index": row["backbone_index"],
-                "mpnn_index": row["mpnn_index"],
-                "sequence": row["sequence"],
-                "mpnn_nll_score": row.get("mpnn_nll_score", ""),
+                **row,
                 "gpu_id": gpu_id,
                 "shard": shard,
                 "source_pdb": str(source_pdb),
@@ -172,4 +167,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

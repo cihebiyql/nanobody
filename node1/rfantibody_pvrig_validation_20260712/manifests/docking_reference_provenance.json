@@ -1,0 +1,37 @@
+{
+  "all_checks_passed": true,
+  "created_at": "2026-07-12T11:57:58.907466+00:00",
+  "files": [
+    {
+      "bytes": 340443,
+      "path": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/docking/8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+      "source": "/mnt/d/work/\u6297\u4f53/data/structures/8X6B.pdb"
+    },
+    {
+      "bytes": 197883,
+      "path": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/docking/9E6Y.pdb",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+      "source": "/mnt/d/work/\u6297\u4f53/data/structures/9E6Y.pdb"
+    },
+    {
+      "bytes": 5558,
+      "path": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/docking/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "source": "/mnt/d/work/\u6297\u4f53/data/structures/PVRIG_hotspot_set_v1.csv"
+    },
+    {
+      "bytes": 62621,
+      "path": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/docking/pvrig_8x6b_chainB.pdb",
+      "sha256": "b8560ca059ca5f16b85a8e17219864a644089fbdc51d0b4f98cc71e469c56b10",
+      "source": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_package/shard_0/inputs/pvrig_8x6b_chainB.pdb"
+    },
+    {
+      "bytes": 76,
+      "path": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_validation_20260712/inputs/docking/hotspot_residues_8x6b.txt",
+      "sha256": "7d332b9b6b812465ec67375be96d2a6a8e69c7ac3e556f3aae2d6e61084ad8bb",
+      "source": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_teacher_v1_20260712/pilot96_package/shard_0/inputs/hotspot_residues_8x6b.txt"
+    }
+  ],
+  "schema_version": 1
+}
