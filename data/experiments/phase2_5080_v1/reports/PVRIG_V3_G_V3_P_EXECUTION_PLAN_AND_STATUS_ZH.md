@@ -56,7 +56,7 @@ known-positive exact overlap = 0
 max positive CDR identity <75%
 ```
 
-### 3.2 RFantibody 正式候选库正在生成
+### 3.2 RFantibody 正式候选库已完成
 
 设计规模：
 
@@ -110,7 +110,14 @@ experiments/phase2_5080_v1/logs/pvrig_formal_teacher_pipeline_full_unittest_2026
 
 完整本地回归为 `255 tests / 9.115s / OK`。
 
-最终门仍是 `240/240 task、0 failed、2,880 backbone、8,640 raw sequence records`。不会因为 partial 计数正常就提前宣称生成完成。
+最终生成门已于 `2026-07-13 06:02 +08:00` 通过：
+
+```text
+240/240 task complete
+0 failed marker
+2,880/2,880 backbone PDB
+8,640/8,640 ProteinMPNN sequence PDB
+```
 
 自动接管控制器已改为独立 session 运行，对瞬时 SSH 错误和非法返回格式会重试，不会因一次轮询失败而丢失 `240/240` 后的最终化接管：
 
@@ -120,7 +127,7 @@ experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher_pipeline.sh
 experiments/phase2_5080_v1/logs/pvrig_formal_teacher_pipeline_controller.log
 ```
 
-### 3.3 候选收集器已验证
+### 3.3 正式候选收集已通过
 
 脚本：
 
@@ -149,7 +156,18 @@ source PDB and SHA256
 0 framework/CDR/provenance parse error
 ```
 
-这只是 collector 验证，不是正式候选集；正式收集必须等到 240/240 完成后重跑且得到 `PASS_COMPLETE_COLLECTION`。
+这组 partial 数据只用于预验证。`240/240` 后已重跑正式收集，结果为：
+
+```text
+status = PASS_COMPLETE_COLLECTION
+raw records = 8,640
+exact-unique sequences = 8,248
+exact duplicate records = 392
+parent = 40
+patch = 2,880 / 2,880 / 2,880
+mode = 4,320 H3 / 4,320 H1H3
+formal split = 6,048 train / 1,296 dev / 1,296 test
+```
 
 同一 partial 集的 fast gate 集成验证：
 
@@ -163,6 +181,18 @@ CDR homopolymer >=5      = 7
 ```
 
 这一结果说明生成库的大多数序列可进入模型前筛，但不能取消正式全库 fast gate。
+
+正式全库 fast gate 也已完成：
+
+```text
+input exact-unique = 8,248
+FORMAL_ELIGIBLE = 7,087
+HARD_FAIL = 1,161
+
+hard failure counts:
+CDR N-linked glyco motif = 1,147
+CDR homopolymer >=5 = 17
+```
 
 ### 3.4 正式 teacher 不是全 8,640 条 docking
 
@@ -211,6 +241,23 @@ run_pvrig_formal_teacher500_finalize.sh
 
 该 partial 集还显示 mean-pooled 高分明显被 parent framework 主导：前 10 全部来自同一 parent。这正是 Teacher500 不能机械取 Top 500、必须实施 parent/patch/mode 配额和 40% 左右非高分抽样的实证。
 
+正式评分和 Teacher500 冻结已完成：
+
+```text
+scored eligible candidates = 7,087
+Teacher500 unique candidates/sequences = 500 / 500
+selection layers = 140 high prior + 100 boundary + 60 low-prior QC
+                 + 120 diversity + 80 uncertainty/disagreement
+split = 350 train / 75 dev / 75 test
+parent coverage = 40，每个 12–13 条
+parent + patch + mode max = 3
+patch = 164 / 167 / 169
+mode = 254 H1H3 / 246 H3
+manifest SHA256 = 9285dd09db2ca1492fa97d52e7d009f4891777548adf06bc1845935aceeb0991
+```
+
+七分片包为 `72/72/72/71/71/71/71`，总计 500 条；本地和 Node1 哈希校验已返回 `PASS_TEACHER500_REMOTE_PACKAGE_VERIFIED`。
+
 ### 3.5 正式 Node1 teacher 字段
 
 每条候选执行：
@@ -240,6 +287,33 @@ PVRIG-specific contact-frequency matrix
 ```
 
 不能使用 `A/A=1、其他=0`，也不能只学习 rank-1 pose。9E6Y 重评分仍不等于独立 9E6Y docking；该限制必须写入 teacher manifest。
+
+### 3.6 Teacher500 Node1 执行状态
+
+正式七分片 controller 已于 `2026-07-13 06:07 +08:00` 启动。单体阶段于 `06:31:37` 通过：
+
+```text
+NanoBodyBuilder2 raw PDB = 500
+normalized chain-A PDB = 500
+sequence validation JSON = 500
+monomer geometry QC JSON = 500
+refinement failure -> unrefined fallback = 16
+fallback success / failure = 16 / 0
+nonzero normalize/sequence/geometry QC = 0
+monomer.complete = present
+```
+
+HADDOCK 于 `06:31:37` 启动。首轮实测每条约 4.3–4.8 分钟，但原设置的 300 秒 load-gate 轮询会在每条之间增加约 5 分钟空等。在 14 条 docking 已成功、七个 shard 都处于 `LOAD_GATE_WAIT`、且确认无活动 HADDOCK 进程的安全窗口，仅将轮询间隔从 300 秒改为 60 秒并以 `docking` resume 模式重启。阈值仍为 load1 48，HADDOCK 参数、每分片核数和所有输入均未改变；已完成 14 条由 `HADDOCK_SKIP_COMPLETE` 验证后跳过。
+
+本地独立后处理监控器已启动，只在同时满足 `docking.complete + 500 success + 0 fail` 时才运行 8X6B/9E6Y、contact-frequency 和 formal Teacher500 audit：
+
+```text
+experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher500_docking.sh
+experiments/phase2_5080_v1/src/start_pvrig_formal_teacher500_docking_monitor.sh
+experiments/phase2_5080_v1/logs/pvrig_formal_teacher500_docking_monitor.log
+```
+
+该监控器已通过“瞬时 SSH 失败后重试”和“500/500 完成后触发 mock postprocess”两类合约测试。
 
 ## 四、V3-G 通用模型路径
 
