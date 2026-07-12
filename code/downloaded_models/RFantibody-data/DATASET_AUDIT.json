@@ -1,0 +1,98 @@
+{
+  "source": {
+    "record": "https://zenodo.org/records/15741710",
+    "doi": "10.5281/zenodo.15741710",
+    "license": "CC-BY-4.0",
+    "upstream": "modified from SAbDab"
+  },
+  "file": {
+    "path": "downloaded_models/RFantibody-data/AntibodyTrainingDataset.csv",
+    "bytes": 8516238,
+    "md5": "e2eb7b90e3733e0ac9247dd53857c5aa",
+    "columns": [
+      "pdb",
+      "Hchain",
+      "Lchain",
+      "model",
+      "antigen_chain",
+      "antigen_type",
+      "antigen_het_name",
+      "antigen_name",
+      "short_header",
+      "date",
+      "compound",
+      "organism",
+      "heavy_species",
+      "light_species",
+      "antigen_species",
+      "authors",
+      "resolution",
+      "method",
+      "r_free",
+      "r_factor",
+      "scfv",
+      "engineered",
+      "heavy_subclass",
+      "light_subclass",
+      "light_ctype",
+      "affinity",
+      "delta_g",
+      "affinity_method",
+      "temperature",
+      "pmid",
+      "ab_chains",
+      "protein_target_chains",
+      "cdr_seq",
+      "target_seq",
+      "ab_cluster",
+      "target_cluster",
+      "cdr_len",
+      "negative_item",
+      "negative_example",
+      "validation_set"
+    ]
+  },
+  "counts": {
+    "rows": 11777,
+    "unique_pdb": 6205,
+    "unique_ab_cluster": 2480,
+    "unique_target_cluster_nonempty": 1320,
+    "negative_example": {
+      "False": 5920,
+      "True": 5857
+    },
+    "validation_set": {
+      "False": 10652,
+      "True": 1125
+    },
+    "ab_chains": {
+      "HL": 9301,
+      "L": 391,
+      "H": 2085
+    },
+    "target_sequence_present": {
+      "true": 8314,
+      "false": 3463
+    },
+    "scfv": {
+      "False": 11237,
+      "True": 540
+    },
+    "method": {
+      "X-RAY DIFFRACTION": 9259,
+      "ELECTRON MICROSCOPY": 2507,
+      "ELECTRON MICROSCOPY / HOMOLOGY MODEL": 10,
+      "X-RAY DIFFRACTION, 1": 1
+    },
+    "numeric_affinity_rows": 1263,
+    "unique_pdb_with_numeric_affinity": 709,
+    "date_min": "1976-03-17",
+    "date_max": "2023-01-11"
+  },
+  "interpretation_warnings": [
+    "negative_example=True rows are constructed negatives, not necessarily experimentally verified non-binders",
+    "validation_set is the released cluster split flag and should not be conflated with the separate final 104+47-structure validation sets described in the supplement",
+    "ab_chains=H is heavy-only and enriched for camelid VHH, but should be revalidated before treating every row as a canonical VHH",
+    "the released CSV covers the antibody/SAbDab component; exact end-to-end retraining also used TCR, loop-mediated PDB, and an in-house 1.6M miniprotein binder dataset"
+  ]
+}
