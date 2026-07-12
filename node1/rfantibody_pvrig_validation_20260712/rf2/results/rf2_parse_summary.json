@@ -1,0 +1,19 @@
+{
+  "all_outputs_present": true,
+  "docking_selected": 0,
+  "docking_unique_backbones": 0,
+  "expected_candidates": 78,
+  "generated_at": "2026-07-12T12:10:14.855807+00:00",
+  "pose_recovered": 0,
+  "schema_version": 1,
+  "scientific_boundary": "RF2 pose recovery is a consistency check, not experimental binding or blocking evidence.",
+  "status_counts": {
+    "RF2_LOW_INTERACTION_CONFIDENCE": 68,
+    "RF2_POSE_NOT_RECOVERED": 10
+  },
+  "thresholds": {
+    "interaction_pae_max_exclusive": 10.0,
+    "target_aligned_antibody_rmsd_max_a_exclusive": 2.0,
+    "target_aligned_cdr_rmsd_max_a_exclusive": 2.0
+  }
+}
