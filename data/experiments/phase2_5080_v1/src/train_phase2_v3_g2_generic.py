@@ -98,13 +98,17 @@ class CompactESM2Cache(v23.ESM2Cache):
         super().__init__(manifest_path, expected_dim)
         self.max_cached_shards = max_cached_shards
         self._shards = OrderedDict()
+        self._resolved_shard_paths = {
+            raw: (self.manifest_path.parent / raw).resolve()
+            for raw in {row["shard_path"] for row in self.rows.values()}
+        }
 
     def get(self, sequence: str, max_len: int) -> torch.Tensor:
         digest = v23.seq_hash(sequence)
         row = self.rows.get(digest)
         if row is None:
             raise KeyError(f"Missing ESM2 cache row for sequence hash {digest}")
-        shard_path = (self.manifest_path.parent / row["shard_path"]).resolve()
+        shard_path = self._resolved_shard_paths[row["shard_path"]]
         if not shard_path.exists():
             raise FileNotFoundError(f"Missing ESM2 shard for {digest}: {shard_path}")
         if shard_path not in self._shards:
