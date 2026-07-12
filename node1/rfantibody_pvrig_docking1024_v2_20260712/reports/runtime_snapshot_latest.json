@@ -1,0 +1,47 @@
+{
+  "captured_at": "2026-07-12T17:43:01.995572+00:00",
+  "downstream_controller": {
+    "message": "waiting for frozen 1024-candidate cohort",
+    "pid": 3199367,
+    "state": "waiting_for_generation",
+    "updated_at": "2026-07-12T17:42:05.673882+00:00"
+  },
+  "generation_controller": {
+    "message": "running 48 arms on six GPU lanes",
+    "pid": 3195169,
+    "state": "full_generation",
+    "updated_at": "2026-07-12T17:22:30.638402+00:00"
+  },
+  "generation_counts": {
+    "backbone_pdb_count": 6,
+    "backbone_trb_count": 6,
+    "sequence_pdb_count": 0,
+    "state_counts": {
+      "pending": 42,
+      "running": 6
+    }
+  },
+  "hostname": "node1",
+  "loadavg": "317.19 298.52 292.37 281/6070 3233458",
+  "postprocess_controller": {
+    "message": "waiting for at least 1000 completed HADDOCK candidates",
+    "pid": 3112657,
+    "state": "waiting_for_docking",
+    "updated_at": "2026-07-12T17:23:09.722227+00:00"
+  },
+  "resource_policy": {
+    "gpu_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7
+    ],
+    "gpu_memory_used_gate_mb": 12000,
+    "gpu_nice": 10,
+    "gpu_stage_max_load1": 400,
+    "haddock_max_load1": 240,
+    "haddock_max_parallel": 2
+  }
+}

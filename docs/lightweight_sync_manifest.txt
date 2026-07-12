@@ -536,6 +536,7 @@ data/experiments/phase2_5080_v1/src/freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/fuse_phase2_v2_4_p3.py
 data/experiments/phase2_5080_v1/src/fuse_pvrig_v3_structure_evidence.py
 data/experiments/phase2_5080_v1/src/make_rfantibody_hlt_framework.py
+data/experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher_pipeline.sh
 data/experiments/phase2_5080_v1/src/phase2_v2_5_contracts.py
 data/experiments/phase2_5080_v1/src/phase2_v2_5_metrics.py
 data/experiments/phase2_5080_v1/src/phase2_v3_contracts.py
@@ -1703,6 +1704,8 @@ node1/rfantibody_pvrig_docking1024_v2_20260712/inputs/scaffolds/scaffold_manifes
 node1/rfantibody_pvrig_docking1024_v2_20260712/inputs/scaffolds/scaffold_vhh_eval.json
 node1/rfantibody_pvrig_docking1024_v2_20260712/inputs/scaffolds/scaffold_vhh_eval.tsv
 node1/rfantibody_pvrig_docking1024_v2_20260712/inputs/scaffolds/scaffolds.fasta
+node1/rfantibody_pvrig_docking1024_v2_20260712/reports/generation_status_latest.json
+node1/rfantibody_pvrig_docking1024_v2_20260712/reports/runtime_snapshot_latest.json
 node1/rfantibody_pvrig_docking1024_v2_20260712/schemas/README_DATASET_ZH.md
 node1/rfantibody_pvrig_docking1024_v2_20260712/schemas/acceptance_spec.json
 node1/rfantibody_pvrig_docking1024_v2_20260712/scripts/aggregate_dual_baseline.py

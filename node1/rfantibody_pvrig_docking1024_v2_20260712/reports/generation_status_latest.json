@@ -1,0 +1,398 @@
+{
+  "arm_count": 48,
+  "arms": [
+    {
+      "arm_id": "P1_orig_S",
+      "backbones": 1,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "running",
+      "trb": 1
+    },
+    {
+      "arm_id": "P1_orig_L",
+      "backbones": 1,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "running",
+      "trb": 1
+    },
+    {
+      "arm_id": "P1_qrg_S",
+      "backbones": 1,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "running",
+      "trb": 1
+    },
+    {
+      "arm_id": "P1_qrg_L",
+      "backbones": 1,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "running",
+      "trb": 1
+    },
+    {
+      "arm_id": "P1_ekg_S",
+      "backbones": 1,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "running",
+      "trb": 1
+    },
+    {
+      "arm_id": "P1_ekg_L",
+      "backbones": 1,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "running",
+      "trb": 1
+    },
+    {
+      "arm_id": "P1_qkg_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P1_qkg_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_orig_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_orig_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_qrg_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_qrg_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_ekg_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_ekg_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_qkg_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P2_qkg_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_orig_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_orig_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_qrg_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_qrg_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_ekg_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_ekg_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_qkg_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P3_qkg_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_orig_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_orig_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_qrg_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_qrg_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_ekg_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_ekg_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_qkg_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P4_qkg_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_orig_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_orig_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_qrg_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_qrg_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_ekg_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_ekg_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_qkg_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P5_qkg_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_orig_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_orig_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_qrg_S",
+      "backbones": 0,
+      "gpu_id": 1,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_qrg_L",
+      "backbones": 0,
+      "gpu_id": 2,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_ekg_S",
+      "backbones": 0,
+      "gpu_id": 3,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_ekg_L",
+      "backbones": 0,
+      "gpu_id": 4,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_qkg_S",
+      "backbones": 0,
+      "gpu_id": 5,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    },
+    {
+      "arm_id": "P6_qkg_L",
+      "backbones": 0,
+      "gpu_id": 7,
+      "sequences": 0,
+      "state": "pending",
+      "trb": 0
+    }
+  ],
+  "backbone_pdb_count": 6,
+  "backbone_trb_count": 6,
+  "expected_backbones": 384,
+  "expected_sequences": 1536,
+  "sequence_pdb_count": 0,
+  "state_counts": {
+    "pending": 42,
+    "running": 6
+  }
+}
