@@ -121,6 +121,9 @@ def prepare_rows(source: Path) -> tuple[list[dict[str, object]], Counter[str]]:
         if not sequence or set(sequence) - STANDARD_AA:
             exclusions["nonstandard_sequence"] += 1
             continue
+        if len(sequence) < 115:
+            exclusions["sequence_too_short_for_full_framework"] += 1
+            continue
         if raw.get("keep_or_drop") != "keep" or raw.get("framework_health_status") != "pass_framework_health":
             exclusions["source_gate_not_passed"] += 1
             continue
