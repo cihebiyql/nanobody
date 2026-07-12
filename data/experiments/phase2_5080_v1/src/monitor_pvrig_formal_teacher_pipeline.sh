@@ -26,7 +26,7 @@ while true; do
     "$SSH_COMMAND" "$NODE_HOST" "ROOT='$PRODUCTION'; \
       printf '%s ' \"\$(find \"\$ROOT/tasks\" -name complete.json | wc -l)\"; \
       printf '%s ' \"\$(find \"\$ROOT/tasks\" -name failed.json | wc -l)\"; \
-      pgrep -af 'run_worker.sh' | grep -v pgrep | wc -l"
+      pgrep -af 'run_worker[^ ]*\.sh' | grep -v pgrep | wc -l"
   )
   echo "GENERATION_STATUS $(date -Is) complete=$complete failed=$failed workers=$workers"
   if (( failed > 0 )); then
@@ -44,7 +44,7 @@ while true; do
 done
 
 while true; do
-  workers=$("$SSH_COMMAND" "$NODE_HOST" "pgrep -af 'run_worker.sh' | grep -v pgrep | wc -l")
+  workers=$("$SSH_COMMAND" "$NODE_HOST" "pgrep -af 'run_worker[^ ]*\.sh' | grep -v pgrep | wc -l")
   echo "WORKER_DRAIN_STATUS $(date -Is) workers=$workers"
   (( workers == 0 )) && break
   sleep 30
