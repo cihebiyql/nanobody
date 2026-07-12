@@ -1,43 +1,51 @@
 # 运行状态
 
-更新时间：2026-07-13 00:28 CST
+更新时间：2026-07-13 01:24 CST
 
 ## 当前阶段
 
-- 已完成旧流程、hotspot、scaffold、GPU/CPU 资源与训练数据合同审计。
-- 已冻结 48-arm V2 设计规格：计划生成 384 backbones、1,536 raw sequences，并从中冻结 1,024 条 docking cohort；真实 cohort 尚未生成。
-- 已生成 3 个 FR2 VHHified scaffold 原型；hallmark 为 1.0、5-aa hydrophobic-run 为 0，正式 `VTVSS` artifact 正等待资源门控后重冻结。
-- 第一次 4-arm RFdiffusion + ProteinMPNN smoke 已通过，但它只作为补 FR4 前的诊断结果。
-- 已加入 scaffold 层 `VTVSS` 修复、SHA/CDR label preflight 和第二次 smoke 的正式门槛。
-- 三个后台控制器已经在 node1 运行：generation、RF2/NBB2/HADDOCK、双参考后处理/训练 ETL。
-- node1 当前另一个 RFantibody 项目约有 28 个进程、`load1` 约 190-220；本流程正在资源门控中等待，不抢占现有任务。
-- 等负载降到 generation 门槛 72 且 GPU pool 空闲后，控制器会自动继续，无需手工重启。
+- 已冻结 48-arm V2 设计规格：`6 hotspot patches x 4 scaffolds x 2 H3 regimes`。
+- 4 个 scaffold 已经 PyRosetta 末端修复为 canonical `VTVSS`，且 PDB chain `H` 和 `H1/H2/H3` label 回归检查通过。
+- 修复后的正式 smoke 已通过：`P1_orig_S`、`P1_qrg_S`、`P1_ekg_S`、`P1_qkg_L` 均产出 1 个 backbone、TRB 和 ProteinMPNN 序列。
+- 2026-07-13 01:22 CST 已在 GPU `1,2,3,4,5,7` 启动 6 条正式 generation lane；每条 lane 顺序处理 8 个 arm。
+- generation、downstream 和 postprocess 三个可恢复控制器均在 node1 后台运行。downstream 等待 `data/candidates.tsv`，postprocess 等待至少 1,000 个真实 HADDOCK 成功候选。
+- 当前尚未冻结 1,024 条 cohort；因此 RF2、NanoBodyBuilder2 和 HADDOCK3 还未进入全量阶段。
 
-## 当前资源快照
+## 资源策略
+
+node1 是 64 核共享节点，当前其他 CPU/GPU 任务使 `load1` 长期约为 270-310。原 GPU 阶段 `MAX_LOAD1=240` 会使六条 lane 在 GPU 仍有充足显存时无限等待。根据正式 smoke 的实测结果，现采用分阶段门控：
 
 ```text
-GPU pool: 1,2,3,4,5,7
-CPU: 64 cores
-RAM: 503 GiB
-/data free: about 20 TB
+GPU stages (RFdiffusion/RF2/NBB2): MAX_LOAD1=400
+GPU pool:                            1,2,3,4,5,7
+GPU memory-used gate:               12,000 MiB per GPU
+GPU task nice:                      10
+OMP/MKL/OpenBLAS threads:           2 per GPU task
+HADDOCK MAX_LOAD1:                  240
+HADDOCK maximum parallel jobs:      2
+HADDOCK nice:                       15
 ```
 
-HADDOCK3/双参考后处理将根据实时 `load1` 动态限流；基线负载约 60 时只启动约 1 个 4-core HADDOCK 作业，负载下降后再扩并发。其他项目正在使用 GPU/CPU 时，本流程等待，不主动终止对方任务。
+这个调整只放宽低优先级 GPU 阶段的 load gate。HADDOCK3 仍保留更严格的 CPU 限流。不停止、降权或重启其他项目的任务。
 
 ## 已验证的代码合同
 
+- controller contract tests：6 项通过。
 - RF2 contract tests：2 项通过。
 - NBB2/HADDOCK orchestration contract tests：3 项通过。
 - training dataset contract tests：3 项通过。
-- Python AST、JSON 和全部 shell syntax：通过。
-- 真实第一代 HADDOCK pose 经 chain `B -> T` 回归后，V2 双参考流程成功输出 8X6B `BLOCKER_LIKE_A`、9E6Y `BLOCKER_PLAUSIBLE_B` 和 consensus `SINGLE_BASELINE_BLOCKER_RECHECK`。
+- Python AST、JSON 和 shell syntax：通过。
+- 真实第一代 HADDOCK pose 经 chain `B -> T` 回归后，V2 双参考流程输出 8X6B `BLOCKER_LIKE_A`、9E6Y `BLOCKER_PLAUSIBLE_B` 和 consensus `SINGLE_BASELINE_BLOCKER_RECHECK`。
 
 ## 尚未完成
 
-- 1,536 条原始生成；
-- 1,024 条 exact-unique cohort 冻结；
-- 1,024 条 sequence QC；
-- 不少于 1,000 条 RF2；
-- 不少于 1,000 条 NBB2 + HADDOCK3；
-- pose-level 能量/双基线几何 ETL；
-- leakage-safe split 与最终合同测试。
+- 384 个 RFdiffusion backbones 和 1,536 条原始 ProteinMPNN 记录；
+- 1,024 条 exact-unique cohort 冻结和 sequence QC；
+- 不少于 1,000 条 RF2 结果；
+- 不少于 1,000 条 NanoBodyBuilder2 + 真实 HADDOCK3 结果；
+- pose-level 能量、8X6B/9E6Y 几何、失败原因和 leakage-safe split ETL；
+- `reports/final_audit.json` 全部硬门槛通过。
+
+## 声明边界
+
+本次全量 docking 的目的是建立可训练的 pose/能量/失败数据集和候选优先级，不是把计算 docking 分数当成实验 binder、Kd 或 PVRIG-PVRL2 阻断证据。
