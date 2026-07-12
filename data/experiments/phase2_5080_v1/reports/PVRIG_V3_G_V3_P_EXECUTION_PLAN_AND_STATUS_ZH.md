@@ -93,7 +93,9 @@ Node1 根目录：
 37 个 generation worker 仍在运行
 ```
 
-节点当时只有 64 个 CPU 核，而每个默认 RFdiffusion 进程会创建约 100 个 CPU 线程，实测 CPU pressure 约为 95%。因此没有继续盲目增加 worker，而是仅对后续新启动的 task 设置可覆盖的 `OMP/MKL/OpenBLAS/NumExpr=1`。这不改变 GPU、seed、hotspot、loop 或生成参数，也不中断已在运行的 task；原脚本和修改后脚本的 SHA256 已保存在 Node1 生产目录中。
+节点当时只有 64 个 CPU 核，而每个默认 RFdiffusion 进程会创建约 100 个 CPU 线程，实测 CPU pressure 约为 95%。因此没有继续盲目增加 worker，而是对后续新启动的 task 设置可覆盖的 `OMP/MKL/OpenBLAS/NumExpr=1`；这不改变 GPU、seed、hotspot、loop 或生成参数。
+
+首次施加该运行时参数时曾原地改写正在被 Bash 读取的 `run_task.sh`，导致 7 个已完成 RFdiffusion 的 task 在进入 ProteinMPNN 时以 `rc=127` 退出。这 7 个 task 的 84 个 backbone 全部保留，没有 `failed.json`，也没有删除任何输出。随后启动了覆盖所有 205 个未完成 task 的受锁 recovery worker：七个异常 task 已全部恢复为 `complete`，每个均有 `12 backbone + 36 sequence PDB`。运行脚本不再在存活 task 期间修改；原脚本、当前脚本和 recovery plan 的哈希/审计文件均保存在 Node1 生产目录。恢复后快照为 `42/240 complete、0 failed marker、682 backbone、1,512 sequence PDB`。
 
 最终门仍是 `240/240 task、0 failed、2,880 backbone、8,640 raw sequence records`。不会因为 partial 计数正常就提前宣称生成完成。
 
