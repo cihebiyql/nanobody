@@ -1,6 +1,6 @@
 # 运行状态
 
-更新时间：2026-07-13 03:01 CST
+更新时间：2026-07-13 07:33 CST
 
 ## 当前阶段
 
@@ -9,10 +9,11 @@
 - 修复后的正式 smoke 已通过：`P1_orig_S`、`P1_qrg_S`、`P1_ekg_S`、`P1_qkg_L` 均产出 1 个 backbone、TRB 和 ProteinMPNN 序列。
 - 2026-07-13 02:59 CST，6 个首批 arm 全部完成，共产出 48 个 backbone、48 个 TRB 和 192 条 ProteinMPNN 序列，未见 OOM 或异常。
 - primary-only 过渡已成功执行：6 条旧 lane 被逐 GPU 安全停止，新 controller 已明确携带 `config/generation_arms_primary.tsv` 启动。
-- 当前活动表为 36 个 VHHified arm，期望 288 个 primary backbone 和 1,152 条 primary sequence record；其中 4 个首批 primary arm 已完成（32 backbones/128 sequences），6 个新 arm 已启动。
+- 36 个 VHHified arm 已全部完成：288 个 primary backbones 和 1,152 条 primary sequence records。连同保留的 2 个 orig 诊断 arm，实际产出 304 backbones 和 1,216 sequence records。
 - 完整 48-arm 矩阵仍保留作为设计溯源；实际计划生成 288 个 primary backbones 和 16 个已在运行的 original-scaffold diagnostic backbones，删去其余不会进入 1,024 条 cohort 的 80 个诊断 backbone。
-- generation、downstream 和 postprocess 三个可恢复控制器均在 node1 后台运行。downstream 等待 `data/candidates.tsv`，postprocess 等待至少 1,000 个真实 HADDOCK 成功候选。
-- 当前尚未冻结 1,024 条 cohort；因此 RF2、NanoBodyBuilder2 和 HADDOCK3 还未进入全量阶段。
+- 1,152 条 primary records 中有 1,067 条全局 exact-unique；已冻结 1,024 条 exact-unique cohort，覆盖全部 36 arms 和 288 backbones。
+- 序列 QC 为 `1,024/1,024` 无 hard-fail。RF2 seed42 为 `1,024/1,024` 有输出：4 个 strict pose-recovered、813 个 low-interaction-confidence、207 个 pose-not-recovered。
+- NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。真实 HADDOCK smoke 已成功，全量 docking 正在运行。
 
 ## 资源策略
 
@@ -24,8 +25,9 @@ GPU pool:                            1,2,3,4,5,7
 GPU memory-used gate:               12,000 MiB per GPU
 GPU task nice:                      10
 OMP/MKL/OpenBLAS threads:           2 per GPU task
-HADDOCK MAX_LOAD1:                  240
-HADDOCK maximum parallel jobs:      2
+HADDOCK main-controller MAX_LOAD1:  240
+HADDOCK sidecar MAX_LOAD1:          160
+HADDOCK total parallel jobs:        8 (main 2 + sidecar 6)
 HADDOCK nice:                       15
 ```
 
@@ -33,7 +35,7 @@ HADDOCK nice:                       15
 
 ## 已验证的代码合同
 
-- controller contract tests：8 项通过。
+- controller contract tests：9 项通过。
 - RF2 contract tests：4 项通过。
 - NBB2/HADDOCK orchestration contract tests：3 项通过。
 - training dataset contract tests：3 项通过。
@@ -42,10 +44,8 @@ HADDOCK nice:                       15
 
 ## 尚未完成
 
-- 304 个实际 RFdiffusion backbones（288 primary + 16 diagnostic）和 1,216 条实际 ProteinMPNN 记录；
-- 1,024 条 exact-unique cohort 冻结和 sequence QC；
-- 不少于 1,000 条 RF2 结果；
-- 不少于 1,000 条 NanoBodyBuilder2 + 真实 HADDOCK3 结果；
+- RF2 seed43/44 enrichment 和最终多 seed 汇总；
+- 不少于 1,000 条真实 HADDOCK3 结果；
 - pose-level 能量、8X6B/9E6Y 几何、失败原因和 leakage-safe split ETL；
 - `reports/final_audit.json` 全部硬门槛通过。
 
