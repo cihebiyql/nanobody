@@ -42,13 +42,15 @@ TAG_RE = re.compile(r"design_(\d+)_dldesign_(\d+)\.pdb$")
 BACKBONE_PDB_RE = re.compile(r"design_(\d+)\.pdb$")
 BACKBONE_TRB_RE = re.compile(r"design_(\d+)\.trb$")
 
-# The finalizer uses node1's system Python; add the validated RFantibody
-# environment so NumPy-backed TRB pickles can be decoded.
-RFANTIBODY_SITE_PACKAGES = Path(
-    "/data/qlyu/anaconda3/envs/rfdiffusion2/lib/python3.11/site-packages"
-)
-if RFANTIBODY_SITE_PACKAGES.is_dir():
-    sys.path.insert(0, str(RFANTIBODY_SITE_PACKAGES))
+RFANTIBODY_PYTHON = Path("/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python")
+if __name__ == "__main__" and Path(sys.executable).resolve() != RFANTIBODY_PYTHON.resolve():
+    if RFANTIBODY_PYTHON.is_file():
+        os.execv(
+            str(RFANTIBODY_PYTHON),
+            [str(RFANTIBODY_PYTHON), str(Path(__file__).resolve()), *sys.argv[1:]],
+        )
+    if Path("/data/qlyu/software/RFantibody").exists():
+        raise RuntimeError(f"RFantibody Python is missing: {RFANTIBODY_PYTHON}")
 
 
 def parse_args() -> argparse.Namespace:
