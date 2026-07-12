@@ -1,62 +1,46 @@
 {
-  "arm_count": 48,
-  "arm_table_path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/config/generation_arms.tsv",
-  "arm_table_sha256": "53e0699e1726c063288913a28ed471aa15110af737090c6ac0bb8fc9bf3b9344",
+  "arm_count": 36,
+  "arm_table_path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/config/generation_arms_primary.tsv",
+  "arm_table_sha256": "40e0dd3b1bdcf7bbcacc24ec2336eb7b42eb92457873ad4580981e82c988e0aa",
   "arms": [
     {
-      "arm_id": "P1_orig_S",
-      "backbones": 4,
-      "gpu_id": 1,
-      "sequences": 0,
-      "state": "running",
-      "trb": 4
-    },
-    {
-      "arm_id": "P1_orig_L",
-      "backbones": 4,
-      "gpu_id": 2,
-      "sequences": 0,
-      "state": "running",
-      "trb": 4
-    },
-    {
       "arm_id": "P1_qrg_S",
-      "backbones": 4,
+      "backbones": 8,
       "gpu_id": 3,
-      "sequences": 0,
-      "state": "running",
-      "trb": 4
+      "sequences": 32,
+      "state": "complete",
+      "trb": 8
     },
     {
       "arm_id": "P1_qrg_L",
-      "backbones": 4,
+      "backbones": 8,
       "gpu_id": 4,
-      "sequences": 0,
-      "state": "running",
-      "trb": 4
+      "sequences": 32,
+      "state": "complete",
+      "trb": 8
     },
     {
       "arm_id": "P1_ekg_S",
-      "backbones": 4,
+      "backbones": 8,
       "gpu_id": 5,
-      "sequences": 0,
-      "state": "running",
-      "trb": 4
+      "sequences": 32,
+      "state": "complete",
+      "trb": 8
     },
     {
       "arm_id": "P1_ekg_L",
-      "backbones": 4,
+      "backbones": 8,
       "gpu_id": 7,
-      "sequences": 0,
-      "state": "running",
-      "trb": 4
+      "sequences": 32,
+      "state": "complete",
+      "trb": 8
     },
     {
       "arm_id": "P1_qkg_S",
       "backbones": 0,
       "gpu_id": 1,
       "sequences": 0,
-      "state": "pending",
+      "state": "running",
       "trb": 0
     },
     {
@@ -64,23 +48,7 @@
       "backbones": 0,
       "gpu_id": 2,
       "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P2_orig_S",
-      "backbones": 0,
-      "gpu_id": 3,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P2_orig_L",
-      "backbones": 0,
-      "gpu_id": 4,
-      "sequences": 0,
-      "state": "pending",
+      "state": "running",
       "trb": 0
     },
     {
@@ -88,7 +56,7 @@
       "backbones": 0,
       "gpu_id": 5,
       "sequences": 0,
-      "state": "pending",
+      "state": "running",
       "trb": 0
     },
     {
@@ -96,7 +64,7 @@
       "backbones": 0,
       "gpu_id": 7,
       "sequences": 0,
-      "state": "pending",
+      "state": "running",
       "trb": 0
     },
     {
@@ -120,7 +88,7 @@
       "backbones": 0,
       "gpu_id": 3,
       "sequences": 0,
-      "state": "pending",
+      "state": "running",
       "trb": 0
     },
     {
@@ -128,23 +96,7 @@
       "backbones": 0,
       "gpu_id": 4,
       "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P3_orig_S",
-      "backbones": 0,
-      "gpu_id": 5,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P3_orig_L",
-      "backbones": 0,
-      "gpu_id": 7,
-      "sequences": 0,
-      "state": "pending",
+      "state": "running",
       "trb": 0
     },
     {
@@ -191,22 +143,6 @@
       "arm_id": "P3_qkg_L",
       "backbones": 0,
       "gpu_id": 7,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P4_orig_S",
-      "backbones": 0,
-      "gpu_id": 1,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P4_orig_L",
-      "backbones": 0,
-      "gpu_id": 2,
       "sequences": 0,
       "state": "pending",
       "trb": 0
@@ -260,22 +196,6 @@
       "trb": 0
     },
     {
-      "arm_id": "P5_orig_S",
-      "backbones": 0,
-      "gpu_id": 3,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P5_orig_L",
-      "backbones": 0,
-      "gpu_id": 4,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
       "arm_id": "P5_qrg_S",
       "backbones": 0,
       "gpu_id": 5,
@@ -319,22 +239,6 @@
       "arm_id": "P5_qkg_L",
       "backbones": 0,
       "gpu_id": 4,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P6_orig_S",
-      "backbones": 0,
-      "gpu_id": 5,
-      "sequences": 0,
-      "state": "pending",
-      "trb": 0
-    },
-    {
-      "arm_id": "P6_orig_L",
-      "backbones": 0,
-      "gpu_id": 7,
       "sequences": 0,
       "state": "pending",
       "trb": 0
@@ -388,13 +292,14 @@
       "trb": 0
     }
   ],
-  "backbone_pdb_count": 24,
-  "backbone_trb_count": 24,
-  "expected_backbones": 384,
-  "expected_sequences": 1536,
-  "sequence_pdb_count": 0,
+  "backbone_pdb_count": 32,
+  "backbone_trb_count": 32,
+  "expected_backbones": 288,
+  "expected_sequences": 1152,
+  "sequence_pdb_count": 128,
   "state_counts": {
-    "pending": 42,
+    "complete": 4,
+    "pending": 26,
     "running": 6
   }
 }

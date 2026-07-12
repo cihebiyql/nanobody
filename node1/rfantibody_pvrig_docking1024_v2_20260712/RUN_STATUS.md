@@ -1,14 +1,15 @@
 # 运行状态
 
-更新时间：2026-07-13 02:10 CST
+更新时间：2026-07-13 03:01 CST
 
 ## 当前阶段
 
 - 已冻结 48-arm V2 设计规格：`6 hotspot patches x 4 scaffolds x 2 H3 regimes`。
 - 4 个 scaffold 已经 PyRosetta 末端修复为 canonical `VTVSS`，且 PDB chain `H` 和 `H1/H2/H3` label 回归检查通过。
 - 修复后的正式 smoke 已通过：`P1_orig_S`、`P1_qrg_S`、`P1_ekg_S`、`P1_qkg_L` 均产出 1 个 backbone、TRB 和 ProteinMPNN 序列。
-- 2026-07-13 01:22 CST 已在 GPU `1,2,3,4,5,7` 启动 6 条正式 generation lane。02:03 CST 实测已落盘 12 个 backbone PDB 和 12 个 TRB，6 个首批 arm 均在持续推进，未见 OOM 或异常。
-- 已加入 primary-only 过渡控制器：当当前 6 个 arm 各自完成时，逐 GPU 停止旧 lane，然后仅使用 36 个会进入 cohort 的 VHHified arm 恢复运行。
+- 2026-07-13 02:59 CST，6 个首批 arm 全部完成，共产出 48 个 backbone、48 个 TRB 和 192 条 ProteinMPNN 序列，未见 OOM 或异常。
+- primary-only 过渡已成功执行：6 条旧 lane 被逐 GPU 安全停止，新 controller 已明确携带 `config/generation_arms_primary.tsv` 启动。
+- 当前活动表为 36 个 VHHified arm，期望 288 个 primary backbone 和 1,152 条 primary sequence record；其中 4 个首批 primary arm 已完成（32 backbones/128 sequences），6 个新 arm 已启动。
 - 完整 48-arm 矩阵仍保留作为设计溯源；实际计划生成 288 个 primary backbones 和 16 个已在运行的 original-scaffold diagnostic backbones，删去其余不会进入 1,024 条 cohort 的 80 个诊断 backbone。
 - generation、downstream 和 postprocess 三个可恢复控制器均在 node1 后台运行。downstream 等待 `data/candidates.tsv`，postprocess 等待至少 1,000 个真实 HADDOCK 成功候选。
 - 当前尚未冻结 1,024 条 cohort；因此 RF2、NanoBodyBuilder2 和 HADDOCK3 还未进入全量阶段。
@@ -32,8 +33,8 @@ HADDOCK nice:                       15
 
 ## 已验证的代码合同
 
-- controller contract tests：6 项通过。
-- RF2 contract tests：2 项通过。
+- controller contract tests：8 项通过。
+- RF2 contract tests：4 项通过。
 - NBB2/HADDOCK orchestration contract tests：3 项通过。
 - training dataset contract tests：3 项通过。
 - Python AST、JSON 和 shell syntax：通过。
