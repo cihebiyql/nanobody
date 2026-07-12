@@ -90,9 +90,22 @@ fi
     "$RUN_ROOT/manifests/fr4_terminal_repair_mapping.tsv" \
     "$RUN_ROOT/rf2/results" \
     --top-limit 50
-  echo "RF2_CONTROLLER_COMPLETE time=$(date -Is)"
+
+  docking_package=$RUN_ROOT/docking/top_rf2_pose_recovered
+  python3 "$RUN_ROOT/scripts/build_nbb2_haddock_package.py" \
+    "$RUN_ROOT/rf2/results/rf2_pose_recovered_top.tsv" \
+    "$RUN_ROOT/inputs/docking" \
+    "$RUN_ROOT/scripts/docking_helpers" \
+    "$docking_package" \
+    --shards 4
+  cp "$RUN_ROOT/scripts/run_nbb2_haddock_shard_node1.sh" "$docking_package/"
+  cp "$RUN_ROOT/scripts/run_nbb2_haddock_controller_node1.sh" "$docking_package/"
+  chmod +x "$docking_package"/*.sh
+  PACKAGE_ROOT="$docking_package" \
+    MONOMER_MAX_LOAD1="$MAX_LOAD1" DOCKING_MAX_LOAD1=48 POLL_SECONDS="$POLL_SECONDS" \
+    bash "$docking_package/run_nbb2_haddock_controller_node1.sh"
+  echo "RF2_AND_REMOTE_DOCKING_CONTROLLER_COMPLETE time=$(date -Is)"
 ) >> "$LOG" 2>&1 < /dev/null &
 
 echo "$!" > "$PID_FILE"
 echo "Started RF2 controller pid=$! log=$LOG"
-
