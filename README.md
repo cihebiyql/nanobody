@@ -162,8 +162,12 @@ PVRIG-PVRL2 机制和结构界面的轻量可视化入口。包含一个 Python 
 
 - 构建 allowlist：`scripts/build_lightweight_sync_manifest.py`
 - 同步到 GitHub：`scripts/sync_lightweight_to_github.sh`
+- 启动周期自动同步：`scripts/lightweight_sync_daemon.sh start`
+- 查看/停止自动同步：`scripts/lightweight_sync_daemon.sh status`, `scripts/lightweight_sync_daemon.sh stop`
+- 自动同步默认每 120 秒执行一次，可用 `NANOBODY_SYNC_INTERVAL` 调整；日志和状态写入本地 `.omx/`，不上传运行日志。
 - 默认单文件阈值：5 MiB，可用 `NANOBODY_SYNC_MAX_BYTES` 覆盖。
 - Git 默认忽略新文件；同步脚本只强制加入 manifest 选中的轻量文件。
+- 手动和自动同步共用 `.git/lightweight-sync.lock`，避免并发提交/推送冲突。
 - 嵌套 Git 工作树会被同步脚本临时绕过 `.git/` 边界以加入轻量源码，但内部 `.git/` 目录不会被提交。
 
 ## 明确不在仓库中的内容

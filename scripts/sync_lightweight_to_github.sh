@@ -19,6 +19,14 @@ if [[ ! -d .git ]]; then
   git init -b "$BRANCH"
 fi
 
+SYNC_LOCK="${NANOBODY_SYNC_LOCK:-$ROOT/.git/lightweight-sync.lock}"
+mkdir -p "$(dirname "$SYNC_LOCK")"
+exec 9>"$SYNC_LOCK"
+if ! flock -n 9; then
+  echo "Another lightweight sync is already running; skipping this cycle."
+  exit 0
+fi
+
 git config user.name "cihebiyql"
 git config user.email "yuqiule@gmail.com"
 

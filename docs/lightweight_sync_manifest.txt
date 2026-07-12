@@ -1647,6 +1647,7 @@ scripts/build_pvrig_hotspot_set.py
 scripts/build_pvrig_mechanism_view.py
 scripts/extract_pvrig_interface.py
 scripts/import_plabdab_nano_scaffolds.py
+scripts/lightweight_sync_daemon.sh
 scripts/reconcile_pvrig_numbering.py
 scripts/run_known_positive_validator.py
 scripts/sync_lightweight_to_github.sh
