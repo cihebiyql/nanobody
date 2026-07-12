@@ -1,0 +1,11 @@
+model,consensus_class,baseline_count,blocker_like_count,plausible_count,binder_like_count,evidence_only_count,baseline_classes,best_haddock_rank,recommended_next_step
+cluster_1_model_1,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,1,keep as follow-up only; collect stronger occlusion or assay evidence
+cluster_2_model_1,SINGLE_BASELINE_BLOCKER_RECHECK,2,1,1,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_PLAUSIBLE_B,2,inspect weaker baseline and decide whether this is an alternative epitope or an unstable pose
+cluster_2_model_2,SINGLE_BASELINE_BLOCKER_RECHECK,2,1,1,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_PLAUSIBLE_B,3,inspect weaker baseline and decide whether this is an alternative epitope or an unstable pose
+cluster_2_model_3,SINGLE_BASELINE_BLOCKER_RECHECK,2,1,1,0,0,8x6b:BLOCKER_LIKE_A;9e6y:BLOCKER_PLAUSIBLE_B,9,inspect weaker baseline and decide whether this is an alternative epitope or an unstable pose
+cluster_3_model_1,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,4,keep as follow-up only; collect stronger occlusion or assay evidence
+cluster_3_model_2,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,8,keep as follow-up only; collect stronger occlusion or assay evidence
+cluster_4_model_1,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,5,keep as follow-up only; collect stronger occlusion or assay evidence
+cluster_4_model_2,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,6,keep as follow-up only; collect stronger occlusion or assay evidence
+cluster_5_model_1,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,7,keep as follow-up only; collect stronger occlusion or assay evidence
+cluster_6_model_1,BLOCKER_PLAUSIBLE_B,2,0,2,0,0,8x6b:BLOCKER_PLAUSIBLE_B;9e6y:BLOCKER_PLAUSIBLE_B,10,keep as follow-up only; collect stronger occlusion or assay evidence

@@ -1,0 +1,5 @@
+model,baseline,haddock_rank,haddock_score,hotspot_overlap_count,align_rmsd_A,total_vhh_pvrl2_atom_occlusion,total_vhh_pvrl2_residue_pair_occlusion,total_vhh_pvrl2_atom_clash,total_vhh_pvrl2_residue_pair_clash,cdr3_atom_occlusion,cdr3_atom_occlusion_fraction,cdr3_residue_pair_occlusion,cdr3_residue_pair_occlusion_fraction,cdr3_atom_clash,cdr3_residue_pair_clash,cdr3_vhh_residue_count,cdr3_pvrl2_residue_count,cdr12_atom_occlusion,cdr12_residue_pair_occlusion,framework_atom_occlusion,framework_residue_pair_occlusion,framework_residue_pair_occlusion_fraction
+cluster_1_model_1,8x6b,1,,14,0.478,8632,724,1598,261,1661,0.19242354031510658,128,0.17679558011049723,321,55,12,40,1286,93,5685,503,0.6947513812154696
+cluster_1_model_2,8x6b,2,,14,0.517,8682,711,1614,262,1682,0.1937341626353375,124,0.17440225035161744,310,53,12,41,1203,82,5797,505,0.710267229254571
+cluster_1_model_3,8x6b,3,,14,0.510,8852,748,1621,272,1654,0.1868504292815183,124,0.1657754010695187,311,48,12,43,1300,96,5898,528,0.7058823529411765
+cluster_1_model_4,8x6b,4,,13,0.489,8888,732,1610,282,1719,0.1934068406840684,130,0.17759562841530055,287,52,12,42,1270,94,5899,508,0.6939890710382514

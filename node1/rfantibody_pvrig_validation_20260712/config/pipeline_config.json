@@ -31,8 +31,8 @@
   },
   "pose_audit_triage": {
     "alignment_target": "8X6B PVRIG",
-    "total_pvrl2_occlusion_min_a2": 500.0,
-    "cdr3_pvrl2_occlusion_min_a2": 100.0,
+    "total_pvrl2_residue_pair_occlusion_min": 500,
+    "cdr3_pvrl2_residue_pair_occlusion_min": 100,
     "cdr3_occlusion_fraction_min": 0.15,
     "legacy_hotspot_overlap_min": 14,
     "legacy_hotspot_overlap_applicability": "report_only_due_to_sparse_generation_hotspots"
@@ -60,4 +60,3 @@
     "preserve_original_outputs": true
   }
 }
-
