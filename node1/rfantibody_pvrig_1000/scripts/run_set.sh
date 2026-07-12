@@ -129,6 +129,7 @@ if (( pending_count > 0 )); then
     -loop_string H1,H2,H3 \
     -seqs_per_struct "$SEQS_PER_BACKBONE" \
     -temperature "$MPNN_TEMPERATURE" \
+    -checkpoint_path "$RF_ROOT/weights/ProteinMPNN_v48_noise_0.2.pt" \
     -omit_AAs CX \
     -augment_eps 0 \
     -checkpoint_name "$TMP_DIR/mpnn_checkpoint_$$.txt" \
