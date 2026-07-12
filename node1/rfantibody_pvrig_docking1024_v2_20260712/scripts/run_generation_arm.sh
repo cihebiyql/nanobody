@@ -93,9 +93,14 @@ printf '%s\n' "$GPU_ID" > "$STATUS_DIR/gpu.txt"
 write_status running 0
 
 existing_backbones=$(find "$BACKBONE_DIR" -maxdepth 1 -type f -name 'design_*.pdb' | wc -l)
-if (( existing_backbones > target_backbones )); then
-  echo "Found $existing_backbones backbones, expected at most $target_backbones" >&2
+existing_trbs=$(find "$BACKBONE_DIR" -maxdepth 1 -type f -name 'design_*.trb' | wc -l)
+if (( existing_backbones > target_backbones || existing_trbs > target_backbones )); then
+  echo "Found too many RFdiffusion outputs: pdb=$existing_backbones trb=$existing_trbs expected=$target_backbones" >&2
   exit 3
+fi
+if (( (existing_backbones > 0 || existing_trbs > 0) && (existing_backbones != target_backbones || existing_trbs != target_backbones) )); then
+  echo "Partial RFdiffusion outputs require explicit quarantine; refusing an in-place retry that could overwrite backbone identity: pdb=$existing_backbones trb=$existing_trbs expected=$target_backbones" >&2
+  exit 7
 fi
 missing_backbones=$((target_backbones - existing_backbones))
 if (( missing_backbones > 0 )); then
@@ -111,7 +116,7 @@ if (( missing_backbones > 0 )); then
     --diffuser-t 50 \
     --deterministic \
     --no-trajectory \
-    >"$LOG_DIR/rfdiffusion.log" 2>&1
+    >"$LOG_DIR/rfdiffusion_$(date +%Y%m%d_%H%M%S).log" 2>&1
 fi
 
 backbone_count=$(find "$BACKBONE_DIR" -maxdepth 1 -type f -name 'design_*.pdb' | wc -l)
@@ -127,7 +132,10 @@ mkdir -p "$pending_dir" "$mpnn_work_dir"
 for pdb in "$BACKBONE_DIR"/design_*.pdb; do
   base=$(basename "$pdb" .pdb)
   output_count=$(find "$SEQUENCE_DIR" -maxdepth 1 -type f -name "${base}_dldesign_*.pdb" | wc -l)
-  if [[ "$output_count" -lt "$seqs_per_backbone" ]]; then
+  if [[ "$output_count" -gt 0 && "$output_count" -lt "$seqs_per_backbone" ]]; then
+    echo "Partial ProteinMPNN siblings require explicit quarantine for $base: found=$output_count expected=$seqs_per_backbone" >&2
+    exit 8
+  elif [[ "$output_count" -eq 0 ]]; then
     ln -s "$pdb" "$pending_dir/$(basename "$pdb")"
   elif [[ "$output_count" -gt "$seqs_per_backbone" ]]; then
     echo "Too many sequence outputs for $base: $output_count" >&2
@@ -151,7 +159,7 @@ if (( pending_count > 0 )); then
     -augment_eps 0 \
     -checkpoint_name "$TMP_DIR/mpnn_checkpoint_$$.txt" \
     -deterministic \
-    >"$LOG_DIR/proteinmpnn.log" 2>&1
+    >"$LOG_DIR/proteinmpnn_$(date +%Y%m%d_%H%M%S).log" 2>&1
 fi
 
 sequence_count=$(find "$SEQUENCE_DIR" -maxdepth 1 -type f -name 'design_*_dldesign_*.pdb' | wc -l)

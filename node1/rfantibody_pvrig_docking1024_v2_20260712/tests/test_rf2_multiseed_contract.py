@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import csv
 import importlib.util
+import inspect
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,11 +25,26 @@ def write_candidates(tmp_path: Path, count: int = 1024) -> Path:
     pdb_dir = tmp_path / "pdbs"
     pdb_dir.mkdir()
     rows = []
+    alphabet = "ACDEFGHIKLMNPQRSTVWY"
+    aa1_to_3 = {"A":"ALA","C":"CYS","D":"ASP","E":"GLU","F":"PHE","G":"GLY","H":"HIS","I":"ILE","K":"LYS","L":"LEU","M":"MET","N":"ASN","P":"PRO","Q":"GLN","R":"ARG","S":"SER","T":"THR","V":"VAL","W":"TRP","Y":"TYR"}
     for index in range(count):
         cid = f"cand_{index:04d}"
+        value = index
+        encoded = []
+        for _ in range(4):
+            encoded.append(alphabet[value % len(alphabet)])
+            value //= len(alphabet)
+        sequence = "AC" + "".join(encoded) + "DE"
         pdb = pdb_dir / f"{cid}.pdb"
-        pdb.write_text(f"REMARK source {cid}\n", encoding="ascii")
-        rows.append({"candidate_id": cid, "sequence": "ACDE", "mpnn_pdb": str(pdb), "hotspot_set": "hs", "backbone_index": str(index % 8)})
+        lines = []
+        serial = 1
+        for residue_id, aa in enumerate(sequence, start=1):
+            lines.append(f"ATOM  {serial:5d}  CA  {aa1_to_3[aa]:>3s} H{residue_id:4d}    {residue_id:8.3f}{0.0:8.3f}{0.0:8.3f}  1.00  0.00           C")
+            serial += 1
+        lines.append(f"ATOM  {serial:5d}  CA  GLY T{1:4d}    {0.0:8.3f}{1.0:8.3f}{0.0:8.3f}  1.00  0.00           C")
+        lines.extend(("REMARK PDBinfo-LABEL:    1 H1", "REMARK PDBinfo-LABEL:    2 H2", "REMARK PDBinfo-LABEL:    3 H3"))
+        pdb.write_text("\n".join(lines) + "\n", encoding="ascii")
+        rows.append({"candidate_id": cid, "sequence": sequence, "mpnn_pdb": str(pdb), "hotspot_set": "hs", "backbone_index": str(index % 8)})
     path = tmp_path / "candidates.tsv"
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]), delimiter="\t")
@@ -82,7 +99,13 @@ def test_parse_keeps_old_seed42_gate_separate_from_formal_multiseed_gate(tmp_pat
         out = Path(row["expected_output_pdb"])
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(score_text(), encoding="ascii")
-    # One candidate missing in seed42 can still be recovered by enrichment, proving formal gate separation.
+    # A complete 3-seed candidate passes only when at least 2/3 are moderate and one is strict.
+    for seed in (43, 44):
+        extra = next(r for r in rows if r["candidate_id"] == "cand_0000" and r["seed"] == str(seed))
+        extra_out = Path(extra["expected_output_pdb"])
+        extra_out.parent.mkdir(parents=True, exist_ok=True)
+        extra_out.write_text(score_text(), encoding="ascii")
+    # One candidate missing in seed42 remains pending even if one enrichment seed recovers.
     enrich = next(r for r in rows if r["candidate_id"] == "cand_1001" and r["seed"] == "43")
     out = Path(enrich["expected_output_pdb"])
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -95,10 +118,19 @@ def test_parse_keeps_old_seed42_gate_separate_from_formal_multiseed_gate(tmp_pat
 
     gate_rows = {row["candidate_id"]: row for row in read_tsv(tmp_path / "parsed" / "rf2_multiseed_candidate_gates.tsv")}
     assert gate_rows["cand_0000"]["old_gate_status"] == "OLD_GATE_PASS_STRICT_SEED42"
-    assert gate_rows["cand_0000"]["formal_multiseed_gate_status"] == "FORMAL_MULTI_SEED_PASS_PRIMARY_SEED42"
+    assert gate_rows["cand_0000"]["formal_multiseed_gate_status"] == "FORMAL_MULTI_SEED_PASS_2OF3_WITH_STRICT_SUPPORT"
     assert gate_rows["cand_1001"]["old_gate_status"] == "OLD_GATE_FAIL_OR_MISSING_STRICT_SEED42"
-    assert gate_rows["cand_1001"]["formal_multiseed_gate_status"] == "FORMAL_MULTI_SEED_PASS_ENRICHMENT_SEED"
+    assert gate_rows["cand_1001"]["formal_multiseed_gate_status"] == "FORMAL_MULTI_SEED_PENDING_INCOMPLETE_SEEDS"
     metrics = read_tsv(tmp_path / "parsed" / "rf2_multiseed_metrics.tsv")
     missing = [row for row in metrics if row["rf2_status"] == "RF2_FAILED_MISSING_OUTPUT"]
     assert missing
     assert {row["rf2_failure_label_policy"] for row in missing} == {"not_negative_sample"}
+
+
+if __name__ == "__main__":
+    tests = [value for name, value in sorted(globals().items()) if name.startswith("test_") and callable(value)]
+    for test in tests:
+        with tempfile.TemporaryDirectory() as directory:
+            kwargs = {"tmp_path": Path(directory)} if "tmp_path" in inspect.signature(test).parameters else {}
+            test(**kwargs)
+    print(f"{len(tests)} RF2 contract tests passed")

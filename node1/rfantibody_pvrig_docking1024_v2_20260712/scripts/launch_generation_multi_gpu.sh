@@ -70,7 +70,12 @@ rc=0
 for pid in "${pids[@]}"; do
   wait "$pid" || rc=1
 done
-if [[ "$rc" -eq 0 ]]; then
+expected_arms=$(awk 'NR > 1 { count++ } END { print count+0 }' "$ARM_TABLE")
+complete_arms=$(find "$RUN_ROOT/generation/arms" -mindepth 2 -maxdepth 2 -type f -name complete.json 2>/dev/null | wc -l | tr -d ' ')
+if [[ "$rc" -eq 0 && "$complete_arms" -eq "$expected_arms" ]]; then
   date -Is > "$RUN_ROOT/status/generation/all.complete"
+else
+  echo "Generation is not globally complete: complete_arms=$complete_arms expected_arms=$expected_arms rc=$rc" >&2
+  rc=4
 fi
 exit "$rc"

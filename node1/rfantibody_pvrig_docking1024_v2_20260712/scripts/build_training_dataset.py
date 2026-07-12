@@ -28,6 +28,7 @@ VALID_SPLITS = (TRAIN_SPLIT, "validation", "test", KNOWN_POSITIVE_SPLIT, "deferr
 MISSING = "missing"
 DEFERRED = "deferred"
 UNKNOWN = "unknown"
+VALID_AA = set("ACDEFGHIKLMNPQRSTVWY")
 
 KEY_ALIASES = {
     "candidate_id": ("candidate_id", "design_id", "id", "name"),
@@ -164,6 +165,8 @@ def normalize_candidates(rows: list[dict[str, str]], known_fasta: Path) -> list[
         sequence_hash = hashlib.sha256(sequence.encode()).hexdigest() if sequence else ""
         if not sequence:
             raise ValueError(f"candidate {candidate_id} has an empty sequence")
+        if set(sequence) - VALID_AA:
+            raise ValueError(f"candidate {candidate_id} contains noncanonical amino acids")
         seen_ids[candidate_id] += 1
         seen_sequences[sequence_hash] += 1
         exact_matches = references.get(sequence, [])

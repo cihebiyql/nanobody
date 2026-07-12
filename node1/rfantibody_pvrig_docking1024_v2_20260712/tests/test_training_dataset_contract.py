@@ -1,7 +1,9 @@
 import csv
+import inspect
 import json
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,23 +28,26 @@ def make_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
     input_dir = tmp_path / "data"
     output_dir = tmp_path / "out"
     known = tmp_path / "known.fasta"
-    known.write_text(">known_positive|kp1\nEVQLKNOWN\n", encoding="utf-8")
+    known.write_text(">known_positive|kp1\nEVQLKNNW\n", encoding="utf-8")
     write_tsv(
         input_dir / "candidates.tsv",
         [
-            {"candidate_id": "candA", "sequence": "EVQLAAAA", "arm_id": "arm1", "backbone_group_id": "bb1", "sequence_group_id": "fam1"},
-            {"candidate_id": "candB", "sequence": "EVQLBBBB", "arm_id": "arm1", "backbone_group_id": "bb1", "sequence_group_id": "fam1"},
-            {"candidate_id": "known1", "sequence": "EVQLKNOWN", "arm_id": "arm2", "backbone_group_id": "bb2", "sequence_group_id": "fam_known"},
+            {"candidate_id": "candA", "sequence": "EVQLAAAA", "cdr3": "AAAA", "arm_id": "arm1", "backbone_group_id": "bb1", "sequence_group_id": "fam1"},
+            {"candidate_id": "candB", "sequence": "EVQLCCCC", "cdr3": "CCCC", "arm_id": "arm1", "backbone_group_id": "bb1", "sequence_group_id": "fam1"},
+            {"candidate_id": "known1", "sequence": "EVQLKNNW", "cdr3": "KNNW", "arm_id": "arm2", "backbone_group_id": "bb2", "sequence_group_id": "fam_known"},
         ],
     )
     write_tsv(input_dir / "rf2_metrics.tsv", [{"candidate_id": "candA", "rf2_recovery_rmsd": 1.4, "rf2_plddt": 88.0}])
     write_tsv(input_dir / "monomer_qc.tsv", [{"candidate_id": "candA", "monomer_qc_score": 0.91, "monomer_clash_score": 0.02}])
     write_tsv(input_dir / "baseline_postprocess.tsv", [{"candidate_id": "candA", "baseline_affinity_proxy": -7.2, "baseline_blocker_geometry": 0.73}])
-    pdb = input_dir / "haddock_runs" / "candA" / "selected_model_1.pdb"
+    pdb = input_dir / "haddock_runs" / "candA" / "run_candA" / "6_seletopclusts" / "cluster_1_model_1.pdb"
     pdb.parent.mkdir(parents=True, exist_ok=True)
     pdb.write_text(
         "REMARK HADDOCK score: -42.5\n"
-        "REMARK energies: vdw -11.0 elec -22.0 desolv -3.5 air 0.4 bsa 910.0\n"
+        "REMARK total,bonds,angles,improper,dihe,vdw,elec,air,cdih,coup,rdcs,vean,dani,xpcs,rg\n"
+        "REMARK energies: -36.1,0,0,0,0,-11.0,-22.0,0.4,0,0,0,0,0,0,0\n"
+        "REMARK Desolvation energy: -3.5\n"
+        "REMARK buried surface area: 910.0\n"
         "ATOM      1  CA  GLY A   1       0.0   0.0   0.0  1.00 10.00           C\n",
         encoding="utf-8",
     )
@@ -125,3 +130,12 @@ def test_final_mode_requires_1000_completed_docking_candidates(tmp_path: Path) -
     result = run_builder(input_dir, output_dir, known, mode="final")
     assert result.returncode != 0
     assert "completed docking candidates 1 < 1000" in result.stderr
+
+
+if __name__ == "__main__":
+    tests = [value for name, value in sorted(globals().items()) if name.startswith("test_") and callable(value)]
+    for test in tests:
+        with tempfile.TemporaryDirectory() as directory:
+            kwargs = {"tmp_path": Path(directory)} if "tmp_path" in inspect.signature(test).parameters else {}
+            test(**kwargs)
+    print(f"{len(tests)} training-dataset contract tests passed")
