@@ -9,6 +9,24 @@ Generate a traceable pool of 1,000 unique full-length VHH sequences conditioned
 on four sparse PVRIG-PVRL2 interface hotspot sets. This is a generation run,
 not a binder or blocker validation run.
 
+## Completion
+
+The run completed successfully on 2026-07-12. Four shards produced 200
+RFdiffusion backbones and 1,600 ProteinMPNN sequence-pose records. Global exact
+deduplication and balanced allocation produced 1,000 exact-unique full-length
+VHH sequences, with 250 sequences from each hotspot set.
+
+The synced local deliverables are under:
+
+```text
+/mnt/d/work/抗体/node1/rfantibody_pvrig_1000/results/
+```
+
+`results/LOCAL_VERIFICATION.json` records an independent post-transfer check of
+FASTA/TSV consistency, exact uniqueness, CDR lengths, hotspot-set quotas,
+completion markers, known-positive exact matches, and SHA256 hashes. See
+`RUN_STATUS.md` for the detailed Chinese report and the set-B geometry warning.
+
 ## Design
 
 - RFdiffusion: 50 backbones per hotspot set, 200 total.

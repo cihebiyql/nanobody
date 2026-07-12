@@ -42,5 +42,44 @@
     "C",
     "D"
   ],
-  "scientific_boundary": "Generated hotspot-conditioned candidates are not validated binders or blockers."
+  "scientific_boundary": "Generated hotspot-conditioned candidates are not validated binders or blockers.",
+  "selected_geometry_by_hotspot_set": {
+    "A": {
+      "records": 250,
+      "records_le_8A": 244,
+      "records_8_to_10A": 6,
+      "records_gt_10A": 0,
+      "represented_backbones": 42,
+      "represented_backbones_le_8A": 41,
+      "represented_backbones_le_10A": 42
+    },
+    "B": {
+      "records": 250,
+      "records_le_8A": 96,
+      "records_8_to_10A": 125,
+      "records_gt_10A": 29,
+      "represented_backbones": 42,
+      "represented_backbones_le_8A": 16,
+      "represented_backbones_le_10A": 37
+    },
+    "C": {
+      "records": 250,
+      "records_le_8A": 250,
+      "records_8_to_10A": 0,
+      "records_gt_10A": 0,
+      "represented_backbones": 43,
+      "represented_backbones_le_8A": 43,
+      "represented_backbones_le_10A": 43
+    },
+    "D": {
+      "records": 250,
+      "records_le_8A": 247,
+      "records_8_to_10A": 0,
+      "records_gt_10A": 3,
+      "represented_backbones": 44,
+      "represented_backbones_le_8A": 43,
+      "represented_backbones_le_10A": 43
+    }
+  },
+  "geometry_warning": "Set B is weaker: only 96/250 selected records are <=8 A and 29/250 are >10 A; filter before RF2/docking."
 }
