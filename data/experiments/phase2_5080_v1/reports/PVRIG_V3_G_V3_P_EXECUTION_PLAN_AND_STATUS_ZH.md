@@ -83,16 +83,25 @@ Node1 根目录：
 覆盖 H3 最长 20 aa 和 H1+H3
 ```
 
-正式生产已经启动，主 worker 和反向尾部 worker 在 GPU 1-7 上并行，每个 task 均使用文件锁防止重复写入。本文档快照时：
+正式生产已经启动，主 worker、反向尾部 worker 和可恢复 boost worker 在 GPU 1-7 上并行，每个 task 均使用文件锁防止重复写入。`boost_v1 + boost_v2` 启动后未见 OOM、Traceback 或 failed marker。截至 `2026-07-13 02:03 +08:00`：
 
 ```text
-21/240 task complete
+35/240 task complete
 0 failed
-363/2,880 backbone PDB 已生成
-780/8,640 ProteinMPNN sequence PDB 已生成
+529/2,880 backbone PDB 已生成
+1,260/8,640 ProteinMPNN sequence PDB 已生成
+37 个 generation worker 仍在运行
 ```
 
 最终门仍是 `240/240 task、0 failed、2,880 backbone、8,640 raw sequence records`。不会因为 partial 计数正常就提前宣称生成完成。
+
+自动接管控制器已改为独立 session 运行，对瞬时 SSH 错误和非法返回格式会重试，不会因一次轮询失败而丢失 `240/240` 后的最终化接管：
+
+```text
+experiments/phase2_5080_v1/src/start_pvrig_formal_teacher_pipeline_controller.sh
+experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher_pipeline.sh
+experiments/phase2_5080_v1/logs/pvrig_formal_teacher_pipeline_controller.log
+```
 
 ### 3.3 候选收集器已验证
 
