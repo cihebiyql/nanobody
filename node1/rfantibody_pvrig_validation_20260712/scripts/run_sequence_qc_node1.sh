@@ -19,6 +19,7 @@ GEOMETRY_CLUSTER_LIMIT=${GEOMETRY_CLUSTER_LIMIT:-3}
 WORKERS=${WORKERS:-16}
 TNP_NCORES=${TNP_NCORES:-4}
 IDENTITY_CACHE_SIZE=${IDENTITY_CACHE_SIZE:-500000}
+SKIP_FINAL_DIVERSITY=${SKIP_FINAL_DIVERSITY:-0}
 LOG_DIR=$RUN_ROOT/logs
 PID_FILE=$RUN_ROOT/manifests/$RUN_LABEL.pid
 EXIT_FILE=$RUN_ROOT/manifests/$RUN_LABEL.exit_code
@@ -85,6 +86,9 @@ command=(
   --identity-cache-size "$IDENTITY_CACHE_SIZE"
   --local-positive-cdr-csv "$POSITIVE_CDRS"
 )
+if [[ "$SKIP_FINAL_DIVERSITY" == "1" ]]; then
+  command+=(--skip-final-diversity)
+fi
 
 {
   printf '%q ' "${command[@]}"
