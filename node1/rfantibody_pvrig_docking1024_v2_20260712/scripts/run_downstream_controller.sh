@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 RUN_ROOT=${RUN_ROOT:-/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712}
 MAX_LOAD1=${MAX_LOAD1:-240}
+HADDOCK_MAX_LOAD1=${HADDOCK_MAX_LOAD1:-240}
 GPU_MEMORY_GATE_MB=${GPU_MEMORY_GATE_MB:-12000}
 POLL_SECONDS=${POLL_SECONDS:-120}
 RF2_MIN_COMPLETE=${RF2_MIN_COMPLETE:-1000}
@@ -160,7 +161,8 @@ wait_for_gpus
 RUN_ROOT="$RUN_ROOT" CANDIDATE_LIMIT=1 bash "$RUN_ROOT/scripts/run_nbb2_multigpu.sh"
 SMOKE_CID=$(awk -F $'\t' 'NR==2 {print $1}' "$RUN_ROOT/docking/manifests/docking_candidates.tsv")
 wait_for_load
-RUN_ROOT="$RUN_ROOT" bash "$RUN_ROOT/scripts/run_haddock_one.sh" "$SMOKE_CID"
+RUN_ROOT="$RUN_ROOT" MAX_LOAD1="$HADDOCK_MAX_LOAD1" \
+  bash "$RUN_ROOT/scripts/run_haddock_one.sh" "$SMOKE_CID"
 
 write_state nbb2_full "running NBB2 on the full frozen cohort"
 for attempt in 1 2 3; do
@@ -180,7 +182,7 @@ write_state docking_full "running load-aware HADDOCK and RF2 enrichment"
 run_rf2_enrichment >"$RUN_ROOT/logs/rf2_enrichment_controller.log" 2>&1 &
 enrichment_pid=$!
 python3 "$RUN_ROOT/scripts/run_haddock_load_aware.py" \
-  --run-root "$RUN_ROOT" --max-load1 "$MAX_LOAD1" --cores-per-job 4 \
+  --run-root "$RUN_ROOT" --max-load1 "$HADDOCK_MAX_LOAD1" --cores-per-job 4 \
   --max-parallel "$HADDOCK_MAX_PARALLEL" --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 3 \
   >"$RUN_ROOT/logs/haddock_load_aware.log" 2>&1
 wait "$enrichment_pid" || true
@@ -191,7 +193,7 @@ haddock_count=$(haddock_success_count)
 if [[ "$haddock_count" -lt "$HADDOCK_MIN_SUCCESS" ]]; then
   write_state docking_retry "retrying failed HADDOCK candidates up to five attempts"
   python3 "$RUN_ROOT/scripts/run_haddock_load_aware.py" \
-    --run-root "$RUN_ROOT" --max-load1 "$MAX_LOAD1" --cores-per-job 4 \
+    --run-root "$RUN_ROOT" --max-load1 "$HADDOCK_MAX_LOAD1" --cores-per-job 4 \
     --max-parallel "$HADDOCK_MAX_PARALLEL" --poll-seconds "$POLL_SECONDS" --retry-failed --max-attempts 5 \
     >>"$RUN_ROOT/logs/haddock_load_aware.log" 2>&1
   haddock_count=$(haddock_success_count)
