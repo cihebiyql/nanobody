@@ -223,9 +223,6 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
 
     base, extra = divmod(target, len(arm_ids))
     quotas = {arm_id: base + (index < extra) for index, arm_id in enumerate(arm_ids)}
-    selected: list[dict[str, object]] = []
-    selected_ids: set[str] = set()
-    selected_sequences: set[str] = set()
 
     def priority(row: dict[str, object]) -> tuple[object, ...]:
         return (
@@ -237,55 +234,70 @@ def select_balanced(rows: list[dict[str, object]], target: int) -> list[dict[str
             str(row["candidate_id"]),
         )
 
+    # Build a deterministic one-per-backbone round-robin order for every arm.
+    ordered_digests: dict[str, list[str]] = {}
+    row_by_arm_digest: dict[tuple[str, str], dict[str, object]] = {}
     for arm_id in arm_ids:
         candidates = sorted(by_arm[arm_id], key=priority)
         by_backbone: defaultdict[str, list[dict[str, object]]] = defaultdict(list)
         for row in candidates:
             by_backbone[str(row["backbone_group_id"])].append(row)
-        arm_selected = 0
-        depth = 0
-        while arm_selected < quotas[arm_id]:
-            added = False
+        order: list[str] = []
+        seen: set[str] = set()
+        max_depth = max((len(value) for value in by_backbone.values()), default=0)
+        for depth in range(max_depth):
             for backbone_id in sorted(by_backbone):
                 siblings = by_backbone[backbone_id]
                 if depth >= len(siblings):
                     continue
                 row = siblings[depth]
                 digest = str(row["sequence_sha256"])
-                if digest in selected_sequences:
+                if digest in seen:
                     continue
-                selected.append(row)
-                selected_ids.add(str(row["candidate_id"]))
-                selected_sequences.add(digest)
-                arm_selected += 1
-                added = True
-                if arm_selected == quotas[arm_id]:
-                    break
-            if not added and depth >= max((len(value) for value in by_backbone.values()), default=0):
-                break
-            depth += 1
-        if arm_selected != quotas[arm_id]:
-            raise ValueError(f"{arm_id}: selected {arm_selected}, required {quotas[arm_id]}")
+                seen.add(digest)
+                order.append(digest)
+                row_by_arm_digest[(arm_id, digest)] = row
+        ordered_digests[arm_id] = order
 
-    if len(selected) < target:
-        for row in sorted(eligible, key=priority):
-            candidate_id = str(row["candidate_id"])
-            digest = str(row["sequence_sha256"])
-            if candidate_id in selected_ids or digest in selected_sequences:
+    # Match arm quota slots to globally unique sequence digests. Reassignment avoids
+    # starving later arms when the same MPNN sequence appears in multiple arms.
+    slots = [(arm_id, slot_index) for arm_id in arm_ids for slot_index in range(quotas[arm_id])]
+    digest_owner: dict[str, tuple[str, int]] = {}
+
+    def assign(slot: tuple[str, int], visited: set[str]) -> bool:
+        arm_id = slot[0]
+        for digest in ordered_digests[arm_id]:
+            if digest in visited:
                 continue
-            selected.append(row)
-            selected_ids.add(candidate_id)
-            selected_sequences.add(digest)
-            if len(selected) == target:
-                break
+            visited.add(digest)
+            owner = digest_owner.get(digest)
+            if owner is None or assign(owner, visited):
+                digest_owner[digest] = slot
+                return True
+        return False
 
-    if len(selected) != target or len(selected_sequences) != target:
-        raise ValueError(f"could not freeze {target} exact-unique candidates; selected={len(selected)} unique={len(selected_sequences)}")
+    for slot in slots:
+        if not assign(slot, set()):
+            matched_by_arm = Counter(owner[0] for owner in digest_owner.values())
+            raise ValueError(
+                "could not satisfy exact-unique arm quotas; "
+                f"matched={len(digest_owner)}/{target} arm={slot[0]} "
+                f"available={len(ordered_digests[slot[0]])} matched_by_arm={dict(sorted(matched_by_arm.items()))}"
+            )
+
+    selected = [row_by_arm_digest[(slot[0], digest)] for digest, slot in digest_owner.items()]
+    selected_sequences = {str(row["sequence_sha256"]) for row in selected}
+    selected_by_arm = Counter(str(row["arm_id"]) for row in selected)
+    if len(selected) != target or len(selected_sequences) != target or selected_by_arm != Counter(quotas):
+        raise ValueError(
+            f"invalid matched cohort: selected={len(selected)} unique={len(selected_sequences)} "
+            f"selected_by_arm={dict(sorted(selected_by_arm.items()))}"
+        )
     selected.sort(key=lambda row: str(row["candidate_id"]))
     for rank, row in enumerate(selected, start=1):
         row["docking_cohort_rank"] = rank
         row["selected_for_docking"] = True
-        row["selection_policy"] = "primary_vhhified_arm_quota_backbone_round_robin_rfd_geometry_priority"
+        row["selection_policy"] = "primary_vhhified_arm_quota_bipartite_exact_unique_backbone_round_robin_rfd_geometry_priority"
     return selected
 
 

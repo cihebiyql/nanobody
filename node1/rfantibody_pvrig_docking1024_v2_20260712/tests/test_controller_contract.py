@@ -126,6 +126,53 @@ def test_primary_arm_table_can_drive_generation_and_freeze() -> None:
     assert 'find "$RUN_ROOT/generation/arms"' not in launcher
 
 
+def test_balanced_selector_reassigns_cross_arm_duplicate() -> None:
+    collector = load_module("collect_and_freeze_candidates", "scripts/collect_and_freeze_candidates.py")
+    rows = []
+    shared = "shared_digest"
+    for index in range(36):
+        arm_id = f"arm_{index:02d}"
+        digest = shared if index == 35 else f"unique_{index:02d}"
+        rows.append(
+            {
+                "candidate_id": f"{arm_id}_primary",
+                "arm_id": arm_id,
+                "backbone_group_id": f"{arm_id}_bb0",
+                "sequence_sha256": digest,
+                "valid_sequence": True,
+                "exact_known_positive_match": False,
+                "scaffold_lane": "primary_vhhified",
+                "rfd_mindist": 1.0,
+                "rfd_averagemin": 1.0,
+                "mpnn_index": 0,
+            }
+        )
+    # Greedy arm-order selection would consume the only sequence available to arm_35.
+    rows.insert(
+        0,
+        {
+            "candidate_id": "arm_00_shared_first",
+            "arm_id": "arm_00",
+            "backbone_group_id": "arm_00_bb1",
+            "sequence_sha256": shared,
+            "valid_sequence": True,
+            "exact_known_positive_match": False,
+            "scaffold_lane": "primary_vhhified",
+            "rfd_mindist": 0.5,
+            "rfd_averagemin": 0.5,
+            "mpnn_index": 0,
+        },
+    )
+
+    selected = collector.select_balanced(rows, 36)
+
+    assert len(selected) == 36
+    assert len({row["sequence_sha256"] for row in selected}) == 36
+    assert Counter(row["arm_id"] for row in selected) == Counter({f"arm_{index:02d}": 1 for index in range(36)})
+    assert next(row for row in selected if row["arm_id"] == "arm_35")["sequence_sha256"] == shared
+    assert next(row for row in selected if row["arm_id"] == "arm_00")["sequence_sha256"] == "unique_00"
+
+
 def test_partial_rf_outputs_do_not_overwrite_existing_frozen_candidates(tmp_path: Path) -> None:
     write_tsv(
         tmp_path / "config" / "generation_arms.tsv",
