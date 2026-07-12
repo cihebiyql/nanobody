@@ -28,6 +28,7 @@ if str(SCRIPT_DIR) not in sys.path:
 import train_phase2_v2_3 as v23  # noqa: E402
 import train_phase2_v3_g2_generic as g2  # noqa: E402
 from phase2_v3_contracts import sha256_file, write_json_atomic  # noqa: E402
+from phase2_v3_metrics import binary_ranking_metrics, macro_target_average_precision  # noqa: E402
 from phase2_v3_model import (  # noqa: E402
     BindingPriorModel,
     frame_pair_indices,
@@ -76,8 +77,10 @@ def complete_seed_summaries(run_root: Path, seeds: Sequence[int] = SEEDS) -> dic
 
 
 def metric_bundle(labels: np.ndarray, scores: np.ndarray, targets: Sequence[str]) -> dict[str, Any]:
-    metrics = v23.binary_metrics(labels.astype(np.int64), scores.astype(np.float64))
-    macro, per_target = g2.macro_target_auprc(labels.astype(np.int64), scores.astype(np.float64), targets)
+    metrics = binary_ranking_metrics(labels.astype(np.int64), scores.astype(np.float64))
+    macro, per_target = macro_target_average_precision(
+        labels.astype(np.int64), scores.astype(np.float64), targets
+    )
     metrics.update({"macro_target_auprc": macro, "per_target_auprc": per_target})
     return metrics
 
@@ -99,16 +102,20 @@ def cluster_bootstrap_macro_delta(
     unique_clusters = sorted(set(clusters))
     groups = [np.flatnonzero(clusters == cluster) for cluster in unique_clusters]
     observed = (
-        g2.macro_target_auprc(labels, candidate_scores, targets.tolist())[0]
-        - g2.macro_target_auprc(labels, baseline_scores, targets.tolist())[0]
+        macro_target_average_precision(labels, candidate_scores, targets.tolist())[0]
+        - macro_target_average_precision(labels, baseline_scores, targets.tolist())[0]
     )
     rng = np.random.default_rng(seed)
     deltas = []
     for _ in range(replicates):
         sampled = rng.integers(0, len(groups), size=len(groups))
         indices = np.concatenate([groups[index] for index in sampled])
-        candidate = g2.macro_target_auprc(labels[indices], candidate_scores[indices], targets[indices].tolist())[0]
-        baseline = g2.macro_target_auprc(labels[indices], baseline_scores[indices], targets[indices].tolist())[0]
+        candidate = macro_target_average_precision(
+            labels[indices], candidate_scores[indices], targets[indices].tolist()
+        )[0]
+        baseline = macro_target_average_precision(
+            labels[indices], baseline_scores[indices], targets[indices].tolist()
+        )[0]
         deltas.append(candidate - baseline)
     values = np.asarray(deltas, dtype=np.float64)
     return {
