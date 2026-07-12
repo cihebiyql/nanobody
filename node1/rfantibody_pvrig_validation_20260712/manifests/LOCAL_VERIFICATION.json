@@ -1,0 +1,174 @@
+{
+  "candidate_results": {
+    "candidate_count": 30,
+    "candidates_with_at_least_two_AA_models": 0,
+    "candidates_with_one_AA_model": 5,
+    "computational_class_counts": {
+      "CONSENSUS_A_SPARSE_RECHECK": 5,
+      "SINGLE_BASELINE_BLOCKER_RECHECK": 25
+    },
+    "final_label_counts": {
+      "FINAL_DIAGNOSTIC_ONLY_RF2_NOT_RECOVERED": 30
+    },
+    "final_positive_high": 0
+  },
+  "claim_boundary": [
+    "not experimental binding evidence",
+    "not Kd prediction",
+    "not competition assay evidence",
+    "not cell blockade evidence",
+    "guided docking geometry cannot rescue failed blind RF2 pose recovery"
+  ],
+  "decision": {
+    "diagnostic_docking": "COMPLETE_AND_USABLE_FOR_WEAK_RANKING_ONLY",
+    "formal_current_batch": "NO_GO_NO_STRICT_RF2_POSE_RECOVERY",
+    "future_pipeline": "CONDITIONAL_GO_STAGED_FUNNEL"
+  },
+  "design_pose_audit": {
+    "audited_backbones": 200,
+    "occlusion_metric_unit": "heavy_atom_distance_based_nearby_residue_pair_count_not_A2",
+    "represented_pass_backbones_in_final1000": 39,
+    "rf2_primary_candidates": 78,
+    "three_occlusion_gate_pass_backbones": 52
+  },
+  "diagnostic_fallback": {
+    "candidates": 30,
+    "hotspot_set_counts": {
+      "A": 10,
+      "B": 4,
+      "C": 7,
+      "D": 9
+    },
+    "required_flag": "RF2_DIAGNOSTIC_FALLBACK_NOT_STRICT_POSE_RECOVERY",
+    "unique_backbones": 30
+  },
+  "dual_baseline_model_classes": {
+    "8x6b": {
+      "BLOCKER_LIKE_A": 138,
+      "BLOCKER_PLAUSIBLE_B": 117,
+      "EVIDENCE_INFERENCE_ONLY_E": 5
+    },
+    "9e6y": {
+      "BLOCKER_LIKE_A": 5,
+      "BLOCKER_PLAUSIBLE_B": 246,
+      "EVIDENCE_INFERENCE_ONLY_E": 9
+    },
+    "consensus": {
+      "BLOCKER_PLAUSIBLE_B": 117,
+      "CONSENSUS_BLOCKER_LIKE_A": 5,
+      "EVIDENCE_INFERENCE_ONLY_E": 5,
+      "SINGLE_BASELINE_BLOCKER_RECHECK": 133
+    }
+  },
+  "generated_at": "2026-07-12T13:23:53.503703+00:00",
+  "haddock3": {
+    "candidate_failures": 0,
+    "candidate_success": 30,
+    "controller_complete": "2026-07-12T21:12:20+08:00",
+    "controller_start": "2026-07-12T20:24:06+08:00",
+    "postprocess_complete_candidates": 30,
+    "postprocess_status": "PASS",
+    "restraint_policy": "all CDR residues to full 23-residue 8X6B PVRIG-PVRL2 interface union",
+    "sampling": 40,
+    "selected_models": 260,
+    "seletop": 10
+  },
+  "key_outputs": [
+    "README.md",
+    "RUN_STATUS.md",
+    "reports/PVRIG_RFANTIBODY_VALIDATION_FINAL_ZH.md",
+    "rf2/results/rf2_metrics.tsv",
+    "rf2/results/rf2_parse_summary.json",
+    "rf2/results/rf2_diagnostic_docking_top.tsv",
+    "manifests/docking_postprocess_audit.json",
+    "reports/final/final_blocker_screen.tsv",
+    "reports/final/final_blocker_summary.json"
+  ],
+  "nanobodybuilder2": {
+    "exact_sequence_matches": 30,
+    "geometry_validation_files": 30,
+    "sane_chain_a_backbones": 30,
+    "sequence_validation_files": 30
+  },
+  "rf2_blind_pose_recovery": {
+    "all_outputs_present": true,
+    "docking_selected": 0,
+    "docking_unique_backbones": 0,
+    "expected_candidates": 78,
+    "generated_at": "2026-07-12T12:10:14.855807+00:00",
+    "metric_distributions": {
+      "framework_aligned_antibody_rmsd": {
+        "max": 2.79,
+        "median": 0.54,
+        "min": 0.43
+      },
+      "framework_aligned_cdr_rmsd": {
+        "max": 6.06,
+        "median": 0.84,
+        "min": 0.59
+      },
+      "interaction_pae": {
+        "max": 18.27,
+        "median": 14.5,
+        "min": 3.54
+      },
+      "pred_lddt": {
+        "max": 0.92,
+        "median": 0.9,
+        "min": 0.87
+      },
+      "target_aligned_antibody_rmsd": {
+        "max": 42.74,
+        "median": 11.24,
+        "min": 1.93
+      },
+      "target_aligned_cdr_rmsd": {
+        "max": 28.03,
+        "median": 10.14,
+        "min": 0.94
+      }
+    },
+    "pose_recovered": 0,
+    "schema_version": 1,
+    "scientific_boundary": "RF2 pose recovery is a consistency check, not experimental binding or blocking evidence.",
+    "status_counts": {
+      "RF2_LOW_INTERACTION_CONFIDENCE": 68,
+      "RF2_POSE_NOT_RECOVERED": 10
+    },
+    "thresholds": {
+      "interaction_pae_max_exclusive": 10.0,
+      "target_aligned_antibody_rmsd_max_a_exclusive": 2.0,
+      "target_aligned_cdr_rmsd_max_a_exclusive": 2.0
+    }
+  },
+  "schema_version": 1,
+  "sequence_qc": {
+    "fast_hard_fail": 0,
+    "fast_rows": 1000,
+    "full_capacity_hard_fail": 0,
+    "full_capacity_rows": 300,
+    "rf2_primary_full_hard_fail": 0,
+    "rf2_primary_full_rows": 78,
+    "rf2_primary_recommendation": "REVIEW_DEVELOPABILITY",
+    "shared_reason": "not_vhh_like;hydrophobic_run"
+  },
+  "source_delivery": {
+    "final_exact_unique_sequences": 1000,
+    "final_hotspot_set_counts": {
+      "A": 250,
+      "B": 250,
+      "C": 250,
+      "D": 250
+    },
+    "final_unique_backbones": 171,
+    "raw_exact_unique_sequences": 1494,
+    "raw_sequence_pose_records": 1600
+  },
+  "status": "PASS_COMPLETE_DIAGNOSTIC_NO_STRICT_RF2_RECOVERY",
+  "verification": {
+    "artifact_consistency": "PASS",
+    "local_unittest": "15 tests, PASS",
+    "shared_blocker_screening_robustness": "PASS",
+    "shared_success_case_workflow": "PASS"
+  }
+}

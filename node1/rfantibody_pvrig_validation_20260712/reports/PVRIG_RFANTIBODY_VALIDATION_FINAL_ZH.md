@@ -292,7 +292,7 @@ sequence/developability QC
 - 任一候选已被证明阻断 PVRIG-PVRL2。
 - HADDOCK score 可以在不同序列间直接转换成亲和力。
 - 9E6Y 后处理等价于在 9E6Y 受体构象上独立 docking。
-- `0/78` 等于 78 条实验不结合。
+- 不能把 `0/78` 改写为“78 条实验不结合”。
 
 在完成 SPR/BLI、PVRIG-PVRL2 竞争结合和细胞功能实验前，最高只能使用 `diagnostic computational priority` 或 `computational blocker-geometry hypothesis` 这类表述。
 
