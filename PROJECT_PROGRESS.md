@@ -2,6 +2,37 @@
 
 This is the continuously maintained progress document for the PVRIG mechanism, scaffold, and model work. Update it whenever Phase I evidence, model gates, or candidate-ranking artifacts change.
 
+## Current Competition Objective - 2026-07-12
+
+**Status: `PIPELINE_READY_CANDIDATE_PORTFOLIO_NOT_READY`.**
+
+The current critical path is the 2026-07-26 18:00 first-round competition
+submission, not another generic-model iteration. The project must produce 50
+ranked, traceable VHH designs, with the strongest evidence concentrated in a
+diverse Top10. Known positives, patent sequences, and their mutant controls
+remain calibration/leakage controls and are never submission candidates.
+
+The existing V2.4 model Top50 has now been run through the production cascade:
+50/50 pass positive-CDR novelty, 29/50 pass full sequence QC, 21/50 hard-fail,
+4/29 have imported docking evidence, and 2/29 receive the computational
+`FINAL_POSITIVE_HIGH` label. These 50 are unmodified public ZYMScott sequences,
+so this result validates the screening workflow but does not create a compliant
+submission portfolio.
+
+Authoritative competition audit and machine-readable state:
+
+- `node1/PVRIG_COMPETITION_ASSET_AND_GOAL_AUDIT_20260712.md`
+- `node1/competition_qc/pvrig_competition_asset_inventory_20260712.csv`
+- `node1/competition_qc/pvrig_competition_readiness_20260712.json`
+- `node1/competition_qc/pvrig_top50_audit_20260712/`
+
+Immediate priorities are: generate a target-conditioned multi-family VHH
+library with RFantibody and the clean scaffold set; obtain at least 100-300
+designed hard-pass sequences; structure/dock the bounded shortlist; freeze a
+50-sequence portfolio and multi-family Top10; then produce the official template,
+one-page proposal, and reproducible source release. Current computational labels
+remain ranking evidence, not experimental binding or blocking truth.
+
 ## Latest Phase 2 Model Update - 2026-07-11 (V2.5)
 
 Phase 2 V2.5 is engineering-complete with final target status
@@ -201,7 +232,7 @@ Phase 2 next priorities are deliberately narrow:
 3. Improve pair ranking with better hard-negative biology and target-conditioned interaction supervision before increasing model size.
 4. Keep all current candidate values as computational ranking evidence until binding and blocking assays exist.
 
-## Current Objective
+## Historical Phase I Objective
 
 **Phase I: Mechanism-guided construction of a PVRIG-blocking-oriented VHH scaffold library**
 
@@ -228,7 +259,7 @@ Build a reproducible first-stage foundation for PVRIG/PVRL2 blocking VHH design.
 - [x] S67/R95/I97 have explicit structure-coordinate mapping under the UniProt Q6DKI7 numbering assumption.
 - [x] First controlled PLAbDab-nano scaffold import has passed gate-first validation.
 
-## Phase Gate
+## Historical Phase I Gate
 
 - Phase I-a status: accepted complete.
 - Phase I-b status: first controlled PLAbDab-nano import complete.
@@ -309,7 +340,7 @@ scripts/verify_phase_i_outputs.py
 
 Result: PASS. The script verified structure row counts, byte-identical regeneration, numbering reconciliation, hotspot set v1, S67/R95/I97 soft-hint mapping, positive/reference separation, ANARCI/IMGT CDR extraction, official-validator similarity evidence, PLAbDab-nano license/access-review state, controlled scaffold import counts, clean library, cluster table, top 200 outputs, and docs/report anchors.
 
-## Next Actions
+## Historical Phase I Next Actions
 
 1. Review `scaffolds/top_200_vhh_scaffolds_for_design.csv` for any project-specific exclusions before Phase II.
 2. Confirm source access and terms for OAS/INDI before importing those larger scaffold sources, if more scaffold diversity is needed.

@@ -8,6 +8,7 @@
 
 | 你想找什么 | 建议入口 |
 | --- | --- |
+| 当前赛题目标、资产缺口、Top50/Top10 readiness | `node1/PVRIG_COMPETITION_ASSET_AND_GOAL_AUDIT_20260712.md` |
 | 项目进展、阶段结论、下一步 | `PROJECT_PROGRESS.md` |
 | Phase I / Phase I-B 设计思路 | `docs/PHASE_I_PLAN.md`, `docs/PHASE_I_B_PLAN.md`, `docs/PHASE_I_EXPLORATION.md` |
 | PVRIG-PVRL2 结构热点与脚本 | `data/structures/`, `scripts/extract_pvrig_interface.py`, `scripts/build_pvrig_hotspot_set.py` |

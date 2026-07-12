@@ -5,6 +5,9 @@
 远端：`node1`，用户：`qlyu`
 软件根目录：`/data/qlyu/software`
 
+当前赛题目标、资产清单、Top50 实测和提交 readiness 以
+`PVRIG_COMPETITION_ASSET_AND_GOAL_AUDIT_20260712.md` 为准；本文件只负责工具调用。
+
 ## 1. 稳定 SSH 连接
 
 后续从 WSL/Codex 访问 node1，默认使用 Windows OpenSSH：
