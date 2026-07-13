@@ -67,7 +67,7 @@ POSTPROCESS_REFERENCE_PATHS = {
     "9e6y_scoring_reference": DATA_ROOT / "structures/9E6Y.pdb",
 }
 FROZEN_POSTPROCESS_TOOLCHAIN_SHA256 = {
-    "postprocessor": "52f90996be89e8e2ea200ebd1cc17935566d3397cc05d8d8ef85d138aa933c6b",
+    "postprocessor": "ef81a12fc6ab578822c679712596114d2c666a2cdd546fc69b5aa5b6762e86b8",
     "align_pdb_by_chain": "e6b863979db5a1ac6702ae7f04da49d3d425069a070fc441221341a202a9d7f7",
     "score_pvrig_vhh_pose": "a5ca4117ba6a5d449711fcd1198ae09c77508532fe7c0cc73d23d57b02eb15ec",
     "score_cdr_region_occlusion": "c5e419daec19e6e38b6a52bfc63e0d6100c9c16f27b46a60235dc0f6a438982f",
@@ -1178,9 +1178,9 @@ def validate_geometry_numeric_closure(
                 continue
             try:
                 parsed = parse_int(value, field)
+                output[field] = parsed
                 if parsed < 0:
                     raise ValueError(f"{field} is negative: {value!r}")
-                output[field] = parsed
             except ValueError as error:
                 errors.append(f"{label}_nonnegative_integer:{model}:{field}:{error}")
 
@@ -1842,6 +1842,65 @@ def combine_candidate(
     }
 
 
+def repeatability_diagnostics(
+    comparisons: Sequence[Mapping[str, Any]],
+    expected_pilot_ids: set[str],
+) -> dict[str, Any]:
+    observed_ids = [str(row.get("pilot_id", "")) for row in comparisons]
+    comparison_rows_16 = len(comparisons) == EXPECTED_REPLICATE_PILOTS
+    comparison_pilot_set_exact = (
+        len(observed_ids) == len(set(observed_ids))
+        and set(observed_ids) == expected_pilot_ids
+    )
+    comparison_both_sides_dg_a = (
+        comparison_rows_16
+        and all(
+            parse_bool(row.get("main_dg_a_pass", False))
+            and parse_bool(row.get("replicate_dg_a_pass", False))
+            for row in comparisons
+        )
+    )
+    ready = comparison_rows_16 and comparison_pilot_set_exact and comparison_both_sides_dg_a
+    first_tiers = [str(row.get("main_stable_tier", "")) for row in comparisons]
+    second_tiers = [str(row.get("replicate_stable_tier", "")) for row in comparisons]
+    if ready:
+        spearman = spearman_with_ties(
+            [float(row["main_R_gold"]) for row in comparisons],
+            [float(row["replicate_R_gold"]) for row in comparisons],
+        )
+        quadratic = weighted_cohen_kappa_details(first_tiers, second_tiers, "quadratic")
+        linear = weighted_cohen_kappa_details(first_tiers, second_tiers, "linear")
+    else:
+        levels = ["G1", "G2", "G3", "G4", "G5"]
+        tier_counts = lambda values: {level: values.count(level) for level in levels}
+        spearman = None
+        quadratic = {
+            "value": None,
+            "weighting": "quadratic",
+            "observed_cost": None,
+            "expected_cost": None,
+            "first_tier_counts": tier_counts(first_tiers),
+            "second_tier_counts": tier_counts(second_tiers),
+        }
+        linear = {
+            **quadratic,
+            "weighting": "linear",
+            "first_tier_counts": dict(quadratic["first_tier_counts"]),
+            "second_tier_counts": dict(quadratic["second_tier_counts"]),
+        }
+    return {
+        "comparison_rows_16": comparison_rows_16,
+        "comparison_pilot_set_exact": comparison_pilot_set_exact,
+        "comparison_both_sides_dg_a": comparison_both_sides_dg_a,
+        "repeat_metrics_ready": ready,
+        "expected_pilot_ids": sorted(expected_pilot_ids),
+        "observed_pilot_ids": sorted(observed_ids),
+        "R_gold_spearman": spearman,
+        "stable_tier_quadratic_kappa": quadratic,
+        "stable_tier_linear_kappa": linear,
+    }
+
+
 def pilot_gate(
     main_complete: int,
     replicate_complete: int,
@@ -1852,6 +1911,10 @@ def pilot_gate(
     quadratic_kappa: float | None,
     manifest_contract_pass: bool = True,
     package_closure_pass: bool = True,
+    comparison_rows_16: bool = True,
+    comparison_pilot_set_exact: bool = True,
+    comparison_both_sides_dg_a: bool = True,
+    stable_tier_expected_cost: float | None = 1.0,
 ) -> dict[str, Any]:
     gates = {
         "package_provenance_closure": package_closure_pass,
@@ -1861,7 +1924,13 @@ def pilot_gate(
         "contact_failures_zero": contact_failures == 0,
         "per_candidate_failure_tolerance_override_false": not per_candidate_failure_tolerance_override,
         "tolerance_relaxation_false": not tolerance_relaxation,
+        "comparison_rows_16": comparison_rows_16,
+        "comparison_pilot_id_set_exact": comparison_pilot_set_exact,
+        "comparison_both_sides_dg_a": comparison_both_sides_dg_a,
         "repeat_R_gold_spearman_ge_0_70": spearman is not None and spearman >= 0.70,
+        "stable_tier_expected_disagreement_gt_0": (
+            stable_tier_expected_cost is not None and stable_tier_expected_cost > 0
+        ),
         "stable_tier_quadratic_kappa_ge_0_60": quadratic_kappa is not None and quadratic_kappa >= 0.60,
     }
     return {
@@ -2033,20 +2102,17 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "claim_boundary": CLAIM_BOUNDARY,
             }
         )
-    spearman = spearman_with_ties(
-        [float(row["main_R_gold"]) for row in comparisons],
-        [float(row["replicate_R_gold"]) for row in comparisons],
+    replicate_required_ids = {
+        row["pilot_id"]
+        for row in selection_rows
+        if parse_bool(row.get("replicate_seed_required", ""))
+    }
+    repeatability = repeatability_diagnostics(
+        comparisons, replicate_required_ids
     )
-    quadratic_kappa = weighted_cohen_kappa(
-        [row["main_stable_tier"] for row in comparisons],
-        [row["replicate_stable_tier"] for row in comparisons],
-        "quadratic",
-    )
-    linear_kappa = weighted_cohen_kappa(
-        [row["main_stable_tier"] for row in comparisons],
-        [row["replicate_stable_tier"] for row in comparisons],
-        "linear",
-    )
+    spearman = repeatability["R_gold_spearman"]
+    quadratic_kappa = repeatability["stable_tier_quadratic_kappa"]["value"]
+    linear_kappa = repeatability["stable_tier_linear_kappa"]["value"]
     main_complete = sum(parse_bool(row["dg_a_pass"]) for row in main_candidates)
     replicate_run_complete = sum(
         parse_bool(row["dg_a_pass"]) for row in receptor_rows if row["seed_role"] == "replicate"
@@ -2062,6 +2128,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         quadratic_kappa,
         manifest_contract_pass=not contract_errors,
         package_closure_pass=not package_closure_errors,
+        comparison_rows_16=repeatability["comparison_rows_16"],
+        comparison_pilot_set_exact=repeatability["comparison_pilot_set_exact"],
+        comparison_both_sides_dg_a=repeatability["comparison_both_sides_dg_a"],
+        stable_tier_expected_cost=repeatability["stable_tier_quadratic_kappa"]["expected_cost"],
     )
 
     args.outdir.mkdir(parents=True, exist_ok=True)
@@ -2102,6 +2172,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "R_gold_spearman": spearman,
             "stable_tier_quadratic_kappa": quadratic_kappa,
             "stable_tier_linear_kappa": linear_kappa,
+            "comparison_rows_16": repeatability["comparison_rows_16"],
+            "comparison_pilot_set_exact": repeatability["comparison_pilot_set_exact"],
+            "comparison_both_sides_dg_a": repeatability["comparison_both_sides_dg_a"],
+            "repeat_metrics_ready": repeatability["repeat_metrics_ready"],
+            "expected_pilot_ids": repeatability["expected_pilot_ids"],
+            "observed_pilot_ids": repeatability["observed_pilot_ids"],
+            "stable_tier_quadratic_details": repeatability["stable_tier_quadratic_kappa"],
+            "stable_tier_linear_details": repeatability["stable_tier_linear_kappa"],
         },
         "protocol": {
             "frozen_rigidbody_seeds": {
