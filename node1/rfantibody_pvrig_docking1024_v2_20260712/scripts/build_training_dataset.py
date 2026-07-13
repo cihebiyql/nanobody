@@ -716,7 +716,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--docking-runs", type=Path)
     parser.add_argument("--haddock-root", type=Path)
     parser.add_argument("--baseline-postprocess", type=Path)
-    parser.add_argument("--known-positives", type=Path, default=Path("inputs/leakage_reference.fasta"))
+    parser.add_argument(
+        "--known-positives",
+        type=Path,
+        default=project_root / "inputs" / "leakage_reference.fasta",
+    )
     args = parser.parse_args()
     args.candidates = args.candidates or default_path(args.input_dir, "candidates.tsv")
     args.rf2_metrics = args.rf2_metrics or default_path(args.input_dir, "rf2_metrics.tsv")

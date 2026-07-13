@@ -132,6 +132,31 @@ def test_final_mode_requires_1000_completed_docking_candidates(tmp_path: Path) -
     assert "completed docking candidates 1 < 1000" in result.stderr
 
 
+def test_default_known_positive_reference_is_project_relative(tmp_path: Path) -> None:
+    input_dir, output_dir, _ = make_fixture(tmp_path)
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--mode",
+            "partial",
+            "--input-dir",
+            str(input_dir),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    manifest = json.loads((output_dir / "dataset_manifest.json").read_text(encoding="utf-8"))
+    source = manifest["source_files"]["known_positives"]
+    assert source["exists"] is True
+    assert Path(source["path"]) == ROOT / "inputs" / "leakage_reference.fasta"
+
+
 if __name__ == "__main__":
     tests = [value for name, value in sorted(globals().items()) if name.startswith("test_") and callable(value)]
     for test in tests:
