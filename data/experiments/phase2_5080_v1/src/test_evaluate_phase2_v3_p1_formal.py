@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import tempfile
-import unittest
-import sys
 import hashlib
 import json
+import sys
+import tempfile
+import unittest
 from pathlib import Path
 
 import pandas as pd
@@ -135,7 +135,12 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         self.assertLess(
             result["paired_parent_cluster_permutation"]["two_sided_p_value"], 0.05
         )
-        self.assertTrue(all(value["rejected_as_null_or_target_independent"] for value in result["control_results"].values()))
+        self.assertTrue(
+            all(
+                value["rejected_as_null_or_target_independent"]
+                for value in result["control_results"].values()
+            )
+        )
         self.assertTrue((output / "formal_evaluation.json").is_file())
         self.assertTrue((output / "formal_test_predictions_with_teacher_labels.csv").is_file())
 

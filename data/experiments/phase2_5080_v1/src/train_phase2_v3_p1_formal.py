@@ -55,6 +55,10 @@ DEFAULT_SELECTION = EXP_DIR / "data_splits/pvrig_teacher_formal_v1/teacher500/pv
 DEFAULT_TARGET = DATA_ROOT / "model_data/pvrig_target_ectodomain_proxy_v1.fasta"
 DEFAULT_TARGET_MAPPING = DATA_ROOT / "model_data/pvrig_target_domain_mapping_v1.csv"
 DEFAULT_RECONCILIATION = DATA_ROOT / "structures/PVRIG_numbering_reconciliation.csv"
+DEFAULT_PDB_8X6B = DATA_ROOT / "structures/8X6B.pdb"
+DEFAULT_PDB_9E6Y = DATA_ROOT / "structures/9E6Y.pdb"
+DEFAULT_INTERFACE_8X6B = DATA_ROOT / "structures/PVRIG_interface_residues_8X6B.csv"
+DEFAULT_INTERFACE_9E6Y = DATA_ROOT / "structures/PVRIG_interface_residues_9E6Y.csv"
 DEFAULT_SOURCE_CHECKPOINT = EXP_DIR / "checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt"
 DEFAULT_CONFIG = EXP_DIR / "configs/phase2_v3_p1_formal.json"
 DEFAULT_OUT = EXP_DIR / "runs/phase2_v3_p1_formal"
@@ -86,6 +90,10 @@ class FormalTrainConfig:
     target_fasta: str = str(DEFAULT_TARGET)
     target_mapping_csv: str = str(DEFAULT_TARGET_MAPPING)
     reconciliation_csv: str = str(DEFAULT_RECONCILIATION)
+    pdb_8x6b: str = str(DEFAULT_PDB_8X6B)
+    pdb_9e6y: str = str(DEFAULT_PDB_9E6Y)
+    interface_8x6b_csv: str = str(DEFAULT_INTERFACE_8X6B)
+    interface_9e6y_csv: str = str(DEFAULT_INTERFACE_9E6Y)
     source_checkpoint: str = str(DEFAULT_SOURCE_CHECKPOINT)
     generic_replay_csv: str = ""
     out_root: str = str(DEFAULT_OUT)
@@ -99,6 +107,8 @@ class FormalTrainConfig:
     contact_dim: int = 64
     pooled_dim: int = 48
     hidden_dim: int = 128
+    structure_dim: int = 8
+    structure_projection_dim: int = 16
     dropout: float = 0.1
     ordinal_weight: float = 1.0
     geometry_weight: float = 0.7
@@ -192,6 +202,64 @@ def target_weights(mapping_csv: Path, target_sequence: str, expected_count: int)
     if expected_count and observed != expected_count:
         raise ValueError(f"Expected {expected_count} weighted PVRIG residues, found {observed}")
     return weights
+
+
+def build_conformer_features(
+    pdb_id: str,
+    pdb_path: Path,
+    interface_csv: Path,
+    reconciliation_csv: Path,
+    target_sequence: str,
+) -> torch.Tensor:
+    """Build deterministic resolved/interface/geometry features for one conformer."""
+    reconciliation = [row for row in read_csv(reconciliation_csv) if row["pdb_id"].upper() == pdb_id.upper()]
+    if not reconciliation:
+        raise ValueError(f"No reconciliation rows for {pdb_id}")
+    chain = reconciliation[0]["pvrig_chain"]
+    model_index = {
+        (int(row["pdb_resseq"]), row["pdb_icode"].strip()): int(row["uniprot_position"]) - 39
+        for row in reconciliation
+        if 0 <= int(row["uniprot_position"]) - 39 < len(target_sequence)
+    }
+    interface = {
+        (int(row["pvrig_resseq"]), row["pvrig_icode"].strip()): float(row["min_heavy_atom_distance_a"])
+        for row in read_csv(interface_csv)
+        if row["pdb_id"].upper() == pdb_id.upper() and row["pvrig_chain"] == chain
+    }
+    ca: dict[tuple[int, str], tuple[float, float, float, float]] = {}
+    for line in pdb_path.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not line.startswith("ATOM") or line[21].strip() != chain or line[12:16].strip() != "CA":
+            continue
+        altloc = line[16].strip()
+        if altloc not in {"", "A"}:
+            continue
+        key = (int(line[22:26]), line[26].strip())
+        ca.setdefault(key, (float(line[30:38]), float(line[38:46]), float(line[46:54]), float(line[60:66])))
+    coordinates = np.asarray([value[:3] for key, value in ca.items() if key in model_index], dtype=np.float32)
+    if not len(coordinates):
+        raise ValueError(f"No reconciled CA coordinates for {pdb_id}")
+    center = coordinates.mean(0)
+    scale = float(np.sqrt(np.mean(np.sum((coordinates - center) ** 2, axis=1)))) or 1.0
+    features = torch.zeros((len(target_sequence), 8), dtype=torch.float32)
+    coordinate_by_index: dict[int, np.ndarray] = {}
+    for key, (x, y, z, bfactor) in ca.items():
+        index = model_index.get(key)
+        if index is None:
+            continue
+        coordinate = np.asarray((x, y, z), dtype=np.float32)
+        coordinate_by_index[index] = coordinate
+        distance = interface.get(key)
+        features[index, 0] = 1.0
+        features[index, 1] = float(distance is not None)
+        features[index, 2] = math.exp(-distance / 4.5) if distance is not None else 0.0
+        features[index, 3:6] = torch.from_numpy((coordinate - center) / scale)
+        features[index, 6] = max(0.0, min(1.5, bfactor / 100.0))
+    for index, coordinate in coordinate_by_index.items():
+        neighbors = [coordinate_by_index[neighbor] for neighbor in (index - 1, index + 1) if neighbor in coordinate_by_index]
+        if neighbors:
+            mean_step = float(np.mean([np.linalg.norm(coordinate - neighbor) for neighbor in neighbors]))
+            features[index, 7] = min(mean_step / 4.0, 2.0)
+    return features
 
 
 def _sequence(row: dict[str, str]) -> str:
@@ -415,9 +483,12 @@ class GenericReplayDataset(Dataset):
         self.cache = cache
         self.cdrs = cdrs
         self.cfg = cfg
-        required = {"sample_id", "vhh_sequence", "antigen_sequence"}
+        required = {
+            "sample_id", "vhh_sequence", "antigen_sequence", "contact_pairs_json",
+            "vhh_paratope_mask", "antigen_epitope_mask",
+        }
         if not self.rows or required - set(self.rows[0]):
-            raise ValueError("Generic replay CSV must contain sample_id,vhh_sequence,antigen_sequence")
+            raise ValueError(f"Generic replay CSV missing columns: {sorted(required - set(self.rows[0] if self.rows else {}))}")
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -428,6 +499,12 @@ class GenericReplayDataset(Dataset):
         antigen_sequence = row["antigen_sequence"].strip().upper()
         if not self.cache.has(vhh_sequence) or not self.cache.has(antigen_sequence) or not self.cdrs.has_cdr3(vhh_sequence):
             raise ValueError(f"Missing replay model input for {row['sample_id']}")
+        contact = torch.zeros((len(vhh_sequence), len(antigen_sequence)), dtype=torch.float32)
+        for pair in json.loads(row["contact_pairs_json"]):
+            vhh_index, antigen_index = int(pair[0]), int(pair[1])
+            if not 0 <= vhh_index < len(vhh_sequence) or not 0 <= antigen_index < len(antigen_sequence):
+                raise ValueError(f"Replay contact index out of range for {row['sample_id']}")
+            contact[vhh_index, antigen_index] = 1.0
         return {
             "candidate_id": row["sample_id"],
             "parent_framework_cluster": "GENERIC_REPLAY",
@@ -437,6 +514,9 @@ class GenericReplayDataset(Dataset):
             "vhh": self.cache.get(vhh_sequence, self.cfg.max_vhh_len),
             "cdr": self.cdrs.get(vhh_sequence, self.cfg.max_vhh_len),
             "antigen": self.cache.get(antigen_sequence, self.cfg.max_antigen_len),
+            "contact": contact,
+            "paratope": v23.mask_from_string(row["vhh_paratope_mask"], len(vhh_sequence)),
+            "epitope": v23.mask_from_string(row["antigen_epitope_mask"], len(antigen_sequence)),
         }
 
 
@@ -444,12 +524,15 @@ def _pad_teacher_matrix(batch: list[dict[str, Any]], key: str, rows: int, column
     if columns is None:
         output = torch.zeros((len(batch), rows), dtype=torch.float32)
         for index, row in enumerate(batch):
-            output[index, : len(row[key])] = row[key]
+            length = min(rows, len(row[key]))
+            output[index, :length] = row[key][:length]
         return output
     output = torch.zeros((len(batch), rows, columns), dtype=torch.float32)
     for index, row in enumerate(batch):
         value = row[key]
-        output[index, : value.shape[0], : value.shape[1]] = value
+        value_rows = min(rows, value.shape[0])
+        value_columns = min(columns, value.shape[1])
+        output[index, :value_rows, :value_columns] = value[:value_rows, :value_columns]
     return output
 
 
@@ -480,6 +563,20 @@ def collate_teacher(batch: list[dict[str, Any]]) -> dict[str, Any]:
             "paratope": _pad_teacher_matrix(batch, "paratope", max_vhh),
             "epitope": _pad_teacher_matrix(batch, "epitope", max_antigen),
             "campaign_codes": torch.tensor([campaigns[row["campaign_id"]] for row in batch], dtype=torch.long),
+        }
+    )
+    return output
+
+
+def collate_replay(batch: list[dict[str, Any]]) -> dict[str, Any]:
+    output = collate_model_inputs(batch)
+    max_vhh = output["vhh"].shape[1]
+    max_antigen = output["antigen"].shape[1]
+    output.update(
+        {
+            "contact": _pad_teacher_matrix(batch, "contact", max_vhh, max_antigen),
+            "paratope": _pad_teacher_matrix(batch, "paratope", max_vhh),
+            "epitope": _pad_teacher_matrix(batch, "epitope", max_antigen),
         }
     )
     return output
@@ -556,14 +653,29 @@ def compute_teacher_loss(
     return total, {"ordinal": ordinal, "geometry": regression, **auxiliaries, "campaign_rank": rank}
 
 
-def _model_forward(model: PVRIGV3P1Model, batch: dict[str, Any], device: torch.device, zero_hotspots: bool = False) -> dict[str, torch.Tensor]:
+def _model_forward(
+    model: PVRIGV3P1Model,
+    batch: dict[str, Any],
+    device: torch.device,
+    zero_hotspots: bool = False,
+    control_type: str = "full",
+    control_seed: int = 0,
+) -> dict[str, torch.Tensor]:
     hotspots = torch.zeros(batch["antigen"].shape[1], device=device) if zero_hotspots else None
+    structure = (
+        torch.zeros((batch["antigen"].shape[1], model.config.structure_dim), device=device)
+        if zero_hotspots else None
+    )
     return model(
         batch["vhh"].to(device),
         batch["cdr"].to(device),
         batch["antigen"].to(device),
         batch["generic_binding_prior"].to(device),
         hotspot_weights=hotspots,
+        structure_8x6b=structure,
+        structure_9e6y=structure,
+        control_type=control_type,
+        control_seed=control_seed,
     )
 
 
@@ -614,11 +726,13 @@ def predict_label_free(
     device: torch.device,
     geometry_mean: torch.Tensor,
     geometry_std: torch.Tensor,
+    control_type: str = "full",
+    control_seed: int = 0,
 ) -> list[dict[str, object]]:
     model.eval()
     rows: list[dict[str, object]] = []
     for batch in loader:
-        outputs = _model_forward(model, batch, device)
+        outputs = _model_forward(model, batch, device, control_type=control_type, control_seed=control_seed)
         tier_probabilities = outputs["tier_probabilities"].float().cpu()
         relevance = outputs["predicted_relevance"].float().cpu()
         geometry = outputs["geometry"].float().cpu() * geometry_std.cpu() + geometry_mean.cpu()
@@ -709,6 +823,10 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
         "target_fasta": Path(cfg.target_fasta),
         "target_mapping_csv": Path(cfg.target_mapping_csv),
         "reconciliation_csv": Path(cfg.reconciliation_csv),
+        "pdb_8x6b": Path(cfg.pdb_8x6b),
+        "pdb_9e6y": Path(cfg.pdb_9e6y),
+        "interface_8x6b_csv": Path(cfg.interface_8x6b_csv),
+        "interface_9e6y_csv": Path(cfg.interface_9e6y_csv),
         "source_checkpoint": Path(cfg.source_checkpoint),
     }
     if cfg.generic_replay_csv:
@@ -730,6 +848,12 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
     target_sequence = read_fasta(Path(cfg.target_fasta))
     mapping = pvrig_pdb_to_model_index(Path(cfg.reconciliation_csv), target_sequence)
     hotspot_weights = target_weights(Path(cfg.target_mapping_csv), target_sequence, cfg.expected_hotspot_residues)
+    structure_8x6b = build_conformer_features(
+        "8X6B", Path(cfg.pdb_8x6b), Path(cfg.interface_8x6b_csv), Path(cfg.reconciliation_csv), target_sequence
+    )
+    structure_9e6y = build_conformer_features(
+        "9E6Y", Path(cfg.pdb_9e6y), Path(cfg.interface_9e6y_csv), Path(cfg.reconciliation_csv), target_sequence
+    )
     cache = v23.ESM2Cache(Path(cfg.cache_manifest), backbone_cfg.esm_dim)
     cdrs = v23.CDRMaskStore(Path(cfg.cdr_mask_csv))
     datasets: dict[str, Dataset] = {
@@ -749,7 +873,33 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
         raise ValueError("Open teacher datasets do not match frozen train/dev counts")
     if len(datasets["test"]) != cfg.expected_test_candidates:
         raise ValueError("Label-free test inference dataset does not match frozen count")
-    return datasets, {"hotspot_weights": hotspot_weights, "target_sequence": target_sequence}
+    return datasets, {
+        "hotspot_weights": hotspot_weights,
+        "structure_8x6b": structure_8x6b,
+        "structure_9e6y": structure_9e6y,
+        "target_sequence": target_sequence,
+    }
+
+
+def shuffle_train_teacher_labels(dataset: FormalTeacherDataset, seed: int) -> None:
+    """Apply one deterministic train-only permutation to all teacher targets."""
+    generator = torch.Generator().manual_seed(seed + 30_000)
+    permutation = torch.randperm(len(dataset.rows), generator=generator).tolist()
+    target_keys = ("tier", "relevance", "geometry", "contact", "paratope", "epitope")
+    sources = [{key: row[key] for key in target_keys} for row in dataset.rows]
+    for destination, source_index in zip(dataset.rows, permutation):
+        source = sources[source_index]
+        destination["tier"] = source["tier"]
+        destination["relevance"] = source["relevance"]
+        destination["geometry"] = list(source["geometry"])
+        contact = torch.zeros_like(destination["contact"])
+        source_contact = source["contact"]
+        rows = min(contact.shape[0], source_contact.shape[0])
+        columns = min(contact.shape[1], source_contact.shape[1])
+        contact[:rows, :columns] = source_contact[:rows, :columns]
+        destination["contact"] = contact
+        destination["paratope"] = contact.max(1).values
+        destination["epitope"] = contact.max(0).values
 
 
 def train_seed(
@@ -758,7 +908,11 @@ def train_seed(
     run_dir: Path,
     resume: bool = False,
     stop_after_epoch: int = 0,
+    control_type: str = "full",
 ) -> dict[str, Any]:
+    allowed_controls = {"full", "vhh_only", "hotspot_shuffle", "antigen_ablation", "target_permutation", "label_shuffle"}
+    if control_type not in allowed_controls:
+        raise ValueError(f"Unsupported formal control: {control_type}")
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -770,6 +924,8 @@ def train_seed(
 
     backbone_cfg, backbone_state = load_backbone_checkpoint(Path(cfg.source_checkpoint))
     datasets, shared = build_datasets(cfg, backbone_cfg)
+    if control_type == "label_shuffle":
+        shuffle_train_teacher_labels(datasets["train"], seed)
     train_geometry = torch.tensor([row["geometry"] for row in datasets["train"].rows], dtype=torch.float32)
     geometry_mean = train_geometry.mean(0).to(device)
     geometry_std = train_geometry.std(0, unbiased=False).clamp_min(1e-6).to(device)
@@ -797,9 +953,17 @@ def train_seed(
         pooled_dim=cfg.pooled_dim,
         hidden_dim=cfg.hidden_dim,
         geometry_dim=len(GEOMETRY_FIELDS),
+        structure_dim=cfg.structure_dim,
+        structure_projection_dim=cfg.structure_projection_dim,
         dropout=cfg.dropout,
     )
-    model = PVRIGV3P1Model(backbone, model_cfg, shared["hotspot_weights"]).to(device)
+    model = PVRIGV3P1Model(
+        backbone,
+        model_cfg,
+        shared["hotspot_weights"],
+        shared["structure_8x6b"],
+        shared["structure_9e6y"],
+    ).to(device)
     assert_backbone_frozen(model)
     optimizer = torch.optim.AdamW(
         (parameter for parameter in model.parameters() if parameter.requires_grad),
@@ -808,7 +972,7 @@ def train_seed(
     )
     scaler = torch.amp.GradScaler("cuda", enabled=cfg.use_amp and device.type == "cuda")
     hashes = artifact_hashes(cfg)
-    config_fingerprint = sha256_json(asdict(cfg))
+    config_fingerprint = sha256_json({"config": asdict(cfg), "control_type": control_type})
     run_dir.mkdir(parents=True, exist_ok=True)
     write_json_atomic(run_dir / "config_resolved.json", asdict(cfg))
 
@@ -896,6 +1060,7 @@ def train_seed(
             {
                 "schema_version": SCHEMA_VERSION,
                 "seed": seed,
+                "control_type": control_type,
                 "epoch": epoch,
                 "head_state": model.trainable_state_dict(),
                 "optimizer_state": optimizer.state_dict(),
@@ -924,6 +1089,7 @@ def train_seed(
             "schema_version": SCHEMA_VERSION,
             "seed": seed,
             "status": status,
+            "control_type": control_type,
             "last_checkpoint": str(last_path),
             "completed_epoch": history[-1]["epoch"],
             "claim_boundary": CLAIM_BOUNDARY,
@@ -959,16 +1125,52 @@ def train_seed(
         raise AssertionError("Non-test rows leaked into evaluator-facing predictions")
     prediction_path = run_dir / "test_predictions.csv"
     write_csv_atomic(prediction_path, test_predictions)
+    if control_type == "full":
+        inference_controls = ("vhh_only", "hotspot_shuffle", "antigen_ablation", "target_permutation")
+    elif control_type == "label_shuffle":
+        inference_controls = ("label_shuffle",)
+    else:
+        inference_controls = (control_type,)
+    control_rows: list[dict[str, object]] = []
+    for inference_control in inference_controls:
+        forward_control = "full" if inference_control == "label_shuffle" else inference_control
+        rows = predict_label_free(
+            model,
+            loaders["test"],
+            device,
+            geometry_mean,
+            geometry_std,
+            control_type=forward_control,
+            control_seed=seed,
+        )
+        control_rows.extend(
+            {
+                "candidate_id": row["candidate_id"],
+                "sequence_sha256": row["sequence_sha256"],
+                "formal_split": row["formal_split"],
+                "parent_framework_cluster": row["parent_framework_cluster"],
+                "seed": seed,
+                "control_type": inference_control,
+                "predicted_relevance": row["predicted_relevance"],
+            }
+            for row in rows
+        )
+    control_path = run_dir / "control_predictions.csv"
+    write_csv_atomic(control_path, control_rows)
     final_dev = evaluate_dev(model, loaders["dev"], device, geometry_mean, geometry_std, cfg)
     summary = {
         "schema_version": SCHEMA_VERSION,
         "seed": seed,
         "status": status,
+        "control_type": control_type,
         "best_epoch": best_epoch,
         "best_dev_metrics": final_dev,
         "dev_selection_policy": "maximum_dev_ndcg_then_minimum_dev_loss",
         "test_predictions_path": str(prediction_path),
         "test_predictions_sha256": sha256_file(prediction_path),
+        "control_predictions_path": str(control_path),
+        "control_predictions_sha256": sha256_file(control_path),
+        "control_prediction_types": list(inference_controls),
         "test_prediction_columns_are_label_free": True,
         "best_checkpoint": str(best_checkpoint),
         "best_checkpoint_sha256": sha256_file(best_checkpoint),
@@ -990,13 +1192,21 @@ def run_training(
     run_root: Path | None = None,
     resume: bool = False,
     stop_after_epoch: int = 0,
+    control_type: str = "full",
 ) -> dict[str, Any]:
     if run_root is None:
         run_id = time.strftime("phase2_v3_p1_formal_%Y%m%d_%H%M%S")
         run_root = Path(cfg.out_root) / run_id
     run_root.mkdir(parents=True, exist_ok=True)
     seed_summaries = [
-        train_seed(cfg, seed, run_root / f"seed_{seed}", resume=resume, stop_after_epoch=stop_after_epoch)
+        train_seed(
+            cfg,
+            seed,
+            run_root / f"seed_{seed}",
+            resume=resume,
+            stop_after_epoch=stop_after_epoch,
+            control_type=control_type,
+        )
         for seed in cfg.seeds
     ]
     status = "PAUSED_RESUMABLE" if any(summary["status"] == "PAUSED_RESUMABLE" for summary in seed_summaries) else "PASS_FORMAL_MULTISEED_COMPLETE"
@@ -1005,6 +1215,7 @@ def run_training(
         "status": status,
         "run_root": str(run_root),
         "seeds": list(cfg.seeds),
+        "control_type": control_type,
         "seed_summaries": seed_summaries,
         "test_label_access": "NONE_TRAINER_USES_LABEL_FREE_SELECTION_ROWS_FOR_TEST_INFERENCE",
         "claim_boundary": CLAIM_BOUNDARY,
@@ -1029,6 +1240,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--run-dir", type=Path)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument(
+        "--control",
+        choices=("full", "vhh_only", "hotspot_shuffle", "antigen_ablation", "target_permutation", "label_shuffle"),
+        default="full",
+    )
     parser.add_argument("--stop-after-epoch", type=int, default=0, help=argparse.SUPPRESS)
     return parser.parse_args(argv)
 
@@ -1036,7 +1252,13 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
     cfg = load_config(args.config)
-    summary = run_training(cfg, args.run_dir, resume=args.resume, stop_after_epoch=args.stop_after_epoch)
+    summary = run_training(
+        cfg,
+        args.run_dir,
+        resume=args.resume,
+        stop_after_epoch=args.stop_after_epoch,
+        control_type=args.control,
+    )
     print(json.dumps(summary, indent=2, sort_keys=True))
     return 0
 

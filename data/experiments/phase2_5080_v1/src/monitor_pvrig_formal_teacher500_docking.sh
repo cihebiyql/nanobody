@@ -68,6 +68,11 @@ while true; do
     break
   fi
   if (( alive == 0 )); then
+    if (( expected == EXPECTED_CANDIDATES && latest_success == EXPECTED_CANDIDATES && latest_failed == 0 && pending == 0 && model_ready == EXPECTED_CANDIDATES )); then
+      "$SSH_COMMAND" "$NODE_HOST" "ROOT='$REMOTE_ROOT'; tmp=\"\$ROOT/.docking.complete.tmp.\$\$\"; printf 'RECOVERED_COMPLETION_ATTESTATION %s latest_success=$latest_success model_ready=$model_ready\\n' \"\$(date -Is)\" >\"\$tmp\"; mv -f \"\$tmp\" \"\$ROOT/docking.complete\""
+      echo "DOCKING_RECOVERED_COMPLETION_ATTESTED remote_pid=$remote_pid latest_success=$latest_success model_ready=$model_ready"
+      break
+    fi
     echo "DOCKING_CONTROLLER_DIED_WITHOUT_COMPLETE remote_pid=$remote_pid latest_success=$latest_success latest_failed=$latest_failed pending=$pending model_ready=$model_ready" >&2
     exit 5
   fi

@@ -151,21 +151,24 @@ def _prepare_teacher(teacher: pd.DataFrame) -> pd.DataFrame:
     return teacher
 
 
-def load_teacher(path: Path) -> pd.DataFrame:
-    """Load a combined dev/test teacher table (mainly useful for fixtures)."""
-    return _prepare_teacher(pd.read_csv(path))
-
-
 def load_teacher_parts(open_path: Path, sealed_test_path: Path) -> pd.DataFrame:
     """Open dev labels and unseal formal test labels only inside evaluation."""
     development = pd.read_csv(open_path)
     sealed = pd.read_csv(sealed_test_path)
-    development = development.loc[development["formal_split"].astype(str).eq("dev")].copy()
-    sealed = sealed.loc[sealed["formal_split"].astype(str).eq("test")].copy()
-    if "sealed_status" in sealed and not sealed["sealed_status"].astype(str).eq(
-        "SEALED_FORMAL_TEST_LABEL"
-    ).all():
+    if "formal_split" not in development or set(development["formal_split"].astype(str)) - {
+        "train",
+        "dev",
+    }:
+        raise ValueError("Open teacher labels must contain only train/dev rows")
+    if "formal_split" not in sealed or set(sealed["formal_split"].astype(str)) != {"test"}:
+        raise ValueError("Sealed formal labels must contain test rows only")
+    if "sealed_status" not in sealed:
+        raise ValueError("Sealed formal labels lack required sealed_status")
+    if not sealed["sealed_status"].astype(str).eq("SEALED_FORMAL_TEST_LABEL").all():
         raise ValueError("Formal test label rows do not carry the required sealed status")
+    development = development.loc[development["formal_split"].astype(str).eq("dev")].copy()
+    if development.empty:
+        raise ValueError("Open teacher labels contain no development rows")
     return _prepare_teacher(pd.concat([development, sealed], ignore_index=True, sort=False))
 
 
@@ -227,7 +230,8 @@ def merge_three_seed_predictions(
         ids = set(prediction["candidate_id"].astype(str))
         if ids != expected_ids:
             raise ValueError(
-                f"Seed {seed} test candidate set differs: missing={len(expected_ids - ids)}, extra={len(ids - expected_ids)}"
+                f"Seed {seed} test candidate set differs: "
+                f"missing={len(expected_ids - ids)}, extra={len(ids - expected_ids)}"
             )
         _validate_identity_columns(prediction, test, f"seed {seed}")
         keep = ["candidate_id", "predicted_relevance", *[f"predicted_{field}" for field in GEOMETRY_FIELDS]]
@@ -243,7 +247,9 @@ def merge_three_seed_predictions(
     relevance_columns = [f"predicted_relevance_seed_{seed}" for seed in EXPECTED_SEEDS]
     merged["ensemble_predicted_relevance"] = merged[relevance_columns].mean(axis=1)
     merged["ensemble_relevance_seed_std"] = merged[relevance_columns].std(axis=1, ddof=0)
-    merged["ensemble_relevance_seed_range"] = merged[relevance_columns].max(axis=1) - merged[relevance_columns].min(axis=1)
+    merged["ensemble_relevance_seed_range"] = merged[relevance_columns].max(axis=1) - merged[
+        relevance_columns
+    ].min(axis=1)
     for field in GEOMETRY_FIELDS:
         columns = [f"predicted_{field}_seed_{seed}" for seed in EXPECTED_SEEDS]
         merged[f"ensemble_predicted_{field}"] = merged[columns].mean(axis=1)
@@ -410,7 +416,8 @@ def _screen_checks(metrics: Mapping[str, Any], threshold: GateThresholds) -> dic
 
 
 def evaluate_formal(
-    teacher_path: Path | None,
+    teacher_open_path: Path,
+    teacher_test_sealed_path: Path,
     seed_paths: Mapping[int, Path],
     baseline_path: Path,
     control_path: Path,
@@ -419,27 +426,12 @@ def evaluate_formal(
     bootstrap_replicates: int = 2000,
     permutation_replicates: int = 2000,
     threshold: GateThresholds = GateThresholds(),
-    teacher_open_path: Path | None = None,
-    teacher_test_sealed_path: Path | None = None,
 ) -> dict[str, Any]:
-    split_teacher_mode = teacher_open_path is not None or teacher_test_sealed_path is not None
-    if teacher_path is not None and split_teacher_mode:
-        raise ValueError("Use either combined teacher_path or open/sealed teacher paths, not both")
-    if split_teacher_mode:
-        if teacher_open_path is None or teacher_test_sealed_path is None:
-            raise ValueError("Both teacher_open_path and teacher_test_sealed_path are required")
-        teacher = load_teacher_parts(teacher_open_path, teacher_test_sealed_path)
-        teacher_hashes = {
-            "teacher_open_development": sha256_file(teacher_open_path),
-            "teacher_formal_labels_sealed": sha256_file(teacher_test_sealed_path),
-        }
-        teacher_join_mode = "open_dev_plus_evaluator_only_unsealed_test"
-    else:
-        if teacher_path is None:
-            raise ValueError("A combined teacher path or open/sealed teacher paths are required")
-        teacher = load_teacher(teacher_path)
-        teacher_hashes = {"teacher_combined": sha256_file(teacher_path)}
-        teacher_join_mode = "combined_dev_test_fixture_or_legacy"
+    teacher = load_teacher_parts(teacher_open_path, teacher_test_sealed_path)
+    teacher_hashes = {
+        "teacher_open_development": sha256_file(teacher_open_path),
+        "teacher_formal_labels_sealed": sha256_file(teacher_test_sealed_path),
+    }
     predictions, seed_hashes = merge_three_seed_predictions(teacher, seed_paths)
     selected_baseline, baseline_scores, baseline_selection = select_strongest_baseline(
         teacher, baseline_path
@@ -577,7 +569,7 @@ def evaluate_formal(
         "checks": primary_checks,
         "all_checks_pass": all(primary_checks.values()),
         "test_label_join_boundary": "inside_this_evaluator_only",
-        "teacher_join_mode": teacher_join_mode,
+        "teacher_join_mode": "open_dev_plus_evaluator_only_unsealed_test",
         "input_prediction_artifacts_label_blind": True,
         "artifact_sha256": {
             **teacher_hashes,
@@ -599,10 +591,8 @@ def evaluate_formal(
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    teacher_group = parser.add_mutually_exclusive_group(required=True)
-    teacher_group.add_argument("--teacher", type=Path)
-    teacher_group.add_argument("--teacher-open", type=Path)
-    parser.add_argument("--teacher-test-sealed", type=Path)
+    parser.add_argument("--teacher-open", type=Path, required=True)
+    parser.add_argument("--teacher-test-sealed", type=Path, required=True)
     parser.add_argument(
         "--seed-prediction",
         action="append",
@@ -625,7 +615,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def main(argv: Sequence[str] | None = None) -> None:
     args = parse_args(argv)
     result = evaluate_formal(
-        teacher_path=args.teacher,
+        teacher_open_path=args.teacher_open,
+        teacher_test_sealed_path=args.teacher_test_sealed,
         seed_paths=parse_seed_paths(args.seed_prediction),
         baseline_path=args.baseline_predictions,
         control_path=args.control_predictions,
@@ -639,8 +630,6 @@ def main(argv: Sequence[str] | None = None) -> None:
             relevance_spearman=args.relevance_spearman_threshold,
             target_control_ef_drop=args.target_control_ef_drop,
         ),
-        teacher_open_path=args.teacher_open,
-        teacher_test_sealed_path=args.teacher_test_sealed,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
 

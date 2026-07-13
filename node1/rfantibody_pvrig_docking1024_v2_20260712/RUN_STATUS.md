@@ -1,6 +1,6 @@
 # 运行状态
 
-更新时间：2026-07-13 08:01 CST
+更新时间：2026-07-13 08:41 CST
 
 ## 当前阶段
 
@@ -14,7 +14,9 @@
 - 1,152 条 primary records 中有 1,067 条全局 exact-unique；已冻结 1,024 条 exact-unique cohort，覆盖全部 36 arms 和 288 backbones。
 - 序列 QC 为 `1,024/1,024` 无 hard-fail。RF2 seed42 为 `1,024/1,024` 有输出：4 个 strict pose-recovered、813 个 low-interaction-confidence、207 个 pose-not-recovered。
 - NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。真实 HADDOCK smoke 已成功，全量 docking 正在运行。
-- 2026-07-13 08:01 CST 实测：RF2 seed43 已产出 `947/1,024` 个结果；HADDOCK 为 `33 success / 10 running / 0 failed`，全部为 attempt 1。
+- RF2 seed42/43/44 均已完成 `1,024/1,024`，共 3,072 个输出。多 seed 严格门控为 4 条正式通过、28 条近通过校准样本和 992 条不完整通过；RF2 失败/低置信只记为 QC 或 missingness，不作为负结合/负阻断标签。
+- 2026-07-13 08:41 CST 实测：HADDOCK 为 `90 success / 10 running / 0 failed`，全部为 attempt 1。
+- 已提前对 `PVRIG_RFAb_v2_P1_ekg_L_bb000_mpn00` 运行真实 8X6B/9E6Y 双参考后处理 smoke，4 个 selected models 全部生成 consensus 记录，后处理接口通过。
 
 ## 资源策略
 
@@ -46,7 +48,6 @@ HADDOCK nice:                       15
 
 ## 尚未完成
 
-- RF2 seed43/44 enrichment 和最终多 seed 汇总；
 - 不少于 1,000 条真实 HADDOCK3 结果；
 - pose-level 能量、8X6B/9E6Y 几何、失败原因和 leakage-safe split ETL；
 - `reports/final_audit.json` 全部硬门槛通过。

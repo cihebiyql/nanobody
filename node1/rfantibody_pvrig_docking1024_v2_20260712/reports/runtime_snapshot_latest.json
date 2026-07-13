@@ -1,10 +1,46 @@
 {
-  "captured_at": "2026-07-12T18:21:58.102923+00:00",
+  "captured_at": "2026-07-13T00:45:03.447515+00:00",
+  "controllers_runtime": {
+    "downstream_controller": {
+      "alive": true,
+      "pid": 3296328
+    },
+    "haddock_sidecar": {
+      "alive": true,
+      "pid": 1578486
+    },
+    "haddock_sidecar2": {
+      "alive": true,
+      "pid": 1672377
+    },
+    "postprocess_controller": {
+      "alive": true,
+      "pid": 3235532
+    },
+    "postprocess_early_batch": {
+      "alive": true,
+      "pid": 1730946
+    }
+  },
+  "docking": {
+    "haddock_counts": {
+      "running": 10,
+      "success": 100
+    },
+    "nbb2_counts": {
+      "success": 1024
+    },
+    "postprocess_counts": {
+      "missing": 941,
+      "running": 2,
+      "success": 81
+    }
+  },
   "downstream_controller": {
-    "message": "waiting for frozen 1024-candidate cohort",
+    "message": "running load-aware HADDOCK and RF2 enrichment",
     "pid": 3296328,
-    "state": "waiting_for_generation",
-    "updated_at": "2026-07-12T18:20:29.999507+00:00"
+    "state": "docking_full",
+    "updated_at": "2026-07-12T23:31:39.788457+00:00"
   },
   "execution_policy": {
     "active_cohort_source": {
@@ -64,11 +100,15 @@
     },
     "schema_version": 1
   },
+  "frozen_cohort": {
+    "candidate_count": 1024,
+    "exact_unique_sequences": 1024
+  },
   "generation_controller": {
-    "message": "running 48 arms on six GPU lanes",
-    "pid": 3195169,
-    "state": "full_generation",
-    "updated_at": "2026-07-12T17:22:30.638402+00:00"
+    "message": "1024-candidate generation cohort frozen",
+    "pid": 3866812,
+    "state": "complete",
+    "updated_at": "2026-07-12T21:29:17.789092+00:00"
   },
   "generation_counts": {
     "backbone_pdb_count": 16,
@@ -80,18 +120,19 @@
     }
   },
   "hostname": "node1",
-  "loadavg": "391.83 430.27 437.04 358/6858 3302920",
+  "loadavg": "67.93701171875 70.50634765625 70.91796875",
   "postprocess_controller": {
     "message": "waiting for at least 1000 completed HADDOCK candidates",
     "pid": 3235532,
     "state": "waiting_for_docking",
-    "updated_at": "2026-07-12T18:20:15.246844+00:00"
+    "updated_at": "2026-07-13T00:44:29.020578+00:00"
   },
   "primary_only_transition": {
     "complete": false,
     "pid": 3278041
   },
   "resource_policy": {
+    "early_postprocess_parallel": 2,
     "gpu_ids": [
       1,
       2,
@@ -103,7 +144,45 @@
     "gpu_memory_used_gate_mb": 12000,
     "gpu_nice": 10,
     "gpu_stage_max_load1": 400,
-    "haddock_max_load1": 240,
-    "haddock_max_parallel": 2
+    "haddock_main_parallel": 2,
+    "haddock_nice": 15,
+    "haddock_sidecar1_parallel": 6,
+    "haddock_sidecar2_parallel": 2,
+    "haddock_total_parallel": 10
+  },
+  "rf2": {
+    "parse_summary": {
+      "candidate_count": 1024,
+      "failed_or_missing_are_negative_samples": false,
+      "formal_multiseed_gate_counts": {
+        "FORMAL_MULTI_SEED_FAIL_COMPLETE": 992,
+        "FORMAL_MULTI_SEED_PASS_2OF3_WITH_STRICT_SUPPORT": 4,
+        "RF2_NEAR_PASS_CALIBRATION_ONLY": 28
+      },
+      "generated_at": "2026-07-13T00:40:54.707502+00:00",
+      "manifest_rows": 3072,
+      "manifest_tsv": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/rf2/multiseed/rf2_multiseed_manifest.tsv",
+      "missing_outputs": 0,
+      "old_gate_counts": {
+        "NOT_APPLICABLE_ENRICHMENT_SEED": 2048,
+        "OLD_GATE_FAIL_OR_MISSING_STRICT_SEED42": 1020,
+        "OLD_GATE_PASS_STRICT_SEED42": 4
+      },
+      "schema_version": 1,
+      "scientific_boundary": "RF2 failures or missing outputs are QC/missingness records only, not negative binding or blocking labels.",
+      "seed42_enrichment_ready": true,
+      "seed42_min_outputs_required_for_enrichment": 1000,
+      "seed42_output_count": 1024,
+      "status_counts": {
+        "RF2_LOW_INTERACTION_CONFIDENCE": 2428,
+        "RF2_POSE_NOT_RECOVERED": 635,
+        "RF2_POSE_RECOVERED": 9
+      }
+    },
+    "seed_outputs": {
+      "42": 1024,
+      "43": 1024,
+      "44": 1024
+    }
   }
 }

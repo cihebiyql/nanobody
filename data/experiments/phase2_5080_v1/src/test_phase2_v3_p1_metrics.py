@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import unittest
 import sys
+import unittest
 from pathlib import Path
 
 import numpy as np
