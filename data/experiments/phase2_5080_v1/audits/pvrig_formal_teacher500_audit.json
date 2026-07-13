@@ -1,0 +1,61 @@
+{
+  "candidate_count": 500,
+  "candidate_id_counts": {
+    "candidate_summary": 500,
+    "contact_frequency": 500,
+    "pose_summary": 500,
+    "selection": 500,
+    "teacher_manifest": 500
+  },
+  "candidate_id_set_consistency": true,
+  "candidate_pose_count_distribution": {
+    "4": 11,
+    "5": 15,
+    "6": 38,
+    "7": 51,
+    "8": 40,
+    "9": 80,
+    "10": 265
+  },
+  "claim_boundary": "prospective_docking_geometry_surrogate_not_binding_or_experimental_blocking_truth",
+  "complete_candidate_count": 500,
+  "contact_pose_failure_count": 0,
+  "contact_pose_success_count": 4394,
+  "exact_known_positive_sequence_overlap_count": 0,
+  "exact_known_positive_sequence_overlaps": [],
+  "formal_split_counts": {
+    "dev": 75,
+    "test": 75,
+    "train": 350
+  },
+  "output_sha256": {
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_teacher_manifest_v1.csv": "7ac150eb759f8ad51b0877cdbe651ede0818d5ed29ccc72fe1c37867093bbfcd",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/candidate_summary.csv": "14a75493825c826dc6e75f3c4471291d06bf0294b5778cc51e72d64898680270",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/pose_contact_frequency.jsonl": "f66be3f5d9bc5a31afc5689154da09462c12171501513de9f243c7a91b24f3a9",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/pose_summary.csv": "08a58ed0da194b90589ed529fb3de653eb751b5c5dbebf8fdc9a71c435d88216",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/teacher_config.json": "26c838e9f8c0b1e635c742f111689a5623d05d93d13427fcade9e2492d5ab22c"
+  },
+  "parent_framework_cluster_count": 40,
+  "pose_consensus_class_counts": {
+    "BLOCKER_PLAUSIBLE_B": 1941,
+    "CONSENSUS_BLOCKER_LIKE_A": 138,
+    "EVIDENCE_INFERENCE_ONLY_E": 324,
+    "SINGLE_BASELINE_BLOCKER_RECHECK": 1991
+  },
+  "pose_count": 4394,
+  "schema_version": "pvrig_formal_teacher500_geometry_v1",
+  "selection_layer_counts": {
+    "boundary": 100,
+    "diversity": 120,
+    "high_prior": 140,
+    "low_prior_qc_pass": 60,
+    "uncertainty_disagreement": 80
+  },
+  "status": "PASS_FORMAL_TEACHER500_READY",
+  "target_patch_counts": {
+    "A_CENTER": 164,
+    "B_LOWER": 167,
+    "C_CROSS": 169
+  },
+  "unique_candidate_sequence_count": 500
+}

@@ -367,6 +367,7 @@ data/experiments/phase2_5080_v1/audits/PHASE2_V2_5_FINAL_AUDIT_V1.md
 data/experiments/phase2_5080_v1/audits/PHASE2_V2_5_GPU_TELEMETRY_SUMMARY_V1.md
 data/experiments/phase2_5080_v1/audits/PHASE2_V2_COMPLETION_AUDIT.md
 data/experiments/phase2_5080_v1/audits/PVRIG_EXISTING_STRUCTURE_AND_NODE1_ASSET_REDISCOVERY_V1.md
+data/experiments/phase2_5080_v1/audits/PVRIG_FORMAL_TEACHER500_AUDIT.md
 data/experiments/phase2_5080_v1/audits/PVRIG_TARGET_DOMAIN_AUDIT_V1.md
 data/experiments/phase2_5080_v1/audits/PVRIG_TEACHER_PILOT96_AUDIT.md
 data/experiments/phase2_5080_v1/audits/PVRIG_TEACHER_V1_AUDIT.md
@@ -413,6 +414,7 @@ data/experiments/phase2_5080_v1/audits/phase2_v2_5_readiness_audit_v1.json
 data/experiments/phase2_5080_v1/audits/phase2_v2_5_split_seal_audit_v1.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_g1_esm2_smoke_cache_validation.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_g2_preregistration.json
+data/experiments/phase2_5080_v1/audits/phase2_v3_p1_formal_data_audit.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_generic_replay_audit.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_preregistration.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_test_spec.json
@@ -421,6 +423,7 @@ data/experiments/phase2_5080_v1/audits/phase2_v3_test_spec.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_balanced_boost_plan_20260713.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_recovery_plan_20260713.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_run_task_sha256_20260713.tsv
+data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_audit.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_postprocess_audit.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_sync_audit.json
 data/experiments/phase2_5080_v1/audits/pvrig_teacher500_failed_candidate_recovery.json

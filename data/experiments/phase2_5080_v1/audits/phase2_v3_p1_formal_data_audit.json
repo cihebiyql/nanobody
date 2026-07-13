@@ -1,0 +1,42 @@
+{
+  "candidate_id_closure": true,
+  "claim_boundary": "docking_geometry_surrogate_not_binding_or_experimental_blocking_truth",
+  "formal_blinded_label_columns": [],
+  "input_sha256": {
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_teacher_manifest_v1.csv": "7ac150eb759f8ad51b0877cdbe651ede0818d5ed29ccc72fe1c37867093bbfcd",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/candidate_summary.csv": "14a75493825c826dc6e75f3c4471291d06bf0294b5778cc51e72d64898680270",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/pose_contact_frequency.jsonl": "f66be3f5d9bc5a31afc5689154da09462c12171501513de9f243c7a91b24f3a9"
+  },
+  "output_paths": {
+    "contact_formal_labels_sealed": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_contact_formal_labels_sealed_v1.jsonl",
+    "contact_train_dev": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_contact_train_dev_v1.jsonl",
+    "formal_blinded": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_teacher_formal_blinded_v1.csv",
+    "formal_labels_sealed": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_teacher_formal_labels_sealed_v1.csv",
+    "train_dev": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_teacher_train_dev_v1.csv",
+    "train_normalization": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/train_only_normalization_v1.json"
+  },
+  "output_sha256": {
+    "contact_formal_labels_sealed": "f263dd6def11246be4e4552004495a6ab79dd165a7561ebc2b002edca186aa4a",
+    "contact_train_dev": "606ac203739b94763afe0abfe3cc136198d5e9841c04fb05b4aafea0b6212447",
+    "formal_blinded": "c39036ec2447c01f88d0e8d78571ab0e3d395ab24b06c03889894167c7614090",
+    "formal_labels_sealed": "217124433d2fb4b7c4f5566ff75ee64284e1980a8d01e713696e99cbdd5ff49a",
+    "train_dev": "7bea38b4b2afdac7996065ff84eec3d8ba61856b078167ac76c20b11675dc8b5",
+    "train_normalization": "cc130694dee81089b550afa9fa8fc864b820edc1752174582413ec0a68cf0df6"
+  },
+  "parent_cluster_cross_split_overlap": {
+    "dev_test": 0,
+    "train_dev": 0,
+    "train_test": 0
+  },
+  "row_counts": {
+    "dev": 75,
+    "test": 75,
+    "train": 350
+  },
+  "schema_version": "phase2_v3_p1_formal_data_v1",
+  "sequence_hash_closure": true,
+  "status": "PASS_PHASE2_V3_P1_FORMAL_DATA_SEALED",
+  "unique_parent_clusters": 40,
+  "upstream_teacher_audit": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_audit.json",
+  "upstream_teacher_audit_sha256": "78fb0b06ffa633ed867a33143da56fe8fcf16bda5d552feb3fc553d82596057c"
+}
