@@ -58,6 +58,12 @@ BASELINES = {
         "marker_reference_key": "9e6y_scoring_reference",
     },
 }
+EXPECTED_RUN_IDS = frozenset(
+    f"{pilot}__{receptor}__{seed_role}"
+    for pilot in ("P2PILOT_001", "P2PILOT_033")
+    for receptor in ("8X6B", "9E6Y")
+    for seed_role in ("main", "replicate")
+)
 
 SCHEMA_VERSION = "phase2_v3_p2_v1_1_hetatm_contamination_audit_v1"
 ROW_SCHEMA_VERSION = "phase2_v3_p2_v1_1_hetatm_contamination_row_v1"
@@ -501,6 +507,41 @@ def validate_marker_artifact(
         raise ValueError(f"Marker artifact hash mismatch for {run_dir.name}:{artifact_key}")
 
 
+def validated_marker_rank_map(marker: dict[str, Any], run_id: str) -> dict[str, int]:
+    items = marker.get("selected_pose_files")
+    if not isinstance(items, list):
+        raise ValueError(f"Missing selected pose inventory for {run_id}")
+    expected_count = require_int(
+        marker.get("counts", {}).get("selected_models"),
+        f"{run_id}/marker selected_models",
+    )
+    if len(items) != expected_count:
+        raise ValueError(f"Selected pose inventory length mismatch for {run_id}")
+    models = [str(item.get("model", "")) for item in items if isinstance(item, dict)]
+    ranks = [
+        require_int(item.get("haddock_rank"), f"{run_id}/marker rank")
+        for item in items
+        if isinstance(item, dict)
+    ]
+    if len(models) != len(items) or any(not model for model in models):
+        raise ValueError(f"Invalid selected pose inventory entry for {run_id}")
+    if len(set(models)) != len(models):
+        raise ValueError(f"Duplicate selected pose model for {run_id}")
+    if len(set(ranks)) != len(ranks):
+        raise ValueError(f"Duplicate selected pose rank for {run_id}")
+    rank_map = dict(zip(models, ranks))
+    traceback = marker.get("traceback", {}).get("model_ranks")
+    if not isinstance(traceback, dict):
+        raise ValueError(f"Missing traceback rank map for {run_id}")
+    traceback_map = {
+        str(model): require_int(rank, f"{run_id}/traceback rank")
+        for model, rank in traceback.items()
+    }
+    if traceback_map != rank_map:
+        raise ValueError(f"Selected pose/traceback rank map mismatch for {run_id}")
+    return rank_map
+
+
 def audit_rows(
     input_root: Path,
     rules_path: Path,
@@ -530,8 +571,13 @@ def audit_rows(
     run_markers: list[dict[str, Any]] = []
 
     run_dirs = sorted(path for path in input_root.iterdir() if path.is_dir())
-    if not run_dirs:
-        raise ValueError(f"No run directories found under {input_root}")
+    observed_run_ids = {path.name for path in run_dirs}
+    if observed_run_ids != EXPECTED_RUN_IDS:
+        raise ValueError(
+            "Expected the exact 8-run revised smoke set; "
+            f"missing={sorted(EXPECTED_RUN_IDS - observed_run_ids)}, "
+            f"unexpected={sorted(observed_run_ids - EXPECTED_RUN_IDS)}"
+        )
     for run_dir in run_dirs:
         run_id = run_dir.name
         marker_path = run_dir / "postprocess.complete.json"
@@ -549,17 +595,10 @@ def audit_rows(
         rank_path = run_dir / "reports/haddock3_model_ranks.csv"
         validate_marker_artifact(marker, "ranks", rank_path, run_dir)
         rank_rows = read_csv_unique(rank_path)
-        expected_marker_models = {
-            str(item["model"]) for item in marker.get("selected_pose_files", [])
-        }
+        marker_ranks = validated_marker_rank_map(marker, run_id)
+        expected_marker_models = set(marker_ranks)
         if set(rank_rows) != expected_marker_models:
             raise ValueError(f"Rank/marker model set mismatch for {run_id}")
-        if marker.get("counts", {}).get("selected_models") != len(rank_rows):
-            raise ValueError(f"Marker selected-model count mismatch for {run_id}")
-        marker_ranks = {
-            str(item["model"]): require_int(item.get("haddock_rank"), "marker rank")
-            for item in marker.get("selected_pose_files", [])
-        }
         csv_ranks = {
             model: require_int(row.get("haddock_rank"), "rank CSV")
             for model, row in rank_rows.items()

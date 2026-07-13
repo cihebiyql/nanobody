@@ -133,6 +133,21 @@ class HetatmContactAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "hash mismatch"):
                 MOD.validate_marker_artifact(marker, "ranks", artifact, run_dir)
 
+    def test_selected_pose_inventory_rejects_duplicate_models_and_ranks(self) -> None:
+        marker = {
+            "counts": {"selected_models": 2},
+            "selected_pose_files": [
+                {"model": "pose_1", "haddock_rank": 1},
+                {"model": "pose_1", "haddock_rank": 2},
+            ],
+            "traceback": {"model_ranks": {"pose_1": 1}},
+        }
+        with self.assertRaisesRegex(ValueError, "Duplicate selected pose model"):
+            MOD.validated_marker_rank_map(marker, "run")
+        marker["selected_pose_files"][1] = {"model": "pose_2", "haddock_rank": 1}
+        with self.assertRaisesRegex(ValueError, "Duplicate selected pose rank"):
+            MOD.validated_marker_rank_map(marker, "run")
+
 
 class SensitivityClassificationTests(unittest.TestCase):
     def setUp(self) -> None:

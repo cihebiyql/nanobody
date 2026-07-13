@@ -249,7 +249,7 @@ fraction delta 有正有负，不能统一描述为 fraction 膨胀。
 - 行级 CSV：`/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_rows.csv`
 - 机器审计 JSON：`/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_audit.json`
 - CSV SHA256：`e23206c7c82eb947f45743edd6a0e53d3df320b41cee555efc90255088ad353a`
-- JSON SHA256：`d2c76ccedc17f4275b95645287bc84af0d0fd383ef05dfd57d12faf02fe7b0dd`
+- JSON SHA256：`ef139bb83ab69443dced89348a2304eb92a1a484810c16f9f6fb962cb901395a`
 - 当前 scorer SHA256：`c5e419daec19e6e38b6a52bfc63e0d6100c9c16f27b46a60235dc0f6a438982f`
 - 当前 classifier SHA256：`c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654`
 - rules SHA256：`60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5`
