@@ -27,9 +27,9 @@
       "pose_clusters": 5,
       "rank_rows": 10,
       "run_id": "P2PILOT_001__8X6B__main",
-      "seconds": 25.615,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 314,
@@ -46,9 +46,9 @@
       "pose_clusters": 5,
       "rank_rows": 8,
       "run_id": "P2PILOT_001__8X6B__replicate",
-      "seconds": 21.872,
+      "seconds": 0.0,
       "selected_models": 8,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 402,
@@ -65,9 +65,9 @@
       "pose_clusters": 5,
       "rank_rows": 10,
       "run_id": "P2PILOT_001__9E6Y__main",
-      "seconds": 24.719,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 338,
@@ -84,9 +84,9 @@
       "pose_clusters": 7,
       "rank_rows": 10,
       "run_id": "P2PILOT_001__9E6Y__replicate",
-      "seconds": 25.62,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 385,
@@ -103,9 +103,9 @@
       "pose_clusters": 7,
       "rank_rows": 10,
       "run_id": "P2PILOT_033__8X6B__main",
-      "seconds": 20.125,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 321,
@@ -122,9 +122,9 @@
       "pose_clusters": 4,
       "rank_rows": 10,
       "run_id": "P2PILOT_033__8X6B__replicate",
-      "seconds": 20.11,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 383,
@@ -141,9 +141,9 @@
       "pose_clusters": 10,
       "rank_rows": 10,
       "run_id": "P2PILOT_033__9E6Y__main",
-      "seconds": 20.057,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     },
     {
       "canonical_contact_pair_rows": 413,
@@ -160,9 +160,9 @@
       "pose_clusters": 6,
       "rank_rows": 10,
       "run_id": "P2PILOT_033__9E6Y__replicate",
-      "seconds": 20.089,
+      "seconds": 0.0,
       "selected_models": 10,
-      "status": "PASS"
+      "status": "SKIP_COMPLETE"
     }
   ],
   "schema_version": "phase2_v3_p2_dual_docking_pilot_postprocess_audit_v1_1",
