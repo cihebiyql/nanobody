@@ -1,6 +1,6 @@
 # 运行状态
 
-更新时间：2026-07-13 14:06 CST
+更新时间：2026-07-13 14:54 CST
 
 ## 当前阶段
 
@@ -15,7 +15,7 @@
 - 序列 QC 为 `1,024/1,024` 无 hard-fail。RF2 seed42 为 `1,024/1,024` 有输出：4 个 strict pose-recovered、813 个 low-interaction-confidence、207 个 pose-not-recovered。
 - NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。真实 HADDOCK smoke 已成功，全量 docking 正在运行。
 - RF2 seed42/43/44 均已完成 `1,024/1,024`，共 3,072 个输出。多 seed 严格门控为 4 条正式通过、28 条近通过校准样本和 992 条不完整通过；RF2 失败/低置信只记为 QC 或 missingness，不作为负结合/负阻断标签。
-- 2026-07-13 14:06 CST 实测：HADDOCK 为 `453 success / 10 running / 0 failed`。目前有 2 条因 `flexref` 稳定产出 8/10 个模型、缺失率 20% 超过默认 tolerance 10% 而失败；已在完整保留失败目录后使用透明的 `flexref/emref tolerance=30%` rescue 策略分别于 attempt 5 和 attempt 4 成功，均产出 8 个 selected models。
+- 2026-07-13 14:54 CST 实测：HADDOCK 为 `511 success / 10 running / 0 failed`，增量 8X6B/9E6Y 双参考后处理为 503 条。目前有 2 条因 `flexref` 稳定产出 8/10 个模型、缺失率 20% 超过默认 tolerance 10% 而失败；已在完整保留失败目录后使用透明的 `flexref/emref tolerance=30%` rescue 策略分别于 attempt 5 和 attempt 4 成功，均产出 8 个 selected models。
 - 修复了 HADDOCK 重试时被残留 `run_dir` 立即拒绝的编排缺陷：现在重试前会将失败的部分目录移入 `docking/failed_haddock_attempts/<candidate_id>/`，既保留失败证据，又能进行干净重跑。
 - 修复了 main/sidecar 共享 `haddock_controller.json` 时使用同一 `.tmp` 文件导致的原子替换竞争。该问题曾使两个 sidecar 在约 13:20 CST 退出；现每次写入都使用唯一临时文件，并发回归测试通过。旧孤儿任务自然排空到仅剩 main 2 路后，两个 sidecar 已安全重启，实际并发恢复为 10。
 - 已提前对 `PVRIG_RFAb_v2_P1_ekg_L_bb000_mpn00` 运行真实 8X6B/9E6Y 双参考后处理 smoke，4 个 selected models 全部生成 consensus 记录，后处理接口通过。

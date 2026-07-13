@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-07-13T00:45:03.447515+00:00",
+  "captured_at": "2026-07-13T06:57:51.334807+00:00",
   "controllers_runtime": {
     "downstream_controller": {
       "alive": true,
@@ -7,33 +7,36 @@
     },
     "haddock_sidecar": {
       "alive": true,
-      "pid": 1578486
+      "pid": 3004332
     },
     "haddock_sidecar2": {
       "alive": true,
-      "pid": 1672377
+      "pid": 3004335
+    },
+    "haddock_sidecar_watchdog": {
+      "alive": true,
+      "pid": 3039590
     },
     "postprocess_controller": {
       "alive": true,
       "pid": 3235532
     },
     "postprocess_early_batch": {
-      "alive": true,
-      "pid": 1730946
+      "alive": false,
+      "pid": 3008113
     }
   },
   "docking": {
     "haddock_counts": {
       "running": 10,
-      "success": 100
+      "success": 516
     },
     "nbb2_counts": {
       "success": 1024
     },
     "postprocess_counts": {
-      "missing": 941,
-      "running": 2,
-      "success": 81
+      "missing": 521,
+      "success": 503
     }
   },
   "downstream_controller": {
@@ -120,7 +123,7 @@
     }
   },
   "hostname": "node1",
-  "loadavg": "67.93701171875 70.50634765625 70.91796875",
+  "loadavg": "66.73583984375 71.271484375 73.26953125",
   "postprocess_controller": {
     "message": "waiting for at least 1000 completed HADDOCK candidates",
     "pid": 3235532,
@@ -141,9 +144,6 @@
       5,
       7
     ],
-    "gpu_memory_used_gate_mb": 12000,
-    "gpu_nice": 10,
-    "gpu_stage_max_load1": 400,
     "haddock_main_parallel": 2,
     "haddock_nice": 15,
     "haddock_sidecar1_parallel": 6,
