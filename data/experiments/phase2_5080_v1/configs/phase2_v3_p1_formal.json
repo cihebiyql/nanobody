@@ -14,6 +14,7 @@
   "interface_8x6b_csv": "structures/PVRIG_interface_residues_8X6B.csv",
   "interface_9e6y_csv": "structures/PVRIG_interface_residues_9E6Y.csv",
   "source_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+  "config_json": "experiments/phase2_5080_v1/configs/phase2_v3_p1_formal.json",
   "preregistration_json": "experiments/phase2_5080_v1/audits/phase2_v3_p1_preregistration.json",
   "test_spec_json": "experiments/phase2_5080_v1/audits/phase2_v3_p1_test_spec.json",
   "generic_replay_csv": "experiments/phase2_5080_v1/prepared/phase2_v3_p1_generic_replay/generic_replay_train256_v1.csv",

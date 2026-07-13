@@ -102,6 +102,7 @@ class FormalTrainConfig:
     interface_8x6b_csv: str = str(DEFAULT_INTERFACE_8X6B)
     interface_9e6y_csv: str = str(DEFAULT_INTERFACE_9E6Y)
     source_checkpoint: str = str(DEFAULT_SOURCE_CHECKPOINT)
+    config_json: str = str(DEFAULT_CONFIG)
     preregistration_json: str = str(DEFAULT_PREREGISTRATION)
     test_spec_json: str = str(DEFAULT_TEST_SPEC)
     generic_replay_csv: str = str(DEFAULT_GENERIC_REPLAY)
@@ -1055,6 +1056,10 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
         "interface_8x6b_csv": Path(cfg.interface_8x6b_csv),
         "interface_9e6y_csv": Path(cfg.interface_9e6y_csv),
         "source_checkpoint": Path(cfg.source_checkpoint),
+        "config_json": Path(cfg.config_json),
+        "trainer_source": Path(__file__).resolve(),
+        "model_source": SCRIPT_DIR / "phase2_v3_p1_model.py",
+        "v2_3_backbone_source": SCRIPT_DIR / "train_phase2_v2_3.py",
         "preregistration_json": Path(cfg.preregistration_json),
         "test_spec_json": Path(cfg.test_spec_json),
     }
