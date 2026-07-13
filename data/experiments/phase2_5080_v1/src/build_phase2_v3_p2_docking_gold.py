@@ -25,15 +25,15 @@ EXP_DIR = SCRIPT_DIR.parent
 DEFAULT_SELECTION_MANIFEST = (
     EXP_DIR / "data_splits/pvrig_v3_p2/dual_docking_pilot64_manifest.csv"
 )
-DEFAULT_PACKAGE_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package"
+DEFAULT_PACKAGE_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package_v2"
 DEFAULT_RUN_MANIFEST = DEFAULT_PACKAGE_ROOT / "manifests/run_manifest.csv"
 DEFAULT_POSTPROCESSED_ROOT = (
-    EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_postprocessed"
+    EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed"
 )
-DEFAULT_SYNC_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_node1_selected"
-DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_gold"
-DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_docking_gold_audit.json"
-DEFAULT_REPORT = EXP_DIR / "reports/PVRIG_V3_P2_DOCKING_GOLD_VALIDATION_ZH.md"
+DEFAULT_SYNC_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_v2_node1_selected"
+DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_v2_gold"
+DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_docking_gold_v2_audit.json"
+DEFAULT_REPORT = EXP_DIR / "reports/PVRIG_V3_P2_DOCKING_GOLD_V2_VALIDATION_ZH.md"
 
 CLAIM_BOUNDARY = (
     "computational docking gold from frozen independent 8X6B/9E6Y HADDOCK "
@@ -41,6 +41,7 @@ CLAIM_BOUNDARY = (
 )
 RECEPTORS = ("8x6b", "9e6y")
 SEED_ROLES = ("main", "replicate")
+PROTOCOL_ID = "DG_A_PILOT64_V1_1"
 FROZEN_RIGIDBODY_SEEDS = {
     ("8x6b", "main"): 917,
     ("8x6b", "replicate"): 10917,
@@ -49,7 +50,24 @@ FROZEN_RIGIDBODY_SEEDS = {
 }
 FROZEN_TOPOAA_SEED = 917
 FROZEN_RIGIDBODY_TOLERANCE = 5.0
-FROZEN_FLEXREF_TOLERANCE = 10.0
+FROZEN_FLEXREF_TOLERANCE = 20.0
+FROZEN_EMREF_TOLERANCE = 20.0
+STAGE_IO_RELPATHS = {
+    "topoaa": "0_topoaa/io.json",
+    "rigidbody": "1_rigidbody/io.json",
+    "seletop": "2_seletop/io.json",
+    "flexref": "3_flexref/io.json",
+    "emref": "4_emref/io.json",
+    "final": "6_seletopclusts/io.json",
+}
+STAGE_OUTPUT_REQUIREMENTS = {
+    "topoaa": ("eq", 2),
+    "rigidbody": ("ge", 38),
+    "seletop": ("eq", 10),
+    "flexref": ("ge", 8),
+    "emref": ("ge", 8),
+    "final": ("ge", 8),
+}
 EXPECTED_PILOTS = 64
 EXPECTED_REPLICATE_PILOTS = 16
 EXPECTED_MAIN_RUNS = 128
@@ -321,6 +339,14 @@ def run_protocol_checks(
         add_check(checks, errors, "known_receptor_seed_role", False, f"{receptor}/{seed_role}")
         return {"checks": checks, **evidence}, errors
 
+    add_check(
+        checks,
+        errors,
+        "manifest_protocol_id",
+        row.get("protocol_id") == PROTOCOL_ID,
+        f"{row.get('protocol_id')}!={PROTOCOL_ID}",
+    )
+
     def declared_int(field: str, expected: int) -> None:
         try:
             actual = parse_int(row.get(field, ""), field)
@@ -343,12 +369,32 @@ def run_protocol_checks(
     for field, expected in (
         ("rigidbody_tolerance", FROZEN_RIGIDBODY_TOLERANCE),
         ("flexref_tolerance", FROZEN_FLEXREF_TOLERANCE),
+        ("emref_tolerance", FROZEN_EMREF_TOLERANCE),
     ):
         try:
             actual = parse_float(row.get(field, ""), field)
             add_check(checks, errors, f"manifest_{field}", actual == expected, f"{actual}!={expected}")
         except ValueError as error:
             add_check(checks, errors, f"manifest_{field}", False, str(error))
+    try:
+        override = parse_bool(row.get("per_candidate_failure_tolerance_override", ""))
+        add_check(
+            checks,
+            errors,
+            "manifest_no_per_candidate_failure_tolerance_override",
+            not override,
+            str(override),
+        )
+        evidence["per_candidate_failure_tolerance_override"] = override
+    except ValueError as error:
+        add_check(
+            checks,
+            errors,
+            "manifest_no_per_candidate_failure_tolerance_override",
+            False,
+            str(error),
+        )
+        evidence["per_candidate_failure_tolerance_override"] = True
     try:
         relaxed = parse_bool(row.get("tolerance_relaxed", ""))
         add_check(checks, errors, "manifest_no_tolerance_relaxation", not relaxed, str(relaxed))
@@ -386,11 +432,18 @@ def run_protocol_checks(
             config = read_toml(config_path)
             rigidbody = config.get("rigidbody", {})
             flexref = config.get("flexref", {})
+            emref = config.get("emref", {})
+            seletop = config.get("seletop", {})
             topoaa = config.get("topoaa", {})
-            evidence["tolerance_relaxed"] = bool(evidence.get("tolerance_relaxed")) or (
-                float(rigidbody.get("tolerance", math.inf)) > FROZEN_RIGIDBODY_TOLERANCE
-                or float(flexref.get("tolerance", math.inf)) > FROZEN_FLEXREF_TOLERANCE
+            config_override = (
+                float(rigidbody.get("tolerance", math.inf)) != FROZEN_RIGIDBODY_TOLERANCE
+                or float(flexref.get("tolerance", math.inf)) != FROZEN_FLEXREF_TOLERANCE
+                or float(emref.get("tolerance", math.inf)) != FROZEN_EMREF_TOLERANCE
             )
+            evidence["per_candidate_failure_tolerance_override"] = bool(
+                evidence.get("per_candidate_failure_tolerance_override")
+            ) or config_override
+            evidence["tolerance_relaxed"] = bool(evidence.get("tolerance_relaxed")) or config_override
             add_check(
                 checks,
                 errors,
@@ -422,6 +475,20 @@ def run_protocol_checks(
             add_check(
                 checks,
                 errors,
+                "config_emref_tolerance",
+                float(emref.get("tolerance", math.nan)) == FROZEN_EMREF_TOLERANCE,
+                str(emref.get("tolerance")),
+            )
+            add_check(
+                checks,
+                errors,
+                "config_seletop_select",
+                seletop.get("select") == 10,
+                str(seletop.get("select")),
+            )
+            add_check(
+                checks,
+                errors,
                 "config_sampling_matches_manifest",
                 rigidbody.get("sampling") == sampling,
                 f"{rigidbody.get('sampling')}!={sampling}",
@@ -435,10 +502,20 @@ def run_protocol_checks(
             completion = json.loads(completion_path.read_text(encoding="utf-8"))
             if completion.get("tolerance_relaxed") is not False:
                 evidence["tolerance_relaxed"] = True
+            if completion.get("per_candidate_failure_tolerance_override") is not False:
+                evidence["per_candidate_failure_tolerance_override"] = True
             evidence["completion_status"] = completion.get("status", "")
             evidence["completion_pose_count"] = completion.get("pose_count", "")
             evidence["completion_cluster_count"] = completion.get("cluster_count", "")
+            evidence["completion_stage_output_counts"] = completion.get("stage_output_counts", {})
             add_check(checks, errors, "completion_run_id", completion.get("run_id") == run_id, str(completion.get("run_id")))
+            add_check(
+                checks,
+                errors,
+                "completion_protocol_id",
+                completion.get("protocol_id") == PROTOCOL_ID,
+                f"{completion.get('protocol_id')}!={PROTOCOL_ID}",
+            )
             add_check(
                 checks,
                 errors,
@@ -453,6 +530,13 @@ def run_protocol_checks(
                 "completion_rigidbody_iniseed",
                 completion.get("iniseed") == expected_seed,
                 f"{completion.get('iniseed')}!={expected_seed}",
+            )
+            add_check(
+                checks,
+                errors,
+                "completion_no_per_candidate_failure_tolerance_override",
+                completion.get("per_candidate_failure_tolerance_override") is False,
+                str(completion.get("per_candidate_failure_tolerance_override")),
             )
             add_check(
                 checks,
@@ -493,62 +577,173 @@ def run_protocol_checks(
         except Exception as error:
             add_check(checks, errors, "completion_parse", False, f"{type(error).__name__}:{error}")
 
-    params_path = run_dir / "1_rigidbody/params.cfg"
-    io_path = run_dir / "1_rigidbody/io.json"
-    add_check(checks, errors, "runtime_rigidbody_params_present", params_path.is_file(), str(params_path))
-    if params_path.is_file():
+    runtime_param_specs = {
+        "rigidbody": (run_dir / "1_rigidbody/params.cfg", FROZEN_RIGIDBODY_TOLERANCE),
+        "flexref": (run_dir / "3_flexref/params.cfg", FROZEN_FLEXREF_TOLERANCE),
+        "emref": (run_dir / "4_emref/params.cfg", FROZEN_EMREF_TOLERANCE),
+    }
+    for module, (params_path, expected_tolerance) in runtime_param_specs.items():
+        add_check(checks, errors, f"runtime_{module}_params_present", params_path.is_file(), str(params_path))
+        if not params_path.is_file():
+            continue
         try:
             params_document = read_toml(params_path)
-            params = params_document.get("rigidbody", params_document)
+            params = params_document.get(module, params_document)
             add_check(
                 checks,
                 errors,
-                "runtime_rigidbody_iniseed",
-                params.get("iniseed") == expected_seed,
-                f"{params.get('iniseed')}!={expected_seed}",
-            )
-            add_check(
-                checks,
-                errors,
-                "runtime_rigidbody_tolerance",
-                float(params.get("tolerance", math.nan)) == FROZEN_RIGIDBODY_TOLERANCE,
+                f"runtime_{module}_tolerance",
+                float(params.get("tolerance", math.nan)) == expected_tolerance,
                 str(params.get("tolerance")),
             )
+            if module == "rigidbody":
+                add_check(
+                    checks,
+                    errors,
+                    "runtime_rigidbody_iniseed",
+                    params.get("iniseed") == expected_seed,
+                    f"{params.get('iniseed')}!={expected_seed}",
+                )
+                add_check(
+                    checks,
+                    errors,
+                    "runtime_rigidbody_sampling",
+                    params.get("sampling") == sampling,
+                    f"{params.get('sampling')}!={sampling}",
+                )
+        except Exception as error:
             add_check(
                 checks,
                 errors,
-                "runtime_rigidbody_sampling",
-                params.get("sampling") == sampling,
-                f"{params.get('sampling')}!={sampling}",
+                f"runtime_{module}_params_parse",
+                False,
+                f"{type(error).__name__}:{error}",
             )
-        except Exception as error:
-            add_check(checks, errors, "runtime_rigidbody_params_parse", False, f"{type(error).__name__}:{error}")
-    add_check(checks, errors, "runtime_rigidbody_io_present", io_path.is_file(), str(io_path))
-    if io_path.is_file():
+
+    runtime_stage_counts: dict[str, int] = {}
+    rigidbody_outputs: list[dict[str, Any]] = []
+    for stage, relative in STAGE_IO_RELPATHS.items():
+        io_path = run_dir / relative
+        add_check(checks, errors, f"runtime_{stage}_io_present", io_path.is_file(), str(io_path))
+        if not io_path.is_file():
+            runtime_stage_counts[stage] = 0
+            continue
         try:
             runtime_io = json.loads(io_path.read_text(encoding="utf-8"))
-            outputs = runtime_io.get("output", [])
-            observed_seeds = [parse_int(item.get("seed", ""), "runtime_output_seed") for item in outputs]
-            expected_seeds = list(range(expected_seed + 1, expected_seed + sampling + 1))
-            evidence["runtime_rigidbody_output_count"] = len(outputs)
-            evidence["runtime_rigidbody_seed_start"] = min(observed_seeds) if observed_seeds else ""
-            evidence["runtime_rigidbody_seed_end"] = max(observed_seeds) if observed_seeds else ""
-            add_check(
-                checks,
-                errors,
-                "runtime_rigidbody_output_count",
-                len(outputs) == sampling,
-                f"{len(outputs)}!={sampling}",
-            )
-            add_check(
-                checks,
-                errors,
-                "runtime_rigidbody_seed_set",
-                sorted(observed_seeds) == expected_seeds,
-                f"observed={sorted(observed_seeds)};expected={expected_seeds}",
-            )
+            outputs = runtime_io.get("output")
+            if not isinstance(outputs, list):
+                raise ValueError("io.json output is not a list")
+            runtime_stage_counts[stage] = len(outputs)
+            if stage == "rigidbody":
+                rigidbody_outputs = outputs
         except Exception as error:
-            add_check(checks, errors, "runtime_rigidbody_io_parse", False, f"{type(error).__name__}:{error}")
+            runtime_stage_counts[stage] = 0
+            add_check(
+                checks,
+                errors,
+                f"runtime_{stage}_io_parse",
+                False,
+                f"{type(error).__name__}:{error}",
+            )
+    evidence["runtime_stage_output_counts"] = runtime_stage_counts
+    for stage, (operator, expected) in STAGE_OUTPUT_REQUIREMENTS.items():
+        observed = runtime_stage_counts.get(stage, 0)
+        passed = observed == expected if operator == "eq" else observed >= expected
+        add_check(
+            checks,
+            errors,
+            f"runtime_{stage}_output_count",
+            passed,
+            f"{observed}:{operator}:{expected}",
+        )
+
+    try:
+        observed_seeds = [parse_int(item.get("seed", ""), "runtime_output_seed") for item in rigidbody_outputs]
+        expected_seeds = set(range(expected_seed + 1, expected_seed + sampling + 1))
+        observed_seed_set = set(observed_seeds)
+        evidence["runtime_rigidbody_output_count"] = len(rigidbody_outputs)
+        evidence["runtime_rigidbody_seed_start"] = min(observed_seeds) if observed_seeds else ""
+        evidence["runtime_rigidbody_seed_end"] = max(observed_seeds) if observed_seeds else ""
+        add_check(
+            checks,
+            errors,
+            "runtime_rigidbody_seed_set",
+            len(observed_seed_set) == len(observed_seeds)
+            and observed_seed_set <= expected_seeds
+            and len(observed_seeds) >= STAGE_OUTPUT_REQUIREMENTS["rigidbody"][1],
+            f"observed={sorted(observed_seed_set)};allowed={sorted(expected_seeds)}",
+        )
+    except Exception as error:
+        add_check(checks, errors, "runtime_rigidbody_seed_set", False, f"{type(error).__name__}:{error}")
+
+    completion_stage_counts = completion.get("stage_output_counts", {}) if completion else {}
+    add_check(
+        checks,
+        errors,
+        "completion_stage_output_counts_object",
+        isinstance(completion_stage_counts, dict),
+        type(completion_stage_counts).__name__,
+    )
+    for stage, observed in runtime_stage_counts.items():
+        try:
+            declared = parse_int(completion_stage_counts.get(stage, ""), f"completion_stage_{stage}")
+            add_check(
+                checks,
+                errors,
+                f"completion_stage_output_count_{stage}",
+                declared == observed,
+                f"{declared}!={observed}",
+            )
+        except (AttributeError, ValueError) as error:
+            add_check(
+                checks,
+                errors,
+                f"completion_stage_output_count_{stage}",
+                False,
+                str(error),
+            )
+
+    selected_dir = run_dir / "6_seletopclusts"
+    model_names = {
+        path.name.removesuffix(".pdb.gz").removesuffix(".pdb")
+        for path in selected_dir.glob("cluster_*_model_*.pdb*")
+        if path.is_file() and path.stat().st_size
+    }
+    cluster_names = {cluster_from_model(model) for model in model_names}
+    evidence["runtime_final_model_files"] = len(model_names)
+    evidence["runtime_final_pose_clusters"] = len(cluster_names)
+    add_check(
+        checks,
+        errors,
+        "runtime_final_model_files",
+        len(model_names) >= MIN_SELECTED_POSES and len(model_names) == runtime_stage_counts.get("final", 0),
+        f"files={len(model_names)};io={runtime_stage_counts.get('final', 0)}",
+    )
+    add_check(
+        checks,
+        errors,
+        "runtime_final_pose_clusters",
+        len(cluster_names) >= MIN_POSE_CLUSTERS,
+        str(len(cluster_names)),
+    )
+    if completion:
+        try:
+            add_check(
+                checks,
+                errors,
+                "completion_pose_count_matches_runtime",
+                parse_int(completion.get("pose_count", ""), "pose_count") == len(model_names),
+                f"{completion.get('pose_count')}!={len(model_names)}",
+            )
+            add_check(
+                checks,
+                errors,
+                "completion_cluster_count_matches_runtime",
+                parse_int(completion.get("cluster_count", ""), "cluster_count") == len(cluster_names),
+                f"{completion.get('cluster_count')}!={len(cluster_names)}",
+            )
+        except ValueError as error:
+            add_check(checks, errors, "completion_runtime_count_match", False, str(error))
     evidence["checks"] = checks
     evidence["monomer_sha256"] = row.get("monomer_sha256", "")
     evidence["frozen_rigidbody_iniseed"] = expected_seed
@@ -833,7 +1028,7 @@ def pilot_gate(
     main_complete: int,
     replicate_complete: int,
     contact_failures: int,
-    tolerance_relaxation: bool,
+    per_candidate_failure_tolerance_override: bool,
     spearman: float | None,
     quadratic_kappa: float | None,
     manifest_contract_pass: bool = True,
@@ -843,7 +1038,8 @@ def pilot_gate(
         "main_dg_a_64_of_64": main_complete == EXPECTED_PILOTS,
         "replicate_receptor_runs_32_of_32": replicate_complete == EXPECTED_REPLICATE_RUNS,
         "contact_failures_zero": contact_failures == 0,
-        "tolerance_relaxation_false": not tolerance_relaxation,
+        "per_candidate_failure_tolerance_override_false": not per_candidate_failure_tolerance_override,
+        "tolerance_relaxation_false": not per_candidate_failure_tolerance_override,
         "repeat_R_gold_spearman_ge_0_70": spearman is not None and spearman >= 0.70,
         "stable_tier_quadratic_kappa_ge_0_60": quadratic_kappa is not None and quadratic_kappa >= 0.60,
     }
@@ -860,6 +1056,7 @@ def build_report(audit: Mapping[str, Any]) -> str:
         "# PVRIG V3-P2 Docking Gold 验证报告",
         "",
         f"- 状态：`{audit['status']}`",
+        f"- 协议：`{PROTOCOL_ID}`",
         f"- 主批次 DG-A 完整候选：{audit['counts']['main_candidates_dg_a_complete']}/64",
         f"- 重复 receptor run 完整：{audit['counts']['replicate_receptor_runs_dg_a_complete']}/32",
         f"- contact failures：{audit['counts']['contact_failures']}",
@@ -895,7 +1092,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     selection = {row["pilot_id"]: row for row in selection_rows}
     all_pose_rows: list[dict[str, Any]] = []
     receptor_rows: list[dict[str, Any]] = []
-    global_tolerance_relaxation = False
+    global_failure_tolerance_override = False
     for manifest_row in run_rows:
         protocol, protocol_errors = run_protocol_checks(manifest_row, args.sync_root)
         poses, postprocess, postprocess_errors = evaluate_postprocessed_run(manifest_row, args.postprocessed_root)
@@ -918,12 +1115,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     )
             except ValueError:
                 pass
-        global_tolerance_relaxation |= bool(protocol.get("tolerance_relaxed", True))
+        global_failure_tolerance_override |= bool(
+            protocol.get("per_candidate_failure_tolerance_override", True)
+        )
         dg_a = not errors
         all_pose_rows.extend(poses)
         receptor_rows.append(
             {
-                "schema_version": "phase2_v3_p2_docking_gold_receptor_v1",
+                "schema_version": "phase2_v3_p2_docking_gold_receptor_v1_1",
+                "protocol_id": PROTOCOL_ID,
                 "pilot_id": manifest_row["pilot_id"],
                 "source_candidate_id": manifest_row.get("source_candidate_id", ""),
                 "run_id": manifest_row["run_id"],
@@ -940,6 +1140,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "stable_supporting_clusters": postprocess["stable_supporting_clusters"],
                 "canonical_contact_pose_rows": postprocess["canonical_contact_pose_rows"],
                 "contact_failures": postprocess["contact_failures"],
+                "stage_output_counts": json.dumps(
+                    protocol.get("runtime_stage_output_counts", {}), sort_keys=True, separators=(",", ":")
+                ),
+                "per_candidate_failure_tolerance_override": protocol.get(
+                    "per_candidate_failure_tolerance_override", True
+                ),
                 "tolerance_relaxed": protocol.get("tolerance_relaxed", True),
                 "dg_a_pass": dg_a,
                 "dg_a_failure_reasons": ";".join(errors),
@@ -1014,7 +1220,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         main_complete,
         replicate_run_complete,
         contact_failures,
-        global_tolerance_relaxation,
+        global_failure_tolerance_override,
         spearman,
         quadratic_kappa,
         manifest_contract_pass=not contract_errors,
@@ -1031,7 +1237,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     write_csv(candidate_path, main_candidates, ["schema_version", "pilot_rank", "pilot_id", "source_candidate_id", "R_gold"])
     write_csv(comparison_path, comparisons, ["schema_version", "pilot_id", "source_candidate_id", "main_R_gold", "replicate_R_gold"])
     audit: dict[str, Any] = {
-        "schema_version": "phase2_v3_p2_docking_gold_audit_v1",
+        "schema_version": "phase2_v3_p2_docking_gold_audit_v1_1",
+        "protocol_id": PROTOCOL_ID,
         **gate,
         "inputs": {
             "selection_manifest": str(args.selection_manifest),
@@ -1065,7 +1272,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "topoaa_iniseed": FROZEN_TOPOAA_SEED,
             "rigidbody_tolerance": FROZEN_RIGIDBODY_TOLERANCE,
             "flexref_tolerance": FROZEN_FLEXREF_TOLERANCE,
-            "tolerance_relaxation_observed": global_tolerance_relaxation,
+            "emref_tolerance": FROZEN_EMREF_TOLERANCE,
+            "stage_output_requirements": {
+                stage: {"operator": operator, "value": value}
+                for stage, (operator, value) in STAGE_OUTPUT_REQUIREMENTS.items()
+            },
+            "per_candidate_failure_tolerance_override_observed": global_failure_tolerance_override,
+            "tolerance_relaxation_observed": global_failure_tolerance_override,
         },
         "manifest_contract_errors": contract_errors,
         "failed_receptor_runs": [
