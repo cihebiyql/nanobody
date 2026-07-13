@@ -87,29 +87,57 @@ class DockingGoldEvidenceTests(unittest.TestCase):
         config.write_text(
             "[topoaa]\niniseed = 917\n"
             "[rigidbody]\niniseed = 917\ntolerance = 5\nsampling = 40\n"
-            "[flexref]\ntolerance = 10\n",
+            "[seletop]\nselect = 10\n"
+            "[flexref]\ntolerance = 20\n"
+            "[emref]\ntolerance = 20\n",
             encoding="utf-8",
         )
         params = run_dir / "1_rigidbody/params.cfg"
         params.parent.mkdir(parents=True, exist_ok=True)
         prefix = "" if flat_params else "[rigidbody]\n"
         params.write_text(prefix + "iniseed = 917\ntolerance = 5\nsampling = 40\n", encoding="utf-8")
-        (params.parent / "io.json").write_text(
-            json.dumps({"output": [{"seed": seed} for seed in range(918, 958)]}),
-            encoding="utf-8",
-        )
+        (run_dir / "3_flexref").mkdir(parents=True, exist_ok=True)
+        (run_dir / "3_flexref/params.cfg").write_text("[flexref]\ntolerance = 20\n", encoding="utf-8")
+        (run_dir / "4_emref").mkdir(parents=True, exist_ok=True)
+        (run_dir / "4_emref/params.cfg").write_text("[emref]\ntolerance = 20\n", encoding="utf-8")
+        stage_counts = {"topoaa": 2, "rigidbody": 38, "seletop": 10, "flexref": 8, "emref": 8, "final": 8}
+        stage_paths = {
+            "topoaa": "0_topoaa/io.json",
+            "rigidbody": "1_rigidbody/io.json",
+            "seletop": "2_seletop/io.json",
+            "flexref": "3_flexref/io.json",
+            "emref": "4_emref/io.json",
+            "final": "6_seletopclusts/io.json",
+        }
+        for stage, relative in stage_paths.items():
+            path = run_dir / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            outputs = (
+                [{"seed": seed} for seed in range(918, 956)]
+                if stage == "rigidbody"
+                else [{} for _ in range(stage_counts[stage])]
+            )
+            path.write_text(json.dumps({"output": outputs}), encoding="utf-8")
+        selected = run_dir / "6_seletopclusts"
+        for index in range(1, 9):
+            cluster = 1 if index <= 4 else 2
+            model = index if index <= 4 else index - 4
+            (selected / f"cluster_{cluster}_model_{model}.pdb.gz").write_bytes(b"model\n")
         completion = run_root / f"{run_id}.complete.json"
         completion.write_text(
             json.dumps(
                 {
+                    "protocol_id": "DG_A_PILOT64_V1_1",
                     "run_id": run_id,
                     "status": "PASS_DOCKING_OUTPUT_COMPLETE",
                     "iniseed": 917,
                     "pose_count": 8,
                     "cluster_count": 2,
+                    "stage_output_counts": stage_counts,
                     "config_sha256": sha(config),
                     "monomer_sha256": "m" * 64,
                     "receptor_sha256": "r" * 64,
+                    "per_candidate_failure_tolerance_override": False,
                     "tolerance_relaxed": False,
                     "haddock3_version_contract": "2025.11.0",
                     "exit_code": 0,
@@ -119,6 +147,7 @@ class DockingGoldEvidenceTests(unittest.TestCase):
         )
         return {
             "run_id": run_id,
+            "protocol_id": "DG_A_PILOT64_V1_1",
             "pilot_id": "P2PILOT_001",
             "source_candidate_id": "candidate_1",
             "receptor_id": "8x6b",
@@ -130,7 +159,9 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             "rigidbody_seed_end": "957",
             "rigidbody_sampling": "40",
             "rigidbody_tolerance": "5",
-            "flexref_tolerance": "10",
+            "flexref_tolerance": "20",
+            "emref_tolerance": "20",
+            "per_candidate_failure_tolerance_override": "false",
             "tolerance_relaxed": "false",
             "config_relpath": str(config.relative_to(root)),
             "config_sha256": sha(config),

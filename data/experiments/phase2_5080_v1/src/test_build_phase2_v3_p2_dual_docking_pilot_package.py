@@ -46,6 +46,13 @@ class BuildPhase2V3P2DualDockingPilotPackageTest(unittest.TestCase):
 
     def test_real_asset_closure_and_cardinality(self) -> None:
         self.assertEqual(self.audit["status"], "PASS_PILOT64_DUAL_DOCKING_PACKAGE_READY")
+        self.assertEqual(self.audit["protocol_id"], "DG_A_PILOT64_V1_1")
+        self.assertEqual(
+            self.audit["remote_root"],
+            "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_v2_20260714",
+        )
+        self.assertEqual(self.audit["module_failure_tolerances"], {"rigidbody": 5, "flexref": 20, "emref": 20})
+        self.assertFalse(self.audit["per_candidate_failure_tolerance_override"])
         self.assertEqual(self.audit["candidate_count"], 64)
         self.assertEqual(self.audit["monomer_count"], 64)
         self.assertEqual(self.audit["monomer_sequence_validation_count"], 64)
@@ -79,6 +86,11 @@ class BuildPhase2V3P2DualDockingPilotPackageTest(unittest.TestCase):
             self.assertEqual(row["run_dir_relpath"], f"runs/{row['run_id']}/run_{row['run_id']}")
             self.assertEqual(row["completion_relpath"], f"runs/{row['run_id']}/{row['run_id']}.complete.json")
             self.assertEqual(row["log_relpath"], f"runs/{row['run_id']}/{row['run_id']}.log")
+            self.assertEqual(row["protocol_id"], "DG_A_PILOT64_V1_1")
+            self.assertEqual(row["rigidbody_tolerance"], "5")
+            self.assertEqual(row["flexref_tolerance"], "20")
+            self.assertEqual(row["emref_tolerance"], "20")
+            self.assertEqual(row["per_candidate_failure_tolerance_override"], "false")
             self.assertEqual(row["tolerance_relaxed"], "false")
         for rows in by_pilot.values():
             self.assertEqual(len({row["monomer_relpath"] for row in rows}), 1)
@@ -104,6 +116,11 @@ class BuildPhase2V3P2DualDockingPilotPackageTest(unittest.TestCase):
             self.assertEqual(row["flexref_iniseed"], "INHERIT_RIGIDBODY_POSE_SEEDS")
             self.assertEqual(row["emref_iniseed"], "INHERIT_RIGIDBODY_POSE_SEEDS")
             self.assertEqual(row["haddock3_version_contract"], "2025.11.0")
+            self.assertEqual(row["protocol_id"], "DG_A_PILOT64_V1_1")
+            self.assertEqual(row["rigidbody_tolerance"], "5")
+            self.assertEqual(row["flexref_tolerance"], "20")
+            self.assertEqual(row["emref_tolerance"], "20")
+            self.assertEqual(row["per_candidate_failure_tolerance_override"], "false")
             ranges.append(set(range(seed_start, seed_end + 1)))
         for index, left in enumerate(ranges):
             for right in ranges[index + 1:]:
@@ -117,7 +134,8 @@ class BuildPhase2V3P2DualDockingPilotPackageTest(unittest.TestCase):
             self.assertIn("sampling = 40", section(config, "rigidbody"))
             self.assertIn("tolerance = 5", section(config, "rigidbody"))
             self.assertIn("select = 10", section(config, "seletop"))
-            self.assertIn("tolerance = 10", section(config, "flexref"))
+            self.assertIn("tolerance = 20", section(config, "flexref"))
+            self.assertIn("tolerance = 20", section(config, "emref"))
             self.assertNotIn("iniseed", section(config, "flexref"))
             self.assertNotIn("iniseed", section(config, "emref"))
             self.assertIn("min_population = 1", section(config, "clustfcc"))
@@ -166,6 +184,10 @@ class BuildPhase2V3P2DualDockingPilotPackageTest(unittest.TestCase):
         controller = self.package / "scripts/run_dual_docking_pilot64.py"
         source = controller.read_text(encoding="utf-8")
         self.assertIn('MAX_CONCURRENT_JOBS = 5', source)
+        self.assertIn('PROTOCOL_ID = "DG_A_PILOT64_V1_1"', source)
+        self.assertIn('"topoaa": "0_topoaa/io.json"', source)
+        self.assertIn("'rigidbody': {'operator': 'ge', 'value': 38}", source)
+        self.assertIn('"per_candidate_failure_tolerance_override": False', source)
         self.assertIn('PVRIG_DOCKING_MAX_LOAD1", "55"', source)
         self.assertIn("wait_for_load(max_load1, load_poll_seconds)", source)
         self.assertIn('"PASS_DOCKING_OUTPUT_COMPLETE"', source)
@@ -187,6 +209,25 @@ class BuildPhase2V3P2DualDockingPilotPackageTest(unittest.TestCase):
             check=False, capture_output=True, text=True,
         )
         self.assertNotEqual(refused.returncode, 0)
+
+    def test_controller_stage_count_gate_is_exactly_protocol_v1_1(self) -> None:
+        controller = self.package / "scripts/run_dual_docking_pilot64.py"
+        spec = importlib.util.spec_from_file_location("generated_pilot64_controller", controller)
+        assert spec and spec.loader
+        generated = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(generated)
+        run_dir = self.root / "synthetic_run"
+        counts = {"topoaa": 2, "rigidbody": 38, "seletop": 10, "flexref": 8, "emref": 8, "final": 8}
+        for stage, relative in generated.STAGE_IO_RELPATHS.items():
+            path = run_dir / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps({"output": [{} for _ in range(counts[stage])]}), encoding="utf-8")
+        self.assertEqual(generated.stage_output_counts(run_dir), counts)
+        self.assertTrue(generated.stage_counts_pass(counts))
+        for stage in counts:
+            failed = dict(counts)
+            failed[stage] -= 1
+            self.assertFalse(generated.stage_counts_pass(failed), stage)
 
     def test_manifests_and_package_are_deterministic(self) -> None:
         second = self.root / "package_second"
