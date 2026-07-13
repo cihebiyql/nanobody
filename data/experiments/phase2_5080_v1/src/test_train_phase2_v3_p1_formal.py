@@ -45,6 +45,7 @@ class SyntheticFormalFixture:
         self.cdr = root / "cdr.csv"
         self.target_fasta = root / "target.fasta"
         self.mapping = root / "target_mapping.csv"
+        self.hotspot = root / "hotspot.csv"
         self.reconciliation = root / "reconciliation.csv"
         self.pdb8 = root / "8X6B.pdb"
         self.pdb9 = root / "9E6Y.pdb"
@@ -164,6 +165,17 @@ class SyntheticFormalFixture:
                 for index, aa in enumerate(self.target)
             ],
         )
+        write_csv(
+            self.hotspot,
+            [
+                {
+                    "hotspot_id": "synthetic_hotspot",
+                    "priority_weight": 1.0,
+                    "uniprot_position": 39,
+                    "uniprot_aa": self.target[0],
+                }
+            ],
+        )
 
         three = {"N": "ASN", "P": "PRO", "Q": "GLN", "R": "ARG", "S": "SER"}
         reconciliation_rows: list[dict[str, object]] = []
@@ -224,6 +236,7 @@ class SyntheticFormalFixture:
             cdr_mask_csv=str(self.cdr),
             target_fasta=str(self.target_fasta),
             target_mapping_csv=str(self.mapping),
+            hotspot_csv=str(self.hotspot),
             reconciliation_csv=str(self.reconciliation),
             pdb_8x6b=str(self.pdb8),
             pdb_9e6y=str(self.pdb9),
