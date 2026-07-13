@@ -443,7 +443,7 @@ def run_protocol_checks(
                 checks,
                 errors,
                 "completion_status",
-                completion.get("status") in {"PASS", "PASS_DOCKING_OUTPUT_COMPLETE"},
+                completion.get("status") == "PASS_DOCKING_OUTPUT_COMPLETE",
                 str(completion.get("status")),
             )
             add_check(checks, errors, "completion_exit_code", completion.get("exit_code") == 0, str(completion.get("exit_code")))
@@ -651,6 +651,7 @@ def evaluate_postprocessed_run(
                     errors.append(f"classification_{baseline}_incomplete:{model}:{','.join(missing_class)}")
                 if missing_mechanism:
                     errors.append(f"mechanism_{baseline}_incomplete:{model}:{','.join(missing_mechanism)}")
+                    contact_failures += 1
                 blocker_class = class_row.get("blocker_class", "")
                 if blocker_class not in VALID_BLOCKER_CLASSES:
                     errors.append(f"classification_{baseline}_invalid:{model}:{blocker_class}")
@@ -804,7 +805,14 @@ def combine_candidate(
         "pilot_id": pilot["pilot_id"],
         "source_cohort": pilot.get("source_cohort", ""),
         "source_candidate_id": pilot.get("source_candidate_id", ""),
+        "sequence": pilot.get("sequence", ""),
+        "sequence_sha256": pilot.get("sequence_sha256", ""),
+        "family": pilot.get("family", ""),
         "parent_framework_cluster": pilot.get("parent_framework_cluster", ""),
+        "source_formal_split": pilot.get("source_formal_split", ""),
+        "target_patch_id": pilot.get("target_patch_id", ""),
+        "design_mode": pilot.get("design_mode", ""),
+        "selection_stratum": pilot.get("selection_stratum", ""),
         "seed_role": seed_role,
         "r_8x6b": f"{first:.10f}",
         "r_9e6y": f"{second:.10f}",
@@ -896,17 +904,17 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         completion_cluster_count = protocol.get("completion_cluster_count", "")
         if str(completion_pose_count).strip():
             try:
-                if parse_int(completion_pose_count, "completion_pose_count") != postprocess["selected_poses"]:
+                if parse_int(completion_pose_count, "completion_pose_count") < postprocess["selected_poses"]:
                     errors.append(
-                        f"completion_vs_postprocess_pose_count:{completion_pose_count}!={postprocess['selected_poses']}"
+                        f"completion_pose_count_below_postprocess:{completion_pose_count}<{postprocess['selected_poses']}"
                     )
             except ValueError:
                 pass
         if str(completion_cluster_count).strip():
             try:
-                if parse_int(completion_cluster_count, "completion_cluster_count") != postprocess["pose_clusters"]:
+                if parse_int(completion_cluster_count, "completion_cluster_count") < postprocess["pose_clusters"]:
                     errors.append(
-                        f"completion_vs_postprocess_cluster_count:{completion_cluster_count}!={postprocess['pose_clusters']}"
+                        f"completion_cluster_count_below_postprocess:{completion_cluster_count}<{postprocess['pose_clusters']}"
                     )
             except ValueError:
                 pass
