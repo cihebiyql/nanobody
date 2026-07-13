@@ -81,6 +81,13 @@ class DockingGoldMathTests(unittest.TestCase):
 
 
 class DockingGoldEvidenceTests(unittest.TestCase):
+    def test_frozen_external_trust_anchors_match_current_package(self) -> None:
+        evidence, errors = MOD.validate_package_closure(
+            MOD.DEFAULT_SELECTION_MANIFEST, MOD.DEFAULT_RUN_MANIFEST
+        )
+        self.assertEqual(errors, [])
+        self.assertTrue(all(evidence["trust_anchor_checks"].values()))
+
     def make_protocol_evidence(self, root: Path, flat_params: bool = False) -> dict[str, str]:
         run_id = "P2PILOT_001__8x6b__main"
         run_root = root / "runs" / run_id
@@ -361,6 +368,8 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 key: {"relpath": str(path.relative_to(run_root)), "sha256": sha(path)}
                 for key, path in artifacts.items()
             },
+            "toolchain_sha256": MOD.current_postprocess_toolchain_hashes(),
+            "reference_sha256": MOD.current_postprocess_reference_hashes(),
             "consensus_sha256": sha(artifacts["consensus"]),
             "claim_boundary": MOD.CLAIM_BOUNDARY,
         }
@@ -459,17 +468,46 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             selection = root / "selection.csv"
             selection.write_text("pilot_id\nP2PILOT_001\n", encoding="utf-8")
             run_manifest = manifests / "run_manifest.csv"
-            run_manifest.write_text("run_id\nrun_1\n", encoding="utf-8")
+            config = package / "runs/run_1/run_1.cfg"
+            monomer = package / "monomers/m1.pdb"
+            receptor = package / "receptors/r1.pdb"
+            restraint = package / "restraints/r1.tbl"
+            hotspot = package / "hotspots/h1.txt"
+            controller = package / "scripts/controller.py"
+            for path in (config, monomer, receptor, restraint, hotspot, controller):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"frozen:{path.name}\n", encoding="utf-8")
+            write_csv(
+                run_manifest,
+                [
+                    {
+                        "run_id": "run_1",
+                        "config_relpath": str(config.relative_to(package)),
+                        "monomer_relpath": str(monomer.relative_to(package)),
+                        "receptor_relpath": str(receptor.relative_to(package)),
+                        "restraint_relpath": str(restraint.relative_to(package)),
+                        "hotspot_relpath": str(hotspot.relative_to(package)),
+                    }
+                ],
+            )
             protocol_manifest = manifests / "protocol_manifest.csv"
             protocol_manifest.write_text("protocol_id\nDG_A_PILOT64_V1_1\n", encoding="utf-8")
             monomer_manifest = manifests / "monomer_manifest.csv"
             monomer_manifest.write_text("pilot_id\nP2PILOT_001\n", encoding="utf-8")
-            payload = package / "payload.txt"
-            payload.write_text("frozen\n", encoding="utf-8")
             content_manifest = manifests / "package_content_sha256.tsv"
             content_rows = [
                 (sha(path), str(path.relative_to(package)))
-                for path in (run_manifest, protocol_manifest, monomer_manifest, payload)
+                for path in (
+                    run_manifest,
+                    protocol_manifest,
+                    monomer_manifest,
+                    config,
+                    monomer,
+                    receptor,
+                    restraint,
+                    hotspot,
+                    controller,
+                )
             ]
             content_manifest.write_text(
                 "sha256\tpath\n" + "".join(f"{digest}\t{path}\n" for digest, path in sorted(content_rows, key=lambda item: item[1])),
@@ -479,6 +517,8 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 "schema_version": "phase2_v3_p2_pilot64_package_audit_v1_1",
                 "protocol_id": MOD.PROTOCOL_ID,
                 "status": "PASS_PILOT64_DUAL_DOCKING_PACKAGE_READY",
+                "controller": str(controller.relative_to(package)),
+                "controller_sha256": sha(controller),
                 "pilot_manifest_sha256": sha(selection),
                 "run_manifest": "manifests/run_manifest.csv",
                 "run_manifest_sha256": sha(run_manifest),
@@ -492,13 +532,34 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 "per_candidate_failure_tolerance_override": False,
                 "tolerance_relaxed": False,
             }
-            (package / "package_audit.json").write_text(json.dumps(audit), encoding="utf-8")
-            evidence, errors = MOD.validate_package_closure(selection, run_manifest)
+            audit_path = package / "package_audit.json"
+            audit_path.write_text(json.dumps(audit), encoding="utf-8")
+            anchors = {
+                "selection_manifest": sha(selection),
+                "run_manifest": sha(run_manifest),
+                "package_audit": sha(audit_path),
+                "content_manifest": sha(content_manifest),
+            }
+            evidence, errors = MOD.validate_package_closure(selection, run_manifest, anchors)
             self.assertEqual(errors, [])
             self.assertTrue(evidence["checks"]["content_manifest_exact_file_set"])
-            payload.write_text("drifted\n", encoding="utf-8")
-            _evidence, errors = MOD.validate_package_closure(selection, run_manifest)
-            self.assertTrue(any(error.startswith("content_sha256_mismatch:payload.txt") for error in errors))
+
+            runtime = package / "runs/run_1/run_run_1/1_rigidbody/io.json"
+            runtime.parent.mkdir(parents=True)
+            runtime.write_text("{}\n", encoding="utf-8")
+            (package / "runs/run_1/run_1.complete.json").write_text("{}\n", encoding="utf-8")
+            _evidence, errors = MOD.validate_package_closure(selection, run_manifest, anchors)
+            self.assertEqual(errors, [])
+
+            undeclared = package / "monomers/undeclared.pdb"
+            undeclared.write_text("unexpected immutable input\n", encoding="utf-8")
+            _evidence, errors = MOD.validate_package_closure(selection, run_manifest, anchors)
+            self.assertTrue(any(error.startswith("immutable_input_set_mismatch:") for error in errors))
+            undeclared.unlink()
+
+            monomer.write_text("drifted\n", encoding="utf-8")
+            _evidence, errors = MOD.validate_package_closure(selection, run_manifest, anchors)
+            self.assertTrue(any(error.startswith("content_sha256_mismatch:monomers/m1.pdb") for error in errors))
 
     def test_manifest_contract_requires_exact_64_plus_16_design(self) -> None:
         selection: list[dict[str, str]] = []

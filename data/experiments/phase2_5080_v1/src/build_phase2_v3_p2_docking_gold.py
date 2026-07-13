@@ -21,6 +21,10 @@ from typing import Any, Iterable, Mapping, Sequence
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 EXP_DIR = SCRIPT_DIR.parent
+DATA_ROOT = EXP_DIR.parents[1]
+WORKSPACE_ROOT = DATA_ROOT.parent
+DOCKING_SCRIPTS = WORKSPACE_ROOT / "docking/scripts"
+WORKFLOW_DIR = WORKSPACE_ROOT / "docking/success_case_validation"
 
 DEFAULT_SELECTION_MANIFEST = (
     EXP_DIR / "data_splits/pvrig_v3_p2/dual_docking_pilot64_manifest.csv"
@@ -42,6 +46,40 @@ CLAIM_BOUNDARY = (
 RECEPTORS = ("8x6b", "9e6y")
 SEED_ROLES = ("main", "replicate")
 PROTOCOL_ID = "DG_A_PILOT64_V1_1"
+FROZEN_EXTERNAL_TRUST_ANCHORS = {
+    "selection_manifest": "e67fcab05d93cd3f274c76cc435e9f4b649ace255e230129865d913fa8be3755",
+    "run_manifest": "e8a420471f68f646c82063ea3254347859f155409cad413a971f37d30b3278a9",
+    "package_audit": "9a347b8200b5bb1d06c76e52cf34aa0393facc04e24314d45f333725e3f28280",
+    "content_manifest": "efa89e6b05406128b046b0189f236a2273ab3670fd783224d9b1bab786eba624",
+}
+POSTPROCESS_TOOLCHAIN_PATHS = {
+    "postprocessor": SCRIPT_DIR / "process_phase2_v3_p2_dual_docking_pilot.py",
+    "align_pdb_by_chain": DOCKING_SCRIPTS / "align_pdb_by_chain.py",
+    "score_pvrig_vhh_pose": DOCKING_SCRIPTS / "score_pvrig_vhh_pose.py",
+    "score_cdr_region_occlusion": DOCKING_SCRIPTS / "score_cdr_region_occlusion.py",
+    "apply_blocker_judgment": WORKFLOW_DIR / "apply_blocker_judgment.py",
+    "summarize_multibaseline_judgment": WORKFLOW_DIR / "summarize_multibaseline_judgment.py",
+}
+POSTPROCESS_REFERENCE_PATHS = {
+    "hotspot_csv": DATA_ROOT / "structures/PVRIG_hotspot_set_v1.csv",
+    "numbering_reconciliation_csv": DATA_ROOT / "structures/PVRIG_numbering_reconciliation.csv",
+    "8x6b_scoring_reference": DATA_ROOT / "structures/8X6B.pdb",
+    "9e6y_scoring_reference": DATA_ROOT / "structures/9E6Y.pdb",
+}
+FROZEN_POSTPROCESS_TOOLCHAIN_SHA256 = {
+    "postprocessor": "52f90996be89e8e2ea200ebd1cc17935566d3397cc05d8d8ef85d138aa933c6b",
+    "align_pdb_by_chain": "e6b863979db5a1ac6702ae7f04da49d3d425069a070fc441221341a202a9d7f7",
+    "score_pvrig_vhh_pose": "a5ca4117ba6a5d449711fcd1198ae09c77508532fe7c0cc73d23d57b02eb15ec",
+    "score_cdr_region_occlusion": "c5e419daec19e6e38b6a52bfc63e0d6100c9c16f27b46a60235dc0f6a438982f",
+    "apply_blocker_judgment": "c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654",
+    "summarize_multibaseline_judgment": "058ee1a2405fcb253057c813b9a5bb2e9dced99a2bb81be6560ed89885493317",
+}
+FROZEN_POSTPROCESS_REFERENCE_SHA256 = {
+    "hotspot_csv": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+    "numbering_reconciliation_csv": "d7decf3be4a19dd9da2a42d9c8825a0b5d95ca350aea553b0933ad5c30c3c552",
+    "8x6b_scoring_reference": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+    "9e6y_scoring_reference": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+}
 FROZEN_RIGIDBODY_SEEDS = {
     ("8x6b", "main"): 917,
     ("8x6b", "replicate"): 10917,
@@ -132,6 +170,22 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def hash_named_paths(paths: Mapping[str, Path]) -> dict[str, str]:
+    return {
+        name: sha256_file(path)
+        for name, path in paths.items()
+        if path.is_file()
+    }
+
+
+def current_postprocess_toolchain_hashes() -> dict[str, str]:
+    return hash_named_paths(POSTPROCESS_TOOLCHAIN_PATHS)
+
+
+def current_postprocess_reference_hashes() -> dict[str, str]:
+    return hash_named_paths(POSTPROCESS_REFERENCE_PATHS)
 
 
 def parse_bool(value: Any) -> bool:
@@ -349,6 +403,7 @@ def add_check(checks: dict[str, bool], errors: list[str], name: str, passed: boo
 def validate_package_closure(
     selection_manifest: Path,
     run_manifest: Path,
+    trust_anchors: Mapping[str, str] | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
     """Validate the package audit as the root of the frozen input closure."""
     package_root = run_manifest.resolve().parent.parent
@@ -359,6 +414,8 @@ def validate_package_closure(
         "package_root": str(package_root),
         "package_audit": str(audit_path),
     }
+    anchors = dict(FROZEN_EXTERNAL_TRUST_ANCHORS if trust_anchors is None else trust_anchors)
+    trust_anchor_checks: dict[str, bool] = {}
     add_check(checks, errors, "package_audit_present", audit_path.is_file(), str(audit_path))
     if not audit_path.is_file():
         evidence["checks"] = checks
@@ -446,6 +503,24 @@ def validate_package_closure(
         f"{resolved.get('run_manifest')}!={run_manifest}",
     )
 
+    observed_anchor_hashes = {
+        "selection_manifest": sha256_file(selection_manifest) if selection_manifest.is_file() else "",
+        "run_manifest": sha256_file(run_manifest) if run_manifest.is_file() else "",
+        "package_audit": sha256_file(audit_path),
+        "content_manifest": (
+            sha256_file(resolved["package_content_hash_manifest"])
+            if resolved.get("package_content_hash_manifest", Path()).is_file()
+            else ""
+        ),
+    }
+    for name, expected in anchors.items():
+        observed = observed_anchor_hashes.get(name, "")
+        passed = observed == expected
+        trust_anchor_checks[name] = passed
+        add_check(checks, errors, f"frozen_trust_anchor_{name}", passed, f"{observed}!={expected}")
+    evidence["trust_anchor_checks"] = trust_anchor_checks
+    evidence["observed_trust_anchor_sha256"] = observed_anchor_hashes
+
     content_path = resolved.get("package_content_hash_manifest")
     if content_path and content_path.is_file():
         try:
@@ -471,20 +546,66 @@ def validate_package_closure(
                     observed = sha256_file(target)
                     if observed != digest:
                         errors.append(f"content_sha256_mismatch:{relative}:{observed}!={digest}")
-            exclusions = set(audit.get("package_content_hash_scope_exclusions", []))
-            expected = {
-                str(path.relative_to(package_root))
-                for path in package_root.rglob("*")
-                if path.is_file() and str(path.relative_to(package_root)) not in exclusions
+            run_rows = read_csv(run_manifest)
+            immutable_expected = {
+                str(audit[field])
+                for field in ("run_manifest", "protocol_manifest", "monomer_manifest", "controller")
+                if audit.get(field)
             }
-            exact = set(declared) == expected
+            for run_row in run_rows:
+                for field in (
+                    "config_relpath",
+                    "monomer_relpath",
+                    "receptor_relpath",
+                    "restraint_relpath",
+                    "hotspot_relpath",
+                ):
+                    relative = run_row.get(field, "").strip()
+                    if relative:
+                        immutable_expected.add(relative)
+            exact = set(declared) == immutable_expected
             add_check(
                 checks,
                 errors,
                 "content_manifest_exact_file_set",
                 exact,
-                f"missing={sorted(expected-set(declared))};extra={sorted(set(declared)-expected)}",
+                f"missing={sorted(immutable_expected-set(declared))};extra={sorted(set(declared)-immutable_expected)}",
             )
+            immutable_observed: set[str] = set()
+            for dirname in ("monomers", "receptors", "restraints", "hotspots", "scripts"):
+                directory = package_root / dirname
+                if directory.is_dir():
+                    immutable_observed.update(
+                        str(path.relative_to(package_root)) for path in directory.rglob("*") if path.is_file()
+                    )
+            manifests_dir = package_root / "manifests"
+            content_relative = str(content_path.relative_to(package_root))
+            if manifests_dir.is_dir():
+                immutable_observed.update(
+                    str(path.relative_to(package_root))
+                    for path in manifests_dir.rglob("*")
+                    if path.is_file() and str(path.relative_to(package_root)) != content_relative
+                )
+            runs_dir = package_root / "runs"
+            if runs_dir.is_dir():
+                immutable_observed.update(
+                    str(path.relative_to(package_root)) for path in runs_dir.glob("*/*.cfg") if path.is_file()
+                )
+            immutable_exact = immutable_observed == immutable_expected
+            add_check(
+                checks,
+                errors,
+                "immutable_input_exact_file_set",
+                immutable_exact,
+                f"missing={sorted(immutable_expected-immutable_observed)};"
+                f"extra={sorted(immutable_observed-immutable_expected)}",
+            )
+            if not immutable_exact:
+                errors.append(
+                    "immutable_input_set_mismatch:"
+                    f"missing={sorted(immutable_expected-immutable_observed)};"
+                    f"extra={sorted(immutable_observed-immutable_expected)}"
+                )
             add_check(
                 checks,
                 errors,

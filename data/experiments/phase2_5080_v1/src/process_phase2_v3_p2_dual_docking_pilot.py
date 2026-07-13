@@ -58,6 +58,20 @@ RECEPTORS = {
         "map_column": "pdb_9e6y_ref",
     },
 }
+POSTPROCESS_TOOLCHAIN_PATHS = {
+    "postprocessor": Path(__file__).resolve(),
+    "align_pdb_by_chain": DOCKING_SCRIPTS / "align_pdb_by_chain.py",
+    "score_pvrig_vhh_pose": DOCKING_SCRIPTS / "score_pvrig_vhh_pose.py",
+    "score_cdr_region_occlusion": DOCKING_SCRIPTS / "score_cdr_region_occlusion.py",
+    "apply_blocker_judgment": WORKFLOW_DIR / "apply_blocker_judgment.py",
+    "summarize_multibaseline_judgment": WORKFLOW_DIR / "summarize_multibaseline_judgment.py",
+}
+POSTPROCESS_REFERENCE_PATHS = {
+    "hotspot_csv": HOTSPOT_CSV,
+    "numbering_reconciliation_csv": RECONCILIATION_CSV,
+    "8x6b_scoring_reference": Path(RECEPTORS["8x6b"]["pdb"]),
+    "9e6y_scoring_reference": Path(RECEPTORS["9e6y"]["pdb"]),
+}
 MODEL_RE = re.compile(r"cluster_(\d+)_model_(\d+)")
 POSTPROCESS_ARTIFACT_KEYS = (
     "consensus",
@@ -128,6 +142,22 @@ def read_json_object(path: Path) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError(f"Expected JSON object: {path}")
     return payload
+
+
+def hash_named_paths(paths: dict[str, Path]) -> dict[str, str]:
+    missing = [f"{name}:{path}" for name, path in paths.items() if not path.is_file()]
+    if missing:
+        raise FileNotFoundError(f"Missing frozen postprocess inputs: {missing}")
+    return {name: sha256_file(path) for name, path in paths.items()}
+
+
+def postprocess_marker_matches(marker_path: Path, expected: dict[str, Any]) -> bool:
+    if not marker_path.is_file():
+        return False
+    try:
+        return read_json_object(marker_path) == expected
+    except (OSError, TypeError, ValueError, json.JSONDecodeError):
+        return False
 
 
 def build_postprocess_marker(
@@ -209,6 +239,8 @@ def build_postprocess_marker(
         "selected_pose_files": selected_inventory,
         "counts": counts,
         "artifacts": artifacts,
+        "toolchain_sha256": hash_named_paths(POSTPROCESS_TOOLCHAIN_PATHS),
+        "reference_sha256": hash_named_paths(POSTPROCESS_REFERENCE_PATHS),
         "consensus_sha256": artifacts["consensus"]["sha256"],
         "run_dir": str(run_dir),
         "claim_boundary": CLAIM_BOUNDARY,
@@ -744,18 +776,16 @@ def process_one(
             marker = build_postprocess_marker(
                 row, sync_root, workdir, run_dir, selected, before, run_manifest_sha256
             )
-            (workdir / "postprocess.complete.json").write_text(
-                json.dumps(marker, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-            )
-            return {
-                "run_id": run_id,
-                "pilot_id": row["pilot_id"],
-                "status": "SKIP_COMPLETE",
-                "seconds": 0.0,
-                "selected_models": expected,
-                "pose_clusters": cluster_count,
-                **before,
-            }
+            if postprocess_marker_matches(workdir / "postprocess.complete.json", marker):
+                return {
+                    "run_id": run_id,
+                    "pilot_id": row["pilot_id"],
+                    "status": "SKIP_COMPLETE",
+                    "seconds": 0.0,
+                    "selected_models": expected,
+                    "pose_clusters": cluster_count,
+                    **before,
+                }
 
         raw_dir = workdir / "poses_unpacked"
         raw_dir.mkdir(parents=True, exist_ok=True)
