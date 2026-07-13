@@ -110,6 +110,44 @@ def test_status_reports_missingness_from_atomic_state(tmp_path: Path) -> None:
     assert payload["missingness"]["restraint_missing"] == 0
     assert payload["missingness"]["cfg_missing"] == 0
 
+
+def test_status_counts_only_haddock_selected_models(tmp_path: Path) -> None:
+    write_minimal_inputs(tmp_path)
+    candidates = tmp_path / "data" / "candidates.tsv"
+    write_candidates(candidates)
+    build = load_module("build_docking_package_selected", ROOT / "scripts" / "build_docking_package.py")
+    build.build_package(tmp_path, candidates, expected_count=2, receptor_chain="T", ncores_per_haddock=4, gpu_ids="1,2,3,4,5,7")
+
+    state_dir = tmp_path / "docking" / "state" / "haddock"
+    state_dir.mkdir(parents=True, exist_ok=True)
+    (state_dir / "cand_a.json").write_text(json.dumps({"status": "success"}), encoding="utf-8")
+    run_dir = tmp_path / "docking" / "haddock" / "cand_a" / "run_cand_a_pvrig_8x6b_full_interface"
+    selected_dir = run_dir / "6_seletopclusts"
+    selected_dir.mkdir(parents=True)
+    (selected_dir / "cluster_1_model_1.pdb").write_text("END\n", encoding="ascii")
+    stray_dir = run_dir / "5_cluster"
+    stray_dir.mkdir(parents=True)
+    (stray_dir / "cluster_99_model_99.pdb").write_text("END\n", encoding="ascii")
+
+    export_dir = tmp_path / "exports"
+    subprocess.run(
+        [
+            "python3",
+            str(ROOT / "scripts" / "status_docking.py"),
+            "--run-root",
+            str(tmp_path),
+            "--export-dir",
+            str(export_dir),
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    rows = list(csv.DictReader((export_dir / "docking_runs.tsv").open(encoding="utf-8"), delimiter="\t"))
+    assert rows[0]["docking_status"] == "completed"
+    assert rows[0]["selected_model_count"] == "1"
+    assert "6_seletopclusts" in rows[0]["selected_model_path"]
+
 if __name__ == "__main__":
     import tempfile
 
@@ -118,4 +156,6 @@ if __name__ == "__main__":
     test_load_aware_scheduler_waits_when_load_is_at_threshold()
     with tempfile.TemporaryDirectory() as tmp:
         test_status_reports_missingness_from_atomic_state(Path(tmp) / "status")
-    print("3 contract tests passed")
+    with tempfile.TemporaryDirectory() as tmp:
+        test_status_counts_only_haddock_selected_models(Path(tmp) / "selected")
+    print("4 contract tests passed")

@@ -388,6 +388,45 @@ def load_generic_replay_retention(
     }, checks
 
 
+def validate_artifact_bundle(
+    path: Path,
+    seed_paths: Mapping[int, Path],
+    baseline_path: Path,
+    control_path: Path,
+    replay_path: Path,
+) -> dict[str, Any]:
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    if manifest.get("status") != "PASS_V3_P1_FORMAL_ARTIFACT_BUNDLE_READY":
+        raise ValueError("Formal artifact bundle is not in a passing ready state")
+    if set(map(int, manifest.get("seed_predictions", {}))) != set(EXPECTED_SEEDS):
+        raise ValueError("Formal artifact bundle does not bind the exact formal seeds")
+    for key in ("checkpoints", "label_shuffle_checkpoints"):
+        if set(map(int, manifest.get(key, {}))) != set(EXPECTED_SEEDS):
+            raise ValueError(f"Formal artifact bundle does not bind exact {key}")
+
+    def verify(record: Mapping[str, Any], actual: Path, label: str) -> None:
+        recorded_path = Path(str(record["path"]))
+        if recorded_path.resolve() != actual.resolve() or str(record["sha256"]) != sha256_file(actual):
+            raise ValueError(f"Formal artifact bundle mismatch for {label}")
+
+    for seed in EXPECTED_SEEDS:
+        verify(manifest["seed_predictions"][str(seed)], Path(seed_paths[seed]), f"seed_{seed}_prediction")
+    outputs = manifest.get("bundle_outputs", {})
+    verify(outputs["baseline_predictions"], baseline_path, "baseline_predictions")
+    verify(outputs["control_predictions"], control_path, "control_predictions")
+    verify(outputs["generic_replay_retention"], replay_path, "generic_replay_retention")
+    for label, record in manifest["checkpoints"].items():
+        verify(record, Path(str(record["path"])), f"checkpoint_{label}")
+    for label, record in manifest["label_shuffle_checkpoints"].items():
+        verify(record, Path(str(record["path"])), f"label_shuffle_checkpoint_{label}")
+    bound = manifest.get("bound_files")
+    if not isinstance(bound, dict) or not bound:
+        raise ValueError("Formal artifact bundle has no bound governance/source files")
+    for label, record in bound.items():
+        verify(record, Path(str(record["path"])), f"bound_{label}")
+    return {"path": str(path), "sha256": sha256_file(path), "bound_file_count": len(bound)}
+
+
 def _top_fraction_seed_agreement(frame: pd.DataFrame, fraction: float = 0.20) -> dict[str, Any]:
     count = max(1, int(np.ceil(len(frame) * fraction)))
     top_sets = {
@@ -422,11 +461,15 @@ def evaluate_formal(
     baseline_path: Path,
     control_path: Path,
     generic_replay_path: Path,
+    artifact_manifest_path: Path,
     output_dir: Path,
     bootstrap_replicates: int = 2000,
     permutation_replicates: int = 2000,
     threshold: GateThresholds = GateThresholds(),
 ) -> dict[str, Any]:
+    artifact_bundle = validate_artifact_bundle(
+        artifact_manifest_path, seed_paths, baseline_path, control_path, generic_replay_path
+    )
     teacher = load_teacher_parts(teacher_open_path, teacher_test_sealed_path)
     teacher_hashes = {
         "teacher_open_development": sha256_file(teacher_open_path),
@@ -572,12 +615,14 @@ def evaluate_formal(
         "teacher_join_mode": "open_dev_plus_evaluator_only_unsealed_test",
         "input_prediction_artifacts_label_blind": True,
         "artifact_sha256": {
+            "formal_artifact_manifest": artifact_bundle["sha256"],
             **teacher_hashes,
             "baseline_predictions": baseline_selection["sha256"],
             "control_predictions": control_hash,
             "generic_replay_retention": generic_replay["sha256"],
             **seed_hashes,
         },
+        "formal_artifact_bundle": artifact_bundle,
         "known_limitations": [
             "Teacher labels are docking-derived geometry surrogates, not experimental binding or blocking truth.",
             "9E6Y labels rescore 8X6B-generated poses unless a later teacher version adds independent docking.",
@@ -602,6 +647,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--baseline-predictions", type=Path, required=True)
     parser.add_argument("--control-predictions", type=Path, required=True)
     parser.add_argument("--generic-replay-retention", type=Path, required=True)
+    parser.add_argument("--artifact-manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--bootstrap-replicates", type=int, default=2000)
     parser.add_argument("--permutation-replicates", type=int, default=2000)
@@ -621,6 +667,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         baseline_path=args.baseline_predictions,
         control_path=args.control_predictions,
         generic_replay_path=args.generic_replay_retention,
+        artifact_manifest_path=args.artifact_manifest,
         output_dir=args.output_dir,
         bootstrap_replicates=args.bootstrap_replicates,
         permutation_replicates=args.permutation_replicates,

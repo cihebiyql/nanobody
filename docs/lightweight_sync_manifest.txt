@@ -525,6 +525,7 @@ data/experiments/phase2_5080_v1/src/build_phase2_v2_5_assay_panel.py
 data/experiments/phase2_5080_v1/src/build_phase2_v2_5_evidence_registry.py
 data/experiments/phase2_5080_v1/src/build_phase2_v2_5_pose_summary.py
 data/experiments/phase2_5080_v1/src/build_phase2_v2_5_splits.py
+data/experiments/phase2_5080_v1/src/build_phase2_v3_p1_formal_bundle.py
 data/experiments/phase2_5080_v1/src/build_pvrig_formal_parent40_structure_package.py
 data/experiments/phase2_5080_v1/src/build_pvrig_formal_rfantibody_package.py
 data/experiments/phase2_5080_v1/src/build_pvrig_formal_teacher500.py
@@ -602,6 +603,7 @@ data/experiments/phase2_5080_v1/src/test_build_phase2_v2_4_portable_checkpoints.
 data/experiments/phase2_5080_v1/src/test_build_phase2_v2_5_assay_panel.py
 data/experiments/phase2_5080_v1/src/test_build_phase2_v2_5_evidence_registry.py
 data/experiments/phase2_5080_v1/src/test_build_phase2_v2_5_pose_summary.py
+data/experiments/phase2_5080_v1/src/test_build_phase2_v3_p1_formal_bundle.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_formal_parent40_structure_package.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_formal_rfantibody_package.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_formal_teacher500.py

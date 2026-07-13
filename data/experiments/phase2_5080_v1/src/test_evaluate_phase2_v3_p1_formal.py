@@ -29,6 +29,7 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         self.baseline_path = self.root / "baselines.csv"
         self.control_path = self.root / "controls.csv"
         self.replay_path = self.root / "generic_replay_retention.json"
+        self.artifact_manifest_path = self.root / "formal_artifact_manifest.json"
         self.seed_paths: dict[int, Path] = {}
         rows: list[dict[str, object]] = []
         index = 0
@@ -114,6 +115,29 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
             ),
             encoding="utf-8",
         )
+        def record(path: Path) -> dict[str, str]:
+            return {"path": str(path), "sha256": formal.sha256_file(path)}
+        checkpoints = {}
+        label_checkpoints = {}
+        for seed in formal.EXPECTED_SEEDS:
+            checkpoint = self.root / f"checkpoint_{seed}.pt"
+            checkpoint.write_text(f"checkpoint-{seed}\n")
+            label_checkpoint = self.root / f"label_checkpoint_{seed}.pt"
+            label_checkpoint.write_text(f"label-checkpoint-{seed}\n")
+            checkpoints[str(seed)] = record(checkpoint)
+            label_checkpoints[str(seed)] = record(label_checkpoint)
+        self.artifact_manifest_path.write_text(json.dumps({
+            "status": "PASS_V3_P1_FORMAL_ARTIFACT_BUNDLE_READY",
+            "seed_predictions": {str(seed): record(path) for seed, path in self.seed_paths.items()},
+            "checkpoints": checkpoints,
+            "label_shuffle_checkpoints": label_checkpoints,
+            "bound_files": {"teacher_open": record(self.teacher_open_path), "teacher_sealed": record(self.teacher_sealed_path)},
+            "bundle_outputs": {
+                "baseline_predictions": record(self.baseline_path),
+                "control_predictions": record(self.control_path),
+                "generic_replay_retention": record(self.replay_path),
+            },
+        }), encoding="utf-8")
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -127,6 +151,7 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
             self.baseline_path,
             self.control_path,
             self.replay_path,
+            self.artifact_manifest_path,
             output,
             bootstrap_replicates=300,
             permutation_replicates=1023,
@@ -154,6 +179,16 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         )
         self.assertTrue((output / "formal_evaluation.json").is_file())
         self.assertTrue((output / "formal_test_predictions_with_teacher_labels.csv").is_file())
+
+    def test_artifact_manifest_hash_mismatch_fails_closed(self) -> None:
+        prediction = pd.read_csv(self.seed_paths[83])
+        prediction.loc[0, "predicted_relevance"] += 0.5
+        prediction.to_csv(self.seed_paths[83], index=False)
+        with self.assertRaisesRegex(ValueError, "artifact bundle mismatch"):
+            formal.validate_artifact_bundle(
+                self.artifact_manifest_path, self.seed_paths, self.baseline_path,
+                self.control_path, self.replay_path,
+            )
 
     def test_open_and_sealed_teacher_join_occurs_in_evaluator(self) -> None:
         teacher = pd.read_csv(self.teacher_path)

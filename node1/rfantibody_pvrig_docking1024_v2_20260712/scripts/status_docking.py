@@ -101,7 +101,10 @@ def main() -> int:
             }
         )
         run_dir = docking_root / "haddock" / cid / f"run_{cid}_pvrig_8x6b_full_interface"
-        selected = sorted(run_dir.rglob("cluster_*_model_*.pdb")) + sorted(run_dir.rglob("cluster_*_model_*.pdb.gz"))
+        selected_dir = run_dir / "6_seletopclusts"
+        selected = sorted(selected_dir.glob("cluster_*_model_*.pdb")) + sorted(
+            selected_dir.glob("cluster_*_model_*.pdb.gz")
+        )
         docking_rows.append(
             {
                 "candidate_id": cid,
