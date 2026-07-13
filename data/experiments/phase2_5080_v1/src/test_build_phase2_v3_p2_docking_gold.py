@@ -459,6 +459,14 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
             self.assertTrue(any(error.startswith("marker_selected_pose_hash_mismatch:") for error in errors))
 
+            self.make_postprocessed_run(root, row, sync_root, "f" * 64)
+            marker_path = root / row["run_id"] / "postprocess.complete.json"
+            marker_payload = json.loads(marker_path.read_text(encoding="utf-8"))
+            marker_payload["toolchain_sha256"]["postprocessor"] = "0" * 64
+            marker_path.write_text(json.dumps(marker_payload), encoding="utf-8")
+            _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
+            self.assertTrue(any(error.startswith("marker_postprocess_toolchain_trust_mismatch:") for error in errors))
+
     def test_package_closure_is_rooted_in_package_audit_and_detects_content_drift(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
