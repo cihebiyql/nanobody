@@ -111,6 +111,14 @@ class DualDockingPostprocessTests(unittest.TestCase):
                 path = selected_dir / f"{model}.pdb.gz"
                 path.write_bytes(f"pose-{rank}\n".encode())
                 selected.append((model, path, rank))
+            traceback = run_dir / "traceback/consensus.tsv"
+            traceback.parent.mkdir(parents=True)
+            traceback.write_text(
+                "Model\t6_seletopclusts_rank\tSum-of-Ranks\n"
+                "cluster_1_model_1.pdb\t1\t99\n"
+                "cluster_2_model_1.pdb\t2\t1\n",
+                encoding="utf-8",
+            )
 
             row = {
                 "run_id": "P2PILOT_001__8X6B__main",
@@ -182,6 +190,11 @@ class DualDockingPostprocessTests(unittest.TestCase):
             self.assertTrue(all(item["sha256"] for item in marker["artifacts"].values()))
             self.assertEqual(set(marker["toolchain_sha256"]), set(MOD.POSTPROCESS_TOOLCHAIN_PATHS))
             self.assertEqual(set(marker["reference_sha256"]), set(MOD.POSTPROCESS_REFERENCE_PATHS))
+            self.assertEqual(marker["traceback"]["relpath"], "traceback/consensus.tsv")
+            self.assertEqual(marker["traceback"]["model_ranks"], {
+                "cluster_1_model_1": 1,
+                "cluster_2_model_1": 2,
+            })
 
             marker_path = workdir / "postprocess.complete.json"
             self.assertFalse(MOD.postprocess_marker_matches(marker_path, marker))
@@ -199,6 +212,38 @@ class DualDockingPostprocessTests(unittest.TestCase):
                 "f" * 64,
             )
             self.assertFalse(MOD.postprocess_marker_matches(marker_path, drifted))
+
+    def test_selected_models_requires_complete_strict_traceback_ranks(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            run_dir = Path(tmp)
+            selected = run_dir / "6_seletopclusts"
+            selected.mkdir(parents=True)
+            for model in ("cluster_1_model_1", "cluster_2_model_1"):
+                (selected / f"{model}.pdb.gz").write_bytes(b"pose\n")
+            with self.assertRaises(FileNotFoundError):
+                MOD.selected_models(run_dir, 10)
+
+            traceback = run_dir / "traceback/consensus.tsv"
+            traceback.parent.mkdir()
+            traceback.write_text(
+                "Model\t6_seletopclusts_rank\tSum-of-Ranks\n"
+                "cluster_1_model_1.pdb\t1\t99\n"
+                "cluster_2_model_1.pdb\t2\t1\n",
+                encoding="utf-8",
+            )
+            rows = MOD.selected_models(run_dir, 10)
+            self.assertEqual([(model, rank) for model, _path, rank in rows], [
+                ("cluster_1_model_1", 1),
+                ("cluster_2_model_1", 2),
+            ])
+            traceback.write_text(
+                "Model\t6_seletopclusts_rank\n"
+                "cluster_1_model_1.pdb\t1\n"
+                "cluster_2_model_1.pdb\t1\n",
+                encoding="utf-8",
+            )
+            with self.assertRaises(ValueError):
+                MOD.selected_models(run_dir, 10)
 
 
 if __name__ == "__main__":

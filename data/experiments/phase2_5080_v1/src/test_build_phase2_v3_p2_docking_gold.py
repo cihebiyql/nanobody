@@ -68,6 +68,12 @@ class DockingGoldMathTests(unittest.TestCase):
         self.assertEqual(MOD.weighted_cohen_kappa(tiers, tiers, "quadratic"), 1.0)
         self.assertAlmostEqual(MOD.weighted_cohen_kappa(tiers, list(reversed(tiers)), "quadratic"), -1.0)
         self.assertAlmostEqual(MOD.weighted_cohen_kappa(tiers, list(reversed(tiers)), "linear"), -0.5)
+        self.assertIsNone(MOD.weighted_cohen_kappa(["G2"] * 16, ["G2"] * 16, "quadratic"))
+        details = MOD.weighted_cohen_kappa_details(["G2"] * 16, ["G2"] * 16, "quadratic")
+        self.assertEqual(details["expected_cost"], 0.0)
+        self.assertEqual(details["observed_cost"], 0.0)
+        self.assertIsNone(details["value"])
+        self.assertEqual(details["first_tier_counts"], {"G1": 0, "G2": 16, "G3": 0, "G4": 0, "G5": 0})
 
     def test_pilot_gate_requires_every_prefrozen_threshold(self) -> None:
         passed = MOD.pilot_gate(64, 32, 0, False, False, 0.70, 0.60, True)
@@ -78,6 +84,14 @@ class DockingGoldMathTests(unittest.TestCase):
         relaxed = MOD.pilot_gate(64, 32, 0, False, True, 0.70, 0.60, True)
         self.assertNotIn("per_candidate_failure_tolerance_override_false", relaxed["failed_gates"])
         self.assertIn("tolerance_relaxation_false", relaxed["failed_gates"])
+        degenerate = MOD.pilot_gate(
+            64, 32, 0, False, False, 1.0, None, True,
+            comparison_rows_16=True,
+            comparison_pilot_set_exact=True,
+            comparison_both_sides_dg_a=True,
+            stable_tier_expected_cost=0.0,
+        )
+        self.assertIn("stable_tier_expected_disagreement_gt_0", degenerate["failed_gates"])
 
 
 class DockingGoldEvidenceTests(unittest.TestCase):
@@ -306,6 +320,16 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             selected_pose_files.append(
                 {"model": model, "filename": pose.name, "sha256": sha(pose), "haddock_rank": rank}
             )
+        traceback = synced_run_dir / "traceback/consensus.tsv"
+        traceback.parent.mkdir(parents=True)
+        traceback.write_text(
+            "Model\t6_seletopclusts_rank\tSum-of-Ranks\n"
+            + "".join(
+                f"{model}.pdb\t{rank}\t{100-rank}\n"
+                for rank, model in enumerate(models, 1)
+            ),
+            encoding="utf-8",
+        )
         completion = sync_root / row["completion_relpath"]
         completion.parent.mkdir(parents=True, exist_ok=True)
         completion_payload = {
@@ -352,6 +376,11 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 "receptor": row["receptor_sha256"],
             },
             "selected_pose_files": selected_pose_files,
+            "traceback": {
+                "relpath": "traceback/consensus.tsv",
+                "sha256": sha(traceback),
+                "model_ranks": {model: rank for rank, model in enumerate(models, 1)},
+            },
             "counts": {
                 "selected_models": 8,
                 "pose_clusters": 2,
@@ -466,6 +495,70 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             marker_path.write_text(json.dumps(marker_payload), encoding="utf-8")
             _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
             self.assertTrue(any(error.startswith("marker_postprocess_toolchain_trust_mismatch:") for error in errors))
+
+            self.make_postprocessed_run(root, row, sync_root, "f" * 64)
+            traceback = sync_root / row["run_dir_relpath"] / "traceback/consensus.tsv"
+            traceback.write_text(
+                traceback.read_text(encoding="utf-8").replace("\t1\t99\n", "\t2\t99\n", 1),
+                encoding="utf-8",
+            )
+            _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
+            self.assertTrue(any(error.startswith("traceback_") or error.startswith("marker_traceback_") for error in errors))
+
+    def test_postprocessed_run_rejects_nonfinite_negative_and_inconsistent_geometry(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sync_root = root / "sync"
+            row = {
+                "run_id": "P2PILOT_001__8x6b__main",
+                "pilot_id": "P2PILOT_001",
+                "source_candidate_id": "candidate_1",
+                "receptor_id": "8x6b",
+                "seed_role": "main",
+                "run_dir_relpath": "runs/P2PILOT_001__8x6b__main/run_P2PILOT_001__8x6b__main",
+                "completion_relpath": "runs/P2PILOT_001__8x6b__main/P2PILOT_001__8x6b__main.complete.json",
+                "config_sha256": "c" * 64,
+                "monomer_sha256": "m" * 64,
+                "receptor_sha256": "r" * 64,
+            }
+            self.make_postprocessed_run(root, row, sync_root, "f" * 64)
+            classification = root / row["run_id"] / "reports" / f"{row['run_id']}_8x6b_blocker_classification.csv"
+            rows = MOD.read_csv(classification)
+            rows[0]["hotspot_overlap_count"] = "-1"
+            rows[0]["total_vhh_pvrl2_residue_pair_occlusion"] = "2"
+            rows[0]["cdr3_pvrl2_residue_pair_occlusion"] = "3"
+            rows[0]["cdr3_occlusion_fraction"] = "nan"
+            write_csv(classification, rows)
+            _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
+            self.assertTrue(any(error.startswith("classification_8x6b_nonnegative_integer:") for error in errors))
+            self.assertTrue(any(error.startswith("classification_8x6b_fraction:") for error in errors))
+            self.assertTrue(any(error.startswith("classification_8x6b_cdr3_exceeds_total:") for error in errors))
+            self.assertTrue(any(error.startswith("classification_mechanism_hotspot_mismatch:") for error in errors))
+
+    def test_repeatability_requires_exact_complete_replicate_set(self) -> None:
+        expected = {f"P2PILOT_{index:03d}" for index in range(1, 17)}
+        comparisons = [
+            {
+                "pilot_id": pilot_id,
+                "main_R_gold": str(index),
+                "replicate_R_gold": str(index),
+                "main_stable_tier": "G2",
+                "replicate_stable_tier": "G2",
+                "main_dg_a_pass": True,
+                "replicate_dg_a_pass": True,
+            }
+            for index, pilot_id in enumerate(sorted(expected), 1)
+        ]
+        diagnostics = MOD.repeatability_diagnostics(comparisons, expected)
+        self.assertTrue(diagnostics["comparison_rows_16"])
+        self.assertTrue(diagnostics["comparison_pilot_set_exact"])
+        self.assertTrue(diagnostics["comparison_both_sides_dg_a"])
+        self.assertIsNone(diagnostics["stable_tier_quadratic_kappa"]["value"])
+        self.assertEqual(diagnostics["stable_tier_quadratic_kappa"]["expected_cost"], 0.0)
+        incomplete = MOD.repeatability_diagnostics(comparisons[:-1], expected)
+        self.assertFalse(incomplete["comparison_rows_16"])
+        self.assertFalse(incomplete["comparison_pilot_set_exact"])
+        self.assertIsNone(incomplete["R_gold_spearman"])
 
     def test_package_closure_is_rooted_in_package_audit_and_detects_content_drift(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
