@@ -17,6 +17,7 @@ EXP_DIR = SCRIPT_DIR.parent
 DEFAULT_CANDIDATES = EXP_DIR / "prepared/pvrig_teacher_formal_v1/candidate_summary.csv"
 DEFAULT_CONTACTS = EXP_DIR / "prepared/pvrig_teacher_formal_v1/pose_contact_frequency.jsonl"
 DEFAULT_MANIFEST = EXP_DIR / "data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_teacher_manifest_v1.csv"
+DEFAULT_TEACHER_AUDIT = EXP_DIR / "audits/pvrig_formal_teacher500_audit.json"
 DEFAULT_OUTPUT = EXP_DIR / "prepared/phase2_v3_p1_formal"
 DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p1_formal_data_audit.json"
 SCHEMA_VERSION = "phase2_v3_p1_formal_data_v1"
@@ -142,9 +143,21 @@ def prepare(
     manifest_path: Path,
     output_dir: Path,
     audit_path: Path,
+    upstream_audit_path: Path,
     expected_candidates: int = 500,
     expected_splits: dict[str, int] | None = None,
 ) -> dict[str, Any]:
+    upstream = json.loads(upstream_audit_path.read_text(encoding="utf-8"))
+    if upstream.get("status") != "PASS_FORMAL_TEACHER500_READY":
+        raise ValueError(f"Formal Teacher500 upstream audit is not PASS: {upstream.get('status')}")
+    upstream_hashes = upstream.get("output_sha256")
+    if not isinstance(upstream_hashes, dict):
+        raise ValueError("Formal Teacher500 upstream audit lacks output_sha256")
+    for path in (candidates_path, contacts_path, manifest_path):
+        resolved = path.resolve()
+        matches = [value for key, value in upstream_hashes.items() if Path(key).resolve() == resolved]
+        if len(matches) != 1 or matches[0] != sha256_file(path):
+            raise ValueError(f"Formal Teacher500 upstream hash mismatch for {path}")
     candidates = index_unique(read_csv(candidates_path), "candidate_summary")
     contacts = index_unique(read_jsonl(contacts_path), "contact_frequency")
     manifest = index_unique(read_csv(manifest_path), "teacher_manifest")
@@ -164,6 +177,10 @@ def prepare(
         sequence_sha = str(candidate.get("sequence_sha256") or meta.get("sequence_sha256") or "").strip()
         if not sequence or sequence_hash(sequence) != sequence_sha:
             raise ValueError(f"Sequence hash mismatch for {candidate_id}")
+        contact_sequence = str(contacts[candidate_id].get("sequence", "")).strip()
+        contact_sha = str(contacts[candidate_id].get("sequence_sha256", "")).strip()
+        if contact_sequence != sequence or contact_sha != sequence_sha or sequence_hash(contact_sequence) != contact_sha:
+            raise ValueError(f"Contact sequence/hash mismatch for {candidate_id}")
         for candidate_field, manifest_field, label in (
             ("sequence_sha256", "sequence_sha256", "Sequence hash"),
             ("formal_split", "formal_split", "Split"),
@@ -180,6 +197,14 @@ def prepare(
         for field in LABEL_FIELDS:
             if field not in candidate or str(candidate[field]).strip() == "":
                 raise ValueError(f"Missing formal label {field} for {candidate_id}")
+        if str(candidate.get("teacher_completeness", "")).strip() != "COMPLETE":
+            raise ValueError(f"Incomplete teacher summary for {candidate_id}")
+        if int(float(candidate["failed_contact_pose_count"])) != 0:
+            raise ValueError(f"Teacher contact extraction failure for {candidate_id}")
+        if int(float(candidate["valid_baseline_pair_count"])) != int(float(candidate["pose_count"])):
+            raise ValueError(f"Incomplete dual-baseline poses for {candidate_id}")
+        if int(float(candidate["valid_contact_pose_count"])) != int(float(candidate["pose_count"])):
+            raise ValueError(f"Incomplete contact poses for {candidate_id}")
         row = {**meta, **candidate, "sequence": sequence, "sequence_sha256": sequence_sha, "formal_split": split,
                "parent_framework_cluster": cluster, "geometry_tier_index": str(5 - int(str(candidate["provisional_stable_geometry_tier"])[1:])),
                "claim_boundary": CLAIM_BOUNDARY}
@@ -239,6 +264,8 @@ def prepare(
         "sequence_hash_closure": True,
         "formal_blinded_label_columns": [],
         "input_sha256": {str(path): sha256_file(path) for path in (candidates_path, contacts_path, manifest_path)},
+        "upstream_teacher_audit": str(upstream_audit_path),
+        "upstream_teacher_audit_sha256": sha256_file(upstream_audit_path),
         "output_paths": {name: str(path) for name, path in outputs.items()},
         "claim_boundary": CLAIM_BOUNDARY,
     }
@@ -252,6 +279,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--candidates", type=Path, default=DEFAULT_CANDIDATES)
     parser.add_argument("--contacts", type=Path, default=DEFAULT_CONTACTS)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    parser.add_argument("--upstream-teacher-audit", type=Path, default=DEFAULT_TEACHER_AUDIT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
     parser.add_argument("--expected-candidates", type=int, default=500)
@@ -261,6 +289,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def main(argv: Sequence[str] | None = None) -> None:
     args = parse_args(argv)
     print(json.dumps(prepare(args.candidates, args.contacts, args.manifest, args.output_dir, args.audit,
+                             args.upstream_teacher_audit,
                              args.expected_candidates), indent=2, sort_keys=True))
 
 

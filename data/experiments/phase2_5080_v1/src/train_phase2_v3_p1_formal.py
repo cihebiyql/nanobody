@@ -65,6 +65,7 @@ DEFAULT_CONFIG = EXP_DIR / "configs/phase2_v3_p1_formal.json"
 DEFAULT_PREREGISTRATION = EXP_DIR / "audits/phase2_v3_p1_preregistration.json"
 DEFAULT_TEST_SPEC = EXP_DIR / "audits/phase2_v3_p1_test_spec.json"
 DEFAULT_OUT = EXP_DIR / "runs/phase2_v3_p1_formal"
+DEFAULT_GENERIC_REPLAY = EXP_DIR / "prepared/phase2_v3_p1_generic_replay/generic_replay_train256_v1.csv"
 
 CLAIM_BOUNDARY = "pvrig_docking_geometry_surrogate_not_binding_or_experimental_blocking_truth"
 SCHEMA_VERSION = "phase2_v3_p1_formal_training_v1"
@@ -101,10 +102,10 @@ class FormalTrainConfig:
     source_checkpoint: str = str(DEFAULT_SOURCE_CHECKPOINT)
     preregistration_json: str = str(DEFAULT_PREREGISTRATION)
     test_spec_json: str = str(DEFAULT_TEST_SPEC)
-    generic_replay_csv: str = ""
-    generic_replay_cache_manifest: str = ""
-    generic_replay_cdr_mask_csv: str = ""
-    generic_replay_size: int = 128
+    generic_replay_csv: str = str(DEFAULT_GENERIC_REPLAY)
+    generic_replay_cache_manifest: str = str(EXP_DIR / "prepared/esm2_8m_v2_3_cache/manifest.csv")
+    generic_replay_cdr_mask_csv: str = str(EXP_DIR / "data_splits/vhh_cdr_type_masks_v2_3.csv")
+    generic_replay_size: int = 256
     out_root: str = str(DEFAULT_OUT)
     seeds: tuple[int, ...] = (83, 89, 97)
     epochs: int = 30
@@ -535,6 +536,8 @@ class GenericReplayDataset(Dataset):
             }
             if not self.rows or required - set(self.rows[0]):
                 raise ValueError(f"Generic replay CSV missing columns: {sorted(required - set(self.rows[0] if self.rows else {}))}")
+            if len(self.rows) != maximum_rows:
+                raise ValueError(f"Frozen generic replay row count changed: {len(self.rows)} != {maximum_rows}")
         self.cache = cache
         self.cdrs = cdrs
         self.cfg = cfg
@@ -589,6 +592,38 @@ class GenericReplayDataset(Dataset):
             }
             for row in self.rows
         ]
+
+
+class CampaignBatchSampler:
+    """Keep each small parent/patch/mode campaign intact within a minibatch."""
+
+    def __init__(self, dataset: FormalTeacherDataset, batch_size: int, generator: torch.Generator) -> None:
+        self.batch_size = batch_size
+        self.generator = generator
+        groups: dict[str, list[int]] = {}
+        for index, row in enumerate(dataset.rows):
+            groups.setdefault(row["campaign_id"], []).append(index)
+        if any(len(indices) > batch_size for indices in groups.values()):
+            raise ValueError("Campaign exceeds batch_size and cannot preserve rank pairs")
+        self.groups = [groups[name] for name in sorted(groups)]
+        self.row_count = len(dataset)
+
+    def __iter__(self) -> Iterator[list[int]]:
+        group_order = torch.randperm(len(self.groups), generator=self.generator).tolist()
+        batch: list[int] = []
+        for group_index in group_order:
+            group = self.groups[group_index]
+            local_order = torch.randperm(len(group), generator=self.generator).tolist()
+            ordered_group = [group[index] for index in local_order]
+            if batch and len(batch) + len(ordered_group) > self.batch_size:
+                yield batch
+                batch = []
+            batch.extend(ordered_group)
+        if batch:
+            yield batch
+
+    def __len__(self) -> int:
+        return math.ceil(self.row_count / self.batch_size)
 
 
 def _pad_teacher_matrix(batch: list[dict[str, Any]], key: str, rows: int, columns: int | None = None) -> torch.Tensor:
@@ -1085,8 +1120,8 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
     }
 
 
-def shuffle_train_teacher_labels(dataset: FormalTeacherDataset, seed: int) -> None:
-    """Apply one deterministic train-only permutation to all teacher targets."""
+def shuffle_teacher_labels(dataset: FormalTeacherDataset, seed: int) -> None:
+    """Apply one deterministic split-local permutation to all teacher targets."""
     generator = torch.Generator().manual_seed(seed + 30_000)
     permutation = torch.randperm(len(dataset.rows), generator=generator).tolist()
     target_keys = ("tier", "relevance", "geometry", "contact", "paratope", "epitope")
@@ -1129,16 +1164,19 @@ def train_seed(
     backbone_cfg, backbone_state = load_backbone_checkpoint(Path(cfg.source_checkpoint))
     datasets, shared = build_datasets(cfg, backbone_cfg)
     if control_type == "label_shuffle":
-        shuffle_train_teacher_labels(datasets["train"], seed)
+        # The null must not use real dev labels for checkpoint selection.
+        shuffle_teacher_labels(datasets["train"], seed)
+        shuffle_teacher_labels(datasets["dev"], seed + 1_000_000)
     train_geometry = torch.tensor([row["geometry"] for row in datasets["train"].rows], dtype=torch.float32)
     geometry_mean = train_geometry.mean(0).to(device)
     geometry_std = train_geometry.std(0, unbiased=False).clamp_min(1e-6).to(device)
 
     generator = torch.Generator().manual_seed(seed + 10_000)
     replay_generator = torch.Generator().manual_seed(seed + 20_000)
+    campaign_sampler = CampaignBatchSampler(datasets["train"], cfg.batch_size, generator)
     loaders = {
         "train": DataLoader(
-            datasets["train"], batch_size=cfg.batch_size, shuffle=True, generator=generator,
+            datasets["train"], batch_sampler=campaign_sampler,
             num_workers=cfg.num_workers, collate_fn=collate_teacher,
         ),
         "dev": DataLoader(datasets["dev"], batch_size=cfg.batch_size, shuffle=False, collate_fn=collate_teacher),

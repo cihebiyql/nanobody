@@ -162,6 +162,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         for pose in case_poses:
             update_common(pose, row)
         contact = base.contact_frequency_record(case, case_poses, contacts)
+        contact["sequence"] = row["vhh_sequence"]
+        contact["sequence_sha256"] = row["sequence_sha256"]
         update_common(contact, row)
         summary = base.candidate_summary(case, case_poses, contact, args.min_supporting_clusters)
         update_common(summary, row)

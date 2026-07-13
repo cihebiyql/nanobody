@@ -36,15 +36,26 @@ class FormalDataTest(unittest.TestCase):
                 "candidate_id": candidate_id, "sequence": sequence, "sequence_sha256": sha,
                 "formal_split": split, "parent_framework_cluster": f"pc{index}",
                 "generic_binding_prior": "0.5", "provisional_stable_geometry_tier": f"G{index + 1}",
+                "teacher_completeness": "COMPLETE",
             }
             row.update({field: "1" for field in MOD.LABEL_FIELDS if field != "provisional_stable_geometry_tier"})
+            row.update({"pose_count": "4", "valid_baseline_pair_count": "4",
+                        "valid_contact_pose_count": "4", "failed_contact_pose_count": "0"})
             rows.append(row)
             manifest.append({"candidate_id": candidate_id, "vhh_sequence": sequence, "sequence_sha256": sha,
                              "formal_split": split, "parent_framework_cluster": f"pc{index}"})
-            contacts.append({"candidate_id": candidate_id, "pair_frequencies": []})
+            contacts.append({"candidate_id": candidate_id, "sequence": sequence, "sequence_sha256": sha,
+                             "pair_frequencies": []})
         write_csv(self.root / "candidates.csv", rows)
         write_csv(self.root / "manifest.csv", manifest)
         (self.root / "contacts.jsonl").write_text("".join(json.dumps(row) + "\n" for row in contacts))
+        output_hashes = {
+            str(path.resolve()): MOD.sha256_file(path)
+            for path in (self.root / "candidates.csv", self.root / "contacts.jsonl", self.root / "manifest.csv")
+        }
+        (self.root / "upstream.json").write_text(json.dumps({
+            "status": "PASS_FORMAL_TEACHER500_READY", "output_sha256": output_hashes,
+        }))
 
     def tearDown(self):
         self.temp.cleanup()
@@ -52,7 +63,7 @@ class FormalDataTest(unittest.TestCase):
     def test_seals_test_labels_and_preserves_parent_isolation(self):
         audit = MOD.prepare(
             self.root / "candidates.csv", self.root / "contacts.jsonl", self.root / "manifest.csv",
-            self.root / "out", self.root / "audit.json", expected_candidates=4,
+            self.root / "out", self.root / "audit.json", self.root / "upstream.json", expected_candidates=4,
             expected_splits={"train": 2, "dev": 1, "test": 1},
         )
         self.assertEqual(audit["status"], "PASS_PHASE2_V3_P1_FORMAL_DATA_SEALED")
@@ -69,10 +80,42 @@ class FormalDataTest(unittest.TestCase):
         rows = MOD.read_csv(self.root / "manifest.csv")
         rows[-1]["parent_framework_cluster"] = rows[0]["parent_framework_cluster"]
         write_csv(self.root / "manifest.csv", rows)
+        upstream = json.loads((self.root / "upstream.json").read_text())
+        upstream["output_sha256"][str((self.root / "manifest.csv").resolve())] = MOD.sha256_file(
+            self.root / "manifest.csv"
+        )
+        (self.root / "upstream.json").write_text(json.dumps(upstream))
         with self.assertRaisesRegex(ValueError, "Parent-cluster"):
             MOD.prepare(
                 self.root / "candidates.csv", self.root / "contacts.jsonl", self.root / "manifest.csv",
-                self.root / "out", self.root / "audit.json", expected_candidates=4,
+                self.root / "out", self.root / "audit.json", self.root / "upstream.json", expected_candidates=4,
+                expected_splits={"train": 2, "dev": 1, "test": 1},
+            )
+
+    def test_rejects_nonpass_upstream_audit(self):
+        upstream = json.loads((self.root / "upstream.json").read_text())
+        upstream["status"] = "FAIL_INCOMPLETE"
+        (self.root / "upstream.json").write_text(json.dumps(upstream))
+        with self.assertRaisesRegex(ValueError, "upstream audit is not PASS"):
+            MOD.prepare(
+                self.root / "candidates.csv", self.root / "contacts.jsonl", self.root / "manifest.csv",
+                self.root / "out", self.root / "audit.json", self.root / "upstream.json", expected_candidates=4,
+                expected_splits={"train": 2, "dev": 1, "test": 1},
+            )
+
+    def test_rejects_contact_sequence_hash_mismatch(self):
+        contacts = MOD.read_jsonl(self.root / "contacts.jsonl")
+        contacts[0]["sequence_sha256"] = "0" * 64
+        (self.root / "contacts.jsonl").write_text("".join(json.dumps(row) + "\n" for row in contacts))
+        upstream = json.loads((self.root / "upstream.json").read_text())
+        upstream["output_sha256"][str((self.root / "contacts.jsonl").resolve())] = MOD.sha256_file(
+            self.root / "contacts.jsonl"
+        )
+        (self.root / "upstream.json").write_text(json.dumps(upstream))
+        with self.assertRaisesRegex(ValueError, "Contact sequence/hash mismatch"):
+            MOD.prepare(
+                self.root / "candidates.csv", self.root / "contacts.jsonl", self.root / "manifest.csv",
+                self.root / "out", self.root / "audit.json", self.root / "upstream.json", expected_candidates=4,
                 expected_splits={"train": 2, "dev": 1, "test": 1},
             )
 
