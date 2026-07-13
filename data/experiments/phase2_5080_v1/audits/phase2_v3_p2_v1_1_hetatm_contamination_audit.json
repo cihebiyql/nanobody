@@ -239,6 +239,7 @@
     "affected_rows": 156,
     "baseline_model_rows": 156,
     "cdr3_count_inflation_rows": 156,
+    "cdr3_factor_undefined_rows": 0,
     "class_changed_fraction": 0.11538461538461539,
     "class_changed_rows": 18,
     "current_class_reproduced_rows": 156,
@@ -247,6 +248,7 @@
     "runs": 8,
     "source_consistency_pass_rows": 156,
     "total_count_inflation_rows": 156,
+    "total_factor_undefined_rows": 0,
     "unique_aligned_poses": 156
   },
   "decision": {
@@ -254,6 +256,18 @@
     "reason": "Current PVRL2 occlusion semantics count reference HETATM residues as PVRL2 residue-pair occlusion and materially change current-rule classifications.",
     "required_next_gate": "Create a versioned protein-only scorer, recalibrate success cases and thresholds, then rerun smoke, repeatability, and Pilot64 validation.",
     "v1_1_training_use": "BLOCK"
+  },
+  "denominator_zero_factor_rows": {
+    "cdr3": {
+      "count": 0,
+      "factor_value": null,
+      "row_identifiers": []
+    },
+    "total": {
+      "count": 0,
+      "factor_value": null,
+      "row_identifiers": []
+    }
   },
   "distributions": {
     "cdr3_current_to_protein_only_factor": {
@@ -281,9 +295,9 @@
       "p90": 1.29080767546
     }
   },
-  "generated_at_utc": "2026-07-13T18:11:46.257075+00:00",
+  "generated_at_utc": "2026-07-13T18:15:29.544833+00:00",
   "hashes": {
-    "audit_script": "2757369ef9edd286f33aa2cd34c433c949a01495d43fd7a665745bc78ceada7d",
+    "audit_script": "90c86d469a6a5aec17347556d58f7b5a055f7098c154a4c01192b6f4ce47f841",
     "current_classifier": "c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654",
     "current_occlusion_scorer": "c5e419daec19e6e38b6a52bfc63e0d6100c9c16f27b46a60235dc0f6a438982f",
     "output_csv": "e23206c7c82eb947f45743edd6a0e53d3df320b41cee555efc90255088ad353a",
@@ -357,7 +371,7 @@
   "metric_definitions": {
     "contact_cutoff": "distance <= per-model contact_cutoff_a (currently 4.5 A)",
     "current": "PVRL2 reference ATOM and HETATM heavy atoms",
-    "current_to_protein_only_factor": "current inclusive count / protein-only count; null in JSON and blank in CSV when protein-only denominator is zero",
+    "current_to_protein_only_factor": "current inclusive count / protein-only count; denominator-zero rows are represented by null semantics below, blank in CSV, and excluded from distributions",
     "distribution_p90": "linear interpolation at position (n - 1) * 0.90",
     "fraction_delta": "current CDR3 fraction - protein-only CDR3 fraction; signed, not monotonic",
     "inflation_absolute": "current inclusive count - protein-only count",
