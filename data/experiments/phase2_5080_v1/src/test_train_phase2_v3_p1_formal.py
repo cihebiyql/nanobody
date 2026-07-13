@@ -254,10 +254,17 @@ class SyntheticFormalFixture:
             expected_dev_parents=1,
             expected_test_parents=1,
             expected_hotspot_residues=1,
+            enforce_formal_governance=False,
         )
 
 
 class FormalTrainerTest(unittest.TestCase):
+    def test_real_config_passes_frozen_governance_preflight(self) -> None:
+        cfg = formal.load_config(EXP_DIR / "configs/phase2_v3_p1_formal.json")
+        audit = formal.validate_governance(cfg)
+        self.assertEqual(audit["status"], "PASS_FORMAL_GOVERNANCE_PREFLIGHT")
+        self.assertEqual(audit["seeds"], [83, 89, 97])
+
     def test_synthetic_training_resume_is_deterministic_and_test_output_is_blind(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             fixture = SyntheticFormalFixture(Path(directory))
@@ -310,19 +317,53 @@ class FormalTrainerTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "forbidden teacher label"):
                 formal.build_datasets(fixture.config(), backbone_cfg)
 
-    def test_real_generic_replay_source_freezes_128_train_groups(self) -> None:
+    def test_real_generic_replay_config_freezes_256_rows(self) -> None:
         cache = v23.ESM2Cache(EXP_DIR / "prepared/esm2_8m_v2_3_cache/manifest.csv", 320)
         cdr = v23.CDRMaskStore(EXP_DIR / "data_splits/vhh_cdr_type_masks_v2_3.csv")
         dataset = formal.GenericReplayDataset(
-            EXP_DIR / "prepared/structure_contact_maps_v3_clustered.jsonl",
+            EXP_DIR / "prepared/phase2_v3_p1_generic_replay/generic_replay_train256_v1.csv",
             cache,
             cdr,
             v23.Config(),
-            128,
+            256,
         )
-        self.assertEqual(len(dataset), 128)
-        self.assertEqual({row["source_split"] for row in dataset.rows}, {"train"})
-        self.assertEqual(len({row["split_group_id"] for row in dataset.rows}), 128)
+        self.assertEqual(len(dataset), 256)
+        self.assertEqual(len({row["sample_id"] for row in dataset.rows}), 256)
+
+    def test_label_shuffle_is_independent_on_train_and_dev(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = SyntheticFormalFixture(Path(directory))
+            cfg = fixture.config()
+            backbone_cfg, _ = formal.load_backbone_checkpoint(fixture.checkpoint)
+            datasets, _ = formal.build_datasets(cfg, backbone_cfg)
+            train_before = [row["relevance"] for row in datasets["train"].rows]
+            dev_before = [row["relevance"] for row in datasets["dev"].rows]
+            formal.shuffle_teacher_labels(datasets["train"], 83)
+            formal.shuffle_teacher_labels(datasets["dev"], 83 + 1_000_000)
+            train_after = [row["relevance"] for row in datasets["train"].rows]
+            dev_after = [row["relevance"] for row in datasets["dev"].rows]
+            self.assertNotEqual(train_before, train_after)
+            self.assertNotEqual(dev_before, dev_after)
+            self.assertEqual(sorted(train_before), sorted(train_after))
+            self.assertEqual(sorted(dev_before), sorted(dev_after))
+
+    def test_campaign_sampler_never_splits_a_campaign(self) -> None:
+        class Rows:
+            rows = [
+                {"campaign_id": "A"}, {"campaign_id": "A"},
+                {"campaign_id": "B"}, {"campaign_id": "B"}, {"campaign_id": "B"},
+                {"campaign_id": "C"},
+            ]
+
+            def __len__(self) -> int:
+                return len(self.rows)
+
+        sampler = formal.CampaignBatchSampler(Rows(), 4, torch.Generator().manual_seed(83))
+        batches = list(sampler)
+        self.assertEqual(sorted(index for batch in batches for index in batch), list(range(6)))
+        batch_by_index = {index: batch_number for batch_number, batch in enumerate(batches) for index in batch}
+        for indices in ((0, 1), (2, 3, 4), (5,)):
+            self.assertEqual(len({batch_by_index[index] for index in indices}), 1)
 
 
 if __name__ == "__main__":

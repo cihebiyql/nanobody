@@ -515,6 +515,9 @@ def validate_model_inputs(outdir: Path, expected_dim: int = 320) -> dict[str, An
     cdrs = read_csv(cdr_path)
     sequences = read_csv(sequence_path)
     cache = read_csv(cache_path)
+    candidate_by_id = {row["candidate_id"]: row for row in candidates}
+    pair_by_id = {row["sample_id"]: row for row in pairs}
+    cdr_by_hash = {row["sequence_hash"]: row for row in cdrs}
     candidate_hashes = {row["sequence_sha256"] for row in candidates}
     sequence_by_hash = {row["sequence_sha256"]: row for row in sequences}
     if not (
@@ -526,10 +529,36 @@ def validate_model_inputs(outdir: Path, expected_dim: int = 320) -> dict[str, An
         raise ValueError("Formal model-input sequence hashes are not exact-unique")
     if candidate_hashes != {row["sequence_hash"] for row in cdrs}:
         raise ValueError("Candidate and CDR-mask sequence hash sets differ")
+    if len(candidate_by_id) != EXPECTED_CANDIDATES or set(candidate_by_id) != set(pair_by_id):
+        raise ValueError("Candidate and pair candidate-ID sets differ")
+    for candidate_id, candidate in candidate_by_id.items():
+        pair = pair_by_id[candidate_id]
+        cdr = cdr_by_hash[candidate["sequence_sha256"]]
+        sequence = candidate["vhh_seq"]
+        if (
+            sequence_sha256(sequence) != candidate["sequence_sha256"]
+            or pair["vhh_sequence"] != sequence
+            or pair["vhh_sequence_sha256"] != candidate["sequence_sha256"]
+            or pair["teacher_split"] != candidate["formal_split"]
+            or pair["parent_framework_cluster"] != candidate["parent_framework_cluster"]
+            or cdr["vhh_seq"] != sequence
+        ):
+            raise ValueError(f"Candidate/pair/CDR identity closure failed for {candidate_id}")
     if candidate_hashes | {EXPECTED_TARGET_SEQUENCE_SHA256} != set(sequence_by_hash):
         raise ValueError("The 501-sequence manifest is not exactly Teacher500 plus fixed PVRIG")
     if set(sequence_by_hash) != {row["sequence_sha256"] for row in cache}:
         raise ValueError("Sequence and ESM2 cache hash sets differ")
+    if len({row["model_sha256"] for row in cache}) != 1:
+        raise ValueError("ESM2 cache manifest contains multiple model hashes")
+    for digest, source in sequence_by_hash.items():
+        if sequence_sha256(source["sequence"]) != digest:
+            raise ValueError(f"Sequence manifest hash mismatch for {digest}")
+    for row in pairs:
+        if (
+            row["target_sequence_sha256"] != EXPECTED_TARGET_SEQUENCE_SHA256
+            or sequence_sha256(row["target_sequence"]) != EXPECTED_TARGET_SEQUENCE_SHA256
+        ):
+            raise ValueError(f"Pair target identity mismatch for {row['sample_id']}")
 
     shard_payloads: dict[Path, dict[str, torch.Tensor]] = {}
     failures: list[str] = []
@@ -547,6 +576,9 @@ def validate_model_inputs(outdir: Path, expected_dim: int = 320) -> dict[str, An
                 tensor.ndim != 2
                 or tensor.shape != (int(source["sequence_length"]), expected_dim)
                 or tensor.dtype != torch.float16
+                or int(row["sequence_length"]) != int(source["sequence_length"])
+                or int(row["cached_length"]) != int(source["sequence_length"])
+                or row["shard_key"] != digest
                 or row["chain_type"] != source["chain_type"]
                 or row["truncation_policy"] != "none"
             ):

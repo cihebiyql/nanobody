@@ -56,6 +56,7 @@ DEFAULT_SELECTION = EXP_DIR / "data_splits/pvrig_teacher_formal_v1/teacher500/pv
 DEFAULT_TARGET = DATA_ROOT / "model_data/pvrig_target_ectodomain_proxy_v1.fasta"
 DEFAULT_TARGET_MAPPING = DATA_ROOT / "model_data/pvrig_target_domain_mapping_v1.csv"
 DEFAULT_RECONCILIATION = DATA_ROOT / "structures/PVRIG_numbering_reconciliation.csv"
+DEFAULT_HOTSPOT = DATA_ROOT / "structures/PVRIG_hotspot_set_v1.csv"
 DEFAULT_PDB_8X6B = DATA_ROOT / "structures/8X6B.pdb"
 DEFAULT_PDB_9E6Y = DATA_ROOT / "structures/9E6Y.pdb"
 DEFAULT_INTERFACE_8X6B = DATA_ROOT / "structures/PVRIG_interface_residues_8X6B.csv"
@@ -94,6 +95,7 @@ class FormalTrainConfig:
     cdr_mask_csv: str = str(DEFAULT_PREPARED / "model_inputs/vhh_cdr_type_masks.csv")
     target_fasta: str = str(DEFAULT_TARGET)
     target_mapping_csv: str = str(DEFAULT_TARGET_MAPPING)
+    hotspot_csv: str = str(DEFAULT_HOTSPOT)
     reconciliation_csv: str = str(DEFAULT_RECONCILIATION)
     pdb_8x6b: str = str(DEFAULT_PDB_8X6B)
     pdb_9e6y: str = str(DEFAULT_PDB_9E6Y)
@@ -140,6 +142,7 @@ class FormalTrainConfig:
     expected_dev_parents: int = 6
     expected_test_parents: int = 6
     expected_hotspot_residues: int = 23
+    enforce_formal_governance: bool = True
 
 
 def sha256_file(path: Path) -> str:
@@ -211,6 +214,22 @@ def target_weights(mapping_csv: Path, target_sequence: str, expected_count: int)
     observed = int((weights > 0).sum())
     if expected_count and observed != expected_count:
         raise ValueError(f"Expected {expected_count} weighted PVRIG residues, found {observed}")
+    return weights
+
+
+def hotspot_weights(hotspot_csv: Path, target_sequence: str, expected_count: int) -> torch.Tensor:
+    weights = torch.zeros(len(target_sequence), dtype=torch.float32)
+    for row in read_csv(hotspot_csv):
+        weight = float(row["priority_weight"])
+        if weight <= 0:
+            continue
+        index = int(row["uniprot_position"]) - 39
+        if not 0 <= index < len(target_sequence) or target_sequence[index] != row["uniprot_aa"]:
+            raise ValueError(f"Frozen hotspot does not map to target sequence: {row['hotspot_id']}")
+        weights[index] = max(float(weights[index]), weight)
+    observed = int((weights > 0).sum())
+    if observed != expected_count:
+        raise ValueError(f"Expected {expected_count} frozen hotspot residues, found {observed}")
     return weights
 
 
@@ -1029,6 +1048,7 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
         "cdr_mask_csv": Path(cfg.cdr_mask_csv),
         "target_fasta": Path(cfg.target_fasta),
         "target_mapping_csv": Path(cfg.target_mapping_csv),
+        "hotspot_csv": Path(cfg.hotspot_csv),
         "reconciliation_csv": Path(cfg.reconciliation_csv),
         "pdb_8x6b": Path(cfg.pdb_8x6b),
         "pdb_9e6y": Path(cfg.pdb_9e6y),
@@ -1053,6 +1073,61 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
     return result
 
 
+def validate_governance(cfg: FormalTrainConfig) -> dict[str, Any]:
+    prereg_path = Path(cfg.preregistration_json)
+    test_spec_path = Path(cfg.test_spec_json)
+    prereg = json.loads(prereg_path.read_text(encoding="utf-8"))
+    test_spec = json.loads(test_spec_path.read_text(encoding="utf-8"))
+    if prereg.get("status") != "FROZEN_BEFORE_FORMAL_TEACHER_LABELS_AND_TEST_UNSEAL":
+        raise ValueError("V3-P preregistration is not in the frozen pre-label state")
+    if test_spec.get("status") != "FROZEN_BEFORE_FORMAL_TEST_UNSEAL":
+        raise ValueError("V3-P test specification is not frozen")
+    if tuple(prereg["training"]["seeds"]) != (83, 89, 97):
+        raise ValueError("Frozen V3-P seeds changed")
+    expected_losses = prereg["architecture"]["losses"]
+    observed_losses = {
+        "generic_replay": cfg.generic_replay_weight,
+        "geometry_regression": cfg.geometry_weight,
+        "ordinal_tier": cfg.ordinal_weight,
+        "pose_contact_frequency": cfg.contact_weight,
+        "within_campaign_rank": cfg.campaign_rank_weight,
+    }
+    if observed_losses != expected_losses:
+        raise ValueError(f"Configured loss weights differ from preregistration: {observed_losses} != {expected_losses}")
+    verified: dict[str, dict[str, str]] = {}
+    for name, record in prereg["frozen_inputs"].items():
+        path = DATA_ROOT / record["path"]
+        observed = sha256_file(path)
+        if observed != record["sha256"]:
+            raise ValueError(f"Frozen preregistration input hash changed: {name}")
+        verified[name] = {"path": str(path), "sha256": observed}
+    frozen_selection = (DATA_ROOT / prereg["frozen_inputs"]["teacher500_selection_manifest"]["path"]).resolve()
+    if Path(cfg.selection_csv).resolve() != frozen_selection:
+        raise ValueError("Configured Teacher500 selection is not the preregistered frozen manifest")
+    configured_frozen_paths = {
+        "hotspot_set": cfg.hotspot_csv,
+        "interface_8x6b": cfg.interface_8x6b_csv,
+        "interface_9e6y": cfg.interface_9e6y_csv,
+        "structure_8x6b": cfg.pdb_8x6b,
+        "structure_9e6y": cfg.pdb_9e6y,
+    }
+    for name, configured_path in configured_frozen_paths.items():
+        expected_path = (DATA_ROOT / prereg["frozen_inputs"][name]["path"]).resolve()
+        if Path(configured_path).resolve() != expected_path:
+            raise ValueError(f"Configured {name} is not the preregistered frozen artifact")
+    declared_prereg = (DATA_ROOT / test_spec["preregistration_path"]).resolve()
+    if prereg_path.resolve() != declared_prereg:
+        raise ValueError("Test specification points to a different preregistration")
+    return {
+        "status": "PASS_FORMAL_GOVERNANCE_PREFLIGHT",
+        "preregistration_sha256": sha256_file(prereg_path),
+        "test_spec_sha256": sha256_file(test_spec_path),
+        "verified_frozen_inputs": verified,
+        "loss_weights": observed_losses,
+        "seeds": [83, 89, 97],
+    }
+
+
 def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[dict[str, Dataset], dict[str, Any]]:
     selection_rows = read_csv(Path(cfg.selection_csv))
     validate_selection(selection_rows, cfg)
@@ -1075,7 +1150,10 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
     contacts = {str(row["candidate_id"]): row for row in contact_rows}
     target_sequence = read_fasta(Path(cfg.target_fasta))
     mapping = pvrig_pdb_to_model_index(Path(cfg.reconciliation_csv), target_sequence)
-    hotspot_weights = target_weights(Path(cfg.target_mapping_csv), target_sequence, cfg.expected_hotspot_residues)
+    # Validate the model-domain mapping, then source the actual mask from the
+    # preregistered hotspot artifact rather than an unfrozen derived table.
+    target_weights(Path(cfg.target_mapping_csv), target_sequence, cfg.expected_hotspot_residues)
+    hotspot_values = hotspot_weights(Path(cfg.hotspot_csv), target_sequence, cfg.expected_hotspot_residues)
     structure_8x6b = build_conformer_features(
         "8X6B", Path(cfg.pdb_8x6b), Path(cfg.interface_8x6b_csv), Path(cfg.reconciliation_csv), target_sequence
     )
@@ -1113,7 +1191,7 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
     if len(datasets["test"]) != cfg.expected_test_candidates:
         raise ValueError("Label-free test inference dataset does not match frozen count")
     return datasets, {
-        "hotspot_weights": hotspot_weights,
+        "hotspot_weights": hotspot_values,
         "structure_8x6b": structure_8x6b,
         "structure_9e6y": structure_9e6y,
         "target_sequence": target_sequence,
@@ -1152,6 +1230,11 @@ def train_seed(
     allowed_controls = {"full", "vhh_only", "hotspot_shuffle", "antigen_ablation", "target_permutation", "label_shuffle"}
     if control_type not in allowed_controls:
         raise ValueError(f"Unsupported formal control: {control_type}")
+    governance = (
+        validate_governance(cfg)
+        if cfg.enforce_formal_governance
+        else {"status": "DISABLED_FOR_SYNTHETIC_OR_DEVELOPMENT_FIXTURE"}
+    )
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -1218,6 +1301,8 @@ def train_seed(
     config_fingerprint = sha256_json({"config": asdict(cfg), "control_type": control_type})
     run_dir.mkdir(parents=True, exist_ok=True)
     write_json_atomic(run_dir / "config_resolved.json", asdict(cfg))
+    governance_path = run_dir / "formal_governance_preflight.json"
+    write_json_atomic(governance_path, governance)
     if "replay" in datasets:
         write_csv_atomic(run_dir / "generic_replay_manifest.csv", datasets["replay"].manifest_rows())
     baseline_path = run_dir / "baseline_registry.csv"
@@ -1340,6 +1425,7 @@ def train_seed(
             "seed": seed,
             "status": status,
             "control_type": control_type,
+            "formal_governance_preflight_sha256": sha256_file(governance_path),
             "last_checkpoint": str(last_path),
             "completed_epoch": history[-1]["epoch"],
             "claim_boundary": CLAIM_BOUNDARY,
@@ -1364,6 +1450,8 @@ def train_seed(
             "preregistration_sha256": hashes["files"]["preregistration_json"],
             "test_spec_sha256": hashes["files"]["test_spec_json"],
             "artifact_hashes": hashes,
+            "formal_governance_preflight": governance,
+            "formal_governance_preflight_sha256": sha256_file(governance_path),
             "geometry_fields": list(GEOMETRY_FIELDS),
             "geometry_mean": geometry_mean.cpu(),
             "geometry_std": geometry_std.cpu(),
@@ -1456,6 +1544,9 @@ def train_seed(
         "config_fingerprint": config_fingerprint,
         "preregistration_sha256": hashes["files"]["preregistration_json"],
         "test_spec_sha256": hashes["files"]["test_spec_json"],
+        "formal_governance_preflight": governance,
+        "formal_governance_preflight_path": str(governance_path),
+        "formal_governance_preflight_sha256": sha256_file(governance_path),
         "baseline_registry_path": str(baseline_path),
         "baseline_registry_sha256": sha256_file(baseline_path),
         "frozen_backbone": True,
@@ -1481,6 +1572,8 @@ def run_training(
     stop_after_epoch: int = 0,
     control_type: str = "full",
 ) -> dict[str, Any]:
+    if cfg.enforce_formal_governance and tuple(cfg.seeds) != (83, 89, 97):
+        raise ValueError("Formal V3-P run requires exact preregistered seeds 83,89,97")
     if run_root is None:
         run_id = time.strftime("phase2_v3_p1_formal_%Y%m%d_%H%M%S")
         run_root = Path(cfg.out_root) / run_id

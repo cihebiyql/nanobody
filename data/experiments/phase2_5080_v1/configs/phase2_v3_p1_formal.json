@@ -7,6 +7,7 @@
   "cdr_mask_csv": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/model_inputs/vhh_cdr_type_masks.csv",
   "target_fasta": "model_data/pvrig_target_ectodomain_proxy_v1.fasta",
   "target_mapping_csv": "model_data/pvrig_target_domain_mapping_v1.csv",
+  "hotspot_csv": "structures/PVRIG_hotspot_set_v1.csv",
   "reconciliation_csv": "structures/PVRIG_numbering_reconciliation.csv",
   "pdb_8x6b": "structures/8X6B.pdb",
   "pdb_9e6y": "structures/9E6Y.pdb",
@@ -52,5 +53,6 @@
   "expected_train_parents": 28,
   "expected_dev_parents": 6,
   "expected_test_parents": 6,
-  "expected_hotspot_residues": 23
+  "expected_hotspot_residues": 23,
+  "enforce_formal_governance": true
 }

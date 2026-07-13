@@ -181,6 +181,40 @@ class PrepareFormalTeacher500InputsTest(unittest.TestCase):
             self.assertEqual(summary["resumed_sequences"], 501)
             self.assertEqual(summary["new_sequences"], 0)
 
+    def test_rejects_pair_identity_or_cache_manifest_metadata_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            outdir = root / "model_inputs"
+            model_path = root / "model.bin"
+            model_path.write_bytes(b"frozen-test-model")
+            MOD.prepare_sequence_inputs(MOD.DEFAULT_SELECTION, MOD.DEFAULT_TARGET, outdir)
+            write_fake_cache(outdir, model_path)
+
+            pairs = MOD.read_csv(outdir / "pvrig_formal_teacher500_pair_inputs.csv")
+            pairs[0]["sample_id"] = "wrong_candidate"
+            write_rows(outdir / "pvrig_formal_teacher500_pair_inputs.csv", pairs)
+            with self.assertRaisesRegex(ValueError, "candidate-ID sets differ"):
+                MOD.validate_model_inputs(outdir)
+
+        for field, replacement, message in (
+            ("cached_length", "1", "tensor validation failed"),
+            ("shard_key", "wrong_key", "tensor validation failed"),
+            ("model_sha256", "0" * 64, "multiple model hashes"),
+        ):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                outdir = root / "model_inputs"
+                model_path = root / "model.bin"
+                model_path.write_bytes(b"frozen-test-model")
+                MOD.prepare_sequence_inputs(MOD.DEFAULT_SELECTION, MOD.DEFAULT_TARGET, outdir)
+                write_fake_cache(outdir, model_path)
+                manifest_path = outdir / "esm2_8m_cache/manifest.csv"
+                rows = MOD.read_csv(manifest_path)
+                rows[0][field] = replacement
+                MOD.write_cache_manifest(manifest_path, rows)
+                with self.assertRaisesRegex(ValueError, message):
+                    MOD.validate_model_inputs(outdir)
+
 
 if __name__ == "__main__":
     unittest.main()
