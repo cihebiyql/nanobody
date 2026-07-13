@@ -1142,6 +1142,28 @@ def validate_postprocess_marker(
         if normalized != expected:
             errors.append(f"marker_identity_mismatch:{field}:{actual}!={expected}")
 
+    current_toolchain = current_postprocess_toolchain_hashes()
+    current_references = current_postprocess_reference_hashes()
+    for label, marker_field, current, frozen in (
+        (
+            "toolchain",
+            "toolchain_sha256",
+            current_toolchain,
+            FROZEN_POSTPROCESS_TOOLCHAIN_SHA256,
+        ),
+        (
+            "reference",
+            "reference_sha256",
+            current_references,
+            FROZEN_POSTPROCESS_REFERENCE_SHA256,
+        ),
+    ):
+        if current != frozen:
+            errors.append(f"current_postprocess_{label}_trust_mismatch:{current}!={frozen}")
+        marker_hashes = marker.get(marker_field)
+        if marker_hashes != frozen:
+            errors.append(f"marker_postprocess_{label}_trust_mismatch:{marker_hashes}!={frozen}")
+
     input_sha = marker.get("input_sha256")
     if not isinstance(input_sha, dict):
         errors.append("marker_input_sha256_not_object")
@@ -1884,6 +1906,17 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         },
         "package_closure": package_closure,
         "package_closure_errors": package_closure_errors,
+        "external_trust_anchors": {
+            "frozen_sha256": FROZEN_EXTERNAL_TRUST_ANCHORS,
+            "observed_sha256": package_closure.get("observed_trust_anchor_sha256", {}),
+            "checks": package_closure.get("trust_anchor_checks", {}),
+        },
+        "postprocess_provenance": {
+            "frozen_toolchain_sha256": FROZEN_POSTPROCESS_TOOLCHAIN_SHA256,
+            "observed_toolchain_sha256": current_postprocess_toolchain_hashes(),
+            "frozen_reference_sha256": FROZEN_POSTPROCESS_REFERENCE_SHA256,
+            "observed_reference_sha256": current_postprocess_reference_hashes(),
+        },
         "manifest_contract_errors": contract_errors,
         "failed_receptor_runs": [
             {"run_id": row["run_id"], "reasons": row["dg_a_failure_reasons"]}
