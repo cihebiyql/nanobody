@@ -174,6 +174,26 @@ def tree_digest(root: Path) -> dict[str, Any]:
     return {"file_count": count, "total_bytes": total_bytes, "sha256": digest.hexdigest()}
 
 
+def ensure_output_paths_outside_input_root(
+    input_root: Path,
+    output_paths: Sequence[Path],
+    protected_input_paths: Sequence[Path] = (),
+) -> None:
+    resolved_root = input_root.resolve()
+    resolved_outputs = [path.resolve() for path in output_paths]
+    protected = {path.resolve() for path in protected_input_paths}
+    if len(set(resolved_outputs)) != len(resolved_outputs):
+        raise ValueError("Audit output paths must be distinct")
+    for path in resolved_outputs:
+        if path in protected:
+            raise ValueError(f"Audit output path collides with a protected input: {path}")
+        try:
+            path.relative_to(resolved_root)
+        except ValueError:
+            continue
+        raise ValueError(f"Audit output path must be outside the read-only input root: {path}")
+
+
 def read_json_object(path: Path) -> dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
@@ -376,14 +396,15 @@ def threshold_value(text: str) -> float:
 def load_rules(path: Path) -> dict[str, float]:
     payload = read_json_object(path)
     required = payload["classifier"]["BLOCKER_LIKE_A"]["required_for_vhh_docking"]
+    total_min = threshold_value(required["total_vhh_pvrl2_residue_pair_occlusion"])
     return {
         "hotspot_min": threshold_value(required["hotspot_overlap_count"]),
-        "total_min": threshold_value(required["total_vhh_pvrl2_residue_pair_occlusion"]),
+        "total_min": total_min,
         "cdr3_min": threshold_value(required["cdr3_pvrl2_residue_pair_occlusion"]),
         "cdr3_fraction_min": threshold_value(required["cdr3_occlusion_fraction"]),
         # These values are hardcoded in the current classifier and are hash-bound below.
         "binder_total_max": 50.0,
-        "b_total_min": 500.0,
+        "b_total_min": total_min,
         "b_cdr3_min": 50.0,
         "b_fallback_total_min": 300.0,
         "b_fallback_hotspot_min": 10.0,
@@ -891,6 +912,12 @@ def build_audit(
     transitions = Counter(str(row["class_transition"]) for row in rows)
     changed_rows = [row for row in rows if row["class_changed"] == "true"]
     affected_rows = [row for row in rows if row["affected"] == "true"]
+    total_factor_undefined = [
+        row for row in rows if row["total_current_to_protein_only_factor"] == ""
+    ]
+    cdr3_factor_undefined = [
+        row for row in rows if row["cdr3_current_to_protein_only_factor"] == ""
+    ]
     total_factors = [
         float(row["total_current_to_protein_only_factor"])
         for row in rows
@@ -968,6 +995,8 @@ def build_audit(
             "affected_fraction": len(affected_rows) / row_count,
             "class_changed_rows": len(changed_rows),
             "class_changed_fraction": len(changed_rows) / row_count,
+            "total_factor_undefined_rows": len(total_factor_undefined),
+            "cdr3_factor_undefined_rows": len(cdr3_factor_undefined),
         },
         "reference_inventory_heavy_atoms": {
             baseline: {
@@ -984,8 +1013,8 @@ def build_audit(
             "protein_only": "same calculation with PVRL2 reference ATOM heavy atoms only",
             "inflation_absolute": "current inclusive count - protein-only count",
             "current_to_protein_only_factor": (
-                "current inclusive count / protein-only count; null in JSON and blank in CSV "
-                "when protein-only denominator is zero"
+                "current inclusive count / protein-only count; denominator-zero rows are "
+                "represented by null semantics below, blank in CSV, and excluded from distributions"
             ),
             "fraction_delta": "current CDR3 fraction - protein-only CDR3 fraction; signed, not monotonic",
             "distribution_p90": "linear interpolation at position (n - 1) * 0.90",
@@ -1006,6 +1035,18 @@ def build_audit(
         ),
         "affected_row_identifiers": [identifier(row) for row in affected_rows],
         "class_changed_row_identifiers": [identifier(row) for row in changed_rows],
+        "denominator_zero_factor_rows": {
+            "total": {
+                "count": len(total_factor_undefined),
+                "factor_value": None,
+                "row_identifiers": [identifier(row) for row in total_factor_undefined],
+            },
+            "cdr3": {
+                "count": len(cdr3_factor_undefined),
+                "factor_value": None,
+                "row_identifiers": [identifier(row) for row in cdr3_factor_undefined],
+            },
+        },
         "hashes": {
             **evidence["static_hashes"],
             "output_csv": sha256_file(output_csv),
@@ -1122,6 +1163,10 @@ def write_report(path: Path, audit: dict[str, Any], audit_json_sha256: str) -> N
             "",
             *[f"- `{identifier}`" for identifier in audit["class_changed_row_identifiers"]],
             "",
+            "## 全部受影响行标识",
+            "",
+            *[f"- `{identifier}`" for identifier in audit["affected_row_identifiers"]],
+            "",
             "## 科学处置",
             "",
             "1. 保留当前 V1.1 scorer、postprocessor 和 smoke 输出不变，作为被拒绝版本的 provenance。",
@@ -1151,6 +1196,16 @@ def write_report(path: Path, audit: dict[str, Any], audit_json_sha256: str) -> N
 def main() -> int:
     args = parse_args()
     input_root = args.input_root.resolve()
+    ensure_output_paths_outside_input_root(
+        input_root,
+        [args.output_csv, args.output_json, args.output_report],
+        [
+            args.rules_json,
+            args.classifier_path,
+            args.scorer_path,
+            *[Path(config["reference"]) for config in BASELINES.values()],
+        ],
+    )
     before_snapshot = tree_digest(input_root)
     rows, evidence = audit_rows(
         input_root,

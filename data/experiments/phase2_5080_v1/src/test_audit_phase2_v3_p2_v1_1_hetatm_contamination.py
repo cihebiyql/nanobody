@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import math
 import sys
 import tempfile
@@ -97,6 +98,41 @@ class HetatmContactAuditTests(unittest.TestCase):
         self.assertIsNone(MOD.safe_factor(3.0, 0.0))
         self.assertEqual(MOD.csv_number(MOD.safe_factor(3.0, 0.0)), "")
 
+    def test_output_paths_must_stay_outside_read_only_input_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "input"
+            root.mkdir()
+            outside = Path(tmp) / "audit.csv"
+            MOD.ensure_output_paths_outside_input_root(root, [outside])
+            with self.assertRaisesRegex(ValueError, "outside the read-only input root"):
+                MOD.ensure_output_paths_outside_input_root(root, [root / "audit.csv"])
+            with self.assertRaisesRegex(ValueError, "must be distinct"):
+                MOD.ensure_output_paths_outside_input_root(root, [outside, outside])
+            protected = Path(tmp) / "rules.json"
+            with self.assertRaisesRegex(ValueError, "collides with a protected input"):
+                MOD.ensure_output_paths_outside_input_root(
+                    root, [protected], [protected]
+                )
+
+    def test_marker_artifact_path_and_hash_are_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            run_dir = Path(tmp) / "run"
+            artifact = run_dir / "reports/ranks.csv"
+            artifact.parent.mkdir(parents=True)
+            artifact.write_text("model,rank\npose,1\n", encoding="utf-8")
+            marker = {
+                "artifacts": {
+                    "ranks": {
+                        "relpath": "reports/ranks.csv",
+                        "sha256": MOD.sha256_file(artifact),
+                    }
+                }
+            }
+            MOD.validate_marker_artifact(marker, "ranks", artifact, run_dir)
+            artifact.write_text("model,rank\npose,2\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "hash mismatch"):
+                MOD.validate_marker_artifact(marker, "ranks", artifact, run_dir)
+
 
 class SensitivityClassificationTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -128,6 +164,26 @@ class SensitivityClassificationTests(unittest.TestCase):
         self.assertEqual(self.classify(14, 499, 99, 0.20), "BLOCKER_PLAUSIBLE_B")
         self.assertEqual(self.classify(14, 500, 50, 0.10), "BLOCKER_PLAUSIBLE_B")
         self.assertEqual(self.classify(14, 299, 49, 0.10), "EVIDENCE_INFERENCE_ONLY_E")
+
+    def test_b_total_threshold_tracks_the_loaded_a_total_rule(self) -> None:
+        payload = {
+            "classifier": {
+                "BLOCKER_LIKE_A": {
+                    "required_for_vhh_docking": {
+                        "hotspot_overlap_count": ">= 14",
+                        "total_vhh_pvrl2_residue_pair_occlusion": ">= 600",
+                        "cdr3_pvrl2_residue_pair_occlusion": ">= 100",
+                        "cdr3_occlusion_fraction": ">= 0.15",
+                    }
+                }
+            }
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "rules.json"
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            loaded = MOD.load_rules(path)
+        self.assertEqual(loaded["total_min"], 600.0)
+        self.assertEqual(loaded["b_total_min"], 600.0)
 
     def test_claim_boundary_forbids_overclaiming(self) -> None:
         self.assertIn("Read-only V1.1 contamination and sensitivity audit", MOD.CLAIM_BOUNDARY)
