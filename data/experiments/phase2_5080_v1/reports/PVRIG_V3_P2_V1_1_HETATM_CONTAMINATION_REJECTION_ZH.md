@@ -8,7 +8,7 @@
 ## 结论
 
 当前 V1.1 遮挡计分把参考 PVRL2 链中的水和配体 `HETATM` 当作 PVRL2 残基，
-并计入 total/CDR3 residue-pair occlusion。该语义已经在全量 Pilot64 运行前被本审计拒绝，
+并计入 total/CDR3 residue-pair occlusion。该语义已在全量 Pilot64 运行期间、正式 Gold 冻结前被本审计拒绝，
 因此当前 V1.1 路径不得冻结为训练用 Docking Gold。
 
 这里的 protein-only 结果仅是 **sensitivity classification comparison（敏感性分类比较）**。
@@ -249,7 +249,7 @@ fraction delta 有正有负，不能统一描述为 fraction 膨胀。
 - 行级 CSV：`/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_rows.csv`
 - 机器审计 JSON：`/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_audit.json`
 - CSV SHA256：`c0fcaabdc2760d93ca94f8e9291bf90b7a011e1dd0cd2f7820b567d492af2daa`
-- JSON SHA256：`e016291bfa3b6dc611ff41f97521fc4286e38f262c3d45a3612a7649e7d34854`
+- JSON SHA256：`c53a12545de2ad827e39caaae7767d4ae442d16cd9b09cdc22479b0fd7527f45`
 - 当前 scorer SHA256：`c5e419daec19e6e38b6a52bfc63e0d6100c9c16f27b46a60235dc0f6a438982f`
 - 当前 classifier SHA256：`c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654`
 - rules SHA256：`60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5`
