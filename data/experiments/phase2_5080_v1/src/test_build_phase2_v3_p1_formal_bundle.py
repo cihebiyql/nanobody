@@ -30,7 +30,7 @@ class FormalBundleTest(unittest.TestCase):
         for path in (self.prereg, self.spec):
             path.write_text("{}\n")
         self.bound = []
-        for name in ("config.json", "teacher_open.csv", "teacher_sealed.csv", "data_audit.json", "inputs.json", "trainer.py", "model.py", "evaluator.py"):
+        for name in ("config.json", "teacher_open.csv", "teacher_sealed.csv", "data_audit.json", "inputs.json", "trainer.py", "model.py", "evaluator.py", "bundle.py"):
             path = self.root / name
             path.write_text(name + "\n")
             self.bound.append(path)
@@ -80,7 +80,7 @@ class FormalBundleTest(unittest.TestCase):
             preregistration=self.prereg, test_spec=self.spec, config=self.bound[0],
             teacher_open=self.bound[1], teacher_test_sealed=self.bound[2], formal_data_audit=self.bound[3],
             model_input_validation=self.bound[4], trainer_source=self.bound[5], model_source=self.bound[6],
-            evaluator_source=self.bound[7], output_dir=self.root / "bundle",
+            evaluator_source=self.bound[7], bundle_builder_source=self.bound[8], output_dir=self.root / "bundle",
         )
 
     def test_builds_hash_bound_bundle(self) -> None:

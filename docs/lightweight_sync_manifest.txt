@@ -548,6 +548,7 @@ data/experiments/phase2_5080_v1/src/freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/fuse_phase2_v2_4_p3.py
 data/experiments/phase2_5080_v1/src/fuse_pvrig_v3_structure_evidence.py
 data/experiments/phase2_5080_v1/src/make_rfantibody_hlt_framework.py
+data/experiments/phase2_5080_v1/src/monitor_phase2_v3_p1_after_teacher.sh
 data/experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher500_docking.sh
 data/experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher_pipeline.sh
 data/experiments/phase2_5080_v1/src/phase2_v2_5_contracts.py
@@ -574,6 +575,7 @@ data/experiments/phase2_5080_v1/src/prepare_pvrig_teacher_pilot96_model_inputs.p
 data/experiments/phase2_5080_v1/src/process_pvrig_formal_teacher500.py
 data/experiments/phase2_5080_v1/src/process_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/run_external_priors_v1.py
+data/experiments/phase2_5080_v1/src/run_phase2_v3_p1_formal_pipeline.sh
 data/experiments/phase2_5080_v1/src/run_pvrig_formal_teacher500_finalize.sh
 data/experiments/phase2_5080_v1/src/run_pvrig_formal_teacher500_postprocess.sh
 data/experiments/phase2_5080_v1/src/score_p3_late_fusion.py
@@ -585,6 +587,7 @@ data/experiments/phase2_5080_v1/src/select_pvrig_formal_parent40.py
 data/experiments/phase2_5080_v1/src/select_pvrig_formal_teacher500.py
 data/experiments/phase2_5080_v1/src/select_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/setup_external_priors_env_v1.sh
+data/experiments/phase2_5080_v1/src/start_phase2_v3_p1_after_teacher_monitor.sh
 data/experiments/phase2_5080_v1/src/start_pvrig_formal_teacher500_docking_monitor.sh
 data/experiments/phase2_5080_v1/src/start_pvrig_formal_teacher_pipeline_controller.sh
 data/experiments/phase2_5080_v1/src/summarize_external_priors_v1.py

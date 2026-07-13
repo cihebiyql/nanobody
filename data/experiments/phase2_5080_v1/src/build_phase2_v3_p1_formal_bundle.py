@@ -139,6 +139,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "trainer_source": args.trainer_source,
         "model_source": args.model_source,
         "evaluator_source": args.evaluator_source,
+        "bundle_builder_source": args.bundle_builder_source,
     }
     bound_files = {name: {"path": str(path), "sha256": sha256_file(path)} for name, path in bound_paths.items()}
     seed_predictions = {
@@ -189,6 +190,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--trainer-source", type=Path, required=True)
     parser.add_argument("--model-source", type=Path, required=True)
     parser.add_argument("--evaluator-source", type=Path, required=True)
+    parser.add_argument("--bundle-builder-source", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     return parser.parse_args(argv)
 
