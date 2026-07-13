@@ -1137,7 +1137,7 @@ def write_report(path: Path, audit: dict[str, Any], audit_json_sha256: str) -> N
         "## 结论",
         "",
         "当前 V1.1 遮挡计分把参考 PVRL2 链中的水和配体 `HETATM` 当作 PVRL2 残基，",
-        "并计入 total/CDR3 residue-pair occlusion。该语义已经在全量 Pilot64 运行前被本审计拒绝，",
+        "并计入 total/CDR3 residue-pair occlusion。该语义已在全量 Pilot64 运行期间、正式 Gold 冻结前被本审计拒绝，",
         "因此当前 V1.1 路径不得冻结为训练用 Docking Gold。",
         "",
         "这里的 protein-only 结果仅是 **sensitivity classification comparison（敏感性分类比较）**。",
