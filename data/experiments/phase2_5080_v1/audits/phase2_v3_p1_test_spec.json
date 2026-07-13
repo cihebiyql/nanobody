@@ -1,0 +1,23 @@
+{
+  "known_limitations": [
+    "formal test contains only six parent clusters",
+    "Teacher500 contains one generation method",
+    "9E6Y is reference-interface rescoring, not an independent second docking run"
+  ],
+  "preregistration_path": "experiments/phase2_5080_v1/audits/phase2_v3_p1_preregistration.json",
+  "required_checks": [
+    "500 candidate/contact/manifest ID and sequence-hash closure",
+    "train/dev/test parent_framework_cluster overlap equals zero",
+    "formal blinded manifest contains no geometry or contact labels",
+    "three exact seeds 83,89,97 each produce checkpoint, config, dev predictions, and blinded formal predictions",
+    "evaluator merges sealed labels one-to-one by candidate_id, sequence_sha256, and parent_framework_cluster",
+    "ensemble metrics include Recall@20%, EF@10%, NDCG, relevance Spearman, geometry metrics, and uncertainty",
+    "parent-cluster bootstrap CI and paired parent-cluster permutation are reported",
+    "label shuffle, hotspot shuffle, antigen ablation, target permutation, and VHH-only controls are reported",
+    "generic replay contact/paratope retention is reported",
+    "artifact manifest binds source, configs, teacher files, checkpoints, predictions, and preregistration hashes",
+    "claim boundary remains docking surrogate rather than binding or experimental blocking truth"
+  ],
+  "schema_version": "phase2_v3_p1_test_spec_v1",
+  "status": "FROZEN_BEFORE_FORMAL_TEST_UNSEAL"
+}

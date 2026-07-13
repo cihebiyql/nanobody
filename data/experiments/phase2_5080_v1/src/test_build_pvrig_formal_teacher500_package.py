@@ -41,6 +41,8 @@ class BuildPVRIGFormalTeacher500PackageTest(unittest.TestCase):
         self.assertIn("gpu=$((shard + 1))", source)
         self.assertIn("PVRIG_HADDOCK_NCORES:-4", source)
         self.assertIn('V2_5_HADDOCK_NCORES="$HADDOCK_NCORES"', source)
+        self.assertIn("PVRIG_MAX_PARALLEL_SHARDS:-7", source)
+        self.assertIn('${#pids[@]} >= MAX_PARALLEL_SHARDS', source)
         self.assertIn("run_shards 0 monomer", source)
         self.assertIn("run_shards 1 docking", source)
 

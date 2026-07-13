@@ -1,0 +1,141 @@
+{
+  "architecture": {
+    "generic_prior": "frozen mean-pooled v3_full three-seed ensemble scalar already present in Teacher500 manifest",
+    "losses": {
+      "generic_replay": 0.3,
+      "geometry_regression": 0.7,
+      "ordinal_tier": 1.0,
+      "pose_contact_frequency": 0.5,
+      "within_campaign_rank": 0.5
+    },
+    "ordered_target": {
+      "G1": 4,
+      "G2": 3,
+      "G3": 2,
+      "G4": 1,
+      "G5": 0
+    },
+    "residue_backbone": "frozen V2.3 residue/contact backbone; legacy V2.3 pair head and failed V3-G2 pair head are prohibited as generic prior",
+    "target_channels": [
+      "PVRIG residue embeddings",
+      "8X6B fixed structure features",
+      "9E6Y fixed structure features",
+      "hotspot/interface masks"
+    ],
+    "trainable_components": [
+      "PVRIG adapter/cross-attention",
+      "ordered G1-G5 head",
+      "geometry regressors",
+      "contact/paratope/epitope heads",
+      "small fusion ranker"
+    ]
+  },
+  "baselines": [
+    "constant/prevalence",
+    "frozen mean-pooled generic_binding_prior",
+    "cheap_qc_score",
+    "frozen V2.3 hotspot-contact features",
+    "VHH-only head",
+    "shallow generic+contact+QC ranker"
+  ],
+  "challenge_blocks": {
+    "held_out_parent_clusters": "formal primary",
+    "leave_design_mode": "diagnostic",
+    "leave_generation_method": "NOT_AVAILABLE_TEACHER500_HAS_ONE_GENERATION_METHOD",
+    "leave_patch": "diagnostic"
+  },
+  "claim_boundary": "PVRIG docking geometry/contact-frequency surrogate for frontscreen allocation only; not binding, Kd, competition, or experimental blocker proof.",
+  "controls": {
+    "antigen_ablation_relative_ef_drop_min": 0.25,
+    "generic_contact_paratope_retention_min_fraction": 0.9,
+    "hotspot_mask_shuffle_relative_ef_drop_min": 0.25,
+    "label_shuffle": "must not pass primary gate",
+    "target_residue_permutation_relative_ef_drop_min": 0.25,
+    "vhh_only": "must underperform full ensemble"
+  },
+  "dataset": {
+    "expected_candidates": 500,
+    "maximum_poses_per_candidate": 10,
+    "minimum_poses_per_candidate": 4,
+    "parent_cluster_counts": {
+      "dev": 6,
+      "test": 6,
+      "train": 28
+    },
+    "split_counts": {
+      "dev": 75,
+      "test": 75,
+      "train": 350
+    },
+    "split_unit": "parent_framework_cluster",
+    "teacher_required_status": "PASS_FORMAL_TEACHER500_READY",
+    "test_unseal_policy": "one evaluator-only unseal after all seeds, baselines, thresholds, and dev selections are frozen"
+  },
+  "formal_decision": {
+    "fail": "retain strongest governed baseline and do not promote V3-P deep ensemble",
+    "pass": "eligible to allocate Node1 frontscreen quota, subject to 80/10/10 exploitation-uncertainty-diversity policy"
+  },
+  "frozen_at": "2026-07-13T08:30:00+08:00",
+  "frozen_inputs": {
+    "hotspot_set": {
+      "path": "structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    "interface_8x6b": {
+      "path": "structures/PVRIG_interface_residues_8X6B.csv",
+      "sha256": "593ad8627b741bf3b4886e7ea1af4dc9cd78dafca96877038fceaf43fe6aba19"
+    },
+    "interface_9e6y": {
+      "path": "structures/PVRIG_interface_residues_9E6Y.csv",
+      "sha256": "b335960a0fa54e06e5a6201c055d2337d76f4d6efd417f3298ca862f088b443a"
+    },
+    "meanpool_v3_full_train_summary": {
+      "path": "experiments/phase2_5080_v1/runs/phase2_v3_g2_meanpool_baselines/phase2_v3_binding_20260712T160248_656867Z/train_summary.json",
+      "sha256": "3f07f62de4a4b1c73dad0f2e80296401a8d5955386031c35826f0ae129607371"
+    },
+    "parent40_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/parent40_manifest.tsv",
+      "sha256": "6ce915d7d20e77b7b86a93208db99e05425e868aa58431acf76f318769c159d9"
+    },
+    "scored_candidate_source": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1_candidates/scored_candidates_v1.csv",
+      "sha256": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b"
+    },
+    "structure_8x6b": {
+      "path": "structures/8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    "structure_9e6y": {
+      "path": "structures/9E6Y.pdb",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    "teacher500_selection_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_manifest_v1.csv",
+      "sha256": "9285dd09db2ca1492fa97d52e7d009f4891777548adf06bc1845935aceeb0991"
+    }
+  },
+  "objective": "Rank unseen-parent PVRIG designs by Node1 docking-geometry surrogate while preserving explicit binding and experimental-truth boundaries.",
+  "primary_metrics": {
+    "g1_g2_enrichment_at_10pct_min": 3.0,
+    "g1_g2_recall_at_20pct_min": 0.7,
+    "geometry_relevance_spearman_min": 0.35,
+    "ndcg_requirement": "ensemble exceeds strongest dev-selected baseline with parent-cluster bootstrap 95% CI lower bound > 0",
+    "permutation_p_max": 0.05,
+    "seed_consistency": "all three seeds must exceed the strongest dev-selected baseline on the primary dev selection composite"
+  },
+  "schema_version": "phase2_v3_p1_preregistration_v1",
+  "status": "FROZEN_BEFORE_FORMAL_TEACHER_LABELS_AND_TEST_UNSEAL",
+  "training": {
+    "checkpoint_selection": "dev-only composite",
+    "dev_selection_composite": "mean of normalized NDCG, G1+G2 Recall@20%, and teacher_relevance_mean Spearman",
+    "early_stopping": "dev only",
+    "language_model_policy": "frozen",
+    "normalization": "fit on train split only",
+    "seeds": [
+      83,
+      89,
+      97
+    ],
+    "test_labels_forbidden_to_trainer": true
+  }
+}

@@ -139,6 +139,11 @@ DOCKING_START_MAX_LOAD1=${{PVRIG_DOCKING_START_MAX_LOAD1:-48}}
 INTERNAL_MAX_LOAD1=${{PVRIG_INTERNAL_MAX_LOAD1:-48}}
 LOAD_WAIT_SECONDS=${{PVRIG_LOAD_WAIT_SECONDS:-300}}
 HADDOCK_NCORES=${{PVRIG_HADDOCK_NCORES:-{pilot.HADDOCK_NCORES}}}
+MAX_PARALLEL_SHARDS=${{PVRIG_MAX_PARALLEL_SHARDS:-{SHARD_COUNT}}}
+if [[ ! $MAX_PARALLEL_SHARDS =~ ^[1-7]$ ]]; then
+  echo "PVRIG_MAX_PARALLEL_SHARDS must be between 1 and {SHARD_COUNT}" >&2
+  exit 2
+fi
 mkdir -p "$ROOT/controller_logs"
 exec > >(tee -a "$ROOT/controller_logs/controller.$(date +%Y%m%d_%H%M%S).log") 2>&1
 
@@ -162,6 +167,7 @@ PY
 run_shards() {{
   local run_haddock="$1" phase="$2"
   local pids=()
+  status=0
   for shard in $(seq 0 {shard_count - 1}); do
     shard_root="$ROOT/shard_$shard"
     gpu=$((shard + {GPU_OFFSET}))
@@ -177,8 +183,11 @@ run_shards() {{
       bash "$shard_root/scripts/run_node1_v2_5_pose_batch.sh"
     ) >"$ROOT/controller_logs/${{phase}}_shard_${{shard}}.log" 2>&1 &
     pids+=("$!")
+    if (( ${{#pids[@]}} >= MAX_PARALLEL_SHARDS )); then
+      for pid in "${{pids[@]}}"; do wait "$pid" || status=1; done
+      pids=()
+    fi
   done
-  status=0
   for pid in "${{pids[@]}}"; do wait "$pid" || status=1; done
   if [[ "$status" != 0 ]]; then
     echo "SHARD_PHASE_FAILED phase=$phase"
