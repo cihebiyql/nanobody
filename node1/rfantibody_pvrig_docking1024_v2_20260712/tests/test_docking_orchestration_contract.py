@@ -148,6 +148,55 @@ def test_status_counts_only_haddock_selected_models(tmp_path: Path) -> None:
     assert rows[0]["selected_model_count"] == "1"
     assert "6_seletopclusts" in rows[0]["selected_model_path"]
 
+
+def test_haddock_retry_archives_partial_run_before_clean_attempt(tmp_path: Path) -> None:
+    candidate = "cand_retry"
+    candidate_root = tmp_path / "docking" / "haddock" / candidate
+    data_dir = candidate_root / "data"
+    data_dir.mkdir(parents=True)
+    (data_dir / f"{candidate}_vhh_chainA.pdb").write_text("END\n", encoding="ascii")
+    (candidate_root / f"{candidate}_pvrig_8x6b_full_interface.cfg").write_text("run_dir = retry\n", encoding="ascii")
+    run_dir = candidate_root / f"run_{candidate}_pvrig_8x6b_full_interface"
+    run_dir.mkdir()
+    (run_dir / "partial_attempt.txt").write_text("failed partial run\n", encoding="ascii")
+
+    state_dir = tmp_path / "docking" / "state" / "haddock"
+    state_dir.mkdir(parents=True)
+    (state_dir / f"{candidate}.json").write_text(
+        json.dumps({"candidate_id": candidate, "status": "failed", "attempt": 1}),
+        encoding="utf-8",
+    )
+    fake_haddock = tmp_path / "fake_haddock.sh"
+    fake_haddock.write_text(
+        "#!/usr/bin/env bash\n"
+        f"mkdir -p run_{candidate}_pvrig_8x6b_full_interface/6_seletopclusts\n"
+        f"printf 'END\\n' > run_{candidate}_pvrig_8x6b_full_interface/6_seletopclusts/cluster_1_model_1.pdb\n",
+        encoding="ascii",
+    )
+    fake_haddock.chmod(0o755)
+
+    result = subprocess.run(
+        ["bash", str(ROOT / "scripts" / "run_haddock_one.sh"), candidate],
+        env={
+            "PATH": "/usr/bin:/bin",
+            "RUN_ROOT": str(tmp_path),
+            "HADDOCK3": str(fake_haddock),
+            "BOLTZ_BIN": "/usr/bin",
+            "CPU_NICE": "0",
+        },
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    state = json.loads((state_dir / f"{candidate}.json").read_text(encoding="utf-8"))
+    assert state["status"] == "success"
+    assert state["attempt"] == 2
+    archives = list((tmp_path / "docking" / "failed_haddock_attempts" / candidate).glob("failed_before_attempt_2_*"))
+    assert len(archives) == 1
+    assert (archives[0] / "partial_attempt.txt").is_file()
+    assert (run_dir / "6_seletopclusts" / "cluster_1_model_1.pdb").is_file()
+
 if __name__ == "__main__":
     import tempfile
 
@@ -158,4 +207,6 @@ if __name__ == "__main__":
         test_status_reports_missingness_from_atomic_state(Path(tmp) / "status")
     with tempfile.TemporaryDirectory() as tmp:
         test_status_counts_only_haddock_selected_models(Path(tmp) / "selected")
-    print("4 contract tests passed")
+    with tempfile.TemporaryDirectory() as tmp:
+        test_haddock_retry_archives_partial_run_before_clean_attempt(Path(tmp) / "retry")
+    print("5 contract tests passed")

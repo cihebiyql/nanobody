@@ -58,6 +58,13 @@ if ! mkdir "$LOCKDIR" 2>/dev/null; then
   exit 75
 fi
 trap 'rm -rf "$LOCKDIR"' EXIT
+if [[ "$PREVIOUS_ATTEMPT" -gt 0 && -d "$RUN_DIR" ]]; then
+  archive_root="$DOCKING_ROOT/failed_haddock_attempts/$CID"
+  archive="$archive_root/failed_before_attempt_${ATTEMPT}_$(date -u +%Y%m%dT%H%M%SZ)"
+  mkdir -p "$archive_root"
+  mv "$RUN_DIR" "$archive"
+  echo "HADDOCK_ARCHIVE_PARTIAL cid=$CID previous_attempt=$PREVIOUS_ATTEMPT archive=$archive" | tee -a "$LOG"
+fi
 if [[ ! -s "$DOCKING_ROOT/haddock/$CID/data/${CID}_vhh_chainA.pdb" ]]; then
   write_state missing 2 "missing NBB2 monomer for HADDOCK"
   echo "HADDOCK_MISSING_MONOMER cid=$CID" >&2
