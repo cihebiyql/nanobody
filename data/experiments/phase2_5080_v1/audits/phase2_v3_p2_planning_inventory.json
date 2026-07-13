@@ -1,0 +1,97 @@
+{
+  "schema_version": "phase2_v3_p2_planning_inventory_v1",
+  "generated_at": "2026-07-13T00:00:00+08:00",
+  "status": "PASS_P2_PLANNING_INVENTORY_READY",
+  "claim_boundary": "planning inventory for a fixed-target PVRIG docking distiller; docking is the project computational gold standard, not experimental binding or blocking truth",
+  "source_sha256": {
+    "eligible_candidates": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b",
+    "teacher500_selection": "9285dd09db2ca1492fa97d52e7d009f4891777548adf06bc1845935aceeb0991",
+    "teacher500_summary": "14a75493825c826dc6e75f3c4471291d06bf0294b5778cc51e72d64898680270",
+    "calibration_summary": "19d5cb4a724bff6361ea2e030404f510c2abfcda14796cb6d973e466c386cb1f",
+    "positive_calibration": "09c8f874e2c0b23bd8be419781f6946c9df25ce125251b948fff601da930d409",
+    "top200_scaffolds": "16b478534ba350ef1b101099411f412d5b52bfb1482015ddd21d007c3b5e5861",
+    "parent40": "6ce915d7d20e77b7b86a93208db99e05425e868aa58431acf76f318769c159d9",
+    "p1_formal_outcome": "f5e9bd47a51eea956f28035f1f84b79b41aac89aae86d0c4f83196641b06b91f"
+  },
+  "prospective_candidate_pool": {
+    "formal_eligible_rows": 7087,
+    "teacher500_selected_rows": 500,
+    "remaining_unlabelled_eligible_rows": 6587,
+    "teacher500_unique_parents": 40,
+    "generation_methods": [
+      "RFantibody_RFdiffusion_ProteinMPNN"
+    ]
+  },
+  "scaffold_inventory": {
+    "top200_rows": 200,
+    "top200_unique_clusters": 200,
+    "parent40_exact_sequence_overlap": 40,
+    "parent40_cluster_overlap": 40,
+    "unused_top200_parent_clusters": 160
+  },
+  "teacher500": {
+    "candidate_count": 500,
+    "stable_tier_counts": {
+      "G1": 13,
+      "G2": 339,
+      "G3": 135,
+      "G5": 13
+    },
+    "parent_g1_g2_fraction_min": 0.08333333333333333,
+    "parent_g1_g2_fraction_max": 1.0,
+    "spearman_generic_prior_vs_teacher_relevance": -0.3168034910774338,
+    "spearman_cheap_qc_vs_teacher_relevance": 0.07176470385043351,
+    "selection_layer_tier_counts": {
+      "boundary": {
+        "G1": 2,
+        "G2": 75,
+        "G3": 21,
+        "G5": 2
+      },
+      "diversity": {
+        "G1": 2,
+        "G2": 83,
+        "G3": 34,
+        "G5": 1
+      },
+      "high_prior": {
+        "G1": 7,
+        "G2": 74,
+        "G3": 51,
+        "G5": 8
+      },
+      "low_prior_qc_pass": {
+        "G1": 2,
+        "G2": 47,
+        "G3": 10,
+        "G5": 1
+      },
+      "uncertainty_disagreement": {
+        "G2": 60,
+        "G3": 19,
+        "G5": 1
+      }
+    }
+  },
+  "positive_calibration": {
+    "known_positive_sequences": 11,
+    "calibration_cases_total": 47,
+    "calibration_known_positive_rows": 11,
+    "calibration_other_reference_or_mutant_rows": 36,
+    "positive_families": [
+      "151",
+      "20",
+      "30",
+      "38",
+      "39"
+    ],
+    "strict_docking_order_anchor_pairs_available": 25,
+    "submission_eligible": false
+  },
+  "design_implications": [
+    "Teacher500 has strong parent-level tier prevalence variation, so parent-group validation and within-parent ranking are mandatory.",
+    "The frozen generic prior is negatively correlated with docking relevance in Teacher500 and must not be an input to the P2 docking head.",
+    "The existing 47 positive/reference/mutant cases can support only a low-weight docking-validated anchor lane; sequence similarity to positives remains forbidden.",
+    "There are 160 unused Top200 parent clusters, enough to create a new untouched parent holdout."
+  ]
+}
