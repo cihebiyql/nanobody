@@ -1,0 +1,168 @@
+{
+  "excluded_from_local_mirror": [
+    "generation raw PDB/TRB files",
+    "RF2 output PDB files",
+    "NBB2 monomer PDB files",
+    "full HADDOCK run directories and failed-attempt archives"
+  ],
+  "files": {
+    "README.md": {
+      "bytes": 8569,
+      "sha256": "7097b243692ddd5233113a0c67359dac9226c74dd7df913390b189d56cc090e1"
+    },
+    "RUN_STATUS.md": {
+      "bytes": 6603,
+      "sha256": "0b2eedad2900d46bbfe86c907e3c67fbb414812a2452efd2db7c574d92cdebad"
+    },
+    "data/baseline_postprocess.tsv": {
+      "bytes": 150692,
+      "sha256": "ee2bbd47b16f67350d8398c3b185cdf1c9d88ce5995f0b5fd6236d8b3a578f32"
+    },
+    "data/candidates.tsv": {
+      "bytes": 1433874,
+      "sha256": "6a8d21bf4a3c8088cd3f45446fcf7f6222548301e7086a7f322b3c2262e9481d"
+    },
+    "data/candidates.tsv.sha256": {
+      "bytes": 81,
+      "sha256": "bc797f20972a7fb4bc2611c50db194b66b2534d5e1d252c44899c7358377000f"
+    },
+    "data/docking_pose_baseline_metrics.tsv": {
+      "bytes": 7996943,
+      "sha256": "34dd19148fcb5f5d92c2c8bb8ab49ddc13895d8e469425985687d83a36a09a40"
+    },
+    "data/docking_pose_consensus.tsv": {
+      "bytes": 894580,
+      "sha256": "9c64f3c89591e837633b340c37b22b5d8b6f304cf91d337a867c48bbbfccba21"
+    },
+    "data/docking_runs.tsv": {
+      "bytes": 643586,
+      "sha256": "c5f2a87e8f6c0e172ee05465c3634a252da2ee6152dedf85af09f9e23a581187"
+    },
+    "data/dual_baseline_summary.json": {
+      "bytes": 358,
+      "sha256": "8777730ce35160b8fefc6596941433733a07c3e93d5a1a052a4563ca2ebae018"
+    },
+    "data/generation_freeze_summary.json": {
+      "bytes": 2602,
+      "sha256": "2b8805c90da7dd19d667049178048a2156e6e1b9caf0306755303ded725a3c0a"
+    },
+    "data/monomer_qc.tsv": {
+      "bytes": 570145,
+      "sha256": "04161ce8116b2f7f76f44957a66cebe21a48f21fdf471a7e63ffcc47868b54f9"
+    },
+    "data/rf2_candidate_gates.tsv": {
+      "bytes": 181869,
+      "sha256": "c35cf61c11f12df3a120bff5464a4847de17dc1c269a59dc6243a25a2da9696d"
+    },
+    "data/rf2_metrics.tsv": {
+      "bytes": 7125322,
+      "sha256": "3be4abde4d9ff8d604380570c5e4b3b800cb1b619c8bf8d7e3425b19ff3e2df3"
+    },
+    "data/sequence_qc.tsv": {
+      "bytes": 589775,
+      "sha256": "82ed35df4ecbebf5e49098e25082e2748d48286603dcc9fafda780896604b9cd"
+    },
+    "data/training_dataset/candidate_summary.tsv": {
+      "bytes": 503954,
+      "sha256": "8ef09c3a28d30e0fb8ce5db7b784fc8856503e1b11d6e5b4561f53175df42a11"
+    },
+    "data/training_dataset/candidates.tsv": {
+      "bytes": 416326,
+      "sha256": "ceb85bcf5413be10cd7a88ecdd17e52281206510d10b128cd72da2070a23a897"
+    },
+    "data/training_dataset/dataset_manifest.json": {
+      "bytes": 5382,
+      "sha256": "8f558e91ca93f3e05dcc02a8d13983b9818638751b64f5f5f1c451b5921b0e5f"
+    },
+    "data/training_dataset/docking_pose_features.tsv": {
+      "bytes": 3315828,
+      "sha256": "2a2b4a97499de9e927023e857b52eafeba02e205464cbc64a618a96eadd37398"
+    },
+    "data/training_dataset/docking_runs.tsv": {
+      "bytes": 333899,
+      "sha256": "00356c43043e1c58cdc793ee539dfa91fb0b4faa3f909cd1cc53260ad0233786"
+    },
+    "data/training_dataset/failures.tsv": {
+      "bytes": 44,
+      "sha256": "cb1099d055d11e6f77d514e80d1ca23be2e5d6caafb9b01373b37e06bf0ed6bb"
+    },
+    "data/training_dataset/monomer_qc.tsv": {
+      "bytes": 61511,
+      "sha256": "195eaea3fe75358586fad7e6e0bccebffff6e3f0163d7fc78f3d727e84989d13"
+    },
+    "data/training_dataset/rf2_metrics.tsv": {
+      "bytes": 1203132,
+      "sha256": "92e3d345940e66b08474663176ccc7edb462ade75746bd7d475c9e06cd8e7913"
+    },
+    "data/training_dataset/splits_by_backbone.tsv": {
+      "bytes": 61575,
+      "sha256": "0c84a34131e5c641c57483f0cf8edebf2ecbb7b7a93c7a266e415c247e5bdbf7"
+    },
+    "reports/PVRIG_RFAb_v2_P2_qkg_L_bb001_mpn03_haddock_rescue.json": {
+      "bytes": 3051,
+      "sha256": "09de13eb0ddc39f1f096e32851e75ec7b97b0db99881ff61a41095d2a0b00ad9"
+    },
+    "reports/PVRIG_RFAb_v2_P3_qkg_L_bb001_mpn02_haddock_rescue.json": {
+      "bytes": 3051,
+      "sha256": "4cd764028a630bcbe259e2d0c2a4cf997161a22701d182efd9e01934122d080d"
+    },
+    "reports/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_haddock_rescue.json": {
+      "bytes": 3051,
+      "sha256": "b4a7cfe64ca9137a4bd3b867cbe30ece5ac0585f905c68b1c6fd1ae88a415236"
+    },
+    "reports/docking_status.json": {
+      "bytes": 236439,
+      "sha256": "b5c9f20398940a7f6b4d58c8c0d2fde94547c910c3fce8a4fdae92f22b4727c4"
+    },
+    "reports/final_audit.json": {
+      "bytes": 1559,
+      "sha256": "f48d080dbf82b53856d311b74f3844d0cb1046675e2818bf6ef881d58d0f2abd"
+    },
+    "reports/generation_status_latest.json": {
+      "bytes": 5699,
+      "sha256": "921f285ed162b8d072a004d59baa84124aba0944b896ad1f8504e10730432f47"
+    },
+    "reports/independent_final_validation.json": {
+      "bytes": 2338,
+      "sha256": "b274c8d623002a6c1ade416c96e06d70e610a4a34489bbfd55b90b019859ef69"
+    },
+    "reports/rf2_multiseed_parse_summary.json": {
+      "bytes": 1062,
+      "sha256": "dedc5ecc974336e7d1b56d27c218a555d6e48654faa2ee95e3ec300e27fbcbfd"
+    },
+    "reports/runtime_snapshot_latest.json": {
+      "bytes": 9617,
+      "sha256": "e268664cce127a0139332087cf536ed30f5763e3ef50b959925952aca296bfe9"
+    },
+    "status/downstream_controller.json": {
+      "bytes": 192,
+      "sha256": "c7472fcd4d70b2e9bbdf497b9f2fb673c875c838d62a1790667d84faad340051"
+    },
+    "status/downstream_controller.raw_docking_complete": {
+      "bytes": 26,
+      "sha256": "01ac763dc1efeca17f3be2b5bd5b23365dd13ab469d4d6f39e5f667e05dedccd"
+    },
+    "status/generation_controller.complete": {
+      "bytes": 26,
+      "sha256": "882946fc0d10a994ed10f0088db20a092bccc3bf7e7fdd3ed62d17381b8605f9"
+    },
+    "status/generation_controller.json": {
+      "bytes": 152,
+      "sha256": "b4e31ce14d02c2b051e27e66506eb02734c8167cb48cfeee66f916ac89a7b4c3"
+    },
+    "status/postprocess_controller.complete": {
+      "bytes": 26,
+      "sha256": "30edc1638d52bd02c0e547abebf7265c184e493a03582a7da468ded698436c56"
+    },
+    "status/postprocess_controller.json": {
+      "bytes": 169,
+      "sha256": "6176fce0e4a9453573886bebf8c20729789410055b8d3a9ff53c596870ac51c8"
+    }
+  },
+  "generated_at": "2026-07-13T13:23:30.092106+00:00",
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_docking1024_v2_20260712",
+  "raw_assets_remain_on_node1": true,
+  "remote_root": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712",
+  "schema_version": 1,
+  "scope": "core metadata, reports, final training tables, and controller markers"
+}
