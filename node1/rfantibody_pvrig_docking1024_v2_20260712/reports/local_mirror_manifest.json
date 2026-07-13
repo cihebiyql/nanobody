@@ -98,6 +98,10 @@
       "bytes": 61575,
       "sha256": "0c84a34131e5c641c57483f0cf8edebf2ecbb7b7a93c7a266e415c247e5bdbf7"
     },
+    "reports/FINAL_COMPLETION_ZH.md": {
+      "bytes": 7037,
+      "sha256": "c9fdcc48591608b426e373df154bbebc7d84dc322a5d456cf61469bc112db517"
+    },
     "reports/PVRIG_RFAb_v2_P2_qkg_L_bb001_mpn03_haddock_rescue.json": {
       "bytes": 3051,
       "sha256": "09de13eb0ddc39f1f096e32851e75ec7b97b0db99881ff61a41095d2a0b00ad9"
@@ -159,7 +163,7 @@
       "sha256": "6176fce0e4a9453573886bebf8c20729789410055b8d3a9ff53c596870ac51c8"
     }
   },
-  "generated_at": "2026-07-13T13:23:30.092106+00:00",
+  "generated_at": "2026-07-13T13:29:29.620944+00:00",
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/rfantibody_pvrig_docking1024_v2_20260712",
   "raw_assets_remain_on_node1": true,
   "remote_root": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712",
