@@ -78,8 +78,8 @@ class PVRIGV3P1Model(nn.Module):
 
         self.vhh_pool = nn.Sequential(nn.Linear(d_model, config.pooled_dim), nn.GELU())
         self.antigen_pool = nn.Sequential(nn.Linear(d_model, config.pooled_dim), nn.GELU())
-        # 14 contact/site statistics plus prior and prior-logit features.
-        feature_dim = config.pooled_dim * 2 + 16
+        # Fifteen contact/site statistics plus prior and prior-logit features.
+        feature_dim = config.pooled_dim * 2 + 17
         self.shared = nn.Sequential(
             nn.LayerNorm(feature_dim),
             nn.Linear(feature_dim, config.hidden_dim),

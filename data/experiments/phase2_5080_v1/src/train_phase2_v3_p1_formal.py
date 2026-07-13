@@ -1,0 +1,1045 @@
+#!/usr/bin/env python3
+"""Train formal multi-parent V3-P models without opening formal test labels.
+
+Training consumes a train/dev-only teacher table and contact-frequency file.
+The frozen all-candidate selection manifest is used for label-free test
+inference, so checkpoint selection cannot depend on formal test labels.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import math
+import os
+import random
+import re
+import statistics
+import sys
+import time
+from collections import Counter
+from dataclasses import asdict, dataclass, fields
+from pathlib import Path
+from typing import Any, Iterable, Iterator, Sequence
+
+import numpy as np
+import torch
+from torch import nn
+from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import DataLoader, Dataset
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+EXP_DIR = SCRIPT_DIR.parent
+DATA_ROOT = EXP_DIR.parents[1]
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+import train_phase2_v2_3 as v23  # noqa: E402
+from phase2_v3_p1_model import (  # noqa: E402
+    PVRIGModelConfig,
+    PVRIGV3P1Model,
+    RELEVANCE_TO_TIER,
+    TIER_NAMES,
+    TIER_TO_RELEVANCE,
+    assert_backbone_frozen,
+    checkpoint_model_metadata,
+    generic_replay_consistency_loss,
+    ordinal_cumulative_loss,
+    teacher_auxiliary_losses,
+    within_campaign_rank_loss,
+)
+
+
+DEFAULT_PREPARED = EXP_DIR / "prepared/pvrig_teacher_formal_v1"
+DEFAULT_SELECTION = EXP_DIR / "data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_manifest_v1.csv"
+DEFAULT_TARGET = DATA_ROOT / "model_data/pvrig_target_ectodomain_proxy_v1.fasta"
+DEFAULT_TARGET_MAPPING = DATA_ROOT / "model_data/pvrig_target_domain_mapping_v1.csv"
+DEFAULT_RECONCILIATION = DATA_ROOT / "structures/PVRIG_numbering_reconciliation.csv"
+DEFAULT_SOURCE_CHECKPOINT = EXP_DIR / "checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt"
+DEFAULT_CONFIG = EXP_DIR / "configs/phase2_v3_p1_formal.json"
+DEFAULT_OUT = EXP_DIR / "runs/phase2_v3_p1_formal"
+
+CLAIM_BOUNDARY = "pvrig_docking_geometry_surrogate_not_binding_or_experimental_blocking_truth"
+SCHEMA_VERSION = "phase2_v3_p1_formal_training_v1"
+GEOMETRY_FIELDS = (
+    "median_hotspot_overlap_8x6b",
+    "median_hotspot_overlap_9e6y",
+    "median_total_occlusion_8x6b",
+    "median_total_occlusion_9e6y",
+    "median_cdr3_occlusion_8x6b",
+    "median_cdr3_occlusion_9e6y",
+    "topk_a_or_b_fraction",
+    "teacher_relevance_mean",
+)
+RESIDUE_RE = re.compile(r"^([^:]+):(-?\d+)([A-Za-z]?):([A-Za-z]{3})$")
+
+
+@dataclass
+class FormalTrainConfig:
+    # These two files must be physically train/dev-only. Full Teacher500 label
+    # files are deliberately not accepted by this trainer.
+    teacher_open_csv: str = str(DEFAULT_PREPARED / "open_development/candidate_summary_train_dev.csv")
+    contact_open_jsonl: str = str(DEFAULT_PREPARED / "open_development/pose_contact_frequency_train_dev.jsonl")
+    selection_csv: str = str(DEFAULT_SELECTION)
+    cache_manifest: str = str(DEFAULT_PREPARED / "model_inputs/esm2_8m_cache/manifest.csv")
+    cdr_mask_csv: str = str(DEFAULT_PREPARED / "model_inputs/vhh_cdr_type_masks.csv")
+    target_fasta: str = str(DEFAULT_TARGET)
+    target_mapping_csv: str = str(DEFAULT_TARGET_MAPPING)
+    reconciliation_csv: str = str(DEFAULT_RECONCILIATION)
+    source_checkpoint: str = str(DEFAULT_SOURCE_CHECKPOINT)
+    generic_replay_csv: str = ""
+    out_root: str = str(DEFAULT_OUT)
+    seeds: tuple[int, ...] = (83, 89, 97)
+    epochs: int = 30
+    batch_size: int = 32
+    replay_batch_size: int = 16
+    learning_rate: float = 3e-4
+    weight_decay: float = 1e-4
+    early_stopping_patience: int = 7
+    contact_dim: int = 64
+    pooled_dim: int = 48
+    hidden_dim: int = 128
+    dropout: float = 0.1
+    ordinal_weight: float = 1.0
+    geometry_weight: float = 0.7
+    contact_weight: float = 0.5
+    paratope_weight: float = 0.25
+    epitope_weight: float = 0.25
+    campaign_rank_weight: float = 0.5
+    generic_replay_weight: float = 0.3
+    ranking_margin: float = 0.2
+    gradient_clip: float = 1.0
+    use_amp: bool = True
+    num_workers: int = 0
+    device: str = "cuda"
+    expected_total_candidates: int = 500
+    expected_train_candidates: int = 350
+    expected_dev_candidates: int = 75
+    expected_test_candidates: int = 75
+    expected_train_parents: int = 28
+    expected_dev_parents: int = 6
+    expected_test_parents: int = 6
+    expected_hotspot_residues: int = 23
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def sha256_json(payload: Any) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        return list(csv.DictReader(handle))
+
+
+def read_jsonl(path: Path) -> list[dict[str, Any]]:
+    with path.open(encoding="utf-8") as handle:
+        return [json.loads(line) for line in handle if line.strip()]
+
+
+def read_fasta(path: Path) -> str:
+    sequence = "".join(
+        line.strip().upper()
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.startswith(">")
+    )
+    if not sequence:
+        raise ValueError(f"No sequence found in {path}")
+    return sequence
+
+
+def parse_residue_label(label: str) -> tuple[str, int, str, str]:
+    match = RESIDUE_RE.fullmatch(label)
+    if not match:
+        raise ValueError(f"Invalid residue label: {label}")
+    return match.group(1), int(match.group(2)), match.group(3), match.group(4).upper()
+
+
+def pvrig_pdb_to_model_index(reconciliation_csv: Path, target_sequence: str) -> dict[tuple[str, int, str], int]:
+    mapping: dict[tuple[str, int, str], int] = {}
+    for row in read_csv(reconciliation_csv):
+        if row["pdb_id"].upper() != "8X6B" or row["pvrig_chain"] != "B":
+            continue
+        model_index = int(row["uniprot_position"]) - 39
+        if not 0 <= model_index < len(target_sequence):
+            continue
+        if target_sequence[model_index] != row["pdb_aa"] and "SEQADV" not in row.get("note", ""):
+            raise ValueError(f"8X6B/target residue mismatch at target index {model_index}")
+        mapping[("B", int(row["pdb_resseq"]), row["pdb_icode"].strip())] = model_index
+    if not mapping:
+        raise ValueError("No 8X6B PVRIG residues map to the target sequence")
+    return mapping
+
+
+def target_weights(mapping_csv: Path, target_sequence: str, expected_count: int) -> torch.Tensor:
+    weights = torch.zeros(len(target_sequence), dtype=torch.float32)
+    for row in read_csv(mapping_csv):
+        if row["in_model_domain"] != "yes":
+            continue
+        index = int(row["model_index_0based"])
+        if target_sequence[index] != row["aa"]:
+            raise ValueError(f"Target mapping mismatch at model index {index}")
+        weights[index] = float(row.get("target_weight", "") or 0.0)
+    observed = int((weights > 0).sum())
+    if expected_count and observed != expected_count:
+        raise ValueError(f"Expected {expected_count} weighted PVRIG residues, found {observed}")
+    return weights
+
+
+def _sequence(row: dict[str, str]) -> str:
+    return (row.get("vhh_sequence") or row.get("sequence") or "").strip().upper()
+
+
+def sequence_sha256(sequence: str) -> str:
+    return hashlib.sha256(sequence.strip().upper().encode()).hexdigest()
+
+
+def _campaign_id(row: dict[str, str]) -> str:
+    return "|".join((row.get("parent_id", ""), row.get("target_patch_id", ""), row.get("design_mode", "")))
+
+
+def validate_selection(rows: list[dict[str, str]], cfg: FormalTrainConfig) -> None:
+    required = {
+        "candidate_id", "vhh_sequence", "parent_framework_cluster", "formal_split",
+        "generic_binding_prior", "generic_binding_model", "parent_id", "target_patch_id", "design_mode",
+    }
+    missing = required - set(rows[0] if rows else {})
+    if missing:
+        raise ValueError(f"Selection manifest missing columns: {sorted(missing)}")
+    if len(rows) != cfg.expected_total_candidates or len({row["candidate_id"] for row in rows}) != len(rows):
+        raise ValueError("Selection candidate count or uniqueness does not match the frozen contract")
+    split_counts = Counter(row["formal_split"] for row in rows)
+    expected_counts = {
+        "train": cfg.expected_train_candidates,
+        "dev": cfg.expected_dev_candidates,
+        "test": cfg.expected_test_candidates,
+    }
+    if split_counts != Counter(expected_counts):
+        raise ValueError(f"Frozen split counts changed: {dict(split_counts)} != {expected_counts}")
+    parent_splits: dict[str, set[str]] = {}
+    for row in rows:
+        parent_splits.setdefault(row["parent_framework_cluster"], set()).add(row["formal_split"])
+        prior = float(row["generic_binding_prior"])
+        if not math.isfinite(prior) or not 0.0 <= prior <= 1.0:
+            raise ValueError(f"Invalid generic binding prior for {row['candidate_id']}")
+        if "meanpool" not in row["generic_binding_model"].lower():
+            raise ValueError("V3-P accepts only the frozen mean-pooled generic_binding_prior scalar")
+    leaked = {parent: splits for parent, splits in parent_splits.items() if len(splits) != 1}
+    if leaked:
+        raise ValueError(f"Parent framework cluster leakage: {list(leaked.items())[:3]}")
+    observed_parents = Counter()
+    for parent, splits in parent_splits.items():
+        observed_parents[next(iter(splits))] += 1
+    expected_parents = {
+        "train": cfg.expected_train_parents,
+        "dev": cfg.expected_dev_parents,
+        "test": cfg.expected_test_parents,
+    }
+    if observed_parents != Counter(expected_parents):
+        raise ValueError(f"Frozen parent split counts changed: {dict(observed_parents)} != {expected_parents}")
+
+
+def validate_open_teacher(
+    teacher_rows: list[dict[str, str]],
+    contact_rows: list[dict[str, Any]],
+    selection: dict[str, dict[str, str]],
+) -> None:
+    open_ids = {candidate_id for candidate_id, row in selection.items() if row["formal_split"] in {"train", "dev"}}
+    teacher_ids = {row["candidate_id"] for row in teacher_rows}
+    contact_ids = {str(row["candidate_id"]) for row in contact_rows}
+    if len(teacher_ids) != len(teacher_rows) or len(contact_ids) != len(contact_rows):
+        raise ValueError("Open teacher/contact files contain duplicate candidates")
+    if teacher_ids != open_ids or contact_ids != open_ids:
+        raise ValueError("Open teacher/contact IDs must exactly equal frozen train+dev IDs")
+    for row in teacher_rows:
+        candidate_id = row["candidate_id"]
+        split = row.get("formal_split") or selection[candidate_id]["formal_split"]
+        if split not in {"train", "dev"}:
+            raise ValueError("Formal test labels are forbidden in the V3-P trainer")
+        if selection[candidate_id]["formal_split"] != split:
+            raise ValueError(f"Teacher split mismatch for {candidate_id}")
+        if row.get("teacher_completeness", "COMPLETE") != "COMPLETE":
+            raise ValueError(f"Incomplete teacher record: {candidate_id}")
+        tier = row["provisional_stable_geometry_tier"]
+        if tier not in TIER_TO_RELEVANCE:
+            raise ValueError(f"Invalid geometry tier for {candidate_id}: {tier}")
+        if _sequence(row) and _sequence(row) != _sequence(selection[candidate_id]):
+            raise ValueError(f"Teacher/selection sequence mismatch for {candidate_id}")
+        for field in GEOMETRY_FIELDS:
+            if not math.isfinite(float(row[field])):
+                raise ValueError(f"Non-finite {field} for {candidate_id}")
+    for row in contact_rows:
+        candidate_id = str(row["candidate_id"])
+        split = str(row.get("formal_split") or selection[candidate_id]["formal_split"])
+        if split not in {"train", "dev"}:
+            raise ValueError("Formal test contact-frequency labels are forbidden in the V3-P trainer")
+
+
+def teacher_contact_matrix(
+    record: dict[str, Any],
+    vhh_length: int,
+    target_length: int,
+    pvrig_mapping: dict[tuple[str, int, str], int],
+) -> torch.Tensor:
+    matrix = torch.zeros((vhh_length, target_length), dtype=torch.float32)
+    for pair in record.get("pair_frequencies", []):
+        v_chain, v_resseq, _, _ = parse_residue_label(str(pair["vhh_residue"]))
+        p_chain, p_resseq, p_icode, _ = parse_residue_label(str(pair["pvrig_residue"]))
+        if v_chain != "A":
+            raise ValueError(f"Unexpected VHH chain {v_chain}")
+        v_index = v_resseq - 1
+        p_index = pvrig_mapping.get((p_chain, p_resseq, p_icode))
+        if not 0 <= v_index < vhh_length or p_index is None:
+            raise ValueError(f"Unmapped teacher contact for {record.get('candidate_id')}: {pair}")
+        frequency = float(pair["frequency"])
+        if not 0.0 <= frequency <= 1.0:
+            raise ValueError("Contact frequencies must be in [0, 1]")
+        matrix[v_index, p_index] = max(matrix[v_index, p_index], frequency)
+    return matrix
+
+
+def load_backbone_checkpoint(path: Path) -> tuple[v23.Config, dict[str, torch.Tensor]]:
+    payload = torch.load(path, map_location="cpu", weights_only=False)
+    raw_config = payload.get("cfg") or payload.get("backbone_cfg")
+    state = payload.get("model") or payload.get("model_state_dict")
+    if not isinstance(raw_config, dict) or not isinstance(state, dict):
+        raise ValueError("Unsupported V2.3 source checkpoint")
+    return v23.Config(**raw_config), state
+
+
+class FormalTeacherDataset(Dataset):
+    def __init__(
+        self,
+        split: str,
+        rows: list[dict[str, str]],
+        selection: dict[str, dict[str, str]],
+        contacts: dict[str, dict[str, Any]],
+        cache: v23.ESM2Cache,
+        cdrs: v23.CDRMaskStore,
+        backbone_cfg: v23.Config,
+        target_sequence: str,
+        pvrig_mapping: dict[tuple[str, int, str], int],
+    ) -> None:
+        self.rows: list[dict[str, Any]] = []
+        self.cache = cache
+        self.cdrs = cdrs
+        self.backbone_cfg = backbone_cfg
+        self.target_sequence = target_sequence
+        for teacher in rows:
+            candidate_id = teacher["candidate_id"]
+            source = selection[candidate_id]
+            if source["formal_split"] != split:
+                continue
+            sequence = _sequence(source)
+            if not cache.has(sequence) or not cdrs.has_cdr3(sequence):
+                raise ValueError(f"Missing complete VHH model inputs for {candidate_id}")
+            contact = teacher_contact_matrix(contacts[candidate_id], len(sequence), len(target_sequence), pvrig_mapping)
+            self.rows.append(
+                {
+                    "candidate_id": candidate_id,
+                    "parent_framework_cluster": source["parent_framework_cluster"],
+                    "formal_split": split,
+                    "sequence_sha256": source.get("sequence_sha256") or sequence_sha256(sequence),
+                    "campaign_id": _campaign_id(source),
+                    "sequence": sequence,
+                    "generic_binding_prior": float(source["generic_binding_prior"]),
+                    "tier": teacher["provisional_stable_geometry_tier"],
+                    "relevance": TIER_TO_RELEVANCE[teacher["provisional_stable_geometry_tier"]],
+                    "geometry": [float(teacher[field]) for field in GEOMETRY_FIELDS],
+                    "contact": contact,
+                    "paratope": contact.max(1).values,
+                    "epitope": contact.max(0).values,
+                }
+            )
+        self.rows.sort(key=lambda row: row["candidate_id"])
+
+    def __len__(self) -> int:
+        return len(self.rows)
+
+    def __getitem__(self, index: int) -> dict[str, Any]:
+        row = self.rows[index]
+        vhh = self.cache.get(row["sequence"], self.backbone_cfg.max_vhh_len)
+        cdr = self.cdrs.get(row["sequence"], self.backbone_cfg.max_vhh_len)[: len(vhh)]
+        antigen = self.cache.get(self.target_sequence, self.backbone_cfg.max_antigen_len)
+        return {**row, "vhh": vhh, "cdr": cdr, "antigen": antigen}
+
+
+class InferenceDataset(Dataset):
+    def __init__(
+        self,
+        rows: Iterable[dict[str, str]],
+        cache: v23.ESM2Cache,
+        cdrs: v23.CDRMaskStore,
+        backbone_cfg: v23.Config,
+        target_sequence: str,
+    ) -> None:
+        self.rows = sorted(list(rows), key=lambda row: row["candidate_id"])
+        self.cache = cache
+        self.cdrs = cdrs
+        self.backbone_cfg = backbone_cfg
+        self.target_sequence = target_sequence
+
+    def __len__(self) -> int:
+        return len(self.rows)
+
+    def __getitem__(self, index: int) -> dict[str, Any]:
+        row = self.rows[index]
+        sequence = _sequence(row)
+        if not self.cache.has(sequence) or not self.cdrs.has_cdr3(sequence):
+            raise ValueError(f"Missing complete model inputs for {row['candidate_id']}")
+        return {
+            "candidate_id": row["candidate_id"],
+            "parent_framework_cluster": row["parent_framework_cluster"],
+            "formal_split": row["formal_split"],
+            "sequence_sha256": row.get("sequence_sha256") or sequence_sha256(sequence),
+            "generic_binding_prior": float(row["generic_binding_prior"]),
+            "vhh": self.cache.get(sequence, self.backbone_cfg.max_vhh_len),
+            "cdr": self.cdrs.get(sequence, self.backbone_cfg.max_vhh_len),
+            "antigen": self.cache.get(self.target_sequence, self.backbone_cfg.max_antigen_len),
+        }
+
+
+class GenericReplayDataset(Dataset):
+    """Optional unlabeled replay pairs for frozen-backbone consistency."""
+
+    def __init__(self, path: Path, cache: v23.ESM2Cache, cdrs: v23.CDRMaskStore, cfg: v23.Config) -> None:
+        self.rows = read_csv(path)
+        self.cache = cache
+        self.cdrs = cdrs
+        self.cfg = cfg
+        required = {"sample_id", "vhh_sequence", "antigen_sequence"}
+        if not self.rows or required - set(self.rows[0]):
+            raise ValueError("Generic replay CSV must contain sample_id,vhh_sequence,antigen_sequence")
+
+    def __len__(self) -> int:
+        return len(self.rows)
+
+    def __getitem__(self, index: int) -> dict[str, Any]:
+        row = self.rows[index]
+        vhh_sequence = row["vhh_sequence"].strip().upper()
+        antigen_sequence = row["antigen_sequence"].strip().upper()
+        if not self.cache.has(vhh_sequence) or not self.cache.has(antigen_sequence) or not self.cdrs.has_cdr3(vhh_sequence):
+            raise ValueError(f"Missing replay model input for {row['sample_id']}")
+        return {
+            "candidate_id": row["sample_id"],
+            "parent_framework_cluster": "GENERIC_REPLAY",
+            "formal_split": "replay",
+            "sequence_sha256": sequence_sha256(vhh_sequence),
+            "generic_binding_prior": 0.5,
+            "vhh": self.cache.get(vhh_sequence, self.cfg.max_vhh_len),
+            "cdr": self.cdrs.get(vhh_sequence, self.cfg.max_vhh_len),
+            "antigen": self.cache.get(antigen_sequence, self.cfg.max_antigen_len),
+        }
+
+
+def _pad_teacher_matrix(batch: list[dict[str, Any]], key: str, rows: int, columns: int | None = None) -> torch.Tensor:
+    if columns is None:
+        output = torch.zeros((len(batch), rows), dtype=torch.float32)
+        for index, row in enumerate(batch):
+            output[index, : len(row[key])] = row[key]
+        return output
+    output = torch.zeros((len(batch), rows, columns), dtype=torch.float32)
+    for index, row in enumerate(batch):
+        value = row[key]
+        output[index, : value.shape[0], : value.shape[1]] = value
+    return output
+
+
+def collate_model_inputs(batch: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "candidate_id": [row["candidate_id"] for row in batch],
+        "parent_framework_cluster": [row["parent_framework_cluster"] for row in batch],
+        "formal_split": [row["formal_split"] for row in batch],
+        "sequence_sha256": [row["sequence_sha256"] for row in batch],
+        "vhh": pad_sequence([row["vhh"] for row in batch], batch_first=True),
+        "cdr": pad_sequence([row["cdr"][: len(row["vhh"])] for row in batch], batch_first=True, padding_value=v23.PAD_CDR),
+        "antigen": pad_sequence([row["antigen"] for row in batch], batch_first=True),
+        "generic_binding_prior": torch.tensor([row["generic_binding_prior"] for row in batch], dtype=torch.float32),
+    }
+
+
+def collate_teacher(batch: list[dict[str, Any]]) -> dict[str, Any]:
+    output = collate_model_inputs(batch)
+    max_vhh = output["vhh"].shape[1]
+    max_antigen = output["antigen"].shape[1]
+    campaigns = {name: index for index, name in enumerate(sorted({row["campaign_id"] for row in batch}))}
+    output.update(
+        {
+            "tier": [row["tier"] for row in batch],
+            "relevance": torch.tensor([row["relevance"] for row in batch], dtype=torch.long),
+            "geometry": torch.tensor([row["geometry"] for row in batch], dtype=torch.float32),
+            "contact": _pad_teacher_matrix(batch, "contact", max_vhh, max_antigen),
+            "paratope": _pad_teacher_matrix(batch, "paratope", max_vhh),
+            "epitope": _pad_teacher_matrix(batch, "epitope", max_antigen),
+            "campaign_codes": torch.tensor([campaigns[row["campaign_id"]] for row in batch], dtype=torch.long),
+        }
+    )
+    return output
+
+
+def rankdata(values: np.ndarray) -> np.ndarray:
+    order = np.argsort(values, kind="mergesort")
+    ranks = np.empty(len(values), dtype=np.float64)
+    start = 0
+    while start < len(values):
+        end = start + 1
+        while end < len(values) and values[order[end]] == values[order[start]]:
+            end += 1
+        ranks[order[start:end]] = (start + end - 1) / 2.0
+        start = end
+    return ranks
+
+
+def spearman(actual: Sequence[float], predicted: Sequence[float]) -> float:
+    if len(actual) < 2:
+        return 0.0
+    x = rankdata(np.asarray(actual, dtype=np.float64))
+    y = rankdata(np.asarray(predicted, dtype=np.float64))
+    if np.std(x) == 0 or np.std(y) == 0:
+        return 0.0
+    return float(np.corrcoef(x, y)[0, 1])
+
+
+def ndcg(actual: Sequence[int], predicted: Sequence[float]) -> float:
+    if not actual:
+        return 0.0
+    y = np.asarray(actual, dtype=np.float64)
+    score = np.asarray(predicted, dtype=np.float64)
+    order = np.argsort(-score, kind="mergesort")
+    ideal = np.argsort(-y, kind="mergesort")
+    discounts = np.log2(np.arange(2, len(y) + 2))
+    dcg = float(np.sum((np.power(2.0, y[order]) - 1.0) / discounts))
+    idcg = float(np.sum((np.power(2.0, y[ideal]) - 1.0) / discounts))
+    return dcg / idcg if idcg > 0 else 0.0
+
+
+def compute_teacher_loss(
+    outputs: dict[str, torch.Tensor],
+    batch: dict[str, Any],
+    geometry_mean: torch.Tensor,
+    geometry_std: torch.Tensor,
+    cfg: FormalTrainConfig,
+) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    device = outputs["geometry"].device
+    relevance = batch["relevance"].to(device)
+    geometry = batch["geometry"].to(device)
+    ordinal = ordinal_cumulative_loss(outputs["cumulative_logits"], relevance)
+    regression = nn.functional.smooth_l1_loss(outputs["geometry"], (geometry - geometry_mean) / geometry_std)
+    auxiliaries = teacher_auxiliary_losses(
+        outputs,
+        batch["contact"].to(device),
+        batch["paratope"].to(device),
+        batch["epitope"].to(device),
+    )
+    rank = within_campaign_rank_loss(
+        outputs["predicted_relevance"],
+        relevance,
+        batch["campaign_codes"].to(device),
+        cfg.ranking_margin,
+    )
+    total = (
+        cfg.ordinal_weight * ordinal
+        + cfg.geometry_weight * regression
+        + cfg.contact_weight * auxiliaries["contact"]
+        + cfg.paratope_weight * auxiliaries["paratope"]
+        + cfg.epitope_weight * auxiliaries["epitope"]
+        + cfg.campaign_rank_weight * rank
+    )
+    return total, {"ordinal": ordinal, "geometry": regression, **auxiliaries, "campaign_rank": rank}
+
+
+def _model_forward(model: PVRIGV3P1Model, batch: dict[str, Any], device: torch.device, zero_hotspots: bool = False) -> dict[str, torch.Tensor]:
+    hotspots = torch.zeros(batch["antigen"].shape[1], device=device) if zero_hotspots else None
+    return model(
+        batch["vhh"].to(device),
+        batch["cdr"].to(device),
+        batch["antigen"].to(device),
+        batch["generic_binding_prior"].to(device),
+        hotspot_weights=hotspots,
+    )
+
+
+@torch.inference_mode()
+def evaluate_dev(
+    model: PVRIGV3P1Model,
+    loader: DataLoader,
+    device: torch.device,
+    geometry_mean: torch.Tensor,
+    geometry_std: torch.Tensor,
+    cfg: FormalTrainConfig,
+) -> dict[str, float]:
+    model.eval()
+    losses: list[float] = []
+    actual_relevance: list[int] = []
+    predicted_relevance: list[float] = []
+    actual_geometry: list[list[float]] = []
+    predicted_geometry: list[list[float]] = []
+    for batch in loader:
+        with torch.amp.autocast(device_type=device.type, enabled=cfg.use_amp and device.type == "cuda"):
+            outputs = _model_forward(model, batch, device)
+            loss, _ = compute_teacher_loss(outputs, batch, geometry_mean, geometry_std, cfg)
+        losses.append(float(loss.cpu()))
+        predictions = outputs["predicted_relevance"].float().cpu().tolist()
+        geometry = (outputs["geometry"].float().cpu() * geometry_std.cpu()) + geometry_mean.cpu()
+        actual_relevance.extend(batch["relevance"].tolist())
+        predicted_relevance.extend(predictions)
+        actual_geometry.extend(batch["geometry"].tolist())
+        predicted_geometry.extend(geometry.tolist())
+    metrics = {
+        "loss": statistics.mean(losses) if losses else float("inf"),
+        "ndcg": ndcg(actual_relevance, predicted_relevance),
+        "spearman": spearman(actual_relevance, predicted_relevance),
+        "ordinal_mae": float(np.mean(np.abs(np.asarray(actual_relevance) - np.asarray(predicted_relevance)))),
+    }
+    actual_array = np.asarray(actual_geometry, dtype=np.float64)
+    predicted_array = np.asarray(predicted_geometry, dtype=np.float64)
+    for index, field in enumerate(GEOMETRY_FIELDS):
+        metrics[f"{field}_mae"] = float(np.mean(np.abs(actual_array[:, index] - predicted_array[:, index])))
+        metrics[f"{field}_spearman"] = spearman(actual_array[:, index], predicted_array[:, index])
+    return metrics
+
+
+@torch.inference_mode()
+def predict_label_free(
+    model: PVRIGV3P1Model,
+    loader: DataLoader,
+    device: torch.device,
+    geometry_mean: torch.Tensor,
+    geometry_std: torch.Tensor,
+) -> list[dict[str, object]]:
+    model.eval()
+    rows: list[dict[str, object]] = []
+    for batch in loader:
+        outputs = _model_forward(model, batch, device)
+        tier_probabilities = outputs["tier_probabilities"].float().cpu()
+        relevance = outputs["predicted_relevance"].float().cpu()
+        geometry = outputs["geometry"].float().cpu() * geometry_std.cpu() + geometry_mean.cpu()
+        for index, candidate_id in enumerate(batch["candidate_id"]):
+            row: dict[str, object] = {
+                "candidate_id": candidate_id,
+                "formal_split": batch["formal_split"][index],
+                "sequence_sha256": batch["sequence_sha256"][index],
+                "parent_framework_cluster": batch["parent_framework_cluster"][index],
+                "predicted_relevance": float(relevance[index]),
+                "generic_binding_prior": float(batch["generic_binding_prior"][index]),
+            }
+            row.update({f"predicted_{tier}_probability": float(tier_probabilities[index, pos]) for pos, tier in enumerate(TIER_NAMES)})
+            row.update({f"predicted_{field}": float(geometry[index, pos]) for pos, field in enumerate(GEOMETRY_FIELDS)})
+            rows.append(row)
+    return rows
+
+
+def write_csv_atomic(path: Path, rows: list[dict[str, object]]) -> None:
+    if not rows:
+        raise ValueError(f"Cannot write empty CSV: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temporary, path)
+
+
+def write_json_atomic(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    os.replace(temporary, path)
+
+
+def save_torch_atomic(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    torch.save(payload, temporary)
+    os.replace(temporary, path)
+
+
+def rng_state() -> dict[str, Any]:
+    return {
+        "python": random.getstate(),
+        "numpy": np.random.get_state(),
+        "torch": torch.get_rng_state(),
+        "cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
+    }
+
+
+def restore_rng_state(state: dict[str, Any]) -> None:
+    random.setstate(state["python"])
+    np.random.set_state(state["numpy"])
+    torch.set_rng_state(state["torch"])
+    if torch.cuda.is_available() and state.get("cuda"):
+        torch.cuda.set_rng_state_all(state["cuda"])
+
+
+def cycle(loader: DataLoader) -> Iterator[dict[str, Any]]:
+    while True:
+        yield from loader
+
+
+def resolve_device(requested: str) -> torch.device:
+    if requested == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("CUDA requested for formal V3-P training but unavailable")
+    return torch.device(requested)
+
+
+def referenced_cache_hashes(manifest_path: Path) -> dict[str, str]:
+    rows = read_csv(manifest_path)
+    paths = sorted({str((manifest_path.parent / row["shard_path"]).resolve()) for row in rows})
+    return {path: sha256_file(Path(path)) for path in paths}
+
+
+def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
+    paths = {
+        "teacher_open_csv": Path(cfg.teacher_open_csv),
+        "contact_open_jsonl": Path(cfg.contact_open_jsonl),
+        "selection_csv": Path(cfg.selection_csv),
+        "cache_manifest": Path(cfg.cache_manifest),
+        "cdr_mask_csv": Path(cfg.cdr_mask_csv),
+        "target_fasta": Path(cfg.target_fasta),
+        "target_mapping_csv": Path(cfg.target_mapping_csv),
+        "reconciliation_csv": Path(cfg.reconciliation_csv),
+        "source_checkpoint": Path(cfg.source_checkpoint),
+    }
+    if cfg.generic_replay_csv:
+        paths["generic_replay_csv"] = Path(cfg.generic_replay_csv)
+    return {
+        "files": {name: sha256_file(path) for name, path in paths.items()},
+        "cache_shards": referenced_cache_hashes(Path(cfg.cache_manifest)),
+    }
+
+
+def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[dict[str, Dataset], dict[str, Any]]:
+    selection_rows = read_csv(Path(cfg.selection_csv))
+    validate_selection(selection_rows, cfg)
+    selection = {row["candidate_id"]: row for row in selection_rows}
+    teacher_rows = read_csv(Path(cfg.teacher_open_csv))
+    contact_rows = read_jsonl(Path(cfg.contact_open_jsonl))
+    validate_open_teacher(teacher_rows, contact_rows, selection)
+    contacts = {str(row["candidate_id"]): row for row in contact_rows}
+    target_sequence = read_fasta(Path(cfg.target_fasta))
+    mapping = pvrig_pdb_to_model_index(Path(cfg.reconciliation_csv), target_sequence)
+    hotspot_weights = target_weights(Path(cfg.target_mapping_csv), target_sequence, cfg.expected_hotspot_residues)
+    cache = v23.ESM2Cache(Path(cfg.cache_manifest), backbone_cfg.esm_dim)
+    cdrs = v23.CDRMaskStore(Path(cfg.cdr_mask_csv))
+    datasets: dict[str, Dataset] = {
+        split: FormalTeacherDataset(split, teacher_rows, selection, contacts, cache, cdrs, backbone_cfg, target_sequence, mapping)
+        for split in ("train", "dev")
+    }
+    datasets["test"] = InferenceDataset(
+        (row for row in selection_rows if row["formal_split"] == "test"),
+        cache,
+        cdrs,
+        backbone_cfg,
+        target_sequence,
+    )
+    if cfg.generic_replay_csv:
+        datasets["replay"] = GenericReplayDataset(Path(cfg.generic_replay_csv), cache, cdrs, backbone_cfg)
+    if len(datasets["train"]) != cfg.expected_train_candidates or len(datasets["dev"]) != cfg.expected_dev_candidates:
+        raise ValueError("Open teacher datasets do not match frozen train/dev counts")
+    if len(datasets["test"]) != cfg.expected_test_candidates:
+        raise ValueError("Label-free test inference dataset does not match frozen count")
+    return datasets, {"hotspot_weights": hotspot_weights, "target_sequence": target_sequence}
+
+
+def train_seed(
+    cfg: FormalTrainConfig,
+    seed: int,
+    run_dir: Path,
+    resume: bool = False,
+    stop_after_epoch: int = 0,
+) -> dict[str, Any]:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.use_deterministic_algorithms(True, warn_only=True)
+    device = resolve_device(cfg.device)
+    if device.type == "cuda":
+        torch.cuda.manual_seed_all(seed)
+        torch.set_float32_matmul_precision("high")
+
+    backbone_cfg, backbone_state = load_backbone_checkpoint(Path(cfg.source_checkpoint))
+    datasets, shared = build_datasets(cfg, backbone_cfg)
+    train_geometry = torch.tensor([row["geometry"] for row in datasets["train"].rows], dtype=torch.float32)
+    geometry_mean = train_geometry.mean(0).to(device)
+    geometry_std = train_geometry.std(0, unbiased=False).clamp_min(1e-6).to(device)
+
+    generator = torch.Generator().manual_seed(seed + 10_000)
+    replay_generator = torch.Generator().manual_seed(seed + 20_000)
+    loaders = {
+        "train": DataLoader(
+            datasets["train"], batch_size=cfg.batch_size, shuffle=True, generator=generator,
+            num_workers=cfg.num_workers, collate_fn=collate_teacher,
+        ),
+        "dev": DataLoader(datasets["dev"], batch_size=cfg.batch_size, shuffle=False, collate_fn=collate_teacher),
+        "test": DataLoader(datasets["test"], batch_size=cfg.batch_size, shuffle=False, collate_fn=collate_model_inputs),
+    }
+    if "replay" in datasets:
+        loaders["replay"] = DataLoader(
+            datasets["replay"], batch_size=cfg.replay_batch_size, shuffle=True,
+            generator=replay_generator, collate_fn=collate_model_inputs,
+        )
+
+    backbone = v23.CrossContactNetV23(backbone_cfg)
+    backbone.load_state_dict(backbone_state)
+    model_cfg = PVRIGModelConfig(
+        contact_dim=cfg.contact_dim,
+        pooled_dim=cfg.pooled_dim,
+        hidden_dim=cfg.hidden_dim,
+        geometry_dim=len(GEOMETRY_FIELDS),
+        dropout=cfg.dropout,
+    )
+    model = PVRIGV3P1Model(backbone, model_cfg, shared["hotspot_weights"]).to(device)
+    assert_backbone_frozen(model)
+    optimizer = torch.optim.AdamW(
+        (parameter for parameter in model.parameters() if parameter.requires_grad),
+        lr=cfg.learning_rate,
+        weight_decay=cfg.weight_decay,
+    )
+    scaler = torch.amp.GradScaler("cuda", enabled=cfg.use_amp and device.type == "cuda")
+    hashes = artifact_hashes(cfg)
+    config_fingerprint = sha256_json(asdict(cfg))
+    run_dir.mkdir(parents=True, exist_ok=True)
+    write_json_atomic(run_dir / "config_resolved.json", asdict(cfg))
+
+    history: list[dict[str, Any]] = []
+    best_metric = -float("inf")
+    best_loss = float("inf")
+    best_epoch = 0
+    best_state: dict[str, torch.Tensor] | None = None
+    stale = 0
+    start_epoch = 1
+    last_path = run_dir / "last_checkpoint.pt"
+    if resume:
+        if not last_path.exists():
+            raise FileNotFoundError(f"Resume checkpoint does not exist: {last_path}")
+        checkpoint = torch.load(last_path, map_location="cpu", weights_only=False)
+        if checkpoint["seed"] != seed or checkpoint["artifact_hashes"] != hashes or checkpoint["config_fingerprint"] != config_fingerprint:
+            raise ValueError("Resume checkpoint seed, artifacts, or configuration changed")
+        model.load_trainable_state_dict(checkpoint["head_state"])
+        optimizer.load_state_dict(checkpoint["optimizer_state"])
+        scaler.load_state_dict(checkpoint["scaler_state"])
+        history = checkpoint["history"]
+        best_metric = float(checkpoint["best_metric"])
+        best_loss = float(checkpoint["best_loss"])
+        best_epoch = int(checkpoint["best_epoch"])
+        best_state = checkpoint["best_head_state"]
+        stale = int(checkpoint["stale"])
+        start_epoch = int(checkpoint["epoch"]) + 1
+        generator.set_state(checkpoint["train_generator_state"])
+        replay_generator.set_state(checkpoint["replay_generator_state"])
+        restore_rng_state(checkpoint["rng_state"])
+
+    replay_iterator = cycle(loaders["replay"]) if "replay" in loaders else None
+    status = "PASS_FORMAL_TRAINING_COMPLETE"
+    for epoch in range(start_epoch, cfg.epochs + 1):
+        model.train()
+        batch_losses: list[float] = []
+        component_values: dict[str, list[float]] = {
+            name: [] for name in ("ordinal", "geometry", "contact", "paratope", "epitope", "campaign_rank", "generic_replay")
+        }
+        for batch in loaders["train"]:
+            optimizer.zero_grad(set_to_none=True)
+            with torch.amp.autocast(device_type=device.type, enabled=cfg.use_amp and device.type == "cuda"):
+                outputs = _model_forward(model, batch, device)
+                loss, components = compute_teacher_loss(outputs, batch, geometry_mean, geometry_std, cfg)
+                replay_loss = loss.sum() * 0.0
+                if replay_iterator is not None:
+                    replay_outputs = _model_forward(model, next(replay_iterator), device, zero_hotspots=True)
+                    replay_loss = generic_replay_consistency_loss(replay_outputs)
+                    loss = loss + cfg.generic_replay_weight * replay_loss
+            if not torch.isfinite(loss):
+                raise RuntimeError(f"Non-finite V3-P loss at seed={seed} epoch={epoch}")
+            scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
+            nn.utils.clip_grad_norm_((parameter for parameter in model.parameters() if parameter.requires_grad), cfg.gradient_clip)
+            scaler.step(optimizer)
+            scaler.update()
+            batch_losses.append(float(loss.detach().cpu()))
+            for name, value in components.items():
+                component_values[name].append(float(value.detach().cpu()))
+            component_values["generic_replay"].append(float(replay_loss.detach().cpu()))
+
+        dev_metrics = evaluate_dev(model, loaders["dev"], device, geometry_mean, geometry_std, cfg)
+        record = {
+            "epoch": epoch,
+            "train_loss": statistics.mean(batch_losses),
+            **{f"train_{name}_loss": statistics.mean(values) for name, values in component_values.items()},
+            "dev": dev_metrics,
+        }
+        history.append(record)
+        print(json.dumps({"seed": seed, **record}, sort_keys=True), flush=True)
+        improved = dev_metrics["ndcg"] > best_metric + 1e-12 or (
+            abs(dev_metrics["ndcg"] - best_metric) <= 1e-12 and dev_metrics["loss"] < best_loss - 1e-12
+        )
+        if improved:
+            best_metric = dev_metrics["ndcg"]
+            best_loss = dev_metrics["loss"]
+            best_epoch = epoch
+            best_state = model.trainable_state_dict()
+            stale = 0
+        else:
+            stale += 1
+
+        save_torch_atomic(
+            last_path,
+            {
+                "schema_version": SCHEMA_VERSION,
+                "seed": seed,
+                "epoch": epoch,
+                "head_state": model.trainable_state_dict(),
+                "optimizer_state": optimizer.state_dict(),
+                "scaler_state": scaler.state_dict(),
+                "best_head_state": best_state,
+                "best_metric": best_metric,
+                "best_loss": best_loss,
+                "best_epoch": best_epoch,
+                "stale": stale,
+                "history": history,
+                "rng_state": rng_state(),
+                "train_generator_state": generator.get_state(),
+                "replay_generator_state": replay_generator.get_state(),
+                "artifact_hashes": hashes,
+                "config_fingerprint": config_fingerprint,
+            },
+        )
+        if stop_after_epoch and epoch >= stop_after_epoch:
+            status = "PAUSED_RESUMABLE"
+            break
+        if stale >= cfg.early_stopping_patience:
+            break
+
+    if status == "PAUSED_RESUMABLE":
+        summary = {
+            "schema_version": SCHEMA_VERSION,
+            "seed": seed,
+            "status": status,
+            "last_checkpoint": str(last_path),
+            "completed_epoch": history[-1]["epoch"],
+            "claim_boundary": CLAIM_BOUNDARY,
+        }
+        write_json_atomic(run_dir / "summary.json", summary)
+        return summary
+    if best_state is None:
+        raise RuntimeError("No dev-selected V3-P checkpoint was produced")
+
+    model.load_trainable_state_dict(best_state)
+    best_checkpoint = run_dir / "best_checkpoint.pt"
+    save_torch_atomic(
+        best_checkpoint,
+        {
+            "schema_version": SCHEMA_VERSION,
+            "seed": seed,
+            "head_state": best_state,
+            "backbone_cfg": asdict(backbone_cfg),
+            "source_backbone_checkpoint": cfg.source_checkpoint,
+            "source_backbone_checkpoint_sha256": hashes["files"]["source_checkpoint"],
+            "geometry_fields": list(GEOMETRY_FIELDS),
+            "geometry_mean": geometry_mean.cpu(),
+            "geometry_std": geometry_std.cpu(),
+            "model_metadata": checkpoint_model_metadata(model),
+            "best_epoch": best_epoch,
+            "dev_selection_metric": "ndcg",
+            "best_dev_ndcg": best_metric,
+            "claim_boundary": CLAIM_BOUNDARY,
+        },
+    )
+    test_predictions = predict_label_free(model, loaders["test"], device, geometry_mean, geometry_std)
+    if any(row["formal_split"] != "test" for row in test_predictions):
+        raise AssertionError("Non-test rows leaked into evaluator-facing predictions")
+    prediction_path = run_dir / "test_predictions.csv"
+    write_csv_atomic(prediction_path, test_predictions)
+    final_dev = evaluate_dev(model, loaders["dev"], device, geometry_mean, geometry_std, cfg)
+    summary = {
+        "schema_version": SCHEMA_VERSION,
+        "seed": seed,
+        "status": status,
+        "best_epoch": best_epoch,
+        "best_dev_metrics": final_dev,
+        "dev_selection_policy": "maximum_dev_ndcg_then_minimum_dev_loss",
+        "test_predictions_path": str(prediction_path),
+        "test_predictions_sha256": sha256_file(prediction_path),
+        "test_prediction_columns_are_label_free": True,
+        "best_checkpoint": str(best_checkpoint),
+        "best_checkpoint_sha256": sha256_file(best_checkpoint),
+        "frozen_backbone": True,
+        "generic_binding_prior_policy": "frozen_meanpool_v3_full_scalar_only",
+        "forbidden_pair_heads": ["v2_3_pair_head", "v3_g2_failed_pair_head"],
+        "generic_replay_enabled": "replay" in datasets,
+        "dataset_sizes": {name: len(dataset) for name, dataset in datasets.items()},
+        "artifact_hashes": hashes,
+        "history": history,
+        "claim_boundary": CLAIM_BOUNDARY,
+    }
+    write_json_atomic(run_dir / "summary.json", summary)
+    return summary
+
+
+def run_training(
+    cfg: FormalTrainConfig,
+    run_root: Path | None = None,
+    resume: bool = False,
+    stop_after_epoch: int = 0,
+) -> dict[str, Any]:
+    if run_root is None:
+        run_id = time.strftime("phase2_v3_p1_formal_%Y%m%d_%H%M%S")
+        run_root = Path(cfg.out_root) / run_id
+    run_root.mkdir(parents=True, exist_ok=True)
+    seed_summaries = [
+        train_seed(cfg, seed, run_root / f"seed_{seed}", resume=resume, stop_after_epoch=stop_after_epoch)
+        for seed in cfg.seeds
+    ]
+    status = "PAUSED_RESUMABLE" if any(summary["status"] == "PAUSED_RESUMABLE" for summary in seed_summaries) else "PASS_FORMAL_MULTISEED_COMPLETE"
+    summary = {
+        "schema_version": SCHEMA_VERSION,
+        "status": status,
+        "run_root": str(run_root),
+        "seeds": list(cfg.seeds),
+        "seed_summaries": seed_summaries,
+        "test_label_access": "NONE_TRAINER_USES_LABEL_FREE_SELECTION_ROWS_FOR_TEST_INFERENCE",
+        "claim_boundary": CLAIM_BOUNDARY,
+    }
+    write_json_atomic(run_root / "training_summary.json", summary)
+    return summary
+
+
+def load_config(path: Path) -> FormalTrainConfig:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    allowed = {field.name for field in fields(FormalTrainConfig)}
+    unknown = set(payload) - allowed
+    if unknown:
+        raise ValueError(f"Unknown formal V3-P config fields: {sorted(unknown)}")
+    if "seeds" in payload:
+        payload["seeds"] = tuple(int(value) for value in payload["seeds"])
+    return FormalTrainConfig(**payload)
+
+
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    parser.add_argument("--run-dir", type=Path)
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--stop-after-epoch", type=int, default=0, help=argparse.SUPPRESS)
+    return parser.parse_args(argv)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_args(argv)
+    cfg = load_config(args.config)
+    summary = run_training(cfg, args.run_dir, resume=args.resume, stop_after_epoch=args.stop_after_epoch)
+    print(json.dumps(summary, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

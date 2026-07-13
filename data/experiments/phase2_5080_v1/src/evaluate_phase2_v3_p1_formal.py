@@ -116,6 +116,7 @@ def load_teacher(path: Path) -> pd.DataFrame:
     teacher = pd.read_csv(path)
     required = {
         "candidate_id",
+        "sequence_sha256",
         "formal_split",
         "parent_framework_cluster",
         "provisional_stable_geometry_tier",
@@ -125,8 +126,14 @@ def load_teacher(path: Path) -> pd.DataFrame:
     if missing:
         raise ValueError(f"Teacher file lacks required columns: {sorted(missing)}")
     teacher = teacher.loc[teacher["formal_split"].astype(str).isin(["dev", "test"])].copy()
+    teacher["candidate_id"] = teacher["candidate_id"].astype(str)
+    teacher["sequence_sha256"] = teacher["sequence_sha256"].astype(str)
+    teacher["formal_split"] = teacher["formal_split"].astype(str)
+    teacher["parent_framework_cluster"] = teacher["parent_framework_cluster"].astype(str)
     if teacher.empty or teacher["candidate_id"].duplicated().any():
         raise ValueError("Teacher dev/test candidate IDs must be non-empty and unique")
+    if teacher["sequence_sha256"].str.fullmatch(r"[0-9a-fA-F]{64}").ne(True).any():
+        raise ValueError("Teacher sequence_sha256 values must be 64 hexadecimal characters")
     if set(teacher["formal_split"].astype(str)) != {"dev", "test"}:
         raise ValueError("Teacher evaluation table must contain both dev and test splits")
     cluster_splits = teacher.groupby("parent_framework_cluster")["formal_split"].nunique()
@@ -146,9 +153,9 @@ def load_teacher(path: Path) -> pd.DataFrame:
 
 
 def _validate_identity_columns(prediction: pd.DataFrame, teacher: pd.DataFrame, source: str) -> None:
-    for column in ("formal_split", "parent_framework_cluster"):
+    for column in ("sequence_sha256", "formal_split", "parent_framework_cluster"):
         if column not in prediction:
-            continue
+            raise ValueError(f"{source} lacks frozen identity column {column}")
         expected = teacher[["candidate_id", column]].merge(
             prediction[["candidate_id", column]],
             on="candidate_id",
@@ -169,6 +176,7 @@ def merge_three_seed_predictions(
     test = teacher.loc[teacher["formal_split"].eq("test")].copy()
     base_columns = [
         "candidate_id",
+        "sequence_sha256",
         "formal_split",
         "parent_framework_cluster",
         "true_tier",
@@ -182,12 +190,19 @@ def merge_three_seed_predictions(
         path = Path(seed_paths[seed])
         prediction = pd.read_csv(path)
         _assert_prediction_blind(prediction, f"seed {seed}")
-        required = {"candidate_id", "predicted_relevance"} | {
+        required = {
+            "candidate_id",
+            "sequence_sha256",
+            "formal_split",
+            "parent_framework_cluster",
+            "predicted_relevance",
+        } | {
             f"predicted_{field}" for field in GEOMETRY_FIELDS
         }
         missing = required - set(prediction.columns)
         if missing:
             raise ValueError(f"Seed {seed} lacks required prediction columns: {sorted(missing)}")
+        prediction["candidate_id"] = prediction["candidate_id"].astype(str)
         if prediction["candidate_id"].duplicated().any():
             raise ValueError(f"Seed {seed} candidate IDs are duplicated")
         if "formal_split" in prediction:
@@ -224,7 +239,16 @@ def select_strongest_baseline(
 ) -> tuple[str, pd.DataFrame, dict[str, Any]]:
     baseline = pd.read_csv(baseline_path)
     _assert_prediction_blind(baseline, "baseline predictions")
-    if "candidate_id" not in baseline or baseline["candidate_id"].duplicated().any():
+    baseline_required = {
+        "candidate_id",
+        "sequence_sha256",
+        "formal_split",
+        "parent_framework_cluster",
+    }
+    if baseline_required - set(baseline):
+        raise ValueError(f"Baseline file lacks identity columns: {sorted(baseline_required - set(baseline))}")
+    baseline["candidate_id"] = baseline["candidate_id"].astype(str)
+    if baseline["candidate_id"].duplicated().any():
         raise ValueError("Baseline candidate IDs must be present and unique")
     score_columns = sorted(column for column in baseline if column.startswith("baseline_"))
     if not score_columns:
@@ -267,11 +291,20 @@ def load_controls(
 ) -> tuple[dict[str, pd.DataFrame], str]:
     controls = pd.read_csv(control_path)
     _assert_prediction_blind(controls, "control predictions")
-    required = {"candidate_id", "seed", "control_type", "predicted_relevance"}
+    required = {
+        "candidate_id",
+        "sequence_sha256",
+        "formal_split",
+        "parent_framework_cluster",
+        "seed",
+        "control_type",
+        "predicted_relevance",
+    }
     missing = required - set(controls.columns)
     if missing:
         raise ValueError(f"Control predictions lack columns: {sorted(missing)}")
     controls["seed"] = pd.to_numeric(controls["seed"], errors="raise").astype(int)
+    controls["candidate_id"] = controls["candidate_id"].astype(str)
     controls["control_type"] = controls["control_type"].astype(str)
     if set(controls["control_type"]) != set(REQUIRED_CONTROL_TYPES):
         raise ValueError(

@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import tempfile
+import unittest
+import sys
+import hashlib
+from pathlib import Path
+
+import pandas as pd
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+import evaluate_phase2_v3_p1_formal as formal
+
+
+class V3P1FormalEvaluatorTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary.name)
+        self.teacher_path = self.root / "teacher.csv"
+        self.baseline_path = self.root / "baselines.csv"
+        self.control_path = self.root / "controls.csv"
+        self.seed_paths: dict[int, Path] = {}
+        rows: list[dict[str, object]] = []
+        index = 0
+        for split, cluster_count in (("dev", 3), ("test", 10)):
+            for cluster in range(cluster_count):
+                for position, tier in enumerate(("G1" if cluster % 2 == 0 else "G2", "G3", "G4", "G5")):
+                    relevance = formal.TIER_TO_RELEVANCE[tier]
+                    row: dict[str, object] = {
+                        "candidate_id": f"{split}_p{cluster:02d}_{position}",
+                        "formal_split": split,
+                        "parent_framework_cluster": f"{split}_parent_{cluster:02d}",
+                        "provisional_stable_geometry_tier": tier,
+                    }
+                    row["sequence_sha256"] = hashlib.sha256(
+                        str(row["candidate_id"]).encode("utf-8")
+                    ).hexdigest()
+                    for field_index, field in enumerate(formal.GEOMETRY_FIELDS):
+                        row[field] = relevance * (field_index + 1) + position * 0.01
+                    rows.append(row)
+                    index += 1
+        teacher = pd.DataFrame(rows)
+        teacher.to_csv(self.teacher_path, index=False)
+
+        baselines = teacher[
+            ["candidate_id", "sequence_sha256", "formal_split", "parent_framework_cluster"]
+        ].copy()
+        positions = baselines["candidate_id"].str.rsplit("_", n=1).str[-1].astype(int)
+        baselines["baseline_mid"] = positions.map({0: 3.0, 1: 4.0, 2: 2.0, 3: 1.0})
+        tiers = teacher["provisional_stable_geometry_tier"].map(formal.TIER_TO_RELEVANCE)
+        baselines["baseline_bad"] = -tiers.astype(float)
+        baselines.to_csv(self.baseline_path, index=False)
+
+        test = teacher.loc[teacher["formal_split"].eq("test")].copy()
+        relevance = test["provisional_stable_geometry_tier"].map(formal.TIER_TO_RELEVANCE)
+        for seed_index, seed in enumerate(formal.EXPECTED_SEEDS):
+            prediction = test[
+                ["candidate_id", "sequence_sha256", "formal_split", "parent_framework_cluster"]
+            ].copy()
+            prediction["predicted_relevance"] = relevance.astype(float) + seed_index * 0.001
+            for field in formal.GEOMETRY_FIELDS:
+                prediction[f"predicted_{field}"] = test[field].astype(float) + seed_index * 0.01
+            path = self.root / f"seed_{seed}.csv"
+            prediction.to_csv(path, index=False)
+            self.seed_paths[seed] = path
+
+        controls: list[dict[str, object]] = []
+        for control_type in formal.REQUIRED_CONTROL_TYPES:
+            for seed_index, seed in enumerate(formal.EXPECTED_SEEDS):
+                for _, row in test.iterrows():
+                    true_relevance = formal.TIER_TO_RELEVANCE[
+                        str(row["provisional_stable_geometry_tier"])
+                    ]
+                    controls.append(
+                        {
+                            "candidate_id": row["candidate_id"],
+                            "sequence_sha256": row["sequence_sha256"],
+                            "formal_split": "test",
+                            "parent_framework_cluster": row["parent_framework_cluster"],
+                            "seed": seed,
+                            "control_type": control_type,
+                            "predicted_relevance": -float(true_relevance) + seed_index * 0.001,
+                        }
+                    )
+        pd.DataFrame(controls).to_csv(self.control_path, index=False)
+
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
+    def test_formal_evaluation_passes_consistent_synthetic_signal(self) -> None:
+        output = self.root / "evaluation"
+        result = formal.evaluate_formal(
+            self.teacher_path,
+            self.seed_paths,
+            self.baseline_path,
+            self.control_path,
+            output,
+            bootstrap_replicates=300,
+            permutation_replicates=1023,
+        )
+        self.assertEqual(result["status"], "PASS_V3_P1_FORMAL_SURROGATE_GATE")
+        self.assertTrue(result["all_checks_pass"])
+        self.assertEqual(
+            result["strongest_baseline_selection"]["selected_baseline"], "baseline_mid"
+        )
+        self.assertEqual(result["expected_seeds"], [83, 89, 97])
+        self.assertEqual(result["formal_test_rows"], 40)
+        self.assertAlmostEqual(
+            result["ensemble_metrics"]["g1_g2_recall_at_20_percent"], 0.8
+        )
+        self.assertAlmostEqual(result["ensemble_metrics"]["g1_g2_ef_at_10_percent"], 4.0)
+        self.assertGreater(result["parent_cluster_bootstrap"]["ci95_lower"], 0.0)
+        self.assertLess(
+            result["paired_parent_cluster_permutation"]["two_sided_p_value"], 0.05
+        )
+        self.assertTrue(all(value["rejected_as_null_or_target_independent"] for value in result["control_results"].values()))
+        self.assertTrue((output / "formal_evaluation.json").is_file())
+        self.assertTrue((output / "formal_test_predictions_with_teacher_labels.csv").is_file())
+
+    def test_exact_three_seed_contract(self) -> None:
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            formal.parse_seed_paths([f"83={self.seed_paths[83]}", f"89={self.seed_paths[89]}"])
+        teacher = formal.load_teacher(self.teacher_path)
+        with self.assertRaisesRegex(ValueError, "exactly"):
+            formal.merge_three_seed_predictions(
+                teacher, {83: self.seed_paths[83], 89: self.seed_paths[89]}
+            )
+
+    def test_prediction_labels_are_rejected_before_join(self) -> None:
+        contaminated = pd.read_csv(self.seed_paths[83])
+        contaminated["true_relevance"] = 4
+        contaminated.to_csv(self.seed_paths[83], index=False)
+        teacher = formal.load_teacher(self.teacher_path)
+        with self.assertRaisesRegex(ValueError, "pre-evaluator label"):
+            formal.merge_three_seed_predictions(teacher, self.seed_paths)
+
+    def test_baseline_is_selected_on_dev_only(self) -> None:
+        teacher = formal.load_teacher(self.teacher_path)
+        selected, _, audit = formal.select_strongest_baseline(teacher, self.baseline_path)
+        self.assertEqual(selected, "baseline_mid")
+        self.assertEqual(audit["selection_split"], "dev")
+        self.assertNotIn("test_metrics", audit)
+
+    def test_missing_control_or_candidate_fails_closed(self) -> None:
+        controls = pd.read_csv(self.control_path)
+        controls = controls.loc[~controls["control_type"].eq("vhh_only")]
+        controls.to_csv(self.control_path, index=False)
+        teacher = formal.load_teacher(self.teacher_path)
+        with self.assertRaisesRegex(ValueError, "Controls must be exactly"):
+            formal.load_controls(
+                self.control_path, teacher.loc[teacher["formal_split"].eq("test")]
+            )
+
+
+if __name__ == "__main__":
+    unittest.main()
