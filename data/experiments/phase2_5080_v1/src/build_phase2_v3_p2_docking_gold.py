@@ -394,7 +394,13 @@ def run_protocol_checks(
             evidence["completion_pose_count"] = completion.get("pose_count", "")
             evidence["completion_cluster_count"] = completion.get("cluster_count", "")
             add_check(checks, errors, "completion_run_id", completion.get("run_id") == run_id, str(completion.get("run_id")))
-            add_check(checks, errors, "completion_status", completion.get("status") == "PASS", str(completion.get("status")))
+            add_check(
+                checks,
+                errors,
+                "completion_status",
+                completion.get("status") in {"PASS", "PASS_DOCKING_OUTPUT_COMPLETE"},
+                str(completion.get("status")),
+            )
             add_check(checks, errors, "completion_exit_code", completion.get("exit_code") == 0, str(completion.get("exit_code")))
             add_check(
                 checks,
@@ -422,6 +428,7 @@ def run_protocol_checks(
             add_check(checks, errors, "completion_parse", False, f"{type(error).__name__}:{error}")
 
     params_path = run_dir / "1_rigidbody/params.cfg"
+    io_path = run_dir / "1_rigidbody/io.json"
     add_check(checks, errors, "runtime_rigidbody_params_present", params_path.is_file(), str(params_path))
     if params_path.is_file():
         try:
@@ -450,6 +457,32 @@ def run_protocol_checks(
             )
         except Exception as error:
             add_check(checks, errors, "runtime_rigidbody_params_parse", False, f"{type(error).__name__}:{error}")
+    add_check(checks, errors, "runtime_rigidbody_io_present", io_path.is_file(), str(io_path))
+    if io_path.is_file():
+        try:
+            runtime_io = json.loads(io_path.read_text(encoding="utf-8"))
+            outputs = runtime_io.get("output", [])
+            observed_seeds = [parse_int(item.get("seed", ""), "runtime_output_seed") for item in outputs]
+            expected_seeds = list(range(expected_seed + 1, expected_seed + sampling + 1))
+            evidence["runtime_rigidbody_output_count"] = len(outputs)
+            evidence["runtime_rigidbody_seed_start"] = min(observed_seeds) if observed_seeds else ""
+            evidence["runtime_rigidbody_seed_end"] = max(observed_seeds) if observed_seeds else ""
+            add_check(
+                checks,
+                errors,
+                "runtime_rigidbody_output_count",
+                len(outputs) == sampling,
+                f"{len(outputs)}!={sampling}",
+            )
+            add_check(
+                checks,
+                errors,
+                "runtime_rigidbody_seed_set",
+                sorted(observed_seeds) == expected_seeds,
+                f"observed={sorted(observed_seeds)};expected={expected_seeds}",
+            )
+        except Exception as error:
+            add_check(checks, errors, "runtime_rigidbody_io_parse", False, f"{type(error).__name__}:{error}")
     evidence["checks"] = checks
     evidence["monomer_sha256"] = row.get("monomer_sha256", "")
     evidence["frozen_rigidbody_iniseed"] = expected_seed

@@ -324,7 +324,7 @@ top_models = 4
 
 def controller_source() -> str:
     return f'''#!/usr/bin/env python3
-"""Run frozen Pilot64 HADDOCK jobs with resumability and DG-A pose gates."""
+"""Run frozen Pilot64 HADDOCK jobs with resumability and docking-output gates."""
 from __future__ import annotations
 
 import argparse
@@ -336,6 +336,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -418,14 +419,31 @@ def completion_payload(row: dict[str, str], status: str, poses: int, clusters: i
     return payload
 
 
-def run_one(root: Path, haddock_bin: Path, row: dict[str, str]) -> dict[str, object]:
+def wait_for_load(max_load1: float, poll_seconds: float) -> None:
+    while True:
+        load1 = float(Path("/proc/loadavg").read_text(encoding="ascii").split()[0])
+        if load1 <= max_load1:
+            return
+        time.sleep(poll_seconds)
+
+
+def run_one(
+    root: Path,
+    haddock_bin: Path,
+    row: dict[str, str],
+    max_load1: float,
+    load_poll_seconds: float,
+) -> dict[str, object]:
     completion = root / row["completion_relpath"]
     run_dir = root / row["run_dir_relpath"]
     try:
         verify_inputs(root, row)
         poses, clusters = output_counts(run_dir)
         if poses >= int(row["expected_min_poses"]) and clusters >= int(row["expected_min_clusters"]):
-            payload = completion_payload(row, "PASS_DG_A_DOCKING_COMPLETE", poses, clusters, exit_code=0, reused=True)
+            payload = completion_payload(
+                row, "PASS_DOCKING_OUTPUT_COMPLETE", poses, clusters, exit_code=0, reused=True,
+                dg_a_status="PENDING_GEOMETRY_AND_CONTACT_POSTPROCESS",
+            )
             atomic_json(completion, payload)
             return payload
 
@@ -436,6 +454,7 @@ def run_one(root: Path, haddock_bin: Path, row: dict[str, str]) -> dict[str, obj
         workspace = root / row["run_workspace_relpath"]
         log_path = root / row["log_relpath"]
         log_path.parent.mkdir(parents=True, exist_ok=True)
+        wait_for_load(max_load1, load_poll_seconds)
         with log_path.open("a", encoding="utf-8") as log:
             log.write(f"\\nRUN_START {{datetime.now(timezone.utc).isoformat()}} run_id={{row['run_id']}}\\n")
             result = subprocess.run(
@@ -452,15 +471,19 @@ def run_one(root: Path, haddock_bin: Path, row: dict[str, str]) -> dict[str, obj
             and poses >= int(row["expected_min_poses"])
             and clusters >= int(row["expected_min_clusters"])
         )
-        status = "PASS_DG_A_DOCKING_COMPLETE" if passed else "FAIL_DG_A_DOCKING_INCOMPLETE"
+        status = "PASS_DOCKING_OUTPUT_COMPLETE" if passed else "FAIL_DOCKING_OUTPUT_INCOMPLETE"
         payload = completion_payload(
             row, status, poses, clusters, exit_code=result.returncode,
             reused=False, archived_partial_relpath=archived,
+            dg_a_status="PENDING_GEOMETRY_AND_CONTACT_POSTPROCESS",
         )
         atomic_json(completion, payload)
         return payload
     except Exception as error:
-        payload = completion_payload(row, "FAIL_CONTROLLER_EXCEPTION", 0, 0, exit_code=None, error=str(error))
+        payload = completion_payload(
+            row, "FAIL_CONTROLLER_EXCEPTION", 0, 0, exit_code=None,
+            dg_a_status="FAIL_CONTROLLER_EXCEPTION", error=str(error),
+        )
         atomic_json(completion, payload)
         return payload
 
@@ -473,6 +496,11 @@ def parse_args() -> argparse.Namespace:
         default=Path(os.environ.get("HADDOCK3_BIN", "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3")),
     )
     parser.add_argument("--max-workers", type=int, default=5)
+    parser.add_argument(
+        "--max-load1", type=float,
+        default=float(os.environ.get("PVRIG_DOCKING_MAX_LOAD1", "55")),
+    )
+    parser.add_argument("--load-poll-seconds", type=float, default=60.0)
     parser.add_argument("--pilot-id", action="append")
     parser.add_argument("--receptor", choices=("8X6B", "9E6Y"), action="append")
     parser.add_argument("--seed-role", choices=("main", "replicate"), action="append")
@@ -484,6 +512,8 @@ def main() -> None:
     args = parse_args()
     if not 1 <= args.max_workers <= MAX_CONCURRENT_JOBS:
         raise SystemExit(f"--max-workers must be between 1 and {{MAX_CONCURRENT_JOBS}}")
+    if args.max_load1 <= 0 or args.load_poll_seconds <= 0:
+        raise SystemExit("--max-load1 and --load-poll-seconds must be positive")
     manifest = args.root / "manifests/run_manifest.csv"
     with manifest.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
@@ -508,11 +538,17 @@ def main() -> None:
 
     failures = 0
     with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
-        futures = {{executor.submit(run_one, args.root, args.haddock_bin, row): row for row in rows}}
+        futures = {{
+            executor.submit(
+                run_one, args.root, args.haddock_bin, row,
+                args.max_load1, args.load_poll_seconds,
+            ): row
+            for row in rows
+        }}
         for future in as_completed(futures):
             payload = future.result()
             print(json.dumps(payload, sort_keys=True), flush=True)
-            if payload["status"] != "PASS_DG_A_DOCKING_COMPLETE":
+            if payload["status"] != "PASS_DOCKING_OUTPUT_COMPLETE":
                 failures += 1
     raise SystemExit(1 if failures else 0)
 
@@ -687,8 +723,8 @@ def build_receptors_and_protocols(
                     "seed_role": seed_role,
                     "topoaa_iniseed": str(TOPOAA_INISEED),
                     "rigidbody_iniseed": str(seed),
-                    "rigidbody_seed_start": str(seed),
-                    "rigidbody_seed_end": str(seed + RIGIDBODY_SAMPLING - 1),
+                    "rigidbody_seed_start": str(seed + 1),
+                    "rigidbody_seed_end": str(seed + RIGIDBODY_SAMPLING),
                     "flexref_iniseed": "INHERIT_RIGIDBODY_POSE_SEEDS",
                     "emref_iniseed": "INHERIT_RIGIDBODY_POSE_SEEDS",
                     "rigidbody_sampling": str(RIGIDBODY_SAMPLING),
@@ -773,8 +809,8 @@ def build_run_rows(
                         "iniseed": str(seed),
                         "topoaa_iniseed": str(TOPOAA_INISEED),
                         "rigidbody_iniseed": str(seed),
-                        "rigidbody_seed_start": str(seed),
-                        "rigidbody_seed_end": str(seed + RIGIDBODY_SAMPLING - 1),
+                        "rigidbody_seed_start": str(seed + 1),
+                        "rigidbody_seed_end": str(seed + RIGIDBODY_SAMPLING),
                         "replicate_seed_required": replicate_required,
                         "config_relpath": config_relpath,
                         "config_sha256": sha256_file(config_path),
@@ -898,8 +934,8 @@ def build_package(
         "seed_contract": {
             f"{receptor_id}:{seed_role}": {
                 "topoaa_iniseed": TOPOAA_INISEED,
-                "rigidbody_seed_start": seed,
-                "rigidbody_seed_end": seed + RIGIDBODY_SAMPLING - 1,
+                "rigidbody_seed_start": seed + 1,
+                "rigidbody_seed_end": seed + RIGIDBODY_SAMPLING,
             }
             for (receptor_id, seed_role), seed in SEED_BY_PROTOCOL.items()
         },

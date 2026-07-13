@@ -57,8 +57,8 @@ def remote_archive_command(remote_root: str, run_ids: Sequence[str]) -> str:
 ROOT={shlex.quote(remote_root)}
 cd "$ROOT"
 {{
-  find manifests inputs -type f -print0
-  find . -maxdepth 1 -type f \( -name 'package_audit.json' -o -name 'package_sha256.tsv' -o -name 'protocol_manifest.json' \) -print0
+  find manifests receptors hotspots scripts -type f -print0
+  find . -maxdepth 1 -type f -name 'package_audit.json' -print0
   for run_id in {quoted_ids}; do
     test -s "runs/$run_id/$run_id.complete.json"
     find "runs/$run_id" -type f \
