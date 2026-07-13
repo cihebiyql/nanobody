@@ -136,9 +136,19 @@ nohup env MAX_LOAD1=240 POSTPROCESS_MAX_PARALLEL=2 \
 
 三个控制器通过完成标记串联：第二个等待冻结的 1,024 条 cohort，第三个等待至少 1,000 条真实 HADDOCK 成功。RF2 seed42 优先完成；seed43/44 在 NBB2 后作为 enrichment。HADDOCK 与双参考后处理都根据 `load1` 动态分配并发。
 
+### HADDOCK 失败和 rescue
+
+可恢复不等于删除失败证据。当一次 HADDOCK 只产出部分中间结果时，重试器先将旧 `run_dir` 移入：
+
+```text
+docking/failed_haddock_attempts/<candidate_id>/failed_before_attempt_<N>_<UTC>/
+```
+
+随后才开始一次干净重跑。如果必须放宽 HADDOCK 的 module tolerance，要使用独立 rescue config 和 JSON 报告记录原因、原/新配置哈希、尝试次数和 selected model 数；这类 rescue pose 仍然只是几何证据。
+
 ## 训练数据最低文件集
 
-最终 `data/` 至少包含：
+最终 `data/training_dataset/` 至少包含：
 
 ```text
 candidates.tsv
@@ -154,9 +164,12 @@ dataset_manifest.json
 
 HADDOCK score 及 vdW、electrostatics、desolvation、AIR/restraint violation、BSA 等字段应从机器可读表或 raw PDB `REMARK` 恢复。缺失必须有 `missing_reason`，不能用空值静默丢弃。
 
+split 以 RFdiffusion backbone、generation arm 和全局 near-CDR3 family（`SequenceMatcher >= 0.80`）为硬防泄漏 key，先取连通分量，再对整个分量做确定性分配。如果硬分量少于 3，manifest 必须显式标记只能两路或单路 split，不得为了凑 train/validation/test 而拆分硬分量。当前 1,024 条 cohort 为两个分量（522/502），因此产出 train/validation，并标记 `test_split_available=false`。
+
 ## 资源礼让
 
 - RFdiffusion、RF2、NanoBodyBuilder2 使用 GPU 1、2、3、4、5、7；GPU 已用显存达到 12,000 MiB 时按 lane 等待。
 - GPU 阶段在当前共享节点使用 `MAX_LOAD1=400`、`nice=10` 和每任务 2 个 BLAS/OpenMP 线程；这个较高 load 门槛不用于 HADDOCK。
 - HADDOCK3 由中央 load-aware 控制器调度；node1 为 64 核，当前有其他训练负载时不固定启动大量并发任务。
+- 本次全量运行的实际峰值为 10 路低优先级 HADDOCK：main controller 2 + sidecar1 6 + sidecar2 2；不再继续提高并发。
 - 不停止、重启或降低其他用户/项目的进程优先级。
