@@ -8,12 +8,12 @@ or PVRIG:PVRL2 blockade.
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
 import math
 import re
-import tomllib
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
@@ -256,8 +256,47 @@ def resolve_evidence_path(root: Path, row: Mapping[str, str], field: str, fallba
 
 
 def read_toml(path: Path) -> dict[str, Any]:
-    with path.open("rb") as handle:
-        return tomllib.load(handle)
+    """Read the scalar subset needed from HADDOCK cfg files on Python 3.10.
+
+    HADDOCK's generated ``params.cfg`` files are TOML, but the production
+    controller still uses Python 3.10 without ``tomllib``/``tomli``.  The gold
+    gate only needs scalar module parameters, so multiline arrays and tables
+    outside those modules can safely be ignored.
+    """
+    document: dict[str, Any] = {}
+    current = document
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            section = line[1:-1].strip()
+            if not section or section.startswith("["):
+                continue
+            current = document
+            for part in section.split("."):
+                current = current.setdefault(part, {})
+            continue
+        if "=" not in line:
+            continue
+        key, raw_value = (part.strip() for part in line.split("=", 1))
+        if not key or not raw_value or raw_value in {"[", "{"}:
+            continue
+        lowered = raw_value.lower()
+        if lowered in {"true", "false"}:
+            value: Any = lowered == "true"
+        else:
+            try:
+                value = ast.literal_eval(raw_value)
+            except (SyntaxError, ValueError):
+                try:
+                    value = float(raw_value)
+                    if value.is_integer() and not any(character in raw_value.lower() for character in (".", "e")):
+                        value = int(value)
+                except ValueError:
+                    continue
+        current[key] = value
+    return document
 
 
 def add_check(checks: dict[str, bool], errors: list[str], name: str, passed: bool, detail: str) -> None:
@@ -348,6 +387,10 @@ def run_protocol_checks(
             rigidbody = config.get("rigidbody", {})
             flexref = config.get("flexref", {})
             topoaa = config.get("topoaa", {})
+            evidence["tolerance_relaxed"] = bool(evidence.get("tolerance_relaxed")) or (
+                float(rigidbody.get("tolerance", math.inf)) > FROZEN_RIGIDBODY_TOLERANCE
+                or float(flexref.get("tolerance", math.inf)) > FROZEN_FLEXREF_TOLERANCE
+            )
             add_check(
                 checks,
                 errors,
@@ -390,6 +433,8 @@ def run_protocol_checks(
     if completion_path.is_file():
         try:
             completion = json.loads(completion_path.read_text(encoding="utf-8"))
+            if completion.get("tolerance_relaxed") is not False:
+                evidence["tolerance_relaxed"] = True
             evidence["completion_status"] = completion.get("status", "")
             evidence["completion_pose_count"] = completion.get("pose_count", "")
             evidence["completion_cluster_count"] = completion.get("cluster_count", "")
@@ -402,6 +447,27 @@ def run_protocol_checks(
                 str(completion.get("status")),
             )
             add_check(checks, errors, "completion_exit_code", completion.get("exit_code") == 0, str(completion.get("exit_code")))
+            add_check(
+                checks,
+                errors,
+                "completion_rigidbody_iniseed",
+                completion.get("iniseed") == expected_seed,
+                f"{completion.get('iniseed')}!={expected_seed}",
+            )
+            add_check(
+                checks,
+                errors,
+                "completion_no_tolerance_relaxation",
+                completion.get("tolerance_relaxed") is False,
+                str(completion.get("tolerance_relaxed")),
+            )
+            add_check(
+                checks,
+                errors,
+                "completion_haddock3_version_contract",
+                completion.get("haddock3_version_contract") == row.get("haddock3_version_contract", ""),
+                f"{completion.get('haddock3_version_contract')}!={row.get('haddock3_version_contract', '')}",
+            )
             add_check(
                 checks,
                 errors,
