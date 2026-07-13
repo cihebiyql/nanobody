@@ -100,6 +100,7 @@ class FormalTrainConfig:
     generic_replay_csv: str = ""
     generic_replay_cache_manifest: str = ""
     generic_replay_cdr_mask_csv: str = ""
+    generic_replay_size: int = 256
     out_root: str = str(DEFAULT_OUT)
     seeds: tuple[int, ...] = (83, 89, 97)
     epochs: int = 30
@@ -482,17 +483,54 @@ class InferenceDataset(Dataset):
 class GenericReplayDataset(Dataset):
     """Optional unlabeled replay pairs for frozen-backbone consistency."""
 
-    def __init__(self, path: Path, cache: v23.ESM2Cache, cdrs: v23.CDRMaskStore, cfg: v23.Config) -> None:
-        self.rows = read_csv(path)
+    def __init__(
+        self,
+        path: Path,
+        cache: v23.ESM2Cache,
+        cdrs: v23.CDRMaskStore,
+        cfg: v23.Config,
+        maximum_rows: int,
+    ) -> None:
+        if path.suffix == ".jsonl":
+            source_rows = [row for row in read_jsonl(path) if row.get("split") == "train"]
+            source_rows.sort(
+                key=lambda row: hashlib.sha256(f"v3p-replay-v1\t{row['complex_id']}".encode()).hexdigest()
+            )
+            selected: list[dict[str, Any]] = []
+            seen_groups: set[str] = set()
+            for source in source_rows:
+                group = str(source.get("split_group_id") or source["complex_id"])
+                vhh_sequence = str(source["vhh_seq"]).strip().upper()
+                antigen_sequence = str(source["antigen_seq"]).strip().upper()
+                if group in seen_groups or not cache.has(vhh_sequence) or not cache.has(antigen_sequence) or not cdrs.has_cdr3(vhh_sequence):
+                    continue
+                seen_groups.add(group)
+                selected.append(
+                    {
+                        "sample_id": str(source["complex_id"]),
+                        "vhh_sequence": vhh_sequence,
+                        "antigen_sequence": antigen_sequence,
+                        "contact_pairs": source["positive_pairs"],
+                        "source_split": "train",
+                        "split_group_id": group,
+                    }
+                )
+                if len(selected) == maximum_rows:
+                    break
+            self.rows = selected
+            if len(self.rows) != maximum_rows:
+                raise ValueError(f"Could select only {len(self.rows)}/{maximum_rows} cache-complete train replay rows")
+        else:
+            self.rows = read_csv(path)
+            required = {
+                "sample_id", "vhh_sequence", "antigen_sequence", "contact_pairs_json",
+                "vhh_paratope_mask", "antigen_epitope_mask",
+            }
+            if not self.rows or required - set(self.rows[0]):
+                raise ValueError(f"Generic replay CSV missing columns: {sorted(required - set(self.rows[0] if self.rows else {}))}")
         self.cache = cache
         self.cdrs = cdrs
         self.cfg = cfg
-        required = {
-            "sample_id", "vhh_sequence", "antigen_sequence", "contact_pairs_json",
-            "vhh_paratope_mask", "antigen_epitope_mask",
-        }
-        if not self.rows or required - set(self.rows[0]):
-            raise ValueError(f"Generic replay CSV missing columns: {sorted(required - set(self.rows[0] if self.rows else {}))}")
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -504,11 +542,19 @@ class GenericReplayDataset(Dataset):
         if not self.cache.has(vhh_sequence) or not self.cache.has(antigen_sequence) or not self.cdrs.has_cdr3(vhh_sequence):
             raise ValueError(f"Missing replay model input for {row['sample_id']}")
         contact = torch.zeros((len(vhh_sequence), len(antigen_sequence)), dtype=torch.float32)
-        for pair in json.loads(row["contact_pairs_json"]):
+        pairs = row.get("contact_pairs")
+        if pairs is None:
+            pairs = json.loads(row["contact_pairs_json"])
+        for pair in pairs:
             vhh_index, antigen_index = int(pair[0]), int(pair[1])
             if not 0 <= vhh_index < len(vhh_sequence) or not 0 <= antigen_index < len(antigen_sequence):
                 raise ValueError(f"Replay contact index out of range for {row['sample_id']}")
             contact[vhh_index, antigen_index] = 1.0
+        paratope = contact.max(1).values
+        epitope = contact.max(0).values
+        if "vhh_paratope_mask" in row:
+            paratope = v23.mask_from_string(row["vhh_paratope_mask"], len(vhh_sequence))
+            epitope = v23.mask_from_string(row["antigen_epitope_mask"], len(antigen_sequence))
         return {
             "candidate_id": row["sample_id"],
             "parent_framework_cluster": "GENERIC_REPLAY",
@@ -519,9 +565,21 @@ class GenericReplayDataset(Dataset):
             "cdr": self.cdrs.get(vhh_sequence, self.cfg.max_vhh_len),
             "antigen": self.cache.get(antigen_sequence, self.cfg.max_antigen_len),
             "contact": contact,
-            "paratope": v23.mask_from_string(row["vhh_paratope_mask"], len(vhh_sequence)),
-            "epitope": v23.mask_from_string(row["antigen_epitope_mask"], len(antigen_sequence)),
+            "paratope": paratope,
+            "epitope": epitope,
         }
+
+    def manifest_rows(self) -> list[dict[str, object]]:
+        return [
+            {
+                "sample_id": row["sample_id"],
+                "sequence_sha256": sequence_sha256(str(row["vhh_sequence"])),
+                "antigen_sequence_sha256": sequence_sha256(str(row["antigen_sequence"])),
+                "source_split": row.get("source_split", "train"),
+                "split_group_id": row.get("split_group_id", row["sample_id"]),
+            }
+            for row in self.rows
+        ]
 
 
 def _pad_teacher_matrix(batch: list[dict[str, Any]], key: str, rows: int, columns: int | None = None) -> torch.Tensor:
@@ -720,7 +778,13 @@ def evaluate_dev(
         predicted_relevance.extend(predictions)
         actual_geometry.extend(batch["geometry"].tolist())
         predicted_geometry.extend(geometry.tolist())
+    actual_array = np.asarray(actual_geometry, dtype=np.float64)
+    predicted_array = np.asarray(predicted_geometry, dtype=np.float64)
     relevance_spearman = spearman(actual_relevance, predicted_relevance)
+    teacher_relevance_index = GEOMETRY_FIELDS.index("teacher_relevance_mean")
+    teacher_relevance_mean_spearman = spearman(
+        actual_array[:, teacher_relevance_index], predicted_array[:, teacher_relevance_index]
+    )
     relevance_ndcg = ndcg(actual_relevance, predicted_relevance)
     recall_at_20 = g1_g2_recall_at_top_fraction(actual_relevance, predicted_relevance)
     metrics = {
@@ -728,13 +792,12 @@ def evaluate_dev(
         "ndcg": relevance_ndcg,
         "g1_g2_recall_at_top_20_percent": recall_at_20,
         "spearman": relevance_spearman,
+        "teacher_relevance_mean_spearman": teacher_relevance_mean_spearman,
         "normalized_selection_composite": statistics.mean(
-            (relevance_ndcg, recall_at_20, (relevance_spearman + 1.0) / 2.0)
+            (relevance_ndcg, recall_at_20, (teacher_relevance_mean_spearman + 1.0) / 2.0)
         ),
         "ordinal_mae": float(np.mean(np.abs(np.asarray(actual_relevance) - np.asarray(predicted_relevance)))),
     }
-    actual_array = np.asarray(actual_geometry, dtype=np.float64)
-    predicted_array = np.asarray(predicted_geometry, dtype=np.float64)
     for index, field in enumerate(GEOMETRY_FIELDS):
         metrics[f"{field}_mae"] = float(np.mean(np.abs(actual_array[:, index] - predicted_array[:, index])))
         metrics[f"{field}_spearman"] = spearman(actual_array[:, index], predicted_array[:, index])
@@ -954,7 +1017,9 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
     if cfg.generic_replay_csv:
         replay_cache = v23.ESM2Cache(Path(cfg.generic_replay_cache_manifest), backbone_cfg.esm_dim)
         replay_cdrs = v23.CDRMaskStore(Path(cfg.generic_replay_cdr_mask_csv))
-        datasets["replay"] = GenericReplayDataset(Path(cfg.generic_replay_csv), replay_cache, replay_cdrs, backbone_cfg)
+        datasets["replay"] = GenericReplayDataset(
+            Path(cfg.generic_replay_csv), replay_cache, replay_cdrs, backbone_cfg, cfg.generic_replay_size
+        )
     if len(datasets["train"]) != cfg.expected_train_candidates or len(datasets["dev"]) != cfg.expected_dev_candidates:
         raise ValueError("Open teacher datasets do not match frozen train/dev counts")
     if len(datasets["test"]) != cfg.expected_test_candidates:
@@ -1061,6 +1126,8 @@ def train_seed(
     config_fingerprint = sha256_json({"config": asdict(cfg), "control_type": control_type})
     run_dir.mkdir(parents=True, exist_ok=True)
     write_json_atomic(run_dir / "config_resolved.json", asdict(cfg))
+    if "replay" in datasets:
+        write_csv_atomic(run_dir / "generic_replay_manifest.csv", datasets["replay"].manifest_rows())
 
     history: list[dict[str, Any]] = []
     best_metric = -float("inf")
@@ -1202,7 +1269,7 @@ def train_seed(
             "geometry_std": geometry_std.cpu(),
             "model_metadata": checkpoint_model_metadata(model),
             "best_epoch": best_epoch,
-            "dev_selection_metric": "normalized_mean(ndcg,g1_g2_recall_at_top_20_percent,(spearman+1)/2)",
+            "dev_selection_metric": "normalized_mean(ndcg,g1_g2_recall_at_top_20_percent,(teacher_relevance_mean_spearman+1)/2)",
             "best_dev_normalized_composite": best_metric,
             "claim_boundary": CLAIM_BOUNDARY,
         },

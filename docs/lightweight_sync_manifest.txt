@@ -420,6 +420,7 @@ data/experiments/phase2_5080_v1/audits/phase2_v3_test_spec.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_balanced_boost_plan_20260713.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_recovery_plan_20260713.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_run_task_sha256_20260713.tsv
+data/experiments/phase2_5080_v1/audits/pvrig_teacher500_failed_candidate_recovery.json
 data/experiments/phase2_5080_v1/audits/pvrig_teacher500_recovery_after_20260713T082432.txt
 data/experiments/phase2_5080_v1/audits/pvrig_teacher500_recovery_before_20260713T082157.txt
 data/experiments/phase2_5080_v1/audits/pvrig_teacher_pilot96_audit.json
@@ -624,6 +625,7 @@ data/experiments/phase2_5080_v1/src/test_phase2_v3_embeddings.py
 data/experiments/phase2_5080_v1/src/test_phase2_v3_formal.py
 data/experiments/phase2_5080_v1/src/test_phase2_v3_metrics.py
 data/experiments/phase2_5080_v1/src/test_phase2_v3_p1_metrics.py
+data/experiments/phase2_5080_v1/src/test_phase2_v3_p1_model.py
 data/experiments/phase2_5080_v1/src/test_phase2_v3_scoring.py
 data/experiments/phase2_5080_v1/src/test_phase2_v3_structure_fusion.py
 data/experiments/phase2_5080_v1/src/test_phase2_v3_training.py

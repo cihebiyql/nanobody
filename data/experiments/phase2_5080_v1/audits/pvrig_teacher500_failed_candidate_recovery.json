@@ -1,0 +1,16 @@
+{
+  "candidate_id": "RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01",
+  "canonical_log_sha256": "98fbbefdd521c07232d07d5bfc55bcd7de964a098c5395170147aea2c2174ed7",
+  "claim_boundary": "candidate_specific_haddock_recovery_not_binding_or_blocker_proof",
+  "config_sha256": "090935f16b43c6b3ef3531d9299d956544b636aba30795b1d961f9e058f67aad",
+  "failed_attempt_archives": [
+    "/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/teacher500_docking/shard_1/haddock3/RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01/run_RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01_pvrig_hotspot.failed_rc1_20260713T082416",
+    "/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/teacher500_docking/shard_1/haddock3/RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01/run_RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01_pvrig_hotspot.failed_rc1_20260713T084202"
+  ],
+  "failed_attempt_count": 2,
+  "recovery_log": "/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/teacher500_docking/shard_1/haddock3/RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01/logs/RFV1__PLDNANO_VHH_00010__B_LOWER__H3__B02__M01_haddock3_run.recovery_tolerance25_20260713T084202.log",
+  "recovery_log_sha256": "98fbbefdd521c07232d07d5bfc55bcd7de964a098c5395170147aea2c2174ed7",
+  "selected_model_count": 8,
+  "status": "PASS_RECOVERED_FLEXREF_TOLERANCE25",
+  "traceback_consensus_present": true
+}
