@@ -27,10 +27,17 @@ class Pilot96PackageTest(unittest.TestCase):
         self.assertNotIn("--expected-residue-count 130", patched)
         self.assertIn("LOAD_GATE_WAIT", patched)
         self.assertIn("HADDOCK_SKIP_COMPLETE", patched)
+        self.assertIn("HADDOCK_NCORES=${V2_5_HADDOCK_NCORES:-4}", patched)
+        self.assertIn('re.subn(r"^ncores = \\d+$"', patched)
+        self.assertGreater(
+            patched.index("python3 scripts/make_candidate_haddock_assets.py"),
+            patched.index('HADDOCK_NCORES=${V2_5_HADDOCK_NCORES:-4}'),
+        )
 
     def test_haddock_config_patch_preserves_load_headroom(self) -> None:
         source = 'mode = "local"\nncores = 8\n'
         self.assertEqual(MOD.patch_haddock_config(source), 'mode = "local"\nncores = 4\n')
+        self.assertEqual(MOD.patch_haddock_config('ncores = 4\n'), 'ncores = 4\n')
 
     def test_controller_uses_same_internal_load_gate(self) -> None:
         controller = MOD.controller_script()

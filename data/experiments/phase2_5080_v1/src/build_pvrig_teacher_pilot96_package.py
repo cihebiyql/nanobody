@@ -72,6 +72,35 @@ def patch_runner(source: str) -> str:
     if load_anchor not in source:
         raise ValueError("Runner MAX_LOAD1 anchor not found")
     source = source.replace(load_anchor, load_anchor + "LOAD_WAIT_SECONDS=${V2_5_LOAD_WAIT_SECONDS:-300}\n", 1)
+    ncores_anchor = "LOAD_WAIT_SECONDS=${V2_5_LOAD_WAIT_SECONDS:-300}\n"
+    source = source.replace(
+        ncores_anchor,
+        ncores_anchor + f"HADDOCK_NCORES=${{V2_5_HADDOCK_NCORES:-{HADDOCK_NCORES}}}\n",
+        1,
+    )
+    assets_anchor = "python3 scripts/make_candidate_haddock_assets.py\n"
+    if assets_anchor not in source:
+        raise ValueError("Runner asset generation anchor not found")
+    source = source.replace(
+        assets_anchor,
+        assets_anchor
+        + "for config in haddock3/*/*_pvrig_hotspot.cfg; do\n"
+        + "  python3 - \"$config\" \"$HADDOCK_NCORES\" <<'PY'\n"
+        + "import os, re, sys\n"
+        + "from pathlib import Path\n"
+        + "path = Path(sys.argv[1])\n"
+        + "ncores = int(sys.argv[2])\n"
+        + "source = path.read_text(encoding=\"utf-8\")\n"
+        + "patched, count = re.subn(r\"^ncores = \\d+$\", f\"ncores = {ncores}\", source, count=1, flags=re.MULTILINE)\n"
+        + "if count != 1:\n"
+        + "    raise SystemExit(f\"Expected one ncores entry in {path}, found {count}\")\n"
+        + "temporary = path.with_name(f\".{path.name}.{os.getpid()}.tmp\")\n"
+        + "temporary.write_text(patched, encoding=\"utf-8\")\n"
+        + "temporary.replace(path)\n"
+        + "PY\n"
+        + "done\n",
+        1,
+    )
     gate_anchor = "    check_load_gate || exit $?\n"
     if gate_anchor not in source:
         raise ValueError("Runner load gate anchor not found")
@@ -101,10 +130,11 @@ def patch_runner(source: str) -> str:
 
 
 def patch_haddock_config(source: str) -> str:
-    anchor = 'ncores = 8\n'
-    if anchor not in source:
-        raise ValueError("HADDOCK ncores anchor not found")
-    return source.replace(anchor, f"ncores = {HADDOCK_NCORES}\n", 1)
+    for current in (8, HADDOCK_NCORES):
+        anchor = f"ncores = {current}\n"
+        if anchor in source:
+            return source.replace(anchor, f"ncores = {HADDOCK_NCORES}\n", 1)
+    raise ValueError("HADDOCK ncores anchor not found")
 
 
 def manifest_row(source: dict[str, str]) -> dict[str, str]:
