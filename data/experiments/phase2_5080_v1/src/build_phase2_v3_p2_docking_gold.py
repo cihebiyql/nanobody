@@ -299,22 +299,31 @@ def spearman_with_ties(x: Sequence[float], y: Sequence[float]) -> float | None:
     return pearson(average_ranks(x), average_ranks(y))
 
 
-def weighted_cohen_kappa(
+def weighted_cohen_kappa_details(
     first: Sequence[str],
     second: Sequence[str],
     weighting: str = "quadratic",
-) -> float | None:
+) -> dict[str, Any]:
     """Five-level weighted Cohen kappa with fixed preregistered G1..G5 order."""
     if len(first) != len(second):
         raise ValueError("Kappa inputs must have equal length")
-    if not first:
-        return None
     if weighting not in {"quadratic", "linear"}:
         raise ValueError("weighting must be 'quadratic' or 'linear'")
     levels = ["G1", "G2", "G3", "G4", "G5"]
     lookup = {value: index for index, value in enumerate(levels)}
     if any(value not in lookup for value in [*first, *second]):
         raise ValueError("Kappa tiers must be G1..G5")
+    first_counts = {level: first.count(level) for level in levels}
+    second_counts = {level: second.count(level) for level in levels}
+    if not first:
+        return {
+            "value": None,
+            "weighting": weighting,
+            "observed_cost": None,
+            "expected_cost": None,
+            "first_tier_counts": first_counts,
+            "second_tier_counts": second_counts,
+        }
     size = len(levels)
     total = len(first)
     observed = [[0.0] * size for _ in range(size)]
@@ -332,9 +341,23 @@ def weighted_cohen_kappa(
 
     observed_cost = sum(cost(i, j) * observed[i][j] for i in range(size) for j in range(size))
     expected_cost = sum(cost(i, j) * left[i] * right[j] for i in range(size) for j in range(size))
-    if expected_cost == 0:
-        return 1.0 if observed_cost == 0 else None
-    return 1.0 - observed_cost / expected_cost
+    value = None if expected_cost == 0 else 1.0 - observed_cost / expected_cost
+    return {
+        "value": value,
+        "weighting": weighting,
+        "observed_cost": observed_cost,
+        "expected_cost": expected_cost,
+        "first_tier_counts": first_counts,
+        "second_tier_counts": second_counts,
+    }
+
+
+def weighted_cohen_kappa(
+    first: Sequence[str],
+    second: Sequence[str],
+    weighting: str = "quadratic",
+) -> float | None:
+    return weighted_cohen_kappa_details(first, second, weighting)["value"]
 
 
 def cluster_from_model(model: str) -> str:
@@ -1090,6 +1113,139 @@ def indexed_rows(path: Path, label: str, errors: list[str]) -> dict[str, dict[st
     return output
 
 
+def read_strict_traceback_ranks(
+    run_dir: Path,
+    errors: list[str],
+) -> tuple[Path, dict[str, int]]:
+    path = run_dir / "traceback/consensus.tsv"
+    if not path.is_file():
+        errors.append(f"traceback_missing:{path}")
+        return path, {}
+    ranks: dict[str, int] = {}
+    rank_to_model: dict[int, str] = {}
+    try:
+        rows = []
+        with path.open(newline="", encoding="utf-8-sig") as handle:
+            rows = list(csv.DictReader(handle, delimiter="\t"))
+        for row in rows:
+            model = row.get("Model", "").removesuffix(".pdb")
+            raw = row.get("6_seletopclusts_rank", "").strip()
+            if not raw:
+                continue
+            if not MODEL_RE.fullmatch(model):
+                raise ValueError(f"invalid model {model!r}")
+            if not raw.isdigit() or int(raw) <= 0:
+                raise ValueError(f"invalid rank {raw!r} for {model}")
+            rank = int(raw)
+            if model in ranks:
+                raise ValueError(f"duplicate model {model}")
+            if rank in rank_to_model:
+                raise ValueError(f"duplicate rank {rank}")
+            ranks[model] = rank
+            rank_to_model[rank] = model
+        if not ranks or set(rank_to_model) != set(range(1, len(ranks) + 1)):
+            raise ValueError(f"ranks not contiguous 1..N: {sorted(rank_to_model)}")
+    except Exception as error:
+        errors.append(f"traceback_invalid:{type(error).__name__}:{error}")
+        return path, {}
+    return path, ranks
+
+
+def validate_geometry_numeric_closure(
+    baseline: str,
+    model: str,
+    classification: Mapping[str, str],
+    mechanism: Mapping[str, str],
+    errors: list[str],
+) -> None:
+    classification_count_fields = {
+        key for key in classification if key.endswith("_count")
+    } | {
+        "total_vhh_pvrl2_residue_pair_occlusion",
+        "cdr3_pvrl2_residue_pair_occlusion",
+        "framework_residue_pair_occlusion",
+    }
+    mechanism_count_fields = {key for key in mechanism if key.endswith("_count")}
+    parsed_class_counts: dict[str, int] = {}
+    parsed_mechanism_counts: dict[str, int] = {}
+    for label, row, fields, output in (
+        (f"classification_{baseline}", classification, classification_count_fields, parsed_class_counts),
+        (f"mechanism_{baseline}", mechanism, mechanism_count_fields, parsed_mechanism_counts),
+    ):
+        for field in sorted(fields):
+            value = row.get(field, "")
+            if value == "":
+                continue
+            try:
+                parsed = parse_int(value, field)
+                if parsed < 0:
+                    raise ValueError(f"{field} is negative: {value!r}")
+                output[field] = parsed
+            except ValueError as error:
+                errors.append(f"{label}_nonnegative_integer:{model}:{field}:{error}")
+
+    fraction_fields = {
+        key for key in [*classification, *mechanism] if "fraction" in key
+    }
+    parsed_fractions: dict[str, float] = {}
+    for field in sorted(fraction_fields):
+        source = classification if field in classification else mechanism
+        value = source.get(field, "")
+        if value == "":
+            continue
+        label = f"classification_{baseline}" if field in classification else f"mechanism_{baseline}"
+        try:
+            parsed = parse_float(value, field)
+            if not 0.0 <= parsed <= 1.0:
+                raise ValueError(f"{field} outside [0,1]: {value!r}")
+            parsed_fractions[field] = parsed
+        except ValueError as error:
+            errors.append(f"{label}_fraction:{model}:{field}:{error}")
+
+    for field in (
+        "align_rmsd_A",
+        "contact_cutoff_a",
+        "clash_cutoff_a",
+        "hotspot_weight_total",
+        "hotspot_weight_overlap",
+    ):
+        value = mechanism.get(field, "")
+        if value == "":
+            continue
+        try:
+            parsed = parse_float(value, field)
+            if parsed < 0:
+                raise ValueError(f"{field} is negative: {value!r}")
+        except ValueError as error:
+            errors.append(f"mechanism_{baseline}_finite_nonnegative:{model}:{field}:{error}")
+
+    hotspot_class = parsed_class_counts.get("hotspot_overlap_count")
+    hotspot_mechanism = parsed_mechanism_counts.get("hotspot_overlap_count")
+    if hotspot_class is not None and hotspot_mechanism is not None and hotspot_class != hotspot_mechanism:
+        errors.append(
+            f"classification_mechanism_hotspot_mismatch:{baseline}:{model}:"
+            f"{hotspot_class}!={hotspot_mechanism}"
+        )
+    total = parsed_class_counts.get("total_vhh_pvrl2_residue_pair_occlusion")
+    mechanism_total = parsed_mechanism_counts.get("pvrl2_vhh_occluding_contact_count")
+    if total is not None and mechanism_total is not None and total != mechanism_total:
+        errors.append(
+            f"classification_mechanism_total_mismatch:{baseline}:{model}:{total}!={mechanism_total}"
+        )
+    cdr3 = parsed_class_counts.get("cdr3_pvrl2_residue_pair_occlusion")
+    if total is not None and cdr3 is not None:
+        if cdr3 > total:
+            errors.append(f"classification_{baseline}_cdr3_exceeds_total:{model}:{cdr3}>{total}")
+        fraction = parsed_fractions.get("cdr3_occlusion_fraction")
+        if fraction is not None:
+            expected_fraction = cdr3 / total if total else 0.0
+            if not math.isclose(fraction, expected_fraction, rel_tol=0.0, abs_tol=1e-6):
+                errors.append(
+                    f"classification_{baseline}_cdr3_fraction_mismatch:{model}:"
+                    f"{fraction}!={expected_fraction}"
+                )
+
+
 def postprocess_artifact_paths(run_root: Path, run_id: str) -> dict[str, Path]:
     reports = run_root / "reports"
     return {
@@ -1112,6 +1268,8 @@ def validate_postprocess_marker(
     counts: Mapping[str, int],
     model_set: set[str],
     ranks: Mapping[str, Mapping[str, str]],
+    traceback_path: Path,
+    traceback_ranks: Mapping[str, int],
 ) -> list[str]:
     errors: list[str] = []
     run_id = row["run_id"]
@@ -1244,6 +1402,28 @@ def validate_postprocess_marker(
             if marker_counts.get(field) != counts.get(field):
                 errors.append(f"marker_count_mismatch:{field}:{marker_counts.get(field)}!={counts.get(field)}")
 
+    traceback_marker = marker.get("traceback")
+    if not isinstance(traceback_marker, dict):
+        errors.append("marker_traceback_not_object")
+    else:
+        expected_relpath = str(traceback_path.relative_to(traceback_path.parents[1]))
+        if traceback_marker.get("relpath") != expected_relpath:
+            errors.append(
+                f"marker_traceback_relpath_mismatch:{traceback_marker.get('relpath')}!={expected_relpath}"
+            )
+        if not traceback_path.is_file():
+            errors.append(f"marker_traceback_missing:{traceback_path}")
+        else:
+            observed_sha = sha256_file(traceback_path)
+            if traceback_marker.get("sha256") != observed_sha:
+                errors.append(
+                    f"marker_traceback_hash_mismatch:{traceback_marker.get('sha256')}!={observed_sha}"
+                )
+        if traceback_marker.get("model_ranks") != dict(traceback_ranks):
+            errors.append(
+                f"marker_traceback_rank_map_mismatch:{traceback_marker.get('model_ranks')}!={dict(traceback_ranks)}"
+            )
+
     paths = postprocess_artifact_paths(run_root, run_id)
     artifact_marker = marker.get("artifacts")
     if not isinstance(artifact_marker, dict):
@@ -1331,6 +1511,10 @@ def evaluate_postprocessed_run(
     run_root = postprocessed_root / run_id
     reports = run_root / "reports"
     errors: list[str] = []
+    synced_run_dir = resolve_evidence_path(
+        sync_root, row, "run_dir_relpath", f"runs/{run_id}/run_{run_id}"
+    )
+    traceback_path, traceback_ranks = read_strict_traceback_ranks(synced_run_dir, errors)
     paths = postprocess_artifact_paths(run_root, run_id)
     consensus = indexed_rows(paths["consensus"], "consensus", errors)
     classifications = {
@@ -1360,6 +1544,11 @@ def evaluate_postprocessed_run(
     else:
         errors.append(f"missing_canonical_contact_pairs:{paths['canonical_contact_pairs']}")
     model_set = set(consensus)
+    if set(traceback_ranks) != model_set:
+        errors.append(
+            f"traceback_model_set_mismatch:missing={sorted(model_set-set(traceback_ranks))};"
+            f"extra={sorted(set(traceback_ranks)-model_set)}"
+        )
     for label, index in [
         *((f"classification_{key}", value) for key, value in classifications.items()),
         *((f"mechanism_{key}", value) for key, value in mechanisms.items()),
@@ -1382,12 +1571,28 @@ def evaluate_postprocessed_run(
                 canonical.get(model, {}).get("canonical_residue_pair_count", ""),
                 "canonical_residue_pair_count",
             )
+            if declared < 0:
+                raise ValueError(f"canonical_residue_pair_count is negative: {declared}")
             if pair_counts[model] != declared:
                 errors.append(f"canonical_contact_pair_count_mismatch:{model}:{pair_counts[model]}!={declared}")
                 contact_failures += 1
         except ValueError as error:
             errors.append(f"canonical_contact_pair_count_invalid:{model}:{error}")
             contact_failures += 1
+
+    rank_csv_map: dict[str, int] = {}
+    try:
+        for model, rank_row in ranks.items():
+            rank = parse_int(rank_row.get("haddock_rank", ""), "haddock_rank")
+            if rank <= 0 or rank in rank_csv_map.values():
+                raise ValueError(f"rank must be positive and unique: {model}={rank}")
+            rank_csv_map[model] = rank
+        if set(rank_csv_map.values()) != set(range(1, len(rank_csv_map) + 1)):
+            raise ValueError(f"rank CSV not contiguous 1..N: {sorted(rank_csv_map.values())}")
+        if rank_csv_map != traceback_ranks:
+            raise ValueError(f"rank CSV/traceback mismatch: {rank_csv_map}!={traceback_ranks}")
+    except ValueError as error:
+        errors.append(f"rank_csv_invalid:{error}")
 
     cluster_counts: Counter[str] = Counter()
     for model in model_set:
@@ -1422,6 +1627,9 @@ def evaluate_postprocessed_run(
                 if missing_mechanism:
                     errors.append(f"mechanism_{baseline}_incomplete:{model}:{','.join(missing_mechanism)}")
                     contact_failures += 1
+                validate_geometry_numeric_closure(
+                    baseline, model, class_row, mechanism_row, errors
+                )
                 blocker_class = class_row.get("blocker_class", "")
                 if blocker_class not in VALID_BLOCKER_CLASSES:
                     errors.append(f"classification_{baseline}_invalid:{model}:{blocker_class}")
@@ -1433,9 +1641,13 @@ def evaluate_postprocessed_run(
                 "BINDER_LIKE_C": parse_int(consensus_row.get("binder_like_count", ""), "binder_like_count"),
                 "EVIDENCE_INFERENCE_ONLY_E": parse_int(consensus_row.get("evidence_only_count", ""), "evidence_only_count"),
             }
+            if any(value < 0 for value in declared_counts.values()):
+                errors.append(f"consensus_negative_count:{model}:{declared_counts}")
             if any(counts[key] != value for key, value in declared_counts.items()):
                 errors.append(f"consensus_count_mismatch:{model}")
             baseline_count = parse_int(consensus_row.get("baseline_count", ""), "baseline_count")
+            if baseline_count < 0:
+                errors.append(f"consensus_negative_baseline_count:{model}:{baseline_count}")
             if baseline_count != 2 or sum(declared_counts.values()) != 2:
                 errors.append(f"consensus_not_dual_baseline:{model}:{baseline_count}/{sum(declared_counts.values())}")
             rank = parse_float(consensus_row.get("best_haddock_rank", ""), "best_haddock_rank")
@@ -1520,6 +1732,8 @@ def evaluate_postprocessed_run(
             marker_counts,
             model_set,
             ranks,
+            traceback_path,
+            traceback_ranks,
         )
     )
     return poses, evidence, errors

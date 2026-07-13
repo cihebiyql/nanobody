@@ -321,7 +321,7 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 {"model": model, "filename": pose.name, "sha256": sha(pose), "haddock_rank": rank}
             )
         traceback = synced_run_dir / "traceback/consensus.tsv"
-        traceback.parent.mkdir(parents=True)
+        traceback.parent.mkdir(parents=True, exist_ok=True)
         traceback.write_text(
             "Model\t6_seletopclusts_rank\tSum-of-Ranks\n"
             + "".join(

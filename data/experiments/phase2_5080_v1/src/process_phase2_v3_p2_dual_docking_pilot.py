@@ -215,6 +215,14 @@ def build_postprocess_marker(
                 "haddock_rank": rank,
             }
         )
+    traceback_path = run_dir / "traceback/consensus.tsv"
+    traceback_model_ranks = traceback_ranks(run_dir)
+    selected_model_ranks = {model: rank for model, _path, rank in selected}
+    if traceback_model_ranks != selected_model_ranks:
+        raise ValueError(
+            f"Selected/traceback rank map mismatch for {run_id}: "
+            f"{selected_model_ranks}!={traceback_model_ranks}"
+        )
     counts = {field: evidence[field] for field in POSTPROCESS_COUNT_FIELDS}
     return {
         "schema_version": "phase2_v3_p2_dual_docking_run_postprocess_v1_1",
@@ -237,6 +245,11 @@ def build_postprocess_marker(
             "receptor": row["receptor_sha256"],
         },
         "selected_pose_files": selected_inventory,
+        "traceback": {
+            "relpath": str(traceback_path.relative_to(run_dir)),
+            "sha256": sha256_file(traceback_path),
+            "model_ranks": traceback_model_ranks,
+        },
         "counts": counts,
         "artifacts": artifacts,
         "toolchain_sha256": hash_named_paths(POSTPROCESS_TOOLCHAIN_PATHS),
@@ -257,16 +270,33 @@ def model_name(path: Path) -> str:
 
 def traceback_ranks(run_dir: Path) -> dict[str, int]:
     path = run_dir / "traceback/consensus.tsv"
-    if not path.exists():
-        return {}
+    if not path.is_file():
+        raise FileNotFoundError(f"Missing required HADDOCK traceback consensus: {path}")
     ranks: dict[str, int] = {}
+    rank_to_model: dict[int, str] = {}
     for row in read_csv(path, delimiter="\t"):
         model = row.get("Model", "").removesuffix(".pdb")
-        raw = row.get("6_seletopclusts_rank", "") or row.get("Sum-of-Ranks", "")
-        try:
-            ranks[model] = int(float(raw))
-        except ValueError:
+        raw = row.get("6_seletopclusts_rank", "").strip()
+        if not raw:
             continue
+        if not MODEL_RE.fullmatch(model):
+            raise ValueError(f"Invalid traceback model name: {model!r}")
+        if not raw.isdigit() or int(raw) <= 0:
+            raise ValueError(f"Invalid final traceback rank for {model}: {raw!r}")
+        rank = int(raw)
+        if model in ranks:
+            raise ValueError(f"Duplicate traceback model: {model}")
+        if rank in rank_to_model:
+            raise ValueError(
+                f"Duplicate traceback rank {rank}: {rank_to_model[rank]} and {model}"
+            )
+        ranks[model] = rank
+        rank_to_model[rank] = model
+    expected = set(range(1, len(ranks) + 1))
+    if not ranks or set(rank_to_model) != expected:
+        raise ValueError(
+            f"Final traceback ranks must be unique contiguous 1..N; observed={sorted(rank_to_model)}"
+        )
     return ranks
 
 
@@ -276,20 +306,23 @@ def selected_models(run_dir: Path, top_n: int) -> list[tuple[str, Path, int]]:
     unique: dict[str, Path] = {}
     for path in paths:
         name = model_name(path)
+        if not MODEL_RE.fullmatch(name):
+            raise ValueError(f"Unexpected selected model filename: {path.name}")
         current = unique.get(name)
         if current is None or (current.suffix != ".gz" and path.suffix == ".gz"):
             unique[name] = path
     ranks = traceback_ranks(run_dir)
-
-    def sort_key(item: tuple[str, Path]) -> tuple[int, int, int, str]:
-        name, _path = item
-        match = MODEL_RE.fullmatch(name)
-        cluster = int(match.group(1)) if match else 10**9
-        model = int(match.group(2)) if match else 10**9
-        return ranks.get(name, 10**9), cluster, model, name
-
-    ordered = sorted(unique.items(), key=sort_key)[:top_n]
-    return [(name, path, ranks.get(name, index)) for index, (name, path) in enumerate(ordered, start=1)]
+    if set(ranks) != set(unique):
+        raise ValueError(
+            "Traceback/final selected model set mismatch: "
+            f"missing={sorted(set(unique)-set(ranks))};extra={sorted(set(ranks)-set(unique))}"
+        )
+    if len(unique) > top_n:
+        raise ValueError(
+            f"Final selected model count {len(unique)} exceeds frozen postprocess top_n={top_n}"
+        )
+    ordered = sorted(unique.items(), key=lambda item: ranks[item[0]])
+    return [(name, path, ranks[name]) for name, path in ordered]
 
 
 def unpack_pose(source: Path, destination: Path) -> None:
