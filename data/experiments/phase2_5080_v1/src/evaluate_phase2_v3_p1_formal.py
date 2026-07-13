@@ -112,8 +112,7 @@ def _assert_prediction_blind(frame: pd.DataFrame, source: str) -> None:
         raise ValueError(f"{source} contains pre-evaluator label columns: {sorted(forbidden)}")
 
 
-def load_teacher(path: Path) -> pd.DataFrame:
-    teacher = pd.read_csv(path)
+def _prepare_teacher(teacher: pd.DataFrame) -> pd.DataFrame:
     required = {
         "candidate_id",
         "sequence_sha256",
@@ -152,6 +151,24 @@ def load_teacher(path: Path) -> pd.DataFrame:
     return teacher
 
 
+def load_teacher(path: Path) -> pd.DataFrame:
+    """Load a combined dev/test teacher table (mainly useful for fixtures)."""
+    return _prepare_teacher(pd.read_csv(path))
+
+
+def load_teacher_parts(open_path: Path, sealed_test_path: Path) -> pd.DataFrame:
+    """Open dev labels and unseal formal test labels only inside evaluation."""
+    development = pd.read_csv(open_path)
+    sealed = pd.read_csv(sealed_test_path)
+    development = development.loc[development["formal_split"].astype(str).eq("dev")].copy()
+    sealed = sealed.loc[sealed["formal_split"].astype(str).eq("test")].copy()
+    if "sealed_status" in sealed and not sealed["sealed_status"].astype(str).eq(
+        "SEALED_FORMAL_TEST_LABEL"
+    ).all():
+        raise ValueError("Formal test label rows do not carry the required sealed status")
+    return _prepare_teacher(pd.concat([development, sealed], ignore_index=True, sort=False))
+
+
 def _validate_identity_columns(prediction: pd.DataFrame, teacher: pd.DataFrame, source: str) -> None:
     for column in ("sequence_sha256", "formal_split", "parent_framework_cluster"):
         if column not in prediction:
@@ -161,7 +178,7 @@ def _validate_identity_columns(prediction: pd.DataFrame, teacher: pd.DataFrame, 
             on="candidate_id",
             how="inner",
             suffixes=("_teacher", "_prediction"),
-            validate="one_to_one",
+            validate="one_to_many",
         )
         mismatch = expected[f"{column}_teacher"].astype(str) != expected[f"{column}_prediction"].astype(str)
         if mismatch.any():
@@ -320,7 +337,7 @@ def load_controls(
             raise ValueError(f"{control_type} has duplicate candidate/seed rows")
         if set(block["candidate_id"].astype(str)) != expected_ids:
             raise ValueError(f"{control_type} does not exactly cover the formal test candidates")
-        _validate_identity_columns(block.drop_duplicates("candidate_id"), test_teacher, control_type)
+        _validate_identity_columns(block, test_teacher, control_type)
         pivot = block.pivot(index="candidate_id", columns="seed", values="predicted_relevance")
         pivot = pivot.loc[sorted(expected_ids), list(EXPECTED_SEEDS)]
         pivot = pivot.apply(pd.to_numeric, errors="raise")
@@ -333,6 +350,36 @@ def load_controls(
         ].mean(axis=1)
         output[control_type] = result
     return output, sha256_file(control_path)
+
+
+def load_generic_replay_retention(
+    path: Path, minimum_fraction: float = 0.90
+) -> tuple[dict[str, Any], dict[str, bool]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    per_seed = payload.get("per_seed")
+    if not isinstance(per_seed, dict) or {int(seed) for seed in per_seed} != set(EXPECTED_SEEDS):
+        raise ValueError(f"Generic replay retention must contain exactly seeds {EXPECTED_SEEDS}")
+    checks: dict[str, bool] = {}
+    normalized: dict[str, dict[str, float]] = {}
+    for seed in EXPECTED_SEEDS:
+        record = per_seed[str(seed)] if str(seed) in per_seed else per_seed[seed]
+        if not isinstance(record, dict):
+            raise ValueError(f"Generic replay seed {seed} is not a metric object")
+        normalized[str(seed)] = {}
+        for metric in ("contact_auprc_retention_fraction", "paratope_auprc_retention_fraction"):
+            value = float(record[metric])
+            if not np.isfinite(value) or value < 0.0:
+                raise ValueError(f"Invalid generic replay {metric} for seed {seed}")
+            normalized[str(seed)][metric] = value
+            checks[f"generic_replay_seed_{seed}_{metric}_ge_{minimum_fraction:g}"] = (
+                value >= minimum_fraction
+            )
+    return {
+        "schema_version": payload.get("schema_version", ""),
+        "minimum_retention_fraction": minimum_fraction,
+        "per_seed": normalized,
+        "sha256": sha256_file(path),
+    }, checks
 
 
 def _top_fraction_seed_agreement(frame: pd.DataFrame, fraction: float = 0.20) -> dict[str, Any]:
@@ -363,16 +410,36 @@ def _screen_checks(metrics: Mapping[str, Any], threshold: GateThresholds) -> dic
 
 
 def evaluate_formal(
-    teacher_path: Path,
+    teacher_path: Path | None,
     seed_paths: Mapping[int, Path],
     baseline_path: Path,
     control_path: Path,
+    generic_replay_path: Path,
     output_dir: Path,
     bootstrap_replicates: int = 2000,
     permutation_replicates: int = 2000,
     threshold: GateThresholds = GateThresholds(),
+    teacher_open_path: Path | None = None,
+    teacher_test_sealed_path: Path | None = None,
 ) -> dict[str, Any]:
-    teacher = load_teacher(teacher_path)
+    split_teacher_mode = teacher_open_path is not None or teacher_test_sealed_path is not None
+    if teacher_path is not None and split_teacher_mode:
+        raise ValueError("Use either combined teacher_path or open/sealed teacher paths, not both")
+    if split_teacher_mode:
+        if teacher_open_path is None or teacher_test_sealed_path is None:
+            raise ValueError("Both teacher_open_path and teacher_test_sealed_path are required")
+        teacher = load_teacher_parts(teacher_open_path, teacher_test_sealed_path)
+        teacher_hashes = {
+            "teacher_open_development": sha256_file(teacher_open_path),
+            "teacher_formal_labels_sealed": sha256_file(teacher_test_sealed_path),
+        }
+        teacher_join_mode = "open_dev_plus_evaluator_only_unsealed_test"
+    else:
+        if teacher_path is None:
+            raise ValueError("A combined teacher path or open/sealed teacher paths are required")
+        teacher = load_teacher(teacher_path)
+        teacher_hashes = {"teacher_combined": sha256_file(teacher_path)}
+        teacher_join_mode = "combined_dev_test_fixture_or_legacy"
     predictions, seed_hashes = merge_three_seed_predictions(teacher, seed_paths)
     selected_baseline, baseline_scores, baseline_selection = select_strongest_baseline(
         teacher, baseline_path
@@ -388,6 +455,7 @@ def evaluate_formal(
     controls, control_hash = load_controls(
         control_path, teacher.loc[teacher["formal_split"].eq("test")]
     )
+    generic_replay, generic_replay_checks = load_generic_replay_retention(generic_replay_path)
 
     relevance = predictions["true_relevance"].to_numpy(dtype=float)
     clusters = predictions["parent_framework_cluster"].astype(str).tolist()
@@ -469,6 +537,7 @@ def evaluate_formal(
             "parent_cluster_bootstrap_ci_lower_gt_zero": float(bootstrap["ci95_lower"]) > 0.0,
             "paired_cluster_permutation_p_lt_0_05": float(permutation["two_sided_p_value"])
             < 0.05,
+            **generic_replay_checks,
             **control_checks,
         }
     )
@@ -498,6 +567,7 @@ def evaluate_formal(
         "parent_cluster_bootstrap": bootstrap,
         "paired_parent_cluster_permutation": permutation,
         "control_results": control_results,
+        "generic_replay_retention": generic_replay,
         "thresholds": {
             "g1_g2_recall_at_20": threshold.recall_at_20,
             "g1_g2_ef_at_10": threshold.enrichment_at_10,
@@ -507,11 +577,13 @@ def evaluate_formal(
         "checks": primary_checks,
         "all_checks_pass": all(primary_checks.values()),
         "test_label_join_boundary": "inside_this_evaluator_only",
+        "teacher_join_mode": teacher_join_mode,
         "input_prediction_artifacts_label_blind": True,
         "artifact_sha256": {
-            "teacher": sha256_file(teacher_path),
+            **teacher_hashes,
             "baseline_predictions": baseline_selection["sha256"],
             "control_predictions": control_hash,
+            "generic_replay_retention": generic_replay["sha256"],
             **seed_hashes,
         },
         "known_limitations": [
@@ -527,7 +599,10 @@ def evaluate_formal(
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--teacher", type=Path, required=True)
+    teacher_group = parser.add_mutually_exclusive_group(required=True)
+    teacher_group.add_argument("--teacher", type=Path)
+    teacher_group.add_argument("--teacher-open", type=Path)
+    parser.add_argument("--teacher-test-sealed", type=Path)
     parser.add_argument(
         "--seed-prediction",
         action="append",
@@ -536,6 +611,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--baseline-predictions", type=Path, required=True)
     parser.add_argument("--control-predictions", type=Path, required=True)
+    parser.add_argument("--generic-replay-retention", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--bootstrap-replicates", type=int, default=2000)
     parser.add_argument("--permutation-replicates", type=int, default=2000)
@@ -553,6 +629,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         seed_paths=parse_seed_paths(args.seed_prediction),
         baseline_path=args.baseline_predictions,
         control_path=args.control_predictions,
+        generic_replay_path=args.generic_replay_retention,
         output_dir=args.output_dir,
         bootstrap_replicates=args.bootstrap_replicates,
         permutation_replicates=args.permutation_replicates,
@@ -562,6 +639,8 @@ def main(argv: Sequence[str] | None = None) -> None:
             relevance_spearman=args.relevance_spearman_threshold,
             target_control_ef_drop=args.target_control_ef_drop,
         ),
+        teacher_open_path=args.teacher_open,
+        teacher_test_sealed_path=args.teacher_test_sealed,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
 

@@ -5,6 +5,7 @@ import tempfile
 import unittest
 import sys
 import hashlib
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -23,6 +24,7 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         self.teacher_path = self.root / "teacher.csv"
         self.baseline_path = self.root / "baselines.csv"
         self.control_path = self.root / "controls.csv"
+        self.replay_path = self.root / "generic_replay_retention.json"
         self.seed_paths: dict[int, Path] = {}
         rows: list[dict[str, object]] = []
         index = 0
@@ -87,6 +89,21 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
                         }
                     )
         pd.DataFrame(controls).to_csv(self.control_path, index=False)
+        self.replay_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "phase2_v3_p1_generic_replay_retention_v1",
+                    "per_seed": {
+                        str(seed): {
+                            "contact_auprc_retention_fraction": 0.95,
+                            "paratope_auprc_retention_fraction": 0.96,
+                        }
+                        for seed in formal.EXPECTED_SEEDS
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -98,6 +115,7 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
             self.seed_paths,
             self.baseline_path,
             self.control_path,
+            self.replay_path,
             output,
             bootstrap_replicates=300,
             permutation_replicates=1023,
@@ -121,6 +139,18 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         self.assertTrue((output / "formal_evaluation.json").is_file())
         self.assertTrue((output / "formal_test_predictions_with_teacher_labels.csv").is_file())
 
+    def test_open_and_sealed_teacher_join_occurs_in_evaluator(self) -> None:
+        teacher = pd.read_csv(self.teacher_path)
+        open_path = self.root / "teacher_open.csv"
+        sealed_path = self.root / "teacher_test_sealed.csv"
+        teacher.loc[teacher["formal_split"].eq("dev")].to_csv(open_path, index=False)
+        sealed = teacher.loc[teacher["formal_split"].eq("test")].copy()
+        sealed["sealed_status"] = "SEALED_FORMAL_TEST_LABEL"
+        sealed.to_csv(sealed_path, index=False)
+        loaded = formal.load_teacher_parts(open_path, sealed_path)
+        self.assertEqual(len(loaded), len(teacher))
+        self.assertEqual(set(loaded["formal_split"]), {"dev", "test"})
+
     def test_exact_three_seed_contract(self) -> None:
         with self.assertRaisesRegex(ValueError, "exactly"):
             formal.parse_seed_paths([f"83={self.seed_paths[83]}", f"89={self.seed_paths[89]}"])
@@ -136,6 +166,14 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         contaminated.to_csv(self.seed_paths[83], index=False)
         teacher = formal.load_teacher(self.teacher_path)
         with self.assertRaisesRegex(ValueError, "pre-evaluator label"):
+            formal.merge_three_seed_predictions(teacher, self.seed_paths)
+
+    def test_sequence_hash_mismatch_is_rejected(self) -> None:
+        prediction = pd.read_csv(self.seed_paths[83])
+        prediction.loc[0, "sequence_sha256"] = "0" * 64
+        prediction.to_csv(self.seed_paths[83], index=False)
+        teacher = formal.load_teacher(self.teacher_path)
+        with self.assertRaisesRegex(ValueError, "sequence_sha256"):
             formal.merge_three_seed_predictions(teacher, self.seed_paths)
 
     def test_baseline_is_selected_on_dev_only(self) -> None:

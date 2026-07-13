@@ -107,10 +107,23 @@ def ndcg(
         if k <= 0:
             raise ValueError("k must be positive or None")
         count = min(int(k), len(rel))
-    order = np.argsort(-score, kind="mergesort")[:count]
+    order = np.argsort(-score, kind="mergesort")
     ideal = np.argsort(-rel, kind="mergesort")[:count]
     discounts = np.log2(np.arange(count, dtype=np.float64) + 2.0)
-    actual_dcg = float(np.sum(np.expm1(rel[order] * math.log(2.0)) / discounts))
+    gains = np.expm1(rel * math.log(2.0))
+    actual_dcg = 0.0
+    start = 0
+    while start < count:
+        end = start + 1
+        while end < len(order) and score[order[end]] == score[order[start]]:
+            end += 1
+        clipped_end = min(end, count)
+        # A tied score provides no ordering information, so use its expected DCG.
+        actual_dcg += float(
+            np.mean(gains[order[start:end]])
+            * np.sum(1.0 / discounts[start:clipped_end])
+        )
+        start = end
     ideal_dcg = float(np.sum(np.expm1(rel[ideal] * math.log(2.0)) / discounts))
     return actual_dcg / ideal_dcg if ideal_dcg else 0.0
 

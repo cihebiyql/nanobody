@@ -26,6 +26,8 @@ class PVRIGModelConfig:
     pooled_dim: int = 48
     hidden_dim: int = 128
     geometry_dim: int = 8
+    structure_dim: int = 8
+    structure_projection_dim: int = 16
     dropout: float = 0.1
     contact_residual_scale: float = 0.1
     site_residual_scale: float = 0.1
@@ -56,6 +58,8 @@ class PVRIGV3P1Model(nn.Module):
         backbone: nn.Module,
         config: PVRIGModelConfig,
         hotspot_weights: torch.Tensor,
+        structure_8x6b: torch.Tensor | None = None,
+        structure_9e6y: torch.Tensor | None = None,
     ) -> None:
         super().__init__()
         if hotspot_weights.ndim != 1:
@@ -75,6 +79,13 @@ class PVRIGV3P1Model(nn.Module):
         self.paratope_residual = nn.Linear(d_model, 1)
         self.epitope_residual = nn.Linear(d_model, 1)
         self.site_scale = nn.Parameter(torch.tensor(float(config.site_residual_scale)))
+        self.structure_8x6b_projection = nn.Sequential(
+            nn.Linear(config.structure_dim, config.structure_projection_dim, bias=False), nn.GELU()
+        )
+        self.structure_9e6y_projection = nn.Sequential(
+            nn.Linear(config.structure_dim, config.structure_projection_dim, bias=False), nn.GELU()
+        )
+        self.structure_fusion = nn.Linear(config.structure_projection_dim * 2, d_model, bias=False)
 
         self.vhh_pool = nn.Sequential(nn.Linear(d_model, config.pooled_dim), nn.GELU())
         self.antigen_pool = nn.Sequential(nn.Linear(d_model, config.pooled_dim), nn.GELU())
@@ -96,6 +107,13 @@ class PVRIGV3P1Model(nn.Module):
         inverse_softplus_one = math.log(math.expm1(1.0))
         self.cutpoint_gaps_raw = nn.Parameter(torch.full((3,), inverse_softplus_one))
         self.register_buffer("default_hotspot_weights", hotspot_weights.detach().float().clone())
+        default_shape = (len(hotspot_weights), config.structure_dim)
+        structure_8x6b = torch.zeros(default_shape) if structure_8x6b is None else structure_8x6b
+        structure_9e6y = torch.zeros(default_shape) if structure_9e6y is None else structure_9e6y
+        if tuple(structure_8x6b.shape) != default_shape or tuple(structure_9e6y.shape) != default_shape:
+            raise ValueError(f"Conformer features must both have shape {default_shape}")
+        self.register_buffer("default_structure_8x6b", structure_8x6b.detach().float().clone())
+        self.register_buffer("default_structure_9e6y", structure_9e6y.detach().float().clone())
 
     def train(self, mode: bool = True) -> "PVRIGV3P1Model":
         super().train(mode)
@@ -124,6 +142,34 @@ class PVRIGV3P1Model(nn.Module):
             source = nn.functional.pad(source, (0, antigen_length - source.shape[1]))
         return source[:, :antigen_length]
 
+    def _resolve_structure(
+        self,
+        source: torch.Tensor,
+        antigen_length: int,
+        batch_size: int,
+        device: torch.device,
+    ) -> torch.Tensor:
+        source = source.to(device=device, dtype=torch.float32)
+        if source.ndim == 2:
+            source = source.unsqueeze(0).expand(batch_size, -1, -1)
+        if source.ndim != 3 or source.shape[0] != batch_size or source.shape[2] != self.config.structure_dim:
+            raise ValueError("Structure features must have shape (length, dim) or (batch, length, dim)")
+        if source.shape[1] < antigen_length:
+            source = nn.functional.pad(source, (0, 0, 0, antigen_length - source.shape[1]))
+        return source[:, :antigen_length]
+
+    @staticmethod
+    def _control_permutation(length: int, seed: int, device: torch.device) -> torch.Tensor:
+        generator = torch.Generator(device="cpu").manual_seed(int(seed))
+        return torch.randperm(length, generator=generator).to(device)
+
+    def _encode_vhh_only(self, vhh: torch.Tensor, cdr: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        v_mask = vhh.abs().sum(-1).eq(0)
+        positions = torch.arange(vhh.shape[1], device=vhh.device).unsqueeze(0).expand(vhh.shape[0], -1)
+        positions = positions.clamp(max=self.backbone.cfg.max_vhh_len - 1)
+        hidden = self.backbone.esm_project(vhh) + self.backbone.cdr_type(cdr.clamp(0, 3)) + self.backbone.v_pos(positions)
+        return self.backbone.v_enc(hidden, src_key_padding_mask=v_mask), v_mask
+
     def forward(
         self,
         vhh: torch.Tensor,
@@ -131,20 +177,63 @@ class PVRIGV3P1Model(nn.Module):
         antigen: torch.Tensor,
         generic_binding_prior: torch.Tensor,
         hotspot_weights: torch.Tensor | None = None,
+        structure_8x6b: torch.Tensor | None = None,
+        structure_9e6y: torch.Tensor | None = None,
+        control_type: str = "full",
+        control_seed: int = 0,
     ) -> dict[str, torch.Tensor]:
+        allowed_controls = {"full", "hotspot_shuffle", "antigen_ablation", "target_permutation", "vhh_only"}
+        if control_type not in allowed_controls:
+            raise ValueError(f"Unsupported inference control: {control_type}")
         prior = generic_binding_prior.float().reshape(-1)
         if len(prior) != vhh.shape[0] or not torch.isfinite(prior).all():
             raise ValueError("generic_binding_prior must contain one finite scalar per candidate")
         if bool(((prior < 0.0) | (prior > 1.0)).any()):
             raise ValueError("generic_binding_prior must be a probability in [0, 1]")
 
+        structure_8x6b = self.default_structure_8x6b if structure_8x6b is None else structure_8x6b
+        structure_9e6y = self.default_structure_9e6y if structure_9e6y is None else structure_9e6y
+        raw_hotspots = self.default_hotspot_weights if hotspot_weights is None else hotspot_weights
+        antigen_input = antigen
+        if control_type == "target_permutation":
+            permutation = self._control_permutation(antigen.shape[1], control_seed, antigen.device)
+            antigen_input = antigen[:, permutation]
+            raw_hotspots = raw_hotspots[..., permutation]
+            structure_8x6b = structure_8x6b[..., permutation, :] if structure_8x6b.ndim == 3 else structure_8x6b[permutation]
+            structure_9e6y = structure_9e6y[..., permutation, :] if structure_9e6y.ndim == 3 else structure_9e6y[permutation]
+        elif control_type == "hotspot_shuffle":
+            permutation = self._control_permutation(antigen.shape[1], control_seed, antigen.device)
+            raw_hotspots = raw_hotspots[..., permutation]
+
         self.backbone.eval()
         with torch.no_grad():
-            hv, ha, v_mask, a_mask = self.backbone.encode(vhh, cdr, antigen)
-            base_contact = self.backbone.contact_logits(hv, ha).detach()
-            base_paratope, base_epitope = self.backbone.site_logits(hv, ha)
-            base_paratope = base_paratope.detach()
-            base_epitope = base_epitope.detach()
+            if control_type == "vhh_only":
+                hv, v_mask = self._encode_vhh_only(vhh, cdr)
+                ha = torch.zeros((vhh.shape[0], antigen.shape[1], hv.shape[2]), device=hv.device, dtype=hv.dtype)
+                a_mask = antigen.abs().sum(-1).eq(0)
+                base_contact = torch.zeros((vhh.shape[0], vhh.shape[1], antigen.shape[1]), device=hv.device, dtype=hv.dtype)
+                base_paratope = self.backbone.para(hv).squeeze(-1).detach()
+                base_epitope = torch.zeros((vhh.shape[0], antigen.shape[1]), device=hv.device, dtype=hv.dtype)
+            else:
+                hv, ha, v_mask, a_mask = self.backbone.encode(vhh, cdr, antigen_input)
+                base_contact = self.backbone.contact_logits(hv, ha).detach()
+                base_paratope, base_epitope = self.backbone.site_logits(hv, ha)
+                base_paratope = base_paratope.detach()
+                base_epitope = base_epitope.detach()
+
+        structures_8x6b = self._resolve_structure(structure_8x6b, ha.shape[1], ha.shape[0], ha.device)
+        structures_9e6y = self._resolve_structure(structure_9e6y, ha.shape[1], ha.shape[0], ha.device)
+        hotspots = self._resolve_hotspots(ha.shape[1], ha.shape[0], ha.device, raw_hotspots)
+        if control_type in {"antigen_ablation", "vhh_only"}:
+            ha = torch.zeros_like(ha)
+            structures_8x6b = torch.zeros_like(structures_8x6b)
+            structures_9e6y = torch.zeros_like(structures_9e6y)
+            hotspots = torch.zeros_like(hotspots)
+            base_contact = torch.zeros_like(base_contact)
+            base_epitope = torch.zeros_like(base_epitope)
+        structure_8x6b_encoded = self.structure_8x6b_projection(structures_8x6b)
+        structure_9e6y_encoded = self.structure_9e6y_projection(structures_9e6y)
+        ha = ha + self.structure_fusion(torch.cat((structure_8x6b_encoded, structure_9e6y_encoded), dim=-1))
 
         adapter = torch.bmm(self.contact_q(hv), self.contact_k(ha).transpose(1, 2))
         adapter = adapter / math.sqrt(float(self.contact_q.out_features))
@@ -157,7 +246,6 @@ class PVRIGV3P1Model(nn.Module):
         contact_prob = torch.sigmoid(contact_logits).masked_fill(~valid_contact, 0.0)
         paratope_prob = torch.sigmoid(paratope_logits).masked_fill(v_mask, 0.0)
         epitope_prob = torch.sigmoid(epitope_logits).masked_fill(a_mask, 0.0)
-        hotspots = self._resolve_hotspots(ha.shape[1], ha.shape[0], ha.device, hotspot_weights)
         interface = hotspots.gt(0).unsqueeze(1) & valid_contact
         noninterface = hotspots.eq(0).unsqueeze(1) & valid_contact
         weighted_hotspot = hotspots.unsqueeze(1) * valid_contact
@@ -231,6 +319,8 @@ class PVRIGV3P1Model(nn.Module):
             "vhh_padding_mask": v_mask,
             "antigen_padding_mask": a_mask,
             "generic_binding_prior": prior.to(hv.device),
+            "structure_8x6b_encoded": structure_8x6b_encoded,
+            "structure_9e6y_encoded": structure_9e6y_encoded,
         }
 
     def trainable_state_dict(self) -> dict[str, torch.Tensor]:
