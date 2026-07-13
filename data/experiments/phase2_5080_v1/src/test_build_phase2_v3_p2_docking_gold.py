@@ -180,21 +180,27 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 evidence, errors = MOD.run_protocol_checks(row, root)
                 self.assertEqual(errors, [])
                 self.assertTrue(all(evidence["checks"].values()))
-                self.assertEqual(evidence["runtime_rigidbody_output_count"], 40)
+                self.assertEqual(evidence["runtime_rigidbody_output_count"], 38)
                 self.assertEqual(evidence["runtime_rigidbody_seed_start"], 918)
-                self.assertEqual(evidence["runtime_rigidbody_seed_end"], 957)
+                self.assertEqual(evidence["runtime_rigidbody_seed_end"], 955)
+                self.assertEqual(evidence["runtime_stage_output_counts"], {
+                    "topoaa": 2, "rigidbody": 38, "seletop": 10,
+                    "flexref": 8, "emref": 8, "final": 8,
+                })
 
     def test_protocol_check_rejects_relaxation_and_wrong_runtime_seed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             row = self.make_protocol_evidence(root)
-            row["tolerance_relaxed"] = "true"
+            row["per_candidate_failure_tolerance_override"] = "true"
             io_path = root / row["run_dir_relpath"] / "1_rigidbody/io.json"
             payload = json.loads(io_path.read_text(encoding="utf-8"))
             payload["output"][0]["seed"] = 999
             io_path.write_text(json.dumps(payload), encoding="utf-8")
             evidence, errors = MOD.run_protocol_checks(row, root)
-            self.assertFalse(evidence["checks"]["manifest_no_tolerance_relaxation"])
+            self.assertFalse(
+                evidence["checks"]["manifest_no_per_candidate_failure_tolerance_override"]
+            )
             self.assertFalse(evidence["checks"]["runtime_rigidbody_seed_set"])
             self.assertTrue(errors)
 
