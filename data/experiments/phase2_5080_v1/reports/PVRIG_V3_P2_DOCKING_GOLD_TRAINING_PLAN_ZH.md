@@ -4,6 +4,25 @@
 
 状态：`DRAFT_PENDING_DUAL_DOCKING_PILOT_AND_FREEZE`
 
+当前执行进度：
+
+```text
+P2 planning inventory                    = PASS
+dual-docking pilot64 selection           = PASS
+pilot manifest unique sequences          = 64/64
+replicate-seed candidates                = 16
+independent 8X6B/9E6Y pilot docking      = NOT_STARTED
+P2 preregistration                       = DRAFT_NOT_FROZEN
+```
+
+已生成的 pilot 入口：
+
+```text
+experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/dual_docking_pilot64_manifest.csv
+experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/dual_docking_pilot64.fasta
+experiments/phase2_5080_v1/audits/phase2_v3_p2_dual_docking_pilot_selection_audit.json
+```
+
 ## 一、版本决策
 
 V3-P2 不再尝试证明一个跨抗原通用的 `target-conditioned blocker model`。比赛当前真正需要的是一个更窄但可验证的模型：

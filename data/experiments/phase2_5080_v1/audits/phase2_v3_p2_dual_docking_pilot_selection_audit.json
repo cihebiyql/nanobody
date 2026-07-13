@@ -1,0 +1,57 @@
+{
+  "candidate_count": 64,
+  "claim_boundary": "dual-conformer docking protocol calibration; computational docking gold, not experimental binding or blocking truth",
+  "cohort_counts": {
+    "known_positive": 11,
+    "matched_control": 21,
+    "teacher500_stratified": 32
+  },
+  "control_family_counts": {
+    "20": 6,
+    "30": 5,
+    "38": 4,
+    "39": 6
+  },
+  "input_sha256": {
+    "calibration_manifest": "d75884cbc7f87fab389c1a273661f0d9f724db098b1af99facdae2b4194be4e9",
+    "calibration_summary": "19d5cb4a724bff6361ea2e030404f510c2abfcda14796cb6d973e466c386cb1f",
+    "teacher500_manifest": "9285dd09db2ca1492fa97d52e7d009f4891777548adf06bc1845935aceeb0991",
+    "teacher500_summary": "14a75493825c826dc6e75f3c4471291d06bf0294b5778cc51e72d64898680270"
+  },
+  "output_paths": {
+    "fasta": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/dual_docking_pilot64.fasta",
+    "manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/dual_docking_pilot64_manifest.csv"
+  },
+  "output_sha256": {
+    "fasta": "2be61d5acbef4e681796c69b86ab00281806e5392273bd713c391f9ba7467977",
+    "manifest": "e67fcab05d93cd3f274c76cc435e9f4b649ace255e230129865d913fa8be3755"
+  },
+  "positive_family_counts": {
+    "151": 3,
+    "20": 2,
+    "30": 2,
+    "38": 1,
+    "39": 3
+  },
+  "replicate_seed_candidate_count": 16,
+  "required_docking_protocol": "DG_A_INDEPENDENT_8X6B_AND_9E6Y",
+  "schema_version": "phase2_v3_p2_dual_docking_pilot64_v1",
+  "status": "PASS_P2_DUAL_DOCKING_PILOT64_SELECTED",
+  "teacher_mode_counts": {
+    "H1H3": 16,
+    "H3": 16
+  },
+  "teacher_parent_count": 32,
+  "teacher_patch_counts": {
+    "A_CENTER": 10,
+    "B_LOWER": 11,
+    "C_CROSS": 11
+  },
+  "teacher_stable_tier_counts": {
+    "G1": 8,
+    "G2": 8,
+    "G3": 8,
+    "G5": 8
+  },
+  "unique_sequence_count": 64
+}

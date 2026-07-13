@@ -6,15 +6,13 @@ import argparse
 import csv
 import hashlib
 import json
-import math
 from collections import Counter
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Sequence
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 EXP_DIR = SCRIPT_DIR.parent
-DATA_ROOT = EXP_DIR.parents[1]
 
 DEFAULT_CALIBRATION_MANIFEST = EXP_DIR / "data_splits/pvrig_teacher_v1_manifest.csv"
 DEFAULT_CALIBRATION_SUMMARY = EXP_DIR / "prepared/pvrig_teacher_v1/candidate_summary.csv"

@@ -18,7 +18,7 @@
     },
     "plan": {
       "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_TRAINING_PLAN_ZH.md",
-      "sha256": "3bd0cf0fbbf8a37fcb1e7b3efbb3333bfd0c526722ae8ecd053db130c316c467"
+      "sha256": "0a9e3c078521c17c13e2922dc514cf9708cd3c5b355f5224cf2a5faaec34736b"
     },
     "teacher500_audit": {
       "path": "experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_audit.json",
@@ -82,6 +82,19 @@
       "tolerance_relaxation": false,
       "replicate_gold_relevance_spearman_min": 0.7,
       "replicate_stable_tier_weighted_kappa_min": 0.6
+    },
+    "selection_status": "PASS_P2_DUAL_DOCKING_PILOT64_SELECTED",
+    "selection_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/dual_docking_pilot64_manifest.csv",
+      "sha256": "e67fcab05d93cd3f274c76cc435e9f4b649ace255e230129865d913fa8be3755"
+    },
+    "selection_fasta": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/dual_docking_pilot64.fasta",
+      "sha256": "2be61d5acbef4e681796c69b86ab00281806e5392273bd713c391f9ba7467977"
+    },
+    "selection_audit": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_dual_docking_pilot_selection_audit.json",
+      "sha256": "44a295f952a1d1a52328dba1bf30801720bf735f14f1e3c944e9dfc434a4d457"
     }
   },
   "dataset": {
