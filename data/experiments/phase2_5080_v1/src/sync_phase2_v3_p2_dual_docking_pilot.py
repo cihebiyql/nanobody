@@ -15,11 +15,28 @@ from typing import Any, Sequence
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 EXP_DIR = SCRIPT_DIR.parent
-DEFAULT_PACKAGE_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package"
+DEFAULT_PACKAGE_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package_v2"
 DEFAULT_MANIFEST = DEFAULT_PACKAGE_ROOT / "manifests/run_manifest.csv"
-DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_node1_selected"
-DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_dual_docking_pilot_sync_audit.json"
-DEFAULT_REMOTE_ROOT = "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_20260713"
+DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_v2_node1_selected"
+DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_dual_docking_pilot_v2_sync_audit.json"
+DEFAULT_REMOTE_ROOT = "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_v2_20260714"
+PROTOCOL_ID = "DG_A_PILOT64_V1_1"
+STAGE_IO_RELPATHS = {
+    "topoaa": "0_topoaa/io.json",
+    "rigidbody": "1_rigidbody/io.json",
+    "seletop": "2_seletop/io.json",
+    "flexref": "3_flexref/io.json",
+    "emref": "4_emref/io.json",
+    "final": "6_seletopclusts/io.json",
+}
+STAGE_OUTPUT_REQUIREMENTS = {
+    "topoaa": ("eq", 2),
+    "rigidbody": ("ge", 38),
+    "seletop": ("eq", 10),
+    "flexref": ("ge", 8),
+    "emref": ("ge", 8),
+    "final": ("ge", 8),
+}
 CLAIM_BOUNDARY = "selected_node1_runtime_evidence_for_independent_dual_conformer_docking_gold"
 
 
@@ -68,12 +85,18 @@ cd "$ROOT"
          -o -path '*/run_*/6_seletopclusts/cluster_*_model_*.pdb*' \
          -o -path '*/run_*/traceback/consensus.tsv' \
          -o -path '*/run_*/0_topoaa/params.cfg' \
+         -o -path '*/run_*/0_topoaa/io.json' \
          -o -path '*/run_*/1_rigidbody/params.cfg' \
          -o -path '*/run_*/1_rigidbody/io.json' \
+         -o -path '*/run_*/2_seletop/params.cfg' \
          -o -path '*/run_*/2_seletop/io.json' \
+         -o -path '*/run_*/3_flexref/params.cfg' \
          -o -path '*/run_*/3_flexref/io.json' \
+         -o -path '*/run_*/4_emref/params.cfg' \
          -o -path '*/run_*/4_emref/io.json' \
+         -o -path '*/run_*/5_clustfcc/params.cfg' \
          -o -path '*/run_*/5_clustfcc/clustfcc.tsv' \
+         -o -path '*/run_*/6_seletopclusts/params.cfg' \
          -o -path '*/run_*/6_seletopclusts/io.json' \) -print0
   done
 }} | sort -z -u | tar --null --files-from=- -cf -
@@ -89,6 +112,43 @@ def model_and_cluster_counts(run_dir: Path) -> tuple[int, int]:
     return len(names), len(clusters)
 
 
+def stage_output_counts(run_dir: Path) -> tuple[dict[str, int], list[str]]:
+    counts: dict[str, int] = {}
+    errors: list[str] = []
+    for stage, relative in STAGE_IO_RELPATHS.items():
+        path = run_dir / relative
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            outputs = payload.get("output")
+            if not isinstance(outputs, list):
+                raise ValueError("output is not a list")
+            counts[stage] = len(outputs)
+        except (OSError, TypeError, ValueError, json.JSONDecodeError) as error:
+            counts[stage] = 0
+            errors.append(f"{stage}:{type(error).__name__}:{error}")
+    return counts, errors
+
+
+def stage_counts_pass(counts: dict[str, int]) -> bool:
+    for stage, (operator, expected) in STAGE_OUTPUT_REQUIREMENTS.items():
+        observed = counts.get(stage, 0)
+        if operator == "eq" and observed != expected:
+            return False
+        if operator == "ge" and observed < expected:
+            return False
+    return True
+
+
+def read_completion(path: Path) -> tuple[dict[str, Any], str]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("completion payload is not an object")
+        return payload, ""
+    except (OSError, TypeError, ValueError, json.JSONDecodeError) as error:
+        return {}, f"{type(error).__name__}:{error}"
+
+
 def inventory(outdir: Path, rows: Sequence[dict[str, str]], min_models: int, min_clusters: int) -> dict[str, Any]:
     results: list[dict[str, Any]] = []
     for row in rows:
@@ -97,11 +157,38 @@ def inventory(outdir: Path, rows: Sequence[dict[str, str]], min_models: int, min
         run_dir = run_root / f"run_{run_id}"
         marker = run_root / f"{run_id}.complete.json"
         models, clusters = model_and_cluster_counts(run_dir) if run_dir.is_dir() else (0, 0)
+        stage_counts, stage_errors = stage_output_counts(run_dir)
+        completion, completion_error = read_completion(marker)
         consensus = run_dir / "traceback/consensus.tsv"
         config = run_root / row.get("config_relpath", f"{run_id}.cfg")
         if not config.exists():
             config = run_root / f"{run_id}.cfg"
-        complete = marker.is_file() and consensus.is_file() and config.is_file() and models >= min_models and clusters >= min_clusters
+        completion_stage_counts = completion.get("stage_output_counts", {})
+        completion_contract = (
+            completion.get("status") == "PASS_DOCKING_OUTPUT_COMPLETE"
+            and completion.get("exit_code") == 0
+            and completion.get("protocol_id") == PROTOCOL_ID
+            and completion.get("per_candidate_failure_tolerance_override") is False
+            and completion.get("tolerance_relaxed") is False
+            and completion_stage_counts == stage_counts
+            and completion.get("pose_count") == models
+            and completion.get("cluster_count") == clusters
+        )
+        manifest_contract = (
+            row.get("protocol_id") == PROTOCOL_ID
+            and row.get("per_candidate_failure_tolerance_override", "").lower() == "false"
+        )
+        complete = (
+            marker.is_file()
+            and consensus.is_file()
+            and config.is_file()
+            and models >= min_models
+            and clusters >= min_clusters
+            and not stage_errors
+            and stage_counts_pass(stage_counts)
+            and completion_contract
+            and manifest_contract
+        )
         results.append(
             {
                 "run_id": run_id,
@@ -110,7 +197,12 @@ def inventory(outdir: Path, rows: Sequence[dict[str, str]], min_models: int, min
                 "seed_role": row["seed_role"],
                 "selected_models": models,
                 "pose_clusters": clusters,
+                "stage_output_counts": stage_counts,
+                "stage_output_count_errors": stage_errors,
                 "completion_marker": marker.is_file(),
+                "completion_parse_error": completion_error,
+                "completion_contract": completion_contract,
+                "manifest_protocol_contract": manifest_contract,
                 "traceback_consensus": consensus.is_file(),
                 "config_present": config.is_file(),
                 "complete": complete,
@@ -125,6 +217,11 @@ def inventory(outdir: Path, rows: Sequence[dict[str, str]], min_models: int, min
         "selected_models": sum(row["selected_models"] for row in results),
         "minimum_models_per_run": min_models,
         "minimum_clusters_per_run": min_clusters,
+        "protocol_id": PROTOCOL_ID,
+        "stage_output_requirements": {
+            stage: {"operator": operator, "value": value}
+            for stage, (operator, value) in STAGE_OUTPUT_REQUIREMENTS.items()
+        },
         "results": results,
     }
 
@@ -150,7 +247,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     files = sorted(path for path in args.outdir.rglob("*") if path.is_file())
     audit = {
         **evidence,
-        "schema_version": "phase2_v3_p2_dual_docking_pilot_sync_audit_v1",
+        "schema_version": "phase2_v3_p2_dual_docking_pilot_sync_audit_v1_1",
+        "protocol_id": PROTOCOL_ID,
         "sync_mode": "local_inventory_only" if args.inventory_only else "remote_sync_then_inventory",
         "host": args.host,
         "remote_root": args.remote_root,

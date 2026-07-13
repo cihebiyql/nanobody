@@ -32,9 +32,10 @@ DEFAULT_8X6B_RECEPTOR = (
 )
 DEFAULT_9E6Y_STRUCTURE = DATA_ROOT / "structures/9E6Y.pdb"
 DEFAULT_HOTSPOT_MANIFEST = DATA_ROOT / "structures/PVRIG_hotspot_set_v1.csv"
-DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package"
+DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package_v2"
 
-REMOTE_ROOT = "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_20260713"
+REMOTE_ROOT = "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_v2_20260714"
+PROTOCOL_ID = "DG_A_PILOT64_V1_1"
 HADDOCK3_VERSION_CONTRACT = "2025.11.0"
 EXPECTED_PILOTS = 64
 EXPECTED_REPLICATE_PILOTS = 16
@@ -45,6 +46,17 @@ EXPECTED_CLUSTERS = 2
 NCORES = 4
 TOPOAA_INISEED = 917
 RIGIDBODY_SAMPLING = 40
+RIGIDBODY_TOLERANCE = 5
+FLEXREF_TOLERANCE = 20
+EMREF_TOLERANCE = 20
+STAGE_OUTPUT_REQUIREMENTS = {
+    "topoaa": {"operator": "eq", "value": 2},
+    "rigidbody": {"operator": "ge", "value": 38},
+    "seletop": {"operator": "eq", "value": 10},
+    "flexref": {"operator": "ge", "value": 8},
+    "emref": {"operator": "ge", "value": 8},
+    "final": {"operator": "ge", "value": 8},
+}
 SEED_BY_PROTOCOL = {
     ("8X6B", "main"): 917,
     ("8X6B", "replicate"): 10917,
@@ -67,7 +79,7 @@ AA3_TO_1 = {
 }
 
 RUN_FIELDS = [
-    "schema_version", "run_id", "pilot_rank", "pilot_id", "source_cohort",
+    "schema_version", "protocol_id", "run_id", "pilot_rank", "pilot_id", "source_cohort",
     "source_candidate_id", "receptor_id", "seed_role", "iniseed",
     "topoaa_iniseed", "rigidbody_iniseed", "rigidbody_seed_start",
     "rigidbody_seed_end", "replicate_seed_required", "config_relpath",
@@ -78,7 +90,8 @@ RUN_FIELDS = [
     "cdr2_range", "cdr3_range", "expected_min_poses", "expected_min_clusters",
     "ncores", "rigidbody_tolerance", "rigidbody_sampling", "seletop_select",
     "flexref_tolerance", "emref_tolerance", "clustfcc_min_population",
-    "seletopclusts_top_models", "tolerance_relaxed",
+    "seletopclusts_top_models", "per_candidate_failure_tolerance_override",
+    "tolerance_relaxed",
     "haddock3_version_contract", "claim_boundary",
 ]
 
@@ -283,6 +296,7 @@ def config_text(
     rigidbody_iniseed: int,
 ) -> str:
     return f'''# Pilot64 {run_id}: frozen independent dual-conformer docking.
+# Protocol: {PROTOCOL_ID}
 # Evidence boundary: {CLAIM_BOUNDARY}
 # HADDOCK3 version contract: {HADDOCK3_VERSION_CONTRACT}
 run_dir = "run_{run_id}"
@@ -300,18 +314,18 @@ iniseed = {TOPOAA_INISEED}
 [rigidbody]
 ambig_fname = "../../{restraint_relpath}"
 iniseed = {rigidbody_iniseed}
-tolerance = 5
+tolerance = {RIGIDBODY_TOLERANCE}
 sampling = {RIGIDBODY_SAMPLING}
 
 [seletop]
 select = 10
 
 [flexref]
-tolerance = 10
+tolerance = {FLEXREF_TOLERANCE}
 ambig_fname = "../../{restraint_relpath}"
 
 [emref]
-tolerance = 5
+tolerance = {EMREF_TOLERANCE}
 ambig_fname = "../../{restraint_relpath}"
 
 [clustfcc]
@@ -342,8 +356,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 EXPECTED_VERSION = "{HADDOCK3_VERSION_CONTRACT}"
+PROTOCOL_ID = "{PROTOCOL_ID}"
 MAX_CONCURRENT_JOBS = 5
 POSE_PATTERN = re.compile(r"^cluster_(\\d+)_model_(\\d+)\\.pdb(?:\\.gz)?$")
+STAGE_IO_RELPATHS = {{
+    "topoaa": "0_topoaa/io.json",
+    "rigidbody": "1_rigidbody/io.json",
+    "seletop": "2_seletop/io.json",
+    "flexref": "3_flexref/io.json",
+    "emref": "4_emref/io.json",
+    "final": "6_seletopclusts/io.json",
+}}
+STAGE_OUTPUT_REQUIREMENTS = {STAGE_OUTPUT_REQUIREMENTS!r}
 
 
 def sha256_file(path: Path) -> str:
@@ -372,6 +396,44 @@ def output_counts(run_dir: Path) -> tuple[int, int]:
     return len(pairs), len({{cluster for cluster, _ in pairs}})
 
 
+def stage_output_counts(run_dir: Path) -> dict[str, int]:
+    counts: dict[str, int] = {{}}
+    for stage, relative in STAGE_IO_RELPATHS.items():
+        path = run_dir / relative
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            outputs = payload.get("output")
+            if not isinstance(outputs, list):
+                raise ValueError("io.json output is not a list")
+            counts[stage] = len(outputs)
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            counts[stage] = 0
+    return counts
+
+
+def stage_counts_pass(counts: dict[str, int]) -> bool:
+    for stage, requirement in STAGE_OUTPUT_REQUIREMENTS.items():
+        observed = counts.get(stage, 0)
+        expected = int(requirement["value"])
+        if requirement["operator"] == "eq" and observed != expected:
+            return False
+        if requirement["operator"] == "ge" and observed < expected:
+            return False
+    return True
+
+
+def reusable_exit_zero(completion: Path) -> bool:
+    try:
+        payload = json.loads(completion.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return False
+    return (
+        payload.get("exit_code") == 0
+        and payload.get("protocol_id") == PROTOCOL_ID
+        and payload.get("per_candidate_failure_tolerance_override") is False
+    )
+
+
 def archive_partial(root: Path, row: dict[str, str], run_dir: Path) -> str:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     destination = root / "partial_runs" / row["run_id"] / f"{{run_dir.name}}.{{stamp}}"
@@ -393,9 +455,17 @@ def verify_inputs(root: Path, row: dict[str, str]) -> None:
             raise RuntimeError(f"Hash closure failed for {{row['run_id']}}: {{path_field}}")
 
 
-def completion_payload(row: dict[str, str], status: str, poses: int, clusters: int, **extra: object) -> dict[str, object]:
+def completion_payload(
+    row: dict[str, str],
+    status: str,
+    poses: int,
+    clusters: int,
+    stage_counts: dict[str, int],
+    **extra: object,
+) -> dict[str, object]:
     payload: dict[str, object] = {{
-        "schema_version": "phase2_v3_p2_pilot64_run_completion_v1",
+        "schema_version": "phase2_v3_p2_pilot64_run_completion_v1_1",
+        "protocol_id": PROTOCOL_ID,
         "run_id": row["run_id"],
         "pilot_id": row["pilot_id"],
         "source_candidate_id": row["source_candidate_id"],
@@ -407,10 +477,13 @@ def completion_payload(row: dict[str, str], status: str, poses: int, clusters: i
         "cluster_count": clusters,
         "expected_min_poses": int(row["expected_min_poses"]),
         "expected_min_clusters": int(row["expected_min_clusters"]),
+        "stage_output_counts": stage_counts,
+        "stage_output_requirements": STAGE_OUTPUT_REQUIREMENTS,
         "run_dir_relpath": row["run_dir_relpath"],
         "config_sha256": row["config_sha256"],
         "monomer_sha256": row["monomer_sha256"],
         "receptor_sha256": row["receptor_sha256"],
+        "per_candidate_failure_tolerance_override": False,
         "tolerance_relaxed": False,
         "haddock3_version_contract": EXPECTED_VERSION,
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -439,9 +512,16 @@ def run_one(
     try:
         verify_inputs(root, row)
         poses, clusters = output_counts(run_dir)
-        if poses >= int(row["expected_min_poses"]) and clusters >= int(row["expected_min_clusters"]):
+        stage_counts = stage_output_counts(run_dir)
+        if (
+            reusable_exit_zero(completion)
+            and stage_counts_pass(stage_counts)
+            and poses >= int(row["expected_min_poses"])
+            and clusters >= int(row["expected_min_clusters"])
+        ):
             payload = completion_payload(
-                row, "PASS_DOCKING_OUTPUT_COMPLETE", poses, clusters, exit_code=0, reused=True,
+                row, "PASS_DOCKING_OUTPUT_COMPLETE", poses, clusters, stage_counts,
+                exit_code=0, reused=True,
                 dg_a_status="PENDING_GEOMETRY_AND_CONTACT_POSTPROCESS",
             )
             atomic_json(completion, payload)
@@ -466,22 +546,26 @@ def run_one(
                 check=False,
             )
         poses, clusters = output_counts(run_dir)
+        stage_counts = stage_output_counts(run_dir)
         passed = (
             result.returncode == 0
+            and stage_counts_pass(stage_counts)
             and poses >= int(row["expected_min_poses"])
             and clusters >= int(row["expected_min_clusters"])
         )
         status = "PASS_DOCKING_OUTPUT_COMPLETE" if passed else "FAIL_DOCKING_OUTPUT_INCOMPLETE"
         payload = completion_payload(
-            row, status, poses, clusters, exit_code=result.returncode,
+            row, status, poses, clusters, stage_counts, exit_code=result.returncode,
             reused=False, archived_partial_relpath=archived,
             dg_a_status="PENDING_GEOMETRY_AND_CONTACT_POSTPROCESS",
         )
         atomic_json(completion, payload)
         return payload
     except Exception as error:
+        poses, clusters = output_counts(run_dir)
+        stage_counts = stage_output_counts(run_dir)
         payload = completion_payload(
-            row, "FAIL_CONTROLLER_EXCEPTION", 0, 0, exit_code=None,
+            row, "FAIL_CONTROLLER_EXCEPTION", poses, clusters, stage_counts, exit_code=None,
             dg_a_status="FAIL_CONTROLLER_EXCEPTION", error=str(error),
         )
         atomic_json(completion, payload)
@@ -718,7 +802,8 @@ def build_receptors_and_protocols(
             seed = SEED_BY_PROTOCOL[(receptor_id, seed_role)]
             protocol_rows.append(
                 {
-                    "schema_version": "phase2_v3_p2_pilot64_protocol_manifest_v1",
+                    "schema_version": "phase2_v3_p2_pilot64_protocol_manifest_v1_1",
+                    "protocol_id": PROTOCOL_ID,
                     "receptor_id": receptor_id,
                     "seed_role": seed_role,
                     "topoaa_iniseed": str(TOPOAA_INISEED),
@@ -728,13 +813,14 @@ def build_receptors_and_protocols(
                     "flexref_iniseed": "INHERIT_RIGIDBODY_POSE_SEEDS",
                     "emref_iniseed": "INHERIT_RIGIDBODY_POSE_SEEDS",
                     "rigidbody_sampling": str(RIGIDBODY_SAMPLING),
-                    "rigidbody_tolerance": "5",
+                    "rigidbody_tolerance": str(RIGIDBODY_TOLERANCE),
                     "seletop_select": "10",
-                    "flexref_tolerance": "10",
-                    "emref_tolerance": "5",
+                    "flexref_tolerance": str(FLEXREF_TOLERANCE),
+                    "emref_tolerance": str(EMREF_TOLERANCE),
                     "clustfcc_min_population": "1",
                     "seletopclusts_top_models": "4",
                     "ncores": str(NCORES),
+                    "per_candidate_failure_tolerance_override": "false",
                     "tolerance_relaxed": "false",
                     "haddock3_version_contract": HADDOCK3_VERSION_CONTRACT,
                     "receptor_source_path": str(info["source"]),
@@ -798,7 +884,8 @@ def build_run_rows(
                 )
                 rows.append(
                     {
-                        "schema_version": "phase2_v3_p2_pilot64_run_manifest_v1",
+                        "schema_version": "phase2_v3_p2_pilot64_run_manifest_v1_1",
+                        "protocol_id": PROTOCOL_ID,
                         "run_id": run_id,
                         "pilot_rank": pilot["pilot_rank"],
                         "pilot_id": pilot_id,
@@ -832,13 +919,14 @@ def build_run_rows(
                         "expected_min_poses": str(EXPECTED_SELECTED_POSES),
                         "expected_min_clusters": str(EXPECTED_CLUSTERS),
                         "ncores": str(NCORES),
-                        "rigidbody_tolerance": "5",
+                        "rigidbody_tolerance": str(RIGIDBODY_TOLERANCE),
                         "rigidbody_sampling": str(RIGIDBODY_SAMPLING),
                         "seletop_select": "10",
-                        "flexref_tolerance": "10",
-                        "emref_tolerance": "5",
+                        "flexref_tolerance": str(FLEXREF_TOLERANCE),
+                        "emref_tolerance": str(EMREF_TOLERANCE),
                         "clustfcc_min_population": "1",
                         "seletopclusts_top_models": "4",
+                        "per_candidate_failure_tolerance_override": "false",
                         "tolerance_relaxed": "false",
                         "haddock3_version_contract": HADDOCK3_VERSION_CONTRACT,
                         "claim_boundary": CLAIM_BOUNDARY,
@@ -914,7 +1002,8 @@ def build_package(
     run_counts = Counter((row["receptor_id"], row["seed_role"]) for row in run_rows)
     audit: dict[str, Any] = {
         "status": "PASS_PILOT64_DUAL_DOCKING_PACKAGE_READY",
-        "schema_version": "phase2_v3_p2_pilot64_package_audit_v1",
+        "schema_version": "phase2_v3_p2_pilot64_package_audit_v1_1",
+        "protocol_id": PROTOCOL_ID,
         "remote_root": REMOTE_ROOT,
         "haddock3_version_contract": HADDOCK3_VERSION_CONTRACT,
         "pilot_manifest": str(pilot_manifest),
@@ -941,6 +1030,13 @@ def build_package(
         },
         "seed_ranges_non_overlapping": True,
         "flexref_emref_iniseed_policy": "inherit_rigidbody_pose_seeds_no_explicit_iniseed",
+        "module_failure_tolerances": {
+            "rigidbody": RIGIDBODY_TOLERANCE,
+            "flexref": FLEXREF_TOLERANCE,
+            "emref": EMREF_TOLERANCE,
+        },
+        "stage_output_requirements": STAGE_OUTPUT_REQUIREMENTS,
+        "per_candidate_failure_tolerance_override": False,
         "tolerance_relaxed": False,
         "max_concurrent_haddock_jobs": 5,
         "expected_min_selected_poses_per_run": EXPECTED_SELECTED_POSES,

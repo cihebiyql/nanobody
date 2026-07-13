@@ -34,12 +34,13 @@ DOCKING_SCRIPTS = WORKSPACE_ROOT / "docking/scripts"
 HOTSPOT_CSV = DATA_ROOT / "structures/PVRIG_hotspot_set_v1.csv"
 RECONCILIATION_CSV = DATA_ROOT / "structures/PVRIG_numbering_reconciliation.csv"
 
-DEFAULT_PACKAGE_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package"
+DEFAULT_PACKAGE_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_package_v2"
 DEFAULT_MANIFEST = DEFAULT_PACKAGE_ROOT / "manifests/run_manifest.csv"
-DEFAULT_SYNC_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_node1_selected"
-DEFAULT_WORK_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_postprocessed"
-DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_dual_docking_pilot_postprocess_audit.json"
+DEFAULT_SYNC_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_v2_node1_selected"
+DEFAULT_WORK_ROOT = EXP_DIR / "runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed"
+DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_dual_docking_pilot_v2_postprocess_audit.json"
 
+PROTOCOL_ID = "DG_A_PILOT64_V1_1"
 CLAIM_BOUNDARY = "independent_dual_conformer_docking_geometry_not_experimental_binding_or_blocking_truth"
 RECEPTORS = {
     "8x6b": {
@@ -689,7 +690,8 @@ def process_one(row: dict[str, str], sync_root: Path, work_root: Path, top_n: in
         if not evidence["complete"]:
             raise ValueError(f"Incomplete postprocess evidence for {run_id}: {evidence}")
         completion = {
-            "schema_version": "phase2_v3_p2_dual_docking_run_postprocess_v1",
+            "schema_version": "phase2_v3_p2_dual_docking_run_postprocess_v1_1",
+            "protocol_id": PROTOCOL_ID,
             "status": "PASS",
             "run_id": run_id,
             "pilot_id": row["pilot_id"],
@@ -743,6 +745,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     rows = filter_rows(rows, args)
     if not rows:
         raise ValueError("No docking runs selected")
+    invalid_protocol = [
+        row["run_id"]
+        for row in rows
+        if row.get("protocol_id") != PROTOCOL_ID
+        or row.get("per_candidate_failure_tolerance_override", "").lower() != "false"
+    ]
+    if invalid_protocol:
+        raise ValueError(f"Invalid Pilot64 v1.1 protocol rows: {invalid_protocol[:10]}")
     args.work_root.mkdir(parents=True, exist_ok=True)
     results: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -755,7 +765,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     results.sort(key=lambda row: row["run_id"])
     failures = [row for row in results if row["status"] not in {"PASS", "SKIP_COMPLETE"}]
     audit = {
-        "schema_version": "phase2_v3_p2_dual_docking_pilot_postprocess_audit_v1",
+        "schema_version": "phase2_v3_p2_dual_docking_pilot_postprocess_audit_v1_1",
+        "protocol_id": PROTOCOL_ID,
         "status": "PASS" if not failures else "FAIL_POSTPROCESS_INCOMPLETE",
         "manifest": str(args.manifest),
         "manifest_sha256": sha256_file(args.manifest),
