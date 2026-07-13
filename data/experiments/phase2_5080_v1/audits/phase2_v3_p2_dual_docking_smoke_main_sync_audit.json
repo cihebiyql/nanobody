@@ -1,0 +1,76 @@
+{
+  "claim_boundary": "selected_node1_runtime_evidence_for_independent_dual_conformer_docking_gold",
+  "complete_runs": 4,
+  "failed_runs": 0,
+  "generation_receptor_counts": {
+    "8x6b": 2,
+    "9e6y": 2
+  },
+  "host": "node1",
+  "manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_package/manifests/run_manifest.csv",
+  "manifest_sha256": "f5c459627d005bc2eda954c54466fb0d7f1317cd1764361b34f71e60556f5f10",
+  "minimum_clusters_per_run": 2,
+  "minimum_models_per_run": 8,
+  "outdir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_node1_selected",
+  "remote_root": "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_20260713",
+  "requested_runs": 4,
+  "results": [
+    {
+      "complete": true,
+      "completion_marker": true,
+      "config_present": true,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "receptor_id": "8X6B",
+      "run_id": "P2PILOT_001__8X6B__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_marker": true,
+      "config_present": true,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "receptor_id": "9E6Y",
+      "run_id": "P2PILOT_001__9E6Y__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_marker": true,
+      "config_present": true,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 7,
+      "receptor_id": "8X6B",
+      "run_id": "P2PILOT_033__8X6B__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_marker": true,
+      "config_present": true,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 10,
+      "receptor_id": "9E6Y",
+      "run_id": "P2PILOT_033__9E6Y__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "traceback_consensus": true
+    }
+  ],
+  "schema_version": "phase2_v3_p2_dual_docking_pilot_sync_audit_v1",
+  "seed_role_counts": {
+    "main": 4
+  },
+  "selected_models": 40,
+  "status": "PASS",
+  "sync_mode": "remote_sync_then_inventory",
+  "synced_bytes": 3235907,
+  "synced_file_count": 115
+}

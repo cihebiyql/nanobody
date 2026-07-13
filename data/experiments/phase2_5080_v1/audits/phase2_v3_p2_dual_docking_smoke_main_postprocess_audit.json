@@ -1,0 +1,82 @@
+{
+  "claim_boundary": "independent_dual_conformer_docking_geometry_not_experimental_binding_or_blocking_truth",
+  "complete_runs": 4,
+  "cross_conformer_numbering_remap": true,
+  "failed_runs": 0,
+  "generation_receptor_counts": {
+    "8x6b": 2,
+    "9e6y": 2
+  },
+  "manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_package/manifests/run_manifest.csv",
+  "manifest_sha256": "f5c459627d005bc2eda954c54466fb0d7f1317cd1764361b34f71e60556f5f10",
+  "requested_runs": 4,
+  "results": [
+    {
+      "canonical_contact_pose_rows": 10,
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "contact_failures": 0,
+      "contact_rows": 20,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "run_id": "P2PILOT_001__8X6B__main",
+      "seconds": 19.167,
+      "selected_models": 10,
+      "status": "PASS"
+    },
+    {
+      "canonical_contact_pose_rows": 10,
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "contact_failures": 0,
+      "contact_rows": 20,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "run_id": "P2PILOT_001__9E6Y__main",
+      "seconds": 19.191,
+      "selected_models": 10,
+      "status": "PASS"
+    },
+    {
+      "canonical_contact_pose_rows": 10,
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "contact_failures": 0,
+      "contact_rows": 20,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 7,
+      "run_id": "P2PILOT_033__8X6B__main",
+      "seconds": 19.487,
+      "selected_models": 10,
+      "status": "PASS"
+    },
+    {
+      "canonical_contact_pose_rows": 10,
+      "classification_8x6b_rows": 10,
+      "classification_9e6y_rows": 10,
+      "complete": true,
+      "consensus_rows": 10,
+      "contact_failures": 0,
+      "contact_rows": 20,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 10,
+      "run_id": "P2PILOT_033__9E6Y__main",
+      "seconds": 19.423,
+      "selected_models": 10,
+      "status": "PASS"
+    }
+  ],
+  "schema_version": "phase2_v3_p2_dual_docking_pilot_postprocess_audit_v1",
+  "seed_role_counts": {
+    "main": 4
+  },
+  "status": "PASS",
+  "sync_root": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_node1_selected",
+  "work_root": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_postprocessed"
+}
