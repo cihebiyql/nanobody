@@ -1,0 +1,29 @@
+{
+  "candidate_id": "PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02",
+  "completed_at": "2026-07-13T11:08:36.046446+00:00",
+  "created_at": "2026-07-13T10:57:39.108746+00:00",
+  "failed_attempts_preserved": true,
+  "final_attempt": 4,
+  "original_config": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface.cfg",
+  "original_config_sha256": "a2ea4a2b000189e1a1a3d66e082ff59f5d20f45c3fec87d02a8d71828b0e991e",
+  "reason": "repeatable flexref 20% missing output exceeded default 10% tolerance",
+  "rescue_config": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface_rescue_tolerance30.cfg",
+  "rescue_config_sha256": "17c16f76a2ede89625f3061a7445c88d0e0c74f2be50a3a4e4dd4c5ef6910d7b",
+  "rescue_policy": {
+    "emref_tolerance_percent": 30,
+    "flexref_tolerance_percent": 30
+  },
+  "result": "success",
+  "scientific_boundary": "rescue accepts partial refinement completion; docking remains a pose/geometry proxy, not binder, affinity, or blockade proof",
+  "selected_model_count": 8,
+  "selected_model_paths": [
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_1_model_1.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_2_model_1.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_3_model_1.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_3_model_2.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_3_model_3.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_4_model_1.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_4_model_2.pdb.gz",
+    "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02/run_PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn02_pvrig_8x6b_full_interface/6_seletopclusts/cluster_4_model_3.pdb.gz"
+  ]
+}
