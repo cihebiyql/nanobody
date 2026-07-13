@@ -4,6 +4,7 @@ import csv
 import importlib.util
 import json
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -85,6 +86,22 @@ def test_load_aware_scheduler_waits_when_load_is_at_threshold() -> None:
     sched = load_module("run_haddock_load_aware", ROOT / "scripts" / "run_haddock_load_aware.py")
     assert sched.allowed_parallel(current_load=60.0, max_load1=56.0, cores_per_job=4, max_parallel=8) == 0
     assert sched.allowed_parallel(current_load=40.0, max_load1=56.0, cores_per_job=4, max_parallel=8) == 4
+
+
+def test_scheduler_state_writes_are_safe_across_concurrent_schedulers(tmp_path: Path) -> None:
+    sched = load_module("run_haddock_load_aware_concurrent", ROOT / "scripts" / "run_haddock_load_aware.py")
+    state = tmp_path / "haddock_controller.json"
+
+    def write_many(worker: int) -> None:
+        for sequence in range(40):
+            sched.write_json_atomic(state, {"worker": worker, "sequence": sequence})
+
+    with ThreadPoolExecutor(max_workers=12) as pool:
+        list(pool.map(write_many, range(12)))
+    payload = json.loads(state.read_text(encoding="utf-8"))
+    assert payload["worker"] in range(12)
+    assert payload["sequence"] in range(40)
+    assert not list(tmp_path.glob(".haddock_controller.json.*.tmp"))
 
 
 def test_status_reports_missingness_from_atomic_state(tmp_path: Path) -> None:
@@ -209,4 +226,6 @@ if __name__ == "__main__":
         test_status_counts_only_haddock_selected_models(Path(tmp) / "selected")
     with tempfile.TemporaryDirectory() as tmp:
         test_haddock_retry_archives_partial_run_before_clean_attempt(Path(tmp) / "retry")
-    print("5 contract tests passed")
+    with tempfile.TemporaryDirectory() as tmp:
+        test_scheduler_state_writes_are_safe_across_concurrent_schedulers(Path(tmp) / "concurrent")
+    print("6 contract tests passed")
