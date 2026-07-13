@@ -904,7 +904,12 @@ def audit_rows(
 def write_csv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=CSV_FIELDS, extrasaction="raise")
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=CSV_FIELDS,
+            extrasaction="raise",
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -1239,6 +1244,7 @@ def main() -> int:
         input_root,
         [args.output_csv, args.output_json, args.output_report],
         [
+            Path(__file__).resolve(),
             args.rules_json,
             args.classifier_path,
             args.scorer_path,
