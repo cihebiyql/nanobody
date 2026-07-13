@@ -180,6 +180,25 @@ class DualDockingPostprocessTests(unittest.TestCase):
             self.assertTrue(all(item["sha256"] for item in marker["selected_pose_files"]))
             self.assertEqual(set(marker["artifacts"]), set(MOD.POSTPROCESS_ARTIFACT_KEYS))
             self.assertTrue(all(item["sha256"] for item in marker["artifacts"].values()))
+            self.assertEqual(set(marker["toolchain_sha256"]), set(MOD.POSTPROCESS_TOOLCHAIN_PATHS))
+            self.assertEqual(set(marker["reference_sha256"]), set(MOD.POSTPROCESS_REFERENCE_PATHS))
+
+            marker_path = workdir / "postprocess.complete.json"
+            self.assertFalse(MOD.postprocess_marker_matches(marker_path, marker))
+            marker_path.write_text(json.dumps(marker, sort_keys=True), encoding="utf-8")
+            self.assertTrue(MOD.postprocess_marker_matches(marker_path, marker))
+
+            selected[0][1].write_bytes(b"pose-drift\n")
+            drifted = MOD.build_postprocess_marker(
+                row,
+                sync_root,
+                workdir,
+                run_dir,
+                selected,
+                evidence,
+                "f" * 64,
+            )
+            self.assertFalse(MOD.postprocess_marker_matches(marker_path, drifted))
 
 
 if __name__ == "__main__":
