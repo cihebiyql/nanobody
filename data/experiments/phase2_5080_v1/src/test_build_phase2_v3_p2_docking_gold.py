@@ -70,11 +70,14 @@ class DockingGoldMathTests(unittest.TestCase):
         self.assertAlmostEqual(MOD.weighted_cohen_kappa(tiers, list(reversed(tiers)), "linear"), -0.5)
 
     def test_pilot_gate_requires_every_prefrozen_threshold(self) -> None:
-        passed = MOD.pilot_gate(64, 32, 0, False, 0.70, 0.60, True)
+        passed = MOD.pilot_gate(64, 32, 0, False, False, 0.70, 0.60, True)
         self.assertEqual(passed["status"], "PASS_DOCKING_GOLD_VALIDATED")
-        failed = MOD.pilot_gate(64, 32, 0, False, 0.6999, 0.60, True)
+        failed = MOD.pilot_gate(64, 32, 0, False, False, 0.6999, 0.60, True)
         self.assertEqual(failed["status"], "FAIL_DOCKING_GOLD_NOT_VALIDATED")
         self.assertIn("repeat_R_gold_spearman_ge_0_70", failed["failed_gates"])
+        relaxed = MOD.pilot_gate(64, 32, 0, False, True, 0.70, 0.60, True)
+        self.assertNotIn("per_candidate_failure_tolerance_override_false", relaxed["failed_gates"])
+        self.assertIn("tolerance_relaxation_false", relaxed["failed_gates"])
 
 
 class DockingGoldEvidenceTests(unittest.TestCase):
@@ -204,7 +207,13 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             self.assertFalse(evidence["checks"]["runtime_rigidbody_seed_set"])
             self.assertTrue(errors)
 
-    def make_postprocessed_run(self, root: Path, row: dict[str, str]) -> list[dict[str, object]]:
+    def make_postprocessed_run(
+        self,
+        root: Path,
+        row: dict[str, str],
+        sync_root: Path,
+        run_manifest_sha256: str,
+    ) -> list[dict[str, object]]:
         run_id = row["run_id"]
         run_root = root / run_id
         reports = run_root / "reports"
@@ -266,12 +275,96 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             )
         write_csv(reports / f"{run_id}_dual_baseline_consensus.csv", consensus_rows)
         write_csv(reports / f"{run_id}_canonical_contact_summary.csv", canonical_rows)
+        write_csv(
+            reports / f"{run_id}_canonical_contact_pairs.csv",
+            [{"model": model, "pvrig_uniprot_position": 1, "vhh_resseq": 1} for model in models],
+        )
+        write_csv(
+            reports / "haddock3_model_ranks.csv",
+            [{"model": model, "haddock_rank": rank} for rank, model in enumerate(models, 1)],
+        )
         for baseline in MOD.RECEPTORS:
             write_csv(reports / f"{run_id}_{baseline}_blocker_classification.csv", class_rows[baseline])
             write_csv(
                 run_root / f"{baseline}_baseline/haddock3_top_model_mechanism_scores_{baseline}.csv",
                 mechanism_rows[baseline],
             )
+        synced_run_dir = sync_root / row["run_dir_relpath"]
+        selected_dir = synced_run_dir / "6_seletopclusts"
+        selected_dir.mkdir(parents=True, exist_ok=True)
+        selected_pose_files = []
+        for rank, model in enumerate(models, 1):
+            pose = selected_dir / f"{model}.pdb.gz"
+            pose.write_bytes(f"pose:{model}\n".encode())
+            selected_pose_files.append(
+                {"model": model, "filename": pose.name, "sha256": sha(pose), "haddock_rank": rank}
+            )
+        completion = sync_root / row["completion_relpath"]
+        completion.parent.mkdir(parents=True, exist_ok=True)
+        completion_payload = {
+            "schema_version": "phase2_v3_p2_pilot64_run_completion_v1_1",
+            "protocol_id": MOD.PROTOCOL_ID,
+            "status": "PASS_DOCKING_OUTPUT_COMPLETE",
+            "run_id": run_id,
+            "pilot_id": row["pilot_id"],
+            "source_candidate_id": row["source_candidate_id"],
+            "receptor_id": row["receptor_id"],
+            "seed_role": row["seed_role"],
+            "pose_count": 8,
+            "cluster_count": 2,
+        }
+        completion.write_text(json.dumps(completion_payload), encoding="utf-8")
+        artifacts = {
+            "consensus": reports / f"{run_id}_dual_baseline_consensus.csv",
+            "classification_8x6b": reports / f"{run_id}_8x6b_blocker_classification.csv",
+            "classification_9e6y": reports / f"{run_id}_9e6y_blocker_classification.csv",
+            "mechanism_8x6b": run_root / "8x6b_baseline/haddock3_top_model_mechanism_scores_8x6b.csv",
+            "mechanism_9e6y": run_root / "9e6y_baseline/haddock3_top_model_mechanism_scores_9e6y.csv",
+            "canonical_contact_summary": reports / f"{run_id}_canonical_contact_summary.csv",
+            "canonical_contact_pairs": reports / f"{run_id}_canonical_contact_pairs.csv",
+            "ranks": reports / "haddock3_model_ranks.csv",
+        }
+        marker = {
+            "schema_version": "phase2_v3_p2_dual_docking_run_postprocess_v1_1",
+            "protocol_id": MOD.PROTOCOL_ID,
+            "status": "PASS",
+            "run_id": run_id,
+            "pilot_id": row["pilot_id"],
+            "source_candidate_id": row["source_candidate_id"],
+            "generation_receptor": row["receptor_id"],
+            "seed_role": row["seed_role"],
+            "run_manifest_sha256": run_manifest_sha256,
+            "docking_completion": {
+                "relpath": row["completion_relpath"],
+                "sha256": sha(completion),
+                **completion_payload,
+            },
+            "input_sha256": {
+                "config": row["config_sha256"],
+                "monomer": row["monomer_sha256"],
+                "receptor": row["receptor_sha256"],
+            },
+            "selected_pose_files": selected_pose_files,
+            "counts": {
+                "selected_models": 8,
+                "pose_clusters": 2,
+                "consensus_rows": 8,
+                "classification_8x6b_rows": 8,
+                "classification_9e6y_rows": 8,
+                "mechanism_8x6b_rows": 8,
+                "mechanism_9e6y_rows": 8,
+                "canonical_contact_pose_rows": 8,
+                "canonical_contact_pair_rows": 8,
+                "contact_failures": 0,
+            },
+            "artifacts": {
+                key: {"relpath": str(path.relative_to(run_root)), "sha256": sha(path)}
+                for key, path in artifacts.items()
+            },
+            "consensus_sha256": sha(artifacts["consensus"]),
+            "claim_boundary": MOD.CLAIM_BOUNDARY,
+        }
+        (run_root / "postprocess.complete.json").write_text(json.dumps(marker), encoding="utf-8")
         return consensus_rows
 
     def test_postprocessed_run_pins_weights_tiers_and_complete_contacts(self) -> None:
@@ -283,9 +376,15 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 "source_candidate_id": "candidate_1",
                 "receptor_id": "8x6b",
                 "seed_role": "main",
+                "run_dir_relpath": "runs/P2PILOT_001__8x6b__main/run_P2PILOT_001__8x6b__main",
+                "completion_relpath": "runs/P2PILOT_001__8x6b__main/P2PILOT_001__8x6b__main.complete.json",
+                "config_sha256": "c" * 64,
+                "monomer_sha256": "m" * 64,
+                "receptor_sha256": "r" * 64,
             }
-            consensus = self.make_postprocessed_run(root, row)
-            poses, evidence, errors = MOD.evaluate_postprocessed_run(row, root)
+            sync_root = root / "sync"
+            consensus = self.make_postprocessed_run(root, row, sync_root, "f" * 64)
+            poses, evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
             self.assertEqual(errors, [])
             self.assertEqual(len(poses), 8)
             self.assertEqual(evidence["pose_clusters"], 2)
@@ -296,6 +395,8 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             expected = sum(weight * relevance for weight, relevance in zip(weights, relevances)) / sum(weights)
             self.assertAlmostEqual(evidence["r_receptor"], expected)
             self.assertEqual([int(row["relevance"]) for row in poses], relevances)
+            self.assertTrue(all(row["schema_version"] == "phase2_v3_p2_docking_gold_pose_v1_1" for row in poses))
+            self.assertTrue(all(row["protocol_id"] == MOD.PROTOCOL_ID for row in poses))
 
     def test_postprocessed_run_rejects_canonical_contact_failure(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -306,14 +407,98 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 "source_candidate_id": "candidate_1",
                 "receptor_id": "8x6b",
                 "seed_role": "main",
+                "run_dir_relpath": "runs/P2PILOT_001__8x6b__main/run_P2PILOT_001__8x6b__main",
+                "completion_relpath": "runs/P2PILOT_001__8x6b__main/P2PILOT_001__8x6b__main.complete.json",
+                "config_sha256": "c" * 64,
+                "monomer_sha256": "m" * 64,
+                "receptor_sha256": "r" * 64,
             }
-            self.make_postprocessed_run(root, row)
+            sync_root = root / "sync"
+            self.make_postprocessed_run(root, row, sync_root, "f" * 64)
             path = root / row["run_id"] / "reports" / f"{row['run_id']}_canonical_contact_summary.csv"
             rows = MOD.read_csv(path)
             rows[0]["status"] = "FAIL"
             write_csv(path, rows)
-            _poses, evidence, _errors = MOD.evaluate_postprocessed_run(row, root)
+            _poses, evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
             self.assertEqual(evidence["contact_failures"], 1)
+            self.assertTrue(any(error.startswith("marker_artifact_hash_mismatch:canonical_contact_summary") for error in errors))
+
+    def test_postprocessed_run_requires_marker_and_rejects_selected_pose_hash_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sync_root = root / "sync"
+            row = {
+                "run_id": "P2PILOT_001__8x6b__main",
+                "pilot_id": "P2PILOT_001",
+                "source_candidate_id": "candidate_1",
+                "receptor_id": "8x6b",
+                "seed_role": "main",
+                "run_dir_relpath": "runs/P2PILOT_001__8x6b__main/run_P2PILOT_001__8x6b__main",
+                "completion_relpath": "runs/P2PILOT_001__8x6b__main/P2PILOT_001__8x6b__main.complete.json",
+                "config_sha256": "c" * 64,
+                "monomer_sha256": "m" * 64,
+                "receptor_sha256": "r" * 64,
+            }
+            self.make_postprocessed_run(root, row, sync_root, "f" * 64)
+            marker = root / row["run_id"] / "postprocess.complete.json"
+            marker.unlink()
+            _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
+            self.assertIn("postprocess_marker_missing", errors)
+            self.make_postprocessed_run(root, row, sync_root, "f" * 64)
+            pose = next((sync_root / row["run_dir_relpath"] / "6_seletopclusts").glob("*.pdb.gz"))
+            pose.write_bytes(b"tampered\n")
+            _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
+            self.assertTrue(any(error.startswith("marker_selected_pose_hash_mismatch:") for error in errors))
+
+    def test_package_closure_is_rooted_in_package_audit_and_detects_content_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            package = root / "package"
+            manifests = package / "manifests"
+            manifests.mkdir(parents=True)
+            selection = root / "selection.csv"
+            selection.write_text("pilot_id\nP2PILOT_001\n", encoding="utf-8")
+            run_manifest = manifests / "run_manifest.csv"
+            run_manifest.write_text("run_id\nrun_1\n", encoding="utf-8")
+            protocol_manifest = manifests / "protocol_manifest.csv"
+            protocol_manifest.write_text("protocol_id\nDG_A_PILOT64_V1_1\n", encoding="utf-8")
+            monomer_manifest = manifests / "monomer_manifest.csv"
+            monomer_manifest.write_text("pilot_id\nP2PILOT_001\n", encoding="utf-8")
+            payload = package / "payload.txt"
+            payload.write_text("frozen\n", encoding="utf-8")
+            content_manifest = manifests / "package_content_sha256.tsv"
+            content_rows = [
+                (sha(path), str(path.relative_to(package)))
+                for path in (run_manifest, protocol_manifest, monomer_manifest, payload)
+            ]
+            content_manifest.write_text(
+                "sha256\tpath\n" + "".join(f"{digest}\t{path}\n" for digest, path in sorted(content_rows, key=lambda item: item[1])),
+                encoding="utf-8",
+            )
+            audit = {
+                "schema_version": "phase2_v3_p2_pilot64_package_audit_v1_1",
+                "protocol_id": MOD.PROTOCOL_ID,
+                "status": "PASS_PILOT64_DUAL_DOCKING_PACKAGE_READY",
+                "pilot_manifest_sha256": sha(selection),
+                "run_manifest": "manifests/run_manifest.csv",
+                "run_manifest_sha256": sha(run_manifest),
+                "protocol_manifest": "manifests/protocol_manifest.csv",
+                "protocol_manifest_sha256": sha(protocol_manifest),
+                "monomer_manifest": "manifests/monomer_manifest.csv",
+                "monomer_manifest_sha256": sha(monomer_manifest),
+                "package_content_hash_manifest": "manifests/package_content_sha256.tsv",
+                "package_content_hash_manifest_sha256": sha(content_manifest),
+                "package_content_hash_scope_exclusions": ["package_audit.json", "manifests/package_content_sha256.tsv"],
+                "per_candidate_failure_tolerance_override": False,
+                "tolerance_relaxed": False,
+            }
+            (package / "package_audit.json").write_text(json.dumps(audit), encoding="utf-8")
+            evidence, errors = MOD.validate_package_closure(selection, run_manifest)
+            self.assertEqual(errors, [])
+            self.assertTrue(evidence["checks"]["content_manifest_exact_file_set"])
+            payload.write_text("drifted\n", encoding="utf-8")
+            _evidence, errors = MOD.validate_package_closure(selection, run_manifest)
+            self.assertTrue(any(error.startswith("content_sha256_mismatch:payload.txt") for error in errors))
 
     def test_manifest_contract_requires_exact_64_plus_16_design(self) -> None:
         selection: list[dict[str, str]] = []

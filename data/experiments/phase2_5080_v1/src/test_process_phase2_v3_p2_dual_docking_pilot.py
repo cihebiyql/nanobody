@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -96,6 +97,89 @@ class DualDockingPostprocessTests(unittest.TestCase):
             self.assertEqual(len(rows), 1)
             self.assertEqual(rows[0]["pvrig_uniprot_position"], uniprot)
             self.assertEqual(rows[0]["vhh_resseq"], 7)
+
+    def test_postprocess_marker_pins_runtime_inputs_poses_and_every_scored_artifact(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sync_root = root / "sync"
+            workdir = root / "post" / "P2PILOT_001__8X6B__main"
+            run_dir = sync_root / "runs/P2PILOT_001__8X6B__main/run_P2PILOT_001__8X6B__main"
+            selected_dir = run_dir / "6_seletopclusts"
+            selected_dir.mkdir(parents=True)
+            selected = []
+            for rank, model in enumerate(("cluster_1_model_1", "cluster_2_model_1"), 1):
+                path = selected_dir / f"{model}.pdb.gz"
+                path.write_bytes(f"pose-{rank}\n".encode())
+                selected.append((model, path, rank))
+
+            row = {
+                "run_id": "P2PILOT_001__8X6B__main",
+                "pilot_id": "P2PILOT_001",
+                "source_candidate_id": "candidate_1",
+                "receptor_id": "8X6B",
+                "seed_role": "main",
+                "completion_relpath": "runs/P2PILOT_001__8X6B__main/P2PILOT_001__8X6B__main.complete.json",
+                "config_sha256": "c" * 64,
+                "monomer_sha256": "m" * 64,
+                "receptor_sha256": "r" * 64,
+            }
+            docking_completion = sync_root / row["completion_relpath"]
+            docking_completion.parent.mkdir(parents=True, exist_ok=True)
+            docking_completion.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "phase2_v3_p2_pilot64_run_completion_v1_1",
+                        "protocol_id": MOD.PROTOCOL_ID,
+                        "status": "PASS_DOCKING_OUTPUT_COMPLETE",
+                        "run_id": row["run_id"],
+                        "pilot_id": row["pilot_id"],
+                        "source_candidate_id": row["source_candidate_id"],
+                        "receptor_id": row["receptor_id"],
+                        "seed_role": row["seed_role"],
+                        "pose_count": 2,
+                        "cluster_count": 2,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            for path in MOD.postprocess_artifact_paths(workdir, row["run_id"]).values():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"artifact:{path.name}\n", encoding="utf-8")
+            evidence = {
+                "selected_models": 2,
+                "pose_clusters": 2,
+                "consensus_rows": 2,
+                "classification_8x6b_rows": 2,
+                "classification_9e6y_rows": 2,
+                "mechanism_8x6b_rows": 2,
+                "mechanism_9e6y_rows": 2,
+                "canonical_contact_pose_rows": 2,
+                "canonical_contact_pair_rows": 4,
+                "contact_failures": 0,
+                "complete": True,
+            }
+            marker = MOD.build_postprocess_marker(
+                row,
+                sync_root,
+                workdir,
+                run_dir,
+                selected,
+                evidence,
+                "f" * 64,
+            )
+            self.assertEqual(marker["schema_version"], "phase2_v3_p2_dual_docking_run_postprocess_v1_1")
+            self.assertEqual(marker["protocol_id"], MOD.PROTOCOL_ID)
+            self.assertEqual(marker["run_manifest_sha256"], "f" * 64)
+            self.assertEqual(marker["docking_completion"]["sha256"], MOD.sha256_file(docking_completion))
+            self.assertEqual(marker["input_sha256"]["config"], "c" * 64)
+            self.assertEqual(marker["counts"], {key: evidence[key] for key in MOD.POSTPROCESS_COUNT_FIELDS})
+            self.assertEqual(
+                [item["filename"] for item in marker["selected_pose_files"]],
+                ["cluster_1_model_1.pdb.gz", "cluster_2_model_1.pdb.gz"],
+            )
+            self.assertTrue(all(item["sha256"] for item in marker["selected_pose_files"]))
+            self.assertEqual(set(marker["artifacts"]), set(MOD.POSTPROCESS_ARTIFACT_KEYS))
+            self.assertTrue(all(item["sha256"] for item in marker["artifacts"].values()))
 
 
 if __name__ == "__main__":
