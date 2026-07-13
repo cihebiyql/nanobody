@@ -1,6 +1,6 @@
 # 运行状态
 
-更新时间：2026-07-13 07:33 CST
+更新时间：2026-07-13 08:01 CST
 
 ## 当前阶段
 
@@ -14,10 +14,11 @@
 - 1,152 条 primary records 中有 1,067 条全局 exact-unique；已冻结 1,024 条 exact-unique cohort，覆盖全部 36 arms 和 288 backbones。
 - 序列 QC 为 `1,024/1,024` 无 hard-fail。RF2 seed42 为 `1,024/1,024` 有输出：4 个 strict pose-recovered、813 个 low-interaction-confidence、207 个 pose-not-recovered。
 - NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。真实 HADDOCK smoke 已成功，全量 docking 正在运行。
+- 2026-07-13 08:01 CST 实测：RF2 seed43 已产出 `947/1,024` 个结果；HADDOCK 为 `33 success / 10 running / 0 failed`，全部为 attempt 1。
 
 ## 资源策略
 
-node1 是 64 核共享节点，当前其他 CPU/GPU 任务使 `load1` 长期约为 270-310。原 GPU 阶段 `MAX_LOAD1=240` 会使六条 lane 在 GPU 仍有充足显存时无限等待。根据正式 smoke 的实测结果，现采用分阶段门控：
+node1 是 64 核共享节点。早期其他 CPU/GPU 任务曾使 `load1` 达到约 270-310，原 GPU 阶段 `MAX_LOAD1=240` 会使六条 lane 在 GPU 仍有充足显存时无限等待。根据正式 smoke 的实测结果，现采用分阶段门控；2026-07-13 08:01 CST 时 `load1` 约为 73，可用内存约 420 GiB：
 
 ```text
 GPU stages (RFdiffusion/RF2/NBB2): MAX_LOAD1=400
@@ -26,8 +27,9 @@ GPU memory-used gate:               12,000 MiB per GPU
 GPU task nice:                      10
 OMP/MKL/OpenBLAS threads:           2 per GPU task
 HADDOCK main-controller MAX_LOAD1:  240
-HADDOCK sidecar MAX_LOAD1:          160
-HADDOCK total parallel jobs:        8 (main 2 + sidecar 6)
+HADDOCK sidecar1 MAX_LOAD1:         160
+HADDOCK sidecar2 MAX_LOAD1:         120
+HADDOCK total parallel jobs:        10 (main 2 + sidecar1 6 + sidecar2 2)
 HADDOCK nice:                       15
 ```
 
