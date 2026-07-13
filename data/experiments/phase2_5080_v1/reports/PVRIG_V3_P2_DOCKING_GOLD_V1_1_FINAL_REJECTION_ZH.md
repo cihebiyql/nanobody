@@ -297,6 +297,13 @@ P2_TRAINING_BLOCKED -> P2_TRAINING_READY
 | 当前 V1.1 classifier | `c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654` |
 | 当前 rules JSON | `60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5` |
 
+工程验证：
+
+- Docking Gold、postprocess、package 和 HETATM 审计的定向测试：39/39 PASS。
+- `experiments/phase2_5080_v1/src` 全量 `unittest discover`：340/340 PASS。
+- 五个本次关键 Python 脚本 `py_compile` PASS。
+- `git diff --check` PASS；Node1 全量 controller 退出后无残留 controller/HADDOCK 进程。
+
 ## 11. 复现命令
 
 以下命令从仓库根目录 `/mnt/d/work/抗体/data` 运行：
