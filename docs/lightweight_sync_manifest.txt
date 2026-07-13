@@ -1657,6 +1657,7 @@ docking/scripts/pdb_geometry_qc.py
 docking/scripts/pvrig_scoring_semantics_v1_2.py
 docking/scripts/score_cdr_region_occlusion.py
 docking/scripts/score_pvrig_vhh_pose.py
+docking/scripts/score_pvrig_vhh_pose_v1_2.py
 docking/scripts/test_align_pdb_by_chain.py
 docking/success_case_validation/POSITIVE_MECHANISM_STRUCTURAL_VALIDATION_AUDIT.md
 docking/success_case_validation/README.md
