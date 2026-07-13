@@ -585,6 +585,7 @@ data/experiments/phase2_5080_v1/src/prepare_pvrig_formal_teacher500_model_inputs
 data/experiments/phase2_5080_v1/src/prepare_pvrig_model_screening_summary.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_rfantibody_v1.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_teacher_pilot96_model_inputs.py
+data/experiments/phase2_5080_v1/src/process_phase2_v3_p2_dual_docking_pilot.py
 data/experiments/phase2_5080_v1/src/process_pvrig_formal_teacher500.py
 data/experiments/phase2_5080_v1/src/process_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/run_external_priors_v1.py
