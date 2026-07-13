@@ -548,6 +548,7 @@ data/experiments/phase2_5080_v1/src/phase2_v2_5_metrics.py
 data/experiments/phase2_5080_v1/src/phase2_v3_contracts.py
 data/experiments/phase2_5080_v1/src/phase2_v3_metrics.py
 data/experiments/phase2_5080_v1/src/phase2_v3_model.py
+data/experiments/phase2_5080_v1/src/phase2_v3_p1_metrics.py
 data/experiments/phase2_5080_v1/src/prepare_esm2_embeddings_v2_3.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v2_5_generic.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_binding_data.py
@@ -555,6 +556,7 @@ data/experiments/phase2_5080_v1/src/prepare_phase2_v3_embeddings.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_g1_data.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_g2_cluster_safe_data.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_g2_external_htnfa.py
+data/experiments/phase2_5080_v1/src/prepare_phase2_v3_p1_formal_data.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_formal_candidate_meanpool_inputs.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_model_screening_summary.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_rfantibody_v1.py
@@ -621,6 +623,7 @@ data/experiments/phase2_5080_v1/src/test_prepare_esm2_embeddings_v2_3.py
 data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_g1_data.py
 data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_g2_cluster_safe_data.py
 data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_g2_external_htnfa.py
+data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_p1_formal_data.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_model_screening_summary.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_rfantibody_v1.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_teacher_pilot96_model_inputs.py
