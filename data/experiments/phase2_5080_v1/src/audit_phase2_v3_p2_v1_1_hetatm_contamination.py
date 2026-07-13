@@ -657,8 +657,19 @@ def audit_rows(
                         ),
                         require_float(mechanism_row.get("hotspot_overlap_count"), "mechanism hotspot")
                         == hotspot,
+                        require_int(
+                            mechanism_row.get("pvrl2_vhh_occluding_contact_count"),
+                            "mechanism total",
+                        )
+                        == current_total,
+                        require_float(summary_row.get("hotspot_overlap_count"), "summary hotspot")
+                        == hotspot,
                         mechanism_row.get("baseline") == baseline,
                         summary_row.get("baseline") == baseline,
+                        mechanism_row.get("generation_receptor")
+                        == marker["generation_receptor"],
+                        summary_row.get("generation_receptor")
+                        == marker["generation_receptor"],
                     ]
                 )
                 if not source_consistency:
@@ -690,6 +701,25 @@ def audit_rows(
                     raise ValueError(
                         f"Aligned pose escapes the postprocessed run root: {pose_path}"
                     ) from error
+                source_consistency = source_consistency and all(
+                    [
+                        Path(str(mechanism_row.get("pose_pdb", ""))).resolve()
+                        == pose_path.resolve(),
+                        Path(str(mechanism_row.get("reference_pdb", ""))).resolve()
+                        == reference_path.resolve(),
+                        mechanism_row.get("vhh_chain") == vhh_chain,
+                        mechanism_row.get("ref_pvrl2_chain") == pvrl2_chain,
+                        close(
+                            require_float(
+                                mechanism_row.get("contact_cutoff_a"),
+                                "mechanism contact cutoff",
+                            ),
+                            cutoff,
+                        ),
+                    ]
+                )
+                if not source_consistency:
+                    raise ValueError(f"Stored source metadata mismatch for {run_id}/{baseline}/{model}")
 
                 reference_key = (reference_path.resolve(), pvrl2_chain)
                 if reference_key not in reference_cache:
