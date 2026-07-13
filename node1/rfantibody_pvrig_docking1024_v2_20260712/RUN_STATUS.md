@@ -1,6 +1,6 @@
 # 运行状态
 
-更新时间：2026-07-13 08:41 CST
+更新时间：2026-07-13 09:35 CST
 
 ## 当前阶段
 
@@ -15,8 +15,11 @@
 - 序列 QC 为 `1,024/1,024` 无 hard-fail。RF2 seed42 为 `1,024/1,024` 有输出：4 个 strict pose-recovered、813 个 low-interaction-confidence、207 个 pose-not-recovered。
 - NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。真实 HADDOCK smoke 已成功，全量 docking 正在运行。
 - RF2 seed42/43/44 均已完成 `1,024/1,024`，共 3,072 个输出。多 seed 严格门控为 4 条正式通过、28 条近通过校准样本和 992 条不完整通过；RF2 失败/低置信只记为 QC 或 missingness，不作为负结合/负阻断标签。
-- 2026-07-13 08:41 CST 实测：HADDOCK 为 `90 success / 10 running / 0 failed`，全部为 attempt 1。
+- 2026-07-13 09:35 CST 实测：HADDOCK 为 `179 success / 9 running / 0 failed`，全部为 attempt 1。
 - 已提前对 `PVRIG_RFAb_v2_P1_ekg_L_bb000_mpn00` 运行真实 8X6B/9E6Y 双参考后处理 smoke，4 个 selected models 全部生成 consensus 记录，后处理接口通过。
+- 已用真实中间结果完成 partial ETL smoke：1,024 条候选和 3,072 条 RF2 记录全部入表，NBB2 成功数为 1,024，当时已识别 172 个 completed docking candidates。
+- 修复了训练集 split 退化问题：原固定轮转将两个硬防泄漏连通分量全部分到 train；现按连通分量确定性分配为 `train=522 / validation=502`，同 backbone、arm 和 global near-CDR3 family 均不跨 split。当前只有两个硬分量，因此明确标记 `test_split_available=false`，不伪造第三个分割。
+- 修复了 leakage reference 的默认路径，现固定指向项目内 `inputs/leakage_reference.fasta`，而不再受启动目录影响。
 
 ## 资源策略
 
@@ -41,8 +44,8 @@ HADDOCK nice:                       15
 
 - controller contract tests：9 项通过。
 - RF2 contract tests：4 项通过。
-- NBB2/HADDOCK orchestration contract tests：3 项通过。
-- training dataset contract tests：3 项通过。
+- NBB2/HADDOCK orchestration contract tests：4 项通过。
+- training dataset contract tests：6 项通过。
 - Python AST、JSON 和 shell syntax：通过。
 - 真实第一代 HADDOCK pose 经 chain `B -> T` 回归后，V2 双参考流程输出 8X6B `BLOCKER_LIKE_A`、9E6Y `BLOCKER_PLAUSIBLE_B` 和 consensus `SINGLE_BASELINE_BLOCKER_RECHECK`。
 
