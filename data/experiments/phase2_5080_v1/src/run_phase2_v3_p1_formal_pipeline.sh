@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$ROOT/../.."
+PYTHON_BIN=${PYTHON_BIN:-python}
 CONFIG=${CONFIG:-$ROOT/configs/phase2_v3_p1_formal.json}
 DATA_DIR=${DATA_DIR:-$ROOT/prepared/phase2_v3_p1_formal}
 RUN_STAMP=${RUN_STAMP:-$(date +%Y%m%dT%H%M%S)}
@@ -17,20 +18,39 @@ LOG="$RUN_ROOT/formal_pipeline.log"
 mkdir -p "$RUN_ROOT"
 exec > >(tee -a "$LOG") 2>&1
 
+"$PYTHON_BIN" - "$CONFIG" <<'PY'
+import json
+import sys
+
+config = json.load(open(sys.argv[1]))
+if config.get("device") == "cuda":
+    import torch
+
+    if not torch.cuda.is_available():
+        raise SystemExit(
+            f"CUDA preflight failed for {sys.executable}: torch={torch.__version__}"
+        )
+    print(
+        "V3P_CUDA_PREFLIGHT "
+        f"python={sys.executable} torch={torch.__version__} "
+        f"cuda={torch.version.cuda} device={torch.cuda.get_device_name(0)}"
+    )
+PY
+
 if [[ -e "$EVALUATION/formal_evaluation.json" ]]; then
   echo "Refusing to unseal/evaluate the same formal run twice: $EVALUATION" >&2
   exit 8
 fi
 
-python "$ROOT/src/prepare_phase2_v3_p1_formal_data.py"
+"$PYTHON_BIN" "$ROOT/src/prepare_phase2_v3_p1_formal_data.py"
 
-python "$ROOT/src/train_phase2_v3_p1_formal.py" \
+"$PYTHON_BIN" "$ROOT/src/train_phase2_v3_p1_formal.py" \
   --config "$CONFIG" --run-dir "$FULL_RUN" --control full
 
-python "$ROOT/src/train_phase2_v3_p1_formal.py" \
+"$PYTHON_BIN" "$ROOT/src/train_phase2_v3_p1_formal.py" \
   --config "$CONFIG" --run-dir "$LABEL_RUN" --control label_shuffle
 
-python "$ROOT/src/build_phase2_v3_p1_formal_bundle.py" \
+"$PYTHON_BIN" "$ROOT/src/build_phase2_v3_p1_formal_bundle.py" \
   --full-training-summary "$FULL_RUN/training_summary.json" \
   --label-shuffle-training-summary "$LABEL_RUN/training_summary.json" \
   --preregistration "$ROOT/audits/phase2_v3_p1_preregistration.json" \
@@ -46,7 +66,7 @@ python "$ROOT/src/build_phase2_v3_p1_formal_bundle.py" \
   --bundle-builder-source "$ROOT/src/build_phase2_v3_p1_formal_bundle.py" \
   --output-dir "$BUNDLE"
 
-python "$ROOT/src/evaluate_phase2_v3_p1_formal.py" \
+"$PYTHON_BIN" "$ROOT/src/evaluate_phase2_v3_p1_formal.py" \
   --teacher-open "$DATA_DIR/pvrig_teacher_train_dev_v1.csv" \
   --teacher-test-sealed "$DATA_DIR/pvrig_teacher_formal_labels_sealed_v1.csv" \
   --seed-prediction "83=$FULL_RUN/seed_83/test_predictions.csv" \
@@ -58,7 +78,7 @@ python "$ROOT/src/evaluate_phase2_v3_p1_formal.py" \
   --artifact-manifest "$BUNDLE/formal_artifact_manifest.json" \
   --output-dir "$EVALUATION"
 
-python - "$RUN_ROOT" "$CONFIG" <<'PY'
+"$PYTHON_BIN" - "$RUN_ROOT" "$CONFIG" <<'PY'
 import hashlib
 import json
 import sys

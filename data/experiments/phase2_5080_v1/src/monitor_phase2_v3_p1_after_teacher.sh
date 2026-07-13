@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+PYTHON_BIN=${PYTHON_BIN:-python}
 AUDIT=${AUDIT:-$ROOT/audits/pvrig_formal_teacher500_audit.json}
 PIPELINE=${PIPELINE:-$ROOT/src/run_phase2_v3_p1_formal_pipeline.sh}
 POLL_SECONDS=${POLL_SECONDS:-120}
@@ -26,7 +27,7 @@ sleep_interruptibly() { sleep "$1" & wait "$!"; }
 
 echo "V3P_WATCHER_START $(date -Is) audit=$AUDIT"
 while true; do
-  if [[ -f "$AUDIT" ]] && python - "$AUDIT" <<'PY'
+  if [[ -f "$AUDIT" ]] && "$PYTHON_BIN" - "$AUDIT" <<'PY'
 import json
 import sys
 
@@ -40,5 +41,5 @@ PY
 done
 
 echo "V3P_FORMAL_PIPELINE_START $(date -Is)"
-bash "$PIPELINE"
+PYTHON_BIN="$PYTHON_BIN" bash "$PIPELINE"
 echo "V3P_FORMAL_PIPELINE_COMPLETE $(date -Is)"
