@@ -372,7 +372,7 @@ def split_tokens(candidate: dict[str, object]) -> tuple[str, str, str]:
     )
 
 
-def assign_splits(candidates: list[dict[str, object]]) -> dict[str, str]:
+def assign_splits(candidates: list[dict[str, object]]) -> tuple[dict[str, str], dict[str, object]]:
     # Union by all leakage keys so any shared backbone, arm, or near-sequence family stays in one split.
     parent: dict[str, str] = {}
 
@@ -399,15 +399,80 @@ def assign_splits(candidates: list[dict[str, object]]) -> dict[str, str]:
     for candidate in candidates:
         groups[find(candidate_tokens[str(candidate["candidate_id"])][0])].append(candidate)
 
+    component_rows = sorted(
+        groups.values(),
+        key=lambda group: (
+            -len(group),
+            min(str(candidate["candidate_id"]) for candidate in group),
+        ),
+    )
+    holdout_components = [
+        group for group in component_rows if any(bool(candidate["known_positive"]) for candidate in group)
+    ]
+    model_components = [group for group in component_rows if group not in holdout_components]
+
     assignments: dict[str, str] = {}
-    split_cycle = (TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, TRAIN_SPLIT, "validation", "test", TRAIN_SPLIT)
-    for index, key in enumerate(sorted(groups)):
-        group_split = split_cycle[index % len(split_cycle)]
-        if any(bool(candidate["known_positive"]) for candidate in groups[key]):
-            group_split = KNOWN_POSITIVE_SPLIT
-        for candidate in groups[key]:
-            assignments[str(candidate["candidate_id"])] = group_split
-    return assignments
+    split_counts: Counter[str] = Counter()
+
+    def assign_component(group: list[dict[str, object]], split: str) -> None:
+        for candidate in group:
+            assignments[str(candidate["candidate_id"])] = split
+        split_counts[split] += len(group)
+
+    for group in holdout_components:
+        assign_component(group, KNOWN_POSITIVE_SPLIT)
+
+    model_splits = (TRAIN_SPLIT, "validation", "test")
+    target_fractions = {TRAIN_SPLIT: 0.8, "validation": 0.1, "test": 0.1}
+    for group, split in zip(model_components[:3], model_splits):
+        assign_component(group, split)
+
+    model_candidate_count = sum(len(group) for group in model_components)
+    target_counts = {
+        split: model_candidate_count * fraction for split, fraction in target_fractions.items()
+    }
+    for group in model_components[3:]:
+        split = max(
+            model_splits,
+            key=lambda value: (
+                target_counts[value] - split_counts[value],
+                -model_splits.index(value),
+            ),
+        )
+        assign_component(group, split)
+
+    token_splits: defaultdict[str, set[str]] = defaultdict(set)
+    for candidate in candidates:
+        split = assignments[str(candidate["candidate_id"])]
+        for token in split_tokens(candidate):
+            token_splits[token].add(split)
+    violations = {
+        token: sorted(splits) for token, splits in token_splits.items() if len(splits) > 1
+    }
+    if violations:
+        examples = list(sorted(violations.items()))[:5]
+        raise ValueError(f"hard leakage tokens cross dataset splits: {examples}")
+
+    model_component_count = len(model_components)
+    feasibility = (
+        "three_way" if model_component_count >= 3
+        else "two_way_only" if model_component_count == 2
+        else "train_only"
+    )
+    audit = {
+        "policy": "hard-component deterministic bin-packing at 80/10/10 target",
+        "hard_keys": ["backbone_group_id", "arm_id", "global_near_cdr3_family"],
+        "hard_component_count": len(component_rows),
+        "model_component_count": model_component_count,
+        "known_positive_component_count": len(holdout_components),
+        "model_component_sizes": [len(group) for group in model_components],
+        "model_split_feasibility": feasibility,
+        "available_model_splits": [split for split in model_splits if split_counts[split] > 0],
+        "test_split_available": split_counts["test"] > 0,
+        "target_fractions": target_fractions,
+        "leakage_violation_count": 0,
+    }
+    return assignments, audit
 
 
 def build_tables(args: argparse.Namespace) -> dict[str, object]:
@@ -459,7 +524,7 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
         if unknown_ids:
             raise ValueError(f"{source_name} table contains candidate IDs outside the frozen cohort: {unknown_ids[:5]}")
 
-    split_assignments = assign_splits(candidates)
+    split_assignments, split_audit = assign_splits(candidates)
     failures: list[dict[str, object]] = []
     summaries: list[dict[str, object]] = []
     for candidate in candidates:
@@ -542,6 +607,7 @@ def build_tables(args: argparse.Namespace) -> dict[str, object]:
         "successful_nbb2_candidates": len(nbb2_success_ids),
         "known_positive_count": sum(1 for row in candidates if row["known_positive"]),
         "split_counts": dict(sorted(Counter(split_assignments.values()).items())),
+        "split_audit": split_audit,
         "missingness_counts": dict(sorted(Counter(row["failure_type"] for row in failures).items())),
         "axis_contract": {
             "binder": "binder_label is never inferred from pose, affinity, blocker geometry, or RF2 recovery",
