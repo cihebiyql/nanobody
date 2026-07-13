@@ -64,6 +64,18 @@ class TeacherStatusTest(unittest.TestCase):
         self.assertEqual(status["model_ready"], 0)
         self.assertEqual(status["top_models"], 0)
 
+    def test_retry_start_invalidates_historical_success_until_new_exit(self) -> None:
+        log1 = self.root / "shard_0/logs/run_node1_v2_5_pose_batch.20260713_010000.log"
+        log1.write_text("HADDOCK_START A now\nHADDOCK_EXIT A rc=0 now\n", encoding="utf-8")
+        log2 = self.root / "shard_0/logs/run_node1_v2_5_pose_batch.20260713_020000.log"
+        log2.write_text("HADDOCK_START A retry\n", encoding="utf-8")
+
+        status = MOD.summarize(self.root, expected_candidates=2, min_models=4)
+
+        self.assertEqual(status["latest_success"], 0)
+        self.assertEqual(status["latest_failed"], 0)
+        self.assertEqual(status["pending"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

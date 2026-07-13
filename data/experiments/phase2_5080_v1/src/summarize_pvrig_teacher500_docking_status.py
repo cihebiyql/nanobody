@@ -25,9 +25,9 @@ def candidate_shards(root: Path) -> dict[str, Path]:
     return mapping
 
 
-def latest_events(root: Path) -> tuple[set[str], dict[str, int]]:
+def latest_events(root: Path) -> tuple[set[str], dict[str, int | None]]:
     started: set[str] = set()
-    latest: dict[str, int] = {}
+    latest: dict[str, int | None] = {}
     logs = sorted(
         root.glob("shard_*/logs/run_node1_v2_5_pose_batch.*.log"),
         key=lambda path: (path.name, str(path)),
@@ -36,7 +36,9 @@ def latest_events(root: Path) -> tuple[set[str], dict[str, int]]:
         for line in log.read_text(encoding="utf-8", errors="replace").splitlines():
             match = START_RE.match(line)
             if match:
-                started.add(match.group(1))
+                candidate_id = match.group(1)
+                started.add(candidate_id)
+                latest[candidate_id] = None
                 continue
             match = EXIT_RE.match(line)
             if match:
@@ -70,7 +72,11 @@ def summarize(root: Path, expected_candidates: int, min_models: int) -> dict[str
 
     model_counts = {candidate_id: selected_model_count(shard, candidate_id) for candidate_id, shard in mapping.items()}
     latest_success = sum(latest.get(candidate_id) == 0 for candidate_id in mapping)
-    latest_failed = sum(latest.get(candidate_id, 0) != 0 for candidate_id in mapping if candidate_id in latest)
+    latest_failed = sum(
+        latest.get(candidate_id) not in {None, 0}
+        for candidate_id in mapping
+        if candidate_id in latest
+    )
     return {
         "complete": int((root / "docking.complete").is_file()),
         "expected": expected_candidates,

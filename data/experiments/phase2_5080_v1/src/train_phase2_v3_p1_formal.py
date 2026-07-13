@@ -62,6 +62,8 @@ DEFAULT_INTERFACE_8X6B = DATA_ROOT / "structures/PVRIG_interface_residues_8X6B.c
 DEFAULT_INTERFACE_9E6Y = DATA_ROOT / "structures/PVRIG_interface_residues_9E6Y.csv"
 DEFAULT_SOURCE_CHECKPOINT = EXP_DIR / "checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt"
 DEFAULT_CONFIG = EXP_DIR / "configs/phase2_v3_p1_formal.json"
+DEFAULT_PREREGISTRATION = EXP_DIR / "audits/phase2_v3_p1_preregistration.json"
+DEFAULT_TEST_SPEC = EXP_DIR / "audits/phase2_v3_p1_test_spec.json"
 DEFAULT_OUT = EXP_DIR / "runs/phase2_v3_p1_formal"
 
 CLAIM_BOUNDARY = "pvrig_docking_geometry_surrogate_not_binding_or_experimental_blocking_truth"
@@ -97,6 +99,8 @@ class FormalTrainConfig:
     interface_8x6b_csv: str = str(DEFAULT_INTERFACE_8X6B)
     interface_9e6y_csv: str = str(DEFAULT_INTERFACE_9E6Y)
     source_checkpoint: str = str(DEFAULT_SOURCE_CHECKPOINT)
+    preregistration_json: str = str(DEFAULT_PREREGISTRATION)
+    test_spec_json: str = str(DEFAULT_TEST_SPEC)
     generic_replay_csv: str = ""
     generic_replay_cache_manifest: str = ""
     generic_replay_cdr_mask_csv: str = ""
@@ -996,6 +1000,8 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
         "interface_8x6b_csv": Path(cfg.interface_8x6b_csv),
         "interface_9e6y_csv": Path(cfg.interface_9e6y_csv),
         "source_checkpoint": Path(cfg.source_checkpoint),
+        "preregistration_json": Path(cfg.preregistration_json),
+        "test_spec_json": Path(cfg.test_spec_json),
     }
     if cfg.generic_replay_csv:
         paths["generic_replay_csv"] = Path(cfg.generic_replay_csv)
@@ -1314,6 +1320,9 @@ def train_seed(
             "backbone_cfg": asdict(backbone_cfg),
             "source_backbone_checkpoint": cfg.source_checkpoint,
             "source_backbone_checkpoint_sha256": hashes["files"]["source_checkpoint"],
+            "config_fingerprint": config_fingerprint,
+            "preregistration_sha256": hashes["files"]["preregistration_json"],
+            "test_spec_sha256": hashes["files"]["test_spec_json"],
             "geometry_fields": list(GEOMETRY_FIELDS),
             "geometry_mean": geometry_mean.cpu(),
             "geometry_std": geometry_std.cpu(),
@@ -1329,6 +1338,11 @@ def train_seed(
         raise AssertionError("Non-test rows leaked into evaluator-facing predictions")
     prediction_path = run_dir / "test_predictions.csv"
     write_csv_atomic(prediction_path, test_predictions)
+    dev_prediction_path = run_dir / "dev_predictions.csv"
+    write_csv_atomic(
+        dev_prediction_path,
+        predict_label_free(model, loaders["dev"], device, geometry_mean, geometry_std),
+    )
     if control_type == "full":
         inference_controls = ("vhh_only", "hotspot_shuffle", "antigen_ablation", "target_permutation")
     elif control_type == "label_shuffle":
@@ -1390,12 +1404,17 @@ def train_seed(
         "dev_selection_policy": "maximum_dev_normalized_composite_then_minimum_dev_loss",
         "test_predictions_path": str(prediction_path),
         "test_predictions_sha256": sha256_file(prediction_path),
+        "dev_predictions_path": str(dev_prediction_path),
+        "dev_predictions_sha256": sha256_file(dev_prediction_path),
         "control_predictions_path": str(control_path),
         "control_predictions_sha256": sha256_file(control_path),
         "control_prediction_types": list(inference_controls),
         "test_prediction_columns_are_label_free": True,
         "best_checkpoint": str(best_checkpoint),
         "best_checkpoint_sha256": sha256_file(best_checkpoint),
+        "config_fingerprint": config_fingerprint,
+        "preregistration_sha256": hashes["files"]["preregistration_json"],
+        "test_spec_sha256": hashes["files"]["test_spec_json"],
         "baseline_registry_path": str(baseline_path),
         "baseline_registry_sha256": sha256_file(baseline_path),
         "frozen_backbone": True,
@@ -1403,6 +1422,7 @@ def train_seed(
         "forbidden_pair_heads": ["v2_3_pair_head", "v3_g2_failed_pair_head"],
         "generic_replay_enabled": "replay" in datasets,
         "generic_replay_retention_path": str(retention_path),
+        "generic_replay_retention_sha256": sha256_file(retention_path),
         "generic_replay_retention": retention_metrics,
         "dataset_sizes": {name: len(dataset) for name, dataset in datasets.items()},
         "artifact_hashes": hashes,

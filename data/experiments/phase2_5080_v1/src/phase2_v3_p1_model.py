@@ -433,5 +433,8 @@ def checkpoint_model_metadata(model: PVRIGV3P1Model) -> dict[str, Any]:
         "relevance_mapping": TIER_TO_RELEVANCE,
         "generic_binding_feature": "frozen_meanpool_v3_full_scalar_only",
         "forbidden_pair_heads": ["v2_3_pair_head", "v3_g2_failed_pair_head"],
+        "structure_channels": ["8X6B_per_residue", "9E6Y_per_residue"],
+        "structure_fusion_policy": "separate_projection_then_fusion",
+        "inference_controls": ["vhh_only", "hotspot_shuffle", "antigen_ablation", "target_permutation"],
         "frozen_backbone": True,
     }

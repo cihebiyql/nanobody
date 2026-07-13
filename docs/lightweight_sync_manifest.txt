@@ -413,6 +413,7 @@ data/experiments/phase2_5080_v1/audits/phase2_v2_5_readiness_audit_v1.json
 data/experiments/phase2_5080_v1/audits/phase2_v2_5_split_seal_audit_v1.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_g1_esm2_smoke_cache_validation.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_g2_preregistration.json
+data/experiments/phase2_5080_v1/audits/phase2_v3_p1_generic_replay_audit.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_preregistration.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_test_spec.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_preregistration.json
@@ -563,6 +564,7 @@ data/experiments/phase2_5080_v1/src/prepare_phase2_v3_g1_data.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_g2_cluster_safe_data.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_g2_external_htnfa.py
 data/experiments/phase2_5080_v1/src/prepare_phase2_v3_p1_formal_data.py
+data/experiments/phase2_5080_v1/src/prepare_phase2_v3_p1_generic_replay.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_formal_candidate_meanpool_inputs.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_formal_teacher500_model_inputs.py
 data/experiments/phase2_5080_v1/src/prepare_pvrig_model_screening_summary.py
@@ -634,6 +636,7 @@ data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_g1_data.py
 data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_g2_cluster_safe_data.py
 data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_g2_external_htnfa.py
 data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_p1_formal_data.py
+data/experiments/phase2_5080_v1/src/test_prepare_phase2_v3_p1_generic_replay.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_formal_teacher500_model_inputs.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_model_screening_summary.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_rfantibody_v1.py
@@ -656,6 +659,7 @@ data/experiments/phase2_5080_v1/src/test_train_phase2_v2_3.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v2_4.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v3_g1_binding_smoke.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v3_g2_generic.py
+data/experiments/phase2_5080_v1/src/test_train_phase2_v3_p1_formal.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v3_p1_pilot_smoke.py
 data/experiments/phase2_5080_v1/src/test_validate_clustered_splits_v2.py
 data/experiments/phase2_5080_v1/src/test_validate_esm2_cache_v2_3.py
