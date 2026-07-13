@@ -269,7 +269,7 @@ class DockingGoldEvidenceTests(unittest.TestCase):
                 {
                     "model": model,
                     "generation_receptor": row["receptor_id"],
-                    "canonical_residue_pair_count": 30,
+                    "canonical_residue_pair_count": 1,
                     "status": "PASS",
                 }
             )

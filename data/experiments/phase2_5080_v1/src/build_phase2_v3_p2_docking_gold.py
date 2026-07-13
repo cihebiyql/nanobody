@@ -83,6 +83,29 @@ VALID_BLOCKER_CLASSES = {
     "EVIDENCE_INFERENCE_ONLY_E",
 }
 TIER_TO_LEVEL = {"G1": 4, "G2": 3, "G3": 2, "G4": 1, "G5": 0}
+POSTPROCESS_MARKER_SCHEMA = "phase2_v3_p2_dual_docking_run_postprocess_v1_1"
+POSTPROCESS_ARTIFACT_KEYS = (
+    "consensus",
+    "classification_8x6b",
+    "classification_9e6y",
+    "mechanism_8x6b",
+    "mechanism_9e6y",
+    "canonical_contact_summary",
+    "canonical_contact_pairs",
+    "ranks",
+)
+POSTPROCESS_COUNT_FIELDS = (
+    "selected_models",
+    "pose_clusters",
+    "consensus_rows",
+    "classification_8x6b_rows",
+    "classification_9e6y_rows",
+    "mechanism_8x6b_rows",
+    "mechanism_9e6y_rows",
+    "canonical_contact_pose_rows",
+    "canonical_contact_pair_rows",
+    "contact_failures",
+)
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -323,6 +346,159 @@ def add_check(checks: dict[str, bool], errors: list[str], name: str, passed: boo
         errors.append(f"{name}:{detail}")
 
 
+def validate_package_closure(
+    selection_manifest: Path,
+    run_manifest: Path,
+) -> tuple[dict[str, Any], list[str]]:
+    """Validate the package audit as the root of the frozen input closure."""
+    package_root = run_manifest.resolve().parent.parent
+    audit_path = package_root / "package_audit.json"
+    checks: dict[str, bool] = {}
+    errors: list[str] = []
+    evidence: dict[str, Any] = {
+        "package_root": str(package_root),
+        "package_audit": str(audit_path),
+    }
+    add_check(checks, errors, "package_audit_present", audit_path.is_file(), str(audit_path))
+    if not audit_path.is_file():
+        evidence["checks"] = checks
+        return evidence, errors
+    try:
+        audit = json.loads(audit_path.read_text(encoding="utf-8"))
+        if not isinstance(audit, dict):
+            raise ValueError("package audit is not an object")
+    except Exception as error:
+        add_check(checks, errors, "package_audit_parse", False, f"{type(error).__name__}:{error}")
+        evidence["checks"] = checks
+        return evidence, errors
+    evidence["package_audit_sha256"] = sha256_file(audit_path)
+    evidence["package_audit_payload"] = audit
+    add_check(
+        checks,
+        errors,
+        "package_audit_schema",
+        audit.get("schema_version") == "phase2_v3_p2_pilot64_package_audit_v1_1",
+        str(audit.get("schema_version")),
+    )
+    add_check(checks, errors, "package_audit_protocol", audit.get("protocol_id") == PROTOCOL_ID, str(audit.get("protocol_id")))
+    add_check(
+        checks,
+        errors,
+        "package_audit_status",
+        audit.get("status") == "PASS_PILOT64_DUAL_DOCKING_PACKAGE_READY",
+        str(audit.get("status")),
+    )
+    add_check(
+        checks,
+        errors,
+        "package_audit_no_per_candidate_override",
+        audit.get("per_candidate_failure_tolerance_override") is False,
+        str(audit.get("per_candidate_failure_tolerance_override")),
+    )
+    add_check(
+        checks,
+        errors,
+        "package_audit_no_tolerance_relaxation",
+        audit.get("tolerance_relaxed") is False,
+        str(audit.get("tolerance_relaxed")),
+    )
+    if selection_manifest.is_file():
+        observed = sha256_file(selection_manifest)
+        add_check(
+            checks,
+            errors,
+            "package_selection_manifest_sha256",
+            observed == audit.get("pilot_manifest_sha256"),
+            f"{observed}!={audit.get('pilot_manifest_sha256')}",
+        )
+    else:
+        add_check(checks, errors, "package_selection_manifest_sha256", False, str(selection_manifest))
+
+    declared_files = (
+        ("run_manifest", "run_manifest_sha256"),
+        ("protocol_manifest", "protocol_manifest_sha256"),
+        ("monomer_manifest", "monomer_manifest_sha256"),
+        ("package_content_hash_manifest", "package_content_hash_manifest_sha256"),
+    )
+    resolved: dict[str, Path] = {}
+    for path_field, hash_field in declared_files:
+        relative = str(audit.get(path_field, ""))
+        path = package_root / relative
+        resolved[path_field] = path
+        safe = bool(relative) and not Path(relative).is_absolute() and package_root in path.resolve().parents
+        add_check(checks, errors, f"package_{path_field}_safe_path", safe, relative)
+        present = safe and path.is_file()
+        add_check(checks, errors, f"package_{path_field}_present", present, str(path))
+        if present:
+            observed = sha256_file(path)
+            add_check(
+                checks,
+                errors,
+                f"package_{path_field}_sha256",
+                observed == audit.get(hash_field),
+                f"{observed}!={audit.get(hash_field)}",
+            )
+    add_check(
+        checks,
+        errors,
+        "package_run_manifest_is_evaluated_manifest",
+        resolved.get("run_manifest", Path()).resolve() == run_manifest.resolve(),
+        f"{resolved.get('run_manifest')}!={run_manifest}",
+    )
+
+    content_path = resolved.get("package_content_hash_manifest")
+    if content_path and content_path.is_file():
+        try:
+            with content_path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle, delimiter="\t"))
+            declared: dict[str, str] = {}
+            for item in rows:
+                relative = item.get("path", "")
+                digest = item.get("sha256", "")
+                target = package_root / relative
+                if (
+                    not relative
+                    or relative in declared
+                    or Path(relative).is_absolute()
+                    or package_root not in target.resolve().parents
+                ):
+                    errors.append(f"content_invalid_or_duplicate_path:{relative}")
+                    continue
+                declared[relative] = digest
+                if not target.is_file():
+                    errors.append(f"content_missing:{relative}")
+                else:
+                    observed = sha256_file(target)
+                    if observed != digest:
+                        errors.append(f"content_sha256_mismatch:{relative}:{observed}!={digest}")
+            exclusions = set(audit.get("package_content_hash_scope_exclusions", []))
+            expected = {
+                str(path.relative_to(package_root))
+                for path in package_root.rglob("*")
+                if path.is_file() and str(path.relative_to(package_root)) not in exclusions
+            }
+            exact = set(declared) == expected
+            add_check(
+                checks,
+                errors,
+                "content_manifest_exact_file_set",
+                exact,
+                f"missing={sorted(expected-set(declared))};extra={sorted(set(declared)-expected)}",
+            )
+            add_check(
+                checks,
+                errors,
+                "content_manifest_all_hashes",
+                not any(error.startswith(("content_missing:", "content_sha256_mismatch:", "content_invalid_or_duplicate_path:")) for error in errors),
+                "one or more content entries failed",
+            )
+            evidence["content_manifest_rows"] = len(rows)
+        except Exception as error:
+            add_check(checks, errors, "content_manifest_parse", False, f"{type(error).__name__}:{error}")
+    evidence["checks"] = checks
+    return evidence, errors
+
+
 def run_protocol_checks(
     row: Mapping[str, str],
     sync_root: Path,
@@ -443,7 +619,6 @@ def run_protocol_checks(
             evidence["per_candidate_failure_tolerance_override"] = bool(
                 evidence.get("per_candidate_failure_tolerance_override")
             ) or config_override
-            evidence["tolerance_relaxed"] = bool(evidence.get("tolerance_relaxed")) or config_override
             add_check(
                 checks,
                 errors,
@@ -771,19 +946,211 @@ def indexed_rows(path: Path, label: str, errors: list[str]) -> dict[str, dict[st
     return output
 
 
+def postprocess_artifact_paths(run_root: Path, run_id: str) -> dict[str, Path]:
+    reports = run_root / "reports"
+    return {
+        "consensus": reports / f"{run_id}_dual_baseline_consensus.csv",
+        "classification_8x6b": reports / f"{run_id}_8x6b_blocker_classification.csv",
+        "classification_9e6y": reports / f"{run_id}_9e6y_blocker_classification.csv",
+        "mechanism_8x6b": run_root / "8x6b_baseline/haddock3_top_model_mechanism_scores_8x6b.csv",
+        "mechanism_9e6y": run_root / "9e6y_baseline/haddock3_top_model_mechanism_scores_9e6y.csv",
+        "canonical_contact_summary": reports / f"{run_id}_canonical_contact_summary.csv",
+        "canonical_contact_pairs": reports / f"{run_id}_canonical_contact_pairs.csv",
+        "ranks": reports / "haddock3_model_ranks.csv",
+    }
+
+
+def validate_postprocess_marker(
+    row: Mapping[str, str],
+    run_root: Path,
+    sync_root: Path,
+    run_manifest_sha256: str,
+    counts: Mapping[str, int],
+    model_set: set[str],
+    ranks: Mapping[str, Mapping[str, str]],
+) -> list[str]:
+    errors: list[str] = []
+    run_id = row["run_id"]
+    marker_path = run_root / "postprocess.complete.json"
+    if not marker_path.is_file():
+        return ["postprocess_marker_missing"]
+    try:
+        marker = json.loads(marker_path.read_text(encoding="utf-8"))
+        if not isinstance(marker, dict):
+            raise ValueError("marker is not an object")
+    except Exception as error:
+        return [f"postprocess_marker_parse:{type(error).__name__}:{error}"]
+
+    expected_identity = {
+        "schema_version": POSTPROCESS_MARKER_SCHEMA,
+        "protocol_id": PROTOCOL_ID,
+        "status": "PASS",
+        "run_id": run_id,
+        "pilot_id": row["pilot_id"],
+        "source_candidate_id": row.get("source_candidate_id", ""),
+        "generation_receptor": row["receptor_id"].lower(),
+        "seed_role": row["seed_role"],
+        "run_manifest_sha256": run_manifest_sha256,
+    }
+    for field, expected in expected_identity.items():
+        actual = marker.get(field)
+        normalized = str(actual).lower() if field == "generation_receptor" else actual
+        if normalized != expected:
+            errors.append(f"marker_identity_mismatch:{field}:{actual}!={expected}")
+
+    input_sha = marker.get("input_sha256")
+    if not isinstance(input_sha, dict):
+        errors.append("marker_input_sha256_not_object")
+    else:
+        for marker_field, manifest_field in (
+            ("config", "config_sha256"),
+            ("monomer", "monomer_sha256"),
+            ("receptor", "receptor_sha256"),
+        ):
+            if input_sha.get(marker_field) != row.get(manifest_field, ""):
+                errors.append(
+                    f"marker_input_hash_mismatch:{marker_field}:"
+                    f"{input_sha.get(marker_field)}!={row.get(manifest_field, '')}"
+                )
+
+    completion_relpath = row.get("completion_relpath", f"runs/{run_id}/{run_id}.complete.json")
+    completion_path = Path(completion_relpath)
+    if not completion_path.is_absolute():
+        completion_path = sync_root / completion_path
+    docking_marker = marker.get("docking_completion")
+    if not isinstance(docking_marker, dict):
+        errors.append("marker_docking_completion_not_object")
+    elif not completion_path.is_file():
+        errors.append(f"marker_docking_completion_missing:{completion_path}")
+    else:
+        observed_sha = sha256_file(completion_path)
+        if docking_marker.get("sha256") != observed_sha:
+            errors.append(
+                f"marker_docking_completion_hash_mismatch:{docking_marker.get('sha256')}!={observed_sha}"
+            )
+        try:
+            completion = json.loads(completion_path.read_text(encoding="utf-8"))
+            for field in (
+                "schema_version",
+                "protocol_id",
+                "status",
+                "run_id",
+                "pilot_id",
+                "source_candidate_id",
+                "receptor_id",
+                "seed_role",
+                "pose_count",
+                "cluster_count",
+            ):
+                actual = docking_marker.get(field)
+                expected = completion.get(field)
+                if field == "receptor_id":
+                    actual, expected = str(actual).lower(), str(expected).lower()
+                if actual != expected:
+                    errors.append(f"marker_docking_completion_identity_mismatch:{field}:{actual}!={expected}")
+        except Exception as error:
+            errors.append(f"marker_docking_completion_parse:{type(error).__name__}:{error}")
+
+    marker_counts = marker.get("counts")
+    if not isinstance(marker_counts, dict):
+        errors.append("marker_counts_not_object")
+    else:
+        for field in POSTPROCESS_COUNT_FIELDS:
+            if marker_counts.get(field) != counts.get(field):
+                errors.append(f"marker_count_mismatch:{field}:{marker_counts.get(field)}!={counts.get(field)}")
+
+    paths = postprocess_artifact_paths(run_root, run_id)
+    artifact_marker = marker.get("artifacts")
+    if not isinstance(artifact_marker, dict):
+        errors.append("marker_artifacts_not_object")
+    else:
+        if set(artifact_marker) != set(POSTPROCESS_ARTIFACT_KEYS):
+            errors.append(
+                f"marker_artifact_keys_mismatch:{sorted(artifact_marker)}!={sorted(POSTPROCESS_ARTIFACT_KEYS)}"
+            )
+        for key, expected_path in paths.items():
+            item = artifact_marker.get(key)
+            if not isinstance(item, dict):
+                errors.append(f"marker_artifact_missing:{key}")
+                continue
+            expected_relpath = str(expected_path.relative_to(run_root))
+            if item.get("relpath") != expected_relpath:
+                errors.append(f"marker_artifact_relpath_mismatch:{key}:{item.get('relpath')}!={expected_relpath}")
+            if not expected_path.is_file():
+                errors.append(f"marker_artifact_file_missing:{key}:{expected_path}")
+                continue
+            observed_sha = sha256_file(expected_path)
+            if item.get("sha256") != observed_sha:
+                errors.append(f"marker_artifact_hash_mismatch:{key}:{item.get('sha256')}!={observed_sha}")
+        consensus_item = artifact_marker.get("consensus", {})
+        if marker.get("consensus_sha256") != consensus_item.get("sha256"):
+            errors.append("marker_consensus_sha256_mismatch")
+
+    run_dir = resolve_evidence_path(sync_root, row, "run_dir_relpath", f"runs/{run_id}/run_{run_id}")
+    selected_dir = run_dir / "6_seletopclusts"
+    actual_files = {
+        path.name: path
+        for path in selected_dir.glob("cluster_*_model_*.pdb*")
+        if path.is_file() and path.stat().st_size
+    }
+    selected_marker = marker.get("selected_pose_files")
+    if not isinstance(selected_marker, list):
+        errors.append("marker_selected_pose_files_not_list")
+    else:
+        marker_filenames: set[str] = set()
+        marker_models: set[str] = set()
+        for item in selected_marker:
+            if not isinstance(item, dict):
+                errors.append("marker_selected_pose_item_not_object")
+                continue
+            filename = str(item.get("filename", ""))
+            model = str(item.get("model", ""))
+            marker_filenames.add(filename)
+            marker_models.add(model)
+            path = actual_files.get(filename)
+            if path is None:
+                errors.append(f"marker_selected_pose_missing:{filename}")
+                continue
+            observed_sha = sha256_file(path)
+            if item.get("sha256") != observed_sha:
+                errors.append(f"marker_selected_pose_hash_mismatch:{filename}:{item.get('sha256')}!={observed_sha}")
+            rank_row = ranks.get(model, {})
+            try:
+                marker_rank = parse_int(item.get("haddock_rank", ""), "marker_haddock_rank")
+                rank_value = parse_int(rank_row.get("haddock_rank", ""), "rank_haddock_rank")
+                if marker_rank != rank_value:
+                    errors.append(f"marker_selected_pose_rank_mismatch:{model}:{marker_rank}!={rank_value}")
+            except ValueError as error:
+                errors.append(f"marker_selected_pose_rank_invalid:{model}:{error}")
+        if marker_filenames != set(actual_files):
+            errors.append(
+                f"marker_selected_pose_file_set_mismatch:missing={sorted(set(actual_files)-marker_filenames)};"
+                f"extra={sorted(marker_filenames-set(actual_files))}"
+            )
+        if marker_models != model_set:
+            errors.append(
+                f"marker_selected_pose_model_set_mismatch:missing={sorted(model_set-marker_models)};"
+                f"extra={sorted(marker_models-model_set)}"
+            )
+    return errors
+
+
 def evaluate_postprocessed_run(
     row: Mapping[str, str],
     postprocessed_root: Path,
+    sync_root: Path,
+    run_manifest_sha256: str,
 ) -> tuple[list[dict[str, Any]], dict[str, Any], list[str]]:
     run_id = row["run_id"]
     receptor = row["receptor_id"].lower()
     run_root = postprocessed_root / run_id
     reports = run_root / "reports"
     errors: list[str] = []
-    consensus = indexed_rows(reports / f"{run_id}_dual_baseline_consensus.csv", "consensus", errors)
+    paths = postprocess_artifact_paths(run_root, run_id)
+    consensus = indexed_rows(paths["consensus"], "consensus", errors)
     classifications = {
         baseline: indexed_rows(
-            reports / f"{run_id}_{baseline}_blocker_classification.csv",
+            paths[f"classification_{baseline}"],
             f"classification_{baseline}",
             errors,
         )
@@ -791,20 +1158,28 @@ def evaluate_postprocessed_run(
     }
     mechanisms = {
         baseline: indexed_rows(
-            run_root / f"{baseline}_baseline/haddock3_top_model_mechanism_scores_{baseline}.csv",
+            paths[f"mechanism_{baseline}"],
             f"mechanism_{baseline}",
             errors,
         )
         for baseline in RECEPTORS
     }
-    canonical = indexed_rows(
-        reports / f"{run_id}_canonical_contact_summary.csv", "canonical_contact_summary", errors
-    )
+    canonical = indexed_rows(paths["canonical_contact_summary"], "canonical_contact_summary", errors)
+    ranks = indexed_rows(paths["ranks"], "ranks", errors)
+    canonical_pairs: list[dict[str, str]] = []
+    if paths["canonical_contact_pairs"].is_file():
+        try:
+            canonical_pairs = read_csv(paths["canonical_contact_pairs"])
+        except Exception as error:
+            errors.append(f"read_canonical_contact_pairs:{type(error).__name__}:{error}")
+    else:
+        errors.append(f"missing_canonical_contact_pairs:{paths['canonical_contact_pairs']}")
     model_set = set(consensus)
     for label, index in [
         *((f"classification_{key}", value) for key, value in classifications.items()),
         *((f"mechanism_{key}", value) for key, value in mechanisms.items()),
         ("canonical_contact_summary", canonical),
+        ("ranks", ranks),
     ]:
         if set(index) != model_set:
             errors.append(
@@ -813,6 +1188,21 @@ def evaluate_postprocessed_run(
     contact_failures = sum(item.get("status") != "PASS" for item in canonical.values())
     if len(canonical) != len(model_set):
         contact_failures += abs(len(model_set) - len(canonical))
+    pair_counts = Counter(row.get("model", "") for row in canonical_pairs)
+    if set(pair_counts) - model_set:
+        errors.append(f"canonical_contact_pairs_extra_models:{sorted(set(pair_counts)-model_set)}")
+    for model in model_set:
+        try:
+            declared = parse_int(
+                canonical.get(model, {}).get("canonical_residue_pair_count", ""),
+                "canonical_residue_pair_count",
+            )
+            if pair_counts[model] != declared:
+                errors.append(f"canonical_contact_pair_count_mismatch:{model}:{pair_counts[model]}!={declared}")
+                contact_failures += 1
+        except ValueError as error:
+            errors.append(f"canonical_contact_pair_count_invalid:{model}:{error}")
+            contact_failures += 1
 
     cluster_counts: Counter[str] = Counter()
     for model in model_set:
@@ -864,6 +1254,9 @@ def evaluate_postprocessed_run(
             if baseline_count != 2 or sum(declared_counts.values()) != 2:
                 errors.append(f"consensus_not_dual_baseline:{model}:{baseline_count}/{sum(declared_counts.values())}")
             rank = parse_float(consensus_row.get("best_haddock_rank", ""), "best_haddock_rank")
+            rank_from_artifact = parse_float(ranks.get(model, {}).get("haddock_rank", ""), "haddock_rank")
+            if rank != rank_from_artifact:
+                errors.append(f"consensus_rank_mismatch:{model}:{rank}!={rank_from_artifact}")
             relevance = pose_relevance(
                 declared_counts["BLOCKER_LIKE_A"],
                 declared_counts["BLOCKER_PLAUSIBLE_B"],
@@ -872,7 +1265,8 @@ def evaluate_postprocessed_run(
             weight = pose_weight(rank, cluster_counts[cluster])
             poses.append(
                 {
-                    "schema_version": "phase2_v3_p2_docking_gold_pose_v1",
+                    "schema_version": "phase2_v3_p2_docking_gold_pose_v1_1",
+                    "protocol_id": PROTOCOL_ID,
                     "pilot_id": row["pilot_id"],
                     "source_candidate_id": row.get("source_candidate_id", ""),
                     "run_id": run_id,
@@ -917,8 +1311,32 @@ def evaluate_postprocessed_run(
         "stable_relevance_threshold": threshold,
         "stable_supporting_clusters": support,
         "canonical_contact_pose_rows": len(canonical),
+        "canonical_contact_pair_rows": len(canonical_pairs),
         "contact_failures": contact_failures,
     }
+    marker_counts = {
+        "selected_models": len(poses),
+        "pose_clusters": cluster_count,
+        "consensus_rows": len(consensus),
+        "classification_8x6b_rows": len(classifications["8x6b"]),
+        "classification_9e6y_rows": len(classifications["9e6y"]),
+        "mechanism_8x6b_rows": len(mechanisms["8x6b"]),
+        "mechanism_9e6y_rows": len(mechanisms["9e6y"]),
+        "canonical_contact_pose_rows": len(canonical),
+        "canonical_contact_pair_rows": len(canonical_pairs),
+        "contact_failures": contact_failures,
+    }
+    errors.extend(
+        validate_postprocess_marker(
+            row,
+            run_root,
+            sync_root,
+            run_manifest_sha256,
+            marker_counts,
+            model_set,
+            ranks,
+        )
+    )
     return poses, evidence, errors
 
 
@@ -995,7 +1413,8 @@ def combine_candidate(
     )
     first, second = float(scores[0]), float(scores[1])
     return {
-        "schema_version": "phase2_v3_p2_docking_gold_candidate_v1",
+        "schema_version": "phase2_v3_p2_docking_gold_candidate_v1_1",
+        "protocol_id": PROTOCOL_ID,
         "pilot_rank": pilot.get("pilot_rank", ""),
         "pilot_id": pilot["pilot_id"],
         "source_cohort": pilot.get("source_cohort", ""),
@@ -1029,17 +1448,20 @@ def pilot_gate(
     replicate_complete: int,
     contact_failures: int,
     per_candidate_failure_tolerance_override: bool,
+    tolerance_relaxation: bool,
     spearman: float | None,
     quadratic_kappa: float | None,
     manifest_contract_pass: bool = True,
+    package_closure_pass: bool = True,
 ) -> dict[str, Any]:
     gates = {
+        "package_provenance_closure": package_closure_pass,
         "manifest_contract": manifest_contract_pass,
         "main_dg_a_64_of_64": main_complete == EXPECTED_PILOTS,
         "replicate_receptor_runs_32_of_32": replicate_complete == EXPECTED_REPLICATE_RUNS,
         "contact_failures_zero": contact_failures == 0,
         "per_candidate_failure_tolerance_override_false": not per_candidate_failure_tolerance_override,
-        "tolerance_relaxation_false": not per_candidate_failure_tolerance_override,
+        "tolerance_relaxation_false": not tolerance_relaxation,
         "repeat_R_gold_spearman_ge_0_70": spearman is not None and spearman >= 0.70,
         "stable_tier_quadratic_kappa_ge_0_60": quadratic_kappa is not None and quadratic_kappa >= 0.60,
     }
@@ -1088,14 +1510,24 @@ def build_report(audit: Mapping[str, Any]) -> str:
 def run(args: argparse.Namespace) -> dict[str, Any]:
     selection_rows = read_csv(args.selection_manifest)
     run_rows = read_csv(args.run_manifest)
+    package_closure, package_closure_errors = validate_package_closure(
+        args.selection_manifest, args.run_manifest
+    )
     _runs_by_id, contract_errors = manifest_contract(selection_rows, run_rows)
     selection = {row["pilot_id"]: row for row in selection_rows}
     all_pose_rows: list[dict[str, Any]] = []
     receptor_rows: list[dict[str, Any]] = []
     global_failure_tolerance_override = False
+    global_tolerance_relaxation = False
+    run_manifest_sha256 = sha256_file(args.run_manifest)
     for manifest_row in run_rows:
         protocol, protocol_errors = run_protocol_checks(manifest_row, args.sync_root)
-        poses, postprocess, postprocess_errors = evaluate_postprocessed_run(manifest_row, args.postprocessed_root)
+        poses, postprocess, postprocess_errors = evaluate_postprocessed_run(
+            manifest_row,
+            args.postprocessed_root,
+            args.sync_root,
+            run_manifest_sha256,
+        )
         errors = [*protocol_errors, *postprocess_errors]
         completion_pose_count = protocol.get("completion_pose_count", "")
         completion_cluster_count = protocol.get("completion_cluster_count", "")
@@ -1118,6 +1550,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         global_failure_tolerance_override |= bool(
             protocol.get("per_candidate_failure_tolerance_override", True)
         )
+        global_tolerance_relaxation |= bool(protocol.get("tolerance_relaxed", True))
         dg_a = not errors
         all_pose_rows.extend(poses)
         receptor_rows.append(
@@ -1184,7 +1617,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             continue
         comparisons.append(
             {
-                "schema_version": "phase2_v3_p2_docking_gold_replicate_comparison_v1",
+                "schema_version": "phase2_v3_p2_docking_gold_replicate_comparison_v1_1",
+                "protocol_id": PROTOCOL_ID,
                 "pilot_id": pilot_id,
                 "source_candidate_id": main["source_candidate_id"],
                 "main_R_gold": main["R_gold"],
@@ -1221,9 +1655,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         replicate_run_complete,
         contact_failures,
         global_failure_tolerance_override,
+        global_tolerance_relaxation,
         spearman,
         quadratic_kappa,
         manifest_contract_pass=not contract_errors,
+        package_closure_pass=not package_closure_errors,
     )
 
     args.outdir.mkdir(parents=True, exist_ok=True)
@@ -1231,11 +1667,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     receptor_path = args.outdir / "phase2_v3_p2_docking_gold_receptor.csv"
     candidate_path = args.outdir / "phase2_v3_p2_docking_gold_candidate.csv"
     comparison_path = args.outdir / "phase2_v3_p2_docking_gold_replicate_comparison.csv"
-    write_csv(pose_path, all_pose_rows, ["schema_version", "pilot_id", "run_id", "receptor_id", "seed_role", "model"])
+    write_csv(pose_path, all_pose_rows, ["schema_version", "protocol_id", "pilot_id", "run_id", "receptor_id", "seed_role", "model"])
     serializable_receptors = [{key: value for key, value in row.items() if key != "r_receptor_raw"} for row in receptor_rows]
-    write_csv(receptor_path, serializable_receptors, ["schema_version", "pilot_id", "run_id", "receptor_id", "seed_role"])
-    write_csv(candidate_path, main_candidates, ["schema_version", "pilot_rank", "pilot_id", "source_candidate_id", "R_gold"])
-    write_csv(comparison_path, comparisons, ["schema_version", "pilot_id", "source_candidate_id", "main_R_gold", "replicate_R_gold"])
+    write_csv(receptor_path, serializable_receptors, ["schema_version", "protocol_id", "pilot_id", "run_id", "receptor_id", "seed_role"])
+    write_csv(candidate_path, main_candidates, ["schema_version", "protocol_id", "pilot_rank", "pilot_id", "source_candidate_id", "R_gold"])
+    write_csv(comparison_path, comparisons, ["schema_version", "protocol_id", "pilot_id", "source_candidate_id", "main_R_gold", "replicate_R_gold"])
     audit: dict[str, Any] = {
         "schema_version": "phase2_v3_p2_docking_gold_audit_v1_1",
         "protocol_id": PROTOCOL_ID,
@@ -1244,7 +1680,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "selection_manifest": str(args.selection_manifest),
             "selection_manifest_sha256": sha256_file(args.selection_manifest),
             "run_manifest": str(args.run_manifest),
-            "run_manifest_sha256": sha256_file(args.run_manifest),
+            "run_manifest_sha256": run_manifest_sha256,
             "postprocessed_root": str(args.postprocessed_root),
             "sync_root": str(args.sync_root),
         },
@@ -1278,8 +1714,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 for stage, (operator, value) in STAGE_OUTPUT_REQUIREMENTS.items()
             },
             "per_candidate_failure_tolerance_override_observed": global_failure_tolerance_override,
-            "tolerance_relaxation_observed": global_failure_tolerance_override,
+            "tolerance_relaxation_observed": global_tolerance_relaxation,
         },
+        "package_closure": package_closure,
+        "package_closure_errors": package_closure_errors,
         "manifest_contract_errors": contract_errors,
         "failed_receptor_runs": [
             {"run_id": row["run_id"], "reasons": row["dg_a_failure_reasons"]}
