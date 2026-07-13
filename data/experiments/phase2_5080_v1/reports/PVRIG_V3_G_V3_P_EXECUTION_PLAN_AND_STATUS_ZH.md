@@ -765,3 +765,12 @@ V3_P1_TRAINING_COMPLETE_FORMAL_GATE_FAILED
 ```
 
 这不等于候选 portfolio 或实验阻断分子已准备完成。下一个科学步骤是建立 V3-P2 的 target-dependence 修复和新 holdout，而不是在已解封的 P1 test 上追求一个表面 PASS。
+
+V3-P2 已进一步收敛为“PVRIG 固定靶点 docking 蒸馏器”，其数据收集、阳性锚点、双构象 docking gold、训练和正式验收标准见：
+
+```text
+experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_TRAINING_PLAN_ZH.md
+experiments/phase2_5080_v1/audits/phase2_v3_p2_planning_inventory.json
+experiments/phase2_5080_v1/audits/phase2_v3_p2_preregistration_draft.json
+experiments/phase2_5080_v1/audits/phase2_v3_p2_test_spec_draft.json
+```

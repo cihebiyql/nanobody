@@ -1,0 +1,230 @@
+{
+  "schema_version": "phase2_v3_p2_preregistration_draft_v1",
+  "status": "DRAFT_NOT_FROZEN_PENDING_DUAL_DOCKING_PILOT",
+  "created_at": "2026-07-13T19:30:07+08:00",
+  "objective": "Train a fixed-target PVRIG sequence-to-docking distiller that allocates Node1 docking budget for competition candidates and is evaluated against a new independent dual-conformer docking gold holdout.",
+  "claim_boundary": "Node1 docking is the project computational gold standard. Model outputs do not prove experimental binding, Kd, competition, or functional blocking.",
+  "version_decision": {
+    "production_model_name": "PVRIG-DockDistill-v2",
+    "target_scope": "fixed PVRIG only",
+    "retired_claim": "generic target-conditioned blocker predictor",
+    "deployment_role": "frontscreen allocation before real Node1 docking",
+    "final_submission_authority": "real docking gold plus QC, developability, and portfolio diversity"
+  },
+  "upstream_evidence": {
+    "planning_inventory": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_planning_inventory.json",
+      "sha256": "32a713caf3e77df4adab9a6c5a35536726e080b9494b559e8e5edee4157dffd1"
+    },
+    "plan": {
+      "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_TRAINING_PLAN_ZH.md",
+      "sha256": "3bd0cf0fbbf8a37fcb1e7b3efbb3333bfd0c526722ae8ecd053db130c316c467"
+    },
+    "teacher500_audit": {
+      "path": "experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_audit.json",
+      "sha256": "78fb0b06ffa633ed867a33143da56fe8fcf16bda5d552feb3fc553d82596057c"
+    },
+    "p1_formal_outcome": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p1_formal_outcome_interpretation.json",
+      "sha256": "f5e9bd47a51eea956f28035f1f84b79b41aac89aae86d0c4f83196641b06b91f"
+    },
+    "positive_calibration": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_teacher_v1/candidate_summary.csv",
+      "sha256": "19d5cb4a724bff6361ea2e030404f510c2abfcda14796cb6d973e466c386cb1f"
+    }
+  },
+  "docking_gold_protocol": {
+    "quality_levels": {
+      "DG_A": {
+        "independent_8x6b_docking": true,
+        "independent_9e6y_docking": true,
+        "minimum_valid_selected_poses_per_receptor": 8,
+        "minimum_pose_clusters_per_receptor": 2,
+        "contact_and_geometry_complete": true,
+        "tolerance_relaxation_allowed": false,
+        "eligible_for_primary_training": true,
+        "sample_weight": 1.0
+      },
+      "DG_B": {
+        "definition": "8X6B-generated poses plus 8X6B geometry and 9E6Y reference-interface rescoring",
+        "eligible_for_primary_training": true,
+        "sample_weight": 0.5
+      },
+      "DG_C": {
+        "definition": "incomplete pose, cluster, contact, provenance, or relaxed-tolerance result",
+        "eligible_for_primary_training": false,
+        "sample_weight": 0.0
+      }
+    },
+    "pose_relevance": {
+      "CONSENSUS_BLOCKER_LIKE_A": 4,
+      "SINGLE_BASELINE_BLOCKER_RECHECK": 3,
+      "BLOCKER_PLAUSIBLE_B": 2,
+      "BINDER_LIKE_C": 1,
+      "EVIDENCE_INFERENCE_ONLY_E": 0
+    },
+    "rank_weight": "1/log2(rank+1)",
+    "cluster_weight": "1/poses_in_same_cluster",
+    "receptor_relevance": "sum(rank_weight*cluster_weight*pose_relevance)/sum(rank_weight*cluster_weight)",
+    "gold_relevance": "mean(R_8X6B,R_9E6Y)",
+    "conformer_disagreement": "abs(R_8X6B-R_9E6Y)",
+    "stable_tier_rule": "highest relevance threshold supported by at least two receptor-prefixed pose clusters"
+  },
+  "dual_docking_pilot": {
+    "total_candidates": 64,
+    "known_positives": 11,
+    "matched_controls": 21,
+    "teacher500_stratified": 32,
+    "replicate_seed_candidates": 16,
+    "pass_gates": {
+      "dg_a_complete_candidates": 64,
+      "contact_failures": 0,
+      "tolerance_relaxation": false,
+      "replicate_gold_relevance_spearman_min": 0.7,
+      "replicate_stable_tier_weighted_kappa_min": 0.6
+    }
+  },
+  "dataset": {
+    "existing_teacher500_dg_b": 500,
+    "open_development_new_dg_a": {
+      "existing_parent_active_learning": 160,
+      "new_parent_designs": 80,
+      "fixed_pose_redesigns": 80,
+      "total": 320
+    },
+    "existing_calibration_only": 47,
+    "positive_neighborhood_new_dg_a": 60,
+    "formal_holdout_new_dg_a": 160,
+    "total_records_planned": 1087,
+    "prospective_open_train_dev": 820,
+    "calibration_only": 107,
+    "formal_test": 160,
+    "formal_parent_clusters": 16,
+    "formal_candidates_per_parent": 10,
+    "split_unit": "parent_framework_cluster",
+    "formal_test_unseal_policy": "evaluator-only one-shot after architecture, weights, seeds, baselines, metrics, thresholds, and evaluator hash are frozen"
+  },
+  "positive_anchor": {
+    "known_positive_sequences": 11,
+    "positive_families": [
+      "20",
+      "30",
+      "38",
+      "39",
+      "151"
+    ],
+    "existing_calibration_cases": 47,
+    "existing_strict_docking_order_pairs": 25,
+    "new_neighborhood_candidates_per_family": 12,
+    "new_neighborhood_total": 60,
+    "loss_weight_draft": 0.15,
+    "leave_one_family_out_required": true,
+    "positive_similarity_input_forbidden": true,
+    "submission_eligible": false
+  },
+  "model": {
+    "main_task": "fixed-target PVRIG docking distillation",
+    "inputs": [
+      "VHH ESM2 residue embeddings",
+      "exact CDR type masks",
+      "frozen V2.3 residue/contact representation",
+      "fixed PVRIG residue embedding",
+      "separate 8X6B and 9E6Y residue structure channels"
+    ],
+    "forbidden_inputs": [
+      "generic_binding_prior",
+      "cheap_qc_score",
+      "known_positive_sequence_similarity",
+      "parent_id one-hot",
+      "parent_cluster one-hot",
+      "generator_id one-hot"
+    ],
+    "outputs": [
+      "ordered G1-G5 probabilities",
+      "R_gold",
+      "R_8X6B",
+      "R_9E6Y",
+      "conformer_disagreement",
+      "hotspot/total/CDR3 occlusion metrics",
+      "dual-conformer contact frequency",
+      "paratope and epitope probabilities",
+      "ensemble uncertainty"
+    ],
+    "loss_weights_draft": {
+      "gold_relevance_regression_and_ranking": 1.0,
+      "within_parent_campaign_rank": 0.8,
+      "ordered_tier": 0.7,
+      "dual_conformer_geometry": 0.5,
+      "contact_frequency": 0.5,
+      "conformer_consistency": 0.3,
+      "generic_contact_paratope_replay": 0.5,
+      "positive_anchor": 0.15
+    },
+    "shortcut_controls": [
+      "parent-balanced batches",
+      "inverse parent-tier frequency weighting",
+      "within-parent pairs",
+      "five-fold parent-group cross-validation",
+      "parent-only baseline",
+      "CDR3-only baseline"
+    ]
+  },
+  "training": {
+    "language_models_frozen": true,
+    "development_selection": "five-fold parent-group cross-validation on open labels only",
+    "final_open_training": "train on all 820 prospective open records after hyperparameters are frozen",
+    "seeds": [
+      83,
+      89,
+      97
+    ],
+    "formal_labels_forbidden_to_trainer": true,
+    "old_p1_formal_rows_policy": "may join P2 open-development because P1 test is retired and a new P2 holdout is required"
+  },
+  "baselines": [
+    "parent-only",
+    "CDR3-only",
+    "cheap-QC",
+    "generic-prior",
+    "P1 ensemble",
+    "frozen-contact hotspot",
+    "label-shuffle null"
+  ],
+  "formal_gates_draft": {
+    "formal_label_definition": "top 20 percent by sealed R_gold is the formal_top_quintile",
+    "ndcg": "ensemble exceeds strongest development-selected baseline and parent-cluster bootstrap 95% CI lower bound is greater than zero",
+    "gold_relevance_spearman_min": 0.4,
+    "precision_at_20_percent_budget_for_true_top_quintile_min": 0.5,
+    "recall_at_30_percent_budget_for_true_top_quintile_min": 0.7,
+    "paired_parent_cluster_permutation_p_max": 0.05,
+    "individual_seeds_exceed_baseline_min_count": 2,
+    "label_shuffle_must_fail_primary_gate": true,
+    "generic_contact_replay_retention_min_each_seed": 0.9,
+    "positive_family_lofo_strict_pair_concordance_min": 0.7
+  },
+  "data_integrity_gates": {
+    "formal_dg_a_complete": 160,
+    "formal_contact_failures": 0,
+    "tolerance_relaxation_allowed": false,
+    "parent_cluster_overlap": 0,
+    "exact_sequence_overlap": 0,
+    "cdr3_cluster_identity_threshold": 0.8,
+    "cdr3_cluster_overlap": 0,
+    "candidate_and_label_hash_closure": true
+  },
+  "frontscreen_allocation_after_pass": {
+    "predicted_top": 0.7,
+    "uncertainty_or_disagreement": 0.15,
+    "diversity_exploration": 0.15
+  },
+  "freeze_requirements": [
+    "dual docking pilot passes",
+    "DG-A label builder and protocol hashes frozen",
+    "320 open-development DG-A complete",
+    "160 formal candidate sequences and parent/CDR3 clusters frozen",
+    "formal labels sealed",
+    "positive anchor pairs frozen",
+    "metric feasibility audit passes",
+    "formal evaluator hash frozen"
+  ]
+}
