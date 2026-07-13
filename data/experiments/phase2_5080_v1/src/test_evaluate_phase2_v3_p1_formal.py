@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import contextlib
 import hashlib
+import io
 import json
 import sys
 import tempfile
@@ -22,6 +24,8 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
         self.teacher_path = self.root / "teacher.csv"
+        self.teacher_open_path = self.root / "teacher_open.csv"
+        self.teacher_sealed_path = self.root / "teacher_test_sealed.csv"
         self.baseline_path = self.root / "baselines.csv"
         self.control_path = self.root / "controls.csv"
         self.replay_path = self.root / "generic_replay_retention.json"
@@ -47,6 +51,12 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
                     index += 1
         teacher = pd.DataFrame(rows)
         teacher.to_csv(self.teacher_path, index=False)
+        teacher.loc[teacher["formal_split"].eq("dev")].to_csv(
+            self.teacher_open_path, index=False
+        )
+        sealed = teacher.loc[teacher["formal_split"].eq("test")].copy()
+        sealed["sealed_status"] = "SEALED_FORMAL_TEST_LABEL"
+        sealed.to_csv(self.teacher_sealed_path, index=False)
 
         baselines = teacher[
             ["candidate_id", "sequence_sha256", "formal_split", "parent_framework_cluster"]
@@ -111,7 +121,8 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
     def test_formal_evaluation_passes_consistent_synthetic_signal(self) -> None:
         output = self.root / "evaluation"
         result = formal.evaluate_formal(
-            self.teacher_path,
+            self.teacher_open_path,
+            self.teacher_sealed_path,
             self.seed_paths,
             self.baseline_path,
             self.control_path,
@@ -146,20 +157,39 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
 
     def test_open_and_sealed_teacher_join_occurs_in_evaluator(self) -> None:
         teacher = pd.read_csv(self.teacher_path)
-        open_path = self.root / "teacher_open.csv"
-        sealed_path = self.root / "teacher_test_sealed.csv"
-        teacher.loc[teacher["formal_split"].eq("dev")].to_csv(open_path, index=False)
-        sealed = teacher.loc[teacher["formal_split"].eq("test")].copy()
-        sealed["sealed_status"] = "SEALED_FORMAL_TEST_LABEL"
-        sealed.to_csv(sealed_path, index=False)
-        loaded = formal.load_teacher_parts(open_path, sealed_path)
+        loaded = formal.load_teacher_parts(
+            self.teacher_open_path, self.teacher_sealed_path
+        )
         self.assertEqual(len(loaded), len(teacher))
         self.assertEqual(set(loaded["formal_split"]), {"dev", "test"})
+
+    def test_sealed_status_is_mandatory_and_exact(self) -> None:
+        sealed = pd.read_csv(self.teacher_sealed_path)
+        sealed.drop(columns="sealed_status").to_csv(self.teacher_sealed_path, index=False)
+        with self.assertRaisesRegex(ValueError, "lack required sealed_status"):
+            formal.load_teacher_parts(self.teacher_open_path, self.teacher_sealed_path)
+
+        sealed.loc[0, "sealed_status"] = "OPEN_OR_MIXED"
+        sealed.to_csv(self.teacher_sealed_path, index=False)
+        with self.assertRaisesRegex(ValueError, "required sealed status"):
+            formal.load_teacher_parts(self.teacher_open_path, self.teacher_sealed_path)
+
+    def test_combined_teacher_cli_bypass_is_disabled(self) -> None:
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                formal.parse_args(["--teacher", str(self.teacher_path)])
+
+    def test_open_teacher_cannot_contain_test_labels(self) -> None:
+        pd.read_csv(self.teacher_path).to_csv(self.teacher_open_path, index=False)
+        with self.assertRaisesRegex(ValueError, "only train/dev"):
+            formal.load_teacher_parts(self.teacher_open_path, self.teacher_sealed_path)
 
     def test_exact_three_seed_contract(self) -> None:
         with self.assertRaisesRegex(ValueError, "exactly"):
             formal.parse_seed_paths([f"83={self.seed_paths[83]}", f"89={self.seed_paths[89]}"])
-        teacher = formal.load_teacher(self.teacher_path)
+        teacher = formal.load_teacher_parts(
+            self.teacher_open_path, self.teacher_sealed_path
+        )
         with self.assertRaisesRegex(ValueError, "exactly"):
             formal.merge_three_seed_predictions(
                 teacher, {83: self.seed_paths[83], 89: self.seed_paths[89]}
@@ -169,7 +199,9 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         contaminated = pd.read_csv(self.seed_paths[83])
         contaminated["true_relevance"] = 4
         contaminated.to_csv(self.seed_paths[83], index=False)
-        teacher = formal.load_teacher(self.teacher_path)
+        teacher = formal.load_teacher_parts(
+            self.teacher_open_path, self.teacher_sealed_path
+        )
         with self.assertRaisesRegex(ValueError, "pre-evaluator label"):
             formal.merge_three_seed_predictions(teacher, self.seed_paths)
 
@@ -177,12 +209,16 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         prediction = pd.read_csv(self.seed_paths[83])
         prediction.loc[0, "sequence_sha256"] = "0" * 64
         prediction.to_csv(self.seed_paths[83], index=False)
-        teacher = formal.load_teacher(self.teacher_path)
+        teacher = formal.load_teacher_parts(
+            self.teacher_open_path, self.teacher_sealed_path
+        )
         with self.assertRaisesRegex(ValueError, "sequence_sha256"):
             formal.merge_three_seed_predictions(teacher, self.seed_paths)
 
     def test_baseline_is_selected_on_dev_only(self) -> None:
-        teacher = formal.load_teacher(self.teacher_path)
+        teacher = formal.load_teacher_parts(
+            self.teacher_open_path, self.teacher_sealed_path
+        )
         selected, _, audit = formal.select_strongest_baseline(teacher, self.baseline_path)
         self.assertEqual(selected, "baseline_mid")
         self.assertEqual(audit["selection_split"], "dev")
@@ -192,7 +228,9 @@ class V3P1FormalEvaluatorTest(unittest.TestCase):
         controls = pd.read_csv(self.control_path)
         controls = controls.loc[~controls["control_type"].eq("vhh_only")]
         controls.to_csv(self.control_path, index=False)
-        teacher = formal.load_teacher(self.teacher_path)
+        teacher = formal.load_teacher_parts(
+            self.teacher_open_path, self.teacher_sealed_path
+        )
         with self.assertRaisesRegex(ValueError, "Controls must be exactly"):
             formal.load_controls(
                 self.control_path, teacher.loc[teacher["formal_split"].eq("test")]

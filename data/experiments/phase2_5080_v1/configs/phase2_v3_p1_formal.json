@@ -1,6 +1,7 @@
 {
-  "teacher_open_csv": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/open_development/candidate_summary_train_dev.csv",
-  "contact_open_jsonl": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/open_development/pose_contact_frequency_train_dev.jsonl",
+  "teacher_open_csv": "experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_teacher_train_dev_v1.csv",
+  "contact_open_jsonl": "experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_contact_train_dev_v1.jsonl",
+  "formal_blinded_csv": "experiments/phase2_5080_v1/prepared/phase2_v3_p1_formal/pvrig_teacher_formal_blinded_v1.csv",
   "selection_csv": "experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_manifest_v1.csv",
   "cache_manifest": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/model_inputs/esm2_8m_cache/manifest.csv",
   "cdr_mask_csv": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1/model_inputs/vhh_cdr_type_masks.csv",
@@ -13,6 +14,8 @@
   "interface_9e6y_csv": "structures/PVRIG_interface_residues_9E6Y.csv",
   "source_checkpoint": "experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
   "generic_replay_csv": "",
+  "generic_replay_cache_manifest": "",
+  "generic_replay_cdr_mask_csv": "",
   "out_root": "experiments/phase2_5080_v1/runs/phase2_v3_p1_formal",
   "seeds": [83, 89, 97],
   "epochs": 30,

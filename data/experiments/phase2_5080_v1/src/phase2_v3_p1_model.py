@@ -170,6 +170,23 @@ class PVRIGV3P1Model(nn.Module):
         hidden = self.backbone.esm_project(vhh) + self.backbone.cdr_type(cdr.clamp(0, 3)) + self.backbone.v_pos(positions)
         return self.backbone.v_enc(hidden, src_key_padding_mask=v_mask), v_mask
 
+    def _encode_antigen_ablated(
+        self, vhh: torch.Tensor, cdr: torch.Tensor, antigen: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+        v_mask = vhh.abs().sum(-1).eq(0)
+        a_mask = antigen.abs().sum(-1).eq(0)
+        v_positions = torch.arange(vhh.shape[1], device=vhh.device).unsqueeze(0).expand(vhh.shape[0], -1)
+        a_positions = torch.arange(antigen.shape[1], device=antigen.device).unsqueeze(0).expand(antigen.shape[0], -1)
+        v_positions = v_positions.clamp(max=self.backbone.cfg.max_vhh_len - 1)
+        a_positions = a_positions.clamp(max=self.backbone.cfg.max_antigen_len - 1)
+        hv = self.backbone.esm_project(vhh) + self.backbone.cdr_type(cdr.clamp(0, 3)) + self.backbone.v_pos(v_positions)
+        ha = self.backbone.esm_project(torch.zeros_like(antigen)) + self.backbone.a_pos(a_positions)
+        hv = self.backbone.v_enc(hv, src_key_padding_mask=v_mask)
+        ha = self.backbone.a_enc(ha, src_key_padding_mask=a_mask)
+        for block in self.backbone.cross:
+            hv, ha = block(hv, ha, v_mask, a_mask)
+        return hv, ha, v_mask, a_mask
+
     def forward(
         self,
         vhh: torch.Tensor,
@@ -214,6 +231,11 @@ class PVRIGV3P1Model(nn.Module):
                 base_contact = torch.zeros((vhh.shape[0], vhh.shape[1], antigen.shape[1]), device=hv.device, dtype=hv.dtype)
                 base_paratope = self.backbone.para(hv).squeeze(-1).detach()
                 base_epitope = torch.zeros((vhh.shape[0], antigen.shape[1]), device=hv.device, dtype=hv.dtype)
+            elif control_type == "antigen_ablation":
+                hv, ha, v_mask, a_mask = self._encode_antigen_ablated(vhh, cdr, antigen)
+                base_contact = torch.zeros((vhh.shape[0], vhh.shape[1], antigen.shape[1]), device=hv.device, dtype=hv.dtype)
+                base_paratope = self.backbone.para(hv).squeeze(-1).detach()
+                base_epitope = torch.zeros((vhh.shape[0], antigen.shape[1]), device=hv.device, dtype=hv.dtype)
             else:
                 hv, ha, v_mask, a_mask = self.backbone.encode(vhh, cdr, antigen_input)
                 base_contact = self.backbone.contact_logits(hv, ha).detach()
@@ -231,6 +253,7 @@ class PVRIGV3P1Model(nn.Module):
             hotspots = torch.zeros_like(hotspots)
             base_contact = torch.zeros_like(base_contact)
             base_epitope = torch.zeros_like(base_epitope)
+            prior = torch.full_like(prior, 0.5)
         structure_8x6b_encoded = self.structure_8x6b_projection(structures_8x6b)
         structure_9e6y_encoded = self.structure_9e6y_projection(structures_9e6y)
         ha = ha + self.structure_fusion(torch.cat((structure_8x6b_encoded, structure_9e6y_encoded), dim=-1))

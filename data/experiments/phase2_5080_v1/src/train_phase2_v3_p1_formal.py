@@ -51,6 +51,7 @@ from phase2_v3_p1_model import (  # noqa: E402
 
 
 DEFAULT_PREPARED = EXP_DIR / "prepared/pvrig_teacher_formal_v1"
+DEFAULT_FORMAL_DATA = EXP_DIR / "prepared/phase2_v3_p1_formal"
 DEFAULT_SELECTION = EXP_DIR / "data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_manifest_v1.csv"
 DEFAULT_TARGET = DATA_ROOT / "model_data/pvrig_target_ectodomain_proxy_v1.fasta"
 DEFAULT_TARGET_MAPPING = DATA_ROOT / "model_data/pvrig_target_domain_mapping_v1.csv"
@@ -82,8 +83,9 @@ RESIDUE_RE = re.compile(r"^([^:]+):(-?\d+)([A-Za-z]?):([A-Za-z]{3})$")
 class FormalTrainConfig:
     # These two files must be physically train/dev-only. Full Teacher500 label
     # files are deliberately not accepted by this trainer.
-    teacher_open_csv: str = str(DEFAULT_PREPARED / "open_development/candidate_summary_train_dev.csv")
-    contact_open_jsonl: str = str(DEFAULT_PREPARED / "open_development/pose_contact_frequency_train_dev.jsonl")
+    teacher_open_csv: str = str(DEFAULT_FORMAL_DATA / "pvrig_teacher_train_dev_v1.csv")
+    contact_open_jsonl: str = str(DEFAULT_FORMAL_DATA / "pvrig_contact_train_dev_v1.jsonl")
+    formal_blinded_csv: str = str(DEFAULT_FORMAL_DATA / "pvrig_teacher_formal_blinded_v1.csv")
     selection_csv: str = str(DEFAULT_SELECTION)
     cache_manifest: str = str(DEFAULT_PREPARED / "model_inputs/esm2_8m_cache/manifest.csv")
     cdr_mask_csv: str = str(DEFAULT_PREPARED / "model_inputs/vhh_cdr_type_masks.csv")
@@ -96,6 +98,8 @@ class FormalTrainConfig:
     interface_9e6y_csv: str = str(DEFAULT_INTERFACE_9E6Y)
     source_checkpoint: str = str(DEFAULT_SOURCE_CHECKPOINT)
     generic_replay_csv: str = ""
+    generic_replay_cache_manifest: str = ""
+    generic_replay_cdr_mask_csv: str = ""
     out_root: str = str(DEFAULT_OUT)
     seeds: tuple[int, ...] = (83, 89, 97)
     epochs: int = 30
@@ -618,6 +622,17 @@ def ndcg(actual: Sequence[int], predicted: Sequence[float]) -> float:
     return dcg / idcg if idcg > 0 else 0.0
 
 
+def g1_g2_recall_at_top_fraction(
+    actual: Sequence[int], predicted: Sequence[float], fraction: float = 0.2
+) -> float:
+    positives = {index for index, relevance in enumerate(actual) if relevance >= TIER_TO_RELEVANCE["G2"]}
+    if not positives:
+        return 0.0
+    count = max(1, math.ceil(len(actual) * fraction))
+    ranked = np.argsort(-np.asarray(predicted, dtype=np.float64), kind="mergesort")[:count]
+    return len(positives & set(int(value) for value in ranked)) / len(positives)
+
+
 def compute_teacher_loss(
     outputs: dict[str, torch.Tensor],
     batch: dict[str, Any],
@@ -705,10 +720,17 @@ def evaluate_dev(
         predicted_relevance.extend(predictions)
         actual_geometry.extend(batch["geometry"].tolist())
         predicted_geometry.extend(geometry.tolist())
+    relevance_spearman = spearman(actual_relevance, predicted_relevance)
+    relevance_ndcg = ndcg(actual_relevance, predicted_relevance)
+    recall_at_20 = g1_g2_recall_at_top_fraction(actual_relevance, predicted_relevance)
     metrics = {
         "loss": statistics.mean(losses) if losses else float("inf"),
-        "ndcg": ndcg(actual_relevance, predicted_relevance),
-        "spearman": spearman(actual_relevance, predicted_relevance),
+        "ndcg": relevance_ndcg,
+        "g1_g2_recall_at_top_20_percent": recall_at_20,
+        "spearman": relevance_spearman,
+        "normalized_selection_composite": statistics.mean(
+            (relevance_ndcg, recall_at_20, (relevance_spearman + 1.0) / 2.0)
+        ),
         "ordinal_mae": float(np.mean(np.abs(np.asarray(actual_relevance) - np.asarray(predicted_relevance)))),
     }
     actual_array = np.asarray(actual_geometry, dtype=np.float64)
@@ -749,6 +771,48 @@ def predict_label_free(
             row.update({f"predicted_{field}": float(geometry[index, pos]) for pos, field in enumerate(GEOMETRY_FIELDS)})
             rows.append(row)
     return rows
+
+
+def binary_average_precision(labels: Sequence[int], scores: Sequence[float]) -> float:
+    y = np.asarray(labels, dtype=np.int64)
+    s = np.asarray(scores, dtype=np.float64)
+    positives = int(y.sum())
+    if not positives:
+        return 0.0
+    order = np.argsort(-s, kind="mergesort")
+    ranked = y[order]
+    precision = np.cumsum(ranked) / np.arange(1, len(ranked) + 1)
+    return float(np.sum(precision * ranked) / positives)
+
+
+@torch.inference_mode()
+def evaluate_generic_replay_retention(
+    model: PVRIGV3P1Model,
+    loader: DataLoader,
+    device: torch.device,
+) -> dict[str, float]:
+    model.eval()
+    labels: dict[str, list[int]] = {"contact": [], "paratope": []}
+    adapted: dict[str, list[float]] = {"contact": [], "paratope": []}
+    frozen: dict[str, list[float]] = {"contact": [], "paratope": []}
+    for batch in loader:
+        outputs = _model_forward(model, batch, device, zero_hotspots=True)
+        contact_mask = outputs["valid_contact_mask"].cpu()
+        vhh_mask = (~outputs["vhh_padding_mask"]).cpu()
+        labels["contact"].extend(batch["contact"][contact_mask].round().int().tolist())
+        adapted["contact"].extend(torch.sigmoid(outputs["contact_logits"]).cpu()[contact_mask].tolist())
+        frozen["contact"].extend(torch.sigmoid(outputs["base_contact_logits"]).cpu()[contact_mask].tolist())
+        labels["paratope"].extend(batch["paratope"][vhh_mask].round().int().tolist())
+        adapted["paratope"].extend(torch.sigmoid(outputs["paratope_logits"]).cpu()[vhh_mask].tolist())
+        frozen["paratope"].extend(torch.sigmoid(outputs["base_paratope_logits"]).cpu()[vhh_mask].tolist())
+    metrics: dict[str, float] = {}
+    for task in ("contact", "paratope"):
+        frozen_auprc = binary_average_precision(labels[task], frozen[task])
+        adapted_auprc = binary_average_precision(labels[task], adapted[task])
+        metrics[f"frozen_{task}_auprc"] = frozen_auprc
+        metrics[f"adapted_{task}_auprc"] = adapted_auprc
+        metrics[f"{task}_auprc_retention_fraction"] = adapted_auprc / frozen_auprc if frozen_auprc > 0 else 0.0
+    return metrics
 
 
 def write_csv_atomic(path: Path, rows: list[dict[str, object]]) -> None:
@@ -817,6 +881,7 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
     paths = {
         "teacher_open_csv": Path(cfg.teacher_open_csv),
         "contact_open_jsonl": Path(cfg.contact_open_jsonl),
+        "formal_blinded_csv": Path(cfg.formal_blinded_csv),
         "selection_csv": Path(cfg.selection_csv),
         "cache_manifest": Path(cfg.cache_manifest),
         "cdr_mask_csv": Path(cfg.cdr_mask_csv),
@@ -831,16 +896,35 @@ def artifact_hashes(cfg: FormalTrainConfig) -> dict[str, Any]:
     }
     if cfg.generic_replay_csv:
         paths["generic_replay_csv"] = Path(cfg.generic_replay_csv)
-    return {
+        if not cfg.generic_replay_cache_manifest or not cfg.generic_replay_cdr_mask_csv:
+            raise ValueError("Generic replay requires its own cache manifest and CDR mask CSV")
+        paths["generic_replay_cache_manifest"] = Path(cfg.generic_replay_cache_manifest)
+        paths["generic_replay_cdr_mask_csv"] = Path(cfg.generic_replay_cdr_mask_csv)
+    result = {
         "files": {name: sha256_file(path) for name, path in paths.items()},
         "cache_shards": referenced_cache_hashes(Path(cfg.cache_manifest)),
     }
+    if cfg.generic_replay_csv:
+        result["generic_replay_cache_shards"] = referenced_cache_hashes(Path(cfg.generic_replay_cache_manifest))
+    return result
 
 
 def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[dict[str, Dataset], dict[str, Any]]:
     selection_rows = read_csv(Path(cfg.selection_csv))
     validate_selection(selection_rows, cfg)
     selection = {row["candidate_id"]: row for row in selection_rows}
+    formal_blinded = read_csv(Path(cfg.formal_blinded_csv))
+    forbidden_blinded = {"provisional_stable_geometry_tier", "geometry_tier_index", *GEOMETRY_FIELDS}
+    if formal_blinded and forbidden_blinded & set(formal_blinded[0]):
+        raise ValueError("Formal blinded inference CSV contains forbidden teacher label columns")
+    expected_test_ids = {row["candidate_id"] for row in selection_rows if row["formal_split"] == "test"}
+    if {row["candidate_id"] for row in formal_blinded} != expected_test_ids:
+        raise ValueError("Formal blinded inference IDs do not match the frozen test split")
+    for row in formal_blinded:
+        source = selection[row["candidate_id"]]
+        for field in ("sequence_sha256", "parent_framework_cluster", "formal_split"):
+            if row[field] != source[field]:
+                raise ValueError(f"Formal blinded identity mismatch for {row['candidate_id']} field={field}")
     teacher_rows = read_csv(Path(cfg.teacher_open_csv))
     contact_rows = read_jsonl(Path(cfg.contact_open_jsonl))
     validate_open_teacher(teacher_rows, contact_rows, selection)
@@ -861,14 +945,16 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
         for split in ("train", "dev")
     }
     datasets["test"] = InferenceDataset(
-        (row for row in selection_rows if row["formal_split"] == "test"),
+        formal_blinded,
         cache,
         cdrs,
         backbone_cfg,
         target_sequence,
     )
     if cfg.generic_replay_csv:
-        datasets["replay"] = GenericReplayDataset(Path(cfg.generic_replay_csv), cache, cdrs, backbone_cfg)
+        replay_cache = v23.ESM2Cache(Path(cfg.generic_replay_cache_manifest), backbone_cfg.esm_dim)
+        replay_cdrs = v23.CDRMaskStore(Path(cfg.generic_replay_cdr_mask_csv))
+        datasets["replay"] = GenericReplayDataset(Path(cfg.generic_replay_csv), replay_cache, replay_cdrs, backbone_cfg)
     if len(datasets["train"]) != cfg.expected_train_candidates or len(datasets["dev"]) != cfg.expected_dev_candidates:
         raise ValueError("Open teacher datasets do not match frozen train/dev counts")
     if len(datasets["test"]) != cfg.expected_test_candidates:
@@ -943,7 +1029,7 @@ def train_seed(
     if "replay" in datasets:
         loaders["replay"] = DataLoader(
             datasets["replay"], batch_size=cfg.replay_batch_size, shuffle=True,
-            generator=replay_generator, collate_fn=collate_model_inputs,
+            generator=replay_generator, collate_fn=collate_replay,
         )
 
     backbone = v23.CrossContactNetV23(backbone_cfg)
@@ -1043,11 +1129,12 @@ def train_seed(
         }
         history.append(record)
         print(json.dumps({"seed": seed, **record}, sort_keys=True), flush=True)
-        improved = dev_metrics["ndcg"] > best_metric + 1e-12 or (
-            abs(dev_metrics["ndcg"] - best_metric) <= 1e-12 and dev_metrics["loss"] < best_loss - 1e-12
+        selection_metric = dev_metrics["normalized_selection_composite"]
+        improved = selection_metric > best_metric + 1e-12 or (
+            abs(selection_metric - best_metric) <= 1e-12 and dev_metrics["loss"] < best_loss - 1e-12
         )
         if improved:
-            best_metric = dev_metrics["ndcg"]
+            best_metric = selection_metric
             best_loss = dev_metrics["loss"]
             best_epoch = epoch
             best_state = model.trainable_state_dict()
@@ -1115,8 +1202,8 @@ def train_seed(
             "geometry_std": geometry_std.cpu(),
             "model_metadata": checkpoint_model_metadata(model),
             "best_epoch": best_epoch,
-            "dev_selection_metric": "ndcg",
-            "best_dev_ndcg": best_metric,
+            "dev_selection_metric": "normalized_mean(ndcg,g1_g2_recall_at_top_20_percent,(spearman+1)/2)",
+            "best_dev_normalized_composite": best_metric,
             "claim_boundary": CLAIM_BOUNDARY,
         },
     )
@@ -1158,6 +1245,24 @@ def train_seed(
     control_path = run_dir / "control_predictions.csv"
     write_csv_atomic(control_path, control_rows)
     final_dev = evaluate_dev(model, loaders["dev"], device, geometry_mean, geometry_std, cfg)
+    if "replay" in loaders:
+        retention_metrics: dict[str, Any] = evaluate_generic_replay_retention(
+            model,
+            DataLoader(datasets["replay"], batch_size=cfg.replay_batch_size, shuffle=False, collate_fn=collate_replay),
+            device,
+        )
+        retention_metrics["status"] = "PASS_GENERIC_REPLAY_RETENTION_MEASURED"
+    else:
+        retention_metrics = {
+            "status": "NOT_CONFIGURED",
+            "contact_auprc_retention_fraction": None,
+            "paratope_auprc_retention_fraction": None,
+        }
+    retention_path = run_dir / "generic_replay_retention.json"
+    write_json_atomic(
+        retention_path,
+        {"schema_version": "phase2_v3_p1_generic_replay_retention_v1", "per_seed": {str(seed): retention_metrics}},
+    )
     summary = {
         "schema_version": SCHEMA_VERSION,
         "seed": seed,
@@ -1165,7 +1270,7 @@ def train_seed(
         "control_type": control_type,
         "best_epoch": best_epoch,
         "best_dev_metrics": final_dev,
-        "dev_selection_policy": "maximum_dev_ndcg_then_minimum_dev_loss",
+        "dev_selection_policy": "maximum_dev_normalized_composite_then_minimum_dev_loss",
         "test_predictions_path": str(prediction_path),
         "test_predictions_sha256": sha256_file(prediction_path),
         "control_predictions_path": str(control_path),
@@ -1178,6 +1283,8 @@ def train_seed(
         "generic_binding_prior_policy": "frozen_meanpool_v3_full_scalar_only",
         "forbidden_pair_heads": ["v2_3_pair_head", "v3_g2_failed_pair_head"],
         "generic_replay_enabled": "replay" in datasets,
+        "generic_replay_retention_path": str(retention_path),
+        "generic_replay_retention": retention_metrics,
         "dataset_sizes": {name: len(dataset) for name, dataset in datasets.items()},
         "artifact_hashes": hashes,
         "history": history,
@@ -1220,6 +1327,21 @@ def run_training(
         "test_label_access": "NONE_TRAINER_USES_LABEL_FREE_SELECTION_ROWS_FOR_TEST_INFERENCE",
         "claim_boundary": CLAIM_BOUNDARY,
     }
+    retention = {
+        str(seed_summary["seed"]): seed_summary.get(
+            "generic_replay_retention",
+            {
+                "status": "NOT_AVAILABLE_FOR_PAUSED_RUN",
+                "contact_auprc_retention_fraction": None,
+                "paratope_auprc_retention_fraction": None,
+            },
+        )
+        for seed_summary in seed_summaries
+    }
+    write_json_atomic(
+        run_root / "generic_replay_retention.json",
+        {"schema_version": "phase2_v3_p1_generic_replay_retention_v1", "per_seed": retention},
+    )
     write_json_atomic(run_root / "training_summary.json", summary)
     return summary
 
