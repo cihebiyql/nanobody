@@ -157,6 +157,64 @@ def test_default_known_positive_reference_is_project_relative(tmp_path: Path) ->
     assert Path(source["path"]) == ROOT / "inputs" / "leakage_reference.fasta"
 
 
+def run_split_fixture(tmp_path: Path, group_count: int) -> tuple[dict[str, object], list[dict[str, str]]]:
+    input_dir = tmp_path / "data"
+    output_dir = tmp_path / "out"
+    motifs = ("AAAA", "CCCC", "DDDD", "GGGG")
+    rows = []
+    for group_index in range(group_count):
+        motif = motifs[group_index]
+        for sibling_index, suffix in enumerate(("A", "C")):
+            rows.append(
+                {
+                    "candidate_id": f"group{group_index}_cand{sibling_index}",
+                    "sequence": f"EVQL{motif}{suffix}",
+                    "cdr3": motif,
+                    "arm_id": f"arm{group_index}",
+                    "backbone_group_id": f"bb{group_index}",
+                    "sequence_group_id": f"source_group{group_index}",
+                }
+            )
+    write_tsv(input_dir / "candidates.tsv", rows)
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--mode",
+            "partial",
+            "--input-dir",
+            str(input_dir),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    manifest = json.loads((output_dir / "dataset_manifest.json").read_text(encoding="utf-8"))
+    return manifest, read_tsv(output_dir / "candidate_summary.tsv")
+
+
+def test_component_split_produces_three_nonempty_splits_without_leakage(tmp_path: Path) -> None:
+    manifest, rows = run_split_fixture(tmp_path, group_count=3)
+    assert manifest["split_counts"] == {"test": 2, "train": 2, "validation": 2}
+    assert manifest["split_audit"]["model_split_feasibility"] == "three_way"
+    assert manifest["split_audit"]["leakage_violation_count"] == 0
+    by_arm: dict[str, set[str]] = {}
+    for row in rows:
+        by_arm.setdefault(row["arm_id"], set()).add(row["split"])
+    assert all(len(splits) == 1 for splits in by_arm.values())
+
+
+def test_two_components_are_explicitly_two_way_not_all_train(tmp_path: Path) -> None:
+    manifest, _ = run_split_fixture(tmp_path, group_count=2)
+    assert manifest["split_counts"] == {"train": 2, "validation": 2}
+    assert manifest["split_audit"]["model_split_feasibility"] == "two_way_only"
+    assert manifest["split_audit"]["test_split_available"] is False
+
+
 if __name__ == "__main__":
     tests = [value for name, value in sorted(globals().items()) if name.startswith("test_") and callable(value)]
     for test in tests:
