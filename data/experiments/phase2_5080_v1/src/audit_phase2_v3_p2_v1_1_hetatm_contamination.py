@@ -464,6 +464,22 @@ def validate_marker_contract(
             raise ValueError(f"Marker reference hash mismatch for {run_id}:{baseline}")
 
 
+def validate_marker_artifact(
+    marker: dict[str, Any],
+    artifact_key: str,
+    artifact_path: Path,
+    run_dir: Path,
+) -> None:
+    entry = marker.get("artifacts", {}).get(artifact_key)
+    if not isinstance(entry, dict):
+        raise ValueError(f"Missing marker artifact {artifact_key} for {run_dir.name}")
+    recorded_path = (run_dir / str(entry.get("relpath", ""))).resolve()
+    if recorded_path != artifact_path.resolve():
+        raise ValueError(f"Marker artifact path mismatch for {run_dir.name}:{artifact_key}")
+    if entry.get("sha256") != sha256_file(artifact_path):
+        raise ValueError(f"Marker artifact hash mismatch for {run_dir.name}:{artifact_key}")
+
+
 def audit_rows(
     input_root: Path,
     rules_path: Path,
@@ -510,12 +526,25 @@ def audit_rows(
         )
 
         rank_path = run_dir / "reports/haddock3_model_ranks.csv"
+        validate_marker_artifact(marker, "ranks", rank_path, run_dir)
         rank_rows = read_csv_unique(rank_path)
         expected_marker_models = {
             str(item["model"]) for item in marker.get("selected_pose_files", [])
         }
         if set(rank_rows) != expected_marker_models:
             raise ValueError(f"Rank/marker model set mismatch for {run_id}")
+        if marker.get("counts", {}).get("selected_models") != len(rank_rows):
+            raise ValueError(f"Marker selected-model count mismatch for {run_id}")
+        marker_ranks = {
+            str(item["model"]): require_int(item.get("haddock_rank"), "marker rank")
+            for item in marker.get("selected_pose_files", [])
+        }
+        csv_ranks = {
+            model: require_int(row.get("haddock_rank"), "rank CSV")
+            for model, row in rank_rows.items()
+        }
+        if marker_ranks != csv_ranks:
+            raise ValueError(f"Marker/rank CSV rank map mismatch for {run_id}")
 
         for baseline, baseline_config in BASELINES.items():
             classification_path = (
@@ -532,13 +561,22 @@ def audit_rows(
                 / f"cdr3_occlusion_summary_{baseline}.csv"
             )
             json_dir = run_dir / f"{baseline}_baseline/json"
+            validate_marker_artifact(
+                marker, f"classification_{baseline}", classification_path, run_dir
+            )
+            validate_marker_artifact(
+                marker, f"mechanism_{baseline}", mechanism_path, run_dir
+            )
             classification_rows = read_csv_unique(classification_path)
             mechanism_rows = read_csv_unique(mechanism_path)
             summary_rows = read_csv_unique(summary_path)
-            json_paths = {
-                path.name[: -len(f"_{baseline}_cdr_occlusion.json")]: path
-                for path in json_dir.glob(f"*_{baseline}_cdr_occlusion.json")
-            }
+            json_paths: dict[str, Path] = {}
+            suffix = f"_{baseline}_cdr_occlusion.json"
+            for path in json_dir.glob(f"*{suffix}"):
+                model = path.name[: -len(suffix)]
+                if model in json_paths:
+                    raise ValueError(f"Duplicate CDR JSON for {run_id}/{baseline}/{model}")
+                json_paths[model] = path
             model_sets = {
                 "rank": set(rank_rows),
                 "classification": set(classification_rows),
@@ -619,6 +657,8 @@ def audit_rows(
                         ),
                         require_float(mechanism_row.get("hotspot_overlap_count"), "mechanism hotspot")
                         == hotspot,
+                        mechanism_row.get("baseline") == baseline,
+                        summary_row.get("baseline") == baseline,
                     ]
                 )
                 if not source_consistency:
@@ -644,6 +684,12 @@ def audit_rows(
                     raise ValueError(f"Unexpected chain mapping for {run_id}/{baseline}/{model}")
                 if not pose_path.is_file() or not reference_path.is_file():
                     raise FileNotFoundError(f"Missing pose/reference for {run_id}/{baseline}/{model}")
+                try:
+                    pose_path.resolve().relative_to(run_dir.resolve())
+                except ValueError as error:
+                    raise ValueError(
+                        f"Aligned pose escapes the postprocessed run root: {pose_path}"
+                    ) from error
 
                 reference_key = (reference_path.resolve(), pvrl2_chain)
                 if reference_key not in reference_cache:
@@ -912,6 +958,7 @@ def build_audit(
                 "when protein-only denominator is zero"
             ),
             "fraction_delta": "current CDR3 fraction - protein-only CDR3 fraction; signed, not monotonic",
+            "distribution_p90": "linear interpolation at position (n - 1) * 0.90",
         },
         "distributions": {
             "total_current_to_protein_only_factor": distribution(total_factors),
@@ -924,6 +971,9 @@ def build_audit(
             "by_baseline": baseline_counts,
         },
         "class_transition_counts": dict(sorted(transitions.items())),
+        "changed_class_transition_counts": dict(
+            sorted(Counter(str(row["class_transition"]) for row in changed_rows).items())
+        ),
         "affected_row_identifiers": [identifier(row) for row in affected_rows],
         "class_changed_row_identifiers": [identifier(row) for row in changed_rows],
         "hashes": {
@@ -1033,7 +1083,7 @@ def write_report(path: Path, audit: dict[str, Any], audit_json_sha256: str) -> N
     for label in sorted(set(current) | set(protein)):
         lines.append(f"| `{label}` | {current.get(label, 0)} | {protein.get(label, 0)} |")
     lines.extend(["", "分类 transition：", ""])
-    for transition, count in audit["class_transition_counts"].items():
+    for transition, count in audit["changed_class_transition_counts"].items():
         lines.append(f"- `{transition}`：{count}")
     lines.extend(
         [

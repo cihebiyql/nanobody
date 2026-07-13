@@ -1,0 +1,406 @@
+{
+  "affected_row_identifiers": [
+    "P2PILOT_001__8X6B__main|8x6b|cluster_1_model_1",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_2_model_1",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_3_model_1",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_3_model_2",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_4_model_1",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_3_model_3",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_4_model_2",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_5_model_1",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_4_model_3",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_2_model_2",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_1_model_1",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_2_model_1",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_3_model_1",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_3_model_2",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_4_model_1",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_3_model_3",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_4_model_2",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_5_model_1",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_4_model_3",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_2_model_2",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_1_model_1",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_2_model_1",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_1_model_2",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_3_model_1",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_4_model_1",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_2_model_2",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_3_model_2",
+    "P2PILOT_001__8X6B__replicate|8x6b|cluster_5_model_1",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_1_model_1",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_2_model_1",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_1_model_2",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_3_model_1",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_4_model_1",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_2_model_2",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_3_model_2",
+    "P2PILOT_001__8X6B__replicate|9e6y|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_1_model_1",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_2_model_1",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_2_model_2",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_2_model_3",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_2_model_4",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_3_model_1",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_1_model_2",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_4_model_1",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_1_model_3",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_1_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_2_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_2_model_2",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_2_model_3",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_2_model_4",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_3_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_1_model_2",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_4_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_1_model_3",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_1_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_2_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_3_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_4_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_4_model_2",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_6_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_7_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_7_model_2",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_2_model_2",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_1_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_2_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_3_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_4_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_4_model_2",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_6_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_7_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_7_model_2",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_2_model_2",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_1_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_2_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_2_model_2",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_3_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_4_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_5_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_6_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_6_model_2",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_7_model_1",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_7_model_2",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_1_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_2_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_2_model_2",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_3_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_4_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_5_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_6_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_6_model_2",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_7_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_7_model_2",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_1_model_1",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_2_model_1",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_1_model_2",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_1_model_3",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_3_model_1",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_2_model_2",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_4_model_1",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_2_model_3",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_2_model_4",
+    "P2PILOT_033__8X6B__replicate|8x6b|cluster_4_model_2",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_1_model_1",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_2_model_1",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_1_model_2",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_1_model_3",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_3_model_1",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_2_model_2",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_4_model_1",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_2_model_3",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_2_model_4",
+    "P2PILOT_033__8X6B__replicate|9e6y|cluster_4_model_2",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_1_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_2_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_3_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_4_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_5_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_6_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_7_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_8_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_9_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_10_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_1_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_2_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_3_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_4_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_5_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_6_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_7_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_8_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_9_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_10_model_1",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_1_model_1",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_2_model_1",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_2_model_2",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_2_model_3",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_3_model_1",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_4_model_1",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_3_model_2",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_5_model_1",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_5_model_2",
+    "P2PILOT_033__9E6Y__replicate|8x6b|cluster_6_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_1_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_2_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_2_model_2",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_2_model_3",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_3_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_4_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_3_model_2",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_5_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_5_model_2",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_6_model_1"
+  ],
+  "artifacts": {
+    "audit_json": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_audit.json",
+    "chinese_report": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_V1_1_HETATM_CONTAMINATION_REJECTION_ZH.md",
+    "row_csv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_rows.csv"
+  },
+  "changed_class_transition_counts": {
+    "BLOCKER_LIKE_A->BLOCKER_PLAUSIBLE_B": 4,
+    "BLOCKER_PLAUSIBLE_B->EVIDENCE_INFERENCE_ONLY_E": 14
+  },
+  "claim_boundary": "Read-only V1.1 contamination and sensitivity audit. Protein-only recomputation diagnoses HETATM-driven changes under the current V1.1 classification rules; it is not a V1.2 calibrated label, a corrected Docking Gold set, experimental binding truth, or blocking truth.",
+  "class_changed_row_identifiers": [
+    "P2PILOT_001__8X6B__main|8x6b|cluster_3_model_3",
+    "P2PILOT_001__8X6B__main|8x6b|cluster_4_model_3",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_3_model_3",
+    "P2PILOT_001__8X6B__main|9e6y|cluster_4_model_3",
+    "P2PILOT_001__9E6Y__main|8x6b|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_1_model_1",
+    "P2PILOT_001__9E6Y__main|9e6y|cluster_5_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_7_model_1",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_7_model_2",
+    "P2PILOT_001__9E6Y__replicate|8x6b|cluster_2_model_2",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_7_model_1",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_7_model_2",
+    "P2PILOT_001__9E6Y__replicate|9e6y|cluster_2_model_2",
+    "P2PILOT_033__8X6B__main|8x6b|cluster_6_model_1",
+    "P2PILOT_033__8X6B__main|9e6y|cluster_6_model_1",
+    "P2PILOT_033__9E6Y__main|8x6b|cluster_3_model_1",
+    "P2PILOT_033__9E6Y__main|9e6y|cluster_3_model_1",
+    "P2PILOT_033__9E6Y__replicate|9e6y|cluster_1_model_1"
+  ],
+  "class_counts": {
+    "by_baseline": {
+      "8x6b": {
+        "current_class_counts": {
+          "BLOCKER_LIKE_A": 32,
+          "BLOCKER_PLAUSIBLE_B": 42,
+          "EVIDENCE_INFERENCE_ONLY_E": 4
+        },
+        "protein_only_sensitivity_class_counts": {
+          "BLOCKER_LIKE_A": 30,
+          "BLOCKER_PLAUSIBLE_B": 38,
+          "EVIDENCE_INFERENCE_ONLY_E": 10
+        },
+        "rows": 78
+      },
+      "9e6y": {
+        "current_class_counts": {
+          "BLOCKER_LIKE_A": 32,
+          "BLOCKER_PLAUSIBLE_B": 43,
+          "EVIDENCE_INFERENCE_ONLY_E": 3
+        },
+        "protein_only_sensitivity_class_counts": {
+          "BLOCKER_LIKE_A": 30,
+          "BLOCKER_PLAUSIBLE_B": 37,
+          "EVIDENCE_INFERENCE_ONLY_E": 11
+        },
+        "rows": 78
+      }
+    },
+    "current_v1_1": {
+      "BLOCKER_LIKE_A": 64,
+      "BLOCKER_PLAUSIBLE_B": 85,
+      "EVIDENCE_INFERENCE_ONLY_E": 7
+    },
+    "protein_only_sensitivity": {
+      "BLOCKER_LIKE_A": 60,
+      "BLOCKER_PLAUSIBLE_B": 75,
+      "EVIDENCE_INFERENCE_ONLY_E": 21
+    }
+  },
+  "class_transition_counts": {
+    "BLOCKER_LIKE_A->BLOCKER_LIKE_A": 60,
+    "BLOCKER_LIKE_A->BLOCKER_PLAUSIBLE_B": 4,
+    "BLOCKER_PLAUSIBLE_B->BLOCKER_PLAUSIBLE_B": 71,
+    "BLOCKER_PLAUSIBLE_B->EVIDENCE_INFERENCE_ONLY_E": 14,
+    "EVIDENCE_INFERENCE_ONLY_E->EVIDENCE_INFERENCE_ONLY_E": 7
+  },
+  "counts": {
+    "affected_fraction": 1.0,
+    "affected_rows": 156,
+    "baseline_model_rows": 156,
+    "cdr3_count_inflation_rows": 156,
+    "class_changed_fraction": 0.11538461538461539,
+    "class_changed_rows": 18,
+    "current_class_reproduced_rows": 156,
+    "current_metric_reproduced_rows": 156,
+    "fraction_changed_rows": 156,
+    "runs": 8,
+    "source_consistency_pass_rows": 156,
+    "total_count_inflation_rows": 156,
+    "unique_aligned_poses": 156
+  },
+  "decision": {
+    "protein_only_result_role": "sensitivity classification comparison only",
+    "reason": "Current PVRL2 occlusion semantics count reference HETATM residues as PVRL2 residue-pair occlusion and materially change current-rule classifications.",
+    "required_next_gate": "Create a versioned protein-only scorer, recalibrate success cases and thresholds, then rerun smoke, repeatability, and Pilot64 validation.",
+    "v1_1_training_use": "BLOCK"
+  },
+  "distributions": {
+    "cdr3_current_to_protein_only_factor": {
+      "count": 156,
+      "max": 1.44444444444,
+      "mean": 1.202586830008846,
+      "median": 1.19935897436,
+      "min": 1.08045977011,
+      "p90": 1.2848056032000001
+    },
+    "fraction_delta_current_minus_protein_only": {
+      "count": 156,
+      "max": 0.0434236121502,
+      "mean": -0.010100167258653243,
+      "median": -0.011125098520949998,
+      "min": -0.0400637177678,
+      "p90": 0.004818786020365
+    },
+    "total_current_to_protein_only_factor": {
+      "count": 156,
+      "max": 1.32696897375,
+      "mean": 1.2478159806535256,
+      "median": 1.246737272915,
+      "min": 1.13541666667,
+      "p90": 1.29080767546
+    }
+  },
+  "generated_at_utc": "2026-07-13T18:08:23.623853+00:00",
+  "hashes": {
+    "audit_script": "12ec407eda2befd0cc24be48f73697109df2a0e0152b36df6aa40876849d198c",
+    "current_classifier": "c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654",
+    "current_occlusion_scorer": "c5e419daec19e6e38b6a52bfc63e0d6100c9c16f27b46a60235dc0f6a438982f",
+    "output_csv": "e23206c7c82eb947f45743edd6a0e53d3df320b41cee555efc90255088ad353a",
+    "reference_8x6b": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+    "reference_9e6y": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+    "rules_json": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5",
+    "run_markers": [
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_001__8X6B__main/postprocess.complete.json",
+        "run_id": "P2PILOT_001__8X6B__main",
+        "selected_models": 10,
+        "sha256": "53bd3bb723916f04e971a0ff812434bafee0be8b2690a2624e92d276bdd680cf"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_001__8X6B__replicate/postprocess.complete.json",
+        "run_id": "P2PILOT_001__8X6B__replicate",
+        "selected_models": 8,
+        "sha256": "c48497a4e59458dda9802da7afcb403fca99c6420843e97bd785525b61d1bdd6"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_001__9E6Y__main/postprocess.complete.json",
+        "run_id": "P2PILOT_001__9E6Y__main",
+        "selected_models": 10,
+        "sha256": "b9ed7bd4a1a9874fbce6944d2f0338a9285be463977934ac507262f0b2c14ff9"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_001__9E6Y__replicate/postprocess.complete.json",
+        "run_id": "P2PILOT_001__9E6Y__replicate",
+        "selected_models": 10,
+        "sha256": "c61123461152ab68ed97dde881b66d1f357a254f3281413da4ee6a7ff5bac032"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_033__8X6B__main/postprocess.complete.json",
+        "run_id": "P2PILOT_033__8X6B__main",
+        "selected_models": 10,
+        "sha256": "1abdd6000f8f59d0428bc4629feac406dc5b1ca42323ae456dd3cb1943226268"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_033__8X6B__replicate/postprocess.complete.json",
+        "run_id": "P2PILOT_033__8X6B__replicate",
+        "selected_models": 10,
+        "sha256": "446e16e1a1bb70c2158389f9f7a12fc7dbcbc80a3d676a9928500fb4dd98a9b3"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_033__9E6Y__main/postprocess.complete.json",
+        "run_id": "P2PILOT_033__9E6Y__main",
+        "selected_models": 10,
+        "sha256": "c98d4345a1f591ce8dd714a97ba47d590d2afe5bec235f2e1062c173d724c212"
+      },
+      {
+        "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed/P2PILOT_033__9E6Y__replicate/postprocess.complete.json",
+        "run_id": "P2PILOT_033__9E6Y__replicate",
+        "selected_models": 10,
+        "sha256": "03980df9f3508ab664f4657c096744c91f32aba5078dd5bcffb0ab53080afae9"
+      }
+    ]
+  },
+  "input_root_integrity": {
+    "after": {
+      "file_count": 682,
+      "sha256": "d481048ddd5a812964a5eb779d35730ba1a52459a395bb518d06df161f0cf54f",
+      "total_bytes": 48404411
+    },
+    "before": {
+      "file_count": 682,
+      "sha256": "d481048ddd5a812964a5eb779d35730ba1a52459a395bb518d06df161f0cf54f",
+      "total_bytes": 48404411
+    },
+    "unchanged": true
+  },
+  "metric_definitions": {
+    "contact_cutoff": "distance <= per-model contact_cutoff_a (currently 4.5 A)",
+    "current": "PVRL2 reference ATOM and HETATM heavy atoms",
+    "current_to_protein_only_factor": "current inclusive count / protein-only count; null in JSON and blank in CSV when protein-only denominator is zero",
+    "distribution_p90": "linear interpolation at position (n - 1) * 0.90",
+    "fraction_delta": "current CDR3 fraction - protein-only CDR3 fraction; signed, not monotonic",
+    "inflation_absolute": "current inclusive count - protein-only count",
+    "protein_only": "same calculation with PVRL2 reference ATOM heavy atoms only"
+  },
+  "reference_inventory_heavy_atoms": {
+    "8x6b": {
+      "edo_atom_count": 0,
+      "edo_residue_count": 0,
+      "hetatm_atom_count": 58,
+      "hetatm_residue_count": 58,
+      "hoh_atom_count": 58,
+      "hoh_residue_count": 58,
+      "other_hetatm_atom_count": 0,
+      "other_hetatm_residue_count": 0,
+      "path": "/mnt/d/work/抗体/data/structures/8X6B.pdb",
+      "protein_atom_count": 963,
+      "protein_residue_count": 126,
+      "pvrl2_chain": "A",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    "9e6y": {
+      "edo_atom_count": 24,
+      "edo_residue_count": 6,
+      "hetatm_atom_count": 84,
+      "hetatm_residue_count": 66,
+      "hoh_atom_count": 60,
+      "hoh_residue_count": 60,
+      "other_hetatm_atom_count": 0,
+      "other_hetatm_residue_count": 0,
+      "path": "/mnt/d/work/抗体/data/structures/9E6Y.pdb",
+      "protein_atom_count": 1002,
+      "protein_residue_count": 130,
+      "pvrl2_chain": "D",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    }
+  },
+  "schema_version": "phase2_v3_p2_v1_1_hetatm_contamination_audit_v1",
+  "scope": {
+    "description": "8-run revised smoke rejection diagnostic only",
+    "full_pilot64_gold_read_or_validated": false,
+    "input_root": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_postprocessed",
+    "run_data_source_policy": "The postprocessed root is the sole run/output source. Frozen reference PDBs, rules, classifier, and scorer are read-only static trust dependencies."
+  },
+  "status": "REJECT_V1_1_HETATM_CONTAMINATION_CONFIRMED"
+}
