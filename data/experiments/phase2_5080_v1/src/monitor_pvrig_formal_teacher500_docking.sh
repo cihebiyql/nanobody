@@ -11,6 +11,9 @@ POSTPROCESS_SCRIPT=${POSTPROCESS_SCRIPT:-$ROOT/src/run_pvrig_formal_teacher500_p
 LOG=${LOG:-$ROOT/logs/pvrig_formal_teacher500_docking_monitor.log}
 LOCK=${LOCK:-/tmp/pvrig_formal_teacher500_docking_monitor.lock}
 PID_FILE=${PID_FILE:-$ROOT/logs/pvrig_formal_teacher500_docking_monitor.pid}
+STATUS_SCRIPT=${STATUS_SCRIPT:-$ROOT/src/summarize_pvrig_teacher500_docking_status.py}
+EXPECTED_CANDIDATES=${EXPECTED_CANDIDATES:-500}
+MIN_MODELS=${MIN_MODELS:-4}
 
 mkdir -p "$(dirname "$LOG")"
 exec 9>"$LOCK"
@@ -28,15 +31,9 @@ cleanup_pid_file() {
 trap cleanup_pid_file EXIT
 
 poll_remote_status() {
-  "$SSH_COMMAND" "$NODE_HOST" "ROOT='$REMOTE_ROOT'; \
-    complete=0; test -f \"\$ROOT/docking.complete\" && complete=1; \
-    pid=0; test -s \"\$ROOT/controller.pid\" && pid=\$(cat \"\$ROOT/controller.pid\"); \
-    alive=0; test \"\$pid\" != 0 && kill -0 \"\$pid\" 2>/dev/null && alive=1; \
-    starts=\$(grep -Rh '^HADDOCK_START ' \"\$ROOT\"/shard_*/logs/run_node1_v2_5_pose_batch.*.log 2>/dev/null | wc -l); \
-    success=\$(grep -Rh '^HADDOCK_EXIT .* rc=0 ' \"\$ROOT\"/shard_*/logs/run_node1_v2_5_pose_batch.*.log 2>/dev/null | wc -l); \
-    failed=\$(grep -Rh '^HADDOCK_EXIT .* rc=[^0] ' \"\$ROOT\"/shard_*/logs/run_node1_v2_5_pose_batch.*.log 2>/dev/null | wc -l); \
-    top_models=\$(find \"\$ROOT\" -path '*/6_seletopclusts/cluster_*_model_*.pdb*' -type f 2>/dev/null | wc -l); \
-    printf '%s %s %s %s %s %s %s\\n' \"\$complete\" \"\$alive\" \"\$pid\" \"\$starts\" \"\$success\" \"\$failed\" \"\$top_models\""
+  "$SSH_COMMAND" "$NODE_HOST" \
+    "python3 - '$REMOTE_ROOT' --expected-candidates '$EXPECTED_CANDIDATES' --min-models '$MIN_MODELS'" \
+    <"$STATUS_SCRIPT"
 }
 
 echo "DOCKING_MONITOR_START $(date -Is) remote=$NODE_HOST:$REMOTE_ROOT"
@@ -46,29 +43,32 @@ while true; do
     sleep "$POLL_SECONDS"
     continue
   fi
-  read -r complete alive remote_pid starts success failed top_models extra <<<"$status"
+  read -r complete alive remote_pid expected unique_started latest_success latest_failed pending model_ready top_models extra <<<"$status"
   if [[ -n ${extra:-} ]] ||
     [[ ! ${complete:-} =~ ^[01]$ ]] ||
     [[ ! ${alive:-} =~ ^[01]$ ]] ||
     [[ ! ${remote_pid:-} =~ ^[0-9]+$ ]] ||
-    [[ ! ${starts:-} =~ ^[0-9]+$ ]] ||
-    [[ ! ${success:-} =~ ^[0-9]+$ ]] ||
-    [[ ! ${failed:-} =~ ^[0-9]+$ ]] ||
+    [[ ! ${expected:-} =~ ^[0-9]+$ ]] ||
+    [[ ! ${unique_started:-} =~ ^[0-9]+$ ]] ||
+    [[ ! ${latest_success:-} =~ ^[0-9]+$ ]] ||
+    [[ ! ${latest_failed:-} =~ ^[0-9]+$ ]] ||
+    [[ ! ${pending:-} =~ ^[0-9]+$ ]] ||
+    [[ ! ${model_ready:-} =~ ^[0-9]+$ ]] ||
     [[ ! ${top_models:-} =~ ^[0-9]+$ ]]; then
     echo "DOCKING_POLL_RETRY $(date -Is) detail=$(printf '%q' "$status")" >&2
     sleep "$POLL_SECONDS"
     continue
   fi
-  echo "DOCKING_STATUS $(date -Is) complete=$complete alive=$alive remote_pid=$remote_pid starts=$starts success=$success failed=$failed top_models=$top_models"
+  echo "DOCKING_STATUS $(date -Is) complete=$complete alive=$alive remote_pid=$remote_pid expected=$expected unique_started=$unique_started latest_success=$latest_success latest_failed=$latest_failed pending=$pending model_ready=$model_ready top_models=$top_models"
   if (( complete == 1 )); then
-    if (( success != 500 || failed != 0 )); then
-      echo "DOCKING_COMPLETE_CONTRACT_FAILED success=$success failed=$failed" >&2
+    if (( expected != EXPECTED_CANDIDATES || latest_success != EXPECTED_CANDIDATES || latest_failed != 0 || pending != 0 || model_ready != EXPECTED_CANDIDATES )); then
+      echo "DOCKING_COMPLETE_CONTRACT_FAILED expected=$expected latest_success=$latest_success latest_failed=$latest_failed pending=$pending model_ready=$model_ready" >&2
       exit 6
     fi
     break
   fi
   if (( alive == 0 )); then
-    echo "DOCKING_CONTROLLER_DIED_WITHOUT_COMPLETE remote_pid=$remote_pid success=$success failed=$failed" >&2
+    echo "DOCKING_CONTROLLER_DIED_WITHOUT_COMPLETE remote_pid=$remote_pid latest_success=$latest_success latest_failed=$latest_failed pending=$pending model_ready=$model_ready" >&2
     exit 5
   fi
   sleep "$POLL_SECONDS"
@@ -77,4 +77,3 @@ done
 echo "POSTPROCESS_START $(date -Is)"
 bash "$POSTPROCESS_SCRIPT"
 echo "POSTPROCESS_COMPLETE $(date -Is)"
-

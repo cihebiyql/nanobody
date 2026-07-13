@@ -577,6 +577,7 @@ data/experiments/phase2_5080_v1/src/summarize_external_priors_v1.py
 data/experiments/phase2_5080_v1/src/summarize_phase2_v2_3_multiseed.py
 data/experiments/phase2_5080_v1/src/summarize_phase2_v2_4_multiseed.py
 data/experiments/phase2_5080_v1/src/summarize_phase2_v2_5_formal.py
+data/experiments/phase2_5080_v1/src/summarize_pvrig_teacher500_docking_status.py
 data/experiments/phase2_5080_v1/src/sync_pvrig_teacher_pilot96_outputs.py
 data/experiments/phase2_5080_v1/src/test_analyze_pvrig_v2_5_assay_results.py
 data/experiments/phase2_5080_v1/src/test_build_cdr_masks_v2_3.py
@@ -633,6 +634,7 @@ data/experiments/phase2_5080_v1/src/test_select_pvrig_formal_teacher500.py
 data/experiments/phase2_5080_v1/src/test_select_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/test_summarize_phase2_v2_3_multiseed.py
 data/experiments/phase2_5080_v1/src/test_summarize_phase2_v2_5_formal.py
+data/experiments/phase2_5080_v1/src/test_summarize_pvrig_teacher500_docking_status.py
 data/experiments/phase2_5080_v1/src/test_sync_pvrig_teacher_pilot96_outputs.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v2_3.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v2_4.py

@@ -138,6 +138,7 @@ MONOMER_START_MAX_LOAD1=${{PVRIG_MONOMER_START_MAX_LOAD1:-96}}
 DOCKING_START_MAX_LOAD1=${{PVRIG_DOCKING_START_MAX_LOAD1:-48}}
 INTERNAL_MAX_LOAD1=${{PVRIG_INTERNAL_MAX_LOAD1:-48}}
 LOAD_WAIT_SECONDS=${{PVRIG_LOAD_WAIT_SECONDS:-300}}
+HADDOCK_NCORES=${{PVRIG_HADDOCK_NCORES:-{pilot.HADDOCK_NCORES}}}
 mkdir -p "$ROOT/controller_logs"
 exec > >(tee -a "$ROOT/controller_logs/controller.$(date +%Y%m%d_%H%M%S).log") 2>&1
 
@@ -172,6 +173,7 @@ run_shards() {{
       V2_5_RUN_HADDOCK3="$run_haddock" \
       V2_5_MAX_LOAD1="$INTERNAL_MAX_LOAD1" \
       V2_5_LOAD_WAIT_SECONDS="$LOAD_WAIT_SECONDS" \
+      V2_5_HADDOCK_NCORES="$HADDOCK_NCORES" \
       bash "$shard_root/scripts/run_node1_v2_5_pose_batch.sh"
     ) >"$ROOT/controller_logs/${{phase}}_shard_${{shard}}.log" 2>&1 &
     pids+=("$!")
