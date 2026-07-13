@@ -502,6 +502,7 @@ def validate_package_closure(
 def run_protocol_checks(
     row: Mapping[str, str],
     sync_root: Path,
+    package_root: Path | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
     """Validate the declared protocol plus synced completion/config evidence."""
     run_id = row.get("run_id", "")
@@ -593,6 +594,28 @@ def run_protocol_checks(
     )
     add_check(checks, errors, "synced_config_present", config_path.is_file(), str(config_path))
     add_check(checks, errors, "synced_completion_present", completion_path.is_file(), str(completion_path))
+
+    if package_root is not None:
+        for path_field, hash_field in (
+            ("config_relpath", "config_sha256"),
+            ("monomer_relpath", "monomer_sha256"),
+            ("receptor_relpath", "receptor_sha256"),
+        ):
+            relative = row.get(path_field, "")
+            path = package_root / relative
+            safe = bool(relative) and not Path(relative).is_absolute() and package_root.resolve() in path.resolve().parents
+            add_check(checks, errors, f"package_{path_field}_safe_path", safe, relative)
+            present = safe and path.is_file()
+            add_check(checks, errors, f"package_{path_field}_present", present, str(path))
+            if present:
+                observed = sha256_file(path)
+                add_check(
+                    checks,
+                    errors,
+                    f"package_{hash_field}",
+                    observed == row.get(hash_field, ""),
+                    f"{observed}!={row.get(hash_field, '')}",
+                )
 
     if config_path.is_file():
         try:
@@ -1030,6 +1053,25 @@ def validate_postprocess_marker(
             )
         try:
             completion = json.loads(completion_path.read_text(encoding="utf-8"))
+            manifest_completion_identity = {
+                "protocol_id": PROTOCOL_ID,
+                "status": "PASS_DOCKING_OUTPUT_COMPLETE",
+                "run_id": run_id,
+                "pilot_id": row["pilot_id"],
+                "source_candidate_id": row.get("source_candidate_id", ""),
+                "seed_role": row["seed_role"],
+            }
+            for field, expected in manifest_completion_identity.items():
+                if completion.get(field) != expected:
+                    errors.append(
+                        f"marker_docking_completion_manifest_mismatch:{field}:"
+                        f"{completion.get(field)}!={expected}"
+                    )
+            if str(completion.get("receptor_id", "")).lower() != row["receptor_id"].lower():
+                errors.append(
+                    "marker_docking_completion_manifest_mismatch:receptor_id:"
+                    f"{completion.get('receptor_id')}!={row['receptor_id']}"
+                )
             for field in (
                 "schema_version",
                 "protocol_id",
@@ -1520,8 +1562,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     global_failure_tolerance_override = False
     global_tolerance_relaxation = False
     run_manifest_sha256 = sha256_file(args.run_manifest)
+    package_root = args.run_manifest.resolve().parent.parent
     for manifest_row in run_rows:
-        protocol, protocol_errors = run_protocol_checks(manifest_row, args.sync_root)
+        protocol, protocol_errors = run_protocol_checks(
+            manifest_row, args.sync_root, package_root
+        )
         poses, postprocess, postprocess_errors = evaluate_postprocessed_run(
             manifest_row,
             args.postprocessed_root,
