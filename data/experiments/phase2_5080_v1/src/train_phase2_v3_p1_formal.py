@@ -100,7 +100,7 @@ class FormalTrainConfig:
     generic_replay_csv: str = ""
     generic_replay_cache_manifest: str = ""
     generic_replay_cdr_mask_csv: str = ""
-    generic_replay_size: int = 256
+    generic_replay_size: int = 128
     out_root: str = str(DEFAULT_OUT)
     seeds: tuple[int, ...] = (83, 89, 97)
     epochs: int = 30
@@ -282,7 +282,8 @@ def _campaign_id(row: dict[str, str]) -> str:
 def validate_selection(rows: list[dict[str, str]], cfg: FormalTrainConfig) -> None:
     required = {
         "candidate_id", "vhh_sequence", "parent_framework_cluster", "formal_split",
-        "generic_binding_prior", "generic_binding_model", "parent_id", "target_patch_id", "design_mode",
+        "generic_binding_prior", "generic_binding_model", "cheap_qc_score", "model_uncertainty",
+        "parent_id", "target_patch_id", "design_mode",
     }
     missing = required - set(rows[0] if rows else {})
     if missing:
@@ -474,6 +475,8 @@ class InferenceDataset(Dataset):
             "formal_split": row["formal_split"],
             "sequence_sha256": row.get("sequence_sha256") or sequence_sha256(sequence),
             "generic_binding_prior": float(row["generic_binding_prior"]),
+            "cheap_qc_score": float(row.get("cheap_qc_score", 0.0)),
+            "model_uncertainty": float(row.get("model_uncertainty", 0.0)),
             "vhh": self.cache.get(sequence, self.backbone_cfg.max_vhh_len),
             "cdr": self.cdrs.get(sequence, self.backbone_cfg.max_vhh_len),
             "antigen": self.cache.get(self.target_sequence, self.backbone_cfg.max_antigen_len),
@@ -561,6 +564,8 @@ class GenericReplayDataset(Dataset):
             "formal_split": "replay",
             "sequence_sha256": sequence_sha256(vhh_sequence),
             "generic_binding_prior": 0.5,
+            "cheap_qc_score": 0.0,
+            "model_uncertainty": 0.0,
             "vhh": self.cache.get(vhh_sequence, self.cfg.max_vhh_len),
             "cdr": self.cdrs.get(vhh_sequence, self.cfg.max_vhh_len),
             "antigen": self.cache.get(antigen_sequence, self.cfg.max_antigen_len),
@@ -608,6 +613,8 @@ def collate_model_inputs(batch: list[dict[str, Any]]) -> dict[str, Any]:
         "cdr": pad_sequence([row["cdr"][: len(row["vhh"])] for row in batch], batch_first=True, padding_value=v23.PAD_CDR),
         "antigen": pad_sequence([row["antigen"] for row in batch], batch_first=True),
         "generic_binding_prior": torch.tensor([row["generic_binding_prior"] for row in batch], dtype=torch.float32),
+        "cheap_qc_score": torch.tensor([row.get("cheap_qc_score", 0.0) for row in batch], dtype=torch.float32),
+        "model_uncertainty": torch.tensor([row.get("model_uncertainty", 0.0) for row in batch], dtype=torch.float32),
     }
 
 
@@ -836,6 +843,39 @@ def predict_label_free(
     return rows
 
 
+@torch.inference_mode()
+def build_label_free_baseline_registry(
+    model: PVRIGV3P1Model,
+    loader: DataLoader,
+    device: torch.device,
+) -> list[dict[str, object]]:
+    model.eval()
+    rows: list[dict[str, object]] = []
+    hotspot = model.default_hotspot_weights.to(device).gt(0).view(1, 1, -1)
+    for batch in loader:
+        outputs = _model_forward(model, batch, device)
+        valid = outputs["valid_contact_mask"]
+        local_hotspot = hotspot[:, :, : valid.shape[2]] & valid
+        probabilities = torch.sigmoid(outputs["base_contact_logits"])
+        hotspot_mass = (probabilities * local_hotspot).sum((1, 2)) / local_hotspot.float().sum((1, 2)).clamp_min(1.0)
+        for index, candidate_id in enumerate(batch["candidate_id"]):
+            prior = float(batch["generic_binding_prior"][index])
+            uncertainty = float(batch["model_uncertainty"][index])
+            rows.append(
+                {
+                    "candidate_id": candidate_id,
+                    "sequence_sha256": batch["sequence_sha256"][index],
+                    "formal_split": batch["formal_split"][index],
+                    "parent_framework_cluster": batch["parent_framework_cluster"][index],
+                    "baseline_generic_binding_prior": prior,
+                    "baseline_cheap_qc_score": float(batch["cheap_qc_score"][index]),
+                    "baseline_uncertainty_penalized": prior - uncertainty,
+                    "baseline_hotspot_contact_mass": float(hotspot_mass[index].cpu()),
+                }
+            )
+    return rows
+
+
 def binary_average_precision(labels: Sequence[int], scores: Sequence[float]) -> float:
     y = np.asarray(labels, dtype=np.int64)
     s = np.asarray(scores, dtype=np.float64)
@@ -1014,6 +1054,13 @@ def build_datasets(cfg: FormalTrainConfig, backbone_cfg: v23.Config) -> tuple[di
         backbone_cfg,
         target_sequence,
     )
+    datasets["baseline"] = InferenceDataset(
+        [*(row for row in selection_rows if row["formal_split"] == "dev"), *formal_blinded],
+        cache,
+        cdrs,
+        backbone_cfg,
+        target_sequence,
+    )
     if cfg.generic_replay_csv:
         replay_cache = v23.ESM2Cache(Path(cfg.generic_replay_cache_manifest), backbone_cfg.esm_dim)
         replay_cdrs = v23.CDRMaskStore(Path(cfg.generic_replay_cdr_mask_csv))
@@ -1090,6 +1137,7 @@ def train_seed(
         ),
         "dev": DataLoader(datasets["dev"], batch_size=cfg.batch_size, shuffle=False, collate_fn=collate_teacher),
         "test": DataLoader(datasets["test"], batch_size=cfg.batch_size, shuffle=False, collate_fn=collate_model_inputs),
+        "baseline": DataLoader(datasets["baseline"], batch_size=cfg.batch_size, shuffle=False, collate_fn=collate_model_inputs),
     }
     if "replay" in datasets:
         loaders["replay"] = DataLoader(
@@ -1128,6 +1176,8 @@ def train_seed(
     write_json_atomic(run_dir / "config_resolved.json", asdict(cfg))
     if "replay" in datasets:
         write_csv_atomic(run_dir / "generic_replay_manifest.csv", datasets["replay"].manifest_rows())
+    baseline_path = run_dir / "baseline_registry.csv"
+    write_csv_atomic(baseline_path, build_label_free_baseline_registry(model, loaders["baseline"], device))
 
     history: list[dict[str, Any]] = []
     best_metric = -float("inf")
@@ -1346,6 +1396,8 @@ def train_seed(
         "test_prediction_columns_are_label_free": True,
         "best_checkpoint": str(best_checkpoint),
         "best_checkpoint_sha256": sha256_file(best_checkpoint),
+        "baseline_registry_path": str(baseline_path),
+        "baseline_registry_sha256": sha256_file(baseline_path),
         "frozen_backbone": True,
         "generic_binding_prior_policy": "frozen_meanpool_v3_full_scalar_only",
         "forbidden_pair_heads": ["v2_3_pair_head", "v3_g2_failed_pair_head"],
