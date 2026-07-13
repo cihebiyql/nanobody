@@ -51,6 +51,7 @@ class SyntheticFormalFixture:
         self.interface8 = root / "interface8.csv"
         self.interface9 = root / "interface9.csv"
         self.checkpoint = root / "backbone.pt"
+        self.replay = root / "generic_replay.csv"
         self._write()
 
     def _write(self) -> None:
@@ -136,6 +137,20 @@ class SyntheticFormalFixture:
                 for sequence in self.sequences
             ],
         )
+        write_csv(
+            self.replay,
+            [
+                {
+                    "sample_id": f"R{index}",
+                    "vhh_sequence": self.sequences[index],
+                    "antigen_sequence": self.target,
+                    "contact_pairs_json": json.dumps([[3, 0]]),
+                    "vhh_paratope_mask": "00010",
+                    "antigen_epitope_mask": "10000",
+                }
+                for index in range(2)
+            ],
+        )
         self.target_fasta.write_text(f">target\n{self.target}\n", encoding="utf-8")
         write_csv(
             self.mapping,
@@ -215,7 +230,10 @@ class SyntheticFormalFixture:
             interface_8x6b_csv=str(self.interface8),
             interface_9e6y_csv=str(self.interface9),
             source_checkpoint=str(self.checkpoint),
-            generic_replay_csv="",
+            generic_replay_csv=str(self.replay),
+            generic_replay_cache_manifest=str(self.cache),
+            generic_replay_cdr_mask_csv=str(self.cdr),
+            generic_replay_size=2,
             out_root=str(self.root / "runs"),
             seeds=(83,),
             epochs=2,
@@ -271,6 +289,12 @@ class FormalTrainerTest(unittest.TestCase):
             summary = json.loads((resumed_root / "summary.json").read_text())
             self.assertIn("normalized", summary["dev_selection_policy"])
             self.assertEqual(summary["test_predictions_sha256"], uninterrupted["test_predictions_sha256"])
+            self.assertEqual(
+                summary["generic_replay_retention"]["status"],
+                "PASS_GENERIC_REPLAY_RETENTION_MEASURED",
+            )
+            self.assertGreaterEqual(summary["generic_replay_retention"]["contact_auprc_retention_fraction"], 0.0)
+            self.assertGreaterEqual(summary["generic_replay_retention"]["paratope_auprc_retention_fraction"], 0.0)
             with (resumed_root / "baseline_registry.csv").open() as handle:
                 baseline = list(csv.DictReader(handle))
             self.assertEqual({row["formal_split"] for row in baseline}, {"dev", "test"})

@@ -1213,10 +1213,12 @@ def train_seed(
         replay_generator.set_state(checkpoint["replay_generator_state"])
         restore_rng_state(checkpoint["rng_state"])
 
-    replay_iterator = cycle(loaders["replay"]) if "replay" in loaders else None
     status = "PASS_FORMAL_TRAINING_COMPLETE"
     for epoch in range(start_epoch, cfg.epochs + 1):
         model.train()
+        # Restart at each epoch so the saved generator state is sufficient for
+        # bitwise-equivalent epoch-boundary resume, including replay batches.
+        replay_iterator = cycle(loaders["replay"]) if "replay" in loaders else None
         batch_losses: list[float] = []
         component_values: dict[str, list[float]] = {
             name: [] for name in ("ordinal", "geometry", "contact", "paratope", "epitope", "campaign_rank", "generic_replay")
@@ -1323,6 +1325,7 @@ def train_seed(
             "config_fingerprint": config_fingerprint,
             "preregistration_sha256": hashes["files"]["preregistration_json"],
             "test_spec_sha256": hashes["files"]["test_spec_json"],
+            "artifact_hashes": hashes,
             "geometry_fields": list(GEOMETRY_FIELDS),
             "geometry_mean": geometry_mean.cpu(),
             "geometry_std": geometry_std.cpu(),

@@ -23,12 +23,17 @@ if ! flock -n 9; then
 fi
 exec >>"$LOG" 2>&1
 printf '%s\n' "$$" >"$PID_FILE"
-cleanup_pid_file() {
+cleanup() {
+  local child
+  for child in $(jobs -pr); do
+    kill -TERM "$child" 2>/dev/null || true
+  done
   if [[ -f "$PID_FILE" ]] && [[ $(cat "$PID_FILE") == "$$" ]]; then
     rm -f "$PID_FILE"
   fi
 }
-trap cleanup_pid_file EXIT
+trap cleanup EXIT
+trap 'exit 143' TERM INT
 
 poll_remote_status() {
   "$SSH_COMMAND" "$NODE_HOST" \
@@ -36,11 +41,16 @@ poll_remote_status() {
     <"$STATUS_SCRIPT"
 }
 
+sleep_interruptibly() {
+  sleep "$1" &
+  wait "$!"
+}
+
 echo "DOCKING_MONITOR_START $(date -Is) remote=$NODE_HOST:$REMOTE_ROOT"
 while true; do
   if ! status=$(poll_remote_status 2>&1); then
     echo "DOCKING_POLL_RETRY $(date -Is) detail=$(printf '%q' "$status")" >&2
-    sleep "$POLL_SECONDS"
+    sleep_interruptibly "$POLL_SECONDS"
     continue
   fi
   read -r complete alive remote_pid expected unique_started latest_success latest_failed pending model_ready top_models extra <<<"$status"
@@ -56,7 +66,7 @@ while true; do
     [[ ! ${model_ready:-} =~ ^[0-9]+$ ]] ||
     [[ ! ${top_models:-} =~ ^[0-9]+$ ]]; then
     echo "DOCKING_POLL_RETRY $(date -Is) detail=$(printf '%q' "$status")" >&2
-    sleep "$POLL_SECONDS"
+    sleep_interruptibly "$POLL_SECONDS"
     continue
   fi
   echo "DOCKING_STATUS $(date -Is) complete=$complete alive=$alive remote_pid=$remote_pid expected=$expected unique_started=$unique_started latest_success=$latest_success latest_failed=$latest_failed pending=$pending model_ready=$model_ready top_models=$top_models"
@@ -76,7 +86,7 @@ while true; do
     echo "DOCKING_CONTROLLER_DIED_WITHOUT_COMPLETE remote_pid=$remote_pid latest_success=$latest_success latest_failed=$latest_failed pending=$pending model_ready=$model_ready" >&2
     exit 5
   fi
-  sleep "$POLL_SECONDS"
+  sleep_interruptibly "$POLL_SECONDS"
 done
 
 echo "POSTPROCESS_START $(date -Is)"
