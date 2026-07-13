@@ -1,6 +1,6 @@
 # RFantibody-PVRIG 1,024 条候选：HADDOCK 分数与阻断几何分析
 
-> 生成时间：`2026-07-13T15:08:38.461049+00:00`
+> 生成时间：`2026-07-13T15:14:54.053079+00:00`
 
 ## 1. 一句话结论
 
@@ -15,6 +15,7 @@
 - HADDOCK selected models：8,606 个。
 - 双参考 baseline 行：8,192，即 1,024 × 4 pose × 2 reference。
 - 去重后的前 4 pose：4,096。
+- 本流程是按 PVRIG-PVRL2 界面热点引导的受约束 docking，不是 blind docking；它检验的是目标表位条件下的 pose 兼容性。
 - 9E6Y 是同一 8X6B-guided pose 的 reference-overlay scoring，不是独立第二轮 docking。
 - HADDOCK 分数越负通常表示在该 scoring function 下更有利，但不是 Kd、IC50 或阻断率。
 
@@ -27,6 +28,7 @@
 | 每候选 best score | 1,024 | -116.95 | -98.68 | -86.76 | -78.90 | -71.45 | -60.95 | -44.36 |
 
 每候选 best score 的中位数是 `-78.90`；最负值为 `-116.949`。
+其中 42 条 best score ≤ -100，159 条 ≤ -90，464 条 ≤ -80。
 但最负分候选不一定是双参考 blocker-like，因此不能按 HADDOCK 分数单轴截断。
 
 按 consensus class 看，分数中位数为：

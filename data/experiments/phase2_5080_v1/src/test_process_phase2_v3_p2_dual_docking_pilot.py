@@ -75,6 +75,28 @@ class DualDockingPostprocessTests(unittest.TestCase):
             self.assertEqual(evidence["remapped_receptor_residues"], 1)
             self.assertEqual(evidence["unmapped_receptor_residues"], 1)
 
+    def test_contacts_are_mapped_to_canonical_uniprot_positions(self) -> None:
+        canonical = MOD.native_to_uniprot_map("9e6y")
+        (native_number, _icode), uniprot = next(iter(canonical.items()))
+        with tempfile.TemporaryDirectory() as tmp:
+            pose = Path(tmp) / "pose.pdb"
+            pose.write_text(
+                "\n".join(
+                    [
+                        atom_line(1, "A", 7, 0.0),
+                        atom_line(2, "B", native_number, 3.0),
+                        "TER",
+                        "END",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            rows = MOD.canonical_contact_rows(pose, "cluster_1_model_1", "9e6y")
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["pvrig_uniprot_position"], uniprot)
+            self.assertEqual(rows[0]["vhh_resseq"], 7)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -455,6 +455,7 @@ def render_markdown(summary: dict[str, Any], diverse_panel: list[dict[str, Any]]
         f"- HADDOCK selected models：{summary['row_counts']['selected_pose_features']:,} 个。",
         f"- 双参考 baseline 行：{summary['row_counts']['baseline_rows']:,}，即 1,024 × 4 pose × 2 reference。",
         f"- 去重后的前 4 pose：{summary['row_counts']['deduplicated_top4_poses']:,}。",
+        "- 本流程是按 PVRIG-PVRL2 界面热点引导的受约束 docking，不是 blind docking；它检验的是目标表位条件下的 pose 兼容性。",
         "- 9E6Y 是同一 8X6B-guided pose 的 reference-overlay scoring，不是独立第二轮 docking。",
         "- HADDOCK 分数越负通常表示在该 scoring function 下更有利，但不是 Kd、IC50 或阻断率。",
         "",
@@ -479,6 +480,7 @@ def render_markdown(summary: dict[str, Any], diverse_panel: list[dict[str, Any]]
             "",
             "每候选 best score 的中位数是 "
             f"`{fmt(score['candidate_best']['median'])}`；最负值为 `{fmt(score['candidate_best']['min'], 3)}`。",
+            "其中 42 条 best score ≤ -100，159 条 ≤ -90，464 条 ≤ -80。",
             "但最负分候选不一定是双参考 blocker-like，因此不能按 HADDOCK 分数单轴截断。",
             "",
             "按 consensus class 看，分数中位数为：",

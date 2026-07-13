@@ -155,6 +155,90 @@ def parse_reconciliation(path: Path = RECONCILIATION_CSV) -> dict[str, dict[int,
     return by_pdb
 
 
+def native_to_uniprot_map(receptor: str) -> dict[tuple[int, str], int]:
+    pdb_id = str(RECEPTORS[receptor]["pdb_id"])
+    return {
+        (resseq, icode): uniprot
+        for uniprot, (_chain, resseq, icode) in parse_reconciliation()[pdb_id].items()
+    }
+
+
+def canonical_contact_rows(
+    pose: Path,
+    model: str,
+    source_receptor: str,
+    cutoff: float = 4.5,
+) -> list[dict[str, Any]]:
+    """Extract VHH-PVRIG residue contacts using canonical PVRIG UniProt IDs."""
+    atoms: dict[str, list[tuple[int, str, str, float, float, float]]] = {"A": [], "B": []}
+    for line in pose.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not line.startswith(("ATOM  ", "HETATM")) or len(line) < 54 or line[21] not in atoms:
+            continue
+        atom_name = line[12:16].strip().upper()
+        element = line[76:78].strip().upper() if len(line) >= 78 else ""
+        if element in {"H", "D"} or (not element and atom_name.startswith(("H", "D"))):
+            continue
+        try:
+            atoms[line[21]].append(
+                (
+                    int(line[22:26]),
+                    line[26].strip(),
+                    line[17:20].strip().upper(),
+                    float(line[30:38]),
+                    float(line[38:46]),
+                    float(line[46:54]),
+                )
+            )
+        except ValueError:
+            continue
+    if not atoms["A"] or not atoms["B"]:
+        raise ValueError(f"Missing VHH/PVRIG atoms in {pose}: A={len(atoms['A'])} B={len(atoms['B'])}")
+    canonical = native_to_uniprot_map(source_receptor)
+    cell = cutoff
+    grid: dict[tuple[int, int, int], list[tuple[int, str, str, float, float, float]]] = {}
+    for atom in atoms["B"]:
+        key = (math.floor(atom[3] / cell), math.floor(atom[4] / cell), math.floor(atom[5] / cell))
+        grid.setdefault(key, []).append(atom)
+    cutoff_sq = cutoff * cutoff
+    pairs: dict[tuple[int, str, str, int, str, str], float] = {}
+    for vhh in atoms["A"]:
+        origin = (math.floor(vhh[3] / cell), math.floor(vhh[4] / cell), math.floor(vhh[5] / cell))
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    for pvrig in grid.get((origin[0] + dx, origin[1] + dy, origin[2] + dz), []):
+                        distance_sq = (vhh[3] - pvrig[3]) ** 2 + (vhh[4] - pvrig[4]) ** 2 + (vhh[5] - pvrig[5]) ** 2
+                        if distance_sq > cutoff_sq:
+                            continue
+                        key = (pvrig[0], pvrig[1], pvrig[2], vhh[0], vhh[1], vhh[2])
+                        distance = math.sqrt(distance_sq)
+                        if key not in pairs or distance < pairs[key]:
+                            pairs[key] = distance
+    output: list[dict[str, Any]] = []
+    for key, distance in sorted(pairs.items()):
+        pvrig_resseq, pvrig_icode, pvrig_resname, vhh_resseq, vhh_icode, vhh_resname = key
+        uniprot = canonical.get((pvrig_resseq, pvrig_icode))
+        if uniprot is None:
+            raise ValueError(
+                f"No canonical UniProt mapping for {source_receptor} PVRIG {pvrig_resseq}{pvrig_icode} in {pose}"
+            )
+        output.append(
+            {
+                "model": model,
+                "generation_receptor": source_receptor,
+                "pvrig_pose_resseq": pvrig_resseq,
+                "pvrig_pose_icode": pvrig_icode,
+                "pvrig_resname": pvrig_resname,
+                "pvrig_uniprot_position": uniprot,
+                "vhh_resseq": vhh_resseq,
+                "vhh_icode": vhh_icode,
+                "vhh_resname": vhh_resname,
+                "min_heavy_atom_distance_A": f"{distance:.4f}",
+            }
+        )
+    return output
+
+
 def residue_number_map(source_receptor: str, target_receptor: str) -> dict[tuple[int, str], tuple[int, str]]:
     mappings = parse_reconciliation()
     source_id = str(RECEPTORS[source_receptor]["pdb_id"])
@@ -477,9 +561,22 @@ def completion_evidence(workdir: Path, run_id: str, expected_models: int) -> dic
     }
     mechanism_paths = [workdir / f"{receptor}_baseline/haddock3_top_model_mechanism_scores_{receptor}.csv" for receptor in RECEPTORS]
     contact_rows = sum(len(read_csv(path)) for path in mechanism_paths if path.exists())
-    contact_failures = 2 * expected_models - contact_rows
-    complete = all(value == expected_models for value in row_counts.values()) and contact_failures == 0
-    return {**row_counts, "contact_rows": contact_rows, "contact_failures": contact_failures, "complete": complete}
+    canonical_summary = reports / f"{run_id}_canonical_contact_summary.csv"
+    canonical_rows = read_csv(canonical_summary) if canonical_summary.exists() else []
+    canonical_failures = sum(row.get("status") != "PASS" for row in canonical_rows)
+    contact_failures = 2 * expected_models - contact_rows + canonical_failures
+    complete = (
+        all(value == expected_models for value in row_counts.values())
+        and len(canonical_rows) == expected_models
+        and contact_failures == 0
+    )
+    return {
+        **row_counts,
+        "contact_rows": contact_rows,
+        "canonical_contact_pose_rows": len(canonical_rows),
+        "contact_failures": contact_failures,
+        "complete": complete,
+    }
 
 
 def process_one(row: dict[str, str], sync_root: Path, work_root: Path, top_n: int, min_models: int) -> dict[str, Any]:
@@ -520,6 +617,40 @@ def process_one(row: dict[str, str], sync_root: Path, work_root: Path, top_n: in
             ["model", "haddock_rank", "haddock_score"],
         )
         source_receptor = row["receptor_id"].lower()
+        canonical_pairs: list[dict[str, Any]] = []
+        canonical_summary: list[dict[str, Any]] = []
+        for name in ranks:
+            pairs = canonical_contact_rows(raw_dir / f"{name}.pdb", name, source_receptor)
+            canonical_pairs.extend(pairs)
+            canonical_summary.append(
+                {
+                    "model": name,
+                    "generation_receptor": source_receptor,
+                    "canonical_residue_pair_count": len(pairs),
+                    "status": "PASS",
+                }
+            )
+        write_csv(
+            workdir / "reports" / f"{run_id}_canonical_contact_pairs.csv",
+            canonical_pairs,
+            [
+                "model",
+                "generation_receptor",
+                "pvrig_pose_resseq",
+                "pvrig_pose_icode",
+                "pvrig_resname",
+                "pvrig_uniprot_position",
+                "vhh_resseq",
+                "vhh_icode",
+                "vhh_resname",
+                "min_heavy_atom_distance_A",
+            ],
+        )
+        write_csv(
+            workdir / "reports" / f"{run_id}_canonical_contact_summary.csv",
+            canonical_summary,
+            ["model", "generation_receptor", "canonical_residue_pair_count", "status"],
+        )
         cdr_ranges = (row["cdr1_range"], row["cdr2_range"], row["cdr3_range"])
         classifications: dict[str, Path] = {}
         log_path = workdir / "postprocess.log"
