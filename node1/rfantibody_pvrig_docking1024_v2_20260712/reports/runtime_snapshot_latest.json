@@ -1,42 +1,40 @@
 {
-  "captured_at": "2026-07-13T06:57:51.334807+00:00",
+  "captured_at": "2026-07-13T13:22:57.116967+00:00",
   "controllers_runtime": {
     "downstream_controller": {
-      "alive": true,
+      "alive": false,
       "pid": 3296328
     },
     "haddock_sidecar": {
-      "alive": true,
+      "alive": false,
       "pid": 3004332
     },
     "haddock_sidecar2": {
-      "alive": true,
+      "alive": false,
       "pid": 3004335
     },
     "haddock_sidecar_watchdog": {
-      "alive": true,
+      "alive": false,
       "pid": 3039590
     },
     "postprocess_controller": {
-      "alive": true,
+      "alive": false,
       "pid": 3235532
     },
     "postprocess_early_batch": {
       "alive": false,
-      "pid": 3008113
+      "pid": 3853311
     }
   },
   "docking": {
     "haddock_counts": {
-      "running": 10,
-      "success": 516
+      "success": 1024
     },
     "nbb2_counts": {
       "success": 1024
     },
     "postprocess_counts": {
-      "missing": 521,
-      "success": 503
+      "success": 1024
     }
   },
   "downstream_controller": {
@@ -103,6 +101,44 @@
     },
     "schema_version": 1
   },
+  "final_audit": {
+    "checks": {
+      "candidate_count_1024": true,
+      "candidate_exact_unique_1024": true,
+      "dual_reference_success_ge_1000": true,
+      "haddock_success_ge_1000": true,
+      "nbb2_success_ge_1000": true,
+      "rf2_seed42_outputs_ge_1000": true,
+      "sequence_qc_rows_1024": true,
+      "training_candidate_count_1024": true,
+      "training_completed_docking_ge_1000": true
+    },
+    "counts": {
+      "baseline_metric_rows": 8192,
+      "candidates": 1024,
+      "dual_reference_success": 1024,
+      "exact_unique_sequences": 1024,
+      "haddock_success": 1024,
+      "nbb2_success": 1024,
+      "pose_consensus_rows": 4096,
+      "rf2_seed42_outputs": 1024,
+      "sequence_qc_hard_fail": 0,
+      "sequence_qc_rows": 1024
+    },
+    "generated_at": "2026-07-13T13:10:29.622919+00:00",
+    "hashes": {
+      "data/candidates.tsv": "6a8d21bf4a3c8088cd3f45446fcf7f6222548301e7086a7f322b3c2262e9481d",
+      "data/docking_pose_baseline_metrics.tsv": "34dd19148fcb5f5d92c2c8bb8ab49ddc13895d8e469425985687d83a36a09a40",
+      "data/docking_runs.tsv": "c5f2a87e8f6c0e172ee05465c3634a252da2ee6152dedf85af09f9e23a581187",
+      "data/monomer_qc.tsv": "04161ce8116b2f7f76f44957a66cebe21a48f21fdf471a7e63ffcc47868b54f9",
+      "data/rf2_metrics.tsv": "3be4abde4d9ff8d604380570c5e4b3b800cb1b619c8bf8d7e3425b19ff3e2df3",
+      "data/training_dataset/dataset_manifest.json": "8f558e91ca93f3e05dcc02a8d13983b9818638751b64f5f5f1c451b5921b0e5f"
+    },
+    "schema_version": 1,
+    "scientific_boundary": "computational QC and guided docking data are not experimental binding, Kd, or blockade proof",
+    "status": "PASS"
+  },
+  "final_status": "PASS",
   "frozen_cohort": {
     "candidate_count": 1024,
     "exact_unique_sequences": 1024
@@ -123,7 +159,87 @@
     }
   },
   "hostname": "node1",
-  "loadavg": "66.73583984375 71.271484375 73.26953125",
+  "independent_validation": {
+    "checks": {
+      "all_candidates_have_selected_models": true,
+      "all_rescue_reports_successful": true,
+      "candidate_ids_unique_1024": true,
+      "candidate_rows_1024": true,
+      "candidate_sequence_hashes_valid": true,
+      "candidate_sequences_unique_1024": true,
+      "docking_table_all_completed": true,
+      "dual_reference_rows_complete": true,
+      "final_audit_passes": true,
+      "haddock_states_all_success": true,
+      "known_positive_reference_is_present": true,
+      "monomer_table_all_success": true,
+      "nbb2_states_all_success": true,
+      "postprocess_states_all_success": true,
+      "rf2_3072_unique_candidate_seed_pairs": true,
+      "rf2_each_seed_1024": true,
+      "rf2_not_used_as_negative_labels": true,
+      "scientific_boundary_is_explicit": true,
+      "sequence_qc_1024_no_hard_fail": true,
+      "split_has_no_hard_key_leakage": true,
+      "training_axes_remain_separate": true,
+      "training_manifest_final_1024": true,
+      "training_output_hashes_match": true,
+      "training_output_rows_match": true,
+      "two_way_split_is_explicit": true
+    },
+    "counts": {
+      "baseline_rows": 8192,
+      "candidates": 1024,
+      "consensus_rows": 4096,
+      "haddock_success": 1024,
+      "nbb2_success": 1024,
+      "postprocess_success": 1024,
+      "rescue_reports": 3,
+      "rf2_rows": 3072,
+      "training_pose_rows": 8606
+    },
+    "generated_at": "2026-07-13T13:18:05.756611+00:00",
+    "schema_version": 1,
+    "scientific_boundary": "computational QC and guided docking data are not experimental binding, Kd, or blockade proof",
+    "selected_model_count_range": [
+      4,
+      10
+    ],
+    "split_audit": {
+      "available_model_splits": [
+        "train",
+        "validation"
+      ],
+      "hard_component_count": 2,
+      "hard_keys": [
+        "backbone_group_id",
+        "arm_id",
+        "global_near_cdr3_family"
+      ],
+      "known_positive_component_count": 0,
+      "leakage_violation_count": 0,
+      "model_component_count": 2,
+      "model_component_sizes": [
+        522,
+        502
+      ],
+      "model_split_feasibility": "two_way_only",
+      "policy": "hard-component deterministic bin-packing at 80/10/10 target",
+      "target_fractions": {
+        "test": 0.1,
+        "train": 0.8,
+        "validation": 0.1
+      },
+      "test_split_available": false
+    },
+    "split_counts": {
+      "train": 522,
+      "validation": 502
+    },
+    "split_violations": {},
+    "status": "PASS"
+  },
+  "loadavg": "51.92626953125 54.8017578125 61.6259765625",
   "postprocess_controller": {
     "message": "waiting for at least 1000 completed HADDOCK candidates",
     "pid": 3235532,

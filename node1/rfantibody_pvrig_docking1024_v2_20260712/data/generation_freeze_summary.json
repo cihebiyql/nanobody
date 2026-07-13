@@ -1,0 +1,93 @@
+{
+  "arm_count": 36,
+  "arm_counts_by_lane": {
+    "primary_vhhified": 36
+  },
+  "arm_table_path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/config/generation_arms_primary.tsv",
+  "arm_table_sha256": "40e0dd3b1bdcf7bbcacc24ec2336eb7b42eb92457873ad4580981e82c988e0aa",
+  "claim_boundary": "generated candidates are not experimentally verified binders or blockers",
+  "created_at": "2026-07-12T21:29:17.586590+00:00",
+  "docking_status": "not_run",
+  "expected_backbones_from_arm_table": 288,
+  "expected_sequence_records_from_arm_table": 1152,
+  "generation_execution_policy_path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/config/generation_execution_policy.json",
+  "generation_execution_policy_sha256": "1f6d9b571c24eb66949b20513f298a2c58374b11795e2ebd018cc1fb38906d77",
+  "raw_exact_known_positive_matches": 0,
+  "raw_records": 1152,
+  "raw_unique_sequences": 1067,
+  "raw_valid_records": 1152,
+  "rf2_status": "not_run",
+  "run_root": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712",
+  "schema_version": 1,
+  "selected_by_arm": {
+    "P1_ekg_L": 29,
+    "P1_ekg_S": 28,
+    "P1_qkg_L": 29,
+    "P1_qkg_S": 27,
+    "P1_qrg_L": 29,
+    "P1_qrg_S": 26,
+    "P2_ekg_L": 29,
+    "P2_ekg_S": 28,
+    "P2_qkg_L": 29,
+    "P2_qkg_S": 27,
+    "P2_qrg_L": 29,
+    "P2_qrg_S": 27,
+    "P3_ekg_L": 29,
+    "P3_ekg_S": 28,
+    "P3_qkg_L": 29,
+    "P3_qkg_S": 28,
+    "P3_qrg_L": 29,
+    "P3_qrg_S": 28,
+    "P4_ekg_L": 29,
+    "P4_ekg_S": 29,
+    "P4_qkg_L": 29,
+    "P4_qkg_S": 29,
+    "P4_qrg_L": 29,
+    "P4_qrg_S": 29,
+    "P5_ekg_L": 29,
+    "P5_ekg_S": 29,
+    "P5_qkg_L": 29,
+    "P5_qkg_S": 29,
+    "P5_qrg_L": 29,
+    "P5_qrg_S": 29,
+    "P6_ekg_L": 29,
+    "P6_ekg_S": 27,
+    "P6_qkg_L": 29,
+    "P6_qkg_S": 27,
+    "P6_qrg_L": 29,
+    "P6_qrg_S": 27
+  },
+  "selected_by_h3_regime": {
+    "L": 522,
+    "S": 502
+  },
+  "selected_by_patch": {
+    "P1_core_blocker": 168,
+    "P2_bridge_N_C": 169,
+    "P3_charge_aromatic": 171,
+    "P4_cterm_robust": 174,
+    "P5_upper_interface": 174,
+    "P6_holdout_ablation": 168
+  },
+  "selected_by_scaffold": {
+    "ekg": 343,
+    "qkg": 341,
+    "qrg": 340
+  },
+  "selected_exact_unique_sequences": 1024,
+  "selected_max_siblings_per_backbone": 4,
+  "selected_records": 1024,
+  "selected_rfd_averagemin": {
+    "count": 1024,
+    "max": 9.328941345214844,
+    "median": 6.991431713104248,
+    "min": 4.615692615509033
+  },
+  "selected_rfd_mindist": {
+    "count": 1024,
+    "max": 6.697251319885254,
+    "median": 4.083182334899902,
+    "min": 1.6923071146011353
+  },
+  "selected_unique_backbones": 288
+}

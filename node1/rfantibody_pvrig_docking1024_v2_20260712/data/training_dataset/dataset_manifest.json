@@ -1,0 +1,133 @@
+{
+  "axis_contract": {
+    "affinity_proxy": "baseline postprocess proxy kept separate from binder labels",
+    "binder": "binder_label is never inferred from pose, affinity, blocker geometry, or RF2 recovery",
+    "blocker_geometry": "hotspot/interface geometry proxy kept separate from affinity and binder axes",
+    "pose_quality": "pose_quality_haddock_score is parsed from HADDOCK raw PDB REMARK lines",
+    "rf2_recovery": "RF2 recovery metrics kept separate from docking and blocker axes"
+  },
+  "candidate_count": 1024,
+  "completed_docking_candidates": 1024,
+  "completed_rf2_candidates": 1024,
+  "created_at": "2026-07-13T13:10:28.897511+00:00",
+  "final_gate": {
+    "min_completed_docking_candidates": 1000,
+    "min_completed_rf2_candidates": 1000,
+    "min_successful_nbb2_candidates": 1000,
+    "required_candidate_count": 1024
+  },
+  "known_positive_count": 0,
+  "missingness_counts": {},
+  "mode": "final",
+  "output_files": {
+    "candidate_summary.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/candidate_summary.tsv",
+      "rows": 1024,
+      "sha256": "8ef09c3a28d30e0fb8ce5db7b784fc8856503e1b11d6e5b4561f53175df42a11"
+    },
+    "candidates.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/candidates.tsv",
+      "rows": 1024,
+      "sha256": "ceb85bcf5413be10cd7a88ecdd17e52281206510d10b128cd72da2070a23a897"
+    },
+    "docking_pose_features.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/docking_pose_features.tsv",
+      "rows": 8606,
+      "sha256": "2a2b4a97499de9e927023e857b52eafeba02e205464cbc64a618a96eadd37398"
+    },
+    "docking_runs.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/docking_runs.tsv",
+      "rows": 1024,
+      "sha256": "00356c43043e1c58cdc793ee539dfa91fb0b4faa3f909cd1cc53260ad0233786"
+    },
+    "failures.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/failures.tsv",
+      "rows": 0,
+      "sha256": "cb1099d055d11e6f77d514e80d1ca23be2e5d6caafb9b01373b37e06bf0ed6bb"
+    },
+    "monomer_qc.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/monomer_qc.tsv",
+      "rows": 1024,
+      "sha256": "195eaea3fe75358586fad7e6e0bccebffff6e3f0163d7fc78f3d727e84989d13"
+    },
+    "rf2_metrics.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/rf2_metrics.tsv",
+      "rows": 3072,
+      "sha256": "92e3d345940e66b08474663176ccc7edb462ade75746bd7d475c9e06cd8e7913"
+    },
+    "splits_by_backbone.tsv": {
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/training_dataset/splits_by_backbone.tsv",
+      "rows": 425,
+      "sha256": "0c84a34131e5c641c57483f0cf8edebf2ecbb7b7a93c7a266e415c247e5bdbf7"
+    }
+  },
+  "schema_version": "pvrig_training_dataset_v1",
+  "source_files": {
+    "baseline_postprocess": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/baseline_postprocess.tsv",
+      "sha256": "ee2bbd47b16f67350d8398c3b185cdf1c9d88ce5995f0b5fd6236d8b3a578f32"
+    },
+    "candidates": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/candidates.tsv",
+      "sha256": "6a8d21bf4a3c8088cd3f45446fcf7f6222548301e7086a7f322b3c2262e9481d"
+    },
+    "docking_runs": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/docking_runs.tsv",
+      "sha256": "c5f2a87e8f6c0e172ee05465c3634a252da2ee6152dedf85af09f9e23a581187"
+    },
+    "haddock_root": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/docking/haddock"
+    },
+    "known_positives": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/inputs/leakage_reference.fasta",
+      "sha256": "f8a52eb5633d079dd0f21a0c74a61594325e0c4c47b3b057b14b45bece7f4b5a"
+    },
+    "monomer_qc": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/monomer_qc.tsv",
+      "sha256": "04161ce8116b2f7f76f44957a66cebe21a48f21fdf471a7e63ffcc47868b54f9"
+    },
+    "rf2_metrics": {
+      "exists": true,
+      "path": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712/data/rf2_metrics.tsv",
+      "sha256": "3be4abde4d9ff8d604380570c5e4b3b800cb1b619c8bf8d7e3425b19ff3e2df3"
+    }
+  },
+  "split_audit": {
+    "available_model_splits": [
+      "train",
+      "validation"
+    ],
+    "hard_component_count": 2,
+    "hard_keys": [
+      "backbone_group_id",
+      "arm_id",
+      "global_near_cdr3_family"
+    ],
+    "known_positive_component_count": 0,
+    "leakage_violation_count": 0,
+    "model_component_count": 2,
+    "model_component_sizes": [
+      522,
+      502
+    ],
+    "model_split_feasibility": "two_way_only",
+    "policy": "hard-component deterministic bin-packing at 80/10/10 target",
+    "target_fractions": {
+      "test": 0.1,
+      "train": 0.8,
+      "validation": 0.1
+    },
+    "test_split_available": false
+  },
+  "split_counts": {
+    "train": 522,
+    "validation": 502
+  },
+  "successful_nbb2_candidates": 1024
+}

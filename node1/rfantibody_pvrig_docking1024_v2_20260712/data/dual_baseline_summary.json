@@ -1,0 +1,11 @@
+{
+  "baseline_metric_rows": 8192,
+  "baseline_mode": "8X6B guided docking with 8X6B and 9E6Y reference-overlay scoring",
+  "candidate_count": 1024,
+  "pose_consensus_rows": 4096,
+  "postprocess_success_candidates": 1024,
+  "scientific_boundary": "9E6Y is an overlay score, not an independent 9E6Y docking run",
+  "status_counts": {
+    "success": 1024
+  }
+}

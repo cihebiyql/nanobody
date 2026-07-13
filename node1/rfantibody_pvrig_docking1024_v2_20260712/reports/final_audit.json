@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "candidate_count_1024": true,
+    "candidate_exact_unique_1024": true,
+    "dual_reference_success_ge_1000": true,
+    "haddock_success_ge_1000": true,
+    "nbb2_success_ge_1000": true,
+    "rf2_seed42_outputs_ge_1000": true,
+    "sequence_qc_rows_1024": true,
+    "training_candidate_count_1024": true,
+    "training_completed_docking_ge_1000": true
+  },
+  "counts": {
+    "baseline_metric_rows": 8192,
+    "candidates": 1024,
+    "dual_reference_success": 1024,
+    "exact_unique_sequences": 1024,
+    "haddock_success": 1024,
+    "nbb2_success": 1024,
+    "pose_consensus_rows": 4096,
+    "rf2_seed42_outputs": 1024,
+    "sequence_qc_hard_fail": 0,
+    "sequence_qc_rows": 1024
+  },
+  "generated_at": "2026-07-13T13:10:29.622919+00:00",
+  "hashes": {
+    "data/candidates.tsv": "6a8d21bf4a3c8088cd3f45446fcf7f6222548301e7086a7f322b3c2262e9481d",
+    "data/docking_pose_baseline_metrics.tsv": "34dd19148fcb5f5d92c2c8bb8ab49ddc13895d8e469425985687d83a36a09a40",
+    "data/docking_runs.tsv": "c5f2a87e8f6c0e172ee05465c3634a252da2ee6152dedf85af09f9e23a581187",
+    "data/monomer_qc.tsv": "04161ce8116b2f7f76f44957a66cebe21a48f21fdf471a7e63ffcc47868b54f9",
+    "data/rf2_metrics.tsv": "3be4abde4d9ff8d604380570c5e4b3b800cb1b619c8bf8d7e3425b19ff3e2df3",
+    "data/training_dataset/dataset_manifest.json": "8f558e91ca93f3e05dcc02a8d13983b9818638751b64f5f5f1c451b5921b0e5f"
+  },
+  "schema_version": 1,
+  "scientific_boundary": "computational QC and guided docking data are not experimental binding, Kd, or blockade proof",
+  "status": "PASS"
+}

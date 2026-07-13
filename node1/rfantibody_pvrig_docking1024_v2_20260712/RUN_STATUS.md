@@ -1,6 +1,6 @@
 # 运行状态
 
-更新时间：2026-07-13 14:54 CST
+更新时间：2026-07-13 21:20 CST
 
 ## 当前阶段
 
@@ -13,15 +13,19 @@
 - 完整 48-arm 矩阵仍保留作为设计溯源；实际计划生成 288 个 primary backbones 和 16 个已在运行的 original-scaffold diagnostic backbones，删去其余不会进入 1,024 条 cohort 的 80 个诊断 backbone。
 - 1,152 条 primary records 中有 1,067 条全局 exact-unique；已冻结 1,024 条 exact-unique cohort，覆盖全部 36 arms 和 288 backbones。
 - 序列 QC 为 `1,024/1,024` 无 hard-fail。RF2 seed42 为 `1,024/1,024` 有输出：4 个 strict pose-recovered、813 个 low-interaction-confidence、207 个 pose-not-recovered。
-- NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。真实 HADDOCK smoke 已成功，全量 docking 正在运行。
+- NanoBodyBuilder2 为 `1,024/1,024` 成功，并全部通过序列/主链几何验证。
 - RF2 seed42/43/44 均已完成 `1,024/1,024`，共 3,072 个输出。多 seed 严格门控为 4 条正式通过、28 条近通过校准样本和 992 条不完整通过；RF2 失败/低置信只记为 QC 或 missingness，不作为负结合/负阻断标签。
-- 2026-07-13 14:54 CST 实测：HADDOCK 为 `511 success / 10 running / 0 failed`，增量 8X6B/9E6Y 双参考后处理为 503 条。目前有 2 条因 `flexref` 稳定产出 8/10 个模型、缺失率 20% 超过默认 tolerance 10% 而失败；已在完整保留失败目录后使用透明的 `flexref/emref tolerance=30%` rescue 策略分别于 attempt 5 和 attempt 4 成功，均产出 8 个 selected models。
+- 2026-07-13 21:10 CST，HADDOCK 为 `1,024/1,024 success`，最终失败为 0，每条候选有 4-10 个 selected models，训练表共保存 8,606 条 selected-pose 特征。
+- 共有 3 条候选因 `flexref` 稳定产出 8/10 个模型、缺失率 20% 超过默认 tolerance 10% 而失败；已在完整保留失败目录后使用透明的 `flexref/emref tolerance=30%` rescue 策略成功，对应 JSON 报告记录原/新配置哈希、尝试次数和 selected models。
 - 修复了 HADDOCK 重试时被残留 `run_dir` 立即拒绝的编排缺陷：现在重试前会将失败的部分目录移入 `docking/failed_haddock_attempts/<candidate_id>/`，既保留失败证据，又能进行干净重跑。
 - 修复了 main/sidecar 共享 `haddock_controller.json` 时使用同一 `.tmp` 文件导致的原子替换竞争。该问题曾使两个 sidecar 在约 13:20 CST 退出；现每次写入都使用唯一临时文件，并发回归测试通过。旧孤儿任务自然排空到仅剩 main 2 路后，两个 sidecar 已安全重启，实际并发恢复为 10。
 - 已提前对 `PVRIG_RFAb_v2_P1_ekg_L_bb000_mpn00` 运行真实 8X6B/9E6Y 双参考后处理 smoke，4 个 selected models 全部生成 consensus 记录，后处理接口通过。
 - 已用真实中间结果完成 partial ETL smoke：1,024 条候选和 3,072 条 RF2 记录全部入表，NBB2 成功数为 1,024，当时已识别 172 个 completed docking candidates。
 - 修复了训练集 split 退化问题：原固定轮转将两个硬防泄漏连通分量全部分到 train；现按连通分量确定性分配为 `train=522 / validation=502`，同 backbone、arm 和 global near-CDR3 family 均不跨 split。当前只有两个硬分量，因此明确标记 `test_split_available=false`，不伪造第三个分割。
 - 修复了 leakage reference 的默认路径，现固定指向项目内 `inputs/leakage_reference.fasta`，而不再受启动目录影响。
+- 8X6B/9E6Y 双参考后处理为 `1,024/1,024 success`，产出 8,192 条 baseline metric rows 和 4,096 条 pose-consensus rows。其中 9E6Y 仅是对 8X6B-guided pose 的 reference-overlay score，不是独立 9E6Y docking。
+- final training dataset 为 `mode=final`：1,024 条 candidate、3,072 条 RF2 records、1,024 条 completed docking、8,606 条 pose features，`failures.tsv` 为 0 行。
+- `reports/final_audit.json` 和 `reports/independent_final_validation.json` 均为 `PASS`；独立验收共 25 项检查全部通过，包括表行数、SHA256、selected model 存在性、split 防泄漏和科学边界。
 
 ## 资源策略
 
@@ -51,11 +55,16 @@ HADDOCK nice:                       15
 - Python AST、JSON 和 shell syntax：通过。
 - 真实第一代 HADDOCK pose 经 chain `B -> T` 回归后，V2 双参考流程输出 8X6B `BLOCKER_LIKE_A`、9E6Y `BLOCKER_PLAUSIBLE_B` 和 consensus `SINGLE_BASELINE_BLOCKER_RECHECK`。
 
-## 尚未完成
+## 完成状态
 
-- 不少于 1,000 条真实 HADDOCK3 结果；
-- pose-level 能量、8X6B/9E6Y 几何、失败原因和 leakage-safe split ETL；
-- `reports/final_audit.json` 全部硬门槛通过。
+- 冻结 cohort：`1,024/1,024` exact-unique。
+- sequence QC：`1,024/1,024`，hard-fail = 0。
+- RF2：3 个 seed 各 `1,024/1,024`，无缺失。
+- NanoBodyBuilder2：`1,024/1,024 success`。
+- HADDOCK3：`1,024/1,024 success`。
+- 8X6B/9E6Y 双参考后处理：`1,024/1,024 success`。
+- final ETL 和审计：`PASS`。
+- 已知剩余限制：当前 global near-CDR3 硬防泄漏图只有两个连通分量，因此数据集仅提供 train/validation，明确标记 `test_split_available=false`。
 
 ## 声明边界
 
