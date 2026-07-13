@@ -529,11 +529,16 @@ class DockingGoldEvidenceTests(unittest.TestCase):
             rows[0]["cdr3_pvrl2_residue_pair_occlusion"] = "3"
             rows[0]["cdr3_occlusion_fraction"] = "nan"
             write_csv(classification, rows)
+            mechanism = root / row["run_id"] / "8x6b_baseline/haddock3_top_model_mechanism_scores_8x6b.csv"
+            mechanism_rows = MOD.read_csv(mechanism)
+            mechanism_rows[0]["align_rmsd_A"] = "inf"
+            write_csv(mechanism, mechanism_rows)
             _poses, _evidence, errors = MOD.evaluate_postprocessed_run(row, root, sync_root, "f" * 64)
             self.assertTrue(any(error.startswith("classification_8x6b_nonnegative_integer:") for error in errors))
             self.assertTrue(any(error.startswith("classification_8x6b_fraction:") for error in errors))
             self.assertTrue(any(error.startswith("classification_8x6b_cdr3_exceeds_total:") for error in errors))
             self.assertTrue(any(error.startswith("classification_mechanism_hotspot_mismatch:") for error in errors))
+            self.assertTrue(any(error.startswith("mechanism_8x6b_finite_nonnegative:") for error in errors))
 
     def test_repeatability_requires_exact_complete_replicate_set(self) -> None:
         expected = {f"P2PILOT_{index:03d}" for index in range(1, 17)}

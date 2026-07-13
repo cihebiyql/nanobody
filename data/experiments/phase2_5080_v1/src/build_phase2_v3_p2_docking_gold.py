@@ -1185,7 +1185,9 @@ def validate_geometry_numeric_closure(
                 errors.append(f"{label}_nonnegative_integer:{model}:{field}:{error}")
 
     fraction_fields = {
-        key for key in [*classification, *mechanism] if "fraction" in key
+        key
+        for key in [*classification, *mechanism]
+        if key.endswith("_fraction") and not key.startswith("pass_")
     }
     parsed_fractions: dict[str, float] = {}
     for field in sorted(fraction_fields):
