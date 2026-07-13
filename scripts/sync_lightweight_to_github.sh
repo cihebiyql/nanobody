@@ -8,6 +8,7 @@ REMOTE_URL="${NANOBODY_REMOTE_URL:-git@github.com:cihebiyql/nanobody.git}"
 KEY="${NANOBODY_GIT_KEY:-/root/.ssh/id_ed25519_github_yuqiule}"
 BRANCH="${NANOBODY_BRANCH:-main}"
 MANIFEST="${NANOBODY_SYNC_MANIFEST:-docs/lightweight_sync_manifest.txt}"
+STATUS_DOC="${NANOBODY_SYNC_STATUS_DOC:-docs/LIGHTWEIGHT_SYNC_STATUS.md}"
 INTENT_LINE="${1:-Preserve lightweight nanobody work without uploading heavy datasets}"
 
 if [[ ! -f "$KEY" ]]; then
@@ -96,6 +97,11 @@ trap - EXIT
 if git diff --cached --quiet; then
   echo "No lightweight changes to commit."
 else
+  python3 scripts/update_lightweight_sync_status.py \
+    --manifest "$MANIFEST" \
+    --output "$STATUS_DOC" \
+    --synced-at "$(date --iso-8601=seconds)"
+  git add -f "$STATUS_DOC" scripts/update_lightweight_sync_status.py
   COMMIT_MSG="$(mktemp)"
   cat > "$COMMIT_MSG" <<EOF
 $INTENT_LINE

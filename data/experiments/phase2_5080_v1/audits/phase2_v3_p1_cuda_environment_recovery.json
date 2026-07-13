@@ -1,0 +1,18 @@
+{
+  "dedicated_python": "/root/.local/share/pvrig-v3p-cu130/bin/python",
+  "environment_isolation": "dedicated venv; system Python left unchanged",
+  "initial_failed_run": "experiments/phase2_5080_v1/runs/phase2_v3_p1_formal/formal_20260713T160328",
+  "initial_failure": "system Python exposed torch 2.13.0+cpu and CUDA was unavailable before checkpoint creation",
+  "probe": {
+    "cuda_available": true,
+    "device_count": 1,
+    "device_name": "NVIDIA GeForce RTX 5080",
+    "smoke_sum": 523776.0,
+    "torch": "2.13.0+cu130",
+    "torch_cuda": "13.0"
+  },
+  "schema_version": "phase2_v3_p1_cuda_environment_recovery_v1",
+  "status": "PASS_CUDA_ENVIRONMENT_RESTORED",
+  "successful_formal_run": "experiments/phase2_5080_v1/runs/phase2_v3_p1_formal/formal_20260713T161346",
+  "successful_pipeline_summary_sha256": "7851b3e9e9e8375ab8fb0c9572e10faeedc56fa4b18aa2b7c174d0d72fc777ad"
+}

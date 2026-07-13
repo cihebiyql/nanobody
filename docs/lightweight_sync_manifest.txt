@@ -414,7 +414,9 @@ data/experiments/phase2_5080_v1/audits/phase2_v2_5_readiness_audit_v1.json
 data/experiments/phase2_5080_v1/audits/phase2_v2_5_split_seal_audit_v1.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_g1_esm2_smoke_cache_validation.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_g2_preregistration.json
+data/experiments/phase2_5080_v1/audits/phase2_v3_p1_cuda_environment_recovery.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_formal_data_audit.json
+data/experiments/phase2_5080_v1/audits/phase2_v3_p1_formal_outcome_interpretation.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_generic_replay_audit.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_preregistration.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_p1_test_spec.json
@@ -426,6 +428,7 @@ data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_run_task_sha256_2
 data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_audit.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_postprocess_audit.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_sync_audit.json
+data/experiments/phase2_5080_v1/audits/pvrig_teacher500_5080_offload_audit.json
 data/experiments/phase2_5080_v1/audits/pvrig_teacher500_failed_candidate_recovery.json
 data/experiments/phase2_5080_v1/audits/pvrig_teacher500_recovery_after_20260713T082432.txt
 data/experiments/phase2_5080_v1/audits/pvrig_teacher500_recovery_before_20260713T082157.txt
@@ -1658,6 +1661,7 @@ docking/success_case_validation/validate_mutant_panel_completion.py
 docking/success_case_validation/validate_patent_sequence_artifacts.py
 docking/success_case_validation/validate_success_case_standards.py
 docs/LIGHTWEIGHT_SYNC_INVENTORY.md
+docs/LIGHTWEIGHT_SYNC_STATUS.md
 docs/PHASE_I_B_PLAN.md
 docs/PHASE_I_EXPLORATION.md
 docs/PHASE_I_PLAN.md
@@ -4722,6 +4726,7 @@ scripts/lightweight_sync_daemon.sh
 scripts/reconcile_pvrig_numbering.py
 scripts/run_known_positive_validator.py
 scripts/sync_lightweight_to_github.sh
+scripts/update_lightweight_sync_status.py
 scripts/verify_phase_i_outputs.py
 tests/test_extract_pvrig_interface.py
 tests/test_reconcile_pvrig_numbering.py

@@ -1,0 +1,62 @@
+{
+  "claim_boundary": "computational_docking_teacher_not_binding_or_experimental_blocking_truth",
+  "final_candidate_count": 500,
+  "final_contact_pose_failure_count": 0,
+  "final_pose_count": 4394,
+  "final_teacher_audit_sha256": "78fb0b06ffa633ed867a33143da56fe8fcf16bda5d552feb3fc553d82596057c",
+  "final_teacher_status": "PASS_FORMAL_TEACHER500_READY",
+  "node1_archives": [
+    "/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/teacher500_offload_pre5080_archive_20260713T1405",
+    "/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/teacher500_failed_candidates_archive_20260713T1410",
+    "/data/qlyu/projects/pvrig_teacher_formal_v1_20260712/teacher500_tail24_pre5080_archive_20260713T1433"
+  ],
+  "offload_batches": [
+    {
+      "candidate_count": 285,
+      "local_validation_sha256": "c92fd0b86836dc6ee8af071fcdf1c31b996190f3614b97fa4fbbb03e6fa125dc",
+      "name": "shards_2_to_5",
+      "selected_model_count": 2520
+    },
+    {
+      "candidate_count": 24,
+      "local_validation_sha256": "6f5be607eccb1c8b1785e7244879a5f720cb8f020069cb3c5f4c80428045b146",
+      "name": "tail24_shards_0_1_6",
+      "selected_model_count": 226
+    },
+    {
+      "candidate_count": 3,
+      "local_validation_sha256": "84deb0d73f5d665dda822f7e0cce7ee12fd39e5ddaf689b66b6fbef40554f4c5",
+      "name": "failed_candidate_default_config_recovery",
+      "selected_model_counts": [
+        7,
+        10,
+        9
+      ],
+      "tolerance_relaxation_used": false
+    }
+  ],
+  "runtime_ncores": {
+    "note": "The 34 max=8 logs are retained historical runs completed before the ncores=4 correction; all 500 post-run configs are ncores=4.",
+    "observed_max_selected_cores": {
+      "4": 466,
+      "8": 34
+    },
+    "postrun_config": {
+      "4": 500,
+      "8": 0
+    }
+  },
+  "schema_version": "pvrig_teacher500_5080_offload_audit_v1",
+  "shard6_overlap_race": {
+    "aux_result": "rc=0 at 2026-07-13T15:24:38+08:00 with 10 selected models",
+    "candidate_id": "RFV1__PLDNANO_VHH_00292__A_CENTER__H3__B08__M01",
+    "controller_collision": "rc=1 at 2026-07-13T15:20:07+08:00 because the aux run_dir was non-empty",
+    "resolution": "later lexicographic success attestation after selected-model and consensus validation"
+  },
+  "software": {
+    "cns_sha256": "ce6b0c6b9d38e09991fb15431402e92cb38c723544b2dcca7a8dc28b66643927",
+    "haddock_version": "2025.11.0"
+  },
+  "status": "PASS_TEACHER500_CLOSED_WITH_AUDITED_5080_OFFLOAD",
+  "teacher_manifest_sha256": "9285dd09db2ca1492fa97d52e7d009f4891777548adf06bc1845935aceeb0991"
+}

@@ -1,0 +1,145 @@
+{
+  "artifact_manifest_sha256": "dd34bc999f1a43ae20d3fc40af7b09d827b6a4055c937ffb959373aaad9b1167",
+  "bootstrap_ci95": [
+    0.01720441502593295,
+    0.11795865501980266
+  ],
+  "checks": {
+    "all_three_seeds_ndcg_exceed_strongest_baseline": true,
+    "antigen_ablation_rejected": false,
+    "ensemble_ndcg_exceeds_strongest_dev_selected_baseline": true,
+    "g1_g2_ef_at_10_ge_threshold": false,
+    "g1_g2_recall_at_20_ge_threshold": false,
+    "generic_replay_seed_83_contact_auprc_retention_fraction_ge_0.9": false,
+    "generic_replay_seed_83_paratope_auprc_retention_fraction_ge_0.9": true,
+    "generic_replay_seed_89_contact_auprc_retention_fraction_ge_0.9": true,
+    "generic_replay_seed_89_paratope_auprc_retention_fraction_ge_0.9": true,
+    "generic_replay_seed_97_contact_auprc_retention_fraction_ge_0.9": false,
+    "generic_replay_seed_97_paratope_auprc_retention_fraction_ge_0.9": true,
+    "hotspot_shuffle_rejected": false,
+    "label_shuffle_rejected": true,
+    "paired_cluster_permutation_p_lt_0_05": false,
+    "parent_cluster_bootstrap_ci_lower_gt_zero": true,
+    "relevance_spearman_ge_threshold": true,
+    "target_permutation_rejected": false,
+    "vhh_only_rejected": false
+  },
+  "claim_boundary": "pvrig_docking_geometry_surrogate_not_binding_or_experimental_blocking_truth",
+  "control_relative_ef_drop": {
+    "antigen_ablation": 0.0,
+    "hotspot_shuffle": 0.0,
+    "label_shuffle": 0.24999999999999992,
+    "target_permutation": 0.0,
+    "vhh_only": 0.12499999999999996
+  },
+  "deployment_decision": "DO_NOT_DEPLOY_V3_P1_AS_PVRIG_TARGET_CONDITIONED_FRONTSCREEN",
+  "ensemble_metrics": {
+    "g1_g2_count": 53,
+    "g1_g2_ef_at_10_percent": 1.4150943396226414,
+    "g1_g2_found_at_10_percent": 8,
+    "g1_g2_found_at_20_percent": 14,
+    "g1_g2_recall_at_20_percent": 0.2641509433962264,
+    "ordinal_ndcg_at_100": 0.9876571313872073,
+    "ordinal_ndcg_effective_k": 75,
+    "relevance_spearman": 0.5214833955830732,
+    "row_count": 75,
+    "top_10_percent_count": 8,
+    "top_20_percent_count": 15
+  },
+  "formal_evaluation_sha256": "03788cac0e9f154870b168334db1eda5927f88540cd8992f2b49a2385cad549b",
+  "formal_run": "experiments/phase2_5080_v1/runs/phase2_v3_p1_formal/formal_20260713T161346",
+  "full_training_summary_sha256": "d1ffc6936f1c887fbae603e8a7be05fa71915993f6a03ef90db78ba7befd33da",
+  "generic_replay_retention": {
+    "minimum_retention_fraction": 0.9,
+    "per_seed": {
+      "83": {
+        "contact_auprc_retention_fraction": 0.6645860365001333,
+        "paratope_auprc_retention_fraction": 0.9911692349189543
+      },
+      "89": {
+        "contact_auprc_retention_fraction": 1.0524479364036265,
+        "paratope_auprc_retention_fraction": 0.9982572950732531
+      },
+      "97": {
+        "contact_auprc_retention_fraction": 0.7278703587224984,
+        "paratope_auprc_retention_fraction": 0.9999539494366971
+      }
+    },
+    "schema_version": "phase2_v3_p1_generic_replay_retention_v1",
+    "sha256": "4614793b48ff8e118e2769ea1cdaecac2a268924771f3d0af6728c47b9d36171"
+  },
+  "geometry_metrics": {
+    "field_count": 8,
+    "macro_field_mae": 26.223873953229308,
+    "macro_field_spearman": 0.48076749822151327,
+    "per_field": {
+      "median_cdr3_occlusion_8x6b": {
+        "mae": 27.916304050021704,
+        "spearman": 0.6885292657343715
+      },
+      "median_cdr3_occlusion_9e6y": {
+        "mae": 26.993156500922307,
+        "spearman": 0.69143110010296
+      },
+      "median_hotspot_overlap_8x6b": {
+        "mae": 1.6356982760959202,
+        "spearman": 0.5353826188820748
+      },
+      "median_hotspot_overlap_9e6y": {
+        "mae": 0.7845426389906142,
+        "spearman": 0.10266804533630751
+      },
+      "median_total_occlusion_8x6b": {
+        "mae": 74.33196180555557,
+        "spearman": 0.4692309882692219
+      },
+      "median_total_occlusion_9e6y": {
+        "mae": 77.72455783420139,
+        "spearman": 0.4468089647311161
+      },
+      "teacher_relevance_mean": {
+        "mae": 0.30980044289055725,
+        "spearman": 0.6118564411140773
+      },
+      "topk_a_or_b_fraction": {
+        "mae": 0.09497007715638903,
+        "spearman": 0.3002325616019769
+      }
+    },
+    "row_count": 75
+  },
+  "label_shuffle_training_summary_sha256": "40de25a653a5926c28b9e5ccc92b5e2c18d0c1668ec450206ea3b8e290d1e51f",
+  "next_version_rule": "Retire this formal test from tuning; fix target dependence and contact retention on train/dev, preregister prevalence-feasible metrics, and evaluate once on a newly untouched parent-cluster holdout.",
+  "permutation_p_value": 0.07246376811594203,
+  "preregistered_threshold_feasibility": {
+    "g1_g2_ef_at_10_mathematical_maximum": 1.4150943396226414,
+    "g1_g2_ef_at_10_threshold": 3.0,
+    "g1_g2_ef_threshold_feasible": false,
+    "g1_g2_recall_at_20_mathematical_maximum": 0.2830188679245283,
+    "g1_g2_recall_at_20_threshold": 0.7,
+    "g1_g2_recall_threshold_feasible": false,
+    "interpretation": "The frozen FAIL remains authoritative. These two gates were mathematically impossible at the observed sealed-test prevalence and must be redesigned only in a new version with a new untouched holdout."
+  },
+  "schema_version": "phase2_v3_p1_formal_outcome_interpretation_v1",
+  "status": "FAIL_V3_P1_FORMAL_SURROGATE_GATE",
+  "strongest_baseline_test_metrics": {
+    "g1_g2_count": 53,
+    "g1_g2_ef_at_10_percent": 1.0613207547169812,
+    "g1_g2_found_at_10_percent": 6,
+    "g1_g2_found_at_20_percent": 10,
+    "g1_g2_recall_at_20_percent": 0.18867924528301888,
+    "ordinal_ndcg_at_100": 0.9209483866469251,
+    "ordinal_ndcg_effective_k": 75,
+    "relevance_spearman": -0.22576964660463472,
+    "row_count": 75,
+    "top_10_percent_count": 8,
+    "top_20_percent_count": 15
+  },
+  "test_prevalence": {
+    "g1_g2_count": 53,
+    "g1_g2_fraction": 0.7066666666666667,
+    "rows": 75,
+    "top10_count": 8,
+    "top20_count": 15
+  }
+}

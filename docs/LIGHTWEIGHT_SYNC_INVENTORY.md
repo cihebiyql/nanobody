@@ -1,5 +1,7 @@
 # Lightweight Sync Inventory
 
+> This file documents the selection policy and an audit snapshot. For live counts and the latest content-sync time, see `docs/LIGHTWEIGHT_SYNC_STATUS.md`.
+
 - Generated: 2026-07-10 10:25:05 Asia/Shanghai
 - Workspace: `/mnt/d/work/抗体`
 - Target remote: `git@github.com:cihebiyql/nanobody.git`

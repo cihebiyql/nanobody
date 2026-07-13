@@ -2,7 +2,7 @@
 
 这是 `/mnt/d/work/抗体` 本地工作区的轻量 Git 镜像，用于保存和共享纳米抗体 / PVRIG 项目中可复查、可阅读、可复现的代码、脚本、文档、报告和小型结构/表格文件。
 
-本仓库刻意不上传大型数据集、模型权重、Conda/本地环境、缓存、对接运行中间产物和批量下载镜像。完整同步范围以 `docs/lightweight_sync_manifest.txt` 为准；当前轻量清单约 `1260` 个文件，约 `39.39 MiB`。
+本仓库刻意不上传大型数据集、模型权重、Conda/本地环境、缓存、对接运行中间产物和批量下载镜像。完整同步范围以 `docs/lightweight_sync_manifest.txt` 为准；最新文件数、体量和同步时间见 `docs/LIGHTWEIGHT_SYNC_STATUS.md`。
 
 ## 快速阅读入口
 
@@ -18,6 +18,7 @@
 | 本地模型复现说明 | `code/docs/NANOBODY_MODEL_REPRODUCTION_GUIDE_ZH.md`, `code/docs/DEEPNANO_DETAILED_ZH.md` |
 | Node1 部署和 QC 流程 | `node1/NODE1_ANTIBODY_TOOLS_QUICKSTART.md`, `node1/VHH_COMPETITION_QC_PIPELINE_RUNBOOK.md` |
 | 轻量同步规则 | `docs/LIGHTWEIGHT_SYNC_INVENTORY.md`, `scripts/sync_lightweight_to_github.sh` |
+| 最新同步状态 | `docs/LIGHTWEIGHT_SYNC_STATUS.md` |
 
 ## 文件夹导览
 
@@ -163,6 +164,7 @@ PVRIG-PVRL2 机制和结构界面的轻量可视化入口。包含一个 Python 
 
 - 构建 allowlist：`scripts/build_lightweight_sync_manifest.py`
 - 同步到 GitHub：`scripts/sync_lightweight_to_github.sh`
+- 最新仓库可见进展：`docs/LIGHTWEIGHT_SYNC_STATUS.md`
 - 启动周期自动同步：`scripts/lightweight_sync_daemon.sh start`
 - 查看/停止自动同步：`scripts/lightweight_sync_daemon.sh status`, `scripts/lightweight_sync_daemon.sh stop`
 - 自动同步默认每 120 秒执行一次，可用 `NANOBODY_SYNC_INTERVAL` 调整；日志和状态写入本地 `.omx/`，不上传运行日志。

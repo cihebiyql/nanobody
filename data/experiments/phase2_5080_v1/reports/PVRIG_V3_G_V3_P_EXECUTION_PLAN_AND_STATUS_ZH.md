@@ -1,6 +1,8 @@
 # PVRIG V3-G / V3-P 执行规划与当前状态
 
-更新时间：2026-07-13 01:27（Asia/Shanghai）
+更新时间：2026-07-13 16:40（Asia/Shanghai）
+
+> 最新状态：Teacher500 docking、双参考 geometry/contact teacher、V3-P full + label-shuffle 三种子训练和 evaluator-only formal test 已全部完成。冻结结论为 `FAIL_V3_P1_FORMAL_SURROGATE_GATE`；这是完整执行后的科学门失败，不是 pipeline 未跑完。
 
 ## 一、当前结论
 
@@ -528,27 +530,238 @@ binding prior 与 geometry surrogate 冲突
 
 再增加 300-500 条 teacher，目标总量约 800-1,000 条。
 
-## 六、接下来按此顺序执行
+## 六、Teacher500 与 V3-P 已完成正式闭包
 
-1. 保持 Node1 RFantibody 生产运行，直到 240/240 task 完成且 0 失败。
-2. V3-G2 已完成并回退 `mean-pooled v3_full`；主门已失败，因此 null controls 记为不必要的后续晋级计算，而不将其伪装为 PASS。
-3. 对 8,640 raw 输出运行 collector，冻结 exact-dedup candidate manifest。
-4. 运行快速 hard gate 和通用 prior；按预注册配额抽取约 500 条 teacher，不机械取模型 Top 500。
-5. 生成正式 monomer + HADDOCK + 8X6B/9E6Y + contact-frequency teacher 包。
-6. 用 parent-cluster split 训练 V3-P，并做 leave-parent/method challenge。
-7. V3-P 只负责进入昂贵 Node1 的前筛排序；最终提交仍由结构、docking、开发性和 portfolio 多样性共同决定。
+### 6.1 Docking teacher 最终规模
 
-## 七、当前停止条件
+Node1 与 5080 审计分流后的最终闭包为：
 
-在下列条件全部满足前，不得声称 V3-P 或最终候选准备完成：
+```text
+Teacher candidates = 500 / 500
+HADDOCK selected poses = 4,394
+valid contact poses = 4,394
+failed contact poses = 0
+parent framework clusters = 40
+train / dev / formal test = 350 / 75 / 75
+status = PASS_FORMAL_TEACHER500_READY
+```
+
+pose 级几何分布：
+
+| consensus class | pose 数 |
+| --- | ---: |
+| `CONSENSUS_BLOCKER_LIKE_A` | 138 |
+| `SINGLE_BASELINE_BLOCKER_RECHECK` | 1,991 |
+| `BLOCKER_PLAUSIBLE_B` | 1,941 |
+| `EVIDENCE_INFERENCE_ONLY_E` | 324 |
+
+candidate 级分布：
+
+| 口径 | G1 | G2 | G3 | G5 |
+| --- | ---: | ---: | ---: | ---: |
+| best observed evidence | 92 | 357 | 50 | 1 |
+| stable multi-pose geometry | 13 | 339 | 135 | 13 |
+
+5080 分流和失败恢复没有更改 docking 科学配置：
+
+```text
+shard 2-5 offload = 285 candidates / 2,520 selected models
+tail offload = 24 candidates / 226 selected models
+3 个 Node1 CNS 输出丢失候选在 5080 默认配置下重跑成功
+tolerance relaxation used = false
+HADDOCK3 = 2025.11.0
+CNS SHA256 = ce6b0c6b9d38e09991fb15431402e92cb38c723544b2dcca7a8dc28b66643927
+```
+
+原 Node1 目录和竞态冲突记录都已保留，汇总审计为：
+
+```text
+experiments/phase2_5080_v1/audits/pvrig_teacher500_5080_offload_audit.json
+experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_sync_audit.json
+experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_postprocess_audit.json
+experiments/phase2_5080_v1/audits/pvrig_formal_teacher500_audit.json
+```
+
+### 6.2 正式数据已封存
+
+```text
+status = PASS_PHASE2_V3_P1_FORMAL_DATA_SEALED
+parent-cluster cross-split overlap = 0
+sequence hash closure = true
+train / dev / sealed test = 350 / 75 / 75
+```
+
+Teacher 主输出 SHA256：
+
+```text
+candidate_summary.csv = 14a75493825c826dc6e75f3c4471291d06bf0294b5778cc51e72d64898680270
+pose_summary.csv = 08a58ed0da194b90589ed529fb3de653eb751b5c5dbebf8fdc9a71c435d88216
+pose_contact_frequency.jsonl = f66be3f5d9bc5a31afc5689154da09462c12171501513de9f243c7a91b24f3a9
+teacher manifest = 7ac150eb759f8ad51b0877cdbe651ede0818d5ed29ccc72fe1c37867093bbfcd
+```
+
+### 6.3 Full/null 三种子与 evaluator-only unseal 已完成
+
+系统 Python 在启动时已漂移到 `torch 2.13.0+cpu`，因而第一个运行在任何 checkpoint 产生前 fail closed。后续建立了独立 venv，恢复与旧审计一致的：
+
+```text
+torch = 2.13.0+cu130
+CUDA = 13.0
+GPU = NVIDIA GeForce RTX 5080
+successful run = formal_20260713T161346
+```
+
+环境恢复证据：
+
+```text
+experiments/phase2_5080_v1/audits/phase2_v3_p1_cuda_environment_recovery.json
+```
+
+正式产物哈希：
+
+```text
+full training summary = d1ffc6936f1c887fbae603e8a7be05fa71915993f6a03ef90db78ba7befd33da
+label-shuffle summary = 40de25a653a5926c28b9e5ccc92b5e2c18d0c1668ec450206ea3b8e290d1e51f
+artifact manifest = dd34bc999f1a43ae20d3fc40af7b09d827b6a4055c937ffb959373aaad9b1167
+formal evaluation = 03788cac0e9f154870b168334db1eda5927f88540cd8992f2b49a2385cad549b
+pipeline summary = 7851b3e9e9e8375ab8fb0c9572e10faeedc56fa4b18aa2b7c174d0d72fc777ad
+```
+
+## 七、V3-P1 正式结果
+
+冻结结论：
+
+```text
+FAIL_V3_P1_FORMAL_SURROGATE_GATE
+```
+
+该 FAIL 必须保留，不能在看过 formal test 后修改阈值并仍称为同一版本。
+
+### 7.1 主指标
+
+| 指标 | 冻结门槛 | formal test | 结果 |
+| --- | ---: | ---: | --- |
+| G1+G2 Recall@Top20% | >=0.70 | 0.2642 | FAIL |
+| G1+G2 EF@Top10% | >=3.0 | 1.4151 | FAIL |
+| relevance Spearman | >=0.35 | 0.5215 | PASS |
+| ensemble NDCG@100 | > strongest baseline | 0.9877 vs 0.9209 | PASS |
+| parent-cluster bootstrap CI lower | >0 | 0.0172 | PASS |
+| paired parent-cluster permutation | p<0.05 | p=0.0725 | FAIL |
+| all 3 seed NDCG > baseline | required | 3/3 | PASS |
+
+其中两个早期富集门在封存 test 的实际阳性率下数学上不可达：
+
+```text
+formal test = 75 rows
+G1+G2 = 53 rows (70.7%)
+Top10% = 8 rows -> EF 理论上限 = 75/53 = 1.4151
+Top20% = 15 rows -> Recall 理论上限 = 15/53 = 0.2830
+```
+
+当前 ensemble 在 Top 8 找到 8 个 G1+G2，已达 EF 理论上限；Top 15 找到 14 个，接近 recall 理论上限。这说明预注册的 `3x EF / 70% recall` 是按低阳性率候选库设想的，与实际 teacher 分布不兼容。但这只是对 FAIL 的解释，不能追溯改写冻结判定。
+
+### 7.2 真正需要修正的失败
+
+target controls 没有显示足够的 PVRIG 条件依赖：
+
+| control | EF 相对下降 | 要求 | 结果 |
+| --- | ---: | ---: | --- |
+| hotspot shuffle | 0% | >=25% | FAIL |
+| antigen ablation | 0% | >=25% | FAIL |
+| target permutation | 0% | >=25% | FAIL |
+| VHH-only | 12.5% | >=25% | FAIL |
+| label shuffle | 25% | >=25% | PASS |
+
+这表明模型确实学到了 teacher 排序信号，但大部分信号仍可能来自 VHH 序列、parent 和生成器先验，而不是 PVRIG hotspot/antigen 条件。
+
+generic replay 也未全部通过：
+
+```text
+paratope AUPRC retention = 99.12% / 99.83% / 100.00%  -> 3/3 PASS
+contact AUPRC retention  = 66.46% / 105.24% / 72.79% -> 1/3 PASS
+```
+
+因此即使排除两个不可达的富集门，V3-P1 仍然不能被接受为 PVRIG target-conditioned 生产前筛器。
+
+详细解释审计：
+
+```text
+experiments/phase2_5080_v1/audits/phase2_v3_p1_formal_outcome_interpretation.json
+```
+
+## 八、接下来应该怎么做
+
+### 8.1 冻结 V3-P1，不直接部署
+
+```text
+V3-P1 = formal training complete, formal gate failed
+deployment = no
+claim = docking geometry surrogate research signal only
+```
+
+当前 Node1 大规模前筛仍应使用：
+
+```text
+cheap sequence/QC gates
++ mean-pooled generic prior 仅作弱先验
++ parent/patch/method diversity
++ 10%-20% exploration quota
+```
+
+不应让 V3-P1 独占 full QC 名额。
+
+### 8.2 V3-P2 只在 train/dev 上做诊断与改进
+
+1. 强化 generic multi-antigen target-swap/contrastive replay，不只保持 frozen output。
+2. 对 PVRIG hotspot mask 加入可验证的 counterfactual 排序损失。
+3. 限制 VHH-only / parent / generator-style 捷径，在 dev 上先要求 target controls 显著下降。
+4. 提高 generic contact replay 权重或冻结更多 contact adapter，直到三种子 retention 全部 >=90%。
+5. Teacher500 只有一种 generation method，因此当前不能声称已完成 leave-method challenge。
+
+### 8.3 新版本必须使用新的 untouched holdout
+
+`formal_20260713T161346` 的 75 条 test 已经解封，后续只能用于描述性对比，不能继续调参后仍称 pristine formal test。
+
+V3-P2 建议：
+
+```text
+新增 300-500 条 active-learning teacher
++ 新 parent framework clusters
++ 更多生成方法/局部 pose redesign
++ 对关键候选补独立 9E6Y docking
+-> 重新冻结 train/dev/new formal test
+```
+
+新预注册指标应根据 dev 中的标签基率设置为数学可达，例如：
+
+```text
+Precision@fixed Node1 budget
+Recall@budget / theoretical maximum recall
+NDCG and relevance Spearman
+target-control degradation
+contact/paratope replay retention
+parent-cluster bootstrap and permutation
+```
+
+## 九、当前停止条件与项目状态
+
+本轮“生成 teacher -> 训练 V3-P1 -> formal evaluator”的停止条件已全部满足：
 
 ```text
 RFantibody 240/240 complete
-正式 candidate manifest 和 fast-gate audit PASS
-约 500 条第一轮 prospective teacher 完整生成
-teacher per-pose/contact-frequency 字段完整
-V3-G formal gate 有明确 PASS/FAIL
-V3-P parent-cluster test 和 target-dependence controls 完成
+Teacher500 500/500 complete
+4,394/4,394 contact poses valid
+formal data sealed
+full 3 seeds complete
+label-shuffle 3 seeds complete
+artifact bundle hash-bound
+formal evaluator-only test unseal complete
 ```
 
-因此，当前的直接答案是：**先生成 PVRIG docking teacher 数据是正确且必要的，但它应与 V3-G 通用数据处理和训练并行推进，而不是让两条路径串行等待。**
+项目当前状态应记为：
+
+```text
+V3_P1_TRAINING_COMPLETE_FORMAL_GATE_FAILED
+```
+
+这不等于候选 portfolio 或实验阻断分子已准备完成。下一个科学步骤是建立 V3-P2 的 target-dependence 修复和新 holdout，而不是在已解封的 P1 test 上追求一个表面 PASS。
