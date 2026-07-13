@@ -172,4 +172,5 @@ split 以 RFdiffusion backbone、generation arm 和全局 near-CDR3 family（`Se
 - GPU 阶段在当前共享节点使用 `MAX_LOAD1=400`、`nice=10` 和每任务 2 个 BLAS/OpenMP 线程；这个较高 load 门槛不用于 HADDOCK。
 - HADDOCK3 由中央 load-aware 控制器调度；node1 为 64 核，当前有其他训练负载时不固定启动大量并发任务。
 - 本次全量运行的实际峰值为 10 路低优先级 HADDOCK：main controller 2 + sidecar1 6 + sidecar2 2；不再继续提高并发。
+- `scripts/watch_haddock_sidecars.sh` 只管理本项目的两个 sidecar。如果 scheduler 退出，它会先等孤儿 HADDOCK 任务降到已存活 scheduler 的容量内，再补齐 sidecar，避免因立即重启而瞬间超配。
 - 不停止、重启或降低其他用户/项目的进程优先级。
