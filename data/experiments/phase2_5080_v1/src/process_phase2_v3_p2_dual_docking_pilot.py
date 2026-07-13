@@ -59,6 +59,28 @@ RECEPTORS = {
     },
 }
 MODEL_RE = re.compile(r"cluster_(\d+)_model_(\d+)")
+POSTPROCESS_ARTIFACT_KEYS = (
+    "consensus",
+    "classification_8x6b",
+    "classification_9e6y",
+    "mechanism_8x6b",
+    "mechanism_9e6y",
+    "canonical_contact_summary",
+    "canonical_contact_pairs",
+    "ranks",
+)
+POSTPROCESS_COUNT_FIELDS = (
+    "selected_models",
+    "pose_clusters",
+    "consensus_rows",
+    "classification_8x6b_rows",
+    "classification_9e6y_rows",
+    "mechanism_8x6b_rows",
+    "mechanism_9e6y_rows",
+    "canonical_contact_pose_rows",
+    "canonical_contact_pair_rows",
+    "contact_failures",
+)
 
 
 def read_csv(path: Path, delimiter: str = ",") -> list[dict[str, str]]:
@@ -85,6 +107,112 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def postprocess_artifact_paths(workdir: Path, run_id: str) -> dict[str, Path]:
+    reports = workdir / "reports"
+    return {
+        "consensus": reports / f"{run_id}_dual_baseline_consensus.csv",
+        "classification_8x6b": reports / f"{run_id}_8x6b_blocker_classification.csv",
+        "classification_9e6y": reports / f"{run_id}_9e6y_blocker_classification.csv",
+        "mechanism_8x6b": workdir / "8x6b_baseline/haddock3_top_model_mechanism_scores_8x6b.csv",
+        "mechanism_9e6y": workdir / "9e6y_baseline/haddock3_top_model_mechanism_scores_9e6y.csv",
+        "canonical_contact_summary": reports / f"{run_id}_canonical_contact_summary.csv",
+        "canonical_contact_pairs": reports / f"{run_id}_canonical_contact_pairs.csv",
+        "ranks": reports / "haddock3_model_ranks.csv",
+    }
+
+
+def read_json_object(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"Expected JSON object: {path}")
+    return payload
+
+
+def build_postprocess_marker(
+    row: dict[str, str],
+    sync_root: Path,
+    workdir: Path,
+    run_dir: Path,
+    selected: Sequence[tuple[str, Path, int]],
+    evidence: dict[str, Any],
+    run_manifest_sha256: str,
+) -> dict[str, Any]:
+    run_id = row["run_id"]
+    completion_relpath = row.get("completion_relpath", f"runs/{run_id}/{run_id}.complete.json")
+    completion_path = Path(completion_relpath)
+    if not completion_path.is_absolute():
+        completion_path = sync_root / completion_path
+    if not completion_path.is_file():
+        raise FileNotFoundError(f"Missing original docking completion: {completion_path}")
+    docking_completion = read_json_object(completion_path)
+    identity_expectations = {
+        "protocol_id": PROTOCOL_ID,
+        "run_id": run_id,
+        "pilot_id": row["pilot_id"],
+        "source_candidate_id": row["source_candidate_id"],
+        "seed_role": row["seed_role"],
+    }
+    for field, expected in identity_expectations.items():
+        if docking_completion.get(field) != expected:
+            raise ValueError(
+                f"Docking completion identity mismatch for {run_id}: "
+                f"{field}={docking_completion.get(field)!r}!={expected!r}"
+            )
+    if str(docking_completion.get("receptor_id", "")).lower() != row["receptor_id"].lower():
+        raise ValueError(f"Docking completion receptor mismatch for {run_id}")
+    if docking_completion.get("status") != "PASS_DOCKING_OUTPUT_COMPLETE":
+        raise ValueError(f"Docking completion is not PASS for {run_id}")
+
+    artifacts: dict[str, dict[str, str]] = {}
+    for key, path in postprocess_artifact_paths(workdir, run_id).items():
+        if not path.is_file():
+            raise FileNotFoundError(f"Missing postprocess artifact {key}: {path}")
+        artifacts[key] = {
+            "relpath": str(path.relative_to(workdir)),
+            "sha256": sha256_file(path),
+        }
+    selected_inventory = []
+    for model, path, rank in selected:
+        if not path.is_file() or not path.stat().st_size:
+            raise FileNotFoundError(f"Missing selected pose for {run_id}: {path}")
+        selected_inventory.append(
+            {
+                "model": model,
+                "filename": path.name,
+                "sha256": sha256_file(path),
+                "haddock_rank": rank,
+            }
+        )
+    counts = {field: evidence[field] for field in POSTPROCESS_COUNT_FIELDS}
+    return {
+        "schema_version": "phase2_v3_p2_dual_docking_run_postprocess_v1_1",
+        "protocol_id": PROTOCOL_ID,
+        "status": "PASS",
+        "run_id": run_id,
+        "pilot_id": row["pilot_id"],
+        "source_candidate_id": row["source_candidate_id"],
+        "generation_receptor": row["receptor_id"].lower(),
+        "seed_role": row["seed_role"],
+        "run_manifest_sha256": run_manifest_sha256,
+        "docking_completion": {
+            "relpath": completion_relpath,
+            "sha256": sha256_file(completion_path),
+            **docking_completion,
+        },
+        "input_sha256": {
+            "config": row["config_sha256"],
+            "monomer": row["monomer_sha256"],
+            "receptor": row["receptor_sha256"],
+        },
+        "selected_pose_files": selected_inventory,
+        "counts": counts,
+        "artifacts": artifacts,
+        "consensus_sha256": artifacts["consensus"]["sha256"],
+        "run_dir": str(run_dir),
+        "claim_boundary": CLAIM_BOUNDARY,
+    }
 
 
 def model_name(path: Path) -> str:
@@ -550,37 +678,54 @@ def resolve_run_dir(sync_root: Path, row: dict[str, str]) -> Path:
 
 
 def completion_evidence(workdir: Path, run_id: str, expected_models: int) -> dict[str, Any]:
-    reports = workdir / "reports"
-    consensus = reports / f"{run_id}_dual_baseline_consensus.csv"
-    class_paths = [reports / f"{run_id}_{receptor}_blocker_classification.csv" for receptor in RECEPTORS]
+    paths = postprocess_artifact_paths(workdir, run_id)
+
+    def rows_for(key: str) -> list[dict[str, str]]:
+        path = paths[key]
+        return read_csv(path) if path.is_file() else []
+
     row_counts = {
-        "consensus_rows": len(read_csv(consensus)) if consensus.exists() else 0,
-        **{
-            f"classification_{receptor}_rows": len(read_csv(path)) if path.exists() else 0
-            for receptor, path in zip(RECEPTORS, class_paths)
-        },
+        "consensus_rows": len(rows_for("consensus")),
+        "classification_8x6b_rows": len(rows_for("classification_8x6b")),
+        "classification_9e6y_rows": len(rows_for("classification_9e6y")),
+        "mechanism_8x6b_rows": len(rows_for("mechanism_8x6b")),
+        "mechanism_9e6y_rows": len(rows_for("mechanism_9e6y")),
     }
-    mechanism_paths = [workdir / f"{receptor}_baseline/haddock3_top_model_mechanism_scores_{receptor}.csv" for receptor in RECEPTORS]
-    contact_rows = sum(len(read_csv(path)) for path in mechanism_paths if path.exists())
-    canonical_summary = reports / f"{run_id}_canonical_contact_summary.csv"
-    canonical_rows = read_csv(canonical_summary) if canonical_summary.exists() else []
+    canonical_rows = rows_for("canonical_contact_summary")
+    canonical_pair_rows = rows_for("canonical_contact_pairs")
+    rank_rows = rows_for("ranks")
     canonical_failures = sum(row.get("status") != "PASS" for row in canonical_rows)
-    contact_failures = 2 * expected_models - contact_rows + canonical_failures
+    contact_failures = (
+        max(0, expected_models - row_counts["mechanism_8x6b_rows"])
+        + max(0, expected_models - row_counts["mechanism_9e6y_rows"])
+        + canonical_failures
+    )
     complete = (
         all(value == expected_models for value in row_counts.values())
         and len(canonical_rows) == expected_models
+        and len(rank_rows) == expected_models
+        and paths["canonical_contact_pairs"].is_file()
         and contact_failures == 0
     )
     return {
         **row_counts,
-        "contact_rows": contact_rows,
+        "contact_rows": row_counts["mechanism_8x6b_rows"] + row_counts["mechanism_9e6y_rows"],
         "canonical_contact_pose_rows": len(canonical_rows),
+        "canonical_contact_pair_rows": len(canonical_pair_rows),
+        "rank_rows": len(rank_rows),
         "contact_failures": contact_failures,
         "complete": complete,
     }
 
 
-def process_one(row: dict[str, str], sync_root: Path, work_root: Path, top_n: int, min_models: int) -> dict[str, Any]:
+def process_one(
+    row: dict[str, str],
+    sync_root: Path,
+    work_root: Path,
+    top_n: int,
+    min_models: int,
+    run_manifest_sha256: str,
+) -> dict[str, Any]:
     run_id = row["run_id"]
     workdir = work_root / run_id
     started = time.monotonic()
@@ -594,7 +739,14 @@ def process_one(row: dict[str, str], sync_root: Path, work_root: Path, top_n: in
             raise ValueError(f"Only {cluster_count} pose clusters for {run_id}")
         expected = len(selected)
         before = completion_evidence(workdir, run_id, expected)
+        before.update({"selected_models": expected, "pose_clusters": cluster_count})
         if before["complete"]:
+            marker = build_postprocess_marker(
+                row, sync_root, workdir, run_dir, selected, before, run_manifest_sha256
+            )
+            (workdir / "postprocess.complete.json").write_text(
+                json.dumps(marker, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
             return {
                 "run_id": run_id,
                 "pilot_id": row["pilot_id"],
@@ -687,24 +839,12 @@ def process_one(row: dict[str, str], sync_root: Path, work_root: Path, top_n: in
                 log,
             )
         evidence = completion_evidence(workdir, run_id, expected)
+        evidence.update({"selected_models": expected, "pose_clusters": cluster_count})
         if not evidence["complete"]:
             raise ValueError(f"Incomplete postprocess evidence for {run_id}: {evidence}")
-        completion = {
-            "schema_version": "phase2_v3_p2_dual_docking_run_postprocess_v1_1",
-            "protocol_id": PROTOCOL_ID,
-            "status": "PASS",
-            "run_id": run_id,
-            "pilot_id": row["pilot_id"],
-            "source_candidate_id": row["source_candidate_id"],
-            "generation_receptor": source_receptor,
-            "seed_role": row["seed_role"],
-            "selected_models": expected,
-            "pose_clusters": cluster_count,
-            "run_dir": str(run_dir),
-            "consensus_sha256": sha256_file(workdir / "reports" / f"{run_id}_dual_baseline_consensus.csv"),
-            "contact_failures": 0,
-            "claim_boundary": CLAIM_BOUNDARY,
-        }
+        completion = build_postprocess_marker(
+            row, sync_root, workdir, run_dir, selected, evidence, run_manifest_sha256
+        )
         (workdir / "postprocess.complete.json").write_text(json.dumps(completion, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         return {
             "run_id": run_id,
@@ -754,10 +894,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if invalid_protocol:
         raise ValueError(f"Invalid Pilot64 v1.1 protocol rows: {invalid_protocol[:10]}")
     args.work_root.mkdir(parents=True, exist_ok=True)
+    manifest_sha256 = sha256_file(args.manifest)
     results: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = {
-            pool.submit(process_one, row, args.sync_root, args.work_root, args.top_n, args.min_models): row["run_id"]
+            pool.submit(
+                process_one,
+                row,
+                args.sync_root,
+                args.work_root,
+                args.top_n,
+                args.min_models,
+                manifest_sha256,
+            ): row["run_id"]
             for row in rows
         }
         for future in as_completed(futures):
@@ -769,7 +918,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "protocol_id": PROTOCOL_ID,
         "status": "PASS" if not failures else "FAIL_POSTPROCESS_INCOMPLETE",
         "manifest": str(args.manifest),
-        "manifest_sha256": sha256_file(args.manifest),
+        "manifest_sha256": manifest_sha256,
         "sync_root": str(args.sync_root),
         "work_root": str(args.work_root),
         "requested_runs": len(rows),

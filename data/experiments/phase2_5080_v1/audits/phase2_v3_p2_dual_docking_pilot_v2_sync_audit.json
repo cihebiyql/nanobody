@@ -1,0 +1,248 @@
+{
+  "claim_boundary": "selected_node1_runtime_evidence_for_independent_dual_conformer_docking_gold",
+  "complete_runs": 8,
+  "failed_runs": 0,
+  "generation_receptor_counts": {
+    "8x6b": 4,
+    "9e6y": 4
+  },
+  "host": "node1",
+  "manifest": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_package_v2/manifests/run_manifest.csv",
+  "manifest_sha256": "e8a420471f68f646c82063ea3254347859f155409cad413a971f37d30b3278a9",
+  "minimum_clusters_per_run": 2,
+  "minimum_models_per_run": 8,
+  "outdir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_v2_node1_selected",
+  "protocol_id": "DG_A_PILOT64_V1_1",
+  "remote_root": "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_v2_20260714",
+  "requested_runs": 8,
+  "results": [
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "receptor_id": "8X6B",
+      "run_id": "P2PILOT_001__8X6B__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "receptor_id": "8X6B",
+      "run_id": "P2PILOT_001__8X6B__replicate",
+      "seed_role": "replicate",
+      "selected_models": 8,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 8,
+        "final": 8,
+        "flexref": 8,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 5,
+      "receptor_id": "9E6Y",
+      "run_id": "P2PILOT_001__9E6Y__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_001",
+      "pose_clusters": 7,
+      "receptor_id": "9E6Y",
+      "run_id": "P2PILOT_001__9E6Y__replicate",
+      "seed_role": "replicate",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 7,
+      "receptor_id": "8X6B",
+      "run_id": "P2PILOT_033__8X6B__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 4,
+      "receptor_id": "8X6B",
+      "run_id": "P2PILOT_033__8X6B__replicate",
+      "seed_role": "replicate",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 10,
+      "receptor_id": "9E6Y",
+      "run_id": "P2PILOT_033__9E6Y__main",
+      "seed_role": "main",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    },
+    {
+      "complete": true,
+      "completion_contract": true,
+      "completion_marker": true,
+      "completion_parse_error": "",
+      "config_present": true,
+      "manifest_protocol_contract": true,
+      "pilot_id": "P2PILOT_033",
+      "pose_clusters": 6,
+      "receptor_id": "9E6Y",
+      "run_id": "P2PILOT_033__9E6Y__replicate",
+      "seed_role": "replicate",
+      "selected_models": 10,
+      "stage_output_count_errors": [],
+      "stage_output_counts": {
+        "emref": 10,
+        "final": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "traceback_consensus": true
+    }
+  ],
+  "schema_version": "phase2_v3_p2_dual_docking_pilot_sync_audit_v1_1",
+  "seed_role_counts": {
+    "main": 4,
+    "replicate": 4
+  },
+  "selected_models": 78,
+  "stage_output_requirements": {
+    "emref": {
+      "operator": "ge",
+      "value": 8
+    },
+    "final": {
+      "operator": "ge",
+      "value": 8
+    },
+    "flexref": {
+      "operator": "ge",
+      "value": 8
+    },
+    "rigidbody": {
+      "operator": "ge",
+      "value": 38
+    },
+    "seletop": {
+      "operator": "eq",
+      "value": 10
+    },
+    "topoaa": {
+      "operator": "eq",
+      "value": 2
+    }
+  },
+  "status": "PASS",
+  "sync_mode": "remote_sync_then_inventory",
+  "synced_bytes": 6017245,
+  "synced_file_count": 224
+}
