@@ -972,6 +972,89 @@ def atom_heavy_identity_signature(
     }
 
 
+def hetatm_heavy_identity_signature(
+    coordinates: bytes, chain: str, path: Path
+) -> dict[str, Any]:
+    """Hash heavy HETATM identity independently from the ATOM/OXT gate."""
+    try:
+        text = coordinates.decode("ascii")
+    except UnicodeDecodeError as error:
+        raise RecoveryError(f"PDB is not ASCII: {path}") from error
+    identities: list[tuple[str, str, str, str, str, str]] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if line[:6].strip() != "HETATM" or len(line) < 54 or line[21:22] != chain:
+            continue
+        try:
+            residue_number = int(line[22:26])
+        except ValueError as error:
+            raise RecoveryError(
+                f"Unparseable HETATM residue number in {path}:{line_number}"
+            ) from error
+        resname = line[17:20].strip()
+        atom_name = line[12:16].strip()
+        insertion = line[26:27].strip()
+        altloc = line[16:17].strip()
+        element = line[76:78].strip().upper() if len(line) >= 78 else ""
+        if not resname or not atom_name:
+            raise RecoveryError(f"Missing HETATM identity in {path}:{line_number}")
+        is_heavy = (
+            element not in {"H", "D"}
+            if element
+            else not atom_name.upper().startswith(("H", "D"))
+        )
+        if not is_heavy:
+            continue
+        identities.append(
+            (str(residue_number), insertion, resname, atom_name, altloc, element)
+        )
+    if len(identities) != len(set(identities)):
+        raise RecoveryError(f"Chain {chain} has duplicate heavy HETATM identities: {path}")
+    ordered = sorted(identities)
+    return {
+        "chain": chain,
+        "selection_rule": (
+            "HETATM-only heavy atoms; coordinates, serials, occupancy, and B-factor excluded"
+        ),
+        "identity_count": len(ordered),
+        "identity_sha256": sha256_bytes(canonical_json(ordered).encode("utf-8")),
+        "identities": ordered,
+    }
+
+
+def require_zero_heavy_hetatm(
+    identity: Mapping[str, Any],
+    label: str,
+    chain: str,
+    role: str,
+    amendment_v2: Mapping[str, Any],
+) -> dict[str, Any]:
+    rule = amendment_v2["heavy_hetatm_rule"]
+    if chain not in rule["applicable_chains"] or identity.get("chain") != chain:
+        raise RecoveryError(f"{label} heavy HETATM chain mismatch")
+    if role not in {"reference", "pose"}:
+        raise RecoveryError(f"Unsupported heavy HETATM identity role: {role}")
+    identities = [tuple(item) for item in identity.get("identities", [])]
+    count = int(identity.get("identity_count", -1))
+    if count != len(identities):
+        raise RecoveryError(f"{label} heavy HETATM identity count is internally inconsistent")
+    expected_field = (
+        "reference_heavy_hetatm_identity_count_must_equal"
+        if role == "reference"
+        else "pose_heavy_hetatm_identity_count_must_equal"
+    )
+    expected_count = int(rule[expected_field])
+    if count != expected_count:
+        raise RecoveryError(
+            f"{label} chain {chain} heavy HETATM identity count must be zero; found {count}"
+        )
+    return {
+        "rule_id": rule["rule_id"],
+        "identity_count": count,
+        "identity_sha256": identity["identity_sha256"],
+        "zero_gate_pass": True,
+    }
+
+
 def require_identity_match(
     frozen: Mapping[str, Any],
     pose: Mapping[str, Any],
@@ -1021,7 +1104,7 @@ def identity_signature_summary(identity: Mapping[str, Any]) -> dict[str, Any]:
     return {
         key: value
         for key, value in identity.items()
-        if key not in {"atom_identities", "residue_identities"}
+        if key not in {"atom_identities", "residue_identities", "identities"}
     }
 
 
@@ -1263,6 +1346,23 @@ def build(
     )
     identity_amendment_path = DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.resolve()
     identity_amendment = load_identity_normalization_amendment(identity_amendment_path)
+    identity_amendment_v2_path = DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT_V2.resolve()
+    identity_amendment_v2 = load_identity_normalization_amendment_v2(
+        identity_amendment_v2_path
+    )
+    if (
+        identity_amendment_v2.get("normalization_rule")
+        != identity_amendment.get("normalization_rule")
+        or identity_amendment_v2.get("receptor_rule")
+        != identity_amendment.get("receptor_rule")
+    ):
+        raise RecoveryError("Amendment v2 does not preserve the frozen v1 ATOM rules")
+    identity_amendment_v1_validator_path = Path(
+        amendment_v1_validator.__file__
+    ).resolve()
+    identity_amendment_v2_validator_path = Path(
+        amendment_v2_validator.__file__
+    ).resolve()
     runs, reuse = load_inputs(run_manifest_path, reuse_manifest_path)
     package_audit = load_package_audit(
         package_audit_path, runs, reuse, release, release_data_root
@@ -1322,6 +1422,15 @@ def build(
         "selector_helper_sha256": helper_sha,
         "identity_normalization_amendment_sha256": (
             FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
+        ),
+        "identity_normalization_amendment_validator_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_VALIDATOR_SHA256
+        ),
+        "identity_normalization_amendment_v2_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256
+        ),
+        "identity_normalization_amendment_v2_validator_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256
         ),
     }).encode("utf-8"))[:24]
     release_dir = outdir / "releases" / release_id
@@ -1385,6 +1494,40 @@ def build(
             receptor_identity = atom_heavy_identity_signature(
                 receptor_coordinates, "B", assets["receptor"]
             )
+            monomer_hetatm_identity = hetatm_heavy_identity_signature(
+                monomer_coordinates, "A", assets["monomer"]
+            )
+            receptor_hetatm_identity = hetatm_heavy_identity_signature(
+                receptor_coordinates, "B", assets["receptor"]
+            )
+            if (
+                monomer_hetatm_identity["identity_count"]
+                != monomer_inventory["A"]["hetatm_heavy_atom_count"]
+            ):
+                raise RecoveryError(
+                    f"{run['run_id']} monomer chain A HETATM parser count mismatch"
+                )
+            if (
+                receptor_hetatm_identity["identity_count"]
+                != receptor_inventory["B"]["hetatm_heavy_atom_count"]
+            ):
+                raise RecoveryError(
+                    f"{run['run_id']} receptor chain B HETATM parser count mismatch"
+                )
+            monomer_hetatm_gate = require_zero_heavy_hetatm(
+                monomer_hetatm_identity,
+                f"{run['run_id']} frozen monomer",
+                "A",
+                "reference",
+                identity_amendment_v2,
+            )
+            receptor_hetatm_gate = require_zero_heavy_hetatm(
+                receptor_hetatm_identity,
+                f"{run['run_id']} frozen receptor",
+                "B",
+                "reference",
+                identity_amendment_v2,
+            )
             io_relpath = f"{descriptor.run_dir_relpath}/4_emref/io.json"
             params_relpath = f"{descriptor.run_dir_relpath}/4_emref/params.cfg"
             selected, pose_inventory = recovery_base.load_pose_records(source_root, io_relpath)
@@ -1411,6 +1554,10 @@ def build(
             selected_indices: list[int] = []
             vhh_terminal_oxt_normalization_count = 0
             vhh_raw_atom_identity_exact_count = 0
+            pose_vhh_heavy_hetatm_identity_count_total = 0
+            pose_pvrig_heavy_hetatm_identity_count_total = 0
+            pose_vhh_heavy_hetatm_zero_gate_pass_count = 0
+            pose_pvrig_heavy_hetatm_zero_gate_pass_count = 0
             for rank, record in enumerate(selected, start=1):
                 selected_indices.append(record.output_index)
                 materialized_rel = f"materialized_coordinates/{run['run_id']}/native_rank_{rank:02d}.pdb"
@@ -1422,6 +1569,27 @@ def build(
                 pose_pvrig_identity = atom_heavy_identity_signature(
                     coordinates, "B", record.local_path
                 )
+                pose_vhh_hetatm_identity = hetatm_heavy_identity_signature(
+                    coordinates, "A", record.local_path
+                )
+                pose_pvrig_hetatm_identity = hetatm_heavy_identity_signature(
+                    coordinates, "B", record.local_path
+                )
+                vhh, pvrig = record.vhh_inventory, record.pvrig_inventory
+                if (
+                    pose_vhh_hetatm_identity["identity_count"]
+                    != vhh["hetatm_heavy_atom_count"]
+                ):
+                    raise RecoveryError(
+                        f"{run['run_id']} rank {rank} pose chain A HETATM parser count mismatch"
+                    )
+                if (
+                    pose_pvrig_hetatm_identity["identity_count"]
+                    != pvrig["hetatm_heavy_atom_count"]
+                ):
+                    raise RecoveryError(
+                        f"{run['run_id']} rank {rank} pose chain B HETATM parser count mismatch"
+                    )
                 vhh_identity_gate = require_identity_match(
                     monomer_identity,
                     pose_vhh_identity,
@@ -1436,21 +1604,46 @@ def build(
                     "B",
                     identity_amendment,
                 )
+                pose_vhh_hetatm_gate = require_zero_heavy_hetatm(
+                    pose_vhh_hetatm_identity,
+                    f"{run['run_id']} rank {rank} pose",
+                    "A",
+                    "pose",
+                    identity_amendment_v2,
+                )
+                pose_pvrig_hetatm_gate = require_zero_heavy_hetatm(
+                    pose_pvrig_hetatm_identity,
+                    f"{run['run_id']} rank {rank} pose",
+                    "B",
+                    "pose",
+                    identity_amendment_v2,
+                )
                 vhh_terminal_oxt_normalization_count += int(
                     vhh_identity_gate["terminal_oxt_normalization_applied"]
                 )
                 vhh_raw_atom_identity_exact_count += int(
                     vhh_identity_gate["raw_atom_identity_exact"]
                 )
+                pose_vhh_heavy_hetatm_identity_count_total += int(
+                    pose_vhh_hetatm_gate["identity_count"]
+                )
+                pose_pvrig_heavy_hetatm_identity_count_total += int(
+                    pose_pvrig_hetatm_gate["identity_count"]
+                )
+                pose_vhh_heavy_hetatm_zero_gate_pass_count += int(
+                    pose_vhh_hetatm_gate["zero_gate_pass"]
+                )
+                pose_pvrig_heavy_hetatm_zero_gate_pass_count += int(
+                    pose_pvrig_hetatm_gate["zero_gate_pass"]
+                )
                 atomic_write_bytes(materialized, coordinates)
                 if sha256_file(materialized) != record.coordinate_sha256:
                     raise RecoveryError(f"Materialized coordinate hash mismatch for {run['run_id']} rank {rank}")
                 raw_final = release_dir / record.local_path.relative_to(work_root)
                 materialized_final = release_dir / materialized_rel
-                vhh, pvrig = record.vhh_inventory, record.pvrig_inventory
                 ledger = descriptor.reuse
                 output: dict[str, Any] = {
-                    "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v1",
+                    "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v2",
                     "protocol_id": PROTOCOL_ID,
                     "source_protocol_id": descriptor.source_protocol_id,
                     "source_protocol": SOURCE_PROTOCOL,
@@ -1529,6 +1722,29 @@ def build(
                     "pvrig_raw_atom_identity_exact": str(pvrig_identity_gate["raw_atom_identity_exact"]).lower(),
                     "identity_normalization_amendment_relpath": workspace_relative(identity_amendment_path, workspace_root),
                     "identity_normalization_amendment_sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
+                    "monomer_vhh_heavy_hetatm_identity_count": monomer_hetatm_identity["identity_count"],
+                    "monomer_vhh_heavy_hetatm_identity_sha256": monomer_hetatm_identity["identity_sha256"],
+                    "pose_vhh_heavy_hetatm_identity_count": pose_vhh_hetatm_identity["identity_count"],
+                    "pose_vhh_heavy_hetatm_identity_sha256": pose_vhh_hetatm_identity["identity_sha256"],
+                    "receptor_pvrig_heavy_hetatm_identity_count": receptor_hetatm_identity["identity_count"],
+                    "receptor_pvrig_heavy_hetatm_identity_sha256": receptor_hetatm_identity["identity_sha256"],
+                    "pose_pvrig_heavy_hetatm_identity_count": pose_pvrig_hetatm_identity["identity_count"],
+                    "pose_pvrig_heavy_hetatm_identity_sha256": pose_pvrig_hetatm_identity["identity_sha256"],
+                    "heavy_hetatm_zero_gate_rule_id": pose_vhh_hetatm_gate["rule_id"],
+                    "monomer_vhh_heavy_hetatm_zero_gate_pass": str(monomer_hetatm_gate["zero_gate_pass"]).lower(),
+                    "pose_vhh_heavy_hetatm_zero_gate_pass": str(pose_vhh_hetatm_gate["zero_gate_pass"]).lower(),
+                    "receptor_pvrig_heavy_hetatm_zero_gate_pass": str(receptor_hetatm_gate["zero_gate_pass"]).lower(),
+                    "pose_pvrig_heavy_hetatm_zero_gate_pass": str(pose_pvrig_hetatm_gate["zero_gate_pass"]).lower(),
+                    "heavy_hetatm_zero_gate_pass": str(all((
+                        monomer_hetatm_gate["zero_gate_pass"],
+                        pose_vhh_hetatm_gate["zero_gate_pass"],
+                        receptor_hetatm_gate["zero_gate_pass"],
+                        pose_pvrig_hetatm_gate["zero_gate_pass"],
+                    ))).lower(),
+                    "identity_normalization_amendment_v2_relpath": workspace_relative(identity_amendment_v2_path, workspace_root),
+                    "identity_normalization_amendment_v2_sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256,
+                    "identity_normalization_amendment_v2_validator_relpath": workspace_relative(identity_amendment_v2_validator_path, workspace_root),
+                    "identity_normalization_amendment_v2_validator_sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256,
                     "completion_status": completion["status"],
                     "completion_exit_code": completion.get("exit_code", ""),
                     "source_final_stage_ignored": "true" if mode == REUSE_MODE else "false",
@@ -1605,9 +1821,36 @@ def build(
                 "frozen_seed_range": {"start": seed_start, "end": seed_end},
                 "monomer_atom_identity": identity_signature_summary(monomer_identity),
                 "receptor_atom_identity": identity_signature_summary(receptor_identity),
+                "monomer_heavy_hetatm_identity": identity_signature_summary(
+                    monomer_hetatm_identity
+                ),
+                "receptor_heavy_hetatm_identity": identity_signature_summary(
+                    receptor_hetatm_identity
+                ),
                 "vhh_raw_atom_identity_exact_count": vhh_raw_atom_identity_exact_count,
                 "vhh_terminal_oxt_normalization_count": vhh_terminal_oxt_normalization_count,
                 "pvrig_raw_atom_identity_exact_count": K,
+                "monomer_vhh_heavy_hetatm_zero_gate_pass": monomer_hetatm_gate[
+                    "zero_gate_pass"
+                ],
+                "receptor_pvrig_heavy_hetatm_zero_gate_pass": receptor_hetatm_gate[
+                    "zero_gate_pass"
+                ],
+                "pose_vhh_heavy_hetatm_identity_count_total": (
+                    pose_vhh_heavy_hetatm_identity_count_total
+                ),
+                "pose_pvrig_heavy_hetatm_identity_count_total": (
+                    pose_pvrig_heavy_hetatm_identity_count_total
+                ),
+                "pose_vhh_heavy_hetatm_zero_gate_pass_count": (
+                    pose_vhh_heavy_hetatm_zero_gate_pass_count
+                ),
+                "pose_pvrig_heavy_hetatm_zero_gate_pass_count": (
+                    pose_pvrig_heavy_hetatm_zero_gate_pass_count
+                ),
+                "identity_normalization_amendment_v2_sha256": (
+                    FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256
+                ),
                 "config_sha256": sha256_file(assets["config"]),
                 "completion_sha256": sha256_file(assets["completion"]),
                 "source_io_sha256": sha256_file(io_path),
@@ -1664,7 +1907,7 @@ def build(
                 "remote_local_hash_chain_equal": remote["file_hash_chain"] == local["file_hash_chain"],
             }
         audit: dict[str, Any] = {
-            "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v1",
+            "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
             "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
             "protocol_id": PROTOCOL_ID,
             "source_protocol": SOURCE_PROTOCOL,
@@ -1707,6 +1950,29 @@ def build(
                     "sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
                     "status": identity_amendment["status"],
                     "rule_id": identity_amendment["normalization_rule"]["rule_id"],
+                    "validator_relpath": workspace_relative(
+                        identity_amendment_v1_validator_path, workspace_root
+                    ),
+                    "validator_sha256": (
+                        FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_VALIDATOR_SHA256
+                    ),
+                },
+                "atom_hetatm_identity_amendment_v2": {
+                    "relpath": workspace_relative(
+                        identity_amendment_v2_path, workspace_root
+                    ),
+                    "sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256,
+                    "status": identity_amendment_v2["status"],
+                    "rule_id": identity_amendment_v2["heavy_hetatm_rule"]["rule_id"],
+                    "supersedes_sha256": identity_amendment_v2["supersedes"][
+                        "sha256"
+                    ],
+                    "validator_relpath": workspace_relative(
+                        identity_amendment_v2_validator_path, workspace_root
+                    ),
+                    "validator_sha256": (
+                        FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256
+                    ),
                 },
                 "run_manifest": {"relpath": workspace_relative(runs.path, workspace_root), "sha256": runs.sha256},
                 "exact_reuse_manifest": {"relpath": workspace_relative(reuse.path, workspace_root), "sha256": reuse.sha256},
@@ -1729,6 +1995,42 @@ def build(
                 ),
                 "pvrig_raw_atom_identity_exact_count": sum(
                     row["pvrig_raw_atom_identity_exact"] == "true" for row in output_rows
+                ),
+                "monomer_vhh_heavy_hetatm_identity_count_total": sum(
+                    int(row["monomer_vhh_heavy_hetatm_identity_count"])
+                    for row in output_rows[::K]
+                ),
+                "receptor_pvrig_heavy_hetatm_identity_count_total": sum(
+                    int(row["receptor_pvrig_heavy_hetatm_identity_count"])
+                    for row in output_rows[::K]
+                ),
+                "pose_vhh_heavy_hetatm_identity_count_total": sum(
+                    int(row["pose_vhh_heavy_hetatm_identity_count"])
+                    for row in output_rows
+                ),
+                "pose_pvrig_heavy_hetatm_identity_count_total": sum(
+                    int(row["pose_pvrig_heavy_hetatm_identity_count"])
+                    for row in output_rows
+                ),
+                "monomer_vhh_heavy_hetatm_zero_gate_pass_count": sum(
+                    row["monomer_vhh_heavy_hetatm_zero_gate_pass"] == "true"
+                    for row in output_rows[::K]
+                ),
+                "receptor_pvrig_heavy_hetatm_zero_gate_pass_count": sum(
+                    row["receptor_pvrig_heavy_hetatm_zero_gate_pass"] == "true"
+                    for row in output_rows[::K]
+                ),
+                "pose_vhh_heavy_hetatm_zero_gate_pass_count": sum(
+                    row["pose_vhh_heavy_hetatm_zero_gate_pass"] == "true"
+                    for row in output_rows
+                ),
+                "pose_pvrig_heavy_hetatm_zero_gate_pass_count": sum(
+                    row["pose_pvrig_heavy_hetatm_zero_gate_pass"] == "true"
+                    for row in output_rows
+                ),
+                "heavy_hetatm_zero_gate_pass_count": sum(
+                    row["heavy_hetatm_zero_gate_pass"] == "true"
+                    for row in output_rows
                 ),
                 "coordinate_or_score_modified": False,
             },
