@@ -647,30 +647,185 @@ def validate_metrics_rows(
     }
 
 
-def validate_upstream_audit(path: Path | None, metrics_csv: Path) -> dict[str, Any]:
-    if path is None:
-        return {"required": False, "relpath": "", "sha256": ""}
-    if not path.is_file():
-        raise CalibrationError(f"Upstream calibration audit is missing: {path}")
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if payload.get("status") != "PASS_V1_2_TOP8_CALIBRATION_CONTINUOUS_METRICS_BUILT":
-        raise CalibrationError("Upstream Top-8 calibration audit is not PASS")
-    if payload.get("formal_eligible") is not False:
-        raise CalibrationError("Upstream audit formal eligibility is not false")
-    if payload.get("pose_rule_threshold_freeze_eligible") is not True:
-        raise CalibrationError("Upstream audit is not pose-rule eligible")
-    if payload.get("dual_receptor_r_gold_freeze_eligible") is not False:
-        raise CalibrationError("Upstream audit incorrectly permits dual-receptor R_gold")
-    output = payload.get("output_sha256", {}).get("continuous_metrics", {})
-    if output.get("sha256") != sha256_file(metrics_csv):
-        raise CalibrationError("Metrics CSV hash does not match the upstream audit")
-    return {
-        "required": True,
-        "relpath": canonical_path(path),
-        "sha256": sha256_file(path),
-        "status": payload.get("status"),
-        "metrics_row_hash_chain": output.get("row_hash_chain", ""),
+def resolve_external_evidence_path(raw: str) -> Path:
+    path = Path(raw).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (WORKSPACE_ROOT.parent / path).resolve()
+
+
+def validate_processor_release_manifest(
+    path: Path | None,
+    positive_manifest: Path,
+    mutant_manifest: Path,
+) -> dict[str, Any]:
+    evidence: dict[str, Any] = {
+        "required": path is not None,
+        "validated": False,
+        "failure_reasons": [],
+        "relpath": canonical_path(path) if path is not None else "",
+        "sha256": "",
     }
+    if path is None or not path.is_file():
+        evidence["failure_reasons"].append("processor_release_manifest_missing")
+        return evidence
+    evidence["sha256"] = sha256_file(path)
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        evidence["failure_reasons"].append("processor_release_manifest_invalid_json")
+        return evidence
+    if not isinstance(payload, dict):
+        evidence["failure_reasons"].append("processor_release_manifest_not_object")
+        return evidence
+    if path.resolve() != DEFAULT_PROCESSOR_RELEASE_MANIFEST.resolve():
+        evidence["failure_reasons"].append("processor_release_manifest_noncanonical_path")
+    expected_headers = {
+        "schema_version": "pvrig_v1_2_top8_processor_release_manifest_v1",
+        "protocol_id": PROTOCOL_ID,
+        "status": "FROZEN_V1_2_TOP8_PROCESSOR_RELEASE",
+    }
+    for field, expected in expected_headers.items():
+        if payload.get(field) != expected:
+            evidence["failure_reasons"].append(f"release_{field}_mismatch")
+    file_entries: list[tuple[str, Mapping[str, Any]]] = []
+    for field in ("processor", "processor_test"):
+        value = payload.get(field)
+        if not isinstance(value, dict):
+            evidence["failure_reasons"].append(f"release_{field}_missing")
+        else:
+            file_entries.append((field, value))
+    anchors = payload.get("canonical_anchors")
+    if not isinstance(anchors, dict) or len(anchors) != 13:
+        evidence["failure_reasons"].append("release_canonical_anchor_count_not_13")
+        anchors = {}
+    else:
+        file_entries.extend((f"anchor_{name}", value) for name, value in anchors.items())
+    observed_files: dict[str, Any] = {}
+    for name, entry in file_entries:
+        if not isinstance(entry, dict):
+            evidence["failure_reasons"].append(f"{name}_not_object")
+            continue
+        evidence_path = resolve_external_evidence_path(str(entry.get("path", "")))
+        expected_hash = str(entry.get("sha256", ""))
+        observed_hash = sha256_file(evidence_path) if evidence_path.is_file() else ""
+        passed = bool(
+            evidence_path.is_file()
+            and re.fullmatch(r"[0-9a-f]{64}", expected_hash)
+            and observed_hash == expected_hash
+        )
+        observed_files[name] = {
+            "path": evidence_path.as_posix(),
+            "expected_sha256": expected_hash,
+            "observed_sha256": observed_hash,
+            "passed": passed,
+        }
+        if not passed:
+            evidence["failure_reasons"].append(f"{name}_path_or_hash_mismatch")
+    for anchor_name, expected_path in (
+        ("positive_manifest", positive_manifest.resolve()),
+        ("mutant_manifest", mutant_manifest.resolve()),
+    ):
+        anchor = anchors.get(anchor_name)
+        if not isinstance(anchor, dict):
+            evidence["failure_reasons"].append(f"release_{anchor_name}_missing")
+            continue
+        observed_path = resolve_external_evidence_path(str(anchor.get("path", "")))
+        if observed_path != expected_path:
+            evidence["failure_reasons"].append(f"release_{anchor_name}_path_mismatch")
+    evidence["files"] = observed_files
+    evidence["canonical_anchor_count"] = len(anchors)
+    evidence["validated"] = not evidence["failure_reasons"]
+    return evidence
+
+
+def validate_upstream_audit(
+    path: Path | None,
+    metrics_csv: Path,
+    contacts_jsonl: Path | None,
+    positive_manifest: Path,
+    mutant_manifest: Path,
+    release_evidence: Mapping[str, Any],
+) -> dict[str, Any]:
+    evidence: dict[str, Any] = {
+        "required": path is not None,
+        "validated": False,
+        "failure_reasons": [],
+        "relpath": canonical_path(path) if path is not None else "",
+        "sha256": "",
+    }
+    if path is None or not path.is_file():
+        evidence["failure_reasons"].append("upstream_audit_missing")
+        return evidence
+    evidence["sha256"] = sha256_file(path)
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    expected_scalars = {
+        "status": "PASS_V1_2_TOP8_CALIBRATION_CONTINUOUS_METRICS_BUILT",
+        "protocol_id": PROTOCOL_ID,
+        "formal_eligible": False,
+        "pose_rule_threshold_freeze_eligible": True,
+        "dual_receptor_r_gold_freeze_eligible": False,
+        "thresholds_or_classes_applied": False,
+        "fixed_k_pose_ensemble": True,
+    }
+    for field, expected in expected_scalars.items():
+        if payload.get(field) != expected:
+            evidence["failure_reasons"].append(f"upstream_{field}_mismatch")
+    output = payload.get("output_sha256", {})
+    metrics_output = output.get("continuous_metrics", {}) if isinstance(output, dict) else {}
+    if metrics_output.get("sha256") != sha256_file(metrics_csv):
+        evidence["failure_reasons"].append("upstream_metrics_sha256_mismatch")
+    if int(metrics_output.get("rows", -1)) != 752:
+        evidence["failure_reasons"].append("upstream_metrics_row_count_mismatch")
+    if contacts_jsonl is not None and contacts_jsonl.is_file():
+        contacts_output = output.get("residue_contacts", {}) if isinstance(output, dict) else {}
+        if contacts_output.get("sha256") != sha256_file(contacts_jsonl):
+            evidence["failure_reasons"].append("upstream_contacts_sha256_mismatch")
+        if int(contacts_output.get("records", -1)) != 752:
+            evidence["failure_reasons"].append("upstream_contacts_row_count_mismatch")
+    else:
+        evidence["failure_reasons"].append("upstream_contacts_missing")
+    selector = payload.get("selector_contract", {})
+    if not isinstance(selector, dict) or selector.get("selector_audit_validated") is not True:
+        evidence["failure_reasons"].append("upstream_selector_trust_anchor_not_validated")
+    trust = payload.get("pose_rule_trust_anchor_check", {})
+    if not isinstance(trust, dict) or trust.get("eligible") is not True:
+        evidence["failure_reasons"].append("upstream_pose_rule_trust_not_eligible")
+    if not isinstance(trust, dict) or trust.get("processor_release_manifest_validated") is not True:
+        evidence["failure_reasons"].append("upstream_release_manifest_not_validated")
+    if not release_evidence.get("validated"):
+        evidence["failure_reasons"].append("external_release_manifest_not_validated")
+    canonical_contract = payload.get("canonical_internal_contact_contract", {})
+    if (
+        not isinstance(canonical_contract, dict)
+        or canonical_contract.get("cross_baseline_equality_hard_gate_passed") is not True
+        or canonical_contract.get("cross_baseline_equal_pose_count") != 376
+    ):
+        evidence["failure_reasons"].append("upstream_canonical_internal_contract_failed")
+    publication = payload.get("publication_contract", {})
+    required_publication = (
+        "dedicated_generated_package",
+        "full_directory_replacement",
+        "post_publish_full_path_and_sha256_set_verified",
+    )
+    if not isinstance(publication, dict) or any(
+        publication.get(field) is not True for field in required_publication
+    ) or publication.get("stale_or_unhashed_prior_files_preserved") is not False:
+        evidence["failure_reasons"].append("upstream_publication_contract_failed")
+    input_hashes = payload.get("input_sha256", {})
+    expected_inputs = {
+        "positive_manifest": sha256_file(positive_manifest),
+        "mutant_manifest": sha256_file(mutant_manifest),
+    }
+    for field, expected in expected_inputs.items():
+        if not isinstance(input_hashes, dict) or input_hashes.get(field) != expected:
+            evidence["failure_reasons"].append(f"upstream_{field}_sha256_mismatch")
+    if payload.get("reference_inventory_expected") != payload.get("reference_inventory_observed"):
+        evidence["failure_reasons"].append("upstream_reference_inventory_closure_failed")
+    evidence["status"] = payload.get("status")
+    evidence["metrics_row_hash_chain"] = metrics_output.get("row_hash_chain", "")
+    evidence["validated"] = not evidence["failure_reasons"]
+    return evidence
 
 
 def family_case_index(
@@ -2182,27 +2337,154 @@ def build_robustness_rows(
     return output
 
 
+def build_acceptance_summary(
+    *,
+    config: CalibrationConfig,
+    observed_contract: Mapping[str, Any],
+    input_bindings: Mapping[str, Any],
+    rules: Mapping[str, Any],
+    robustness_rows: Sequence[Mapping[str, str]],
+    lofo_summary: Mapping[str, Any],
+    bootstrap_threshold_rows: Sequence[Mapping[str, str]],
+    bootstrap_anchor_rows: Sequence[Mapping[str, str]],
+    bootstrap_summary: Mapping[str, Any],
+    bootstrap_anchor_summary: Mapping[str, Any],
+    mutant_delta_rows: Sequence[Mapping[str, str]],
+    fingerprint_evidence: Mapping[str, Any],
+) -> dict[str, Any]:
+    thresholds = [rules["thresholds"]["H_canonical"]]
+    thresholds.extend(
+        rules["thresholds"]["baseline"][baseline][metric]
+        for baseline in BASELINES
+        for metric in BASELINE_METRICS
+    )
+    threshold_valid = all(
+        item.get("defined") is True
+        and float(item["L_raw"]) > 0.0
+        and float(item["U_raw"]) > float(item["L_raw"])
+        for item in thresholds
+    )
+    primary_grid = [
+        row for row in robustness_rows if row["primary_preregistered_row"] == "true"
+    ]
+    gates: dict[str, dict[str, Any]] = {
+        "upstream_provenance": {
+            "passed": (
+                input_bindings["upstream_audit"].get("validated") is True
+                and input_bindings["processor_release_manifest"].get("validated") is True
+            ),
+            "upstream_audit_validated": input_bindings["upstream_audit"].get(
+                "validated", False
+            ),
+            "processor_release_manifest_validated": input_bindings[
+                "processor_release_manifest"
+            ].get("validated", False),
+        },
+        "pose_and_metric_closure": {
+            "passed": (
+                config.contract == CalibrationContract()
+                and observed_contract.get("case_count") == 47
+                and observed_contract.get("metric_rows") == 752
+                and observed_contract.get("rows_by_baseline")
+                == {"8x6b": 376, "9e6y": 376}
+            ),
+            "observed": dict(observed_contract),
+        },
+        "atom_only_inventory": {
+            "passed": observed_contract.get("atom_only_reference_inventory_gate_passed")
+            is True,
+        },
+        "threshold_validity": {
+            "passed": threshold_valid,
+            "strict_U_gt_L": True,
+            "O_cutpoint_raw_unit": "residue_pair_count",
+            "O_membership_transform": "log1p_once",
+        },
+        "family_balance": {
+            "passed": (
+                rules.get("positive_family_count") == 5
+                and rules.get("positive_case_count") == 11
+                and rules.get("family_weighting")
+                == "equal_family_then_equal_case_within_family"
+            ),
+        },
+        "sensitivity_grid": {
+            "passed": (
+                len(robustness_rows) == 54
+                and len(primary_grid) == 1
+                and all(row["best_row_selected"] == "false" for row in robustness_rows)
+            ),
+            "rows": len(robustness_rows),
+            "defined_rows": sum(row["grid_defined"] == "true" for row in robustness_rows),
+            "best_row_selected": False,
+        },
+        "lofo": {
+            "passed": lofo_summary.get("passed") is True,
+            "summary": dict(lofo_summary),
+        },
+        "bootstrap": {
+            "passed": (
+                config.bootstrap_seed == BOOTSTRAP_SEED
+                and config.bootstrap_replicates == BOOTSTRAP_REPLICATES
+                and len(bootstrap_threshold_rows) == BOOTSTRAP_REPLICATES * 10
+                and len(bootstrap_anchor_rows) == BOOTSTRAP_REPLICATES * 11
+                and bootstrap_anchor_summary.get("passed") is True
+            ),
+            "seed": config.bootstrap_seed,
+            "replicates": config.bootstrap_replicates,
+            "threshold_rows": len(bootstrap_threshold_rows),
+            "anchor_evaluation_rows": len(bootstrap_anchor_rows),
+            "undefined_replicates": bootstrap_summary.get(
+                "undefined_replicate_count"
+            ),
+            "anchor_summary": dict(bootstrap_anchor_summary),
+        },
+        "mutant_sensitivity": {
+            "passed": (
+                len(mutant_delta_rows) == 29
+                and all(
+                    row["binary_negative_label_assigned"] == "false"
+                    for row in mutant_delta_rows
+                )
+                and all(row["fingerprints_available"] == "true" for row in mutant_delta_rows)
+            ),
+            "paired_delta_rows": len(mutant_delta_rows),
+            "fingerprint_evidence": dict(fingerprint_evidence),
+        },
+        "claim_boundary": {
+            "passed": True,
+            "computational_geometry_only": True,
+            "dual_receptor_r_gold_freeze_eligible": False,
+        },
+    }
+    failed = [name for name, gate in gates.items() if gate.get("passed") is not True]
+    return {
+        "schema_version": "pvrig_v1_2_family_calibration_acceptance_v1",
+        "gates": gates,
+        "failed_gates": failed,
+        "passed_gate_count": len(gates) - len(failed),
+        "total_gate_count": len(gates),
+        "all_gates_passed": not failed,
+    }
+
+
 def rules_document(
     rules: Mapping[str, Any],
     config: CalibrationConfig,
     input_bindings: Mapping[str, Any],
+    acceptance_summary: Mapping[str, Any],
 ) -> dict[str, Any]:
-    freeze_eligible = (
-        config.bootstrap_seed == BOOTSTRAP_SEED
-        and config.bootstrap_replicates == BOOTSTRAP_REPLICATES
-        and config.contract == CalibrationContract()
-        and input_bindings.get("upstream_audit", {}).get("required") is True
-    )
+    freeze_eligible = acceptance_summary.get("all_gates_passed") is True
     status = (
         "PASS_V1_2_FAMILY_AWARE_POSE_AND_SINGLE_RUN_RULES_FROZEN"
         if freeze_eligible
-        else "PASS_V1_2_FAMILY_AWARE_DRY_RUN_BUILT_NOT_FROZEN"
+        else "FAIL_V1_2_FAMILY_CALIBRATION_NOT_FROZEN"
     )
     core = {
         "method_id": METHOD_ID,
         "feature_definitions": {
             "H": "one canonical shared hotspot_weight_fraction per source pose",
-            "O": "log1p(total_occluding_residue_pair_count)",
+            "O": "raw total_occluding_residue_pair_count with log1p used once inside membership",
             "P": "(cdr1+cdr2+cdr3 occluding residue-pair count)/total occluding residue-pair count",
         },
         "calibration": rules,
@@ -2251,6 +2533,7 @@ def rules_document(
             "shared_between_baselines": True,
         },
         "claim_boundary": CLAIM_BOUNDARY,
+        "acceptance_summary": dict(acceptance_summary),
         "rules_core": core,
         "rules_core_sha256": sha256_json(core),
         "input_bindings": dict(input_bindings),
@@ -2417,7 +2700,22 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
     observed_contract = validate_metrics_rows(
         metrics_fields, metrics_rows, positive_cases, mutant_cases, config.contract
     )
-    upstream = validate_upstream_audit(config.upstream_audit, config.metrics_csv)
+    release_evidence = validate_processor_release_manifest(
+        config.processor_release_manifest,
+        config.positive_manifest,
+        config.mutant_manifest,
+    )
+    upstream = validate_upstream_audit(
+        config.upstream_audit,
+        config.metrics_csv,
+        config.contacts_jsonl,
+        config.positive_manifest,
+        config.mutant_manifest,
+        release_evidence,
+    )
+    fingerprint_by_case, fingerprint_evidence = load_contact_fingerprints(
+        config.contacts_jsonl, metrics_rows, config.contract.ranks_per_case
+    )
     input_bindings = {
         "continuous_metrics": {
             "relpath": canonical_path(config.metrics_csv),
@@ -2425,7 +2723,9 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             "rows": len(metrics_rows),
             "row_hash_chain": row_hash_chain(metrics_rows, "metrics_row_sha256"),
         },
+        "residue_contacts": fingerprint_evidence,
         "upstream_audit": upstream,
+        "processor_release_manifest": release_evidence,
         "positive_manifest": {
             "relpath": canonical_path(config.positive_manifest),
             "sha256": sha256_file(config.positive_manifest),
@@ -2438,15 +2738,13 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         },
     }
     rules = derive_rules(metrics_rows, positive_cases, config.contract.ranks_per_case)
-    rules_payload = rules_document(rules, config, input_bindings)
-    freeze_eligible = bool(rules_payload["pose_rule_threshold_freeze_eligible"])
-    status = str(rules_payload["status"])
     pose_rows = score_pose_rows(metrics_rows, rules)
     run_rows = aggregate_run_scores(pose_rows, positive_cases)
     lofo_rows = build_lofo_rows(
-        metrics_rows, positive_cases, config.contract.ranks_per_case
+        metrics_rows, positive_cases, run_rows, config.contract.ranks_per_case
     )
-    bootstrap_rows = hierarchical_bootstrap_rows(
+    lofo_summary = summarize_lofo(lofo_rows, positive_cases)
+    bootstrap_rows, bootstrap_anchor_rows = hierarchical_bootstrap_rows(
         metrics_rows,
         positive_cases,
         config.contract.ranks_per_case,
@@ -2454,8 +2752,11 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         replicates=config.bootstrap_replicates,
     )
     bootstrap_summary = summarize_bootstrap(bootstrap_rows)
+    bootstrap_anchor_summary = summarize_bootstrap_anchors(
+        bootstrap_anchor_rows, positive_cases, config.bootstrap_replicates
+    )
     mutant_delta_rows = build_mutant_delta_rows(
-        run_rows, mutant_cases, base_by_molecule
+        run_rows, mutant_cases, base_by_molecule, fingerprint_by_case
     )
     if len(mutant_delta_rows) != config.contract.mutant_delta_count:
         raise CalibrationError(
@@ -2469,6 +2770,26 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         base_by_molecule,
         config.contract.ranks_per_case,
     )
+    acceptance_summary = build_acceptance_summary(
+        config=config,
+        observed_contract=observed_contract,
+        input_bindings=input_bindings,
+        rules=rules,
+        robustness_rows=robustness_rows,
+        lofo_summary=lofo_summary,
+        bootstrap_threshold_rows=bootstrap_rows,
+        bootstrap_anchor_rows=bootstrap_anchor_rows,
+        bootstrap_summary=bootstrap_summary,
+        bootstrap_anchor_summary=bootstrap_anchor_summary,
+        mutant_delta_rows=mutant_delta_rows,
+        fingerprint_evidence=fingerprint_evidence,
+    )
+    rules_payload = rules_document(
+        rules, config, input_bindings, acceptance_summary
+    )
+    freeze_eligible = bool(rules_payload["pose_rule_threshold_freeze_eligible"])
+    status = str(rules_payload["status"])
+
 
     config.outdir.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(
@@ -2480,6 +2801,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         run_path = staging / RUN_SCORES_NAME
         lofo_path = staging / LOFO_NAME
         bootstrap_path = staging / BOOTSTRAP_NAME
+        bootstrap_anchor_path = staging / BOOTSTRAP_ANCHOR_NAME
         mutant_path = staging / MUTANT_DELTAS_NAME
         robustness_path = staging / ROBUSTNESS_NAME
         write_json(rules_path, rules_payload)
@@ -2487,6 +2809,11 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         write_csv(run_path, run_rows, RUN_SCORE_FIELDS)
         write_csv(lofo_path, lofo_rows, LOFO_FIELDS)
         write_csv(bootstrap_path, bootstrap_rows, BOOTSTRAP_FIELDS)
+        write_csv(
+            bootstrap_anchor_path,
+            bootstrap_anchor_rows,
+            BOOTSTRAP_ANCHOR_FIELDS,
+        )
         write_csv(mutant_path, mutant_delta_rows, MUTANT_DELTA_FIELDS)
         write_csv(robustness_path, robustness_rows, ROBUSTNESS_FIELDS)
         artifact_paths: dict[str, tuple[Path, int | None, str | None]] = {
@@ -2498,6 +2825,11 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
                 bootstrap_path,
                 len(bootstrap_rows),
                 "bootstrap_row_sha256",
+            ),
+            BOOTSTRAP_ANCHOR_NAME: (
+                bootstrap_anchor_path,
+                len(bootstrap_anchor_rows),
+                "bootstrap_anchor_row_sha256",
             ),
             MUTANT_DELTAS_NAME: (
                 mutant_path,
@@ -2516,6 +2848,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             RUN_SCORES_NAME: run_rows,
             LOFO_NAME: lofo_rows,
             BOOTSTRAP_NAME: bootstrap_rows,
+            BOOTSTRAP_ANCHOR_NAME: bootstrap_anchor_rows,
             MUTANT_DELTAS_NAME: mutant_delta_rows,
             ROBUSTNESS_NAME: robustness_rows,
         }
