@@ -12,6 +12,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -22,6 +23,7 @@ from build_docking_jobs import render_cfg_from_job, render_restraints_from_job  
 from common import read_tsv, sha256_file, write_tsv  # noqa: E402
 from run_controller import load_limit  # noqa: E402
 from orchestrate_smoke_then_full import verify_smoke  # noqa: E402
+import run_job as run_job_module  # noqa: E402
 
 
 CORE_HASH = "a" * 64
@@ -218,6 +220,97 @@ class JobManifestControllerTests(unittest.TestCase):
         result = json.loads((self.root / "results" / job_id / "job_result.json").read_text())
         self.assertTrue(all(path.startswith(f"runs/{job_id}/") for path in result["selected_models"]))
         self.assertFalse((scratch / job_id).exists())
+
+    def test_failed_scratch_attempt_is_archived_before_retry(self) -> None:
+        self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
+        job_id = read_tsv(self.root / "manifests/docking_jobs.tsv")[0]["job_id"]
+        fake = self.root / "fake_haddock_retry.py"
+        fake.write_text(
+            "from pathlib import Path\n"
+            "Path('failure_marker.txt').write_text('preserve me')\n"
+            "raise SystemExit(2)\n",
+            encoding="utf-8",
+        )
+        scratch = self.root / "node_local_scratch"
+        env = {
+            **self.env,
+            "PVRIG_HADDOCK_CMD": f"{sys.executable} {fake}",
+            "PVRIG_SCORE_POSE": str(REPO / "scripts/score_pose.py"),
+            "PVRIG_LOCAL_SCRATCH_ROOT": str(scratch),
+        }
+        first = self.run_script("run_job.py", job_id, env=env)
+        self.assertEqual(first.returncode, 1)
+        self.assertTrue((scratch / job_id / "failure_marker.txt").is_file())
+        fake.write_text(
+            "from pathlib import Path\n"
+            "import json\n"
+            "out=Path('haddock_run/6_seletopclusts'); out.mkdir(parents=True)\n"
+            "text=Path('data/vhh_chainA.pdb').read_text().replace('END\\n','')+Path('data/pvrig_chainT.pdb').read_text()\n"
+            "(out/'cluster_1_model_1.pdb').write_text(text)\n"
+            "json.dump({'input':[{'file_name':'cluster_1_model_1.pdb','score':-12.5,'unw_energies':{'air':3.2}}]},open(out/'io.json','w'))\n",
+            encoding="utf-8",
+        )
+        second = self.run_script("run_job.py", job_id, env=env)
+        self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
+        archived = list((self.root / "failed_attempts" / job_id).glob("attempt_1_*/scratch_run/failure_marker.txt"))
+        self.assertEqual(len(archived), 1)
+
+    def test_invalid_job_id_is_rejected_before_any_scratch_path_operation(self) -> None:
+        victim = self.root / "victim"
+        victim.mkdir()
+        marker = victim / "keep.txt"
+        marker.write_text("do not delete", encoding="utf-8")
+        env = {**self.env, "PVRIG_LOCAL_SCRATCH_ROOT": str(self.root / "scratch")}
+        process = self.run_script("run_job.py", "../victim", env=env)
+        self.assertNotEqual(process.returncode, 0)
+        self.assertIn("invalid job_id", process.stderr)
+        self.assertEqual(marker.read_text(encoding="utf-8"), "do not delete")
+
+    def test_scratch_cleanup_error_does_not_rollback_success(self) -> None:
+        self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
+        job_id = read_tsv(self.root / "manifests/docking_jobs.tsv")[0]["job_id"]
+        fake = self.root / "fake_haddock_cleanup.py"
+        fake.write_text(
+            "from pathlib import Path\n"
+            "import json\n"
+            "out=Path('haddock_run/6_seletopclusts'); out.mkdir(parents=True)\n"
+            "text=Path('data/vhh_chainA.pdb').read_text().replace('END\\n','')+Path('data/pvrig_chainT.pdb').read_text()\n"
+            "(out/'cluster_1_model_1.pdb').write_text(text)\n"
+            "json.dump({'input':[{'file_name':'cluster_1_model_1.pdb','score':-12.5,'unw_energies':{'air':3.2}}]},open(out/'io.json','w'))\n",
+            encoding="utf-8",
+        )
+        env = {
+            **self.env,
+            "PVRIG_HADDOCK_CMD": f"{sys.executable} {fake}",
+            "PVRIG_SCORE_POSE": str(REPO / "scripts/score_pose.py"),
+            "PVRIG_LOCAL_SCRATCH_ROOT": str(self.root / "node_local_scratch"),
+        }
+        with mock.patch.dict(os.environ, env, clear=False), mock.patch.object(
+            run_job_module, "cleanup_local_scratch", side_effect=RuntimeError("cleanup failed")
+        ):
+            code = run_job_module.execute(job_id, 2)
+        self.assertEqual(code, 0)
+        state = json.loads((self.root / "status/jobs" / f"{job_id}.json").read_text())
+        self.assertEqual(state["status"], "SUCCESS")
+
+    def test_launcher_defaults_to_node_local_scratch_with_filesystem_preflight(self) -> None:
+        capture = self.root / "ssh_command.txt"
+        fake_ssh = self.root / "fake_ssh.sh"
+        fake_ssh.write_text(f'#!/usr/bin/env bash\nprintf "%s\\n" "$*" > "{capture}"\n', encoding="utf-8")
+        fake_ssh.chmod(0o755)
+        env = {**os.environ, "SSH_BIN": str(fake_ssh), "REMOTE_HOST": "node23"}
+        process = subprocess.run(
+            ["bash", str(REPO / "scripts/launch_node1.sh"), "full"],
+            cwd=REPO,
+            env=env,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+        command = capture.read_text(encoding="utf-8")
+        self.assertIn("PVRIG_LOCAL_SCRATCH_ROOT='/tmp/pvrig_v3_haddock'", command)
+        self.assertIn("stat -f -c %T", command)
 
     def test_smoke_verifier_requires_hash_selected_model_and_both_references(self) -> None:
         self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
