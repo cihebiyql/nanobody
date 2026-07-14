@@ -631,6 +631,22 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         self.assertTrue((outdir / "current" / calibration.REPORT_NAME).is_file())
         self.assertTrue((outdir / "current" / calibration.AUDIT_NAME).is_file())
         self.assertTrue((outdir / "current" / calibration.RELEASE_INPUT_NAME).is_file())
+        rules = json.loads(
+            (outdir / "current" / calibration.RULES_NAME).read_text(encoding="utf-8")
+        )
+        release_input = json.loads(
+            (outdir / "current" / calibration.RELEASE_INPUT_NAME).read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(rules["status"], calibration.CALCULATED_STATUS)
+        self.assertEqual(release_input["status"], calibration.RELEASE_INPUT_STATUS)
+        self.assertFalse(release_input["development_smoke_eligible"])
+        self.assertTrue(release_input["external_validator_required"])
+        self.assertNotIn(
+            "PASS_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD",
+            json.dumps(audit, sort_keys=True),
+        )
 
     def test_full_B2000_two_builds_are_byte_deterministic(self) -> None:
         outdir_a = self.root / "determinism" / "build_a"

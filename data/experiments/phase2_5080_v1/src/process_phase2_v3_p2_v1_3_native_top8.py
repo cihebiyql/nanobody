@@ -800,7 +800,7 @@ def validate_params_provenance(path: Path, row: Mapping[str, str]) -> None:
         raise ContractError(f"emref params tolerance mismatch for {row['run_id']}")
 
 
-def validate_io_provenance(path: Path, row: Mapping[str, str]) -> None:
+def validate_io_provenance(path: Path, row: Mapping[str, str]) -> int:
     payload = read_json_object(path, "4_emref io")
     outputs = payload.get("output")
     index = parse_int(row["source_output_index"], "source_output_index", 0)
@@ -819,6 +819,58 @@ def validate_io_provenance(path: Path, row: Mapping[str, str]) -> None:
         row["source_seed"], "source_seed"
     ):
         raise ContractError(f"4_emref seed mismatch for {row['run_id']}")
+    scored: list[tuple[float, int, str]] = []
+    for output_index, raw in enumerate(outputs):
+        if not isinstance(raw, dict):
+            raise ContractError(f"4_emref output[{output_index}] is invalid")
+        file_name = str(raw.get("file_name", "")).strip()
+        if not file_name:
+            raise ContractError(f"4_emref output[{output_index}] lacks file_name")
+        scored.append(
+            (parse_float(raw.get("score"), "io.score"), output_index, file_name)
+        )
+    selected = sorted(scored)[:8]
+    native_rank = parse_int(row["native_rank"], "native_rank", 1)
+    if native_rank > len(selected) or selected[native_rank - 1] != scored[index]:
+        raise ContractError(f"4_emref fixed Top-8 rank mismatch for {row['run_id']}")
+    return len(outputs)
+
+
+def validate_completion_stage_gate(
+    completion: Mapping[str, Any],
+    io_count: int,
+    row: Mapping[str, str],
+) -> None:
+    counts = completion.get("stage_output_counts")
+    if not isinstance(counts, dict):
+        raise ContractError(f"Completion lacks stage_output_counts for {row['run_id']}")
+    normalized = {
+        stage: parse_int(counts.get(stage), f"stage_output_counts.{stage}")
+        for stage in ("topoaa", "rigidbody", "seletop", "flexref", "emref")
+    }
+    expected = {
+        "topoaa": ("eq", 2),
+        "rigidbody": ("ge", 38),
+        "seletop": ("eq", 10),
+        "flexref": ("ge", 8),
+        "emref": ("ge", 8),
+    }
+    if normalized["emref"] != io_count:
+        raise ContractError(f"Completion/io emref count mismatch for {row['run_id']}")
+    for stage, (operator, threshold) in expected.items():
+        observed = normalized[stage]
+        if (operator == "eq" and observed != threshold) or (
+            operator == "ge" and observed < threshold
+        ):
+            raise ContractError(f"Completion stage gate failed for {row['run_id']}/{stage}")
+    if row["source_mode"] == NEW_SOURCE_MODE:
+        requirements = completion.get("stage_output_requirements")
+        expected_requirements = {
+            stage: {"operator": operator, "value": threshold}
+            for stage, (operator, threshold) in expected.items()
+        }
+        if requirements != expected_requirements:
+            raise ContractError(f"New-run stage requirements drift for {row['run_id']}")
 
 
 def validate_exact_reuse_provenance(
@@ -826,7 +878,7 @@ def validate_exact_reuse_provenance(
     config: BuildConfig,
     file_bindings: dict[str, str],
     manifest_cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
-) -> None:
+) -> Mapping[str, str]:
     reuse_path = bind_local_file(
         row,
         "exact_reuse_manifest_relpath",
@@ -868,6 +920,7 @@ def validate_exact_reuse_provenance(
         )
     if mismatches:
         raise ContractError(f"Exact-reuse ledger mismatch for {row['run_id']}: {mismatches}")
+    return ledger
 
 
 def validate_row_provenance(
@@ -893,6 +946,7 @@ def validate_row_provenance(
     ):
         raise ContractError("Identity-normalization amendment binding mismatch")
     source_mode = row["source_mode"]
+    reuse_ledger: Mapping[str, str] | None = None
     ignored = parse_bool(row["source_final_stage_ignored"], "source_final_stage_ignored")
     exit_code = parse_int(row["completion_exit_code"], "completion_exit_code")
     if source_mode == NEW_SOURCE_MODE:
@@ -912,7 +966,7 @@ def validate_row_provenance(
             or row["source_protocol_id"] != selector_contract.OLD_PROTOCOL_ID
         ):
             raise ContractError(f"Reuse completion semantics failed for {row['run_id']}")
-        validate_exact_reuse_provenance(
+        reuse_ledger = validate_exact_reuse_provenance(
             row, config, file_bindings, manifest_cache
         )
         old_manifest = bind_local_file(
@@ -952,7 +1006,7 @@ def validate_row_provenance(
     )
     validate_config_provenance(assets["config"], row)
     validate_params_provenance(assets["params"], row)
-    validate_io_provenance(assets["io"], row)
+    io_count = validate_io_provenance(assets["io"], row)
 
     completion = read_json_object(assets["completion"], "completion")
     expected_completion = {
@@ -970,10 +1024,32 @@ def validate_row_provenance(
         for field, wanted in expected_completion.items()
         if completion.get(field) != wanted
     }
+    if source_mode == NEW_SOURCE_MODE:
+        new_expected = {
+            "case_id": candidate_id,
+            "candidate_id": candidate_id,
+            "fixed_top8_selection_performed": False,
+            "fixed_top8_policy": "deferred_4_emref_score_order_no_backfill",
+            "formal_eligible": False,
+            "training_label_release_eligible": False,
+            "docking_gold_release_eligible": False,
+        }
+        completion_mismatches.update(
+            {
+                field: (completion.get(field), wanted)
+                for field, wanted in new_expected.items()
+                if completion.get(field) != wanted
+            }
+        )
     if completion_mismatches:
         raise ContractError(
             f"Completion payload mismatch for {row['run_id']}: {completion_mismatches}"
         )
+    validate_completion_stage_gate(completion, io_count, row)
+    if reuse_ledger is not None:
+        expected_counts = reuse_ledger.get("source_stage_output_counts_json", "")
+        if canonical_json(completion.get("stage_output_counts")) != expected_counts:
+            raise ContractError(f"Reuse completion stage-count ledger drift for {row['run_id']}")
 
     run_manifest = bind_local_file(
         row,

@@ -425,6 +425,14 @@ class NativeFixture:
                         }
                         for record in pose_records
                     ]
+                    + [
+                        {
+                            "file_name": f"unused_{index:02d}.pdb.gz",
+                            "score": -1.0 + index,
+                            "seed": 1000 + index,
+                        }
+                        for index in range(self.poses_per_run, 8)
+                    ]
                 },
             )
             rigidbody_seed = 917 if receptor == "8X6B" else 20917
@@ -444,12 +452,33 @@ class NativeFixture:
                 {
                     "protocol_id": MOD.SELECTOR_PROTOCOL_ID,
                     "run_id": run_id,
+                    "case_id": "case_01",
+                    "candidate_id": "case_01",
                     "receptor_id": receptor,
                     "status": "PASS_4_EMREF_TOP8_READY",
                     "exit_code": 0,
                     "config_sha256": MOD.sha256_file(config_path),
                     "monomer_sha256": MOD.sha256_file(monomer),
                     "receptor_sha256": MOD.sha256_file(receptor_path),
+                    "fixed_top8_selection_performed": False,
+                    "fixed_top8_policy": "deferred_4_emref_score_order_no_backfill",
+                    "formal_eligible": False,
+                    "training_label_release_eligible": False,
+                    "docking_gold_release_eligible": False,
+                    "stage_output_counts": {
+                        "topoaa": 2,
+                        "rigidbody": 40,
+                        "seletop": 10,
+                        "flexref": 8,
+                        "emref": 8,
+                    },
+                    "stage_output_requirements": {
+                        "topoaa": {"operator": "eq", "value": 2},
+                        "rigidbody": {"operator": "ge", "value": 38},
+                        "seletop": {"operator": "eq", "value": 10},
+                        "flexref": {"operator": "ge", "value": 8},
+                        "emref": {"operator": "ge", "value": 8},
+                    },
                 },
             )
             run_row: dict[str, str] = {

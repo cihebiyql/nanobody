@@ -469,6 +469,7 @@ def summarize_runs(poses: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
         chains = {}
         for chain in ("A", "B"):
             comparisons = [item["chains"][chain] for item in items]
+            hetatm = [item["heavy_hetatm"] for item in comparisons]
             difference_counter: Counter[str] = Counter()
             for comparison in comparisons:
                 for difference in comparison["missing_atoms"]:
@@ -486,6 +487,21 @@ def summarize_runs(poses: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
                     item["all_atom_differences_are_terminal_oxt"] for item in comparisons
                 ),
                 "difference_frequencies": dict(sorted(difference_counter.items())),
+                "heavy_hetatm": {
+                    "reference_nonzero_pose_count": sum(
+                        item["reference_count"] > 0 for item in hetatm
+                    ),
+                    "pose_nonzero_count": sum(item["pose_count"] > 0 for item in hetatm),
+                    "raw_identity_exact_count": sum(
+                        item["raw_identity_exact"] for item in hetatm
+                    ),
+                    "missing_identity_count": sum(
+                        len(item["missing_identities"]) for item in hetatm
+                    ),
+                    "extra_identity_count": sum(
+                        len(item["extra_identities"]) for item in hetatm
+                    ),
+                },
             }
         rows.append({
             "run_id": run_id,
@@ -503,6 +519,7 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
     chain_summary = {}
     for chain in ("A", "B"):
         comparisons = [pose["chains"][chain] for pose in poses]
+        hetatm = [item["heavy_hetatm"] for item in comparisons]
         chain_summary[chain] = {
             "comparison_count": len(comparisons),
             "residue_identity_exact_count": sum(item["residue_identity_exact"] for item in comparisons),
@@ -521,6 +538,27 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
                 len(item["missing_residues"]) + len(item["extra_residues"])
                 for item in comparisons
             ),
+            "heavy_hetatm": {
+                "reference_identity_count_total": sum(
+                    item["reference_count"] for item in hetatm
+                ),
+                "pose_identity_count_total": sum(item["pose_count"] for item in hetatm),
+                "reference_nonzero_comparison_count": sum(
+                    item["reference_count"] > 0 for item in hetatm
+                ),
+                "pose_nonzero_comparison_count": sum(
+                    item["pose_count"] > 0 for item in hetatm
+                ),
+                "raw_identity_exact_count": sum(
+                    item["raw_identity_exact"] for item in hetatm
+                ),
+                "missing_identity_count": sum(
+                    len(item["missing_identities"]) for item in hetatm
+                ),
+                "extra_identity_count": sum(
+                    len(item["extra_identities"]) for item in hetatm
+                ),
+            },
         }
     chains_by_receptor: dict[str, dict[str, Any]] = {}
     for receptor in sorted({str(pose["receptor_id"]) for pose in poses}):
@@ -528,6 +566,7 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
         receptor_poses = [pose for pose in poses if pose["receptor_id"] == receptor]
         for chain in ("A", "B"):
             comparisons = [pose["chains"][chain] for pose in receptor_poses]
+            hetatm = [item["heavy_hetatm"] for item in comparisons]
             chains_by_receptor[receptor][chain] = {
                 "comparison_count": len(comparisons),
                 "residue_identity_exact_count": sum(
@@ -547,6 +586,15 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
                 "residue_difference_count": sum(
                     len(item["missing_residues"]) + len(item["extra_residues"])
                     for item in comparisons
+                ),
+                "heavy_hetatm_reference_identity_count_total": sum(
+                    item["reference_count"] for item in hetatm
+                ),
+                "heavy_hetatm_pose_identity_count_total": sum(
+                    item["pose_count"] for item in hetatm
+                ),
+                "heavy_hetatm_raw_identity_exact_count": sum(
+                    item["raw_identity_exact"] for item in hetatm
                 ),
             }
     return {
@@ -686,6 +734,15 @@ def build_audit(
         and comparison["all_atom_differences_are_terminal_oxt"]
         for pose in poses for comparison in pose["chains"].values()
     )
+    all_heavy_hetatm_raw_exact = all(
+        comparison["heavy_hetatm"]["raw_identity_exact"]
+        for pose in poses for comparison in pose["chains"].values()
+    )
+    all_heavy_hetatm_zero = all(
+        comparison["heavy_hetatm"]["reference_count"] == 0
+        and comparison["heavy_hetatm"]["pose_count"] == 0
+        for pose in poses for comparison in pose["chains"].values()
+    )
     exact_reuse_complete = (
         len(old_poses) == 512
         and len({pose["run_id"] for pose in old_poses}) == 64
@@ -704,6 +761,7 @@ def build_audit(
         and total_complete
         and all_residues_exact
         and all_non_oxt_exact
+        and all_heavy_hetatm_raw_exact
         and boundary_complete
     )
     implementation = Path(__file__).resolve()
@@ -722,9 +780,16 @@ def build_audit(
             "residue_normalization": "none",
             "all_other_atom_or_residue_differences": "fail_closed",
             "requires_separate_preregistration_and_freeze": True,
+            "heavy_hetatm_policy": (
+                "require_zero_on_reference_and_pose_chains_A_and_B"
+                if all_heavy_hetatm_zero
+                else "require_raw_exact_identity_on_reference_and_pose_chains_A_and_B"
+            ),
         },
         "acceptance": {
             "all_residue_identities_exact": all_residues_exact,
+            "all_heavy_hetatm_raw_identities_exact": all_heavy_hetatm_raw_exact,
+            "all_heavy_hetatm_counts_zero": all_heavy_hetatm_zero,
             "all_non_terminal_oxt_atom_identities_exact": all_non_oxt_exact,
             "all_512_targeted_exact_reuse_poses_covered": exact_reuse_complete,
             "boundary4_complete_and_hash_closed": boundary_complete,
