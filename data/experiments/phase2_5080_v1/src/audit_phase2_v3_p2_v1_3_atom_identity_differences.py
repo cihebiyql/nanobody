@@ -446,6 +446,33 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
                 for item in comparisons
             ),
         }
+    chains_by_receptor: dict[str, dict[str, Any]] = {}
+    for receptor in sorted({str(pose["receptor_id"]) for pose in poses}):
+        chains_by_receptor[receptor] = {}
+        receptor_poses = [pose for pose in poses if pose["receptor_id"] == receptor]
+        for chain in ("A", "B"):
+            comparisons = [pose["chains"][chain] for pose in receptor_poses]
+            chains_by_receptor[receptor][chain] = {
+                "comparison_count": len(comparisons),
+                "residue_identity_exact_count": sum(
+                    item["residue_identity_exact"] for item in comparisons
+                ),
+                "atom_identity_exact_count": sum(
+                    item["atom_identity_exact"] for item in comparisons
+                ),
+                "terminal_oxt_normalized_atom_identity_exact_count": sum(
+                    item["terminal_oxt_normalized_atom_identity_exact"]
+                    for item in comparisons
+                ),
+                "non_oxt_difference_count": sum(
+                    len(item["non_oxt_missing_atoms"]) + len(item["non_oxt_extra_atoms"])
+                    for item in comparisons
+                ),
+                "residue_difference_count": sum(
+                    len(item["missing_residues"]) + len(item["extra_residues"])
+                    for item in comparisons
+                ),
+            }
     return {
         "pose_count": len(poses),
         "run_count": len(runs),
@@ -457,6 +484,7 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
         "v1_3_reuse_overlap_runs": sum(run["v1_3_reuse_overlap"] for run in runs),
         "v1_3_reuse_overlap_poses": sum(pose["v1_3_reuse_overlap"] for pose in poses),
         "chains": chain_summary,
+        "chains_by_receptor": chains_by_receptor,
     }
 
 
@@ -472,6 +500,16 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
     summary = audit["summary"]
     a = summary["chains"]["A"]
     b = summary["chains"]["B"]
+    receptor_rows = []
+    for receptor, chains in summary["chains_by_receptor"].items():
+        for chain, values in chains.items():
+            receptor_rows.append(
+                f"| {receptor} | {chain} | {values['comparison_count']} | "
+                f"{values['residue_identity_exact_count']} | {values['atom_identity_exact_count']} | "
+                f"{values['terminal_oxt_normalized_atom_identity_exact_count']} | "
+                f"{values['non_oxt_difference_count']} |"
+            )
+    receptor_table = "\n".join(receptor_rows)
     return f"""# PVRIG V1.3 ATOM identity 差异审计与窄化 normalization 修订提案
 
 ## 结论
@@ -492,6 +530,12 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
 |---|---:|---:|---:|---:|---:|
 | A / VHH | {a['comparison_count']} | {a['residue_identity_exact_count']} | {a['atom_identity_exact_count']} | {a['terminal_oxt_normalized_atom_identity_exact_count']} | {a['non_oxt_difference_count']} |
 | B / PVRIG | {b['comparison_count']} | {b['residue_identity_exact_count']} | {b['atom_identity_exact_count']} | {b['terminal_oxt_normalized_atom_identity_exact_count']} | {b['non_oxt_difference_count']} |
+
+按 docking receptor 和 chain 分层：
+
+| receptor | chain | comparisons | residue exact | raw atom exact | OXT-normalized exact | non-OXT differences |
+|---|---|---:|---:|---:|---:|---:|
+{receptor_table}
 
 观察到的 raw atom identity 差异仅为 VHH C 端终止残基 `OXT` 在 frozen monomer 中存在、在 HADDOCK pose 中缺失。所有 residue identity 与所有非 `OXT` heavy-ATOM identity 均完全一致；PVRIG chain B 为 raw exact match。
 
@@ -579,7 +623,16 @@ def build_audit(
             and boundary_inventory["remote_local_hash_chain_equal"] is True
         )
     )
-    passed = bool(poses) and all_residues_exact and all_non_oxt_exact and boundary_complete
+    old_pose_count = len(old_poses)
+    old_run_count = len({pose["run_id"] for pose in old_poses})
+    local_old_complete = old_pose_count == 480 and old_run_count == 60
+    passed = (
+        bool(poses)
+        and local_old_complete
+        and all_residues_exact
+        and all_non_oxt_exact
+        and boundary_complete
+    )
     implementation = Path(__file__).resolve()
     audit: dict[str, Any] = {
         "schema_version": "phase2_v3_p2_v1_3_atom_identity_difference_audit_v1",
@@ -600,6 +653,7 @@ def build_audit(
         "acceptance": {
             "all_residue_identities_exact": all_residues_exact,
             "all_non_terminal_oxt_atom_identities_exact": all_non_oxt_exact,
+            "all_480_locally_available_old_poses_covered": local_old_complete,
             "boundary4_complete_and_hash_closed": boundary_complete,
         },
         "summary": summary,
