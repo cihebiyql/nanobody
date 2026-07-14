@@ -353,6 +353,7 @@ class NativeFixture:
 
         run_rows: list[dict[str, str]] = []
         run_assets: dict[str, dict[str, object]] = {}
+        common_monomer = self.selector_release_dir / "assets/common_monomer.pdb"
         for receptor in MOD.RECEPTORS:
             run_id = f"V13CAL_001__{receptor}__main"
             run_dir = self.selector_release_dir / "assets" / run_id
@@ -381,16 +382,17 @@ class NativeFixture:
 
             first_coordinates = pose_records[0]["coordinates"]
             assert isinstance(first_coordinates, bytes)
-            monomer = run_dir / "monomer.pdb"
+            monomer = common_monomer
             receptor_path = run_dir / "receptor.pdb"
-            monomer.write_text(
-                "\n".join(
-                    line
-                    for line in first_coordinates.decode("ascii").splitlines()
-                    if line.startswith("ATOM  ") and line[21] == "A"
+            if not monomer.exists():
+                monomer.write_text(
+                    "\n".join(
+                        line
+                        for line in first_coordinates.decode("ascii").splitlines()
+                        if line.startswith("ATOM  ") and line[21] == "A"
+                    )
+                    + "\nEND\n"
                 )
-                + "\nEND\n"
-            )
             receptor_path.write_text(
                 "\n".join(
                     line
@@ -822,25 +824,26 @@ class V13NativeTop8Tests(unittest.TestCase):
             fixture = NativeFixture(Path(temporary))
             outdir = fixture.root / "output"
             first_audit = MOD.build_package(fixture.config(outdir))
+            published = outdir / "current"
             first_files = {
-                path.relative_to(outdir).as_posix(): path.read_bytes()
-                for path in outdir.rglob("*")
+                path.relative_to(published).as_posix(): path.read_bytes()
+                for path in published.rglob("*")
                 if path.is_file()
             }
             second_audit = MOD.build_package(fixture.config(outdir))
             second_files = {
-                path.relative_to(outdir).as_posix(): path.read_bytes()
-                for path in outdir.rglob("*")
+                path.relative_to(published).as_posix(): path.read_bytes()
+                for path in published.rglob("*")
                 if path.is_file()
             }
             self.assertEqual(first_audit, second_audit)
             self.assertEqual(first_files, second_files)
 
-            material = read_csv(outdir / MOD.MATERIALIZATION_MANIFEST_NAME)
-            metrics = read_csv(outdir / MOD.CONTINUOUS_METRICS_NAME)
+            material = read_csv(published / MOD.MATERIALIZATION_MANIFEST_NAME)
+            metrics = read_csv(published / MOD.CONTINUOUS_METRICS_NAME)
             contacts = [
                 json.loads(line)
-                for line in (outdir / MOD.RESIDUE_CONTACTS_NAME).read_text().splitlines()
+                for line in (published / MOD.RESIDUE_CONTACTS_NAME).read_text().splitlines()
             ]
             self.assertEqual(len(material), 4)
             self.assertEqual(len(metrics), 4)
@@ -888,11 +891,11 @@ class V13NativeTop8Tests(unittest.TestCase):
                 {"pdb_9e6y_ref"},
             )
             native_map_9 = read_csv(
-                outdir / first_audit["output_sha256"]["alignment_maps"]["9E6Y"]["relpath"]
+                published / first_audit["output_sha256"]["alignment_maps"]["9E6Y"]["relpath"]
             )
             self.assertEqual(native_map_9[0], {"mobile_ref": "B:101A", "reference_ref": "A:101A"})
             self.assertEqual(native_map_9[-1], {"mobile_ref": "B:123A", "reference_ref": "A:123A"})
-            aligned_9 = outdir / next(
+            aligned_9 = published / next(
                 row["aligned_pose_relpath"]
                 for row in material
                 if row["generation_receptor"] == "9E6Y"
@@ -907,13 +910,12 @@ class V13NativeTop8Tests(unittest.TestCase):
                 first_audit["observed_contract"]["rows_by_generation_receptor"],
                 {"8X6B": 2, "9E6Y": 2},
             )
-            self.assertTrue(first_audit["primary_native_metric_eligible"])
+            self.assertEqual(first_audit["status"], MOD.PROCESSOR_PENDING_STATUS)
+            self.assertFalse(first_audit["primary_native_metric_eligible"])
             self.assertFalse(first_audit["formal_eligible"])
             self.assertFalse(first_audit["training_label_release_eligible"])
             self.assertFalse(first_audit["docking_gold_release_eligible"])
-            self.assertFalse(
-                first_audit["development_release_manifest_check"]["validated"]
-            )
+            self.assertFalse(first_audit["development_release_state"]["validated"])
             self.assertEqual(
                 first_audit["reference_inventory_observed"]["9E6Y"]
                 ["excluded_hetatm_heavy_atom_count"],
@@ -930,11 +932,8 @@ class V13NativeTop8Tests(unittest.TestCase):
             for forbidden in ("geometry_class", "native_class", "dual_tier", "r_gold"):
                 self.assertNotIn(forbidden, serialized_outputs)
 
-            stale = outdir / "aligned_poses/stale/rank_99.pdb"
-            stale.parent.mkdir(parents=True)
-            stale.write_text("STALE\n")
-            MOD.build_package(fixture.config(outdir))
-            self.assertFalse(stale.exists())
+            self.assertTrue(published.is_symlink())
+            self.assertTrue((outdir / "releases" / first_audit["publication_contract"]["release_id"]).is_dir())
 
     def test_fail_closed_source_hash_atom_inventory_and_conditional_null(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -972,19 +971,37 @@ class V13NativeTop8Tests(unittest.TestCase):
         with self.assertRaises(MOD.ContractError):
             MOD.validate_nullable_region_min_distances({"regions": regions}, "invalid")
 
-    def test_release_component_hash_binding_is_fail_closed(self) -> None:
+    def test_pending_builder_cannot_self_qualify_and_pointer_failure_rolls_back(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "release.json"
-            component = {
-                "schema_version": "pvrig_v1_3_native_processor_release_component_v1",
-                "protocol_id": MOD.PROTOCOL_ID,
-                "artifacts": {"processor": {"path": "x", "sha256": "1" * 64}},
-            }
-            MOD.write_json(path, {"native_processor_release": component})
-            self.assertTrue(MOD.validate_release_manifest(path, component)["validated"])
-            drifted = json.loads(json.dumps(component))
-            drifted["artifacts"]["processor"]["sha256"] = "0" * 64
-            self.assertFalse(MOD.validate_release_manifest(path, drifted)["validated"])
+            fixture = NativeFixture(Path(temporary))
+            audit = MOD.build_package(fixture.config(fixture.root / "publication"))
+            self.assertEqual(audit["status"], MOD.PROCESSOR_PENDING_STATUS)
+            self.assertFalse(audit["primary_native_metric_eligible"])
+            self.assertFalse(audit["development_release_state"]["validated"])
+
+            publication = fixture.root / "pointer_test"
+            old_release = publication / "releases/old"
+            new_release = publication / "releases/new"
+            for release in (old_release, new_release):
+                release.mkdir(parents=True)
+                (release / MOD.AUDIT_NAME).write_text("{}\n")
+            current = publication / "current"
+            MOD.promote_current_symlink(old_release, current)
+            staging = fixture.root / "staging_new"
+            shutil.copytree(new_release, staging)
+
+            def fail_pointer(_release: Path, _current: Path) -> None:
+                raise RuntimeError("injected pointer failure")
+
+            with self.assertRaises(RuntimeError):
+                MOD.promote_versioned_release(
+                    staging,
+                    publication / "releases/new2",
+                    current,
+                    pointer_promoter=fail_pointer,
+                )
+            self.assertEqual(current.resolve(), old_release.resolve())
+            self.assertFalse((publication / "releases/new2").exists())
 
 
 if __name__ == "__main__":

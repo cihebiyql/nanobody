@@ -207,6 +207,8 @@ SELECTOR_REQUIRED_FIELDS = {
     "hotspot_sha256",
     "source_params_sha256",
     "source_io_sha256",
+    "completion_sha256",
+    "run_manifest_relpath",
     "run_manifest_sha256",
     "run_manifest_row_sha256",
     "exact_reuse_manifest_relpath",
