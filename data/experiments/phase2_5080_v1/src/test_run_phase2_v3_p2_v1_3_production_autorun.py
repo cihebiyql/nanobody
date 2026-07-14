@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -216,6 +217,9 @@ def snapshot(
         "controller_pid_file_valid": alive,
         "controller_identity_valid": alive,
         "controller_argv_sha256": "a" * 64 if alive else "",
+        "observed_hostname": "fixture-node",
+        "observed_boot_id": "",
+        "host_identity_valid": True,
         "failures": list(failures),
     }
     return autorun.CommandResult(0, json.dumps(payload) + "\n", "")
@@ -277,11 +281,25 @@ def create_remote_probe_fixture(base: Path) -> tuple[Path, Path]:
 
 
 def execute_remote_probe(remote_root: Path, proc_root: Path) -> dict[str, object]:
+    base = autorun.legacy_controller_contract(os.uname().nodename)
+    argv = list(base.argv)
+    argv[argv.index("--root") + 1] = remote_root.resolve().as_posix()
+    contract = autorun.ControllerContract(
+        host=base.host,
+        boot_id=base.boot_id,
+        pid=base.pid,
+        pid_file_sha256=base.pid_file_sha256,
+        start_ticks=base.start_ticks,
+        python=base.python,
+        haddock_bin=base.haddock_bin,
+        argv=tuple(argv),
+        source=base.source,
+    )
     completed = subprocess.run(
         [
             sys.executable,
             "-c",
-            autorun.remote_probe_script(),
+            autorun.remote_probe_script(contract),
             str(remote_root),
             str(proc_root),
         ],

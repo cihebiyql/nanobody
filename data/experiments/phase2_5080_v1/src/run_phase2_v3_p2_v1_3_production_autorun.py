@@ -203,11 +203,11 @@ class Layout:
 
     @property
     def default_state(self) -> Path:
-        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_state.json"
+        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_state_v2.json"
 
     @property
     def default_log(self) -> Path:
-        return self.exp_dir / "logs/pvrig_v1_3_production_autorun.jsonl"
+        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_v2.jsonl"
 
 
 @dataclass(frozen=True)
@@ -488,7 +488,7 @@ def load_controller_contract(path: Path, configured_host: str) -> ControllerCont
 
     single_writer = receipt.get("single_writer_handoff", {})
     if not isinstance(single_writer, dict) or any(
-        single_writer.get(field) is not expected
+        single_writer.get(field) != expected
         for field, expected in {
             "old_controller_stopped": True,
             "old_children_zero_after_sigstop": True,
@@ -793,8 +793,9 @@ def release_inventory(root: Path, marker: str) -> dict[str, Any]:
     }
 
 
-def remote_probe_script() -> str:
-    script = r'''import csv, hashlib, io, json, os, pathlib, re, sys
+def remote_probe_script(contract: ControllerContract | None = None) -> str:
+    contract = contract or legacy_controller_contract()
+    script = r'''import csv, hashlib, io, json, os, pathlib, re, socket, sys
 root = pathlib.Path(sys.argv[1])
 proc_root = pathlib.Path(sys.argv[2]) if len(sys.argv) == 3 else pathlib.Path("/proc")
 protocol = "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
@@ -805,6 +806,20 @@ expected_pid_sha = "__CONTROLLER_PID_SHA__"
 expected_start_ticks = __CONTROLLER_START_TICKS__
 expected_python = "__CONTROLLER_PYTHON__"
 expected_haddock = "__HADDOCK_BIN__"
+expected_hostname = __EXPECTED_HOSTNAME__
+expected_boot_id = __EXPECTED_BOOT_ID__
+expected_argv = __EXPECTED_ARGV__
+observed_hostname = socket.gethostname()
+try:
+    observed_boot_id = pathlib.Path("/proc/sys/kernel/random/boot_id").read_text(
+        encoding="ascii"
+    ).strip()
+except OSError:
+    observed_boot_id = ""
+host_identity_valid = (
+    observed_hostname == expected_hostname
+    and (not expected_boot_id or observed_boot_id == expected_boot_id)
+)
 
 def emit(status, manifest_count=0, completion_count=0, pass_count=0,
          failure_count=0, missing_count=30, invalid_count=0,
@@ -820,6 +835,9 @@ def emit(status, manifest_count=0, completion_count=0, pass_count=0,
         "controller_pid_file_valid":controller_pid_file_valid,
         "controller_identity_valid":controller_identity_valid,
         "controller_argv_sha256":controller_argv_sha256,
+        "observed_hostname":observed_hostname,
+        "observed_boot_id":observed_boot_id,
+        "host_identity_valid":host_identity_valid,
         "failures":list(failures)}, sort_keys=True))
 
 manifest = root / "manifests/new_run_manifest.csv"
@@ -882,6 +900,8 @@ found_paths = {
     for path in (root / "runs").glob("*/*.complete.json")
 }
 failures = []
+if not host_identity_valid:
+    failures.append("remote_host_or_boot_identity_mismatch")
 unexpected = found_paths - expected_paths
 if unexpected:
     failures.append("unexpected_completion_files:" + ",".join(sorted(unexpected)))
@@ -915,7 +935,7 @@ controller_start_ticks = None
 controller_pid_file_valid = False
 controller_identity_valid = False
 controller_argv_sha256 = ""
-ready = (completion_count == 30 and pass_count == 30 and missing_count == 0
+ready = (host_identity_valid and completion_count == 30 and pass_count == 30 and missing_count == 0
          and not unexpected and not invalid_count and not failure_count)
 if not ready and not unexpected and not invalid_count and not failure_count:
     pid_file = root / "controller_full.pid"
@@ -941,10 +961,6 @@ if not ready and not unexpected and not invalid_count and not failure_count:
             stat_text = (proc / "stat").read_text(encoding="ascii")
             stat_fields = stat_text.rsplit(")", 1)[1].strip().split()
             controller_start_ticks = int(stat_fields[19])
-            expected_argv = [expected_python, "scripts/run_v1_3_completion15.py",
-                "--root", root_resolved.as_posix(), "--haddock-bin", expected_haddock,
-                "--max-workers", "5", "--max-load1", "50",
-                "--load-poll-seconds", "30"]
             controller_identity_valid = (
                 argv == expected_argv
                 and cwd == root_resolved
@@ -957,7 +973,7 @@ if not ready and not unexpected and not invalid_count and not failure_count:
         except Exception as error:
             failures.append("controller_proc_missing_or_dead:" + str(error))
 
-if unexpected or invalid_count or failure_count:
+if not host_identity_valid or unexpected or invalid_count or failure_count:
     status = "FAILURE"
 elif ready:
     status = "READY"
@@ -976,22 +992,29 @@ emit(status, manifest_count=30, completion_count=completion_count,
      controller_argv_sha256=controller_argv_sha256, failures=failures)'''
     return (
         script.replace("__MANIFEST_SHA__", FROZEN_NEW_RUN_MANIFEST_SHA256)
-        .replace("__CONTROLLER_PID__", str(FROZEN_CONTROLLER_PID))
-        .replace("__CONTROLLER_PID_SHA__", FROZEN_CONTROLLER_PID_SHA256)
-        .replace("__CONTROLLER_START_TICKS__", str(FROZEN_CONTROLLER_START_TICKS))
-        .replace("__CONTROLLER_PYTHON__", FROZEN_CONTROLLER_PYTHON)
-        .replace("__HADDOCK_BIN__", FROZEN_HADDOCK_BIN)
+        .replace("__CONTROLLER_PID__", str(contract.pid))
+        .replace("__CONTROLLER_PID_SHA__", contract.pid_file_sha256)
+        .replace("__CONTROLLER_START_TICKS__", str(contract.start_ticks))
+        .replace("__CONTROLLER_PYTHON__", contract.python)
+        .replace("__HADDOCK_BIN__", contract.haddock_bin)
+        .replace("__EXPECTED_HOSTNAME__", json.dumps(contract.host))
+        .replace("__EXPECTED_BOOT_ID__", json.dumps(contract.boot_id))
+        .replace("__EXPECTED_ARGV__", json.dumps(list(contract.argv)))
     )
 
 
-def remote_command(config: Config) -> tuple[str, ...]:
+def remote_command(
+    config: Config, contract: ControllerContract | None = None
+) -> tuple[str, ...]:
     command = "python3 -c {} {}".format(
-        shlex.quote(remote_probe_script()), shlex.quote(REMOTE_ROOT)
+        shlex.quote(remote_probe_script(contract)), shlex.quote(REMOTE_ROOT)
     )
     return (config.ssh_executable, config.host, command)
 
 
-def parse_remote_result(result: CommandResult) -> RemoteSnapshot:
+def parse_remote_result(
+    result: CommandResult, contract: ControllerContract | None = None
+) -> RemoteSnapshot:
     if result.returncode != 0:
         raise AutorunError(
             f"Remote probe exited {result.returncode}: {result.stderr.strip()}"
@@ -1005,7 +1028,7 @@ def parse_remote_result(result: CommandResult) -> RemoteSnapshot:
         raise AutorunError("Remote probe returned invalid JSON") from error
     if not isinstance(payload, dict):
         raise AutorunError("Remote probe JSON is not an object")
-    return RemoteSnapshot.parse(payload)
+    return RemoteSnapshot.parse(payload, contract or legacy_controller_contract())
 
 
 def build_stages(config: Config) -> tuple[Stage, ...]:
@@ -1153,6 +1176,7 @@ class Autorun:
         self.config = config
         self.runner = runner or subprocess_runner
         self.sleeper = sleeper
+        self.controller_contract = controller_contract(config)
         self.state = self._load_state()
 
     def _new_state(self) -> dict[str, Any]:
@@ -1161,6 +1185,8 @@ class Autorun:
             "status": "INITIALIZED",
             "protocol_id": PROTOCOL_ID,
             "remote_root": REMOTE_ROOT,
+            "remote_host": self.config.host,
+            "controller_contract": self.controller_contract.state_binding(),
             "formal_eligible": False,
             "docking_gold_release_eligible": False,
             "training_label_release_eligible": False,
@@ -1178,6 +1204,9 @@ class Autorun:
             payload.get("schema_version") != STATE_SCHEMA
             or payload.get("protocol_id") != PROTOCOL_ID
             or payload.get("remote_root") != REMOTE_ROOT
+            or payload.get("remote_host") != self.config.host
+            or payload.get("controller_contract")
+            != self.controller_contract.state_binding()
         ):
             raise AutorunError("Existing autorun state contract mismatch")
         require_false(payload, FALSE_BOUNDARIES)
@@ -1191,6 +1220,8 @@ class Autorun:
         self.state["docking_gold_release_eligible"] = False
         self.state["training_label_release_eligible"] = False
         self.state["p2_training_ready"] = False
+        self.state["remote_host"] = self.config.host
+        self.state["controller_contract"] = self.controller_contract.state_binding()
         path = self.config.state_path
         path.parent.mkdir(parents=True, exist_ok=True)
         fd, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
@@ -1224,7 +1255,7 @@ class Autorun:
             os.fsync(handle.fileno())
 
     def _probe(self) -> RemoteSnapshot:
-        command = remote_command(self.config)
+        command = remote_command(self.config, self.controller_contract)
         result = self.runner(command, self.config.layout.data_root)
         self._log(
             "remote_probe_command",
@@ -1233,7 +1264,7 @@ class Autorun:
             stdout_sha256=sha256_bytes(result.stdout.encode("utf-8")),
             stderr_sha256=sha256_bytes(result.stderr.encode("utf-8")),
         )
-        return parse_remote_result(result)
+        return parse_remote_result(result, self.controller_contract)
 
     def _record_status(self, status: str, **extra: Any) -> None:
         self.state["status"] = status
@@ -1423,7 +1454,11 @@ class Autorun:
         if self.config.dry_run:
             plan = {
                 "status": "DRY_RUN_ONLY",
-                "remote_command": list(remote_command(self.config)),
+                "remote_command": list(
+                    remote_command(self.config, self.controller_contract)
+                ),
+                "remote_host": self.config.host,
+                "controller_contract": self.controller_contract.state_binding(),
                 "stages": [
                     {"name": stage.name, "command": list(stage.command)}
                     for stage in stages
@@ -1523,6 +1558,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--state-file", type=Path)
     parser.add_argument("--log-file", type=Path)
+    parser.add_argument("--controller-receipt", type=Path)
     return parser.parse_args(argv)
 
 
@@ -1540,6 +1576,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         dry_run=args.dry_run,
         state_file=args.state_file,
         log_file=args.log_file,
+        controller_receipt=args.controller_receipt,
     )
     try:
         if config.dry_run:
