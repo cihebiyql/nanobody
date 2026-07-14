@@ -741,6 +741,7 @@ data/experiments/phase2_5080_v1/src/test_validate_esm2_cache_v2_3.py
 data/experiments/phase2_5080_v1/src/test_validate_p3_structure_fusion.py
 data/experiments/phase2_5080_v1/src/test_validate_phase2_v2_4_final.py
 data/experiments/phase2_5080_v1/src/test_validate_phase2_v3_p2_v1_2_failed_rc_freeze.py
+data/experiments/phase2_5080_v1/src/test_validate_phase2_v3_p2_v1_3_docking_execution_release.py
 data/experiments/phase2_5080_v1/src/train_phase2_v1.py
 data/experiments/phase2_5080_v1/src/train_phase2_v2.py
 data/experiments/phase2_5080_v1/src/train_phase2_v2_3.py
@@ -763,6 +764,7 @@ data/experiments/phase2_5080_v1/src/validate_phase2_v2_5_final.py
 data/experiments/phase2_5080_v1/src/validate_phase2_v2_training.py
 data/experiments/phase2_5080_v1/src/validate_phase2_v3_final.py
 data/experiments/phase2_5080_v1/src/validate_phase2_v3_p2_v1_2_failed_rc_freeze.py
+data/experiments/phase2_5080_v1/src/validate_phase2_v3_p2_v1_3_docking_execution_release.py
 data/phase2_v2_2_top50_with_sequences.csv
 data/reports/MVP_COMPLETION_AUDIT.md
 data/reports/MVP_PVRIG_VHH_WORKFLOW_REPORT.md
