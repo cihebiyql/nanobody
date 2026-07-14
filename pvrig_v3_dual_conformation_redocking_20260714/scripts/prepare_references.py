@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from common import atomic_write_text, is_standard_atom_line, project_root, sha256_file, write_json
+from common import atomic_write_text, is_standard_atom_line, project_root, sha256_file, write_json, write_tsv
 
 REFERENCE_CONFIG = {
     "8x6b": {
@@ -28,16 +28,13 @@ REFERENCE_CONFIG = {
 HOTSPOT_SOURCE = Path("inputs/source/PVRIG_hotspot_set_v1.csv")
 NORMALIZED_DIR = Path("inputs/normalized")
 SUMMARY_PATH = Path("reports/reference_normalization_summary.json")
+HOTSPOT_OUTPUT = Path("inputs/normalized/interface_hotspots_uniprot.tsv")
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=project_root(), help="Project root")
     return parser.parse_args()
-
-
-def residue_key(line: str) -> tuple[str, str, str]:
-    return (line[21], line[22:26], line[26])
 
 
 def normalize_atom_line(line: str, chain: str, residue_number: int, serial: int) -> str:
@@ -111,7 +108,7 @@ def normalize_reference(root: Path, reference_id: str, cfg: dict[str, Any]) -> d
     }
 
 
-def load_hotspots(root: Path) -> dict[str, Any]:
+def load_hotspots(root: Path) -> tuple[dict[str, Any], list[dict[str, object]]]:
     path = root / HOTSPOT_SOURCE
     rows: list[dict[str, str]] = []
     with path.open(newline="", encoding="utf-8-sig") as handle:
@@ -128,9 +125,43 @@ def load_hotspots(root: Path) -> dict[str, Any]:
         raise ValueError(
             f"unexpected hotspot split: total={len(ordered)} anchors={len(anchors)} holdouts={len(holdouts)}"
         )
-    return {
+    split_rows: list[dict[str, object]] = []
+    anchor_positions = {int(row["uniprot_position"]) for row in anchors}
+    for row in ordered:
+        position = int(row["uniprot_position"])
+        split_rows.append(
+            {
+                "alignment_col": int(row["alignment_col"]),
+                "uniprot_position": position,
+                "uniprot_aa": row["uniprot_aa"],
+                "hotspot_id": row["hotspot_id"],
+                "hotspot_class": row["hotspot_class"],
+                "priority_weight": row["priority_weight"],
+                "restraint_role": "AIR_ANCHOR" if position in anchor_positions else "SCORING_HOLDOUT",
+                "pdb_8x6b_ref": row["pdb_8x6b_ref"],
+                "pdb_9e6y_ref": row["pdb_9e6y_ref"],
+            }
+        )
+    write_tsv(
+        root / HOTSPOT_OUTPUT,
+        split_rows,
+        [
+            "alignment_col",
+            "uniprot_position",
+            "uniprot_aa",
+            "hotspot_id",
+            "hotspot_class",
+            "priority_weight",
+            "restraint_role",
+            "pdb_8x6b_ref",
+            "pdb_9e6y_ref",
+        ],
+    )
+    summary = {
         "source": str(HOTSPOT_SOURCE),
         "source_sha256": sha256_file(path),
+        "normalized_table": str(HOTSPOT_OUTPUT),
+        "normalized_table_sha256": sha256_file(root / HOTSPOT_OUTPUT),
         "split_algorithm": "sort_alignment_col_then_even_index_anchor",
         "soft_hint_rows_excluded": True,
         "unique_interface_residue_count": len(ordered),
@@ -140,6 +171,7 @@ def load_hotspots(root: Path) -> dict[str, Any]:
         "air_anchor_uniprot_positions": [int(row["uniprot_position"]) for row in anchors],
         "holdout_uniprot_positions": [int(row["uniprot_position"]) for row in holdouts],
     }
+    return summary, split_rows
 
 
 def main() -> int:
@@ -150,12 +182,13 @@ def main() -> int:
             reference_id: normalize_reference(root, reference_id, cfg)
             for reference_id, cfg in sorted(REFERENCE_CONFIG.items())
         }
+        hotspot_summary, _hotspot_rows = load_hotspots(root)
         summary = {
             "schema_version": 1,
             "numbering": "UniProt_Q6DKI7",
             "atom_filter": "standard_amino_acid_ATOM_only",
             "references": references,
-            "hotspots": load_hotspots(root),
+            "hotspots": hotspot_summary,
         }
         write_json(root / SUMMARY_PATH, summary)
     except Exception as exc:  # pragma: no cover - exercised through subprocess failure paths.

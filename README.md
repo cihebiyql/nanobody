@@ -15,6 +15,7 @@
 | 成功案例机制研究 | `机制/README.md`, `机制/PVRIG_PVRL2_机制当前结论.md`, `机制/case_studies/` |
 | 阳性抗体与 scaffold 库 | `positives/`, `scaffolds/README.md` |
 | docking / 校准 / 阈值分析 | `docking/calibration/`, `docking/case02_hr151_pvrig/reports/` |
+| 固定128候选的双构象独立重对接 | `pvrig_v3_dual_conformation_redocking_20260714/README.md`, `pvrig_v3_dual_conformation_redocking_20260714/RUN_STATUS.md` |
 | 本地模型复现说明 | `code/docs/NANOBODY_MODEL_REPRODUCTION_GUIDE_ZH.md`, `code/docs/DEEPNANO_DETAILED_ZH.md` |
 | Node1 部署和 QC 流程 | `node1/NODE1_ANTIBODY_TOOLS_QUICKSTART.md`, `node1/VHH_COMPETITION_QC_PIPELINE_RUNBOOK.md` |
 | 轻量同步规则 | `docs/LIGHTWEIGHT_SYNC_INVENTORY.md`, `scripts/sync_lightweight_to_github.sh` |
@@ -78,6 +79,15 @@ Node1 机器/环境上的工具部署、运行手册和竞赛 QC 管线说明。
 - CDR 表：`positives/known_positive_CDR_table.csv`
 - 元数据：`positives/positive_antibody_metadata.csv`
 - 机制与排除：`positives/mechanism_reference_table.csv`, `positives/positive_CDR_similarity_exclusion_table.csv`
+
+### `pvrig_v3_dual_conformation_redocking_20260714/`
+
+固定的 PVRIG 双构象独立 HADDOCK3 评价器。它冻结128条候选和47条协议回归控制，分别对 8X6B、9E6Y 执行3个显式 seed 的真正独立重对接，并在 native/cross 两个参考系形成2x2几何评分。该目录修复旧流程的跨构象残基编号漂移和 `HETATM` 污染问题；在控制组稳定性门禁通过前，下一批 P2/P3/P4 序列生成被硬锁定。
+
+- 协议与复现入口：`pvrig_v3_dual_conformation_redocking_20260714/README.md`
+- 当前运行状态：`pvrig_v3_dual_conformation_redocking_20260714/RUN_STATUS.md`
+- 协议参数：`pvrig_v3_dual_conformation_redocking_20260714/config/protocol_spec.json`
+- 固定输入和任务：`pvrig_v3_dual_conformation_redocking_20260714/inputs/`, `pvrig_v3_dual_conformation_redocking_20260714/manifests/`
 
 ### `reports/`
 

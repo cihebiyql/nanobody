@@ -16,29 +16,42 @@ CORE_FILES = [
     "inputs/source/8X6B.pdb",
     "inputs/source/9E6Y.pdb",
     "inputs/source/PVRIG_hotspot_set_v1.csv",
-    "inputs/normalized/8x6b_pvrig_chainT.pdb",
-    "inputs/normalized/8x6b_reference_TL.pdb",
-    "inputs/normalized/9e6y_pvrig_chainT.pdb",
-    "inputs/normalized/9e6y_reference_TL.pdb",
+    "inputs/normalized/8x6b_pvrig_receptor.pdb",
+    "inputs/normalized/8x6b_TL_reference.pdb",
+    "inputs/normalized/9e6y_pvrig_receptor.pdb",
+    "inputs/normalized/9e6y_TL_reference.pdb",
     "inputs/normalized/interface_hotspots_uniprot.tsv",
     "inputs/candidates_128.tsv",
+    "inputs/candidate_monomers_manifest.tsv",
     "inputs/calibration_controls_47.tsv",
     "scripts/common.py",
     "scripts/prepare_references.py",
     "scripts/score_pose.py",
     "scripts/build_candidate_panel.py",
+    "scripts/freeze_candidate_monomers.py",
     "scripts/build_calibration_manifest.py",
 ]
 
 FINAL_FILES = [
     "manifests/docking_jobs.tsv",
+    "manifests/smoke_jobs.tsv",
     "scripts/build_docking_jobs.py",
+    "scripts/deploy_node1.sh",
+    "scripts/freeze_protocol.py",
+    "scripts/launch_node1.sh",
+    "scripts/orchestrate_smoke_then_full.py",
     "scripts/run_job.py",
     "scripts/run_controller.py",
+    "scripts/sync_remote_status.sh",
     "scripts/status.py",
     "scripts/aggregate_results.py",
     "scripts/validate_protocol.py",
     "scripts/guard_next_generation.py",
+    "tests/test_candidate_panel.py",
+    "tests/test_job_manifest_and_controller.py",
+    "tests/test_protocol_freeze.py",
+    "tests/test_references_scoring.py",
+    "tests/test_stability_gate.py",
 ]
 
 
@@ -54,6 +67,13 @@ def file_records(root: Path, relpaths: list[str]) -> list[dict[str, object]]:
         }
         for rel in sorted(relpaths)
     ]
+
+
+def core_files(root: Path) -> list[str]:
+    monomers = sorted((root / "inputs/candidate_monomers").glob("*.pdb"))
+    if len(monomers) != 128:
+        raise ValueError(f"expected 128 frozen candidate monomers, found {len(monomers)}")
+    return CORE_FILES + [str(path.relative_to(root)) for path in monomers]
 
 
 def assert_frozen_counts(root: Path, spec: dict[str, object]) -> None:
@@ -75,7 +95,7 @@ def assert_frozen_counts(root: Path, spec: dict[str, object]) -> None:
 
 def freeze_core(root: Path) -> dict[str, object]:
     spec = read_json(root / "config/protocol_spec.json")
-    records = file_records(root, CORE_FILES)
+    records = file_records(root, core_files(root))
     assert_frozen_counts(root, spec)
     core_material = {
         "schema_version": 1,
@@ -98,6 +118,13 @@ def freeze_final(root: Path) -> dict[str, object]:
     core = read_json(core_path)
     if core.get("status") != "CORE_LOCKED":
         raise ValueError("PROTOCOL_CORE_LOCK.json is absent or not CORE_LOCKED")
+    drifted = []
+    for record in core.get("files", []):
+        path = root / str(record["path"])
+        if not path.is_file() or sha256_file(path) != record.get("sha256"):
+            drifted.append(str(record["path"]))
+    if drifted:
+        raise ValueError(f"core inputs or scripts drifted after core lock: {drifted}")
     final_records = file_records(root, FINAL_FILES)
     jobs = read_tsv(root / "manifests/docking_jobs.tsv")
     spec = read_json(root / "config/protocol_spec.json")

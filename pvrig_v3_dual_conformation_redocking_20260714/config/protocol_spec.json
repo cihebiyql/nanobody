@@ -7,6 +7,8 @@
     "panel_id": "fixed128_v1",
     "expected_count": 128,
     "selection_algorithm": "fixed128_deterministic_v1",
+    "monomer_freeze_manifest": "inputs/candidate_monomers_manifest.tsv",
+    "monomer_source_policy": "128_candidate_pdbs_frozen_locally_and_hash_verified",
     "bucket_quotas": {
       "LOCKED_DUAL_REFERENCE_A": 47,
       "RF2_FORMAL_PASS": 4,
@@ -35,12 +37,16 @@
     "conformations": {
       "8x6b": {
         "source_pdb": "inputs/source/8X6B.pdb",
+        "normalized_receptor_pdb": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+        "normalized_reference_pdb": "inputs/normalized/8x6b_TL_reference.pdb",
         "source_receptor_chain": "B",
         "source_ligand_chain": "A",
         "receptor_number_offset": 38
       },
       "9e6y": {
         "source_pdb": "inputs/source/9E6Y.pdb",
+        "normalized_receptor_pdb": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+        "normalized_reference_pdb": "inputs/normalized/9e6y_TL_reference.pdb",
         "source_receptor_chain": "A",
         "source_ligand_chain": "D",
         "receptor_number_offset": 40
@@ -75,7 +81,11 @@
     ],
     "expected_candidate_jobs": 768,
     "expected_control_jobs": 282,
-    "expected_total_jobs": 1050
+    "expected_total_jobs": 1050,
+    "smoke_seed": 917,
+    "smoke_control_id": "CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151",
+    "smoke_candidate_id": "PVRIG_RFAb_v2_P2_qkg_L_bb006_mpn00",
+    "expected_smoke_jobs": 4
   },
   "scoring": {
     "atom_records": "standard_amino_acid_ATOM_only",

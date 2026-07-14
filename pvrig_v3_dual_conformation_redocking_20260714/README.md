@@ -31,6 +31,8 @@ V3 的修复是：
 
 面板由旧 1024 条候选确定性选出，不按 `sequence_qc.tsv` 的 `candidate_id` 连接，因为该文件使用不同 ID 命名空间；QC 只能按序列 SHA256 一一连接。
 
+128 个候选单体 PDB 已冻结在 `inputs/candidate_monomers/`，`inputs/candidate_monomers_manifest.tsv` 同时记录原 node1 来源、序列 SHA256、PDB SHA256、链和残基范围。正式任务只使用这些冻结副本，不再运行时依赖旧 V2 绝对路径。
+
 | 选择桶 | 数量 | 用途 |
 | --- | ---: | --- |
 | `LOCKED_DUAL_REFERENCE_A` | 47 | 全部保留当前双参考 A 信号，供 V3 重新判断 |
@@ -71,6 +73,7 @@ config/                  协议参数和旧阈值兼容参考
 inputs/source/           冻结的原始结构和热点表
 inputs/normalized/       UniProt编号、T/L链、无HETATM参考结构
 inputs/candidates_128.tsv
+inputs/candidate_monomers/ 与 candidate_monomers_manifest.tsv
 inputs/calibration_controls_47.tsv
 manifests/               协议锁与1050任务清单
 scripts/                 构建、对接、评分、汇总、门禁和状态脚本
@@ -99,6 +102,13 @@ python3 scripts/validate_protocol.py
 
 # 4. 完成最终协议锁，再部署node1
 python3 scripts/freeze_protocol.py final
+scripts/deploy_node1.sh
+
+# 5. 远端先做配置验证；后台编排器会先运行4个固定smoke，
+#    只有smoke证据通过才自动进入1050任务全量队列
+scripts/launch_node1.sh validate
+scripts/launch_node1.sh pipeline
+scripts/launch_node1.sh status
 ```
 
 node1 的固定运行目录是：
@@ -108,6 +118,14 @@ node1 的固定运行目录是：
 ```
 
 控制器按节点 1-minute load 自适应并发：`>=62: 0`、`56-62: 1`、`48-56: 2`、`<48: 4`，每个 HADDOCK3 任务4核、`nice -n 15`。HADDOCK3 是 CPU 工作负载，空闲 GPU 不会直接加速它。
+
+固定 smoke 集合包含 HR-151 阳性控制和旧几何排名第1候选，各自在 8X6B/9E6Y 上以 seed 917 独立运行，共4个任务。smoke 只验证配置、两个受体分支、候选/控制 monomer、selected-model 发现和2x2后处理能否闭合；它不用于判断评价器稳定。
+
+原始输出保留在 node1 的 `runs/`、`results/`、`failed_attempts/`；本地只同步轻量状态与汇总：
+
+```bash
+scripts/sync_remote_status.sh
+```
 
 ## 稳定性门禁
 
@@ -127,4 +145,3 @@ node1 的固定运行目录是：
 ## 解释边界
 
 本流程评价的是“对接 pose 是否具有 PVRIG-PVRL2 界面遮挡样几何”。HADDOCK 分数、界面遮挡、一般结合倾向、亲和力和真实功能阻断是不同证据轴；本目录不会把几何分数直接表述为 Kd 或实验阻断结论。
-

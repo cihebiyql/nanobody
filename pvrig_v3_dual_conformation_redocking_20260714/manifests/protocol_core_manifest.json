@@ -1,0 +1,744 @@
+{
+  "files": [
+    {
+      "bytes": 2983,
+      "path": "config/blocker_judgment_rules_v2.json",
+      "sha256": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5"
+    },
+    {
+      "bytes": 4033,
+      "path": "config/protocol_spec.json",
+      "sha256": "0f4e8d100c42362aa244bc575532f87ed5f3a4d891a76df0b943952721bc14f7"
+    },
+    {
+      "bytes": 34667,
+      "path": "inputs/calibration_controls_47.tsv",
+      "sha256": "aae6aa56a31ef0fc459a532c69666e448438b3bea89fd8f7e9221af6ecc441fd"
+    },
+    {
+      "bytes": 142544,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_ekg_L_bb003_mpn00.pdb",
+      "sha256": "9757a42b3e7637ccb6ae5ee6386c2828859cd1752b92f1220ecf15daa6a44e51"
+    },
+    {
+      "bytes": 142868,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_ekg_L_bb004_mpn00.pdb",
+      "sha256": "9ad108211726189bd3dd818b25f082af9e07fc9005f2b92b9bf3c65b3834fc4c"
+    },
+    {
+      "bytes": 143111,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_ekg_L_bb004_mpn01.pdb",
+      "sha256": "9ae4e44a723403dc83141b711ea4f98f07e90f23fb6b68c3dfb86986482ec437"
+    },
+    {
+      "bytes": 141653,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_ekg_L_bb004_mpn02.pdb",
+      "sha256": "f6f60820660d95f86de1b0ddee561b5e42b693387b434e372307d7b2c98a8097"
+    },
+    {
+      "bytes": 142787,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_ekg_L_bb004_mpn03.pdb",
+      "sha256": "269eb79d906bbbf14885917d796f53dbec5ef92b0caf9c5c0de308d8202338b6"
+    },
+    {
+      "bytes": 139304,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_ekg_S_bb007_mpn00.pdb",
+      "sha256": "d3e5eae80162b307e2d33e7dcfcc63e620500a6be8a12738bb658002cfd1a38b"
+    },
+    {
+      "bytes": 142220,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qkg_L_bb004_mpn01.pdb",
+      "sha256": "9b03575c8d1eb927f226b73e9ae9f19f6aa3f49ba3a07a8a72b7f3f2f0d34e48"
+    },
+    {
+      "bytes": 141815,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qkg_L_bb004_mpn02.pdb",
+      "sha256": "2d79d53601249ca44f605ff00511c36ec26250e82285100d5f2a3bac1fc75648"
+    },
+    {
+      "bytes": 142949,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qkg_L_bb004_mpn03.pdb",
+      "sha256": "6ddd68190de43a1de6818a675267d3fcb7891f81138f109061b5cb9387592287"
+    },
+    {
+      "bytes": 138008,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qkg_S_bb001_mpn01.pdb",
+      "sha256": "f1eb26ac4be87b4630062be5edcb7df964c7791cfbfa4135075aad272d35f83f"
+    },
+    {
+      "bytes": 140276,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qkg_S_bb005_mpn00.pdb",
+      "sha256": "e7d03ccd38441eacfaf3b43d0cbc4d16794169f6cbf70b6419add01d1e1ed5bd"
+    },
+    {
+      "bytes": 141329,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb000_mpn03.pdb",
+      "sha256": "d653d991486a3f12764495c9cf89a18c1e48a76706a7d29ed986cfe807820493"
+    },
+    {
+      "bytes": 143921,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb003_mpn00.pdb",
+      "sha256": "52c6217ec5756783692ff28e0176586966d53471ea036731f7bf1ac327ed8d56"
+    },
+    {
+      "bytes": 143840,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb003_mpn03.pdb",
+      "sha256": "2cf54cba1032b097271c14cdc4378bc319801c71cba85b278c9e748ae8eb8bf7"
+    },
+    {
+      "bytes": 142220,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb004_mpn01.pdb",
+      "sha256": "24c8dc38487baed3f5aa057dd7d7fd2b4252348b1ec1f06198e5c167b47b6143"
+    },
+    {
+      "bytes": 141977,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb004_mpn02.pdb",
+      "sha256": "a279e6f89d5c2144d84233acc907b1cef737a900b3f0448eebc1621779b9871c"
+    },
+    {
+      "bytes": 143111,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb004_mpn03.pdb",
+      "sha256": "c4ba562ba4ba352905c83531ff5b94c95b8b1ad9930e1d1c674535098a08a74d"
+    },
+    {
+      "bytes": 145136,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_L_bb006_mpn01.pdb",
+      "sha256": "6dc9d77d27dabcef84b1301c7c07641f9916cbbdce60d16214e4f2911b20c289"
+    },
+    {
+      "bytes": 138899,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_S_bb003_mpn00.pdb",
+      "sha256": "101c5861a50de215940600eeed5ab3d1a41569dc02d4f15ed1f0ca3c02a0ecd1"
+    },
+    {
+      "bytes": 140276,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_S_bb005_mpn03.pdb",
+      "sha256": "0629884e97a830089a0ae710d24b1853eed8c80fa8d6545c5f9b7aa6657c69a3"
+    },
+    {
+      "bytes": 139790,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_S_bb007_mpn00.pdb",
+      "sha256": "49233aa24d1dff3070d0e04eb16ae108b8ce5cecd2b1bffa7088a7b07d95c1f8"
+    },
+    {
+      "bytes": 139061,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P1_qrg_S_bb007_mpn01.pdb",
+      "sha256": "0c4eb9771f66818c6b6989c15229a9cb401a19879cdb6ec0b164c36d9f038423"
+    },
+    {
+      "bytes": 144407,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_L_bb001_mpn01.pdb",
+      "sha256": "bcad3e66179641c12ac829e8947466273fa09de6ad380e97ea5d33205f3bae69"
+    },
+    {
+      "bytes": 143759,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_L_bb002_mpn02.pdb",
+      "sha256": "745efd71f120e89433f83beebd648f1e07f5ae52c4174f57a776ae9d6fc0d76b"
+    },
+    {
+      "bytes": 143678,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_L_bb003_mpn02.pdb",
+      "sha256": "3a827807bcb9b1670f55e4382dd6ce089b0574989022202e02d127757b83944b"
+    },
+    {
+      "bytes": 148862,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_L_bb005_mpn00.pdb",
+      "sha256": "cf96dcdbf635ddc86820836c7eadba236c09a85c208a081a7c9ec5059c9306b0"
+    },
+    {
+      "bytes": 144326,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_L_bb006_mpn01.pdb",
+      "sha256": "828dc9b56f872df97283a10e0230f97ba4507c575726b70fce919058cc79ebeb"
+    },
+    {
+      "bytes": 147080,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_L_bb007_mpn00.pdb",
+      "sha256": "a8017dbcee42dad16eb8a05e0531fc55d1d1ab41a44ee2d4b6cf34da48d9b4e8"
+    },
+    {
+      "bytes": 140033,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_ekg_S_bb005_mpn02.pdb",
+      "sha256": "8d6007e37f9afde82f26131445947313dd807e7a539fb47e4427081bd3506238"
+    },
+    {
+      "bytes": 144164,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qkg_L_bb003_mpn00.pdb",
+      "sha256": "6574296b3dc3800c82b02b960d347d704b1f67b990298e38ce331a5522c4e9e1"
+    },
+    {
+      "bytes": 143678,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qkg_L_bb006_mpn00.pdb",
+      "sha256": "591efdfe0d870ff8461b49a919e2561ed37309c77f4123cd7b824a2551bc2b18"
+    },
+    {
+      "bytes": 147566,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qkg_L_bb007_mpn01.pdb",
+      "sha256": "1ea0af4718a7336e38eb90a65dd257c04410a6896d03d74ae9328d415e642666"
+    },
+    {
+      "bytes": 137036,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qkg_S_bb001_mpn03.pdb",
+      "sha256": "0e6c424af0999fb8adc10beb524f12f8d94c60ab59b3ef660344613037bc57d6"
+    },
+    {
+      "bytes": 144326,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb003_mpn00.pdb",
+      "sha256": "3ea6ea68604b00d462baff44802b92c2a945373712b7ca1c12978f28536fa4b0"
+    },
+    {
+      "bytes": 144245,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb003_mpn01.pdb",
+      "sha256": "d14824de48bf3ba796ae6d41c1214c7797de44dbc460e5e3c557ec0d112633a7"
+    },
+    {
+      "bytes": 144569,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb003_mpn03.pdb",
+      "sha256": "a937a5e6b3190450cbb50b15ea53eace4f63b473385a2de77c10534468b9f838"
+    },
+    {
+      "bytes": 142706,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb004_mpn01.pdb",
+      "sha256": "686f54bd45006f17f8c7e492c9910b1b8e2ed1b6029254992c014d249f53ac77"
+    },
+    {
+      "bytes": 143597,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb004_mpn02.pdb",
+      "sha256": "2593134ed95f0d1dc9ffb289eb8af7891ae5e0ff64f589bd42ca097ab703dc3f"
+    },
+    {
+      "bytes": 142301,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb004_mpn03.pdb",
+      "sha256": "5d98fbf61255d00d45692cc6a76006d103443b57f580f4bc5c7077aec1e5bea9"
+    },
+    {
+      "bytes": 144488,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb006_mpn01.pdb",
+      "sha256": "607a30dc74e5d638de9e5f4e334645a89aafde7692fd72d100c08655f3c4532a"
+    },
+    {
+      "bytes": 147728,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_L_bb007_mpn01.pdb",
+      "sha256": "2ff3c1b4ae0c249f4c32347f1c9de5264beaef87116fa69dd6f6e9e28551a32f"
+    },
+    {
+      "bytes": 139142,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_S_bb005_mpn02.pdb",
+      "sha256": "eda478f12e21710e148fca6c7d71a4fd626faf6f18fdfd3bdefed6e9309bfe7f"
+    },
+    {
+      "bytes": 138737,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P2_qrg_S_bb007_mpn02.pdb",
+      "sha256": "284b2ad1c0ac1bd3f881a00c6cc03fbdead30723aad59a1eba165bbc8b00a2cf"
+    },
+    {
+      "bytes": 143435,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_L_bb002_mpn02.pdb",
+      "sha256": "8175bfa17b91b1642ac81fc649ed715816834f0ad27e828e7ede3c156fdaaf08"
+    },
+    {
+      "bytes": 143921,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_L_bb003_mpn00.pdb",
+      "sha256": "980ea524153e912fd66b26f42390af814e64ef77478ea875f429dffaee96232c"
+    },
+    {
+      "bytes": 143759,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_L_bb003_mpn02.pdb",
+      "sha256": "ecc393efce179a1d234fa82035c7a14709c07480173d82b21083091b4524db7b"
+    },
+    {
+      "bytes": 147647,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_L_bb005_mpn02.pdb",
+      "sha256": "a5b464484b8386d2761771fa131695f70283fba3a2e13ab91082752c6c321ef7"
+    },
+    {
+      "bytes": 148619,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_L_bb005_mpn03.pdb",
+      "sha256": "19d07ae8b313a082c855eb15d0ea1524ef7f86d717595523d820e9572fb27fe3"
+    },
+    {
+      "bytes": 145703,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_L_bb006_mpn02.pdb",
+      "sha256": "37b228bc9ee798aa64f479a8c3eeb8b1a20ae7d29d46dc68882e20bf2dbf907f"
+    },
+    {
+      "bytes": 140357,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_S_bb005_mpn00.pdb",
+      "sha256": "aa91fae9befd130a2606d68608282f31ee24971f0e0125516e2b5b576e6273c6"
+    },
+    {
+      "bytes": 140600,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_ekg_S_bb005_mpn01.pdb",
+      "sha256": "68ac64c66dc753dcf15ea6e131595081a5ccd421bcc4dc1e5d6da56023ed9cd6"
+    },
+    {
+      "bytes": 145217,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb001_mpn01.pdb",
+      "sha256": "c447e2244778fe0e2ae0a7195491a35cac4d3a4dc4dc5b9997555546ed78562c"
+    },
+    {
+      "bytes": 144002,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb003_mpn00.pdb",
+      "sha256": "9957117bc90cb181f070346becea701577bfd223fb75c6f4e36737f5e677b3fb"
+    },
+    {
+      "bytes": 143921,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb003_mpn02.pdb",
+      "sha256": "61575e71c3789b624060e3ab0f0d283b31023e986edc24b835e095287204228e"
+    },
+    {
+      "bytes": 142787,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb004_mpn03.pdb",
+      "sha256": "901d89d1a10377c59f1ffe66f8f405e2a5a6ab0802df27b98c630abbf8178df2"
+    },
+    {
+      "bytes": 148376,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb005_mpn00.pdb",
+      "sha256": "bdd45b8f679b00ee2f930336fbe4a8f7ff46676b723a0ddd8ebcffd4c6a2ebb7"
+    },
+    {
+      "bytes": 144488,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb006_mpn00.pdb",
+      "sha256": "48f9c01c0a90884262785b31be74bd5bb9b5bda938a04b7c53c206db50ced6eb"
+    },
+    {
+      "bytes": 144083,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qkg_L_bb006_mpn03.pdb",
+      "sha256": "200936866f10dec768d967f95ef6fb4c7ba22cc32887fe6265d77a188f680322"
+    },
+    {
+      "bytes": 145379,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_L_bb001_mpn00.pdb",
+      "sha256": "2e8a3bfd11da550301e4126f528d2de01d47574b13596149af9f973ec33474a7"
+    },
+    {
+      "bytes": 144245,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_L_bb003_mpn00.pdb",
+      "sha256": "68eb2749f1db138689e24843f1eee8a71fcb0fe540d78e9de343725ac4c9ee32"
+    },
+    {
+      "bytes": 144164,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_L_bb003_mpn01.pdb",
+      "sha256": "a0e06f58ddfa8b9ed15b96cd73d340b7f16cfa75392dd8d3ed08e09b7000ff07"
+    },
+    {
+      "bytes": 143759,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_L_bb003_mpn02.pdb",
+      "sha256": "03ca3a32902ca89f50cfd562beac19c25af7fcf25a9765e1331c404b2b8421e1"
+    },
+    {
+      "bytes": 144083,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_L_bb006_mpn02.pdb",
+      "sha256": "6a2dffb1416e9c247bb9977a6ee38db52fde36b6e7b5b00ac4b7579d3590b150"
+    },
+    {
+      "bytes": 145946,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_L_bb007_mpn02.pdb",
+      "sha256": "fbbc57a755511f535bec5319c1e1526d8f503396ca8254c01a9015001a00ff1e"
+    },
+    {
+      "bytes": 139790,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_S_bb005_mpn00.pdb",
+      "sha256": "ab239ce89180d1f95864b5853ee4e2ccebe7f5ecd10165c4a006dc2843fb7732"
+    },
+    {
+      "bytes": 139304,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_S_bb005_mpn03.pdb",
+      "sha256": "4211f44a955d2da10f67976a462a1e6a2534785f89957969fce9fb3893c567d8"
+    },
+    {
+      "bytes": 138008,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P3_qrg_S_bb007_mpn03.pdb",
+      "sha256": "39b3398b6050ef1e20d3ce049d6d4400a90935efd6ff3a203065ac45e89b4f06"
+    },
+    {
+      "bytes": 142220,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_L_bb000_mpn02.pdb",
+      "sha256": "bd4977d331c802f607c080b52f8cf223d7458a0eb3e55bc92e89d709b7b3f7fd"
+    },
+    {
+      "bytes": 144488,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_L_bb003_mpn00.pdb",
+      "sha256": "db00a0d4d2171f9b54d03eef8bf55a1bd49177d7d11b99952c6515356f8ae2d2"
+    },
+    {
+      "bytes": 142544,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_L_bb004_mpn01.pdb",
+      "sha256": "a66cca3d3396cda0e47f301f38861ae3c64ed32336291b6f304f87beb7abc8e8"
+    },
+    {
+      "bytes": 147647,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_L_bb005_mpn00.pdb",
+      "sha256": "59a56dd960ea6b5921f7faaf2f4489ed2e485ef992447646fed53a7e09e900eb"
+    },
+    {
+      "bytes": 147161,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_L_bb005_mpn02.pdb",
+      "sha256": "ccce938b3ee8fb09b5ff6897022aac359fa1e8f143cf8270a3761303e64afe62"
+    },
+    {
+      "bytes": 146189,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_L_bb007_mpn01.pdb",
+      "sha256": "b41f990bf3a3da10b4b7ccc87f939a02f5a7194734718ad443e5b43b005334a4"
+    },
+    {
+      "bytes": 141410,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_S_bb005_mpn01.pdb",
+      "sha256": "aeb104368f76b457cd89f2462df860dd8d595c4f989845216e25004f382a5094"
+    },
+    {
+      "bytes": 139466,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_S_bb007_mpn00.pdb",
+      "sha256": "9667714ed23cc3d00a075866b00f3ae5fe6176c6ab9bdbc3dee7b21abb0fe479"
+    },
+    {
+      "bytes": 138818,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_ekg_S_bb007_mpn01.pdb",
+      "sha256": "b3927ef39a1e2e14d082a2ca2e2e7798f396fd3253377c6aaf76692d421339e4"
+    },
+    {
+      "bytes": 143921,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_L_bb003_mpn00.pdb",
+      "sha256": "9cec09663a9097d420ebf5a83b77430df63aa17ff4cb1aa508b85e88edfcdc75"
+    },
+    {
+      "bytes": 144650,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_L_bb003_mpn01.pdb",
+      "sha256": "c76af5f0f8fadd71cf735bc06ed603786de4f7cf1ebdc8eedfc903db3678bf10"
+    },
+    {
+      "bytes": 142625,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_L_bb004_mpn00.pdb",
+      "sha256": "982c7b897c9905b00927121027d81fc6372c9ccf75356d96654d634ae4a3e1e9"
+    },
+    {
+      "bytes": 148700,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_L_bb005_mpn00.pdb",
+      "sha256": "a83b79aa82e6909ca07d899214106e122a418bdac89a40db9a86e0a919181b75"
+    },
+    {
+      "bytes": 146675,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_L_bb007_mpn00.pdb",
+      "sha256": "ed0668dc7420e08063171fcb40e6ba49592b31876ada268e1a5639e21ac77b63"
+    },
+    {
+      "bytes": 139790,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_S_bb005_mpn03.pdb",
+      "sha256": "a06c192dc5ad07ccad8b059608b55e23d2e046b264efe96c78053d2db6010208"
+    },
+    {
+      "bytes": 139628,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_S_bb007_mpn00.pdb",
+      "sha256": "faa12b3d764458c09e74718e52bc335f40c42106308b342c0ce94d7e2a70a99d"
+    },
+    {
+      "bytes": 139709,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qkg_S_bb007_mpn02.pdb",
+      "sha256": "073d9bb83d06f5955ec9902de69f53b477d3131e998c984db99c2683ad79752a"
+    },
+    {
+      "bytes": 142868,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qrg_L_bb000_mpn00.pdb",
+      "sha256": "bac6d0214c1eed02faabe92f216f480e80359fdd65dc7ab76e0546fcbf6649a2"
+    },
+    {
+      "bytes": 143516,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qrg_L_bb002_mpn02.pdb",
+      "sha256": "9df6001a33188fbe6fe113dc6e650b8172ba60f3a0588b126fef82a7aa162728"
+    },
+    {
+      "bytes": 144083,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qrg_L_bb003_mpn00.pdb",
+      "sha256": "2472dcfab6793274b4c144ea98aea7db0690def59429ed63b12f087d6bdf05fe"
+    },
+    {
+      "bytes": 148862,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qrg_L_bb005_mpn00.pdb",
+      "sha256": "5cb90c963162942458946d2b32e4ffe24811de052c31cca2dcc340be1c4277a2"
+    },
+    {
+      "bytes": 137684,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qrg_S_bb003_mpn02.pdb",
+      "sha256": "0234270bb03457d348fd1c4aa3ea72e0e401eeab16029407ad176c17ae986e63"
+    },
+    {
+      "bytes": 139628,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P4_qrg_S_bb007_mpn02.pdb",
+      "sha256": "429affd76c75a34106550c526ff2e664eefce35d4342f6e804701b91003084ce"
+    },
+    {
+      "bytes": 142301,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb000_mpn02.pdb",
+      "sha256": "5dbabfe36cc79096b6a4499e26783d4960c5b69641284606b8ce2fd28f1b5625"
+    },
+    {
+      "bytes": 142382,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb001_mpn01.pdb",
+      "sha256": "8f2b2e129ba5d0221ac26422dba8ac1188d50197783cb5da088f97cb733d40bd"
+    },
+    {
+      "bytes": 144002,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb003_mpn02.pdb",
+      "sha256": "9e4020891a7b43eac050dbebe35ea7c7ce2f7fc561b97a681fc5a471c0b22c90"
+    },
+    {
+      "bytes": 141815,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb004_mpn01.pdb",
+      "sha256": "12f5b45c622ed04ea9f7815cb9977852433de9ad4c4b454063b92754852d7e77"
+    },
+    {
+      "bytes": 148214,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb005_mpn00.pdb",
+      "sha256": "b1111871b993ced67fbac2a25fe0426c9b45e48c67477887b48eb84804d9de69"
+    },
+    {
+      "bytes": 145379,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb006_mpn01.pdb",
+      "sha256": "573b8bb9a44559bffde2fe3a3b0a90ffeab43cd39cb77d4fdc904a6d096b077d"
+    },
+    {
+      "bytes": 144812,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb006_mpn03.pdb",
+      "sha256": "2037882bfe407104b7398a43246c6fa246bf4edc5ab0b38916650a670d7aed77"
+    },
+    {
+      "bytes": 144893,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_L_bb007_mpn02.pdb",
+      "sha256": "10934f6c9b5531efb2217b00009b9cb3c727af669babf79b88020a7df9701266"
+    },
+    {
+      "bytes": 141086,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_ekg_S_bb005_mpn01.pdb",
+      "sha256": "6ae60862d79b5daef3dfe1dde8fbfbf86f9a4fd3606a322866a71e678fa458b1"
+    },
+    {
+      "bytes": 143678,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_L_bb003_mpn01.pdb",
+      "sha256": "bd6b4c5a38acc53740994ba50a3b8b198b0feac7914986f2e8569c7d3d559e35"
+    },
+    {
+      "bytes": 144731,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_L_bb003_mpn03.pdb",
+      "sha256": "7a48fdf657817bc9882a1146f86b00ec1cfba4e582ec06c5043345ccc0e46e67"
+    },
+    {
+      "bytes": 149024,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_L_bb005_mpn00.pdb",
+      "sha256": "73187a66d8c446121e09bedffdf19a9962ceec8155f8a8d08bb254b6322d6767"
+    },
+    {
+      "bytes": 144974,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_L_bb006_mpn01.pdb",
+      "sha256": "fb70d9a456950e79a2ff4b1fdafd978e0f71baf69b386172addc1c91a559916d"
+    },
+    {
+      "bytes": 146270,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_L_bb007_mpn01.pdb",
+      "sha256": "abedd97cf7a904e874290b714036ef04ba0f3974d07cf4005e192b710c4effef"
+    },
+    {
+      "bytes": 137522,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_S_bb007_mpn01.pdb",
+      "sha256": "6495b0278b6ae2834a293531349733338ea191c70e264449df38d4227decdc4f"
+    },
+    {
+      "bytes": 138089,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qkg_S_bb007_mpn02.pdb",
+      "sha256": "e22feeae3d814e2c1d9f8a98672f78265304495feb7366f18793267319a48f45"
+    },
+    {
+      "bytes": 144893,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_L_bb003_mpn03.pdb",
+      "sha256": "c257c455d96fd2b657e42039fac7d2bb76f2253b255ead497d6782de72916c3c"
+    },
+    {
+      "bytes": 141572,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_L_bb004_mpn01.pdb",
+      "sha256": "44529401461bf3090e42a2b9826f1d0be9ba8fc4e3360ec6cb7350b65c12221f"
+    },
+    {
+      "bytes": 148457,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_L_bb005_mpn01.pdb",
+      "sha256": "3eff31f486ef0e4fd4458a423735e0e3ccd10d1c6456f455e989314b106d4de4"
+    },
+    {
+      "bytes": 148295,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_L_bb005_mpn02.pdb",
+      "sha256": "2ec409e759e39b9b48da6cdba98e7542f6d2226a896021a97b6643f1460ec5fe"
+    },
+    {
+      "bytes": 145460,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn00.pdb",
+      "sha256": "c11f6383f29c244a3d692fc75308ee724d7506ffe626cf8b55cf04c436467261"
+    },
+    {
+      "bytes": 145541,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_L_bb006_mpn01.pdb",
+      "sha256": "de18a21d84b41832f1cd3f0891efddeb65324631f8dd4409bd43ffce234652cb"
+    },
+    {
+      "bytes": 141005,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P5_qrg_S_bb005_mpn01.pdb",
+      "sha256": "8ca2c27af2cbc4eceb180c4638cfefa8743361a21b6cccfde96c5627af50d75e"
+    },
+    {
+      "bytes": 141491,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_L_bb000_mpn01.pdb",
+      "sha256": "e01b745f69a380ebb9c59d7c23238e4510b3772ed1f982fafdc47763b1549370"
+    },
+    {
+      "bytes": 142220,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_L_bb000_mpn02.pdb",
+      "sha256": "53cb290cc16ea4236eea6801aa1567333bee634acdf6130ebf282e8c8458a60c"
+    },
+    {
+      "bytes": 142706,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_L_bb003_mpn00.pdb",
+      "sha256": "c7726265f8bcdcbb931f430bc207885700daa4964ec2c3c5e38c82fca36a9048"
+    },
+    {
+      "bytes": 143030,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_L_bb004_mpn02.pdb",
+      "sha256": "fbd8002396adbe615363c6c97446aa97bc435b3f8d97393a4719e8e87b5857c2"
+    },
+    {
+      "bytes": 147532,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_L_bb005_mpn00.pdb",
+      "sha256": "83757d9e5c550a70a66930d751450edd8a7f7c16f74a318c0d5460289b9714dc"
+    },
+    {
+      "bytes": 146918,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_L_bb007_mpn02.pdb",
+      "sha256": "20db44dde92997f36d95c8aafebe98f20e02e2a925cc440e4cd13d440a529e5a"
+    },
+    {
+      "bytes": 140681,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_S_bb001_mpn01.pdb",
+      "sha256": "0902469e76497b74caaaf70dba666c80ac5dc77c27e97b4353ae42daf736635b"
+    },
+    {
+      "bytes": 140438,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_S_bb001_mpn02.pdb",
+      "sha256": "e196416225c180b9c9140e53aa1b055a00fa157ace5e110c4c093e0dc0c5a4fd"
+    },
+    {
+      "bytes": 139871,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_ekg_S_bb005_mpn03.pdb",
+      "sha256": "f84664cc0722a2ba9042cde23c20764db2f01308d73e5b6c5c4836e3f9a74821"
+    },
+    {
+      "bytes": 141653,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_qkg_L_bb000_mpn01.pdb",
+      "sha256": "6ceca992f06e5a19a01ac124e9179c3b71c02abc8b9ffb9e5a02f2d92a249915"
+    },
+    {
+      "bytes": 142787,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_qkg_L_bb003_mpn00.pdb",
+      "sha256": "f210f698b49d41135dc0c12ae2bba03bf8bb3b602385960c4fe0a97bde26fa6c"
+    },
+    {
+      "bytes": 148376,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_qkg_L_bb007_mpn00.pdb",
+      "sha256": "2046e816f2b5efa996d46b6f610b27009e28d4145152da5b4af5adfb8f235d6f"
+    },
+    {
+      "bytes": 137279,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_qkg_S_bb001_mpn02.pdb",
+      "sha256": "78b284836aa53f0bff9a72c5ee42344dc62d22d6668642628036dd47b9362ffd"
+    },
+    {
+      "bytes": 143678,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_qrg_L_bb003_mpn03.pdb",
+      "sha256": "1ff55a4d6ca3c91737b2d7afe47f0bae4d363348132b4409ee796bb043177054"
+    },
+    {
+      "bytes": 146108,
+      "path": "inputs/candidate_monomers/PVRIG_RFAb_v2_P6_qrg_L_bb005_mpn01.pdb",
+      "sha256": "bc51927205d1245a13a441bacf5cd98be7f0617f00a2c6ec163dcd4676785978"
+    },
+    {
+      "bytes": 54039,
+      "path": "inputs/candidate_monomers_manifest.tsv",
+      "sha256": "db29dcb9047c7e0514a359077f380d53fedd0127c879a939ab8ebad812c5c0df"
+    },
+    {
+      "bytes": 81075,
+      "path": "inputs/candidates_128.tsv",
+      "sha256": "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78"
+    },
+    {
+      "bytes": 137152,
+      "path": "inputs/normalized/8x6b_TL_reference.pdb",
+      "sha256": "80c9e36c63ba9fa8f28f606ad5864d9eb8c50b9b228424e1db5cdfc1bc6725b0"
+    },
+    {
+      "bytes": 61075,
+      "path": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+      "sha256": "31b530edf01fe9b8f354935cc6140d863ba78faf50f93cf5303d0223c2a94e5a"
+    },
+    {
+      "bytes": 142998,
+      "path": "inputs/normalized/9e6y_TL_reference.pdb",
+      "sha256": "01f13b5899624cb8c0450c458fbe055cae706804a78a0f7997940b787e6f2744"
+    },
+    {
+      "bytes": 63840,
+      "path": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+      "sha256": "c850363e92aa0ed00266b0f49ecea364bc661a768b2ac3ebe90cc8946b6f64c6"
+    },
+    {
+      "bytes": 1716,
+      "path": "inputs/normalized/interface_hotspots_uniprot.tsv",
+      "sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44"
+    },
+    {
+      "bytes": 340443,
+      "path": "inputs/source/8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    {
+      "bytes": 197883,
+      "path": "inputs/source/9E6Y.pdb",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    {
+      "bytes": 5558,
+      "path": "inputs/source/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    {
+      "bytes": 9258,
+      "path": "scripts/build_calibration_manifest.py",
+      "sha256": "d8c53608a2fb1155f03f70fe773cd921711d70b88e5700e4e249caeadd0b74d5"
+    },
+    {
+      "bytes": 16474,
+      "path": "scripts/build_candidate_panel.py",
+      "sha256": "5baf23e8ae9e998a02e9e1ca095e6bf68382a235ae28269cacd99fa62a0f441f"
+    },
+    {
+      "bytes": 2802,
+      "path": "scripts/common.py",
+      "sha256": "479cff3f2215f45952009d54869462cd90937cca56e15ddaf6af54a418f16d4a"
+    },
+    {
+      "bytes": 7133,
+      "path": "scripts/freeze_candidate_monomers.py",
+      "sha256": "e716b2623897431f7515e98fe5395c98e1bbb1a0a9ad60c3a539ab86d68a8894"
+    },
+    {
+      "bytes": 7711,
+      "path": "scripts/prepare_references.py",
+      "sha256": "91e14229a8c1a532c880757cb3df25900a07b07f1024427954c040171f78e475"
+    },
+    {
+      "bytes": 15197,
+      "path": "scripts/score_pose.py",
+      "sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9"
+    }
+  ],
+  "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+  "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
+  "protocol_spec_sha256": "0f4e8d100c42362aa244bc575532f87ed5f3a4d891a76df0b943952721bc14f7",
+  "schema_version": 1,
+  "status": "CORE_LOCKED"
+}

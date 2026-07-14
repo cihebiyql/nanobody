@@ -1,0 +1,12 @@
+{
+  "candidate_jobs": 768,
+  "control_jobs": 282,
+  "job_count": 1050,
+  "output": "manifests/docking_jobs.tsv",
+  "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+  "sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
+  "smoke_job_count": 4,
+  "smoke_output": "manifests/smoke_jobs.tsv",
+  "smoke_sha256": "37714022bfa233a8fe3b67be2874afb71d7654e0905d1606cea66f395d72d88d",
+  "status": "OK"
+}

@@ -55,6 +55,8 @@
       141,
       143
     ],
+    "normalized_table": "inputs/normalized/interface_hotspots_uniprot.tsv",
+    "normalized_table_sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44",
     "soft_hint_rows_excluded": true,
     "source": "inputs/source/PVRIG_hotspot_set_v1.csv",
     "source_sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",

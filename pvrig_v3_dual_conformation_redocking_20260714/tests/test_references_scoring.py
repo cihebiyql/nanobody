@@ -32,6 +32,9 @@ class ReferenceAndScoringTests(unittest.TestCase):
         self.assertEqual(summary["hotspots"]["unique_interface_residue_count"], 23)
         self.assertEqual(summary["hotspots"]["air_anchor_count"], 12)
         self.assertEqual(summary["hotspots"]["holdout_count"], 11)
+        hotspot_table = ROOT / summary["hotspots"]["normalized_table"]
+        self.assertTrue(hotspot_table.is_file())
+        self.assertEqual(len(hotspot_table.read_text().splitlines()), 24)
         self.assertEqual(summary["hotspots"]["air_anchor_uniprot_positions"][:4], [71, 74, 82, 87])
         self.assertEqual(summary["hotspots"]["holdout_uniprot_positions"][:4], [72, 81, 83, 90])
 
@@ -76,7 +79,19 @@ class ReferenceAndScoringTests(unittest.TestCase):
                 handle.writelines(extra_atoms)
                 handle.write("END\n")
             io_json.write_text(json.dumps({"score": -12.5, "unw_energies": {"air": 3.25}}))
-            run_cmd(PYTHON, "scripts/score_pose.py", str(pose), "--reference", "8x6b", "--io-json", str(io_json), "--out", str(out))
+            run_cmd(
+                PYTHON,
+                "scripts/score_pose.py",
+                str(pose),
+                "--reference",
+                "8x6b",
+                "--vhh-chain",
+                "H",
+                "--io-json",
+                str(io_json),
+                "--out",
+                str(out),
+            )
             payload = json.loads(out.read_text())
 
         self.assertEqual(payload["haddock_io"]["score"], -12.5)
@@ -90,6 +105,19 @@ class ReferenceAndScoringTests(unittest.TestCase):
         self.assertGreaterEqual(score["vhh_pvrl2_occlusion"]["by_vhh_region_pair_count"]["cdr1"], 1)
         self.assertGreaterEqual(score["vhh_pvrl2_occlusion"]["by_vhh_region_pair_count"]["cdr3"], 0)
         self.assertGreaterEqual(score["clashes_2p5a"]["atom_pair_count"], 1)
+
+    def test_kabsch_recovers_rotated_and_translated_points(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import score_pose
+
+        moving = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.0, 2.0, 0.0), (0.0, 0.0, 3.0)]
+        fixed = [(10.0 - y, 20.0 + x, 30.0 + z) for x, y, z in moving]
+        rotation, cm, cf, rmsd = score_pose.kabsch_transform(moving, fixed)
+        transformed = [score_pose.apply_transform_point(point, rotation, cm, cf) for point in moving]
+        self.assertLess(rmsd, 1e-9)
+        for observed, expected in zip(transformed, fixed):
+            for actual, target in zip(observed, expected):
+                self.assertAlmostEqual(actual, target, places=8)
 
     def test_hetatm_vhh_like_records_are_ignored(self):
         reference_text = (ROOT / "inputs/normalized/8x6b_TL_reference.pdb").read_text()
@@ -110,7 +138,17 @@ class ReferenceAndScoringTests(unittest.TestCase):
                 % (t71_ca[0] + 0.5, t71_ca[1], t71_ca[2])
                 + "END\n"
             )
-            run_cmd(PYTHON, "scripts/score_pose.py", str(pose), "--reference", "8x6b", "--out", str(out))
+            run_cmd(
+                PYTHON,
+                "scripts/score_pose.py",
+                str(pose),
+                "--reference",
+                "8x6b",
+                "--vhh-chain",
+                "H",
+                "--out",
+                str(out),
+            )
             payload = json.loads(out.read_text())
         self.assertNotIn(71, payload["scores"][0]["hotspot_overlap"]["full"]["positions"])
 
