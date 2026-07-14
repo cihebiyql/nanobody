@@ -139,6 +139,8 @@ PVRIG-VHH internal contact 和 hotspot 通道 `H` 对刚体对齐应当不变。
 1/376 poses: H 0.5982142857 -> 0.5535714286
 ```
 
+这四个聚合数来自修复前的 cross-baseline 唯一 pose 对比，计算来源和语义冻结在 `experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_CALIBRATION_METHOD_AMENDMENT_1_ZH.md` 第 1-2 节；最终 package audit 保留的是按 baseline 分开的 raw-versus-aligned drift 计数，不应把两种分母直接比较。
+
 V1.2 现在对每个 raw `4_emref` pose 只计算一次 canonical internal-contact，使用 8X6B source numbering 和 `pdb_8x6b_ref` hotspot 列，然后在两个 post-hoc baseline 中共享。实测 376/376 pose 通过 cross-baseline equality hard gate。
 
 保留 baseline-specific 的只有 PVRL2 遮挡：
