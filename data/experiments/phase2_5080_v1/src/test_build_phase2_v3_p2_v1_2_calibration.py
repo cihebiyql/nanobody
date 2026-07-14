@@ -38,6 +38,23 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def pdb_line(
+    record: str,
+    serial: int,
+    atom_name: str,
+    resname: str,
+    chain: str,
+    residue: int,
+    x: float,
+    *,
+    element: str = "C",
+) -> str:
+    return (
+        f"{record:<6}{serial:5d} {atom_name:^4} {resname:>3} {chain}{residue:4d}    "
+        f"{x:8.3f}{0.0:8.3f}{0.0:8.3f}  1.00 20.00          {element:>2}  "
+    )
+
+
 class CalibrationBuilderFixture:
     def __init__(self, root: Path) -> None:
         self.root = root
@@ -248,6 +265,119 @@ class V12CalibrationBuilderTests(unittest.TestCase):
             self.assertEqual(audit["protocol_id"], "DG_A_PVRIG_V1_2_DEV")
             serialized = json.dumps(audit, sort_keys=True)
             self.assertNotIn("BLOCKER_LIKE_A", serialized)
+
+    @unittest.skipUnless(
+        MOD.DEFAULT_POSE_SCORER.is_file() and MOD.DEFAULT_REGION_SCORER.is_file(),
+        "V1.2 scorer integration requires both scorer files",
+    )
+    def test_real_v1_2_scorer_payload_shapes_integrate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pose = root / "pose.pdb"
+            reference = root / "reference.pdb"
+            hotspots = root / "hotspots.csv"
+            pose.write_text(
+                "\n".join(
+                    [
+                        pdb_line("ATOM", 1, "CA", "SER", "B", 10, 0.0),
+                        pdb_line("ATOM", 2, "CA", "TYR", "A", 100, 4.5),
+                        "END",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            reference.write_text(
+                "\n".join(
+                    [
+                        pdb_line("ATOM", 1, "CA", "ALA", "D", 1, 9.0),
+                        pdb_line("HETATM", 2, "O", "HOH", "D", 201, 4.5, element="O"),
+                        pdb_line("HETATM", 3, "C1", "EDO", "D", 202, 5.0),
+                        "END",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            hotspots.write_text(
+                "hotspot_id,pdb_test_ref,priority_weight\nH1,C:10S,1\n",
+                encoding="utf-8",
+            )
+            pose_json = root / "pose_score.json"
+            region_json = root / "region_score.json"
+            pose_report = MOD.run_scorer(
+                [
+                    sys.executable,
+                    str(MOD.DEFAULT_POSE_SCORER),
+                    "--pose-pdb",
+                    str(pose),
+                    "--reference-pdb",
+                    str(reference),
+                    "--pvrig-chain",
+                    "B",
+                    "--vhh-chain",
+                    "A",
+                    "--ref-pvrig-chain",
+                    "C",
+                    "--ref-pvrl2-chain",
+                    "D",
+                    "--hotspots-csv",
+                    str(hotspots),
+                    "--hotspot-ref-column",
+                    "pdb_test_ref",
+                    "--cdr-ranges",
+                    "CDR3:100-100",
+                    "--assume-aligned",
+                    "--out-json",
+                    str(pose_json),
+                ],
+                pose_json,
+                "real pose scorer integration fixture",
+            )
+            region_report = MOD.run_scorer(
+                [
+                    sys.executable,
+                    str(MOD.DEFAULT_REGION_SCORER),
+                    "--pose-pdb",
+                    str(pose),
+                    "--reference-pdb",
+                    str(reference),
+                    "--vhh-chain",
+                    "A",
+                    "--ref-pvrl2-chain",
+                    "D",
+                    "--cdr1",
+                    "26-35",
+                    "--cdr2",
+                    "53-59",
+                    "--cdr3",
+                    "100-100",
+                    "--out-json",
+                    str(region_json),
+                ],
+                region_json,
+                "real region scorer integration fixture",
+            )
+            manifest_row = {field: "" for field in MOD.MANIFEST_FIELDS}
+            metric_row = MOD.flatten_metric_row(
+                manifest_row, pose_report, region_report
+            )
+            pose_ref = json.loads(metric_row["reference_pvrl2_record_inventory_json"])
+            region_ref = json.loads(
+                metric_row["region_reference_pvrl2_record_inventory_json"]
+            )
+            self.assertEqual(pose_ref["excluded_hetatm_heavy_atom_count"], 2)
+            self.assertEqual(region_ref["excluded_hetatm_heavy_atom_count"], 2)
+            self.assertIn("excluded_hydrogen_or_deuterium_count", pose_ref)
+            self.assertIn("excluded_hydrogen_count", region_ref)
+            self.assertNotEqual(
+                metric_row["reference_pvrl2_record_inventory_sha256"],
+                metric_row["region_reference_pvrl2_record_inventory_sha256"],
+            )
+            self.assertEqual(
+                metric_row["scoring_semantics_version"],
+                MOD.SCORING_SEMANTICS_VERSION,
+            )
 
 
 if __name__ == "__main__":

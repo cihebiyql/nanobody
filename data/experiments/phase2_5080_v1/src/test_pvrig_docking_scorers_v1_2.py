@@ -91,6 +91,28 @@ def write_fixture(root: Path, *, protein_near: bool = True) -> tuple[Path, Path,
 
 
 class PoseScorerV12Tests(unittest.TestCase):
+    def run_with_hotspot_manifest(self, manifest_text: str) -> tuple[int, bool]:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pose, reference, hotspots = write_fixture(root)
+            hotspots.write_text(manifest_text, encoding="utf-8")
+            output = root / "must_not_exist.json"
+            code = POSE.main(
+                [
+                    "--pose-pdb", str(pose),
+                    "--reference-pdb", str(reference),
+                    "--pvrig-chain", "B",
+                    "--vhh-chain", "A",
+                    "--ref-pvrig-chain", "C",
+                    "--ref-pvrl2-chain", "D",
+                    "--hotspots-csv", str(hotspots),
+                    "--hotspot-ref-column", "pdb_test_ref",
+                    "--assume-aligned",
+                    "--out-json", str(output),
+                ]
+            )
+            return code, output.exists()
+
     def run_json(self, root: Path, name: str = "score.json", *, protein_near: bool = True):
         pose, reference, hotspots = write_fixture(root, protein_near=protein_near)
         output = root / name
@@ -252,6 +274,30 @@ class PoseScorerV12Tests(unittest.TestCase):
             )
             self.assertEqual(code, 2)
             self.assertFalse(output.exists())
+
+    def test_empty_hotspot_manifest_fails_closed(self) -> None:
+        code, output_exists = self.run_with_hotspot_manifest(
+            "hotspot_id,pdb_test_ref,priority_weight\n"
+        )
+        self.assertEqual(code, 2)
+        self.assertFalse(output_exists)
+
+    def test_hotspot_manifest_without_matching_reference_chain_fails_closed(self) -> None:
+        code, output_exists = self.run_with_hotspot_manifest(
+            "hotspot_id,pdb_test_ref,priority_weight\nH1,X:10S,1\n"
+        )
+        self.assertEqual(code, 2)
+        self.assertFalse(output_exists)
+
+    def test_invalid_hotspot_weights_fail_closed(self) -> None:
+        for weight in ("NaN", "Inf", "-Inf", "bad", "0", "-1"):
+            with self.subTest(weight=weight):
+                code, output_exists = self.run_with_hotspot_manifest(
+                    "hotspot_id,pdb_test_ref,priority_weight\n"
+                    f"H1,C:10S,{weight}\n"
+                )
+                self.assertEqual(code, 2)
+                self.assertFalse(output_exists)
 
 
 class RegionScorerV12Tests(unittest.TestCase):

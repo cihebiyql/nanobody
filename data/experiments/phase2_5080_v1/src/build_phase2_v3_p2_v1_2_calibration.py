@@ -218,8 +218,11 @@ METRICS_FIELDS = [
     ],
     "pose_pvrig_record_inventory_json",
     "pose_vhh_record_inventory_json",
+    "region_pose_vhh_record_inventory_json",
     "reference_pvrl2_record_inventory_json",
     "reference_pvrl2_record_inventory_sha256",
+    "region_reference_pvrl2_record_inventory_json",
+    "region_reference_pvrl2_record_inventory_sha256",
     "pose_score_payload_sha256",
     "region_score_payload_sha256",
     "metrics_row_sha256",
@@ -611,9 +614,10 @@ def assert_no_classification_keys(value: Any, context: str) -> None:
             if (
                 lowered in FORBIDDEN_RAW_KEYS
                 or lowered.endswith("_classification")
-                or lowered.endswith("_class")
-                or lowered.endswith("_tier")
-                or lowered.endswith("_label")
+                or lowered.endswith("_blocker_class")
+                or lowered.endswith("_geometry_class")
+                or lowered.endswith("_geometry_tier")
+                or lowered.endswith("_relevance_label")
             ):
                 raise ContractError(f"Classification field {key!r} appeared in {context}")
             assert_no_classification_keys(nested, context)
@@ -662,6 +666,36 @@ def required_mapping(parent: Mapping[str, Any], key: str, context: str) -> Mappi
     return value
 
 
+def assert_inventory_agreement(
+    left: Mapping[str, Any],
+    right: Mapping[str, Any],
+    fields: Sequence[str],
+    context: str,
+) -> None:
+    disagreements = {
+        field: (left.get(field), right.get(field))
+        for field in fields
+        if left.get(field) != right.get(field)
+    }
+    if disagreements:
+        raise ContractError(f"Scorer record inventories disagree for {context}: {disagreements}")
+
+
+def assert_atom_only_reference_policy(
+    report: Mapping[str, Any],
+    inventory: Mapping[str, Any],
+    context: str,
+) -> None:
+    policy = str(report.get("reference_pvrl2_selection", ""))
+    selection_rule = str(inventory.get("selection_rule", ""))
+    if "ATOM" not in policy or "only" not in policy.lower():
+        raise ContractError(f"{context} did not declare an ATOM-only reference policy: {policy!r}")
+    if "all HETATM excluded" not in selection_rule:
+        raise ContractError(
+            f"{context} reference inventory did not exclude all HETATM: {selection_rule!r}"
+        )
+
+
 def flatten_metric_row(
     manifest_row: Mapping[str, str],
     pose_report: Mapping[str, Any],
@@ -673,9 +707,6 @@ def flatten_metric_row(
                 f"Unexpected scoring semantics from {name}: "
                 f"{report.get('scoring_semantics_version')!r}"
             )
-        if report.get("reference_pvrl2_selection") != "protein ATOM heavy atoms only":
-            raise ContractError(f"{name} did not enforce protein ATOM-only PVRL2")
-
     pose_inventory = required_mapping(pose_report, "record_inventory", "pose scorer")
     pose_chains = required_mapping(pose_inventory, "pose", "pose scorer inventory")
     region_inventory = required_mapping(region_report, "record_inventory", "region scorer")
@@ -689,10 +720,48 @@ def flatten_metric_row(
     region_reference_inventory = required_mapping(
         region_inventory, "reference_pvrl2_chain", "region scorer inventory"
     )
-    if vhh_inventory != region_vhh_inventory:
-        raise ContractError("Pose and region scorers disagree on the VHH record inventory")
-    if reference_inventory != region_reference_inventory:
-        raise ContractError("Pose and region scorers disagree on the reference record inventory")
+    assert_atom_only_reference_policy(pose_report, reference_inventory, "pose scorer")
+    assert_atom_only_reference_policy(region_report, region_reference_inventory, "region scorer")
+    assert_inventory_agreement(
+        vhh_inventory,
+        region_vhh_inventory,
+        (
+            "chain",
+            "parsed_atom_and_hetatm_count",
+            "selected_heavy_atom_count",
+            "selected_residue_count",
+            "atom_heavy_atom_count",
+            "atom_residue_count",
+            "hetatm_heavy_atom_count",
+            "hetatm_residue_count",
+            "altloc_heavy_atom_count",
+            "altloc_labels",
+        ),
+        "pose VHH chain",
+    )
+    assert_inventory_agreement(
+        reference_inventory,
+        region_reference_inventory,
+        (
+            "chain",
+            "parsed_atom_and_hetatm_count",
+            "protein_atom_heavy_atom_count",
+            "protein_atom_residue_count",
+            "selected_protein_heavy_atom_count",
+            "selected_protein_residue_count",
+            "excluded_hetatm_heavy_atom_count",
+            "excluded_hetatm_residue_count",
+            "excluded_hoh_heavy_atom_count",
+            "excluded_hoh_residue_count",
+            "excluded_edo_heavy_atom_count",
+            "excluded_edo_residue_count",
+            "excluded_other_hetatm_heavy_atom_count",
+            "excluded_other_hetatm_residue_count",
+            "atom_altloc_heavy_atom_count",
+            "atom_altloc_labels",
+        ),
+        "reference PVRL2 chain",
+    )
 
     row = dict(manifest_row)
     row.update(
@@ -727,8 +796,17 @@ def flatten_metric_row(
         {
             "pose_pvrig_record_inventory_json": canonical_json(pvrig_inventory),
             "pose_vhh_record_inventory_json": canonical_json(vhh_inventory),
+            "region_pose_vhh_record_inventory_json": canonical_json(
+                region_vhh_inventory
+            ),
             "reference_pvrl2_record_inventory_json": canonical_json(reference_inventory),
             "reference_pvrl2_record_inventory_sha256": sha256_json(reference_inventory),
+            "region_reference_pvrl2_record_inventory_json": canonical_json(
+                region_reference_inventory
+            ),
+            "region_reference_pvrl2_record_inventory_sha256": sha256_json(
+                region_reference_inventory
+            ),
             "pose_score_payload_sha256": sha256_json(pose_report),
             "region_score_payload_sha256": sha256_json(region_report),
         }

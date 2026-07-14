@@ -18,7 +18,7 @@ import os
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -156,7 +156,10 @@ def workspace_relative(path: Path, workspace_root: Path) -> str:
 
 
 def first_nonempty_alias(
-    row: Mapping[str, Any], aliases: Sequence[str], field_name: str
+    row: Mapping[str, Any],
+    aliases: Sequence[str],
+    field_name: str,
+    require_consistent: bool = False,
 ) -> str:
     values = [(alias, str(row.get(alias, "")).strip()) for alias in aliases]
     populated = [(alias, value) for alias, value in values if value]
@@ -164,6 +167,8 @@ def first_nonempty_alias(
         raise SelectionError(
             f"Manifest row has no {field_name}; accepted aliases: {', '.join(aliases)}"
         )
+    if require_consistent and len({value for _alias, value in populated}) != 1:
+        raise SelectionError(f"Conflicting {field_name} aliases: {populated}")
     return populated[0][1]
 
 
@@ -185,6 +190,22 @@ def resolve_workdir(raw: str, manifest: Path) -> Path:
     return resolved
 
 
+def resolve_workdir_aliases(row: Mapping[str, Any], manifest: Path) -> Path:
+    populated = [
+        (alias, str(row.get(alias, "")).strip())
+        for alias in WORKDIR_ALIASES
+        if str(row.get(alias, "")).strip()
+    ]
+    if not populated:
+        raise SelectionError(
+            f"Manifest row has no workdir; accepted aliases: {', '.join(WORKDIR_ALIASES)}"
+        )
+    resolved = [(alias, resolve_workdir(raw, manifest)) for alias, raw in populated]
+    if len({path for _alias, path in resolved}) != 1:
+        raise SelectionError(f"Conflicting workdir aliases: {resolved}")
+    return resolved[0][1]
+
+
 def read_case_manifests(paths: Sequence[Path]) -> list[CaseRecord]:
     if not paths:
         raise SelectionError("At least one --case-manifest is required")
@@ -199,13 +220,16 @@ def read_case_manifests(paths: Sequence[Path]) -> list[CaseRecord]:
             reader = csv.DictReader(handle)
             if not reader.fieldnames:
                 raise SelectionError(f"Case manifest has no header: {manifest}")
+            if len(set(reader.fieldnames)) != len(reader.fieldnames):
+                raise SelectionError(f"Case manifest has duplicate columns: {manifest}")
             rows = list(reader)
         if not rows:
             raise SelectionError(f"Case manifest has no cases: {manifest}")
         for row_number, row in enumerate(rows, start=2):
-            candidate_id = first_nonempty_alias(row, CANDIDATE_ID_ALIASES, "candidate id")
-            workdir_raw = first_nonempty_alias(row, WORKDIR_ALIASES, "workdir")
-            workdir = resolve_workdir(workdir_raw, manifest)
+            candidate_id = first_nonempty_alias(
+                row, CANDIDATE_ID_ALIASES, "candidate id", require_consistent=True
+            )
+            workdir = resolve_workdir_aliases(row, manifest)
             if workdir.name != candidate_id:
                 raise SelectionError(
                     f"Candidate/workdir mismatch in {manifest}:{row_number}: "
@@ -245,6 +269,8 @@ def locate_emref_io(case: CaseRecord) -> Path:
 
 
 def parse_finite_float(value: Any, field: str) -> float:
+    if value is None or isinstance(value, bool):
+        raise SelectionError(f"{field} is not numeric: {value!r}")
     try:
         parsed = float(value)
     except (TypeError, ValueError) as error:
@@ -335,7 +361,9 @@ def parse_chain_inventory(coordinates: bytes, path: Path) -> dict[str, tuple[int
     return inventory
 
 
-def load_pose_records(io_path: Path, k: int) -> tuple[list[PoseRecord], dict[str, Any]]:
+def load_pose_records(
+    io_path: Path, k: int
+) -> tuple[list[PoseRecord], list[PoseRecord], dict[str, Any]]:
     try:
         payload = json.loads(io_path.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
@@ -403,7 +431,7 @@ def load_pose_records(io_path: Path, k: int) -> tuple[list[PoseRecord], dict[str
     )[:k]
     if len(selected) != k:
         raise SelectionError(f"Internal selection mismatch: selected {len(selected)} != K={k}")
-    return selected, {"output_count": len(outputs), "outputs": inventory_rows}
+    return selected, records, {"output_count": len(outputs), "outputs": inventory_rows}
 
 
 def write_csv_atomic(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
@@ -439,11 +467,21 @@ def build(
     workspace_root = workspace_root.resolve()
     output_csv = output_csv.resolve()
     audit_json = audit_json.resolve()
+    output_csv_relpath = workspace_relative(output_csv, workspace_root)
+    audit_json_relpath = workspace_relative(audit_json, workspace_root)
     if output_csv == audit_json:
         raise SelectionError("--output-csv and --audit-json must be distinct")
     cases = read_case_manifests(case_manifests)
     script_path = Path(__file__).resolve()
     selector_sha256 = sha256_file(script_path)
+    protected_paths = {script_path, *(case.manifest for case in cases)}
+    if output_csv in protected_paths or audit_json in protected_paths:
+        raise SelectionError("Output path collides with a protected selector input")
+    file_bindings: dict[Path, str] = {script_path: selector_sha256}
+    for case in cases:
+        previous = file_bindings.setdefault(case.manifest, case.manifest_sha256)
+        if previous != case.manifest_sha256:
+            raise SelectionError(f"Manifest hash mismatch across cases: {case.manifest}")
     rows: list[dict[str, Any]] = []
     case_audits: list[dict[str, Any]] = []
     manifest_audits = [
@@ -456,7 +494,13 @@ def build(
     for case in cases:
         io_path = locate_emref_io(case)
         io_sha256 = sha256_file(io_path)
-        selected, source_inventory = load_pose_records(io_path, k)
+        selected, all_records, source_inventory = load_pose_records(io_path, k)
+        file_bindings[io_path] = io_sha256
+        for record, inventory_row in zip(all_records, source_inventory["outputs"], strict=True):
+            file_bindings[record.path] = record.source_sha256
+            inventory_row["source_pose_relpath"] = workspace_relative(record.path, workspace_root)
+        if output_csv in file_bindings or audit_json in file_bindings:
+            raise SelectionError("Output path collides with an emref input")
         selected_indices = [record.source_output_index for record in selected]
         for rank, record in enumerate(selected, start=1):
             source_format = "pdb.gz" if record.path.name.endswith(".gz") else "pdb"
@@ -521,6 +565,13 @@ def build(
         raise SelectionError(
             f"Output cardinality mismatch: {len(rows)} != {len(cases)} cases * K={k}"
         )
+    for path, expected_sha256 in file_bindings.items():
+        observed_sha256 = sha256_file(path)
+        if observed_sha256 != expected_sha256:
+            raise SelectionError(
+                f"Input changed while selecting poses: {path}: "
+                f"{observed_sha256} != {expected_sha256}"
+            )
     write_csv_atomic(output_csv, rows)
     audit: dict[str, Any] = {
         "schema_version": "phase2_v3_p2_v1_2_emref_topk_selection_audit_v1",
@@ -541,11 +592,12 @@ def build(
         "source_manifests": manifest_audits,
         "cases": case_audits,
         "output_csv": {
-            "relpath": workspace_relative(output_csv, workspace_root),
+            "relpath": output_csv_relpath,
             "sha256": sha256_file(output_csv),
             "rows": len(rows),
         },
     }
+    audit["audit_json_relpath"] = audit_json_relpath
     write_json_atomic(audit_json, audit)
     return audit
 

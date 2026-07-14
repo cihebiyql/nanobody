@@ -192,11 +192,11 @@ def load_hotspots(
     path: str,
     ref_pvrig_chain: str,
     forced_column: str = "",
-) -> tuple[list[dict[str, str]], str]:
+) -> tuple[list[dict[str, Any]], str]:
     with open(path, "r", encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     if not rows:
-        return [], forced_column
+        raise ValueError("Hotspot manifest is empty")
     columns = rows[0].keys()
     ref_columns = [
         column
@@ -218,29 +218,49 @@ def load_hotspots(
                 chosen = column
                 break
         if not chosen and ref_columns:
-            chosen = ref_columns[0]
-    hotspots: list[dict[str, str]] = []
+            raise ValueError(
+                f"No hotspot reference column contains chain {ref_pvrig_chain!r}"
+            )
+    if not chosen:
+        raise ValueError("Hotspot manifest has no usable pdb_*_ref reference column")
+    hotspots: list[dict[str, Any]] = []
     for row in rows:
         parsed = parse_hotspot_ref(row.get(chosen, "")) if chosen else None
         if not parsed or parsed[0] != ref_pvrig_chain:
             continue
         chain, resseq, amino_acid = parsed
+        raw_weight = (row.get("priority_weight") or "1").strip()
+        try:
+            weight = float(raw_weight)
+        except ValueError as error:
+            raise ValueError(
+                f"Invalid hotspot priority_weight {raw_weight!r} for {chain}:{resseq}"
+            ) from error
+        if not math.isfinite(weight) or weight <= 0:
+            raise ValueError(
+                f"Hotspot priority_weight must be positive and finite for {chain}:{resseq}: "
+                f"{raw_weight!r}"
+            )
         hotspots.append(
             {
                 "hotspot_id": row.get("hotspot_id") or row.get("id") or f"{chain}:{resseq}{amino_acid}",
                 "chain": chain,
                 "resseq": str(resseq),
                 "aa": amino_acid,
-                "weight": row.get("priority_weight", "1"),
+                "weight": weight,
                 "source_column": chosen,
             }
+        )
+    if not hotspots:
+        raise ValueError(
+            f"Hotspot manifest column {chosen!r} has no rows matching chain {ref_pvrig_chain!r}"
         )
     return hotspots, chosen
 
 
 def hotspot_overlap(
     contact_pvrig_residues: set[str],
-    hotspots: list[dict[str, str]],
+    hotspots: list[dict[str, Any]],
     pose_pvrig_chain: str,
 ) -> dict[str, Any]:
     contacted_numbers = set()
@@ -253,10 +273,11 @@ def hotspot_overlap(
     matched_weight = 0.0
     for hotspot in hotspots:
         resseq = int(hotspot["resseq"])
-        try:
-            weight = float(hotspot.get("weight") or 1.0)
-        except ValueError:
-            weight = 1.0
+        weight = float(hotspot["weight"])
+        if not math.isfinite(weight) or weight <= 0:
+            raise ValueError(
+                f"Hotspot priority_weight must be positive and finite for residue {resseq}"
+            )
         total_weight += weight
         if resseq in contacted_numbers:
             matched_weight += weight
