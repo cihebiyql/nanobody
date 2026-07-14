@@ -370,7 +370,10 @@ def parse_chain_inventory(coordinates: bytes, path: Path) -> dict[str, dict[str,
         try:
             serial = int(line[6:11])
             residue_number = int(line[22:26])
-            coordinates_xyz = tuple(float(line[start:end]) for start, end in ((30, 38), (38, 46), (46, 54)))
+            coordinates_xyz = tuple(
+                float(line[start:end])
+                for start, end in ((30, 38), (38, 46), (46, 54))
+            )
         except ValueError as error:
             raise SelectionError(f"Unparseable ATOM record in {path}:{line_number}") from error
         if serial < 1 or not all(math.isfinite(value) for value in coordinates_xyz):
@@ -550,6 +553,7 @@ def build(
             raise SelectionError(f"Manifest hash mismatch across cases: {case.manifest}")
     rows: list[dict[str, Any]] = []
     case_audits: list[dict[str, Any]] = []
+    seen_run_ids: set[str] = set()
     manifest_audits = [
         {
             "relpath": workspace_relative(path.resolve(), workspace_root),
@@ -562,6 +566,9 @@ def build(
         run_id = io_path.parent.parent.name
         if not run_id.startswith("run_") or run_id == "run_":
             raise SelectionError(f"Invalid HADDOCK run directory name: {run_id!r}")
+        if run_id in seen_run_ids:
+            raise SelectionError(f"Duplicate HADDOCK run id across cases: {run_id}")
+        seen_run_ids.add(run_id)
         io_sha256 = sha256_file(io_path)
         selected, all_records, source_inventory = load_pose_records(io_path, k)
         file_bindings[io_path] = io_sha256
@@ -574,64 +581,73 @@ def build(
         for rank, record in enumerate(selected, start=1):
             source_format = "pdb.gz" if record.path.name.endswith(".gz") else "pdb"
             row: dict[str, Any] = {
-                    "schema_version": "phase2_v3_p2_v1_2_emref_topk_selection_v1",
-                    "protocol_id": PROTOCOL_ID,
-                    "source_protocol": SOURCE_PROTOCOL,
-                    "source_stage": SOURCE_STAGE,
-                    "run_id": run_id,
-                    "case_id": case.candidate_id,
-                    "candidate_id": case.candidate_id,
-                    "family": case.family,
-                    "role": case.role,
-                    "canonical_rank": rank,
-                    "source_output_index": record.source_output_index,
-                    "source_output_file": record.file_name,
-                    "source_score": format(record.score, ".17g"),
-                    "source_seed": record.seed,
-                    "source_pose_relpath": workspace_relative(record.path, workspace_root),
-                    "source_pose_format": source_format,
-                    "source_pose_sha256": record.source_sha256,
-                    "source_pose_bytes": record.source_bytes,
-                    "compressed_source_sha256": record.source_sha256,
-                    "compressed_source_bytes": record.source_bytes,
-                    "decompressed_coordinate_sha256": record.coordinate_sha256,
-                    "decompressed_coordinate_bytes": record.coordinate_bytes,
-                    "vhh_chain_id": "A",
-                    "vhh_atom_count": record.vhh_inventory["selected_heavy_atom_count"],
-                    "vhh_residue_count": record.vhh_inventory["selected_residue_count"],
-                    "vhh_atom_heavy_atom_count": record.vhh_inventory["atom_heavy_atom_count"],
-                    "vhh_atom_residue_count": record.vhh_inventory["atom_residue_count"],
-                    "vhh_hetatm_heavy_atom_count": record.vhh_inventory["hetatm_heavy_atom_count"],
-                    "vhh_hetatm_residue_count": record.vhh_inventory["hetatm_residue_count"],
-                    "vhh_excluded_hydrogen_or_deuterium_count": record.vhh_inventory[
-                        "excluded_hydrogen_or_deuterium_count"
-                    ],
-                    "vhh_chain_inventory_json": canonical_json(record.vhh_inventory),
-                    "pvrig_chain_id": "B",
-                    "pvrig_atom_count": record.pvrig_inventory["selected_heavy_atom_count"],
-                    "pvrig_residue_count": record.pvrig_inventory["selected_residue_count"],
-                    "pvrig_atom_heavy_atom_count": record.pvrig_inventory["atom_heavy_atom_count"],
-                    "pvrig_atom_residue_count": record.pvrig_inventory["atom_residue_count"],
-                    "pvrig_hetatm_heavy_atom_count": record.pvrig_inventory["hetatm_heavy_atom_count"],
-                    "pvrig_hetatm_residue_count": record.pvrig_inventory["hetatm_residue_count"],
-                    "pvrig_excluded_hydrogen_or_deuterium_count": record.pvrig_inventory[
-                        "excluded_hydrogen_or_deuterium_count"
-                    ],
-                    "pvrig_chain_inventory_json": canonical_json(record.pvrig_inventory),
-                    "source_io_relpath": workspace_relative(io_path, workspace_root),
-                    "source_io_sha256": io_sha256,
-                    "source_manifest_relpath": workspace_relative(case.manifest, workspace_root),
-                    "source_manifest_sha256": case.manifest_sha256,
-                    "source_manifest_row_sha256": case.manifest_row_sha256,
-                    "selector_implementation_relpath": workspace_relative(
-                        script_path, workspace_root
-                    ),
-                    "selector_implementation_sha256": selector_sha256,
-                    "reuse_role": REUSE_ROLE,
-                    "formal_eligible": "false",
-                    "claim_boundary": CLAIM_BOUNDARY,
-                    "selection_row_sha256": "",
-                }
+                "schema_version": "phase2_v3_p2_v1_2_emref_topk_selection_v1",
+                "protocol_id": PROTOCOL_ID,
+                "source_protocol": SOURCE_PROTOCOL,
+                "source_stage": SOURCE_STAGE,
+                "run_id": run_id,
+                "case_id": case.candidate_id,
+                "candidate_id": case.candidate_id,
+                "family": case.family,
+                "role": case.role,
+                "canonical_rank": rank,
+                "source_output_index": record.source_output_index,
+                "source_output_file": record.file_name,
+                "source_score": format(record.score, ".17g"),
+                "source_seed": record.seed,
+                "source_pose_relpath": workspace_relative(record.path, workspace_root),
+                "source_pose_format": source_format,
+                "source_pose_sha256": record.source_sha256,
+                "source_pose_bytes": record.source_bytes,
+                "compressed_source_sha256": record.source_sha256,
+                "compressed_source_bytes": record.source_bytes,
+                "decompressed_coordinate_sha256": record.coordinate_sha256,
+                "decompressed_coordinate_bytes": record.coordinate_bytes,
+                "vhh_chain_id": "A",
+                "vhh_atom_count": record.vhh_inventory["selected_heavy_atom_count"],
+                "vhh_residue_count": record.vhh_inventory["selected_residue_count"],
+                "vhh_atom_heavy_atom_count": record.vhh_inventory["atom_heavy_atom_count"],
+                "vhh_atom_residue_count": record.vhh_inventory["atom_residue_count"],
+                "vhh_hetatm_heavy_atom_count": record.vhh_inventory[
+                    "hetatm_heavy_atom_count"
+                ],
+                "vhh_hetatm_residue_count": record.vhh_inventory["hetatm_residue_count"],
+                "vhh_excluded_hydrogen_or_deuterium_count": record.vhh_inventory[
+                    "excluded_hydrogen_or_deuterium_count"
+                ],
+                "vhh_chain_inventory_json": canonical_json(record.vhh_inventory),
+                "pvrig_chain_id": "B",
+                "pvrig_atom_count": record.pvrig_inventory["selected_heavy_atom_count"],
+                "pvrig_residue_count": record.pvrig_inventory["selected_residue_count"],
+                "pvrig_atom_heavy_atom_count": record.pvrig_inventory[
+                    "atom_heavy_atom_count"
+                ],
+                "pvrig_atom_residue_count": record.pvrig_inventory["atom_residue_count"],
+                "pvrig_hetatm_heavy_atom_count": record.pvrig_inventory[
+                    "hetatm_heavy_atom_count"
+                ],
+                "pvrig_hetatm_residue_count": record.pvrig_inventory[
+                    "hetatm_residue_count"
+                ],
+                "pvrig_excluded_hydrogen_or_deuterium_count": record.pvrig_inventory[
+                    "excluded_hydrogen_or_deuterium_count"
+                ],
+                "pvrig_chain_inventory_json": canonical_json(record.pvrig_inventory),
+                "source_io_relpath": workspace_relative(io_path, workspace_root),
+                "source_io_sha256": io_sha256,
+                "source_manifest_relpath": workspace_relative(case.manifest, workspace_root),
+                "source_manifest_sha256": case.manifest_sha256,
+                "source_manifest_row_sha256": case.manifest_row_sha256,
+                "selector_implementation_relpath": workspace_relative(
+                    script_path, workspace_root
+                ),
+                "selector_implementation_sha256": selector_sha256,
+                "reuse_role": REUSE_ROLE,
+                "formal_eligible": "false",
+                "claim_boundary": CLAIM_BOUNDARY,
+                "selection_row_sha256": "",
+            }
+            row = {field: str(row.get(field, "")) for field in CSV_FIELDS}
             row["selection_row_sha256"] = row_sha256(row, "selection_row_sha256")
             rows.append(row)
         case_audits.append(
@@ -687,6 +703,9 @@ def build(
             "relpath": output_csv_relpath,
             "sha256": sha256_file(output_csv),
             "rows": len(rows),
+            "selection_row_hash_chain": sha256_bytes(
+                "\n".join(row["selection_row_sha256"] for row in rows).encode("ascii")
+            ),
         },
     }
     audit["audit_json_relpath"] = audit_json_relpath

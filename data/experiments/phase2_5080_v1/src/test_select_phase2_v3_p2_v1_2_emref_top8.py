@@ -138,6 +138,10 @@ class EmrefTop8SelectionTests(unittest.TestCase):
             self.assertTrue(rows[0]["run_id"].startswith("run_"))
             self.assertEqual(len(rows[0]["selector_implementation_sha256"]), 64)
             self.assertEqual(len(rows[0]["selection_row_sha256"]), 64)
+            self.assertEqual(
+                rows[0]["selection_row_sha256"],
+                MOD.row_sha256(rows[0], "selection_row_sha256"),
+            )
             self.assertEqual(rows[0]["reuse_role"], "development_only")
             self.assertEqual(rows[0]["formal_eligible"], "false")
             self.assertEqual(first_csv, output.read_bytes())
