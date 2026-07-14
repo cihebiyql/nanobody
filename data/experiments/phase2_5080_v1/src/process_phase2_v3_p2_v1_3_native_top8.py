@@ -467,6 +467,14 @@ def resolve_workspace_path(raw: str, workspace_root: Path) -> Path:
     return resolved
 
 
+def immutable_release_id(path: Path) -> str:
+    parts = path.resolve().parts
+    positions = [index for index, value in enumerate(parts) if value == "releases"]
+    if not positions or positions[-1] + 1 >= len(parts):
+        raise ContractError(f"Path is not inside an immutable releases/<id> tree: {path}")
+    return parts[positions[-1] + 1]
+
+
 def output_relative(path: Path, output_root: Path) -> str:
     try:
         return path.resolve().relative_to(output_root.resolve()).as_posix()
@@ -1497,6 +1505,13 @@ def verify_selector(
         raise ContractError("Selector rows do not bind one helper implementation")
     if len(publication_release_ids) != 1:
         raise ContractError("Selector rows span multiple publication releases")
+    publication_release_id = next(iter(publication_release_ids))
+    if immutable_release_id(config.selector_csv.resolve()) != publication_release_id:
+        raise ContractError("Selector CSV is not in its immutable publication release")
+    if config.selector_audit is None:
+        raise ContractError("V1.3 native processing requires the selector audit")
+    if immutable_release_id(config.selector_audit.resolve()) != publication_release_id:
+        raise ContractError("Selector audit is not in the selector publication release")
 
     ordered = sorted(
         rows,
@@ -1518,7 +1533,7 @@ def verify_selector(
         "selector_implementation_sha256": next(iter(selector_hashes)),
         "selector_helper_relpath": next(iter(selector_helper_paths)),
         "selector_helper_sha256": next(iter(selector_helper_hashes)),
-        "publication_release_id": next(iter(publication_release_ids)),
+        "publication_release_id": publication_release_id,
         "selector_audit_validated": audit_validated,
         "selection_row_hash_chain": sha256_bytes(
             "\n".join(row["selection_row_sha256"] for row in rows).encode("ascii")
