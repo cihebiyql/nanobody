@@ -1,0 +1,130 @@
+{
+  "boundary_gate_status": "PASS_BOUNDARY_4_OF_4",
+  "boundary_run_count": 4,
+  "claim_boundary": "remote execution receipt only; no geometry, binding, affinity, experimental blocking, Gold, or training-label claim",
+  "completions": [
+    {
+      "case_id": "mut_01_PVRIG-20_base_reference",
+      "exit_code": 0,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json",
+      "receptor_id": "8X6B",
+      "run_id": "V13CAL_012__8X6B__main",
+      "sha256": "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72",
+      "stage_output_counts": {
+        "emref": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "status": "PASS_4_EMREF_TOP8_READY"
+    },
+    {
+      "case_id": "mut_01_PVRIG-20_base_reference",
+      "exit_code": 0,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_012__9E6Y__main/V13CAL_012__9E6Y__main.complete.json",
+      "receptor_id": "9E6Y",
+      "run_id": "V13CAL_012__9E6Y__main",
+      "sha256": "e1bc029a09054a6776c650d1bc5eac939c6f0ac25936f1916c8ba5ab7ccf692c",
+      "stage_output_counts": {
+        "emref": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "status": "PASS_4_EMREF_TOP8_READY"
+    },
+    {
+      "case_id": "mut_36_39H4_fw_cons_Y59F",
+      "exit_code": 0,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_047__8X6B__main/V13CAL_047__8X6B__main.complete.json",
+      "receptor_id": "8X6B",
+      "run_id": "V13CAL_047__8X6B__main",
+      "sha256": "84b8b2adc033f93d131f167abd8a61da73edb0ff5428be188ef771f93d23e139",
+      "stage_output_counts": {
+        "emref": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "status": "PASS_4_EMREF_TOP8_READY"
+    },
+    {
+      "case_id": "mut_36_39H4_fw_cons_Y59F",
+      "exit_code": 0,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_047__9E6Y__main/V13CAL_047__9E6Y__main.complete.json",
+      "receptor_id": "9E6Y",
+      "run_id": "V13CAL_047__9E6Y__main",
+      "sha256": "e6437d5eec96a86c3031131c26ec824e1bd67d9b766ff9e5e2880f3b67d93532",
+      "stage_output_counts": {
+        "emref": 10,
+        "flexref": 10,
+        "rigidbody": 40,
+        "seletop": 10,
+        "topoaa": 2
+      },
+      "status": "PASS_4_EMREF_TOP8_READY"
+    }
+  ],
+  "docking_gold_release_eligible": false,
+  "execution_release_manifest_sha256": "4a0f1a63ef3dc16220beb9d821db71e500d4e512195e7f19a3e112d1d7a2db21",
+  "files": [
+    {
+      "bytes": 1103,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/boundary_gate.json",
+      "sha256": "d3db0bbdc4f5fcd113cd180e771c8978103718f04294dbbda119f775f9e572c2"
+    },
+    {
+      "bytes": 4992,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/controller_boundary.log",
+      "sha256": "b5e7ad6d3c4391389f4857485e654b0c4e3e92437ba28c589ef988e791deacd2"
+    },
+    {
+      "bytes": 37,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/controller_full.launch",
+      "sha256": "538a1070116508585a3b11104b17b8a36bee44b1556f1d75da42c6d62bdc2d89"
+    },
+    {
+      "bytes": 4657,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/controller_list_only.log",
+      "sha256": "f5b4cdeb418593583483860cbbb57c2b6922980a6df89b8eed733ae3b69b0dab"
+    },
+    {
+      "bytes": 4650,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/remote_package_hashcheck.log",
+      "sha256": "da3482a992185b7ff0b13819ae17bb22adfc4a48035baec583fa0f8a3c350813"
+    },
+    {
+      "bytes": 1401,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json",
+      "sha256": "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72"
+    },
+    {
+      "bytes": 1401,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_012__9E6Y__main/V13CAL_012__9E6Y__main.complete.json",
+      "sha256": "e1bc029a09054a6776c650d1bc5eac939c6f0ac25936f1916c8ba5ab7ccf692c"
+    },
+    {
+      "bytes": 1424,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_047__8X6B__main/V13CAL_047__8X6B__main.complete.json",
+      "sha256": "84b8b2adc033f93d131f167abd8a61da73edb0ff5428be188ef771f93d23e139"
+    },
+    {
+      "bytes": 1424,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_remote_execution_receipts/boundary4/runs/V13CAL_047__9E6Y__main/V13CAL_047__9E6Y__main.complete.json",
+      "sha256": "e6437d5eec96a86c3031131c26ec824e1bd67d9b766ff9e5e2880f3b67d93532"
+    }
+  ],
+  "formal_eligible": false,
+  "full_controller_completion_claimed": false,
+  "full_controller_launch_recorded": true,
+  "p2_training_ready": false,
+  "package_content_checked_count": 86,
+  "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+  "remote_root": "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+  "schema_version": "phase2_v3_p2_v1_3_boundary4_remote_receipt_v1",
+  "status": "PASS_V1_3_BOUNDARY4_REMOTE_RECEIPT_HASH_CLOSED",
+  "training_label_release_eligible": false
+}
