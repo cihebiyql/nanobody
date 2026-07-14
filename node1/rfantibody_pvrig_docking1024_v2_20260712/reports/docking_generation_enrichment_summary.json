@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-14T00:38:52.540281+00:00",
+  "objective": "maximize computational dual-reference docking-geometry successes, not experimental outcomes",
+  "success_definitions": {
+    "any_consensus_a": "candidate has at least one of four poses classified CONSENSUS_BLOCKER_LIKE_A",
+    "stable_consensus_a": "candidate has at least two of four poses classified CONSENSUS_BLOCKER_LIKE_A",
+    "strict_good": "any_consensus_a and candidate best HADDOCK score <= -80",
+    "stable_strict_good": "stable_consensus_a and candidate best HADDOCK score <= -80"
+  },
+  "global": {
+    "name": "all_1024",
+    "n": 1024,
+    "any_consensus_a_count": 47,
+    "any_consensus_a_rate": 0.0458984375,
+    "stable_consensus_a_count": 12,
+    "stable_consensus_a_rate": 0.01171875,
+    "strict_good_count": 32,
+    "strict_good_rate": 0.03125,
+    "stable_strict_good_count": 10,
+    "stable_strict_good_rate": 0.009765625,
+    "any_consensus_a_lift": 1.0,
+    "strict_good_lift": 1.0,
+    "median_best_haddock": -78.90465
+  },
+  "subsets": [
+    {
+      "name": "all_1024",
+      "n": 1024,
+      "any_consensus_a_count": 47,
+      "any_consensus_a_rate": 0.0458984375,
+      "stable_consensus_a_count": 12,
+      "stable_consensus_a_rate": 0.01171875,
+      "strict_good_count": 32,
+      "strict_good_rate": 0.03125,
+      "stable_strict_good_count": 10,
+      "stable_strict_good_rate": 0.009765625,
+      "any_consensus_a_lift": 1.0,
+      "strict_good_lift": 1.0,
+      "median_best_haddock": -78.90465
+    },
+    {
+      "name": "long_h3",
+      "n": 522,
+      "any_consensus_a_count": 44,
+      "any_consensus_a_rate": 0.0842911877394636,
+      "stable_consensus_a_count": 11,
+      "stable_consensus_a_rate": 0.0210727969348659,
+      "strict_good_count": 32,
+      "strict_good_rate": 0.06130268199233716,
+      "stable_strict_good_count": 10,
+      "stable_strict_good_rate": 0.019157088122605363,
+      "any_consensus_a_lift": 1.8364718350044837,
+      "strict_good_lift": 1.9616858237547892,
+      "median_best_haddock": -81.16175000000001
+    },
+    {
+      "name": "p2_p3_p4_long_h3",
+      "n": 261,
+      "any_consensus_a_count": 34,
+      "any_consensus_a_rate": 0.13026819923371646,
+      "stable_consensus_a_count": 9,
+      "stable_consensus_a_rate": 0.034482758620689655,
+      "strict_good_count": 28,
+      "strict_good_rate": 0.10727969348659004,
+      "stable_strict_good_count": 8,
+      "stable_strict_good_rate": 0.03065134099616858,
+      "any_consensus_a_lift": 2.838183745006929,
+      "strict_good_lift": 3.4329501915708813,
+      "median_best_haddock": -81.2636
+    },
+    {
+      "name": "p2_p3_p4_long_h3_cdr3_13",
+      "n": 100,
+      "any_consensus_a_count": 20,
+      "any_consensus_a_rate": 0.2,
+      "stable_consensus_a_count": 8,
+      "stable_consensus_a_rate": 0.08,
+      "strict_good_count": 17,
+      "strict_good_rate": 0.17,
+      "stable_strict_good_count": 7,
+      "stable_strict_good_rate": 0.07,
+      "any_consensus_a_lift": 4.357446808510638,
+      "strict_good_lift": 5.44,
+      "median_best_haddock": -81.39435
+    },
+    {
+      "name": "p2_p3_p4_long_h3_cdr3_11_or_13",
+      "n": 206,
+      "any_consensus_a_count": 29,
+      "any_consensus_a_rate": 0.1407766990291262,
+      "stable_consensus_a_count": 9,
+      "stable_consensus_a_rate": 0.043689320388349516,
+      "strict_good_count": 24,
+      "strict_good_rate": 0.11650485436893204,
+      "stable_strict_good_count": 8,
+      "stable_strict_good_rate": 0.038834951456310676,
+      "any_consensus_a_lift": 3.067134889485643,
+      "strict_good_lift": 3.7281553398058254,
+      "median_best_haddock": -81.2827
+    }
+  ],
+  "9e6y_bottleneck": {
+    "8x6b_a_to_9e6y_non_a_pose_count": 1219,
+    "failed_gate_counts": {
+      "pass_hotspot": 1216,
+      "pass_cdr3_fraction": 106,
+      "pass_cdr3_occlusion": 51
+    },
+    "failure_combinations": {
+      "pass_hotspot": 1099,
+      "pass_hotspot+pass_cdr3_fraction": 68,
+      "pass_hotspot+pass_cdr3_occlusion+pass_cdr3_fraction": 36,
+      "pass_hotspot+pass_cdr3_occlusion": 13,
+      "pass_cdr3_occlusion": 1,
+      "pass_cdr3_occlusion+pass_cdr3_fraction": 1,
+      "pass_cdr3_fraction": 1
+    }
+  },
+  "recommended_default_raw_pool": 8192,
+  "recommended_docking_batch": 1024,
+  "retrospective_projection_for_1024_docked": {
+    "if_p2_p3_p4_long_h3_cdr3_13_rate_repeats_any_a": 205,
+    "if_rate_repeats_strict_good": 174,
+    "warning": "retrospective extrapolation only; prospective yield may regress"
+  },
+  "mandatory_metric_repairs_before_optimization": [
+    "exclude HETATM waters and crystallization additives from PVRL2 protein occlusion/clash calculations",
+    "keep hotspot overlap, total occlusion, CDR3 occlusion, HADDOCK score, and diversity as separate fields",
+    "validate any cheap pre-docking surrogate prospectively before using it as a hard gate"
+  ]
+}

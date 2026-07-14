@@ -1270,3 +1270,480 @@ def run_json_tool(command: Sequence[str], output: Path, *, cwd: Path, label: str
     assert_finite_tree(payload, label)
     assert_no_classification_fields(payload, label)
     return payload
+
+
+def assert_inventory_agreement(
+    left: Mapping[str, Any],
+    right: Mapping[str, Any],
+    fields: Sequence[str],
+    context: str,
+) -> None:
+    mismatches = {
+        field_name: (left.get(field_name), right.get(field_name))
+        for field_name in fields
+        if left.get(field_name) != right.get(field_name)
+    }
+    if mismatches:
+        raise ContractError(f"Scorer inventory mismatch for {context}: {mismatches}")
+
+
+def assert_expected_reference_inventory(
+    inventory: Mapping[str, Any],
+    expected: Mapping[str, Any],
+    context: str,
+) -> None:
+    selection_rule = str(inventory.get("selection_rule", ""))
+    if "protein ATOM" not in selection_rule or "all HETATM excluded" not in selection_rule:
+        raise ContractError(
+            f"Reference inventory is not protein-ATOM-only for {context}: {selection_rule!r}"
+        )
+    mismatches = {
+        field_name: (inventory.get(field_name), expected_value)
+        for field_name, expected_value in expected.items()
+        if inventory.get(field_name) != expected_value
+    }
+    if mismatches:
+        raise ContractError(
+            f"Reference ATOM/HETATM inventory mismatch for {context}: {mismatches}"
+        )
+
+
+def validate_scorer_reports(
+    selector_row: Mapping[str, str],
+    baseline: str,
+    pose_report: Mapping[str, Any],
+    region_report: Mapping[str, Any],
+    expected_reference_inventory: Mapping[str, Any],
+) -> None:
+    expected_schemas = {
+        "pose": "pvrig_vhh_pose_score_v1_2",
+        "region": "cdr_region_occlusion_score_v1_2",
+    }
+    if pose_report.get("schema_version") != expected_schemas["pose"]:
+        raise ContractError(
+            f"Unexpected pose scorer schema for {baseline}: "
+            f"{pose_report.get('schema_version')!r}"
+        )
+    if region_report.get("schema_version") != expected_schemas["region"]:
+        raise ContractError(
+            f"Unexpected region scorer schema for {baseline}: "
+            f"{region_report.get('schema_version')!r}"
+        )
+    for label, report in (("pose", pose_report), ("region", region_report)):
+        if report.get("scoring_semantics_version") != SCORING_SEMANTICS_VERSION:
+            raise ContractError(
+                f"Unexpected V1.2 scoring semantics from {label} scorer: "
+                f"{report.get('scoring_semantics_version')!r}"
+            )
+        policy = str(report.get("reference_pvrl2_selection", ""))
+        if "ATOM" not in policy or "only" not in policy.lower():
+            raise ContractError(f"{label} scorer lacks ATOM-only policy: {policy!r}")
+    if parse_int(pose_report.get("hotspot_count"), "hotspot_count") != 23:
+        raise ContractError(
+            f"V1.2 pose scorer hotspot_count != 23 for "
+            f"{selector_row['candidate_id']}/rank{selector_row['canonical_rank']}/{baseline}"
+        )
+
+    pose_inventory_root = required_mapping(
+        pose_report, "record_inventory", "pose scorer report"
+    )
+    pose_chains = required_mapping(pose_inventory_root, "pose", "pose scorer inventory")
+    pvrig_inventory = required_mapping(
+        pose_chains, "pvrig_chain", "pose scorer inventory"
+    )
+    vhh_inventory = required_mapping(pose_chains, "vhh_chain", "pose scorer inventory")
+    pose_reference_inventory = required_mapping(
+        pose_inventory_root, "reference_pvrl2_chain", "pose scorer inventory"
+    )
+
+    region_inventory_root = required_mapping(
+        region_report, "record_inventory", "region scorer report"
+    )
+    region_pose = required_mapping(
+        region_inventory_root, "pose", "region scorer inventory"
+    )
+    region_vhh_inventory = required_mapping(
+        region_pose, "vhh_chain", "region scorer inventory"
+    )
+    region_reference_inventory = required_mapping(
+        region_inventory_root, "reference_pvrl2_chain", "region scorer inventory"
+    )
+    assert_inventory_agreement(
+        vhh_inventory,
+        region_vhh_inventory,
+        INVENTORY_AGREEMENT_FIELDS,
+        f"{baseline} pose VHH chain",
+    )
+    assert_inventory_agreement(
+        pose_reference_inventory,
+        region_reference_inventory,
+        REFERENCE_AGREEMENT_FIELDS,
+        f"{baseline} reference PVRL2 chain",
+    )
+    assert_expected_reference_inventory(
+        pose_reference_inventory,
+        expected_reference_inventory,
+        f"{baseline} pose scorer",
+    )
+    assert_expected_reference_inventory(
+        region_reference_inventory,
+        expected_reference_inventory,
+        f"{baseline} region scorer",
+    )
+
+    selector_vhh_inventory = parse_inventory_json(selector_row, "vhh_chain_inventory_json")
+    selector_pvrig_inventory = parse_inventory_json(
+        selector_row, "pvrig_chain_inventory_json"
+    )
+    assert_inventory_agreement(
+        selector_vhh_inventory,
+        vhh_inventory,
+        INVENTORY_AGREEMENT_FIELDS,
+        f"selector/pose VHH {baseline}",
+    )
+    assert_inventory_agreement(
+        selector_pvrig_inventory,
+        pvrig_inventory,
+        INVENTORY_AGREEMENT_FIELDS,
+        f"selector/pose PVRIG {baseline}",
+    )
+
+
+def validate_toolchain(config: BuildConfig) -> dict[str, dict[str, str]]:
+    expected_names = {
+        "aligner": "align_pdb_by_chain.py",
+        "pose_scorer": "score_pvrig_vhh_pose_v1_2.py",
+        "region_scorer": "score_cdr_region_occlusion_v1_2.py",
+        "scoring_helper": "pvrig_scoring_semantics_v1_2.py",
+    }
+    paths = {
+        "processor": Path(__file__).resolve(),
+        "aligner": config.aligner.resolve(),
+        "pose_scorer": config.pose_scorer.resolve(),
+        "region_scorer": config.region_scorer.resolve(),
+        "scoring_helper": config.scoring_helper.resolve(),
+    }
+    for name, expected_name in expected_names.items():
+        if paths[name].name != expected_name:
+            raise ContractError(
+                f"Refusing non-versioned {name}: expected {expected_name}, got {paths[name]}"
+            )
+    return {
+        name: {
+            "path": canonical_input_path(path, config.workspace_root),
+            "sha256": sha256_file(path),
+        }
+        for name, path in paths.items()
+    }
+
+
+def materialize_and_score_baseline(
+    *,
+    config: BuildConfig,
+    selector_row: Mapping[str, str],
+    case: CaseMetadata,
+    baseline: str,
+    raw_pose: Path,
+    staging_root: Path,
+    work_root: Path,
+    alignment_map: Mapping[str, Any],
+    reconciliation_map: Mapping[tuple[int, str], tuple[int, str]],
+) -> BaselineResult:
+    baseline_spec = BASELINES[baseline]
+    candidate_id = selector_row["candidate_id"]
+    rank = parse_int(selector_row["canonical_rank"], "canonical_rank", 1)
+    rank_dir = Path("aligned_poses") / candidate_id / f"rank_{rank:02d}"
+    aligned_relative = rank_dir / f"aligned_to_{baseline}.pdb"
+    final_pose = staging_root / aligned_relative
+    final_pose.parent.mkdir(parents=True, exist_ok=True)
+    baseline_work = work_root / baseline
+    baseline_work.mkdir(parents=True, exist_ok=True)
+    aligned_native = baseline_work / "aligned_native_numbering.pdb"
+    reference = config.references[baseline].resolve()
+    alignment_stdout = run_command(
+        [
+            sys.executable,
+            config.aligner,
+            "--mobile-pdb",
+            raw_pose,
+            "--reference-pdb",
+            reference,
+            "--mobile-chain",
+            "B",
+            "--reference-chain",
+            baseline_spec["ref_pvrig_chain"],
+            "--pair-map-csv",
+            alignment_map["path"],
+            "--mobile-ref-column",
+            "mobile_ref",
+            "--reference-ref-column",
+            "reference_ref",
+            "--out-pdb",
+            aligned_native,
+        ],
+        cwd=config.workspace_root,
+        label=f"alignment {candidate_id}/rank{rank}/{baseline}",
+    )
+    alignment = parse_alignment_evidence(
+        alignment_stdout, f"{candidate_id}/rank{rank}/{baseline}"
+    )
+    if baseline == "9e6y":
+        remap = remap_pose_receptor_numbering(
+            aligned_native, final_pose, reconciliation_map, pose_chain="B"
+        )
+    else:
+        shutil.copyfile(aligned_native, final_pose)
+        pvrig_inventory = parse_inventory_json(selector_row, "pvrig_chain_inventory_json")
+        remap = {
+            "observed_receptor_residues": parse_int(
+                pvrig_inventory.get("selected_residue_count"),
+                "selector PVRIG residue count",
+                1,
+            ),
+            "remapped_receptor_residues": 0,
+            "unmapped_receptor_residues": 0,
+        }
+    if not final_pose.is_file() or not final_pose.stat().st_size:
+        raise ContractError(f"Aligned pose was not materialized: {final_pose}")
+
+    pose_json = baseline_work / "pose_score.json"
+    region_json = baseline_work / "region_score.json"
+    pose_report = run_json_tool(
+        [
+            sys.executable,
+            config.pose_scorer,
+            "--pose-pdb",
+            final_pose,
+            "--reference-pdb",
+            reference,
+            "--pvrig-chain",
+            "B",
+            "--vhh-chain",
+            "A",
+            "--ref-pvrig-chain",
+            baseline_spec["ref_pvrig_chain"],
+            "--ref-pvrl2-chain",
+            baseline_spec["ref_pvrl2_chain"],
+            "--hotspots-csv",
+            config.hotspots,
+            "--hotspot-ref-column",
+            baseline_spec["hotspot_ref_column"],
+            "--cdr-ranges",
+            (
+                f"CDR1:{case.cdr1_range},CDR2:{case.cdr2_range},"
+                f"CDR3:{case.cdr3_range}"
+            ),
+            "--assume-aligned",
+            "--out-json",
+            pose_json,
+        ],
+        pose_json,
+        cwd=config.workspace_root,
+        label=f"V1.2 pose scorer {candidate_id}/rank{rank}/{baseline}",
+    )
+    region_report = run_json_tool(
+        [
+            sys.executable,
+            config.region_scorer,
+            "--pose-pdb",
+            final_pose,
+            "--reference-pdb",
+            reference,
+            "--vhh-chain",
+            "A",
+            "--ref-pvrl2-chain",
+            baseline_spec["ref_pvrl2_chain"],
+            "--cdr1",
+            case.cdr1_range,
+            "--cdr2",
+            case.cdr2_range,
+            "--cdr3",
+            case.cdr3_range,
+            "--out-json",
+            region_json,
+        ],
+        region_json,
+        cwd=config.workspace_root,
+        label=f"V1.2 region scorer {candidate_id}/rank{rank}/{baseline}",
+    )
+    validate_scorer_reports(
+        selector_row,
+        baseline,
+        pose_report,
+        region_report,
+        config.expected_reference_inventories[baseline],
+    )
+    return BaselineResult(
+        baseline=baseline,
+        aligned_pose_relpath=aligned_relative.as_posix(),
+        aligned_pose_sha256=sha256_file(final_pose),
+        aligned_pose_bytes=final_pose.stat().st_size,
+        alignment_map_relpath=str(alignment_map["relpath"]),
+        alignment_map_sha256=str(alignment_map["sha256"]),
+        alignment=alignment,
+        remap=remap,
+        pose_report=pose_report,
+        region_report=region_report,
+    )
+
+
+def flatten_metrics_row(
+    selector_row: Mapping[str, str],
+    case: CaseMetadata,
+    result: BaselineResult,
+    config: BuildConfig,
+    pose_rule_eligible: bool,
+) -> dict[str, str]:
+    pose_report = result.pose_report
+    region_report = result.region_report
+    pose_inventory_root = required_mapping(
+        pose_report, "record_inventory", "pose scorer report"
+    )
+    pose_chains = required_mapping(pose_inventory_root, "pose", "pose scorer inventory")
+    pvrig_inventory = required_mapping(
+        pose_chains, "pvrig_chain", "pose scorer inventory"
+    )
+    vhh_inventory = required_mapping(pose_chains, "vhh_chain", "pose scorer inventory")
+    reference_inventory = required_mapping(
+        pose_inventory_root, "reference_pvrl2_chain", "pose scorer inventory"
+    )
+    region_inventory_root = required_mapping(
+        region_report, "record_inventory", "region scorer report"
+    )
+    region_pose = required_mapping(
+        region_inventory_root, "pose", "region scorer inventory"
+    )
+    region_vhh_inventory = required_mapping(
+        region_pose, "vhh_chain", "region scorer inventory"
+    )
+    region_reference_inventory = required_mapping(
+        region_inventory_root, "reference_pvrl2_chain", "region scorer inventory"
+    )
+
+    reference = config.references[result.baseline].resolve()
+    row: dict[str, Any] = {
+        "schema_version": "pvrig_v1_2_top8_continuous_metrics_v1",
+        "protocol_id": PROTOCOL_ID,
+        "formal_eligible": "false",
+        "threshold_freeze_eligible": "false",
+        "pose_rule_threshold_freeze_eligible": str(pose_rule_eligible).lower(),
+        "dual_receptor_r_gold_freeze_eligible": "false",
+        "source_docking_receptor": "8x6b",
+        "baseline_channel_semantics": "posthoc_scoring_baseline_same_8x6b_docked_pose_ensemble",
+        "run_id": selector_row["run_id"],
+        "candidate_id": selector_row["candidate_id"],
+        "family": case.family,
+        "evidence_role": case.evidence_role,
+        "control_descriptor": case.control_descriptor,
+        "usage_boundary": case.usage_boundary,
+        "canonical_rank": selector_row["canonical_rank"],
+        "source_output_index": selector_row["source_output_index"],
+        "source_score": selector_row["source_score"],
+        "source_seed": selector_row["source_seed"],
+        "selector_row_sha256": selector_row["selection_row_sha256"],
+        "baseline": result.baseline,
+        "aligned_pose_relpath": result.aligned_pose_relpath,
+        "aligned_pose_sha256": result.aligned_pose_sha256,
+        "alignment_pair_count": result.alignment.pair_count,
+        "alignment_rmsd_a": result.alignment.rmsd_a,
+        "alignment_map_relpath": result.alignment_map_relpath,
+        "alignment_map_sha256": result.alignment_map_sha256,
+        "remap_applied": result.baseline == "9e6y",
+        "remap_observed_receptor_residues": result.remap[
+            "observed_receptor_residues"
+        ],
+        "remap_remapped_receptor_residues": result.remap[
+            "remapped_receptor_residues"
+        ],
+        "remap_unmapped_receptor_residues": result.remap[
+            "unmapped_receptor_residues"
+        ],
+        "reference_relpath": canonical_input_path(reference, config.workspace_root),
+        "reference_sha256": sha256_file(reference),
+        "hotspot_ref_column": BASELINES[result.baseline]["hotspot_ref_column"],
+        "cdr1_range": case.cdr1_range,
+        "cdr2_range": case.cdr2_range,
+        "cdr3_range": case.cdr3_range,
+        "pose_score_schema_version": pose_report["schema_version"],
+        "region_score_schema_version": region_report["schema_version"],
+        "scoring_semantics_version": SCORING_SEMANTICS_VERSION,
+    }
+    for metric in POSE_METRICS:
+        if metric not in pose_report:
+            raise ContractError(f"Pose scorer omitted continuous metric {metric}")
+        row[metric] = pose_report[metric]
+    for metric in REGION_TOTAL_METRICS:
+        if metric not in region_report:
+            raise ContractError(f"Region scorer omitted continuous metric {metric}")
+        row[metric] = region_report[metric]
+    regions = required_mapping(region_report, "regions", "region scorer report")
+    for region in REGIONS:
+        values = required_mapping(regions, region, f"region scorer {region}")
+        for metric in REGION_ITEM_METRICS:
+            if metric not in values:
+                raise ContractError(f"Region scorer omitted {region}.{metric}")
+            row[f"{region.lower()}_{metric}"] = values[metric]
+    row.update(
+        {
+            "pose_pvrig_record_inventory_json": canonical_json(pvrig_inventory),
+            "pose_vhh_record_inventory_json": canonical_json(vhh_inventory),
+            "region_pose_vhh_record_inventory_json": canonical_json(
+                region_vhh_inventory
+            ),
+            "reference_pvrl2_record_inventory_json": canonical_json(
+                reference_inventory
+            ),
+            "region_reference_pvrl2_record_inventory_json": canonical_json(
+                region_reference_inventory
+            ),
+            "pose_score_payload_sha256": sha256_json(pose_report),
+            "region_score_payload_sha256": sha256_json(region_report),
+        }
+    )
+    normalized = {
+        field_name: scalar_text(row.get(field_name), field_name)
+        for field_name in METRICS_FIELDS
+        if field_name != "metrics_row_sha256"
+    }
+    normalized["metrics_row_sha256"] = row_sha256(
+        normalized, "metrics_row_sha256"
+    )
+    assert_no_classification_fields(normalized, "continuous metrics row")
+    return normalized
+
+
+def contact_record(
+    selector_row: Mapping[str, str],
+    result: BaselineResult,
+) -> dict[str, Any]:
+    regions = required_mapping(result.region_report, "regions", "region scorer report")
+    record: dict[str, Any] = {
+        "schema_version": "pvrig_v1_2_top8_residue_contacts_v1",
+        "protocol_id": PROTOCOL_ID,
+        "formal_eligible": False,
+        "source_docking_receptor": "8x6b",
+        "baseline_channel_semantics": "posthoc_scoring_baseline_same_8x6b_docked_pose_ensemble",
+        "run_id": selector_row["run_id"],
+        "candidate_id": selector_row["candidate_id"],
+        "canonical_rank": int(selector_row["canonical_rank"]),
+        "baseline": result.baseline,
+        "selector_row_sha256": selector_row["selection_row_sha256"],
+        "aligned_pose_sha256": result.aligned_pose_sha256,
+        "pvrig_vhh_contacts": result.pose_report.get("pvrig_vhh_contacts", []),
+        "hotspot_overlaps": result.pose_report.get("hotspot_overlaps", []),
+        "region_residue_pairs": {
+            region: {
+                "occluding_residue_pairs": required_mapping(
+                    regions, region, f"region scorer {region}"
+                ).get("occluding_residue_pairs", []),
+                "clash_residue_pairs": required_mapping(
+                    regions, region, f"region scorer {region}"
+                ).get("clash_residue_pairs", []),
+            }
+            for region in REGIONS
+        },
+    }
+    assert_finite_tree(record, "residue contact record")
+    assert_no_classification_fields(record, "residue contact record")
+    record["contact_record_sha256"] = sha256_json(record)
+    return record

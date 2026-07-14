@@ -1,0 +1,7 @@
+lane	fraction	example_raw_count_8192	patches	scaffolds	design_loops	backbone_strategy	proteinmpnn	purpose
+EXPLOIT_P3_STABLE	0.25	2048	P3_charge_aromatic	ekg;qkg;qrg	H1:7,H2:6,H3:13	half winner-backbone resampling; half new RFdiffusion backbones	16-32 sequences/backbone; temperatures 0.1,0.2,0.3	maximize stable A_count and favorable HADDOCK score
+EXPLOIT_P2_YIELD	0.25	2048	P2_bridge_N_C	qrg;ekg;qkg	H1:7,H2:6,H3:13	prioritize P2_qrg_L_bb003/bb004 and P2_qkg_L_bb003/bb006	16-32 sequences/backbone; temperatures 0.1,0.2,0.3	maximize number of candidates with at least one dual-reference A pose
+EXPLOIT_P4_ROBUST	0.2	1638	P4_cterm_robust	ekg;qkg;qrg	H1:7,H2:6,H3:13	winner-backbone resampling plus new backbone search	16-32 sequences/backbone; temperatures 0.1,0.2,0.3	retain a second robust high-yield patch family
+NEIGHBOR_LENGTHS	0.1	819	P2_bridge_N_C;P3_charge_aromatic;P4_cterm_robust	ekg;qrg;qkg	H1:7,H2:6,H3:11|14|15	new RFdiffusion backbones only	8-16 sequences/backbone; temperatures 0.2,0.3	avoid overfitting all capacity to length 13
+9E6Y_CONFORMER_SEARCH	0.1	819	P2/P3/P4 mapped consensus hotspots	ekg;qrg;qkg	H1:7,H2:6,H3:13	generate against aligned 9E6Y PVRIG conformer and rescore in both references	8-16 sequences/backbone; temperatures 0.2,0.3	directly attack the 9E6Y hotspot-overlap bottleneck
+NOVELTY_AND_BIAS_AUDIT	0.1	820	P1;P5;P6;new cross-lobe hotspot combinations	balanced	H1:7,H2:6,H3:11-15	new backbones with family caps	8 sequences/backbone; temperatures 0.2,0.3	maintain exploration and detect surrogate or restraint shortcuts
