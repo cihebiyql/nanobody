@@ -364,6 +364,15 @@ def validate_source_publication(path: Path) -> SourceRelease:
         if mismatches:
             raise ReleaseError(f"{label} contract mismatch: {mismatches}")
         require_false_boundaries(payload, label)
+    if release_input.get("required_external_checks") != [
+        "canonical_upstream_paths_and_frozen_hashes",
+        "immutable_release_inventory",
+        "current_pointer_identity",
+        "computed_gate_outcome",
+        "B2000_output_cardinality",
+        "formal_and_training_vetoes",
+    ]:
+        raise ReleaseError("Release-input external-check contract drift")
 
     publication = audit.get("publication")
     if not isinstance(publication, dict):
