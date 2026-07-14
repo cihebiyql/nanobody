@@ -608,13 +608,17 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
                     "sha256": MOD.sha256_file(mutant),
                 },
             }
+            other_anchor_names = sorted(
+                MOD.PROCESSOR_RELEASE_ANCHOR_NAMES
+                - {"positive_manifest", "mutant_manifest"}
+            )
             anchors.update(
                 {
-                    f"extra_{index}": {
+                    anchor_name: {
                         "path": str(path),
                         "sha256": MOD.sha256_file(path),
                     }
-                    for index, path in enumerate(files)
+                    for anchor_name, path in zip(other_anchor_names, files)
                 }
             )
             release = root / "release.json"

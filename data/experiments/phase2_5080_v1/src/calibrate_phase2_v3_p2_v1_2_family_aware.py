@@ -70,6 +70,21 @@ DEFAULT_PROCESSOR_RELEASE_MANIFEST = (
     / "experiments/phase2_5080_v1/audits/"
     "phase2_v3_p2_v1_2_top8_processor_release_manifest.json"
 )
+PROCESSOR_RELEASE_ANCHOR_NAMES = {
+    "selector_csv",
+    "selector_audit",
+    "selector_implementation",
+    "positive_manifest",
+    "mutant_manifest",
+    "aligner",
+    "pose_scorer",
+    "region_scorer",
+    "scoring_helper",
+    "hotspots",
+    "reconciliation",
+    "reference_8x6b",
+    "reference_9e6y",
+}
 DEFAULT_POSITIVE_MANIFEST = (
     WORKSPACE_ROOT.parent
     / "docking/calibration/patent_success_validation/batch_manifest.csv"
@@ -697,8 +712,8 @@ def validate_processor_release_manifest(
         else:
             file_entries.append((field, value))
     anchors = payload.get("canonical_anchors")
-    if not isinstance(anchors, dict) or len(anchors) != 13:
-        evidence["failure_reasons"].append("release_canonical_anchor_count_not_13")
+    if not isinstance(anchors, dict) or set(anchors) != PROCESSOR_RELEASE_ANCHOR_NAMES:
+        evidence["failure_reasons"].append("release_canonical_anchor_name_set_mismatch")
         anchors = {}
     else:
         file_entries.extend((f"anchor_{name}", value) for name, value in anchors.items())
@@ -794,6 +809,12 @@ def validate_upstream_audit(
         evidence["failure_reasons"].append("upstream_pose_rule_trust_not_eligible")
     if not isinstance(trust, dict) or trust.get("processor_release_manifest_validated") is not True:
         evidence["failure_reasons"].append("upstream_release_manifest_not_validated")
+    if not isinstance(trust, dict) or trust.get(
+        "exact_expected_reference_inventories_match"
+    ) is not True:
+        evidence["failure_reasons"].append(
+            "upstream_expected_reference_inventory_contract_failed"
+        )
     if not release_evidence.get("validated"):
         evidence["failure_reasons"].append("external_release_manifest_not_validated")
     canonical_contract = payload.get("canonical_internal_contact_contract", {})
@@ -821,8 +842,6 @@ def validate_upstream_audit(
     for field, expected in expected_inputs.items():
         if not isinstance(input_hashes, dict) or input_hashes.get(field) != expected:
             evidence["failure_reasons"].append(f"upstream_{field}_sha256_mismatch")
-    if payload.get("reference_inventory_expected") != payload.get("reference_inventory_observed"):
-        evidence["failure_reasons"].append("upstream_reference_inventory_closure_failed")
     evidence["status"] = payload.get("status")
     evidence["metrics_row_hash_chain"] = metrics_output.get("row_hash_chain", "")
     evidence["validated"] = not evidence["failure_reasons"]
