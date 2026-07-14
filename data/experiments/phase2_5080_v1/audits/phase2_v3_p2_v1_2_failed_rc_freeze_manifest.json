@@ -1,0 +1,751 @@
+{
+  "artifact_count": 54,
+  "artifact_inventory_sha256": "5f901f702ca48828b95aef06a8ea27b9f3d043255be89b6220e1bf3deacbaa37",
+  "artifacts": [
+    {
+      "bytes": 140575,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_docking_gold_v2_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_primary_failed_audit",
+      "sha256": "fc9d0dfb0d4419c08e2a9bad9053a80be539fe12b2b7944da688e5525fb9f4ab"
+    },
+    {
+      "bytes": 72313,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_dual_docking_pilot_v2_postprocess_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_postprocess_audit",
+      "sha256": "d32d4873df425d36f5973fda6cc40daa40d2884e926d27171aa95f1b04e592ab"
+    },
+    {
+      "bytes": 105152,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_dual_docking_pilot_v2_sync_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_sync_audit",
+      "sha256": "e70297e1373d7a5cde9e9da113ffae338f15c46e119aebd2f8313a0d2f10d566"
+    },
+    {
+      "bytes": 20391,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_hetatm_audit",
+      "sha256": "c53a12545de2ad827e39caaae7767d4ae442d16cd9b09cdc22479b0fd7527f45"
+    },
+    {
+      "bytes": 211362,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_1_hetatm_contamination_rows.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_hetatm_rows",
+      "sha256": "c0fcaabdc2760d93ca94f8e9291bf90b7a011e1dd0cd2f7820b567d492af2daa"
+    },
+    {
+      "bytes": 927832,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_calibration_emref_top8_selection_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_selector_audit",
+      "sha256": "ad925357a30a6cf37bdf13fc23b512db08d3917761ebd4b0462ac2244f57aa40"
+    },
+    {
+      "bytes": 1095053,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "pilot64_failed52_coordinate_recovery_audit",
+      "sha256": "ae80655146a3be193bb5cfc107adc8efa3efe523fba7ba88b3faa25f013d8daa"
+    },
+    {
+      "bytes": 168267,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "pilot64_smoke8_coordinate_recovery_audit",
+      "sha256": "f625886b2d7ee23314a12cac09e82983ed06e8d799cbd2c8b21df39384cb4206"
+    },
+    {
+      "bytes": 104723,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_file_hashes.sha256",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_758_file_hash_listing",
+      "sha256": "82d0b2f4879b26c5b1490f1f59f558ff31f1e29570e813e3c14703a153cabf48"
+    },
+    {
+      "bytes": 2128,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_deterministic_rebuild_audit",
+      "sha256": "9adb33341e18431175ce04bcc523001bb430e1224899eb779fa2083e74cf8938"
+    },
+    {
+      "bytes": 3021,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_processor_release_manifest.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_processor_release_manifest",
+      "sha256": "a4c876594434076a86b75a073ff4ac02914c88ea20b97c946e299f72c7552cd7"
+    },
+    {
+      "bytes": 914407,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/v1_2_calibration_emref_top8_manifest.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_selector_csv",
+      "sha256": "f42ada6cd3fb1ddf754154b6fb076da8c651ecaab2ff28ae58d1806d9a6de70b"
+    },
+    {
+      "bytes": 16093,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_1_FINAL_REJECTION_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_final_rejection",
+      "sha256": "a8a6da78010cd08ecd56601d321eea2ee1425554f03890f1b45c96ef63be5726"
+    },
+    {
+      "bytes": 5861,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_CALIBRATION_METHOD_AMENDMENT_1_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_2_method_amendment_shared_h",
+      "sha256": "31943ef53535beef066c48f1da24bb59e90aa03c774637342945317b483adbbc"
+    },
+    {
+      "bytes": 23675,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_CALIBRATION_METHOD_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_2_calibration_method",
+      "sha256": "ed1651b11eb865fdfa30cce6b69da4cdebc13f4982c53915cfa2bd838c4bbb25"
+    },
+    {
+      "bytes": 9385,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_EXECUTION_STATUS_AMENDMENT_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_2_execution_status_amendment",
+      "sha256": "287c01103d2779c43114d184a22213d670d59c750801936c22db0b1ebb8cd0a0"
+    },
+    {
+      "bytes": 2528,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_FAILED_RC_FREEZE_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "failed_rc_freeze_note",
+      "sha256": "0d256922b9997e53d765e46918a43b518d6fec3443296a6ecc9cc5458537f45a"
+    },
+    {
+      "bytes": 4027,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_FAMILY_CALIBRATION_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_report",
+      "sha256": "1c744b210ccbc86b5d912c3239fa3fa2392b69430178ee57508db855e975aed3"
+    },
+    {
+      "bytes": 21408,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_VALIDATION_FINAL_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_2_final_validation_report",
+      "sha256": "e413c385fa4af23e15c0766630c79fc89661cb64a123348159d501402b93f8f1"
+    },
+    {
+      "bytes": 1360,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V2_VALIDATION_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_primary_failed_report",
+      "sha256": "5f146d41231860b75890df901f224af758dcb5ffdcdc748af8505ea59a558894"
+    },
+    {
+      "bytes": 13274,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/reports/PVRIG_V3_P2_V1_1_HETATM_CONTAMINATION_REJECTION_ZH.md",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "v1_1_hetatm_rejection_report",
+      "sha256": "69b4709dae1ad5bd87ce09eef3a89e795866fa0b0e0252d8e434eeb85e11a0b9"
+    },
+    {
+      "bytes": 7529823,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_bootstrap_anchor_evaluations.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_bootstrap_anchor_evaluations.csv",
+      "sha256": "97bd09f075c5e33c562b51a73acbcfb05589b714ba6cfc1e221dedfa8496a553"
+    },
+    {
+      "bytes": 4970708,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_bootstrap_thresholds.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_bootstrap_thresholds.csv",
+      "sha256": "05d9c54e68ce8c02e3f8e217df107551d8545f04ef2262a0c582d036bc62d449"
+    },
+    {
+      "bytes": 37405,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_calibration_run_scores.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_calibration_run_scores.csv",
+      "sha256": "eee5cf099b762e45d4550f1e6d53be80aefb8f011163cf89fda13e70a44f5d5e"
+    },
+    {
+      "bytes": 48434,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_family_calibration_audit.json",
+      "sha256": "8aef0ed8ba8e2dbaf46f5dffa3940d7da8283469cfe6aa8d98b521518976eac7"
+    },
+    {
+      "bytes": 3892,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_lofo.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_family_lofo.csv",
+      "sha256": "bb21526b21f31c416e6e0984c0ca40a963eb24088c86dcbf9dfe8d8693d20f44"
+    },
+    {
+      "bytes": 33057,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_rules.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_family_rules.json",
+      "sha256": "7efdf44939816b7c81d3f968c661f50c381b86319a6535cdd537035d6f95b4c8"
+    },
+    {
+      "bytes": 8505720,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_fingerprint_diagnostics.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_fingerprint_diagnostics.csv",
+      "sha256": "dc7748d56a4aa6d1cc4784c23f811bef618144fd4d2b5c6e356ceae65c9a3d7a"
+    },
+    {
+      "bytes": 19022,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_mutant_paired_deltas.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_mutant_paired_deltas.csv",
+      "sha256": "e2f3ffb3d28cf01bb80a26a71bfdfb9a1a2389da083f49d81f1b43058cb320ff"
+    },
+    {
+      "bytes": 489602,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_pose_scores.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_pose_scores.csv",
+      "sha256": "0447b8b5c83e3d8eed9aa491719c55bc3ab3ea01554654288b189cd06b33155e"
+    },
+    {
+      "bytes": 22670,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_robustness_grid.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "family_failed_rc_pvrig_v1_2_robustness_grid.csv",
+      "sha256": "d394f55288a18bafd51f487e02bf98d1fa1afe14a4c8adc7dda72eca246da050"
+    },
+    {
+      "bytes": 192503,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_continuous_package_audit",
+      "sha256": "6d7e67fdf6c25d14723e762e00cbf8058a01661815198ed313079212ea9330d4"
+    },
+    {
+      "bytes": 3433144,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_continuous_metrics.csv",
+      "reuse_class": "CONTINUOUS_INPUT",
+      "role": "top8_continuous_metrics",
+      "sha256": "9a18d3f8002f6f827b33e0ec7144506add4e925e9907a872d992f01a36f347c2"
+    },
+    {
+      "bytes": 531113,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_pose_materialization_manifest.csv",
+      "reuse_class": "CONTINUOUS_INPUT",
+      "role": "top8_pose_materialization_manifest",
+      "sha256": "2358316c9e8d0d71d75993bab1a93bd0c3508621da9286421aca89008d3b1522"
+    },
+    {
+      "bytes": 15260722,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_residue_contacts.jsonl",
+      "reuse_class": "CONTINUOUS_INPUT",
+      "role": "top8_residue_contacts",
+      "sha256": "cc29c580d3e0256536c3d2191b83a32cfd8bc7870c5315cd2ff4cae234199052"
+    },
+    {
+      "bytes": 1602429,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/pilot64_v1_2_emref_recovery_failed52/v1_2_failed52_emref_top8_selector.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "pilot64_failed52_recovery_selector",
+      "sha256": "e7a2194a55788cd610df9d73e92ba3d5ac14de994cee468244c07e7950219544"
+    },
+    {
+      "bytes": 249063,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/pilot64_v1_2_emref_recovery_smoke8/v1_2_smoke8_emref_top8_selector.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "pilot64_smoke8_recovery_selector",
+      "sha256": "41469d9b60b8a969c0f11b1b1bb6aba43f54508dbb6449b9fbcf7a1fe6630f6f"
+    },
+    {
+      "bytes": 129631,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/calibrate_phase2_v3_p2_v1_2_family_aware.py",
+      "reuse_class": "VALIDATOR",
+      "role": "family_calibrator_implementation",
+      "sha256": "2bc36eb1a93ab2b536759b011695d4d92f005ca46ec5aa7a9da75afcde38bd4c"
+    },
+    {
+      "bytes": 120332,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/process_phase2_v3_p2_v1_2_top8_calibration.py",
+      "reuse_class": "VALIDATOR",
+      "role": "top8_processor_implementation",
+      "sha256": "3787ba2df55244d0d3d6738c0766cd9547869657965e9a94be9c02c5548992a4"
+    },
+    {
+      "bytes": 30555,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/select_phase2_v3_p2_v1_2_emref_top8.py",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_selector_implementation",
+      "sha256": "91455d5135e35ee206c3a416c24a11b762774d691610819412f17cc8514ac4eb"
+    },
+    {
+      "bytes": 36682,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/test_calibrate_phase2_v3_p2_v1_2_family_aware.py",
+      "reuse_class": "VALIDATOR",
+      "role": "family_calibrator_test",
+      "sha256": "154493c6fd22664a876b81cba86f3fb008583e9d2ad66a6b251c2eb0aaea11b4"
+    },
+    {
+      "bytes": 29744,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/test_process_phase2_v3_p2_v1_2_top8_calibration.py",
+      "reuse_class": "VALIDATOR",
+      "role": "top8_processor_test",
+      "sha256": "5b3c82f937560b8cfc94043fd8346856db56739adebb874b701e5f7cbcb60d56"
+    },
+    {
+      "bytes": 3831,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/test_validate_phase2_v3_p2_v1_2_failed_rc_freeze.py",
+      "reuse_class": "VALIDATOR",
+      "role": "failed_rc_freeze_validator_test",
+      "sha256": "13ac53e57643c127d5cda3d40dbff00f3769acf1804f25d093c30e1bfdfadb65"
+    },
+    {
+      "bytes": 12765,
+      "frozen": true,
+      "path": "data/experiments/phase2_5080_v1/src/validate_phase2_v3_p2_v1_2_failed_rc_freeze.py",
+      "reuse_class": "VALIDATOR",
+      "role": "failed_rc_freeze_validator",
+      "sha256": "a528f3f2ace5b8eed16a40124ecde6802e081ce3a6188ee8ec855396e2490684"
+    },
+    {
+      "bytes": 340443,
+      "frozen": true,
+      "path": "data/structures/8X6B.pdb",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_reference_8x6b",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    {
+      "bytes": 197883,
+      "frozen": true,
+      "path": "data/structures/9E6Y.pdb",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_reference_9e6y",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    {
+      "bytes": 5558,
+      "frozen": true,
+      "path": "data/structures/PVRIG_hotspot_set_v1.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_hotspots",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    {
+      "bytes": 12296,
+      "frozen": true,
+      "path": "data/structures/PVRIG_numbering_reconciliation.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_reconciliation",
+      "sha256": "d7decf3be4a19dd9da2a42d9c8825a0b5d95ca350aea553b0933ad5c30c3c552"
+    },
+    {
+      "bytes": 18811,
+      "frozen": true,
+      "path": "docking/calibration/mutant_validation_panel/mutant_panel.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_mutant_manifest",
+      "sha256": "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248"
+    },
+    {
+      "bytes": 4971,
+      "frozen": true,
+      "path": "docking/calibration/patent_success_validation/batch_manifest.csv",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_positive_manifest",
+      "sha256": "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8"
+    },
+    {
+      "bytes": 7110,
+      "frozen": true,
+      "path": "docking/scripts/align_pdb_by_chain.py",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_aligner",
+      "sha256": "e6b863979db5a1ac6702ae7f04da49d3d425069a070fc441221341a202a9d7f7"
+    },
+    {
+      "bytes": 9469,
+      "frozen": true,
+      "path": "docking/scripts/pvrig_scoring_semantics_v1_2.py",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_scoring_helper",
+      "sha256": "afcddd97b0070768b28f54ffbfb0959e71929f962cca89985cb3abb70abe0d9c"
+    },
+    {
+      "bytes": 19857,
+      "frozen": true,
+      "path": "docking/scripts/score_cdr_region_occlusion_v1_2.py",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_region_scorer",
+      "sha256": "b60e333c9417693b058357ce45fe99cf4ca641f78e0607028b5475d10025939a"
+    },
+    {
+      "bytes": 17020,
+      "frozen": true,
+      "path": "docking/scripts/score_pvrig_vhh_pose_v1_2.py",
+      "reuse_class": "PROVENANCE_ONLY",
+      "role": "top8_release_anchor_pose_scorer",
+      "sha256": "7fcb7bb8864d171995dd00a16c804bfa82cd731278558ec8a46b40b547467875"
+    }
+  ],
+  "claim_boundary": "Immutable failed computational-geometry RC; not binder, affinity, Kd, experimental blocking, independent dual-receptor R_gold, formal-holdout, or training-label truth.",
+  "exact_directory_contracts": [
+    {
+      "expected_files": [
+        "pvrig_v1_2_bootstrap_anchor_evaluations.csv",
+        "pvrig_v1_2_bootstrap_thresholds.csv",
+        "pvrig_v1_2_calibration_run_scores.csv",
+        "pvrig_v1_2_family_calibration_audit.json",
+        "pvrig_v1_2_family_lofo.csv",
+        "pvrig_v1_2_family_rules.json",
+        "pvrig_v1_2_fingerprint_diagnostics.csv",
+        "pvrig_v1_2_mutant_paired_deltas.csv",
+        "pvrig_v1_2_pose_scores.csv",
+        "pvrig_v1_2_robustness_grid.csv"
+      ],
+      "reuse_class": "PROVENANCE_ONLY",
+      "root": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration"
+    }
+  ],
+  "failed_acceptance_gate": {
+    "all_other_gate_count": 9,
+    "all_other_gates_passed": true,
+    "minimum_modal_probability": 0.7,
+    "name": "bootstrap",
+    "observed_anchor_count": 7,
+    "required_anchor_count": 9,
+    "total_anchor_count": 11,
+    "unstable_anchors": [
+      "PVRIG-38",
+      "PVRIG-39",
+      "20H5",
+      "39H4"
+    ]
+  },
+  "freeze_id": "PVRIG_V3_P2_DOCKING_GOLD_V1_2_FAILED_RC_20260714",
+  "frozen_at_utc": "2026-07-14T04:05:23Z",
+  "hash_listing_contracts": [
+    {
+      "entry_count": 758,
+      "listing_path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_file_hashes.sha256",
+      "require_exact_file_set": true,
+      "reuse_class": "CONTINUOUS_INPUT",
+      "root": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration"
+    }
+  ],
+  "protocol_id": "DG_A_PVRIG_V1_2_DEV",
+  "release_eligibility": {
+    "continuous_input_provenance_reuse_only": true,
+    "dual_receptor_r_gold_freeze_eligible": false,
+    "formal_eligible": false,
+    "p2_training_ready": false,
+    "pose_rule_threshold_freeze_eligible": false,
+    "single_8x6b_dock_run_method_freeze_eligible": false,
+    "threshold_freeze_eligible": false,
+    "training_label_release_eligible": false
+  },
+  "reuse_policy": {
+    "allowed_uses": [
+      "TOP8_CONTINUOUS_GEOMETRY_INPUT_FOR_NEW_INDEPENDENTLY_PREREGISTERED_CALIBRATION",
+      "HASHED_PROVENANCE_AND_REPRODUCIBILITY",
+      "FAILURE_ANALYSIS_AND_REGRESSION_TESTING"
+    ],
+    "mode": "CONTINUOUS_INPUT_AND_PROVENANCE_ONLY",
+    "next_version_requirement": "Any repair must use a new preregistered version and pass all frozen acceptance gates before downstream scoring or label release.",
+    "prohibited_uses": [
+      "CURRENT_ABC_E_OR_G1_G5_AS_GOLD_LABELS",
+      "CURRENT_R_CALIBRATION_RUN_8X6B_DOCK_AS_GOLD",
+      "P2_MODEL_TRAINING_OR_LABEL_RELEASE",
+      "SMOKE8_OR_FAILED52_SCORING_WITH_V1_2_RULES",
+      "DUAL_RECEPTOR_R_GOLD_CLAIM",
+      "FORMAL_HOLDOUT_OR_EXPERIMENTAL_TRUTH_CLAIM",
+      "RETROACTIVE_V1_2_GATE_OR_THRESHOLD_CHANGE"
+    ]
+  },
+  "schema_version": "phase2_v3_p2_v1_2_failed_rc_freeze_manifest_v1",
+  "semantic_assertion_count": 46,
+  "semantic_assertions": [
+    {
+      "expected": "FAIL_V1_2_FAMILY_CALIBRATION_NOT_FROZEN",
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/status"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/p2_training_blocked"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/training_label_release_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/formal_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/threshold_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/pose_rule_threshold_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/single_8x6b_dock_run_method_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/dual_receptor_r_gold_freeze_eligible"
+    },
+    {
+      "expected": "8x6b",
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/source_docking_receptor"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/all_gates_passed"
+    },
+    {
+      "expected": [
+        "bootstrap"
+      ],
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/failed_gates"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/gates/bootstrap/passed"
+    },
+    {
+      "expected": 9,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/gates/bootstrap/anchor_summary/anchors_modal_probability_gate_required"
+    },
+    {
+      "expected": 7,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/gates/bootstrap/anchor_summary/anchors_modal_probability_ge_0_70_count"
+    },
+    {
+      "expected": 2000,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/gates/bootstrap/replicates"
+    },
+    {
+      "expected": 20260714,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "pointer": "/acceptance_summary/gates/bootstrap/seed"
+    },
+    {
+      "expected": "PASS_V1_2_TOP8_CALIBRATION_CONTINUOUS_METRICS_BUILT",
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/status"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/pose_rule_threshold_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/threshold_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/formal_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/dual_receptor_r_gold_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/thresholds_or_classes_applied"
+    },
+    {
+      "expected": "8x6b",
+      "path": "data/experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration/pvrig_v1_2_top8_calibration_audit.json",
+      "pointer": "/source_docking_receptor"
+    },
+    {
+      "expected": "PASS_V1_2_TOP8_BYTE_DETERMINISTIC_REBUILD",
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/status"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/byte_identical"
+    },
+    {
+      "expected": 758,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/file_count_each"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/pose_rule_threshold_fit_input_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/formal_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/dual_receptor_r_gold_freeze_eligible"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit.json",
+      "pointer": "/p2_training_ready"
+    },
+    {
+      "expected": "PASS_V1_2_PILOT64_EMREF_RECOVERY_SELECTED",
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/status"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/formal_eligible"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/remote_local_hash_chain_equal"
+    },
+    {
+      "expected": "4_emref",
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/source_stage"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/source_stage_exclusive"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/selection_backfill"
+    },
+    {
+      "expected": 8,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/counts/selected_runs"
+    },
+    {
+      "expected": 64,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json",
+      "pointer": "/counts/selected_poses"
+    },
+    {
+      "expected": "PASS_V1_2_PILOT64_EMREF_RECOVERY_SELECTED",
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/status"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/formal_eligible"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/remote_local_hash_chain_equal"
+    },
+    {
+      "expected": "4_emref",
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/source_stage"
+    },
+    {
+      "expected": true,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/source_stage_exclusive"
+    },
+    {
+      "expected": false,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/selection_backfill"
+    },
+    {
+      "expected": 52,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/counts/selected_runs"
+    },
+    {
+      "expected": 416,
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json",
+      "pointer": "/counts/selected_poses"
+    }
+  ],
+  "status": "FROZEN_FAILED_RC_V1_2",
+  "training_state": "P2_TRAINING_BLOCKED",
+  "validation_outcome": "FAIL_DOCKING_GOLD_NOT_VALIDATED"
+}
