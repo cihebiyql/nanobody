@@ -608,7 +608,8 @@ for index, row in enumerate(rows, start=2):
         manifest_failures.append("manifest_protocol_mismatch_row_" + str(index))
     raw = str(row.get("completion_relpath", ""))
     pure = pathlib.PurePosixPath(raw)
-    valid = bool(raw) and not pure.is_absolute() and raw == pure.as_posix()
+    valid = (bool(raw) and "\\" not in raw and not pure.is_absolute()
+             and raw == pure.as_posix())
     valid = valid and all(part not in {"", ".", ".."} for part in pure.parts)
     if valid:
         candidate = (root / pathlib.Path(*pure.parts)).resolve(strict=False)

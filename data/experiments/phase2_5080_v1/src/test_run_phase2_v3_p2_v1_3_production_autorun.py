@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import json
+import csv
 import io
-import os
+import json
 import shutil
 import subprocess
 import sys
@@ -411,6 +411,190 @@ class AutorunTest(unittest.TestCase):
         self.assertEqual(status, autorun.REMOTE_FAILURE)
         self.assertEqual(runner.stage_names, [])
 
+    def test_explicit_manifest_failure_precedes_count_gate_and_once_is_nonzero(self) -> None:
+        result = snapshot(
+            "FAILURE",
+            completion=0,
+            passed=0,
+            failure=1,
+            invalid=1,
+            alive=False,
+            failures=("manifest_unreadable_or_malformed",),
+            manifest_count=0,
+            manifest_sha256="",
+        )
+        parsed = autorun.parse_remote_result(result)
+        self.assertEqual(parsed.status, "FAILURE")
+        self.assertEqual(parsed.manifest_count, 0)
+
+        def fake_subprocess(_command: Sequence[str], _cwd: Path) -> autorun.CommandResult:
+            return result
+
+        with mock.patch.object(autorun, "subprocess_runner", fake_subprocess):
+            with redirect_stdout(io.StringIO()):
+                returncode = autorun.main(
+                    [
+                        "--once",
+                        "--ssh-executable",
+                        "fake-ssh",
+                        "--state-file",
+                        str(self.state),
+                        "--log-file",
+                        str(self.log),
+                    ]
+                )
+        self.assertEqual(returncode, 2)
+        self.assertEqual(
+            json.loads(self.state.read_text())["status"], autorun.REMOTE_FAILURE
+        )
+
+    def test_remote_probe_requires_frozen_pid_and_exact_proc_identity(self) -> None:
+        remote, proc = create_remote_probe_fixture(self.root / "probe-valid")
+        valid = execute_remote_probe(remote, proc)
+        self.assertEqual(valid["status"], "WAITING")
+        self.assertTrue(valid["controller_pid_file_valid"])
+        self.assertTrue(valid["controller_identity_valid"])
+        self.assertEqual(valid["controller_pid"], autorun.FROZEN_CONTROLLER_PID)
+        self.assertEqual(
+            valid["controller_start_ticks"], autorun.FROZEN_CONTROLLER_START_TICKS
+        )
+
+        for variant in ("missing_pid", "dead_pid", "argv", "cwd", "start"):
+            with self.subTest(variant=variant):
+                remote, proc = create_remote_probe_fixture(self.root / f"probe-{variant}")
+                proc_dir = proc / str(autorun.FROZEN_CONTROLLER_PID)
+                if variant == "missing_pid":
+                    (remote / "controller_full.pid").unlink()
+                elif variant == "dead_pid":
+                    shutil.rmtree(proc_dir)
+                elif variant == "argv":
+                    (proc_dir / "cmdline").write_bytes(b"python\0wrong.py\0")
+                elif variant == "cwd":
+                    (proc_dir / "cwd").unlink()
+                    (proc_dir / "cwd").symlink_to(self.root.resolve(), target_is_directory=True)
+                else:
+                    stat_fields = ["S", *("0" for _ in range(18)), "1"]
+                    (proc_dir / "stat").write_text(
+                        f"{autorun.FROZEN_CONTROLLER_PID} (python) "
+                        + " ".join(stat_fields)
+                        + "\n",
+                        encoding="ascii",
+                    )
+                observed = execute_remote_probe(remote, proc)
+                self.assertEqual(observed["status"], "FAILURE")
+                self.assertIn(
+                    "controller_not_alive_with_pending_runs", observed["failures"]
+                )
+
+    def test_remote_probe_rejects_manifest_hash_duplicates_and_unsafe_paths(self) -> None:
+        def rewrite(remote: Path, mutation) -> None:
+            manifest = remote / "manifests/new_run_manifest.csv"
+            with manifest.open(newline="", encoding="utf-8-sig") as handle:
+                reader = csv.DictReader(handle)
+                rows = list(reader)
+                fields = list(reader.fieldnames or [])
+            mutation(rows)
+            with manifest.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
+                writer.writeheader()
+                writer.writerows(rows)
+
+        def symlink_escape(remote: Path) -> None:
+            (remote / "escape").symlink_to(self.root.resolve(), target_is_directory=True)
+            rewrite(
+                remote,
+                lambda rows: rows[0].update(completion_relpath="escape/out.json"),
+            )
+
+        cases = {
+            "hash": (
+                lambda remote: (remote / "manifests/new_run_manifest.csv").write_bytes(
+                    frozen_manifest_path().read_bytes() + b"\n"
+                ),
+                "manifest_sha256_mismatch",
+            ),
+            "duplicate_ids": (
+                lambda remote: rewrite(
+                    remote,
+                    lambda rows: rows[1].update(
+                        run_id=rows[0]["run_id"],
+                    ),
+                ),
+                "manifest_run_ids_not_30_unique",
+            ),
+            "duplicate_configs": (
+                lambda remote: rewrite(
+                    remote,
+                    lambda rows: rows[1].update(
+                        config_sha256=rows[0]["config_sha256"],
+                    ),
+                ),
+                "manifest_config_hashes_not_30_unique_sha256",
+            ),
+            "escape": (
+                lambda remote: rewrite(
+                    remote,
+                    lambda rows: rows[0].update(completion_relpath="../escape.json"),
+                ),
+                "manifest_completion_path_unsafe_row_2",
+            ),
+            "absolute": (
+                lambda remote: rewrite(
+                    remote,
+                    lambda rows: rows[0].update(completion_relpath="/tmp/escape.json"),
+                ),
+                "manifest_completion_path_unsafe_row_2",
+            ),
+            "duplicate_path": (
+                lambda remote: rewrite(
+                    remote,
+                    lambda rows: rows[1].update(
+                        completion_relpath=rows[0]["completion_relpath"]
+                    ),
+                ),
+                "manifest_completion_paths_not_30_unique",
+            ),
+            "non_normalized": (
+                lambda remote: rewrite(
+                    remote,
+                    lambda rows: rows[0].update(
+                        completion_relpath="runs//not-normalized.complete.json"
+                    ),
+                ),
+                "manifest_completion_path_unsafe_row_2",
+            ),
+            "symlink_escape": (
+                symlink_escape,
+                "manifest_completion_path_unsafe_row_2",
+            ),
+        }
+        for name, (mutation, expected_failure) in cases.items():
+            with self.subTest(name=name):
+                remote, proc = create_remote_probe_fixture(self.root / f"manifest-{name}")
+                mutation(remote)
+                payload = execute_remote_probe(remote, proc)
+                self.assertEqual(payload["status"], "FAILURE")
+                self.assertIn(expected_failure, payload["failures"])
+
+        remote, proc = create_remote_probe_fixture(self.root / "manifest-missing")
+        (remote / "manifests/new_run_manifest.csv").unlink()
+        missing = execute_remote_probe(remote, proc)
+        self.assertEqual(missing["status"], "FAILURE")
+        self.assertTrue(
+            any(value.startswith("manifest_unreadable_or_malformed:") for value in missing["failures"])
+        )
+
+        remote, proc = create_remote_probe_fixture(self.root / "manifest-malformed")
+        (remote / "manifests/new_run_manifest.csv").write_bytes(b"\xff\xfe\x00")
+        malformed = execute_remote_probe(remote, proc)
+        self.assertEqual(malformed["status"], "FAILURE")
+        self.assertTrue(
+            any(
+                value.startswith("manifest_unreadable_or_malformed:")
+                for value in malformed["failures"]
+            )
+        )
+
     def test_stage_failure_stops_before_downstream(self) -> None:
         runner = FakeRunner(
             self.layout,
@@ -520,6 +704,66 @@ class AutorunTest(unittest.TestCase):
         for receipt in state["stages"].values():
             self.assertEqual(receipt["returncode"], 0)
             self.assertRegex(receipt["artifacts"]["inventory_sha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(
+            set(state["stages"]["development_release"]["upstreams"]),
+            {
+                "selector",
+                "processor_primary",
+                "processor_qualification",
+                "calibration_primary",
+                "calibration_rebuild",
+            },
+        )
+        for binding in state["stages"]["development_release"]["upstreams"].values():
+            self.assertEqual(
+                set(binding),
+                {
+                    "root",
+                    "current_target",
+                    "current_resolved",
+                    "release_id",
+                    "file_count",
+                    "inventory_sha256",
+                },
+            )
+
+    def test_valid_selector_republication_invalidates_all_descendants(self) -> None:
+        first = FakeRunner(
+            self.layout,
+            [snapshot("READY", completion=30, passed=30, alive=False)],
+            development_pass=True,
+        )
+        self.assertEqual(
+            autorun.Autorun(self.config(), runner=first).run(), autorun.FINAL_PASS
+        )
+        FixturePublisher(self.layout, True).selector("selector-republished")
+        second = FakeRunner(
+            self.layout,
+            [snapshot("READY", completion=30, passed=30, alive=False)],
+            development_pass=True,
+        )
+        self.assertEqual(
+            autorun.Autorun(self.config(), runner=second).run(), autorun.FINAL_PASS
+        )
+        self.assertEqual(
+            second.stage_names,
+            [
+                "selector",
+                "processor_primary",
+                "processor_rebuild",
+                "processor_qualification",
+                "calibration_primary",
+                "calibration_rebuild",
+                "development_release",
+            ],
+        )
+
+    def test_release_inventory_rejects_internal_symlinks(self) -> None:
+        FixturePublisher(self.layout).selector()
+        release = (self.layout.selector / "current").resolve()
+        (release / "internal-link").symlink_to(autorun.SELECTOR_CSV)
+        with self.assertRaisesRegex(autorun.AutorunError, "internal symlinks"):
+            autorun.release_inventory(self.layout.selector, autorun.SELECTOR_AUDIT)
 
     def test_development_gate_fail_is_valid_terminal_stop(self) -> None:
         runner = FakeRunner(
