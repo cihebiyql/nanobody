@@ -1,0 +1,45 @@
+{
+  "jobs": [
+    {
+      "conformation": "8x6b",
+      "entity_id": "CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151",
+      "job_id": "CONTROL_CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151_8x6b_s917_f8fab9ee3ba5",
+      "reasons": [],
+      "seed": "917",
+      "selected_model_count": 10,
+      "status": "PASS"
+    },
+    {
+      "conformation": "9e6y",
+      "entity_id": "CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151",
+      "job_id": "CONTROL_CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151_9e6y_s917_1cf19d5dff51",
+      "reasons": [],
+      "seed": "917",
+      "selected_model_count": 10,
+      "status": "PASS"
+    },
+    {
+      "conformation": "8x6b",
+      "entity_id": "PVRIG_RFAb_v2_P2_qkg_L_bb006_mpn00",
+      "job_id": "CANDIDATE_PVRIG_RFAb_v2_P2_qkg_L_bb006_mpn00_8x6b_s917_b4f0607558d3",
+      "reasons": [],
+      "seed": "917",
+      "selected_model_count": 10,
+      "status": "PASS"
+    },
+    {
+      "conformation": "9e6y",
+      "entity_id": "PVRIG_RFAb_v2_P2_qkg_L_bb006_mpn00",
+      "job_id": "CANDIDATE_PVRIG_RFAb_v2_P2_qkg_L_bb006_mpn00_9e6y_s917_38c8465c0f45",
+      "reasons": [],
+      "seed": "917",
+      "selected_model_count": 9,
+      "status": "PASS"
+    }
+  ],
+  "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+  "protocol_lock_sha256": "f217f58f313794af932604a816f6c360e07bdcfc1a53b7ac4c2cae0a81ffeeed",
+  "reasons": [],
+  "smoke_job_count": 4,
+  "status": "PASS"
+}

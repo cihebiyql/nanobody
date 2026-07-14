@@ -1638,6 +1638,7 @@ def build(
                 ),
             },
         }
+        audit = json.loads(canonical_json(audit))
         write_json_atomic(work_root / AUDIT_NAME, audit)
         staged_inventory = directory_inventory(work_root)
         if staged_inventory["file_count"] < EXPECTED_POSES + 2:

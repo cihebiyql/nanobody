@@ -10,6 +10,7 @@ candidate tiers, training labels, or an R_gold score.
 from __future__ import annotations
 
 import argparse
+import configparser
 import csv
 import gzip
 import hashlib
@@ -33,6 +34,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 import process_phase2_v3_p2_v1_2_top8_calibration as core
+import recover_phase2_v3_p2_v1_3_dual47_emref_top8 as selector_contract
 
 
 EXP_DIR = SCRIPT_DIR.parent
@@ -41,6 +43,7 @@ WORKSPACE_ROOT = DATA_ROOT.parent
 DOCKING_SCRIPTS = WORKSPACE_ROOT / "docking/scripts"
 
 PROTOCOL_ID = "DG_A_PVRIG_V1_3_DUAL_NATIVE_DEV"
+PROCESSOR_PENDING_STATUS = "BUILT_PENDING_DEVELOPMENT_RELEASE"
 SELECTOR_PROTOCOL_ID = "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
 SELECTOR_SCHEMA = "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v1"
 SELECTOR_AUDIT_SCHEMA = (
@@ -72,9 +75,6 @@ DEFAULT_SELECTOR_IMPLEMENTATION = (
 )
 DEFAULT_PREREGISTRATION = (
     EXP_DIR / "audits/phase2_v3_p2_v1_3_development_preregistration.json"
-)
-DEFAULT_RELEASE_MANIFEST = (
-    EXP_DIR / "audits/phase2_v3_p2_v1_3_development_release_manifest.json"
 )
 DEFAULT_POSITIVE_MANIFEST = (
     WORKSPACE_ROOT / "docking/calibration/patent_success_validation/batch_manifest.csv"
@@ -124,6 +124,7 @@ SELECTOR_REQUIRED_FIELDS = {
     "schema_version",
     "protocol_id",
     "source_protocol",
+    "source_protocol_id",
     "source_stage",
     "source_mode",
     "run_id",
@@ -138,6 +139,10 @@ SELECTOR_REQUIRED_FIELDS = {
     "teacher_manifest_row_sha256",
     "generation_receptor",
     "receptor_id",
+    "topoaa_iniseed",
+    "rigidbody_iniseed",
+    "rigidbody_seed_start",
+    "rigidbody_seed_end",
     "cdr1_range",
     "cdr2_range",
     "cdr3_range",
@@ -176,6 +181,15 @@ SELECTOR_REQUIRED_FIELDS = {
     "pose_pvrig_residue_identity_sha256",
     "completion_status",
     "completion_exit_code",
+    "source_final_stage_ignored",
+    "config_relpath",
+    "completion_relpath",
+    "monomer_relpath",
+    "receptor_relpath",
+    "restraint_relpath",
+    "hotspot_relpath",
+    "source_params_relpath",
+    "source_io_relpath",
     "config_sha256",
     "monomer_sha256",
     "receptor_sha256",
@@ -185,6 +199,12 @@ SELECTOR_REQUIRED_FIELDS = {
     "source_io_sha256",
     "run_manifest_sha256",
     "run_manifest_row_sha256",
+    "exact_reuse_manifest_relpath",
+    "exact_reuse_manifest_sha256",
+    "exact_reuse_manifest_row_sha256",
+    "source_old_run_manifest_relpath",
+    "source_old_run_manifest_sha256",
+    "source_old_run_manifest_row_sha256",
     "execution_release_manifest_relpath",
     "execution_release_manifest_sha256",
     "publication_release_id",
@@ -352,7 +372,6 @@ class BuildConfig:
     selector_audit: Path | None = DEFAULT_SELECTOR_AUDIT
     selector_implementation: Path = DEFAULT_SELECTOR_IMPLEMENTATION
     preregistration: Path = DEFAULT_PREREGISTRATION
-    release_manifest: Path = DEFAULT_RELEASE_MANIFEST
     positive_manifest: Path = DEFAULT_POSITIVE_MANIFEST
     mutant_manifest: Path = DEFAULT_MUTANT_MANIFEST
     aligner: Path = DEFAULT_ALIGNER
@@ -1539,7 +1558,7 @@ def flatten_metrics_row(
         "formal_eligible": False,
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
-        "primary_native_metric_eligible": True,
+        "primary_native_metric_eligible": False,
         "native_only": True,
         "run_id": selector_row["run_id"],
         "source_mode": selector_row["source_mode"],
@@ -1632,7 +1651,7 @@ def contact_record(
         "formal_eligible": False,
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
-        "primary_native_metric_eligible": True,
+        "primary_native_metric_eligible": False,
         "native_only": True,
         "claim_boundary": CLAIM_BOUNDARY,
         "run_id": selector_row["run_id"],
@@ -1712,7 +1731,7 @@ def process_selector_row(
         "formal_eligible": False,
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
-        "primary_native_metric_eligible": True,
+        "primary_native_metric_eligible": False,
         "native_only": True,
         "run_id": selector_row["run_id"],
         "source_mode": selector_row["source_mode"],
@@ -1797,89 +1816,6 @@ def validate_toolchain(config: BuildConfig) -> dict[str, dict[str, str]]:
         }
         for name, path in paths.items()
     }
-
-
-def current_release_component(
-    config: BuildConfig, selector_evidence: Mapping[str, Any]
-) -> dict[str, Any]:
-    selector_helper = resolve_workspace_path(
-        str(selector_evidence.get("selector_helper_relpath", "")),
-        config.workspace_root,
-    )
-    paths = {
-        "processor": Path(__file__).resolve(),
-        "processor_test": DEFAULT_PROCESSOR_TEST.resolve(),
-        "selector_implementation": config.selector_implementation.resolve(),
-        "selector_helper": selector_helper,
-        "selector_csv": config.selector_csv.resolve(),
-        "selector_audit": config.selector_audit.resolve() if config.selector_audit else None,
-        "preregistration": config.preregistration.resolve(),
-        "positive_manifest": config.positive_manifest.resolve(),
-        "mutant_manifest": config.mutant_manifest.resolve(),
-        "aligner": config.aligner.resolve(),
-        "pose_scorer": config.pose_scorer.resolve(),
-        "region_scorer": config.region_scorer.resolve(),
-        "scoring_helper": config.scoring_helper.resolve(),
-        "hotspots": config.hotspots.resolve(),
-        "reconciliation": config.reconciliation.resolve(),
-        **{
-            f"reference_{receptor.lower()}": path.resolve()
-            for receptor, path in config.references.items()
-        },
-    }
-    artifacts = {
-        name: {
-            "path": canonical_input_path(path, config.workspace_root),
-            "sha256": sha256_file(path),
-        }
-        for name, path in paths.items()
-        if path is not None
-    }
-    if artifacts["selector_implementation"]["sha256"] != selector_evidence.get(
-        "selector_implementation_sha256"
-    ):
-        raise ContractError("Selector evidence changed before release binding")
-    if artifacts["selector_helper"]["sha256"] != selector_evidence.get(
-        "selector_helper_sha256"
-    ):
-        raise ContractError("Selector helper changed before release binding")
-    return {
-        "schema_version": "pvrig_v1_3_native_processor_release_component_v1",
-        "protocol_id": PROTOCOL_ID,
-        "artifacts": artifacts,
-    }
-
-
-def validate_release_manifest(
-    path: Path, expected_component: Mapping[str, Any]
-) -> dict[str, Any]:
-    result: dict[str, Any] = {
-        "path": path.resolve().as_posix(),
-        "exists": path.is_file(),
-        "sha256": "",
-        "component_found": False,
-        "component_matches": False,
-        "validated": False,
-        "errors": [],
-    }
-    if not path.is_file():
-        result["errors"].append("development_release_manifest_missing")
-        return result
-    result["sha256"] = sha256_file(path)
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        result["errors"].append("development_release_manifest_invalid_json")
-        return result
-    component = payload.get("native_processor_release") if isinstance(payload, dict) else None
-    result["component_found"] = isinstance(component, dict)
-    result["component_matches"] = component == expected_component
-    result["validated"] = bool(result["component_found"] and result["component_matches"])
-    if not result["component_found"]:
-        result["errors"].append("native_processor_release_component_missing")
-    elif not result["component_matches"]:
-        result["errors"].append("native_processor_release_component_mismatch")
-    return result
 
 
 def verify_frozen_files(bindings: Mapping[str, str]) -> None:
@@ -2005,10 +1941,6 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
     cases = load_case_metadata(config)
     toolchain = validate_toolchain(config)
     selector_rows, selector_bindings, selector_evidence = verify_selector(config, cases)
-    expected_release_component = current_release_component(config, selector_evidence)
-    release_check = validate_release_manifest(
-        config.release_manifest.resolve(), expected_release_component
-    )
     required_inputs = {
         "preregistration": config.preregistration.resolve(),
         "positive_manifest": config.positive_manifest.resolve(),
@@ -2029,8 +1961,6 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
     }
     if config.selector_audit is not None:
         required_inputs["selector_audit"] = config.selector_audit.resolve()
-    if config.release_manifest.is_file():
-        required_inputs["release_manifest"] = config.release_manifest.resolve()
     file_bindings = dict(selector_bindings)
     for path in required_inputs.values():
         file_bindings[str(path)] = sha256_file(path)
@@ -2184,12 +2114,12 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         }
         audit: dict[str, Any] = {
             "schema_version": "pvrig_v1_3_native_top8_processing_audit_v1",
-            "status": "PASS_V1_3_NATIVE_TOP8_CONTINUOUS_METRICS_BUILT",
+            "status": PROCESSOR_PENDING_STATUS,
             "protocol_id": PROTOCOL_ID,
             "formal_eligible": False,
             "training_label_release_eligible": False,
             "docking_gold_release_eligible": False,
-            "primary_native_metric_eligible": True,
+            "primary_native_metric_eligible": False,
             "p2_training_ready": False,
             "native_only": True,
             "claim_boundary": CLAIM_BOUNDARY,
@@ -2200,7 +2130,11 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
             "dual_candidate_score_outputs_emitted": False,
             "preregistration_status": preregistration["status"],
             "selector_contract": selector_evidence,
-            "development_release_manifest_check": release_check,
+            "development_release_state": {
+                "status": "NOT_EVALUATED_BY_PROCESSOR_BUILDER",
+                "independent_qualification_required": True,
+                "validated": False,
+            },
             "expected_contract": config.contract.as_dict(),
             "observed_contract": {
                 "case_count": len(cases),
@@ -2256,11 +2190,6 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 "reconciliation": sha256_file(config.reconciliation.resolve()),
                 "processor": sha256_file(Path(__file__).resolve()),
                 "processor_test": sha256_file(DEFAULT_PROCESSOR_TEST.resolve()),
-                "development_release_manifest": (
-                    sha256_file(config.release_manifest.resolve())
-                    if config.release_manifest.is_file()
-                    else ""
-                ),
                 "frozen_file_binding_sha256": sha256_json(dict(sorted(file_bindings.items()))),
                 "frozen_file_binding_count": len(file_bindings),
                 **{
@@ -2269,7 +2198,6 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 },
             },
             "toolchain": toolchain,
-            "expected_release_component": expected_release_component,
             "output_sha256": output_hashes,
         }
         # Eligibility fields above are boundaries, not emitted training labels.
@@ -2286,7 +2214,6 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--selector-implementation", type=Path, default=DEFAULT_SELECTOR_IMPLEMENTATION
     )
     parser.add_argument("--preregistration", type=Path, default=DEFAULT_PREREGISTRATION)
-    parser.add_argument("--release-manifest", type=Path, default=DEFAULT_RELEASE_MANIFEST)
     parser.add_argument("--positive-manifest", type=Path, default=DEFAULT_POSITIVE_MANIFEST)
     parser.add_argument("--mutant-manifest", type=Path, default=DEFAULT_MUTANT_MANIFEST)
     parser.add_argument("--aligner", type=Path, default=DEFAULT_ALIGNER)
@@ -2310,7 +2237,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         selector_audit=args.selector_audit.resolve(),
         selector_implementation=args.selector_implementation.resolve(),
         preregistration=args.preregistration.resolve(),
-        release_manifest=args.release_manifest.resolve(),
         positive_manifest=args.positive_manifest.resolve(),
         mutant_manifest=args.mutant_manifest.resolve(),
         aligner=args.aligner.resolve(),

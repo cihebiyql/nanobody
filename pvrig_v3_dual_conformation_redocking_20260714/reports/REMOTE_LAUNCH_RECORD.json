@@ -1,28 +1,98 @@
 {
-  "first_success": {
-    "job_id": "CONTROL_CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151_8x6b_s917_f8fab9ee3ba5",
-    "native_cross_score_matrix_complete": true,
-    "pose_1_8x6b_cdr3_occlusion": 190,
-    "pose_1_8x6b_hotspot_overlap": 17,
-    "pose_1_8x6b_total_occlusion": 630,
-    "pose_1_9e6y_hotspot_overlap": 17,
-    "pose_1_9e6y_total_occlusion": 615,
-    "pose_1_haddock_score": -83.1801,
-    "selected_model_count": 10
+  "full_controller_pid": 4074688,
+  "full_queue_counts_at_record": {
+    "PENDING": 1046,
+    "SUCCESS": 4
   },
-  "full_queue_policy": "starts automatically only after all 4 smoke jobs pass SMOKE_VALIDATION",
-  "next_generation_guard": "LOCKED until EVALUATOR_STABLE.json status PASS with matching hashes",
-  "pipeline_pid": 4062901,
-  "protocol_lock_file_sha256": "a6740daabdc481a096cbc83ad17405f0a0b55bd8f7f412af63e23b9c5fe6a91e",
+  "job_manifest_sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
+  "next_generation_guard": "LOCKED until EVALUATOR_STABLE.json status PASS with matching production hashes",
+  "pipeline_pid": 4072777,
+  "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+  "protocol_lock_file_sha256": "0a68f2efee0af98711d17a740ca376a55942f55865d3a4afc168a7d91a78262b",
+  "protocol_lock_sha256": "f217f58f313794af932604a816f6c360e07bdcfc1a53b7ac4c2cae0a81ffeeed",
   "protocol_validation": "PASS",
-  "recorded_at": "2026-07-14T15:00:31+08:00",
+  "recorded_at": "2026-07-14T15:24:00+08:00",
   "remote_host": "node1",
   "remote_root": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714",
-  "smoke_controller_pid": 4062903,
   "smoke_counts": {
-    "PENDING": 2,
-    "RUNNING": 1,
-    "SUCCESS": 1
+    "SUCCESS": 4
   },
-  "stage": "SMOKE_RUNNING_LOAD_AWARE"
+  "smoke_metrics": {
+    "HR151_dock_8x6b_pose1": {
+      "haddock_score": -83.1801,
+      "score_8x6b": {
+        "cdr3_fraction": 0.301587,
+        "cdr3_occlusion": 190,
+        "holdout": 8,
+        "hotspot": 17,
+        "occlusion": 630
+      },
+      "score_9e6y": {
+        "cdr3_fraction": 0.292683,
+        "cdr3_occlusion": 180,
+        "holdout": 8,
+        "hotspot": 17,
+        "occlusion": 615
+      }
+    },
+    "HR151_dock_9e6y_pose1": {
+      "haddock_score": -64.9252,
+      "score_8x6b": {
+        "cdr3_fraction": 0.279146,
+        "cdr3_occlusion": 170,
+        "holdout": 10,
+        "hotspot": 20,
+        "occlusion": 609
+      },
+      "score_9e6y": {
+        "cdr3_fraction": 0.269815,
+        "cdr3_occlusion": 160,
+        "holdout": 10,
+        "hotspot": 20,
+        "occlusion": 593
+      }
+    },
+    "rank1_dock_8x6b_pose1": {
+      "haddock_score": -82.11595,
+      "score_8x6b": {
+        "cdr3_fraction": 0.156028,
+        "cdr3_occlusion": 88,
+        "holdout": 9,
+        "hotspot": 18,
+        "occlusion": 564
+      },
+      "score_9e6y": {
+        "cdr3_fraction": 0.153986,
+        "cdr3_occlusion": 85,
+        "holdout": 9,
+        "hotspot": 18,
+        "occlusion": 552
+      }
+    },
+    "rank1_dock_9e6y_pose1": {
+      "haddock_score": -69.2655,
+      "score_8x6b": {
+        "cdr3_fraction": 0.188976,
+        "cdr3_occlusion": 120,
+        "holdout": 8,
+        "hotspot": 18,
+        "occlusion": 635
+      },
+      "score_9e6y": {
+        "cdr3_fraction": 0.192616,
+        "cdr3_occlusion": 120,
+        "holdout": 8,
+        "hotspot": 18,
+        "occlusion": 623
+      }
+    }
+  },
+  "smoke_selected_models": {
+    "HR151_8x6b": 10,
+    "HR151_9e6y": 10,
+    "rank1_candidate_8x6b": 10,
+    "rank1_candidate_9e6y": 9
+  },
+  "smoke_status": "PASS",
+  "stage": "SMOKE_PASS_FULL_QUEUE_RUNNING_LOAD_AWARE"
 }

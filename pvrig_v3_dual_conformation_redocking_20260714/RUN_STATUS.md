@@ -1,8 +1,8 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-14 15:00 Asia/Shanghai`
-- 当前阶段：`DEPLOYED_SMOKE_RUNNING_LOAD_AWARE`
+- 更新时间：`2026-07-14 15:24 Asia/Shanghai`
+- 当前阶段：`SMOKE_PASS_FULL_QUEUE_RUNNING_LOAD_AWARE`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
 - 评价器稳定性：`NOT_READY`
@@ -13,8 +13,8 @@
 ## 冻结标识
 
 - `protocol_core_sha256`: `e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8`
-- `protocol_lock_sha256`: `0f2d5eeafdc75949f4e422a091248ba33ff33c984f993dbba955827c71eb7daa`
-- `PROTOCOL_LOCK.json` file SHA256: `a6740daabdc481a096cbc83ad17405f0a0b55bd8f7f412af63e23b9c5fe6a91e`
+- `protocol_lock_sha256`: `f217f58f313794af932604a816f6c360e07bdcfc1a53b7ac4c2cae0a81ffeeed`
+- `PROTOCOL_LOCK.json` file SHA256: `0a68f2efee0af98711d17a740ca376a55942f55865d3a4afc168a7d91a78262b`
 - `docking_jobs.tsv` SHA256: `e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e`
 - `candidates_128.tsv` SHA256: `5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78`
 - `candidate_monomers_manifest.tsv` SHA256: `db29dcb9047c7e0514a359077f380d53fedd0127c879a939ab8ebad812c5c0df`
@@ -31,19 +31,21 @@
 - [x] 本地与 node1 `validate_protocol.py` 均为 `PASS`；
 - [x] 部署文件与本地 `PROTOCOL_LOCK.json` 文件 hash 一致；
 - [x] node1 后台 `smoke -> verify -> full` 编排器已启动。
+- [x] 4/4 node1 smoke任务通过，`reports/SMOKE_VALIDATION.json` 为 `PASS`；
+- [x] 1050任务全量控制器已自动启动。
 
 ## node1 当前现场
 
-- 后台编排器 PID：`4062901`；smoke controller PID：`4062903`；
-- 启动时 load1 约 `65.2`，协议规定 `load1 >= 62` 时并发为0；
-- 当前 smoke 状态为 `1 SUCCESS / 1 RUNNING / 2 PENDING`；控制器只在 load 门禁允许时启动下一个任务；
-- 首个 HR-151 × 8X6B 任务已成功产生10个 selected models；代表 pose 的 HADDOCK score 为 `-83.1801`，8X6B/9E6Y 两参考评分均完整；
+- 后台编排器 PID：`4072777`；全量 controller PID：`4074688`；
+- smoke 结果：`4 SUCCESS / 0 FAIL`，selected models 数分别为 `10 / 10 / 10 / 9`；
+- smoke 已同时验证 HR-151 和 rank-1 候选的 8X6B、9E6Y 独立 HADDOCK run，以及每个 pose 的 native/cross 双参考评分；
+- 全量当前状态：`4 SUCCESS / 1046 PENDING`；记录时 load1 约 `65.8`，故并发门禁为0并等待节点降载；
 - load1 下降后，控制器会自动运行 smoke；只有4/4 均为 `SUCCESS`、selected model非空、job hash匹配且每个pose同时具有8X6B/9E6Y评分，才会写 `SMOKE_VALIDATION.json: PASS` 并自动进入全量1050任务。
 
 ## 尚未完成
 
-- [ ] 4/4 node1 smoke任务通过；
-- [ ] 自动进入1050任务全量队列；
+- [x] 4/4 node1 smoke任务通过；
+- [x] 自动进入1050任务全量队列；
 - [ ] 每个实体、每个构象至少2/3 seeds成功；
 - [ ] 47控制的漂移和阈值敏感性报告完成；
 - [ ] `reports/EVALUATOR_STABLE.json` 变为 `status=PASS`。

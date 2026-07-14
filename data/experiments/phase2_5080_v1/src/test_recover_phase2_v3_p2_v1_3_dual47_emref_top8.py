@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import copy
 import gzip
 import importlib.util
 import json
@@ -557,9 +558,21 @@ class V13Dual47RecoveryTests(unittest.TestCase):
             self.assertNotEqual(first[0]["source_pose_sha256"], first[0]["decompressed_coordinate_sha256"])
             self.assertEqual(first[0]["sequence_sha256"], MOD.sha256_bytes(b"CAND_001"))
             self.assertEqual(first[0]["teacher_manifest_sha256"], "a" * 64)
-            self.assertEqual(
+            self.assertNotEqual(
                 first[0]["monomer_atom_identity_sha256"],
                 first[0]["pose_vhh_atom_identity_sha256"],
+            )
+            self.assertEqual(
+                first[0]["monomer_residue_identity_sha256"],
+                first[0]["pose_vhh_residue_identity_sha256"],
+            )
+            self.assertEqual(first[0]["vhh_raw_atom_identity_exact"], "false")
+            self.assertEqual(first[0]["vhh_terminal_oxt_normalization_applied"], "true")
+            self.assertEqual(first[0]["vhh_normalized_atom_identity_exact"], "true")
+            self.assertEqual(first[0]["pvrig_raw_atom_identity_exact"], "true")
+            self.assertEqual(
+                first[0]["identity_normalization_amendment_sha256"],
+                MOD.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
             )
             self.assertEqual(
                 first[0]["receptor_residue_identity_sha256"],
@@ -672,7 +685,7 @@ class V13Dual47RecoveryTests(unittest.TestCase):
                         break
                 self.assertTrue(changed)
                 pose.write_text("\n".join(lines) + "\n", encoding="ascii")
-                with self.assertRaisesRegex(MOD.RecoveryError, f"chain {chain} ATOM identity mismatch"):
+                with self.assertRaisesRegex(MOD.RecoveryError, f"chain {chain} .*identity mismatch"):
                     fixture.build()
                 self.assertFalse(fixture.output.exists())
 
@@ -731,6 +744,62 @@ class V13Dual47RecoveryTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(MOD.RecoveryError, "outside frozen receptor-specific range"):
             MOD.validate_selected_pose_invariants(out_of_range, run)
+
+    def test_amendment_is_hard_bound_and_only_terminal_chain_a_oxt_is_normalized(self) -> None:
+        amendment = MOD.load_identity_normalization_amendment()
+        reference = MOD.atom_heavy_identity_signature(
+            monomer_pdb_bytes(), "A", Path("reference.pdb")
+        )
+        pose = MOD.atom_heavy_identity_signature(
+            pdb_bytes("A"), "A", Path("pose.pdb")
+        )
+        accepted = MOD.require_identity_match(
+            reference, pose, "positive chain A", "A", amendment
+        )
+        self.assertFalse(accepted["raw_atom_identity_exact"])
+        self.assertTrue(accepted["terminal_oxt_normalization_applied"])
+        self.assertTrue(accepted["normalized_atom_identity_exact"])
+
+        non_oxt = copy.deepcopy(reference)
+        non_oxt["atom_identities"].append(("1", "", "ALA", "CB", "", "C"))
+        with self.assertRaisesRegex(MOD.RecoveryError, "non-OXT ATOM identity mismatch"):
+            MOD.require_identity_match(non_oxt, pose, "non-OXT", "A", amendment)
+
+        non_terminal = copy.deepcopy(reference)
+        bad_oxt = ("0", "", "GLY", "OXT", "", "O")
+        non_terminal["atom_identities"].append(bad_oxt)
+        non_terminal["non_terminal_oxt_identities"] = [bad_oxt]
+        with self.assertRaisesRegex(MOD.RecoveryError, "forbidden non-terminal OXT"):
+            MOD.require_identity_match(non_terminal, pose, "non-terminal", "A", amendment)
+
+        multiple_oxt = copy.deepcopy(reference)
+        alternate_oxt = ("1", "", "ALA", "OXT", "A", "O")
+        multiple_oxt["atom_identities"].append(alternate_oxt)
+        multiple_oxt["terminal_oxt_identities"].append(alternate_oxt)
+        with self.assertRaisesRegex(MOD.RecoveryError, "exceeds terminal-OXT-only"):
+            MOD.require_identity_match(multiple_oxt, pose, "multiple OXT", "A", amendment)
+
+        reordered_terminal = copy.deepcopy(pose)
+        reordered_terminal["terminal_residue"] = ("999", "", "ALA")
+        with self.assertRaisesRegex(MOD.RecoveryError, "terminal residue identity mismatch"):
+            MOD.require_identity_match(reference, reordered_terminal, "terminal", "A", amendment)
+
+        receptor = MOD.atom_heavy_identity_signature(pdb_bytes("B"), "B", Path("receptor.pdb"))
+        receptor_pose = copy.deepcopy(receptor)
+        receptor_oxt = ("1", "", "ALA", "OXT", "", "O")
+        receptor_pose["atom_identities"].append(receptor_oxt)
+        with self.assertRaisesRegex(MOD.RecoveryError, "chain B raw ATOM identity mismatch"):
+            MOD.require_identity_match(receptor, receptor_pose, "receptor", "B", amendment)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            tampered = Path(temporary) / "amendment.json"
+            payload = json.loads(
+                MOD.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.read_text(encoding="utf-8")
+            )
+            payload["normalization_rule"]["allowed_atom_name"] = "O"
+            tampered.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(MOD.RecoveryError, "amendment hash mismatch"):
+                MOD.load_identity_normalization_amendment(tampered)
 
     def test_versioned_publication_pointer_failure_rolls_back_everything(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

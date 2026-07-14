@@ -33,7 +33,9 @@ METHOD_ID = "PVRIG_V1_3_NATIVE_DUAL_RECEPTOR_CALIBRATION_V1"
 SCHEMA_VERSION = "pvrig_v1_3_native_dual_receptor_calibration_v1"
 METRICS_SCHEMA_VERSION = "pvrig_v1_3_native_top8_continuous_metrics_v1"
 PROCESSOR_AUDIT_SCHEMA_VERSION = "pvrig_v1_3_native_top8_processing_audit_v1"
-PROCESSOR_PASS_STATUS = "PASS_V1_3_NATIVE_TOP8_CONTINUOUS_METRICS_BUILT"
+PROCESSOR_PENDING_STATUS = "BUILT_PENDING_DEVELOPMENT_RELEASE"
+PROCESSOR_QUALIFICATION_SCHEMA = "pvrig_v1_3_native_processor_qualification_v1"
+PROCESSOR_QUALIFICATION_STATUS = "QUALIFIED_NATIVE_PROCESSOR_INPUT"
 PREREG_SCHEMA_VERSION = (
     "phase2_v3_p2_docking_gold_v1_3_development_preregistration_v1"
 )
@@ -95,6 +97,12 @@ DEFAULT_METRICS_CSV = (
 )
 DEFAULT_PROCESSOR_AUDIT = (
     DEFAULT_PROCESSING_DIR / "pvrig_v1_3_native_top8_processing_audit.json"
+)
+DEFAULT_PROCESSOR_QUALIFICATION = (
+    WORKSPACE_ROOT
+    / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
+    "docking_gold_v1_3_native_processor_qualification/current/"
+    "pvrig_v1_3_native_processor_qualification.json"
 )
 DEFAULT_SELECTOR_DIR = (
     WORKSPACE_ROOT
@@ -193,6 +201,7 @@ class CalibrationContract:
 class CalibrationConfig:
     metrics_csv: Path
     processor_audit: Path
+    processor_qualification: Path
     selector_csv: Path
     selector_audit: Path
     execution_release: Path
@@ -1115,8 +1124,10 @@ def validate_metrics_rows(
             )
         ):
             raise CalibrationError("Release-eligible processor input is forbidden")
-        if not parse_bool(row.get("primary_native_metric_eligible"), "primary_native_metric_eligible"):
-            raise CalibrationError("Non-primary metric row entered native calibration")
+        if parse_bool(row.get("primary_native_metric_eligible"), "primary_native_metric_eligible"):
+            raise CalibrationError(
+                "Pending processor rows must not self-authorize primary calibration input"
+            )
         if not parse_bool(row.get("native_only"), "native_only"):
             raise CalibrationError("Processor metric row is not native_only=true")
         if row.get("metrics_row_sha256") != row_sha256(row, "metrics_row_sha256"):
@@ -1222,12 +1233,12 @@ def validate_processor_audit(
     payload = json.loads(path.read_text(encoding="utf-8"))
     expected = {
         "schema_version": PROCESSOR_AUDIT_SCHEMA_VERSION,
-        "status": PROCESSOR_PASS_STATUS,
+        "status": PROCESSOR_PENDING_STATUS,
         "protocol_id": PROTOCOL_ID,
         "formal_eligible": False,
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
-        "primary_native_metric_eligible": True,
+        "primary_native_metric_eligible": False,
         "native_only": True,
         "thresholds_applied": False,
         "discrete_geometry_outputs_emitted": False,

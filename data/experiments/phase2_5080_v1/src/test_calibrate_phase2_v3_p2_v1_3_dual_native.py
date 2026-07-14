@@ -177,7 +177,7 @@ class V13SyntheticFixture:
                         "formal_eligible": "false",
                         "training_label_release_eligible": "false",
                         "docking_gold_release_eligible": "false",
-                        "primary_native_metric_eligible": "true",
+                        "primary_native_metric_eligible": "false",
                         "native_only": "true",
                         "candidate_id": case_id,
                         "family": family_by_case[case_id],
@@ -215,12 +215,12 @@ class V13SyntheticFixture:
     def _build_processor_audit(self) -> None:
         payload = {
             "schema_version": calibration.PROCESSOR_AUDIT_SCHEMA_VERSION,
-            "status": calibration.PROCESSOR_PASS_STATUS,
+            "status": calibration.PROCESSOR_PENDING_STATUS,
             "protocol_id": calibration.PROTOCOL_ID,
             "formal_eligible": False,
             "training_label_release_eligible": False,
             "docking_gold_release_eligible": False,
-            "primary_native_metric_eligible": True,
+            "primary_native_metric_eligible": False,
             "native_only": True,
             "thresholds_applied": False,
             "discrete_geometry_outputs_emitted": False,
