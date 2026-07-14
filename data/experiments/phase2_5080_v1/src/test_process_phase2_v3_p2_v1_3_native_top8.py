@@ -942,7 +942,7 @@ class V13NativeTop8Tests(unittest.TestCase):
             fixture.source_poses[0].write_bytes(b"drift")
             with self.assertRaises(MOD.ContractError):
                 MOD.build_package(config)
-            self.assertFalse(config.outdir.exists())
+            self.assertFalse((config.outdir / "current").exists())
 
         with tempfile.TemporaryDirectory() as temporary:
             fixture = NativeFixture(Path(temporary))
@@ -954,7 +954,7 @@ class V13NativeTop8Tests(unittest.TestCase):
             )
             with self.assertRaises(MOD.ContractError):
                 MOD.build_package(config)
-            self.assertFalse(config.outdir.exists())
+            self.assertFalse((config.outdir / "current").exists())
 
         regions = {
             region: {

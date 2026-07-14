@@ -3429,7 +3429,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--positive-manifest", type=Path, default=DEFAULT_POSITIVE_MANIFEST)
     parser.add_argument("--mutant-manifest", type=Path, default=DEFAULT_MUTANT_MANIFEST)
     parser.add_argument("--outdir", type=Path, default=DEFAULT_OUTDIR)
-    parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
+    parser.add_argument("--report", type=Path, default=None)
     parser.add_argument("--bootstrap-seed", type=int, default=BOOTSTRAP_SEED)
     parser.add_argument("--bootstrap-replicates", type=int, default=BOOTSTRAP_REPLICATES)
     return parser.parse_args(argv)
@@ -3455,7 +3455,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         positive_manifest=args.positive_manifest.resolve(),
         mutant_manifest=args.mutant_manifest.resolve(),
         outdir=args.outdir.resolve(),
-        report=args.report.resolve(),
+        report=(
+            args.report.resolve()
+            if args.report is not None
+            else (args.outdir.resolve() / "current" / REPORT_NAME)
+        ),
         bootstrap_seed=args.bootstrap_seed,
         bootstrap_replicates=args.bootstrap_replicates,
     )
