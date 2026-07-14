@@ -54,9 +54,9 @@
 ## 可复核产物
 
 - Audit：`data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_identity_difference_audit.json`
-- Audit SHA256：`57058e8a0fab81380372b0c4e19967b47cff5d8c5f0d9c411ed3e9acaa2c1545`
+- Audit SHA256：`e3303741f42abc1df0fe6dff33b42f6ae92089584d41cbd3d0f934eb251425a2`
 - 审计脚本：`data/experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_identity_differences.py`
-- 审计脚本 SHA256：`f2a2c487bb1b9dffe5bb363beaaa8fd862625cc7b2fe088ab6b8167453464f07`
+- 审计脚本 SHA256：`ac611549837bc3c35bad72620baede4aad4579416c7423cab1ac6f3ba5dd9cfd`
 - Exact-reuse64 remote inventory chain：`7944c79dda27401b6e637d6d9611578a3b862b693a8f76e7018f7ff8bc8cf285`
 - Boundary4 remote inventory chain：`580590a1d55f6f684ecb732dcd3112250d921a016864f146040ee0334d0a1819`
 

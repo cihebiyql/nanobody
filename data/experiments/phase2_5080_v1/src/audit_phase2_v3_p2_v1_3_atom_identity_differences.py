@@ -9,13 +9,12 @@ presence while preserving every residue and every other heavy-atom identity.
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import os
 import tempfile
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 try:
     from experiments.phase2_5080_v1.src import (
@@ -33,12 +32,6 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 EXP_DIR = SCRIPT_DIR.parent
 DATA_ROOT = EXP_DIR.parents[1]
 WORKSPACE_ROOT = DATA_ROOT.parent
-DEFAULT_OLD_SELECTORS = (
-    EXP_DIR
-    / "runs/pvrig_v3_p2/pilot64_v1_2_emref_recovery_smoke8/v1_2_smoke8_emref_top8_selector.csv",
-    EXP_DIR
-    / "runs/pvrig_v3_p2/pilot64_v1_2_emref_recovery_failed52/v1_2_failed52_emref_top8_selector.csv",
-)
 DEFAULT_AUDIT = EXP_DIR / "audits/phase2_v3_p2_v1_3_atom_identity_difference_audit.json"
 DEFAULT_REPORT = EXP_DIR / "reports/PVRIG_V3_P2_DOCKING_GOLD_V1_3_ATOM_IDENTITY_NORMALIZATION_AMENDMENT_PROPOSAL_ZH.md"
 AUDIT_STATUS_PASS = "PASS_V1_3_ATOM_IDENTITY_TERMINAL_OXT_ONLY_SUPPORTED"
@@ -179,10 +172,6 @@ def compare_identity(
     }
 
 
-def workspace_path(relpath: str) -> Path:
-    return selector.contained_path(WORKSPACE_ROOT, relpath, "workspace artifact")
-
-
 def compare_pose(
     *,
     cohort: str,
@@ -247,56 +236,6 @@ def compare_pose(
         "v1_3_reuse_overlap": v1_3_reuse_overlap,
         "chains": chains,
     }
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open(newline="", encoding="utf-8") as handle:
-        return list(csv.DictReader(handle))
-
-
-def audit_old_selectors(
-    selector_paths: Sequence[Path], v1_3_reuse_run_ids: set[str]
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    poses: list[dict[str, Any]] = []
-    inputs = []
-    seen_keys: set[tuple[str, int]] = set()
-    for selector_path in selector_paths:
-        selector_path = selector_path.resolve()
-        rows = read_csv(selector_path)
-        root = selector_path.parent
-        inputs.append({
-            "relpath": selector.workspace_relative(selector_path, WORKSPACE_ROOT),
-            "sha256": sha256_file(selector_path),
-            "rows": len(rows),
-        })
-        for row in rows:
-            key = (row["run_id"], int(row["canonical_rank"]))
-            if key in seen_keys:
-                raise IdentityAuditError(f"Duplicate old selector pose key: {key}")
-            seen_keys.add(key)
-            if selector.row_sha256(row, "selection_row_sha256") != row["selection_row_sha256"]:
-                raise IdentityAuditError(f"Old selector row hash mismatch: {key}")
-            pose_path = workspace_path(row["source_pose_relpath"])
-            monomer_path = selector.contained_path(root, row["monomer_relpath"], "old monomer")
-            receptor_path = selector.contained_path(root, row["receptor_relpath"], "old receptor")
-            poses.append(compare_pose(
-                cohort=f"old_{row['selection_cohort']}",
-                run_id=row["run_id"],
-                source_run_id=row["run_id"],
-                candidate_id=row["candidate_id"],
-                receptor_id=row["receptor_id"],
-                rank=int(row["canonical_rank"]),
-                source_output_index=int(row["source_output_index"]),
-                source_score=row["source_score"],
-                source_seed=int(row["source_seed"]),
-                pose_path=pose_path,
-                monomer_path=monomer_path,
-                receptor_path=receptor_path,
-                pose_source_sha256=row["source_pose_sha256"],
-                pose_coordinate_sha256=row["decompressed_coordinate_sha256"],
-                v1_3_reuse_overlap=row["run_id"] in v1_3_reuse_run_ids,
-            ))
-    return poses, inputs
 
 
 def audit_remote_runs(

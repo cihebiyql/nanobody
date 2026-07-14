@@ -235,6 +235,12 @@ def row_hash_chain(rows: Sequence[Mapping[str, Any]], hash_field: str) -> str:
     return sha256_json([str(row[hash_field]) for row in rows])
 
 
+def newline_hash_chain(rows: Sequence[Mapping[str, Any]], hash_field: str) -> str:
+    return sha256_bytes(
+        "\n".join(str(row[hash_field]) for row in rows).encode("ascii")
+    )
+
+
 def canonical_path(path: Path) -> str:
     resolved = path.resolve()
     try:
@@ -1186,7 +1192,12 @@ def validate_metrics_rows(
 
 
 def validate_processor_audit(
-    path: Path, metrics_csv: Path, rows: Sequence[Mapping[str, str]]
+    path: Path,
+    metrics_csv: Path,
+    rows: Sequence[Mapping[str, str]],
+    config: CalibrationConfig,
+    selector_evidence: Mapping[str, Any],
+    preregistration: Mapping[str, Any],
 ) -> dict[str, Any]:
     if not path.is_file():
         raise CalibrationError(f"Processor audit is missing: {path}")
@@ -1199,6 +1210,13 @@ def validate_processor_audit(
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
         "primary_native_metric_eligible": True,
+        "native_only": True,
+        "thresholds_applied": False,
+        "discrete_geometry_outputs_emitted": False,
+        "cross_reference_rows_emitted": False,
+        "cross_receptor_rank_pairing_performed": False,
+        "dual_candidate_score_outputs_emitted": False,
+        "p2_training_ready": False,
     }
     failures = [field for field, value in expected.items() if payload.get(field) != value]
     observed = payload.get("observed_contract", {})
@@ -1218,11 +1236,59 @@ def validate_processor_audit(
     expected_metric = {
         "sha256": sha256_file(metrics_csv),
         "rows": len(rows),
-        "row_hash_chain": row_hash_chain(rows, "metrics_row_sha256"),
+        "row_hash_chain": newline_hash_chain(rows, "metrics_row_sha256"),
     }
     for field, value in expected_metric.items():
         if not isinstance(metric_binding, dict) or metric_binding.get(field) != value:
             failures.append(f"continuous_metrics.{field}")
+    selector = payload.get("selector_contract", {})
+    selector_expected = {
+        "selector_csv_sha256": selector_evidence["selector_csv"]["sha256"],
+        "publication_release_id": selector_evidence["publication_release_id"],
+        "selector_audit_validated": True,
+        "selection_row_hash_chain": selector_evidence["selector_csv"]["row_hash_chain"],
+    }
+    for field, value in selector_expected.items():
+        if not isinstance(selector, dict) or selector.get(field) != value:
+            failures.append(f"selector_contract.{field}")
+    native_contract = payload.get("native_processing_contract", {})
+    for field in (
+        "raw_native_H_scored_once_per_pose", "native_PVRL2_reference_only",
+        "9E6Y_direct_native_numbering", "canonical_hotspot_reconciliation_validated",
+        "reference_PVRL2_protein_ATOM_only", "all_reference_HETATM_excluded",
+    ):
+        if not isinstance(native_contract, dict) or native_contract.get(field) is not True:
+            failures.append(f"native_processing_contract.{field}")
+    if not isinstance(native_contract, dict) or native_contract.get(
+        "rank_pairing_across_receptors"
+    ) is not False:
+        failures.append("native_processing_contract.rank_pairing_across_receptors")
+    input_hashes = payload.get("input_sha256", {})
+    expected_inputs = {
+        "selector_csv": selector_evidence["selector_csv"]["sha256"],
+        "selector_audit": selector_evidence["selector_audit"]["sha256"],
+        "preregistration": preregistration["sha256"],
+        "positive_manifest": POSITIVE_MANIFEST_SHA256,
+        "mutant_manifest": MUTANT_MANIFEST_SHA256,
+        "reference_8x6b": REFERENCE_SHA256["8X6B"],
+        "reference_9e6y": REFERENCE_SHA256["9E6Y"],
+    }
+    for field, value in expected_inputs.items():
+        if not isinstance(input_hashes, dict) or input_hashes.get(field) != value:
+            failures.append(f"input_sha256.{field}")
+    expected_contract = payload.get("expected_contract", {})
+    if not isinstance(expected_contract, dict) or any(
+        expected_contract.get(field) != value
+        for field, value in {
+            "positive_cases": 11, "mutant_cases": 36, "case_count": 47,
+            "run_count": 94, "pose_count": 752, "poses_per_run": 8,
+        }.items()
+    ):
+        failures.append("expected_contract")
+    release_check = payload.get("development_release_manifest_check", {})
+    if isinstance(release_check, dict) and release_check.get("exists") is True:
+        if release_check.get("validated") is not True:
+            failures.append("development_release_manifest_check")
     if failures:
         raise CalibrationError(f"Processor audit closure failed: {sorted(failures)}")
     return {
@@ -1230,6 +1296,9 @@ def validate_processor_audit(
         "sha256": sha256_file(path),
         "schema_version": payload["schema_version"],
         "status": payload["status"],
+        "native_only": True,
+        "selector_publication_release_id": selector_evidence["publication_release_id"],
+        "metric_row_hash_chain": expected_metric["row_hash_chain"],
         "validated": True,
     }
 
@@ -2238,7 +2307,8 @@ def summarize_bootstrap(
 MUTANT_DELTA_FIELDS = (
     "schema_version", "protocol_id", "method_id", "candidate_id", "family",
     "base_molecule", "exact_base_candidate_id", "control_type", "mutation_class",
-    "mutations_1based", "delta_R8", "delta_R9", "delta_R_dual_dev",
+    "mutations_1based", "candidate_sequence_sha256", "base_sequence_sha256",
+    "mutation_semantics_validated", "delta_R8", "delta_R9", "delta_R_dual_dev",
     "delta_native_class_8", "delta_native_class_9", "delta_dual_tier",
     "candidate_native_class_8", "base_native_class_8",
     "candidate_native_class_9", "base_native_class_9",
@@ -2252,6 +2322,7 @@ def build_mutant_delta_rows(
     dual_rows: Sequence[Mapping[str, str]],
     mutant_cases: Mapping[str, Mapping[str, str]],
     base_by_molecule: Mapping[str, str],
+    frozen_cases: Mapping[str, Mapping[str, str]],
 ) -> list[dict[str, str]]:
     by_case = {row["candidate_id"]: row for row in dual_rows}
     if not set(mutant_cases) <= set(by_case):
@@ -2267,6 +2338,21 @@ def build_mutant_delta_rows(
         base = by_case[base_id]
         if candidate["family"] != base["family"]:
             raise CalibrationError(f"Exact-base family mismatch for {case_id}")
+        candidate_case = frozen_cases.get(case_id)
+        base_case = frozen_cases.get(base_id)
+        if candidate_case is None or base_case is None:
+            raise CalibrationError(f"Frozen sequence evidence missing for {case_id}")
+        expected_sequence = apply_declared_mutations(
+            base_case["sequence"], item["mutations_1based"]
+        )
+        if (
+            expected_sequence != candidate_case["sequence"]
+            or sha256_bytes(candidate_case["sequence"].encode("ascii"))
+            != candidate_case["sequence_sha256"]
+            or sha256_bytes(base_case["sequence"].encode("ascii"))
+            != base_case["sequence_sha256"]
+        ):
+            raise CalibrationError(f"Exact-base mutation sequence closure failed: {case_id}")
         record = {
             "schema_version": SCHEMA_VERSION,
             "protocol_id": PROTOCOL_ID,
@@ -2278,6 +2364,9 @@ def build_mutant_delta_rows(
             "control_type": item["control_type"],
             "mutation_class": item["mutation_class"],
             "mutations_1based": item["mutations_1based"],
+            "candidate_sequence_sha256": candidate_case["sequence_sha256"],
+            "base_sequence_sha256": base_case["sequence_sha256"],
+            "mutation_semantics_validated": True,
             "delta_R8": float(candidate["R_8X6B"]) - float(base["R_8X6B"]),
             "delta_R9": float(candidate["R_9E6Y"]) - float(base["R_9E6Y"]),
             "delta_R_dual_dev": float(candidate["R_dual_dev"]) - float(base["R_dual_dev"]),
@@ -2333,6 +2422,7 @@ def build_robustness_rows(
     positive_cases: Mapping[str, Mapping[str, str]],
     mutant_cases: Mapping[str, Mapping[str, str]],
     base_by_molecule: Mapping[str, str],
+    frozen_cases: Mapping[str, Mapping[str, str]],
     ranks_per_run: int,
 ) -> list[dict[str, str]]:
     output: list[dict[str, str]] = []
@@ -2371,7 +2461,7 @@ def build_robustness_rows(
                             min_supporting_poses=minimum_poses,
                         )
                         deltas = build_mutant_delta_rows(
-                            dual, mutant_cases, base_by_molecule
+                            dual, mutant_cases, base_by_molecule, frozen_cases
                         )
                         positive_tiers = Counter(
                             row["dual_tier"]
@@ -2494,7 +2584,14 @@ def build_acceptance_summary(
         "frozen_upstream": {
             "passed": (
                 input_bindings["preregistration"].get("validated") is True
+                and input_bindings["execution_release"].get("validated") is True
+                and input_bindings["selector_publication"].get(
+                    "immutable_publication_validated"
+                ) is True
                 and input_bindings["processor_audit"].get("validated") is True
+                and input_bindings["fixed_case_semantics"].get(
+                    "mutation_semantics_validated"
+                ) is True
             )
         },
         "cohort_closure": {
@@ -2512,7 +2609,10 @@ def build_acceptance_summary(
         },
         "protocol_hash_closure": {
             "passed": bool(input_bindings["continuous_metrics"].get("sha256"))
-            and bool(input_bindings["processor_audit"].get("sha256")),
+            and bool(input_bindings["processor_audit"].get("sha256"))
+            and input_bindings["frozen_manifests"].get("run_count") == 94
+            and input_bindings["frozen_manifests"].get("protocol_count") == 2
+            and input_bindings["execution_release"].get("artifact_count", 0) >= 30,
         },
         "ATOM_only": {
             "passed": observed_contract.get("atom_only_reference_inventory_gate_passed") is True
@@ -2546,11 +2646,21 @@ def build_acceptance_summary(
         "mutant_sensitivity": {
             "passed": len(mutant_rows) == 29
             and all(row["binary_negative_label_assigned"] == "false" for row in mutant_rows)
-            and all(row["direction_preserved"] == "true" for row in mutant_rows),
+            and all(row["direction_preserved"] == "true" for row in mutant_rows)
+            and all(row["mutation_semantics_validated"] == "true" for row in mutant_rows),
+            "sequence_hashes_and_mutation_semantics": all(
+                row["mutation_semantics_validated"] == "true"
+                and re.fullmatch(r"[0-9a-f]{64}", row["candidate_sequence_sha256"])
+                and re.fullmatch(r"[0-9a-f]{64}", row["base_sequence_sha256"])
+                for row in mutant_rows
+            ),
         },
         "diagnostic_isolation": {
             "passed": observed_contract.get("native_rank_pairing_across_receptors") is False
-            and all(row["cross_reference_used"] == "false" for row in pose_rows)
+            and observed_contract.get("native_only_validated") is True
+            and observed_contract.get(
+                "generation_native_receptor_identity_validated"
+            ) is True
             and all(row["cross_receptor_rank_pairing"] == "false" for row in run_rows)
             and all(row["cross_receptor_rank_pairing"] == "false" for row in dual_rows),
         },
@@ -2579,11 +2689,10 @@ def build_acceptance_summary(
         "required_gate_order": list(required),
         "gates": gates,
         "development_method_passed": passed,
-        "status": (
-            "PASS_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD"
-            if passed
-            else "FAIL_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD_NOT_FROZEN"
-        ),
+        "computed_gate_outcome": "COMPUTED_GATES_SATISFIED" if passed else "COMPUTED_GATES_NOT_SATISFIED",
+        "status": CALCULATED_STATUS,
+        "external_release_validation_required": True,
+        "development_smoke_eligible": False,
         "pass_does_not_override_formal_veto": True,
         "formal_eligible": False,
         "docking_gold_release_eligible": False,
@@ -2668,62 +2777,124 @@ def render_report(
     return "\n".join(lines)
 
 
-def publish_outputs_transaction(
-    staging_dir: Path,
-    destination_dir: Path,
-    staging_report: Path,
-    destination_report: Path,
-) -> None:
-    destination_dir.parent.mkdir(parents=True, exist_ok=True)
-    destination_report.parent.mkdir(parents=True, exist_ok=True)
-    backup_dir = destination_dir.with_name(f".{destination_dir.name}.previous")
-    backup_report = destination_report.with_name(f".{destination_report.name}.previous")
-    if backup_dir.exists() or backup_report.exists():
-        raise CalibrationError("Stale publication backup exists")
-    had_dir = destination_dir.exists()
-    had_report = destination_report.exists()
+def directory_inventory(root: Path) -> dict[str, Any]:
+    files = [
+        {
+            "relpath": path.relative_to(root).as_posix(),
+            "sha256": sha256_file(path),
+            "bytes": path.stat().st_size,
+        }
+        for path in sorted(item for item in root.rglob("*") if item.is_file())
+    ]
+    return {
+        "file_count": len(files),
+        "total_bytes": sum(item["bytes"] for item in files),
+        "file_hash_chain": sha256_bytes(
+            "\n".join(canonical_json(item) for item in files).encode("utf-8")
+        ),
+        "files": files,
+    }
+
+
+def promote_current_symlink(release_dir: Path, current_link: Path) -> None:
+    current_link.parent.mkdir(parents=True, exist_ok=True)
+    if current_link.exists() and not current_link.is_symlink():
+        raise CalibrationError(f"Current publication pointer is not a symlink: {current_link}")
+    temporary = current_link.with_name(f".{current_link.name}.{os.getpid()}.tmp")
+    temporary.unlink(missing_ok=True)
+    os.symlink(os.path.relpath(release_dir, current_link.parent), temporary, target_is_directory=True)
     try:
-        if had_dir:
-            os.replace(destination_dir, backup_dir)
-        if had_report:
-            os.replace(destination_report, backup_report)
-        os.replace(staging_dir, destination_dir)
-        os.replace(staging_report, destination_report)
+        os.replace(temporary, current_link)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def promote_versioned_release(
+    staging: Path,
+    release_dir: Path,
+    current_link: Path,
+    pointer_promoter: PointerPromoter,
+) -> None:
+    release_dir.parent.mkdir(parents=True, exist_ok=True)
+    if current_link.exists() and not current_link.is_symlink():
+        raise CalibrationError(f"Current publication pointer is not a symlink: {current_link}")
+    previous_release = current_link.resolve() if current_link.is_symlink() else None
+    created = False
+    if release_dir.exists():
+        if directory_inventory(staging) != directory_inventory(release_dir):
+            raise CalibrationError(f"Immutable calibration release collision: {release_dir.name}")
+        shutil.rmtree(staging)
+    else:
+        os.replace(staging, release_dir)
+        created = True
+    try:
+        pointer_promoter(release_dir, current_link)
+        if not current_link.is_symlink() or current_link.resolve() != release_dir.resolve():
+            raise CalibrationError("Atomic calibration current-pointer verification failed")
     except Exception:
-        if destination_dir.exists():
-            shutil.rmtree(destination_dir)
-        if destination_report.exists():
-            destination_report.unlink()
-        if had_dir and backup_dir.exists():
-            os.replace(backup_dir, destination_dir)
-        if had_report and backup_report.exists():
-            os.replace(backup_report, destination_report)
+        if previous_release is not None:
+            promote_current_symlink(previous_release, current_link)
+        else:
+            current_link.unlink(missing_ok=True)
+        if created and release_dir.exists():
+            shutil.rmtree(release_dir)
         raise
-    if backup_dir.exists():
-        shutil.rmtree(backup_dir)
-    if backup_report.exists():
-        backup_report.unlink()
 
 
 def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
     preregistration = validate_preregistration(config.preregistration)
-    metric_fields, metric_rows = read_csv_strict(config.metrics_csv)
+    execution_release, execution_ledger = validate_execution_release(
+        config.execution_release
+    )
+    frozen_cases, frozen_runs, protocols, frozen_manifest_evidence = (
+        validate_frozen_manifests(config, execution_ledger)
+    )
     positive_cases = load_positive_manifest(config.positive_manifest)
     mutant_cases, base_by_molecule = load_mutant_manifest(config.mutant_manifest)
+    case_semantics = validate_fixed_case_semantics(
+        config,
+        frozen_cases,
+        positive_cases,
+        mutant_cases,
+        base_by_molecule,
+    )
+    selector_by_key, selector_evidence = validate_selector_publication(
+        config.selector_csv,
+        config.selector_audit,
+        frozen_cases,
+        frozen_runs,
+        protocols,
+    )
+    metric_fields, metric_rows = read_csv_strict(config.metrics_csv)
     observed_contract = validate_metrics_rows(
-        metric_fields, metric_rows, positive_cases, mutant_cases, config.contract
+        metric_fields,
+        metric_rows,
+        positive_cases,
+        mutant_cases,
+        config.contract,
+        selector_by_key,
+        config.references,
     )
     processor_audit = validate_processor_audit(
-        config.processor_audit, config.metrics_csv, metric_rows
+        config.processor_audit,
+        config.metrics_csv,
+        metric_rows,
+        config,
+        selector_evidence,
+        preregistration,
     )
     input_bindings = {
         "preregistration": preregistration,
+        "execution_release": execution_release,
+        "frozen_manifests": frozen_manifest_evidence,
+        "fixed_case_semantics": case_semantics,
+        "selector_publication": selector_evidence,
         "processor_audit": processor_audit,
         "continuous_metrics": {
             "relpath": canonical_path(config.metrics_csv),
             "sha256": sha256_file(config.metrics_csv),
             "rows": len(metric_rows),
-            "row_hash_chain": row_hash_chain(metric_rows, "metrics_row_sha256"),
+            "row_hash_chain": newline_hash_chain(metric_rows, "metrics_row_sha256"),
         },
         "positive_manifest": {
             "relpath": canonical_path(config.positive_manifest),
@@ -2762,12 +2933,15 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         positive_cases,
         config.bootstrap_replicates,
     )
-    mutant_rows = build_mutant_delta_rows(dual_rows, mutant_cases, base_by_molecule)
+    mutant_rows = build_mutant_delta_rows(
+        dual_rows, mutant_cases, base_by_molecule, frozen_cases
+    )
     robustness_rows = build_robustness_rows(
         metric_rows,
         positive_cases,
         mutant_cases,
         base_by_molecule,
+        frozen_cases,
         config.contract.ranks_per_run,
     )
     acceptance = build_acceptance_summary(
