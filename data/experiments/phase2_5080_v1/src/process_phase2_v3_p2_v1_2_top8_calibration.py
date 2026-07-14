@@ -1216,8 +1216,8 @@ def remap_pose_receptor_numbering(
 
 def run_command(command: Sequence[str], *, cwd: Path, label: str) -> str:
     environment = os.environ.copy()
-    environment.setdefault("OPENBLAS_NUM_THREADS", "1")
-    environment.setdefault("OMP_NUM_THREADS", "1")
+    environment["OPENBLAS_NUM_THREADS"] = "1"
+    environment["OMP_NUM_THREADS"] = "1"
     completed = subprocess.run(
         list(map(str, command)),
         cwd=cwd,
@@ -1918,11 +1918,17 @@ def hash_chain(rows: Iterable[Mapping[str, str]], field_name: str) -> str:
 
 def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -> None:
     outdir.mkdir(parents=True, exist_ok=True)
+    published_audit = outdir / AUDIT_NAME
+    if published_audit.exists():
+        published_audit.unlink()
     files = sorted(
         (path for path in staging_root.rglob("*") if path.is_file()),
         key=lambda path: path.relative_to(staging_root).as_posix(),
     )
+    audit_source = staging_root / AUDIT_NAME
     for source in files:
+        if source == audit_source:
+            continue
         relative = source.relative_to(staging_root)
         destination = outdir / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -1931,6 +1937,9 @@ def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -
         stale_contacts = outdir / RESIDUE_CONTACTS_NAME
         if stale_contacts.exists():
             stale_contacts.unlink()
+    if not audit_source.is_file():
+        raise ContractError("Staging package has no final audit marker")
+    os.replace(audit_source, published_audit)
 
 
 def canonical_pose_rule_contract(

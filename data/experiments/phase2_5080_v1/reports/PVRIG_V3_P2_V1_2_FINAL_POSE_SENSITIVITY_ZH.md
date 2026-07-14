@@ -14,6 +14,7 @@
 - 旧规则 class 计数：BLOCKER_LIKE_A=167; BLOCKER_PLAUSIBLE_B=636; EVIDENCE_INFERENCE_ONLY_E=129。
 - V1.2 metrics 上的旧规则诊断计数：BLOCKER_LIKE_A=127; BLOCKER_PLAUSIBLE_B=573; EVIDENCE_INFERENCE_ONLY_E=232。
 - 发生诊断 class 变化的 pose：151/932。
+- 其中 `BLOCKER_PLAUSIBLE_B->BLOCKER_LIKE_A` 为 4 行；这可由排除 HETATM 后分母改变、CDR3 fraction 上升造成，不能解读为几何或生物学改善。
 
 ## 主要数值敏感性
 

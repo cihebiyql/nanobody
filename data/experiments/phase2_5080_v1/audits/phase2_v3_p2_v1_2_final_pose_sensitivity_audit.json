@@ -201,7 +201,7 @@
     "old_rules": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5",
     "positive_manifest": "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8",
     "rescore_audit": "25a4a9c937c34ec4579b026c7c8a5c8fff4c1123647327721d1bd92a2b47a565",
-    "summarizer": "17fc2cd8e35408253e0d277a5acb4e4367779fc6292b70055996ddd047f317a5"
+    "summarizer": "edf6910b61481841b6f8c002b206e86662da0ec527c385adfa5a0c4c1794dfd6"
   },
   "old_rule_replay": {
     "classifier_sha256": "c5f6f96d4821863dd14dc201807d8c863226876507df36a9e78b7a47e7df2654",
@@ -211,7 +211,7 @@
     "rules_sha256": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5"
   },
   "output_sha256": {
-    "chinese_report": "ffe327cbfb7003064700ea623c1e99a4830178606967ee34878a7e2a82b47ca1",
+    "chinese_report": "5b45db7a4339add26a58735a003a4d7117cf48183b7389b4ef9909712e53a39c",
     "row_hash_chain": "fa4c14794f17c1c5e093a72509132a178d1e0ae6a472bf745b2d360cb787dc85",
     "row_level_delta_csv": "47787aaabfc27205a3e08e245206b96ae8cb95b625f970a079bca6cc4feb17ba"
   },
