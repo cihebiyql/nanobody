@@ -530,6 +530,62 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         self.assertTrue((outdir / "current" / calibration.AUDIT_NAME).is_file())
         self.assertTrue((outdir / "current" / calibration.RELEASE_INPUT_NAME).is_file())
 
+    def test_full_B2000_two_builds_are_byte_deterministic(self) -> None:
+        outdir = self.root / "determinism" / "calibration"
+        first = calibration.build_calibration(
+            self._config(outdir, calibration.BOOTSTRAP_REPLICATES)
+        )
+        first_release = (outdir / "current").resolve()
+        first_files = {
+            path.relative_to(first_release).as_posix(): path.read_bytes()
+            for path in first_release.rglob("*")
+            if path.is_file()
+        }
+        second = calibration.build_calibration(
+            self._config(outdir, calibration.BOOTSTRAP_REPLICATES)
+        )
+        second_release = (outdir / "current").resolve()
+        second_files = {
+            path.relative_to(second_release).as_posix(): path.read_bytes()
+            for path in second_release.rglob("*")
+            if path.is_file()
+        }
+        self.assertEqual(first, second)
+        self.assertEqual(first_release, second_release)
+        self.assertEqual(first_files, second_files)
+        self.assertEqual(first["status"], calibration.CALCULATED_STATUS)
+        self.assertFalse(first["development_smoke_eligible"])
+        self.assertEqual(first["bootstrap"]["summary"]["threshold_row_count"], 20000)
+        self.assertEqual(
+            first["bootstrap"]["summary"]["receptor_anchor_evaluation_row_count"],
+            44000,
+        )
+        self.assertEqual(
+            first["bootstrap"]["summary"]["dual_anchor_evaluation_row_count"],
+            22000,
+        )
+
+    def test_versioned_publication_failure_rolls_back_current(self) -> None:
+        outdir = self.root / "rollback" / "calibration"
+        calibration.build_calibration(self._config(outdir, 2))
+        previous = (outdir / "current").resolve()
+        previous_inventory = calibration.directory_inventory(previous)
+
+        def fail_promotion(_release: Path, _current: Path) -> None:
+            raise RuntimeError("injected pointer failure")
+
+        with self.assertRaisesRegex(RuntimeError, "injected pointer failure"):
+            calibration.build_calibration(
+                self._config(outdir, 3), pointer_promoter=fail_promotion
+            )
+        self.assertTrue((outdir / "current").is_symlink())
+        self.assertEqual((outdir / "current").resolve(), previous)
+        self.assertEqual(calibration.directory_inventory(previous), previous_inventory)
+        self.assertEqual(
+            sorted(path.name for path in (outdir / "releases").iterdir()),
+            [previous.name],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

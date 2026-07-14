@@ -2746,6 +2746,8 @@ def render_report(
         "# PVRIG V3-P2 Docking Gold V1.3 native dual-receptor development calibration",
         "",
         f"- Status: `{status}`",
+        "- External release validation is required; this calculation never unlocks smoke execution.",
+        "- Development smoke eligible: `false`.",
         "- Primary data: 47 cases x 2 independent native receptor runs x Top-8 = 752 poses.",
         "- Five channels: pooled canonical H plus receptor-native O/P for 8X6B and 9E6Y.",
         "- Ranks are never paired across receptors; dual joining occurs only after 94 run summaries.",

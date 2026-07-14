@@ -803,6 +803,7 @@ def atom_heavy_identity_signature(
         raise RecoveryError(f"PDB is not ASCII: {path}") from error
     atoms: list[tuple[str, str, str, str, str, str]] = []
     residues: set[tuple[str, str, str]] = set()
+    residue_order: list[tuple[str, str, str]] = []
     for line_number, line in enumerate(text.splitlines(), start=1):
         if not line.startswith("ATOM  ") or len(line) < 54 or line[21:22] != chain:
             continue
@@ -822,7 +823,9 @@ def atom_heavy_identity_signature(
             continue
         residue_key = (str(residue_number), insertion, resname)
         atom_key = (*residue_key, atom_name, altloc, element)
-        residues.add(residue_key)
+        if residue_key not in residues:
+            residues.add(residue_key)
+            residue_order.append(residue_key)
         atoms.append(atom_key)
     if not atoms or not residues:
         raise RecoveryError(f"Chain {chain} has no heavy ATOM identity records: {path}")
@@ -830,6 +833,13 @@ def atom_heavy_identity_signature(
         raise RecoveryError(f"Chain {chain} has duplicate heavy ATOM identities: {path}")
     sorted_atoms = sorted(atoms)
     sorted_residues = sorted(residues)
+    terminal_residue = residue_order[-1]
+    terminal_oxt = sorted(
+        atom for atom in atoms if atom[:3] == terminal_residue and atom[3] == "OXT"
+    )
+    non_terminal_oxt = sorted(
+        atom for atom in atoms if atom[3] == "OXT" and atom[:3] != terminal_residue
+    )
     return {
         "chain": chain,
         "selection_rule": "ATOM-only heavy atoms; coordinates, serials, occupancy, and B-factor excluded",
@@ -837,19 +847,65 @@ def atom_heavy_identity_signature(
         "residue_count": len(sorted_residues),
         "atom_identity_sha256": sha256_bytes(canonical_json(sorted_atoms).encode("utf-8")),
         "residue_identity_sha256": sha256_bytes(canonical_json(sorted_residues).encode("utf-8")),
+        "atom_identities": sorted_atoms,
+        "residue_identities": sorted_residues,
+        "terminal_residue": terminal_residue,
+        "terminal_oxt_identities": terminal_oxt,
+        "non_terminal_oxt_identities": non_terminal_oxt,
     }
 
 
 def require_identity_match(
-    frozen: Mapping[str, Any], pose: Mapping[str, Any], label: str
-) -> None:
-    for field in (
-        "atom_count", "residue_count", "atom_identity_sha256", "residue_identity_sha256"
-    ):
-        if frozen.get(field) != pose.get(field):
-            raise RecoveryError(
-                f"{label} ATOM identity mismatch for {field}: {pose.get(field)!r} != {frozen.get(field)!r}"
-            )
+    frozen: Mapping[str, Any],
+    pose: Mapping[str, Any],
+    label: str,
+    chain: str,
+    amendment: Mapping[str, Any],
+) -> dict[str, Any]:
+    if frozen.get("residue_identities") != pose.get("residue_identities"):
+        raise RecoveryError(f"{label} residue identity mismatch")
+    frozen_atoms = {tuple(item) for item in frozen["atom_identities"]}
+    pose_atoms = {tuple(item) for item in pose["atom_identities"]}
+    raw_exact = frozen_atoms == pose_atoms
+    if chain == "B":
+        if not raw_exact:
+            raise RecoveryError(f"{label} chain B raw ATOM identity mismatch")
+        return {
+            "rule_id": "CHAIN_B_RAW_EXACT",
+            "raw_atom_identity_exact": True,
+            "terminal_oxt_normalization_applied": False,
+            "normalized_atom_identity_exact": True,
+        }
+    if chain != "A" or amendment["normalization_rule"]["applicable_chain"] != "A":
+        raise RecoveryError(f"Unsupported identity-gate chain: {chain}")
+    if frozen.get("terminal_residue") != pose.get("terminal_residue"):
+        raise RecoveryError(f"{label} terminal residue identity mismatch")
+    if frozen.get("non_terminal_oxt_identities") or pose.get("non_terminal_oxt_identities"):
+        raise RecoveryError(f"{label} contains forbidden non-terminal OXT")
+    frozen_terminal_oxt = {tuple(item) for item in frozen["terminal_oxt_identities"]}
+    pose_terminal_oxt = {tuple(item) for item in pose["terminal_oxt_identities"]}
+    frozen_normalized = frozen_atoms - frozen_terminal_oxt
+    pose_normalized = pose_atoms - pose_terminal_oxt
+    if frozen_normalized != pose_normalized:
+        raise RecoveryError(f"{label} non-OXT ATOM identity mismatch")
+    symmetric_difference = frozen_atoms ^ pose_atoms
+    allowed = frozen_terminal_oxt | pose_terminal_oxt
+    if not symmetric_difference <= allowed or len(symmetric_difference) > 1:
+        raise RecoveryError(f"{label} exceeds terminal-OXT-only normalization")
+    return {
+        "rule_id": amendment["normalization_rule"]["rule_id"],
+        "raw_atom_identity_exact": raw_exact,
+        "terminal_oxt_normalization_applied": not raw_exact,
+        "normalized_atom_identity_exact": True,
+    }
+
+
+def identity_signature_summary(identity: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in identity.items()
+        if key not in {"atom_identities", "residue_identities"}
+    }
 
 
 def validate_stage_counts(counts: Any, io_count: int, label: str) -> dict[str, int]:
@@ -1088,6 +1144,8 @@ def build(
         release_data_root,
         FROZEN_EXECUTION_RELEASE_SHA256,
     )
+    identity_amendment_path = DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.resolve()
+    identity_amendment = load_identity_normalization_amendment(identity_amendment_path)
     runs, reuse = load_inputs(run_manifest_path, reuse_manifest_path)
     package_audit = load_package_audit(
         package_audit_path, runs, reuse, release, release_data_root
@@ -1145,6 +1203,9 @@ def build(
         "reuse_manifest_sha256": reuse.sha256,
         "selector_sha256": script_sha,
         "selector_helper_sha256": helper_sha,
+        "identity_normalization_amendment_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
+        ),
     }).encode("utf-8"))[:24]
     release_dir = outdir / "releases" / release_id
     outdir.mkdir(parents=True, exist_ok=True)
@@ -1231,6 +1292,8 @@ def build(
             )
             source_inventory = source_inventories[mode]
             selected_indices: list[int] = []
+            vhh_terminal_oxt_normalization_count = 0
+            vhh_raw_atom_identity_exact_count = 0
             for rank, record in enumerate(selected, start=1):
                 selected_indices.append(record.output_index)
                 materialized_rel = f"materialized_coordinates/{run['run_id']}/native_rank_{rank:02d}.pdb"
@@ -1242,11 +1305,25 @@ def build(
                 pose_pvrig_identity = atom_heavy_identity_signature(
                     coordinates, "B", record.local_path
                 )
-                require_identity_match(
-                    monomer_identity, pose_vhh_identity, f"{run['run_id']} rank {rank} chain A"
+                vhh_identity_gate = require_identity_match(
+                    monomer_identity,
+                    pose_vhh_identity,
+                    f"{run['run_id']} rank {rank} chain A",
+                    "A",
+                    identity_amendment,
                 )
-                require_identity_match(
-                    receptor_identity, pose_pvrig_identity, f"{run['run_id']} rank {rank} chain B"
+                pvrig_identity_gate = require_identity_match(
+                    receptor_identity,
+                    pose_pvrig_identity,
+                    f"{run['run_id']} rank {rank} chain B",
+                    "B",
+                    identity_amendment,
+                )
+                vhh_terminal_oxt_normalization_count += int(
+                    vhh_identity_gate["terminal_oxt_normalization_applied"]
+                )
+                vhh_raw_atom_identity_exact_count += int(
+                    vhh_identity_gate["raw_atom_identity_exact"]
                 )
                 atomic_write_bytes(materialized, coordinates)
                 if sha256_file(materialized) != record.coordinate_sha256:
@@ -1328,6 +1405,13 @@ def build(
                     "receptor_residue_identity_sha256": receptor_identity["residue_identity_sha256"],
                     "pose_pvrig_atom_identity_sha256": pose_pvrig_identity["atom_identity_sha256"],
                     "pose_pvrig_residue_identity_sha256": pose_pvrig_identity["residue_identity_sha256"],
+                    "vhh_identity_gate_rule_id": vhh_identity_gate["rule_id"],
+                    "vhh_raw_atom_identity_exact": str(vhh_identity_gate["raw_atom_identity_exact"]).lower(),
+                    "vhh_terminal_oxt_normalization_applied": str(vhh_identity_gate["terminal_oxt_normalization_applied"]).lower(),
+                    "vhh_normalized_atom_identity_exact": str(vhh_identity_gate["normalized_atom_identity_exact"]).lower(),
+                    "pvrig_raw_atom_identity_exact": str(pvrig_identity_gate["raw_atom_identity_exact"]).lower(),
+                    "identity_normalization_amendment_relpath": workspace_relative(identity_amendment_path, workspace_root),
+                    "identity_normalization_amendment_sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
                     "completion_status": completion["status"],
                     "completion_exit_code": completion.get("exit_code", ""),
                     "source_final_stage_ignored": "true" if mode == REUSE_MODE else "false",
@@ -1402,8 +1486,11 @@ def build(
                 "selected_pose_seeds": selected_seeds,
                 "selected_coordinate_hashes": coordinate_hashes,
                 "frozen_seed_range": {"start": seed_start, "end": seed_end},
-                "monomer_atom_identity": monomer_identity,
-                "receptor_atom_identity": receptor_identity,
+                "monomer_atom_identity": identity_signature_summary(monomer_identity),
+                "receptor_atom_identity": identity_signature_summary(receptor_identity),
+                "vhh_raw_atom_identity_exact_count": vhh_raw_atom_identity_exact_count,
+                "vhh_terminal_oxt_normalization_count": vhh_terminal_oxt_normalization_count,
+                "pvrig_raw_atom_identity_exact_count": K,
                 "config_sha256": sha256_file(assets["config"]),
                 "completion_sha256": sha256_file(assets["completion"]),
                 "source_io_sha256": sha256_file(io_path),
@@ -1498,12 +1585,36 @@ def build(
                     "sha256": release.sha256,
                     "status": release.payload["status"],
                 },
+                "atom_identity_normalization_amendment": {
+                    "relpath": workspace_relative(identity_amendment_path, workspace_root),
+                    "sha256": FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
+                    "status": identity_amendment["status"],
+                    "rule_id": identity_amendment["normalization_rule"]["rule_id"],
+                },
                 "run_manifest": {"relpath": workspace_relative(runs.path, workspace_root), "sha256": runs.sha256},
                 "exact_reuse_manifest": {"relpath": workspace_relative(reuse.path, workspace_root), "sha256": reuse.sha256},
                 "package_audit": {"relpath": workspace_relative(package_audit_path.resolve(), workspace_root), "sha256": sha256_file(package_audit_path.resolve())},
                 "old_run_manifest": old_manifest_binding,
             },
             "source_inventories": source_audit_summary,
+            "identity_gate_summary": {
+                "pose_count": len(output_rows),
+                "vhh_raw_atom_identity_exact_count": sum(
+                    row["vhh_raw_atom_identity_exact"] == "true" for row in output_rows
+                ),
+                "vhh_terminal_oxt_normalization_count": sum(
+                    row["vhh_terminal_oxt_normalization_applied"] == "true"
+                    for row in output_rows
+                ),
+                "vhh_normalized_atom_identity_exact_count": sum(
+                    row["vhh_normalized_atom_identity_exact"] == "true"
+                    for row in output_rows
+                ),
+                "pvrig_raw_atom_identity_exact_count": sum(
+                    row["pvrig_raw_atom_identity_exact"] == "true" for row in output_rows
+                ),
+                "coordinate_or_score_modified": False,
+            },
             "remote_local_hash_chain_equal": all(
                 value["remote_local_hash_chain_equal"] for value in source_audit_summary.values()
             ),

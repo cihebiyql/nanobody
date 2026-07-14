@@ -36,6 +36,15 @@ def pdb_bytes(chains: str, offset: float = 0.0) -> bytes:
     return ("\n".join(lines + ["END"]) + "\n").encode("ascii")
 
 
+def monomer_pdb_bytes() -> bytes:
+    ca = atom_line(1, "A", 1, 1.0)
+    oxt = (
+        f"ATOM  {2:5d} OXT  ALA A{1:4d}    "
+        f"{2.0:8.3f}{0.0:8.3f}{0.0:8.3f}  1.00 20.00           O  "
+    )
+    return ("\n".join([ca, oxt, "END"]) + "\n").encode("ascii")
+
+
 def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
@@ -108,7 +117,7 @@ class Fixture:
             remote, f"runs/{run_id}/{run_id}.cfg", self._config(protocol, run_id, receptor, old)
         )
         monomer_rel, monomer_sha = self._asset(
-            remote, f"monomers/{candidate}_vhh_chainA.pdb", pdb_bytes("A")
+            remote, f"monomers/{candidate}_vhh_chainA.pdb", monomer_pdb_bytes()
         )
         receptor_rel, receptor_sha = self._asset(
             remote, f"receptors/pvrig_{receptor.lower()}_chainB.pdb", pdb_bytes("B")
