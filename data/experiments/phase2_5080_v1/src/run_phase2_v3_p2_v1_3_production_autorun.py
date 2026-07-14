@@ -15,6 +15,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -48,7 +49,9 @@ FROZEN_CONTROLLER_START_TICKS = 664578751
 FROZEN_CONTROLLER_PYTHON = "/data/qlyu/anaconda3/envs/haddock3/bin/python"
 FROZEN_HADDOCK_BIN = "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3"
 
-STATE_SCHEMA = "pvrig_v1_3_production_autorun_state_v1"
+STATE_SCHEMA = "pvrig_v1_3_production_autorun_state_v2"
+MIGRATION_RECEIPT_SCHEMA = "pvrig_v1_3_controller_migration_receipt_v1"
+MIGRATION_RECEIPT_STATUS = "PASS_NODE1_TO_NODE23_SINGLE_WRITER_HANDOFF"
 FINAL_PASS = "COMPLETE_DEVELOPMENT_PASS_SMOKE_ELIGIBLE_FORMAL_BLOCKED"
 FINAL_FAIL = "COMPLETE_DEVELOPMENT_FAIL_STOPPED"
 WAITING = "WAITING_REMOTE_COMPLETION15"
@@ -192,6 +195,7 @@ class Config:
     dry_run: bool = False
     state_file: Path | None = None
     log_file: Path | None = None
+    controller_receipt: Path | None = None
 
     @property
     def state_path(self) -> Path:
@@ -200,6 +204,34 @@ class Config:
     @property
     def log_path(self) -> Path:
         return (self.log_file or self.layout.default_log).resolve()
+
+
+@dataclass(frozen=True)
+class ControllerContract:
+    host: str
+    boot_id: str
+    pid: int
+    pid_file_sha256: str
+    start_ticks: int
+    python: str
+    haddock_bin: str
+    argv: tuple[str, ...]
+    source: str
+    source_sha256: str = ""
+
+    def state_binding(self) -> dict[str, Any]:
+        return {
+            "host": self.host,
+            "boot_id": self.boot_id,
+            "pid": self.pid,
+            "pid_file_sha256": self.pid_file_sha256,
+            "start_ticks": self.start_ticks,
+            "argv_sha256": sha256_bytes(
+                canonical_json(list(self.argv)).encode("utf-8")
+            ),
+            "source": self.source,
+            "source_sha256": self.source_sha256,
+        }
 
 
 @dataclass(frozen=True)
