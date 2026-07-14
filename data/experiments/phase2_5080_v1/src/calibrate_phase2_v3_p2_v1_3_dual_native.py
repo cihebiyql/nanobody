@@ -24,7 +24,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from statistics import median
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Callable, Iterable, Mapping, Sequence
 
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
@@ -41,6 +41,29 @@ PREREGISTRATION_ID = "PVRIG_V3_P2_DOCKING_GOLD_V1_3_DEV_20260714"
 PREREGISTRATION_SHA256 = (
     "930c40cd09423a786bb10319f986ec03d890b086e378bfc7198440a8fd92fdff"
 )
+EXECUTION_RELEASE_SHA256 = (
+    "4a0f1a63ef3dc16220beb9d821db71e500d4e512195e7f19a3e112d1d7a2db21"
+)
+POSITIVE_MANIFEST_SHA256 = (
+    "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8"
+)
+MUTANT_MANIFEST_SHA256 = (
+    "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248"
+)
+CASE_MANIFEST_SHA256 = (
+    "63e08d11d548afd98cca93d66d54395b0084d7398f4c8e94f288aa64cc326e81"
+)
+RUN_MANIFEST_SHA256 = (
+    "7db0b4865169020381d3df22bd7dd39113c33d679d24960f73aedf75cdb8175f"
+)
+PROTOCOL_MANIFEST_SHA256 = (
+    "79308811f52715308bb9d52aaee6d361b1e4f62dec5beec94b6d5a3054dc5709"
+)
+REFERENCE_SHA256 = {
+    "8X6B": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+    "9E6Y": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+}
+NATIVE_HOTSPOT_COLUMN = {"8X6B": "pdb_8x6b_ref", "9E6Y": "pdb_9e6y_ref"}
 RECEPTORS = ("8X6B", "9E6Y")
 POSE_CLASSES = ("A", "B", "C", "E")
 CLASS_RELEVANCE = {"A": 4, "B": 2, "C": 1, "E": 0}
@@ -73,6 +96,30 @@ DEFAULT_METRICS_CSV = (
 DEFAULT_PROCESSOR_AUDIT = (
     DEFAULT_PROCESSING_DIR / "pvrig_v1_3_native_top8_processing_audit.json"
 )
+DEFAULT_SELECTOR_DIR = (
+    WORKSPACE_ROOT
+    / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
+    "docking_gold_v1_3_dual47_top8_recovery/current"
+)
+DEFAULT_SELECTOR_CSV = DEFAULT_SELECTOR_DIR / "pvrig_v1_3_dual47_emref_top8_selector.csv"
+DEFAULT_SELECTOR_AUDIT = DEFAULT_SELECTOR_DIR / "pvrig_v1_3_dual47_emref_top8_recovery_audit.json"
+DEFAULT_EXECUTION_RELEASE = (
+    WORKSPACE_ROOT
+    / "experiments/phase2_5080_v1/audits/"
+    "phase2_v3_p2_v1_3_docking_execution_release_manifest.json"
+)
+DEFAULT_PACKAGE_DIR = (
+    WORKSPACE_ROOT
+    / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
+    "docking_gold_v1_3_dual47_completion15_package"
+)
+DEFAULT_CASE_MANIFEST = DEFAULT_PACKAGE_DIR / "manifests/case_manifest.csv"
+DEFAULT_RUN_MANIFEST = DEFAULT_PACKAGE_DIR / "manifests/run_manifest.csv"
+DEFAULT_PROTOCOL_MANIFEST = DEFAULT_PACKAGE_DIR / "manifests/protocol_manifest.csv"
+DEFAULT_REFERENCES = {
+    "8X6B": WORKSPACE_ROOT / "structures/8X6B.pdb",
+    "9E6Y": WORKSPACE_ROOT / "structures/9E6Y.pdb",
+}
 DEFAULT_PREREGISTRATION = (
     WORKSPACE_ROOT
     / "experiments/phase2_5080_v1/audits/"
@@ -92,9 +139,8 @@ DEFAULT_OUTDIR = (
     "docking_gold_v1_3_native_dual_calibration"
 )
 DEFAULT_REPORT = (
-    WORKSPACE_ROOT
-    / "experiments/phase2_5080_v1/reports/"
-    "PVRIG_V3_P2_DOCKING_GOLD_V1_3_NATIVE_DUAL_CALIBRATION_ZH.md"
+    DEFAULT_OUTDIR
+    / "current/PVRIG_V3_P2_DOCKING_GOLD_V1_3_NATIVE_DUAL_CALIBRATION_ZH.md"
 )
 
 RULES_NAME = "pvrig_v1_3_native_dual_rules.json"
@@ -108,6 +154,11 @@ BOOTSTRAP_DUAL_NAME = "pvrig_v1_3_bootstrap_dual_anchor_evaluations.csv"
 MUTANT_DELTAS_NAME = "pvrig_v1_3_mutant_paired_deltas.csv"
 ROBUSTNESS_NAME = "pvrig_v1_3_robustness_grid.csv"
 AUDIT_NAME = "pvrig_v1_3_native_dual_calibration_audit.json"
+RELEASE_INPUT_NAME = "pvrig_v1_3_calibration_release_input.json"
+REPORT_NAME = "PVRIG_V3_P2_DOCKING_GOLD_V1_3_NATIVE_DUAL_CALIBRATION_ZH.md"
+CALCULATED_STATUS = "CALCULATED_PENDING_RELEASE_VALIDATION"
+RELEASE_INPUT_STATUS = "PENDING_EXTERNAL_RELEASE_VALIDATION"
+PointerPromoter = Callable[[Path, Path], None]
 
 
 class CalibrationError(RuntimeError):
@@ -137,6 +188,13 @@ class CalibrationContract:
 class CalibrationConfig:
     metrics_csv: Path
     processor_audit: Path
+    selector_csv: Path
+    selector_audit: Path
+    execution_release: Path
+    case_manifest: Path
+    run_manifest: Path
+    protocol_manifest: Path
+    references: Mapping[str, Path]
     preregistration: Path
     positive_manifest: Path
     mutant_manifest: Path
@@ -436,11 +494,42 @@ def validate_preregistration(path: Path) -> dict[str, Any]:
     )
     if not all(checks):
         raise CalibrationError("Frozen preregistration semantic closure failed")
+    bindings = payload.get("evidence_bindings")
+    if not isinstance(bindings, list) or len(bindings) != 17:
+        raise CalibrationError("Frozen preregistration evidence ledger is incomplete")
+    validated_bindings: list[dict[str, Any]] = []
+    seen_paths: set[str] = set()
+    for index, binding in enumerate(bindings):
+        if not isinstance(binding, dict):
+            raise CalibrationError(f"Preregistration evidence[{index}] is not an object")
+        raw_path = str(binding.get("path", ""))
+        if not raw_path or raw_path in seen_paths:
+            raise CalibrationError(f"Duplicate/empty preregistration evidence path: {raw_path!r}")
+        seen_paths.add(raw_path)
+        evidence_path = (WORKSPACE_ROOT / raw_path).resolve()
+        expected_hash = str(binding.get("sha256", ""))
+        expected_bytes = parse_int(binding.get("bytes"), f"evidence[{index}].bytes", 1)
+        if (
+            not evidence_path.is_file()
+            or evidence_path.stat().st_size != expected_bytes
+            or sha256_file(evidence_path) != expected_hash
+        ):
+            raise CalibrationError(f"Preregistration evidence binding drift: {raw_path}")
+        validated_bindings.append(
+            {
+                "path": raw_path,
+                "sha256": expected_hash,
+                "bytes": expected_bytes,
+                "role": str(binding.get("role", "")),
+            }
+        )
     return {
         "relpath": canonical_path(path),
         "sha256": observed_hash,
         "schema_version": payload["schema_version"],
         "preregistration_id": payload["preregistration_id"],
+        "evidence_binding_count": len(validated_bindings),
+        "evidence_binding_sha256": sha256_json(validated_bindings),
         "validated": True,
     }
 

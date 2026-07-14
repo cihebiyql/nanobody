@@ -299,30 +299,27 @@ def audit_old_selectors(
     return poses, inputs
 
 
-def audit_boundary_runs(
+def audit_remote_runs(
     descriptors: Sequence[selector.SourceDescriptor],
-    release: selector.ExecutionRelease,
+    cohort: str,
+    remote_root: str,
     ssh_executable: str,
     host: str,
+    required_completion_status: str | None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    boundary_ids = set(release.payload["remote_launch_contract"]["boundary_case_ids"])
-    selected_descriptors = [
-        item for item in descriptors
-        if item.source_mode == selector.NEW_MODE and item.run["case_id"] in boundary_ids
-    ]
-    if len(selected_descriptors) != 4:
-        raise IdentityAuditError(
-            f"Expected four frozen boundary runs, found {len(selected_descriptors)}"
-        )
+    selected_descriptors = list(descriptors)
+    if not selected_descriptors:
+        raise IdentityAuditError(f"Remote identity cohort is empty: {cohort}")
     request = recovery_base.build_sync_request(
         [selector.descriptor_sync_row(item) for item in selected_descriptors],
-        str(release.payload["remote_root"]),
+        remote_root,
     )
     poses: list[dict[str, Any]] = []
-    with tempfile.TemporaryDirectory(prefix="pvrig_v1_3_identity_boundary4_") as temporary:
+    completion_statuses: Counter[str] = Counter()
+    with tempfile.TemporaryDirectory(prefix=f"pvrig_v1_3_identity_{cohort}_") as temporary:
         root = Path(temporary)
         recovery_base.sync_from_remote(
-            request, root, ssh_executable, host, str(release.payload["remote_root"])
+            request, root, ssh_executable, host, remote_root
         )
         remote_inventory, local_inventory = recovery_base.load_and_verify_inventory(root, request)
         for descriptor in selected_descriptors:
@@ -332,19 +329,43 @@ def audit_boundary_runs(
             params_relpath = f"{descriptor.run_dir_relpath}/4_emref/params.cfg"
             selected, source_inventory = recovery_base.load_pose_records(root, io_relpath)
             recovery_base.validate_params(
-                selector.contained_path(root, params_relpath, "boundary params"), run
+                selector.contained_path(root, params_relpath, f"{cohort} params"), run
             )
+            if descriptor.source_mode == selector.REUSE_MODE:
+                assert descriptor.reuse is not None
+                if source_inventory["source_output_count"] != int(
+                    descriptor.reuse["source_emref_output_count"]
+                ):
+                    raise IdentityAuditError(
+                        f"Exact-reuse io output count drift: {run['run_id']}"
+                    )
+                selector.validate_local_hash(
+                    selector.contained_path(root, io_relpath, "exact-reuse io"),
+                    descriptor.expected_hashes["io"],
+                    f"{run['run_id']}.io",
+                )
+                selector.validate_local_hash(
+                    selector.contained_path(root, params_relpath, "exact-reuse params"),
+                    descriptor.expected_hashes["params"],
+                    f"{run['run_id']}.params",
+                )
             completion, _counts = selector.validate_completion(
                 assets["completion"], descriptor, source_inventory["source_output_count"]
             )
-            if completion["status"] != "PASS_4_EMREF_TOP8_READY":
-                raise IdentityAuditError(f"Boundary run is not complete: {run['run_id']}")
+            completion_statuses[str(completion["status"])] += 1
+            if (
+                required_completion_status is not None
+                and completion["status"] != required_completion_status
+            ):
+                raise IdentityAuditError(
+                    f"Unexpected completion status for {run['run_id']}: {completion['status']}"
+                )
             selector.validate_selected_pose_invariants(selected, run)
             for rank, record in enumerate(selected, start=1):
                 poses.append(compare_pose(
-                    cohort="new_v1_3_boundary4",
+                    cohort=cohort,
                     run_id=run["run_id"],
-                    source_run_id=run["run_id"],
+                    source_run_id=descriptor.source_run_id,
                     candidate_id=run["candidate_id"],
                     receptor_id=run["receptor_id"],
                     rank=rank,
@@ -356,7 +377,9 @@ def audit_boundary_runs(
                     receptor_path=assets["receptor"],
                     pose_source_sha256=record.source_sha256,
                     pose_coordinate_sha256=record.coordinate_sha256,
-                    v1_3_reuse_overlap=False,
+                    v1_3_reuse_overlap=(
+                        descriptor.source_mode == selector.REUSE_MODE
+                    ),
                     pose_provenance_path=(
                         f"{descriptor.remote_root}/{record.remote_relpath}"
                     ),
@@ -366,7 +389,8 @@ def audit_boundary_runs(
                     },
                 ))
         inventory = {
-            "remote_root": release.payload["remote_root"],
+            "cohort": cohort,
+            "remote_root": remote_root,
             "request_sha256": request["request_sha256"],
             "inventory_relpath": request["inventory_relpath"],
             "remote_file_count": remote_inventory["file_count"],
@@ -379,8 +403,53 @@ def audit_boundary_runs(
                 remote_inventory["file_hash_chain"] == local_inventory["file_hash_chain"]
             ),
             "run_ids": sorted(item.run["run_id"] for item in selected_descriptors),
+            "source_run_ids": sorted(item.source_run_id for item in selected_descriptors),
+            "completion_status_counts": dict(sorted(completion_statuses.items())),
+            "selected_pose_count": len(poses),
         }
     return poses, inventory
+
+
+def audit_boundary_runs(
+    descriptors: Sequence[selector.SourceDescriptor],
+    release: selector.ExecutionRelease,
+    ssh_executable: str,
+    host: str,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    boundary_ids = set(release.payload["remote_launch_contract"]["boundary_case_ids"])
+    selected = [
+        item for item in descriptors
+        if item.source_mode == selector.NEW_MODE and item.run["case_id"] in boundary_ids
+    ]
+    if len(selected) != 4:
+        raise IdentityAuditError(f"Expected four frozen boundary runs, found {len(selected)}")
+    return audit_remote_runs(
+        selected,
+        "new_v1_3_boundary4",
+        str(release.payload["remote_root"]),
+        ssh_executable,
+        host,
+        "PASS_4_EMREF_TOP8_READY",
+    )
+
+
+def audit_exact_reuse_runs(
+    descriptors: Sequence[selector.SourceDescriptor],
+    old_remote_root: str,
+    ssh_executable: str,
+    host: str,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    selected = [item for item in descriptors if item.source_mode == selector.REUSE_MODE]
+    if len(selected) != 64:
+        raise IdentityAuditError(f"Expected 64 exact-reuse runs, found {len(selected)}")
+    return audit_remote_runs(
+        selected,
+        "old_v1_3_exact_reuse64",
+        old_remote_root,
+        ssh_executable,
+        host,
+        None,
+    )
 
 
 def summarize_runs(poses: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
