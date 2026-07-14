@@ -175,7 +175,7 @@ class JobManifestControllerTests(unittest.TestCase):
             "--once",
             "--dry-run",
             "--load1",
-            "20",
+            "5",
             "--max-parallel",
             "8",
         )
