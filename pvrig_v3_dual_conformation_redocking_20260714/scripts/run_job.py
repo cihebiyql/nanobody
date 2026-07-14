@@ -8,6 +8,7 @@ import fcntl
 import json
 import os
 import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -47,8 +48,23 @@ def state_path(job_id: str) -> Path:
     return root() / "status/jobs" / f"{job_id}.json"
 
 
-def run_path(job_id: str) -> Path:
+def local_scratch_root() -> Path | None:
+    value = os.environ.get("PVRIG_LOCAL_SCRATCH_ROOT", "").strip()
+    if not value:
+        return None
+    path = Path(value).expanduser()
+    if not path.is_absolute():
+        raise RuntimeError("PVRIG_LOCAL_SCRATCH_ROOT must be an absolute path")
+    return path.resolve()
+
+
+def shared_run_path(job_id: str) -> Path:
     return root() / "runs" / job_id
+
+
+def run_path(job_id: str) -> Path:
+    scratch = local_scratch_root()
+    return shared_run_path(job_id) if scratch is None else scratch / job_id
 
 
 def result_path(job_id: str) -> Path:
@@ -112,7 +128,7 @@ def copy_receptor(job: dict[str, str], destination: Path) -> None:
 def archive_previous_attempt(job_id: str, attempt: int) -> None:
     archive_root = root() / "failed_attempts" / job_id / f"attempt_{attempt - 1}_{int(time.time())}"
     moved = False
-    for label, source in (("run", run_path(job_id)), ("result", result_path(job_id).parent)):
+    for label, source in (("run", shared_run_path(job_id)), ("result", result_path(job_id).parent)):
         if source.exists():
             archive_root.mkdir(parents=True, exist_ok=True)
             shutil.move(str(source), str(archive_root / label))
@@ -141,6 +157,45 @@ def prepare_run(job: dict[str, str]) -> Path:
     atomic_write_text(data_dir / "air.tbl", restraint_text)
     write_json(run_dir / "job.json", job)
     return run_dir
+
+
+def publish_scratch_run(job_id: str, run_dir: Path, attempt: int) -> Path:
+    shared = shared_run_path(job_id)
+    if run_dir == shared:
+        return shared
+    write_json(
+        run_dir / "SCRATCH_PROVENANCE.json",
+        {
+            "schema_version": 1,
+            "job_id": job_id,
+            "attempt": attempt,
+            "compute_host": socket.gethostname(),
+            "local_scratch_path": str(run_dir),
+            "published_at": utc_now(),
+        },
+    )
+    shared.parent.mkdir(parents=True, exist_ok=True)
+    temporary = shared.with_name(f".{shared.name}.publishing.{os.getpid()}")
+    if temporary.exists():
+        shutil.rmtree(temporary)
+    try:
+        shutil.copytree(run_dir, temporary, copy_function=shutil.copy2)
+        temporary.replace(shared)
+    except Exception:
+        shutil.rmtree(temporary, ignore_errors=True)
+        raise
+    return shared
+
+
+def cleanup_local_scratch(run_dir: Path) -> None:
+    scratch = local_scratch_root()
+    if scratch is None or run_dir == shared_run_path(run_dir.name):
+        return
+    try:
+        run_dir.relative_to(scratch)
+    except ValueError as exc:
+        raise RuntimeError(f"refusing to clean scratch path outside configured root: {run_dir}") from exc
+    shutil.rmtree(run_dir)
 
 
 def run_haddock(run_dir: Path) -> int:
@@ -235,8 +290,11 @@ def execute(job_id: str, max_attempts: int) -> int:
         if attempt > max_attempts:
             write_state(job_id, {"status": "FAILED_MAX_ATTEMPTS", "attempts": attempt - 1})
             return 1
-        if run_path(job_id).exists() or result_path(job_id).parent.exists():
+        run_dir = run_path(job_id)
+        if shared_run_path(job_id).exists() or result_path(job_id).parent.exists():
             archive_previous_attempt(job_id, attempt)
+        if run_dir != shared_run_path(job_id) and run_dir.exists():
+            shutil.rmtree(run_dir)
         job = find_job(job_id)
         write_state(
             job_id,
@@ -259,6 +317,13 @@ def execute(job_id: str, max_attempts: int) -> int:
             models = selected_models(run_dir)
             if not models:
                 raise RuntimeError("HADDOCK3 produced no selected cluster models")
+            if run_dir != shared_run_path(job_id):
+                write_state(
+                    job_id,
+                    {**read_state(job_id), "status": "RUNNING", "stage": "publishing", "pid": os.getpid()},
+                )
+                run_dir = publish_scratch_run(job_id, run_dir, attempt)
+                models = selected_models(run_dir)
             write_state(job_id, {**read_state(job_id), "status": "RUNNING", "stage": "scoring", "pid": os.getpid()})
             pose_scores = score_models(job, models)
             result = {
@@ -292,6 +357,10 @@ def execute(job_id: str, max_attempts: int) -> int:
                     "completed_at": utc_now(),
                 },
             )
+            try:
+                cleanup_local_scratch(run_path(job_id))
+            except OSError as exc:
+                print(f"WARNING: could not clean local scratch for {job_id}: {exc}", file=sys.stderr)
             return 0
         except Exception as exc:
             write_state(

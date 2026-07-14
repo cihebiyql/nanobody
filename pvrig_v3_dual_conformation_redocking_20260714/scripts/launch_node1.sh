@@ -7,6 +7,7 @@ REMOTE_ROOT=${REMOTE_ROOT:-/data/qlyu/projects/pvrig_v3_dual_conformation_redock
 SSH_BIN=${SSH_BIN:-ssh.exe}
 PYTHON=${REMOTE_PYTHON:-/data/qlyu/anaconda3/envs/haddock3/bin/python}
 HADDOCK3=${REMOTE_HADDOCK3:-/data/qlyu/anaconda3/envs/haddock3/bin/haddock3}
+LOCAL_SCRATCH_ROOT=${REMOTE_LOCAL_SCRATCH_ROOT:-}
 
 case "$MODE" in
   validate)
@@ -31,6 +32,7 @@ case "$MODE" in
         echo '${name} already running pid='\$(cat status/${name}.pid); exit 0; \
       fi; \
       nohup env PVRIG_PROJECT_ROOT='$REMOTE_ROOT' HADDOCK3='$HADDOCK3' PATH='/data/qlyu/anaconda3/envs/haddock3/bin':\"\$PATH\" \
+        PVRIG_LOCAL_SCRATCH_ROOT='$LOCAL_SCRATCH_ROOT' \
         '$PYTHON' '$entry' $extra > logs/${name}.log 2>&1 < /dev/null & \
       pid=\$!; echo \$pid > status/${name}.pid; echo '${name} started pid='\$pid"
     ;;
