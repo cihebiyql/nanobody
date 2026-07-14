@@ -589,8 +589,8 @@ manifest_failures = []
 required = {"protocol_id", "run_id", "config_sha256", "completion_relpath"}
 if not rows or not required.issubset(rows[0]):
     manifest_failures.append("manifest_required_fields_missing")
-run_ids = [str(row.get("run_id", "")) for row in rows]
-config_hashes = [str(row.get("config_sha256", "")) for row in rows]
+run_ids = [row.get("run_id") or "" for row in rows]
+config_hashes = [row.get("config_sha256") or "" for row in rows]
 if manifest_sha != expected_manifest_sha:
     manifest_failures.append("manifest_sha256_mismatch")
 if len(rows) != 30:
@@ -606,7 +606,7 @@ normalized_paths = []
 for index, row in enumerate(rows, start=2):
     if row.get("protocol_id") != protocol:
         manifest_failures.append("manifest_protocol_mismatch_row_" + str(index))
-    raw = str(row.get("completion_relpath", ""))
+    raw = row.get("completion_relpath") or ""
     pure = pathlib.PurePosixPath(raw)
     valid = (bool(raw) and "\\" not in raw and not pure.is_absolute()
              and raw == pure.as_posix())
