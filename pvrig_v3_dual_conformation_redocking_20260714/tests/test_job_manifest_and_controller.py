@@ -190,6 +190,35 @@ class JobManifestControllerTests(unittest.TestCase):
         self.assertEqual(second.returncode, 0)
         self.assertIn("skip successful job", second.stdout)
 
+    def test_run_job_can_execute_in_local_scratch_and_publish_shared_run(self) -> None:
+        self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
+        job_id = read_tsv(self.root / "manifests/docking_jobs.tsv")[0]["job_id"]
+        fake = self.root / "fake_haddock_scratch.py"
+        fake.write_text(
+            "from pathlib import Path\n"
+            "import json\n"
+            "out=Path('haddock_run/6_seletopclusts'); out.mkdir(parents=True)\n"
+            "text=Path('data/vhh_chainA.pdb').read_text().replace('END\\n','')+Path('data/pvrig_chainT.pdb').read_text()\n"
+            "(out/'cluster_1_model_1.pdb').write_text(text)\n"
+            "json.dump({'input':[{'file_name':'cluster_1_model_1.pdb','score':-12.5,'unw_energies':{'air':3.2}}]},open(out/'io.json','w'))\n",
+            encoding="utf-8",
+        )
+        scratch = self.root / "node_local_scratch"
+        env = {
+            **self.env,
+            "PVRIG_HADDOCK_CMD": f"{sys.executable} {fake}",
+            "PVRIG_SCORE_POSE": str(REPO / "scripts/score_pose.py"),
+            "PVRIG_LOCAL_SCRATCH_ROOT": str(scratch),
+        }
+        process = self.run_script("run_job.py", job_id, env=env)
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+        shared_run = self.root / "runs" / job_id
+        self.assertTrue((shared_run / "haddock_run/6_seletopclusts/cluster_1_model_1.pdb").is_file())
+        self.assertTrue((shared_run / "SCRATCH_PROVENANCE.json").is_file())
+        result = json.loads((self.root / "results" / job_id / "job_result.json").read_text())
+        self.assertTrue(all(path.startswith(f"runs/{job_id}/") for path in result["selected_models"]))
+        self.assertFalse((scratch / job_id).exists())
+
     def test_smoke_verifier_requires_hash_selected_model_and_both_references(self) -> None:
         self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
         (self.root / "PROTOCOL_LOCK.json").write_text(
