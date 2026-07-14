@@ -25,8 +25,16 @@ try:
     from experiments.phase2_5080_v1.src import (
         recover_phase2_v3_p2_v1_2_pilot64_emref_top8 as recovery_base,
     )
+    from experiments.phase2_5080_v1.src import (
+        validate_phase2_v3_p2_v1_3_atom_identity_normalization_amendment as amendment_v1_validator,
+    )
+    from experiments.phase2_5080_v1.src import (
+        validate_phase2_v3_p2_v1_3_atom_identity_normalization_amendment_v2 as amendment_v2_validator,
+    )
 except ModuleNotFoundError:  # pragma: no cover - direct execution from src/
     import recover_phase2_v3_p2_v1_2_pilot64_emref_top8 as recovery_base
+    import validate_phase2_v3_p2_v1_3_atom_identity_normalization_amendment as amendment_v1_validator
+    import validate_phase2_v3_p2_v1_3_atom_identity_normalization_amendment_v2 as amendment_v2_validator
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -48,6 +56,18 @@ DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT = (
 )
 FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256 = (
     "daf5c628e424c185c9d33c13b90bdf8d875261a990cbbd04a07b48e272d5df23"
+)
+FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_VALIDATOR_SHA256 = (
+    "c146675dfc334ad17f712213eb8db52abd45ef35f87ef3f0e44364ae609ac9cb"
+)
+DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT_V2 = (
+    EXP_DIR / "audits/phase2_v3_p2_v1_3_atom_identity_normalization_amendment_v2.json"
+)
+FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256 = (
+    "4a59c7dde89a63f717a79208b71ced8753aa50c4da7551f7abc70ba66e179c00"
+)
+FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256 = (
+    "edd81955e7b424472228db366fdcd6a899150106e2eb14ca15f7af0c6e71f62d"
 )
 DEFAULT_OUTDIR = (
     EXP_DIR / "runs/pvrig_v3_p2/docking_gold_v1_3_dual47_top8_recovery"
@@ -148,6 +168,17 @@ CSV_FIELDS = (
     "vhh_terminal_oxt_normalization_applied", "vhh_normalized_atom_identity_exact",
     "pvrig_raw_atom_identity_exact", "identity_normalization_amendment_relpath",
     "identity_normalization_amendment_sha256",
+    "monomer_vhh_heavy_hetatm_identity_count", "monomer_vhh_heavy_hetatm_identity_sha256",
+    "pose_vhh_heavy_hetatm_identity_count", "pose_vhh_heavy_hetatm_identity_sha256",
+    "receptor_pvrig_heavy_hetatm_identity_count", "receptor_pvrig_heavy_hetatm_identity_sha256",
+    "pose_pvrig_heavy_hetatm_identity_count", "pose_pvrig_heavy_hetatm_identity_sha256",
+    "heavy_hetatm_zero_gate_rule_id", "monomer_vhh_heavy_hetatm_zero_gate_pass",
+    "pose_vhh_heavy_hetatm_zero_gate_pass", "receptor_pvrig_heavy_hetatm_zero_gate_pass",
+    "pose_pvrig_heavy_hetatm_zero_gate_pass", "heavy_hetatm_zero_gate_pass",
+    "identity_normalization_amendment_v2_relpath",
+    "identity_normalization_amendment_v2_sha256",
+    "identity_normalization_amendment_v2_validator_relpath",
+    "identity_normalization_amendment_v2_validator_sha256",
     "completion_status", "completion_exit_code", "source_final_stage_ignored",
     "remote_root", "config_relpath", "remote_config_relpath", "completion_relpath",
     "remote_completion_relpath", "monomer_relpath", "remote_monomer_relpath",
@@ -484,9 +515,33 @@ def load_execution_release(
     return ExecutionRelease(path, observed_sha256, payload)
 
 
+def validate_amendment_validator_binding(
+    module: Any,
+    expected_amendment_sha256: str,
+    expected_validator_sha256: str,
+    label: str,
+) -> Path:
+    validator_path = Path(module.__file__).resolve()
+    observed_validator_sha256 = sha256_file(validator_path)
+    if observed_validator_sha256 != expected_validator_sha256:
+        raise RecoveryError(
+            f"Frozen {label} validator hash mismatch: "
+            f"{observed_validator_sha256} != {expected_validator_sha256}"
+        )
+    if module.FROZEN_AMENDMENT_SHA256 != expected_amendment_sha256:
+        raise RecoveryError(f"Frozen {label} validator amendment binding mismatch")
+    return validator_path
+
+
 def load_identity_normalization_amendment(
     path: Path = DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT,
 ) -> dict[str, Any]:
+    validate_amendment_validator_binding(
+        amendment_v1_validator,
+        FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
+        FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_VALIDATOR_SHA256,
+        "atom-identity normalization amendment v1",
+    )
     path = path.resolve()
     observed = sha256_file(path)
     if observed != FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256:
@@ -543,6 +598,68 @@ def load_identity_normalization_amendment(
     ):
         if eligibility.get(field) is not False:
             raise RecoveryError(f"Normalization amendment unexpectedly enables {field}")
+    validator_errors = amendment_v1_validator.validate_payload(payload)
+    if validator_errors:
+        raise RecoveryError(
+            "Frozen atom-identity normalization amendment v1 validator failed: "
+            + ",".join(validator_errors)
+        )
+    return payload
+
+
+def load_identity_normalization_amendment_v2(
+    path: Path = DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT_V2,
+) -> dict[str, Any]:
+    validate_amendment_validator_binding(
+        amendment_v2_validator,
+        FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256,
+        FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256,
+        "ATOM/HETATM identity amendment v2",
+    )
+    path = path.resolve()
+    observed = sha256_file(path)
+    if observed != FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256:
+        raise RecoveryError(
+            "Frozen ATOM/HETATM identity amendment v2 hash mismatch: "
+            f"{observed} != {FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256}"
+        )
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RecoveryError(f"Cannot read ATOM/HETATM identity amendment v2: {path}") from error
+    if not isinstance(payload, dict):
+        raise RecoveryError("ATOM/HETATM identity amendment v2 is not an object")
+    validator_errors = amendment_v2_validator.validate_payload(payload)
+    if validator_errors:
+        raise RecoveryError(
+            "Frozen ATOM/HETATM identity amendment v2 validator failed: "
+            + ",".join(validator_errors)
+        )
+    if payload.get("status") != (
+        "FROZEN_V1_3_TERMINAL_OXT_AND_ZERO_HEAVY_HETATM_AMENDMENT_V2"
+    ):
+        raise RecoveryError("ATOM/HETATM identity amendment v2 status mismatch")
+    supersedes = payload.get("supersedes", {})
+    if (
+        supersedes.get("sha256") != FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
+        or supersedes.get("history_rewritten") is not False
+    ):
+        raise RecoveryError("ATOM/HETATM identity amendment v2 supersession mismatch")
+    rule = payload.get("heavy_hetatm_rule", {})
+    expected_rule = {
+        "rule_id": "CHAIN_A_B_ZERO_HEAVY_HETATM_V1",
+        "applicable_chains": ["A", "B"],
+        "record_scope": "HETATM_heavy_atoms_only",
+        "identity_normalization": "none",
+        "terminal_oxt_normalization_applies": False,
+        "reference_heavy_hetatm_identity_count_must_equal": 0,
+        "pose_heavy_hetatm_identity_count_must_equal": 0,
+        "raw_reference_pose_identity_must_match": True,
+        "any_heavy_hetatm_identity": "fail_closed",
+    }
+    for field, expected in expected_rule.items():
+        if rule.get(field) != expected:
+            raise RecoveryError(f"ATOM/HETATM identity amendment v2 rule mismatch: {field}")
     return payload
 
 
