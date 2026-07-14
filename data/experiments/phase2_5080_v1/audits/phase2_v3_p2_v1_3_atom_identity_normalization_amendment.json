@@ -1,0 +1,110 @@
+{
+  "schema_version": "phase2_v3_p2_v1_3_atom_identity_normalization_amendment_v1",
+  "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+  "status": "FROZEN_V1_3_TERMINAL_OXT_NORMALIZATION_AMENDMENT",
+  "claim_boundary": "coordinate-identity comparison normalization only; no coordinate, docking score, rank, geometry, binding, affinity, blocking, or training-label change",
+  "evidence_scope": {
+    "exact_reuse_run_count": 64,
+    "exact_reuse_pose_count": 512,
+    "boundary_run_count": 4,
+    "boundary_pose_count": 32,
+    "total_run_count": 68,
+    "total_pose_count": 544,
+    "receptor_pose_counts": {
+      "8X6B": 272,
+      "9E6Y": 272
+    },
+    "vhh_chain_a_residue_exact_count": 544,
+    "vhh_chain_a_raw_atom_exact_count": 0,
+    "vhh_chain_a_terminal_oxt_normalized_exact_count": 544,
+    "vhh_chain_a_non_oxt_difference_count": 0,
+    "pvrig_chain_b_residue_exact_count": 544,
+    "pvrig_chain_b_raw_atom_exact_count": 544,
+    "pvrig_chain_b_difference_count": 0
+  },
+  "normalization_rule": {
+    "rule_id": "VHH_CHAIN_A_TERMINAL_OXT_PRESENCE_ONLY_V1",
+    "applicable_chain": "A",
+    "reference_role": "frozen_vhh_monomer",
+    "pose_role": "native_haddock_4_emref_pose",
+    "record_scope": "ATOM_heavy_atoms_only",
+    "residue_identity_key": [
+      "resseq",
+      "icode",
+      "resname"
+    ],
+    "atom_identity_key": [
+      "resseq",
+      "icode",
+      "resname",
+      "atom_name",
+      "altloc",
+      "element"
+    ],
+    "terminal_residue_definition": "last_ATOM_heavy_residue_in_file_order",
+    "terminal_residue_identity_must_match": true,
+    "residue_identity_normalization": "none",
+    "allowed_atom_name": "OXT",
+    "allowed_difference": "presence_or_absence_only_on_the_identical_terminal_residue",
+    "symmetric_difference_maximum_atom_identities": 1,
+    "non_terminal_oxt_allowed": false,
+    "all_non_oxt_atoms_must_match": true,
+    "all_other_atom_or_residue_differences": "fail_closed"
+  },
+  "receptor_rule": {
+    "applicable_chain": "B",
+    "residue_identity_normalization": "none",
+    "atom_identity_normalization": "none",
+    "raw_residue_identity_must_match": true,
+    "raw_atom_identity_must_match": true,
+    "all_differences": "fail_closed"
+  },
+  "side_effect_contract": {
+    "coordinate_bytes_modified": false,
+    "source_pose_hash_modified": false,
+    "decompressed_coordinate_hash_modified": false,
+    "haddock_score_modified": false,
+    "native_rank_modified": false,
+    "pose_selection_modified": false,
+    "geometry_metric_modified": false,
+    "normalization_used_only_for_identity_gate": true
+  },
+  "eligibility": {
+    "development_identity_gate_use_permitted": true,
+    "formal_eligible": false,
+    "training_label_release_eligible": false,
+    "docking_gold_release_eligible": false,
+    "p2_training_ready": false
+  },
+  "selector_activation_contract": {
+    "hard_bound_amendment_sha256_required": true,
+    "silent_rule_expansion_forbidden": true,
+    "future_rule_change_requires_new_amendment": true
+  },
+  "artifacts": [
+    {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_identity_difference_audit.json",
+      "sha256": "e3303741f42abc1df0fe6dff33b42f6ae92089584d41cbd3d0f934eb251425a2",
+      "bytes": 2293202,
+      "role": "544_pose_machine_readable_identity_evidence"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_3_ATOM_IDENTITY_NORMALIZATION_AMENDMENT_PROPOSAL_ZH.md",
+      "sha256": "08a8db0b6bd5d159dbfa841ff4a04fe6973bdd638eddf83f7e4ddf535d41ac44",
+      "bytes": 3190,
+      "role": "chinese_method_amendment_rationale"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_identity_differences.py",
+      "sha256": "ac611549837bc3c35bad72620baede4aad4579416c7423cab1ac6f3ba5dd9cfd",
+      "bytes": 32387,
+      "role": "identity_difference_audit_implementation"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/src/test_audit_phase2_v3_p2_v1_3_atom_identity_differences.py",
+      "sha256": "c84f8ea09e7f2a538319d8105070e9b387f8471f2475bf894b9245ba5c87b5ea",
+      "bytes": 2430,
+      "role": "normalization_positive_and_negative_unit_evidence"
+    }
+  ]
+}

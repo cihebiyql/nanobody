@@ -43,6 +43,12 @@ DEFAULT_EXECUTION_RELEASE_MANIFEST = (
     EXP_DIR / "audits/phase2_v3_p2_v1_3_docking_execution_release_manifest.json"
 )
 FROZEN_EXECUTION_RELEASE_SHA256 = "4a0f1a63ef3dc16220beb9d821db71e500d4e512195e7f19a3e112d1d7a2db21"
+DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT = (
+    EXP_DIR / "audits/phase2_v3_p2_v1_3_atom_identity_normalization_amendment.json"
+)
+FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256 = (
+    "daf5c628e424c185c9d33c13b90bdf8d875261a990cbbd04a07b48e272d5df23"
+)
 DEFAULT_OUTDIR = (
     EXP_DIR / "runs/pvrig_v3_p2/docking_gold_v1_3_dual47_top8_recovery"
 )
@@ -138,6 +144,10 @@ CSV_FIELDS = (
     "pose_vhh_atom_identity_sha256", "pose_vhh_residue_identity_sha256",
     "receptor_atom_identity_sha256", "receptor_residue_identity_sha256",
     "pose_pvrig_atom_identity_sha256", "pose_pvrig_residue_identity_sha256",
+    "vhh_identity_gate_rule_id", "vhh_raw_atom_identity_exact",
+    "vhh_terminal_oxt_normalization_applied", "vhh_normalized_atom_identity_exact",
+    "pvrig_raw_atom_identity_exact", "identity_normalization_amendment_relpath",
+    "identity_normalization_amendment_sha256",
     "completion_status", "completion_exit_code", "source_final_stage_ignored",
     "remote_root", "config_relpath", "remote_config_relpath", "completion_relpath",
     "remote_completion_relpath", "monomer_relpath", "remote_monomer_relpath",
@@ -472,6 +482,68 @@ def load_execution_release(
         if artifact_path.stat().st_size != expected_bytes or sha256_file(artifact_path) != expected_hash:
             raise RecoveryError(f"Frozen execution release artifact hash/size mismatch: {relpath}")
     return ExecutionRelease(path, observed_sha256, payload)
+
+
+def load_identity_normalization_amendment(
+    path: Path = DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT,
+) -> dict[str, Any]:
+    path = path.resolve()
+    observed = sha256_file(path)
+    if observed != FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256:
+        raise RecoveryError(
+            "Frozen atom-identity normalization amendment hash mismatch: "
+            f"{observed} != {FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256}"
+        )
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RecoveryError(f"Cannot read atom-identity normalization amendment: {path}") from error
+    if not isinstance(payload, dict):
+        raise RecoveryError("Atom-identity normalization amendment is not an object")
+    if payload.get("status") != "FROZEN_V1_3_TERMINAL_OXT_NORMALIZATION_AMENDMENT":
+        raise RecoveryError("Atom-identity normalization amendment status mismatch")
+    rule = payload.get("normalization_rule", {})
+    expected_rule = {
+        "rule_id": "VHH_CHAIN_A_TERMINAL_OXT_PRESENCE_ONLY_V1",
+        "applicable_chain": "A",
+        "terminal_residue_definition": "last_ATOM_heavy_residue_in_file_order",
+        "terminal_residue_identity_must_match": True,
+        "residue_identity_normalization": "none",
+        "allowed_atom_name": "OXT",
+        "allowed_difference": "presence_or_absence_only_on_the_identical_terminal_residue",
+        "symmetric_difference_maximum_atom_identities": 1,
+        "non_terminal_oxt_allowed": False,
+        "all_non_oxt_atoms_must_match": True,
+        "all_other_atom_or_residue_differences": "fail_closed",
+    }
+    if not isinstance(rule, dict):
+        raise RecoveryError("Atom-identity normalization amendment rule is missing")
+    for field, expected in expected_rule.items():
+        if rule.get(field) != expected:
+            raise RecoveryError(f"Atom-identity normalization amendment rule mismatch: {field}")
+    receptor = payload.get("receptor_rule", {})
+    if receptor.get("applicable_chain") != "B" or receptor.get("raw_atom_identity_must_match") is not True:
+        raise RecoveryError("Receptor chain B raw identity rule mismatch")
+    if receptor.get("atom_identity_normalization") != "none" or receptor.get("residue_identity_normalization") != "none":
+        raise RecoveryError("Receptor chain B normalization is forbidden")
+    effects = payload.get("side_effect_contract", {})
+    if effects.get("normalization_used_only_for_identity_gate") is not True:
+        raise RecoveryError("OXT normalization is not restricted to the identity gate")
+    for field in (
+        "coordinate_bytes_modified", "source_pose_hash_modified",
+        "decompressed_coordinate_hash_modified", "haddock_score_modified",
+        "native_rank_modified", "pose_selection_modified", "geometry_metric_modified",
+    ):
+        if effects.get(field) is not False:
+            raise RecoveryError(f"Forbidden normalization side effect enabled: {field}")
+    eligibility = payload.get("eligibility", {})
+    for field in (
+        "formal_eligible", "training_label_release_eligible",
+        "docking_gold_release_eligible", "p2_training_ready",
+    ):
+        if eligibility.get(field) is not False:
+            raise RecoveryError(f"Normalization amendment unexpectedly enables {field}")
+    return payload
 
 
 def release_artifact_binding(

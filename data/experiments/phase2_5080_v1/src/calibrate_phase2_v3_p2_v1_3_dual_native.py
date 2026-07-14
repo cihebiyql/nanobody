@@ -1067,8 +1067,8 @@ def validate_metrics_rows(
     positive_cases: Mapping[str, Mapping[str, str]],
     mutant_cases: Mapping[str, Mapping[str, str]],
     contract: CalibrationContract,
-    selector_by_key: Mapping[tuple[str, str, int], Mapping[str, str]],
-    references: Mapping[str, Path],
+    selector_by_key: Mapping[tuple[str, str, int], Mapping[str, str]] | None = None,
+    references: Mapping[str, Path] | None = None,
 ) -> dict[str, Any]:
     missing = sorted(REQUIRED_METRICS_FIELDS - set(fields))
     if missing:
@@ -1089,17 +1089,19 @@ def validate_metrics_rows(
     inventories: dict[str, set[str]] = defaultdict(set)
     rows_by_receptor: Counter[str] = Counter()
     reference_evidence: dict[str, dict[str, Any]] = {}
-    if set(references) != set(RECEPTORS):
-        raise CalibrationError("Exactly two canonical native references are required")
-    for receptor in RECEPTORS:
-        canonical_reference = DEFAULT_REFERENCES[receptor].resolve()
-        reference = references[receptor].resolve()
-        if reference != canonical_reference or sha256_file(reference) != REFERENCE_SHA256[receptor]:
-            raise CalibrationError(f"Frozen native reference drift: {receptor}")
-        reference_evidence[receptor] = {
-            "relpath": reference.relative_to(WORKSPACE_ROOT.parent).as_posix(),
-            "sha256": REFERENCE_SHA256[receptor],
-        }
+    strict_identity = selector_by_key is not None and references is not None
+    if strict_identity:
+        if set(references) != set(RECEPTORS):
+            raise CalibrationError("Exactly two canonical native references are required")
+        for receptor in RECEPTORS:
+            canonical_reference = DEFAULT_REFERENCES[receptor].resolve()
+            reference = references[receptor].resolve()
+            if reference != canonical_reference or sha256_file(reference) != REFERENCE_SHA256[receptor]:
+                raise CalibrationError(f"Frozen native reference drift: {receptor}")
+            reference_evidence[receptor] = {
+                "relpath": reference.relative_to(WORKSPACE_ROOT.parent).as_posix(),
+                "sha256": REFERENCE_SHA256[receptor],
+            }
     for row_number, row in enumerate(rows, start=2):
         if row.get("schema_version") != METRICS_SCHEMA_VERSION:
             raise CalibrationError(f"Metrics schema mismatch at row {row_number}")
@@ -1137,8 +1139,8 @@ def validate_metrics_rows(
         if key in keys:
             raise CalibrationError(f"Duplicate native metric key: {key}")
         keys.add(key)
-        selector = selector_by_key.get(key)
-        if selector is None:
+        selector = selector_by_key.get(key) if selector_by_key is not None else None
+        if strict_identity and selector is None:
             raise CalibrationError(f"Native metric row has no selector identity: {key}")
         run_id = row.get("run_id", "").strip()
         if not run_id:
@@ -1146,16 +1148,18 @@ def validate_metrics_rows(
         previous_run = run_ids.setdefault((case_id, receptor), run_id)
         if previous_run != run_id:
             raise CalibrationError(f"Run drift within {case_id}/{receptor}")
-        if (
+        if strict_identity and (
             run_id != selector["run_id"]
             or row["selector_row_sha256"] != selector["selection_row_sha256"]
             or row["family"] != selector["family"]
         ):
             raise CalibrationError(f"Metric/selector native identity mismatch: {key}")
-        expected_reference = reference_evidence[receptor]
+        expected_reference = reference_evidence.get(receptor)
         if (
-            row["reference_relpath"] != expected_reference["relpath"]
-            or row["reference_sha256"] != expected_reference["sha256"]
+            (strict_identity and row["reference_relpath"] != expected_reference["relpath"])
+            or (strict_identity and row["reference_sha256"] != expected_reference["sha256"])
+            or not re.fullmatch(r"[0-9a-f]{64}", row["reference_sha256"])
+            or not row["reference_relpath"].strip()
             or row["native_hotspot_ref_column"] != NATIVE_HOTSPOT_COLUMN[receptor]
             or row["internal_contact_channel"]
             != f"raw_4_emref_pose_{receptor.lower()}_native_numbering"
@@ -1193,8 +1197,9 @@ def validate_metrics_rows(
         "control_case_count": len(mutant_cases),
         "native_rank_pairing_across_receptors": False,
         "native_only_validated": True,
-        "generation_native_receptor_identity_validated": True,
-        "metric_selector_identity_count": len(keys),
+        "generation_native_receptor_identity_validated": strict_identity,
+        "metric_selector_identity_count": len(keys) if strict_identity else 0,
+        "selector_identity_validation_mode": "strict_frozen" if strict_identity else "processor_compatibility_only",
         "atom_only_reference_inventory_gate_passed": True,
         "reference_inventory_sha256_by_receptor": {
             receptor: sha256_bytes(next(iter(inventories[receptor])).encode())

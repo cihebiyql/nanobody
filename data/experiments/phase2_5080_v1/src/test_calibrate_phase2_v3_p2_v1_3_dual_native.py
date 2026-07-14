@@ -15,16 +15,35 @@ from experiments.phase2_5080_v1.src import (
 class V13SyntheticFixture:
     def __init__(self, root: Path) -> None:
         self.root = root
-        self.positive_manifest = root / "positive_manifest.csv"
-        self.mutant_manifest = root / "mutant_manifest.csv"
+        self.positive_manifest = calibration.DEFAULT_POSITIVE_MANIFEST
+        self.mutant_manifest = calibration.DEFAULT_MUTANT_MANIFEST
+        self.case_manifest = calibration.DEFAULT_CASE_MANIFEST
+        self.run_manifest = calibration.DEFAULT_RUN_MANIFEST
+        self.protocol_manifest = calibration.DEFAULT_PROTOCOL_MANIFEST
+        self.execution_release = calibration.DEFAULT_EXECUTION_RELEASE
+        self.references = calibration.DEFAULT_REFERENCES
+        self.selector_csv = root / "selector.csv"
+        self.selector_audit = root / "selector_audit.json"
         self.metrics_csv = root / "native_metrics.csv"
         self.processor_audit = root / "processor_audit.json"
         self.preregistration = calibration.DEFAULT_PREREGISTRATION
-        self.positive_cases: dict[str, dict[str, str]] = {}
-        self.mutant_cases: dict[str, dict[str, str]] = {}
-        self.base_by_molecule: dict[str, str] = {}
+        self.positive_cases = calibration.load_positive_manifest(self.positive_manifest)
+        self.mutant_cases, self.base_by_molecule = calibration.load_mutant_manifest(
+            self.mutant_manifest
+        )
+        _case_fields, case_rows = calibration.read_csv_strict(self.case_manifest)
+        _run_fields, run_rows = calibration.read_csv_strict(self.run_manifest)
+        _protocol_fields, protocol_rows = calibration.read_csv_strict(
+            self.protocol_manifest
+        )
+        self.frozen_cases = {row["case_id"]: row for row in case_rows}
+        self.frozen_runs = {
+            (row["case_id"], row["receptor_id"]): row for row in run_rows
+        }
+        self.protocols = {row["receptor_id"]: row for row in protocol_rows}
+        self.selector_rows: list[dict[str, str]] = []
         self.metrics_rows: list[dict[str, str]] = []
-        self._build_manifests()
+        self._build_selector()
         self._build_metrics()
         self._build_processor_audit()
 
@@ -36,66 +55,84 @@ class V13SyntheticFixture:
             writer.writeheader()
             writer.writerows(rows)
 
-    def _build_manifests(self) -> None:
-        positive_families = ["151", "151", "151", "20", "20", "30", "30", "38", "39", "39", "39"]
-        positive_rows: list[dict[str, str]] = []
-        for index, family in enumerate(positive_families, start=1):
-            case_id = f"positive_{index:02d}"
-            positive_rows.append(
-                {
-                    "calibration_name": case_id,
-                    "family": family,
-                    "validation_role": "synthetic_positive_anchor",
-                }
-            )
-            self.positive_cases[case_id] = {"family": family}
-        self._write_rows(
-            self.positive_manifest,
-            ["calibration_name", "family", "validation_role"],
-            positive_rows,
+    def _build_selector(self) -> None:
+        fields = sorted(calibration.SELECTOR_REQUIRED_FIELDS - {"selection_row_sha256"})
+        fields.append("selection_row_sha256")
+        rows: list[dict[str, str]] = []
+        for case_id in sorted(self.frozen_cases):
+            case = self.frozen_cases[case_id]
+            for receptor in calibration.RECEPTORS:
+                run = self.frozen_runs[(case_id, receptor)]
+                for rank in range(1, 9):
+                    row = {
+                        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v1",
+                        "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+                        "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",
+                        "source_stage": "4_emref",
+                        "run_id": run["run_id"],
+                        "case_id": case_id,
+                        "candidate_id": case_id,
+                        "family": case["family"],
+                        "sequence_sha256": case["sequence_sha256"],
+                        "generation_receptor": receptor,
+                        "receptor_id": receptor,
+                        "native_rank": str(rank),
+                        "canonical_rank": str(rank),
+                        "receptor_sha256": self.protocols[receptor]["receptor_sha256"],
+                        "run_manifest_sha256": calibration.RUN_MANIFEST_SHA256,
+                        "run_manifest_row_sha256": run["run_manifest_row_sha256"],
+                        "execution_release_manifest_sha256": calibration.EXECUTION_RELEASE_SHA256,
+                        "publication_release_id": "synthetic-selector-release",
+                        "formal_eligible": "false",
+                        "training_label_release_eligible": "false",
+                        "docking_gold_release_eligible": "false",
+                    }
+                    row["selection_row_sha256"] = calibration.row_sha256(
+                        row, "selection_row_sha256"
+                    )
+                    rows.append(row)
+        self._write_rows(self.selector_csv, fields, rows)
+        self.selector_rows = rows
+        selector_chain = calibration.newline_hash_chain(rows, "selection_row_sha256")
+        calibration.write_json(
+            self.selector_audit,
+            {
+                "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v1",
+                "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
+                "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+                "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",
+                "k": 8,
+                "selection_backfill": False,
+                "scoring_performed": False,
+                "remote_local_hash_chain_equal": True,
+                "formal_eligible": False,
+                "training_label_release_eligible": False,
+                "docking_gold_release_eligible": False,
+                "counts": {
+                    "manifest_runs": 94,
+                    "selected_runs": 94,
+                    "selected_poses": 752,
+                    "cases": 47,
+                    "reuse_runs": 64,
+                    "new_runs": 30,
+                },
+                "output_csv": {
+                    "sha256": calibration.sha256_file(self.selector_csv),
+                    "rows": 752,
+                    "selection_row_hash_chain": selector_chain,
+                },
+                "publication": {
+                    "release_id": "synthetic-selector-release",
+                    "promotion": "single atomic current symlink replacement",
+                    "rollback_safe": True,
+                },
+                "inputs": {
+                    "execution_release_manifest": {
+                        "sha256": calibration.EXECUTION_RELEASE_SHA256
+                    }
+                },
+            },
         )
-
-        mutant_rows: list[dict[str, str]] = []
-        mutation_counts = [5, 4, 4, 4, 4, 4, 4]
-        control_families = ["20", "30", "38", "39", "151", "20", "39"]
-        for group, (mutation_count, family) in enumerate(
-            zip(mutation_counts, control_families)
-        ):
-            molecule = f"molecule_{group}"
-            base_id = f"control_{group}_base"
-            base_row = {
-                "mutant_name": base_id,
-                "base_molecule": molecule,
-                "family": family,
-                "control_type": "base_reference",
-                "mutation_class": "unmutated_positive_control",
-                "mutations_1based": "none",
-            }
-            mutant_rows.append(base_row)
-            self.mutant_cases[base_id] = dict(base_row)
-            self.base_by_molecule[molecule] = base_id
-            for mutation in range(mutation_count):
-                case_id = f"control_{group}_mut_{mutation}"
-                row = {
-                    "mutant_name": case_id,
-                    "base_molecule": molecule,
-                    "family": family,
-                    "control_type": "mutant",
-                    "mutation_class": "synthetic_perturbation",
-                    "mutations_1based": f"A{mutation + 1}G",
-                }
-                mutant_rows.append(row)
-                self.mutant_cases[case_id] = dict(row)
-        self._write_rows(
-            self.mutant_manifest,
-            [
-                "mutant_name", "base_molecule", "family", "control_type",
-                "mutation_class", "mutations_1based",
-            ],
-            mutant_rows,
-        )
-        if len(mutant_rows) != 36:
-            raise AssertionError("Synthetic control manifest did not close 36 rows")
 
     def _build_metrics(self) -> None:
         inventory = calibration.canonical_json(
@@ -108,8 +145,11 @@ class V13SyntheticFixture:
             }
         )
         family_by_case = {
-            **{case_id: row["family"] for case_id, row in self.positive_cases.items()},
-            **{case_id: row["family"] for case_id, row in self.mutant_cases.items()},
+            case_id: row["family"] for case_id, row in self.frozen_cases.items()
+        }
+        selector_by_key = {
+            (row["candidate_id"], row["generation_receptor"], int(row["native_rank"])): row
+            for row in self.selector_rows
         }
         fields = sorted(calibration.REQUIRED_METRICS_FIELDS - {"metrics_row_sha256"})
         fields.append("metrics_row_sha256")
@@ -138,20 +178,24 @@ class V13SyntheticFixture:
                         "training_label_release_eligible": "false",
                         "docking_gold_release_eligible": "false",
                         "primary_native_metric_eligible": "true",
+                        "native_only": "true",
                         "candidate_id": case_id,
                         "family": family_by_case[case_id],
-                        "run_id": f"run_{case_id}_{receptor}",
+                        "run_id": self.frozen_runs[(case_id, receptor)]["run_id"],
                         "generation_receptor": receptor,
                         "native_rank": str(rank),
-                        "selector_row_sha256": calibration.sha256_json(
-                            ["selector", case_id, receptor, rank]
-                        ),
+                        "selector_row_sha256": selector_by_key[
+                            (case_id, receptor, rank)
+                        ]["selection_row_sha256"],
                         "aligned_pose_sha256": calibration.sha256_json(
                             ["pose", case_id, receptor, rank]
                         ),
-                        "reference_sha256": calibration.sha256_json(
-                            ["reference", receptor]
-                        ),
+                        "reference_relpath": self.references[receptor]
+                        .relative_to(calibration.WORKSPACE_ROOT.parent)
+                        .as_posix(),
+                        "reference_sha256": calibration.REFERENCE_SHA256[receptor],
+                        "native_hotspot_ref_column": calibration.NATIVE_HOTSPOT_COLUMN[receptor],
+                        "internal_contact_channel": f"raw_4_emref_pose_{receptor.lower()}_native_numbering",
                         "hotspot_weight_fraction": format(min(h_value, 0.95), ".17g"),
                         "total_occluding_residue_pair_count": str(total),
                         "cdr1_occluding_residue_pair_count": str(cdr1),
@@ -177,6 +221,13 @@ class V13SyntheticFixture:
             "training_label_release_eligible": False,
             "docking_gold_release_eligible": False,
             "primary_native_metric_eligible": True,
+            "native_only": True,
+            "thresholds_applied": False,
+            "discrete_geometry_outputs_emitted": False,
+            "cross_reference_rows_emitted": False,
+            "cross_receptor_rank_pairing_performed": False,
+            "dual_candidate_score_outputs_emitted": False,
+            "p2_training_ready": False,
             "observed_contract": {
                 "case_count": 47,
                 "run_count": 94,
@@ -196,7 +247,44 @@ class V13SyntheticFixture:
                     ),
                 }
             },
+            "selector_contract": {
+                "selector_csv_sha256": calibration.sha256_file(self.selector_csv),
+                "publication_release_id": "synthetic-selector-release",
+                "selector_audit_validated": True,
+                "selection_row_hash_chain": calibration.newline_hash_chain(
+                    self.selector_rows, "selection_row_sha256"
+                ),
+            },
+            "native_processing_contract": {
+                "raw_native_H_scored_once_per_pose": True,
+                "native_PVRL2_reference_only": True,
+                "rank_pairing_across_receptors": False,
+                "9E6Y_direct_native_numbering": True,
+                "canonical_hotspot_reconciliation_validated": True,
+                "reference_PVRL2_protein_ATOM_only": True,
+                "all_reference_HETATM_excluded": True,
+            },
+            "input_sha256": {
+                "selector_csv": calibration.sha256_file(self.selector_csv),
+                "selector_audit": calibration.sha256_file(self.selector_audit),
+                "preregistration": calibration.PREREGISTRATION_SHA256,
+                "positive_manifest": calibration.POSITIVE_MANIFEST_SHA256,
+                "mutant_manifest": calibration.MUTANT_MANIFEST_SHA256,
+                "reference_8x6b": calibration.REFERENCE_SHA256["8X6B"],
+                "reference_9e6y": calibration.REFERENCE_SHA256["9E6Y"],
+            },
+            "expected_contract": {
+                "positive_cases": 11,
+                "mutant_cases": 36,
+                "case_count": 47,
+                "run_count": 94,
+                "pose_count": 752,
+                "poses_per_run": 8,
+            },
         }
+        payload["output_sha256"]["continuous_metrics"]["row_hash_chain"] = (
+            calibration.newline_hash_chain(self.metrics_rows, "metrics_row_sha256")
+        )
         calibration.write_json(self.processor_audit, payload)
 
     def load_inputs(self):
@@ -225,6 +313,15 @@ class TestV13NativeDualCalibration(unittest.TestCase):
             positive,
             mutants,
             calibration.CalibrationContract(),
+            {
+                (
+                    row["candidate_id"],
+                    row["generation_receptor"],
+                    int(row["native_rank"]),
+                ): row
+                for row in self.fixture.selector_rows
+            },
+            self.fixture.references,
         )
         rules = calibration.derive_rules(rows, positive, 8)
         weighted_values = calibration.anchor_metric_values(rows, positive, 8)
@@ -247,7 +344,8 @@ class TestV13NativeDualCalibration(unittest.TestCase):
                     1.0,
                 )
         self.assertEqual(calibration.CLASS_RELEVANCE, {"A": 4, "B": 2, "C": 1, "E": 0})
-        self.assertTrue(all(row["cross_reference_used"] == "false" for row in pose_rows))
+        self.assertNotIn("cross_reference_used", calibration.POSE_SCORE_FIELDS)
+        self.assertTrue(all(row["input_native_only"] == "true" for row in pose_rows))
         self.assertTrue(all(row["cross_receptor_rank_pairing"] == "false" for row in run_rows))
         self.assertTrue(all(row["cross_receptor_rank_pairing"] == "false" for row in dual_rows))
         self.assertTrue(all(row["candidate_level_join_only"] == "true" for row in dual_rows))
@@ -319,7 +417,16 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         bad_hash[0]["hotspot_weight_fraction"] = "0.123"
         with self.assertRaisesRegex(calibration.CalibrationError, "metrics_row_sha256"):
             calibration.validate_metrics_rows(
-                fields, bad_hash, positive, mutants, calibration.CalibrationContract()
+                fields,
+                bad_hash,
+                positive,
+                mutants,
+                calibration.CalibrationContract(),
+                {
+                    (row["candidate_id"], row["generation_receptor"], int(row["native_rank"])): row
+                    for row in self.fixture.selector_rows
+                },
+                self.fixture.references,
             )
         bad_schema = [dict(row) for row in rows]
         bad_schema[0]["schema_version"] = "wrong"
@@ -328,7 +435,16 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         )
         with self.assertRaisesRegex(calibration.CalibrationError, "schema"):
             calibration.validate_metrics_rows(
-                fields, bad_schema, positive, mutants, calibration.CalibrationContract()
+                fields,
+                bad_schema,
+                positive,
+                mutants,
+                calibration.CalibrationContract(),
+                {
+                    (row["candidate_id"], row["generation_receptor"], int(row["native_rank"])): row
+                    for row in self.fixture.selector_rows
+                },
+                self.fixture.references,
             )
 
         bad_audit = self.root / "bad_processor_audit.json"
@@ -337,7 +453,23 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         calibration.write_json(bad_audit, payload)
         with self.assertRaisesRegex(calibration.CalibrationError, "Processor audit closure"):
             calibration.validate_processor_audit(
-                bad_audit, self.fixture.metrics_csv, rows
+                bad_audit,
+                self.fixture.metrics_csv,
+                rows,
+                self._config(self.root / "unused", 2),
+                {
+                    "selector_csv": {
+                        "sha256": calibration.sha256_file(self.fixture.selector_csv),
+                        "row_hash_chain": calibration.newline_hash_chain(
+                            self.fixture.selector_rows, "selection_row_sha256"
+                        ),
+                    },
+                    "selector_audit": {
+                        "sha256": calibration.sha256_file(self.fixture.selector_audit)
+                    },
+                    "publication_release_id": "synthetic-selector-release",
+                },
+                {"sha256": calibration.PREREGISTRATION_SHA256},
             )
 
         bad_prereg = self.root / "bad_prereg.json"
@@ -348,21 +480,30 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         with self.assertRaisesRegex(calibration.CalibrationError, "SHA256 mismatch"):
             calibration.validate_preregistration(bad_prereg)
 
+    def _config(self, outdir: Path, replicates: int) -> calibration.CalibrationConfig:
+        return calibration.CalibrationConfig(
+            metrics_csv=self.fixture.metrics_csv,
+            processor_audit=self.fixture.processor_audit,
+            selector_csv=self.fixture.selector_csv,
+            selector_audit=self.fixture.selector_audit,
+            execution_release=self.fixture.execution_release,
+            case_manifest=self.fixture.case_manifest,
+            run_manifest=self.fixture.run_manifest,
+            protocol_manifest=self.fixture.protocol_manifest,
+            references=self.fixture.references,
+            preregistration=self.fixture.preregistration,
+            positive_manifest=self.fixture.positive_manifest,
+            mutant_manifest=self.fixture.mutant_manifest,
+            outdir=outdir,
+            report=outdir / "current" / calibration.REPORT_NAME,
+            bootstrap_seed=calibration.BOOTSTRAP_SEED,
+            bootstrap_replicates=replicates,
+        )
+
     def test_full_synthetic_build_emits_counts_and_unconditional_vetoes(self) -> None:
         outdir = self.root / "build" / "calibration"
-        report = self.root / "build" / "report.md"
         audit = calibration.build_calibration(
-            calibration.CalibrationConfig(
-                metrics_csv=self.fixture.metrics_csv,
-                processor_audit=self.fixture.processor_audit,
-                preregistration=self.fixture.preregistration,
-                positive_manifest=self.fixture.positive_manifest,
-                mutant_manifest=self.fixture.mutant_manifest,
-                outdir=outdir,
-                report=report,
-                bootstrap_seed=calibration.BOOTSTRAP_SEED,
-                bootstrap_replicates=2,
-            )
+            self._config(outdir, 2)
         )
         self.assertEqual(audit["central_outputs"]["pose_rows"], 752)
         self.assertEqual(audit["central_outputs"]["native_run_rows"], 94)
@@ -382,10 +523,12 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         self.assertEqual(audit["training_state"], "P2_TRAINING_BLOCKED")
         self.assertEqual(
             audit["status"],
-            "FAIL_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD_NOT_FROZEN",
+            calibration.CALCULATED_STATUS,
         )
-        self.assertTrue(report.is_file())
-        self.assertTrue((outdir / calibration.AUDIT_NAME).is_file())
+        self.assertFalse(audit["development_smoke_eligible"])
+        self.assertTrue((outdir / "current" / calibration.REPORT_NAME).is_file())
+        self.assertTrue((outdir / "current" / calibration.AUDIT_NAME).is_file())
+        self.assertTrue((outdir / "current" / calibration.RELEASE_INPUT_NAME).is_file())
 
 
 if __name__ == "__main__":
