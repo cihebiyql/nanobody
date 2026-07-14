@@ -33,8 +33,11 @@ CORE_FILES = [
 ]
 
 FINAL_FILES = [
+    "config/evaluator_stability_gate.json",
+    "config/next_generation_gate_spec.json",
     "manifests/docking_jobs.tsv",
     "manifests/smoke_jobs.tsv",
+    "scripts/analyze_p2_p3_p4_enrichment.py",
     "scripts/build_docking_jobs.py",
     "scripts/deploy_node1.sh",
     "scripts/freeze_protocol.py",
@@ -48,6 +51,7 @@ FINAL_FILES = [
     "scripts/validate_protocol.py",
     "scripts/guard_next_generation.py",
     "tests/test_candidate_panel.py",
+    "tests/test_enrichment_gate.py",
     "tests/test_job_manifest_and_controller.py",
     "tests/test_protocol_freeze.py",
     "tests/test_references_scoring.py",
@@ -150,7 +154,10 @@ def freeze_final(root: Path) -> dict[str, object]:
         **final_material,
         "status": "LOCKED",
         "protocol_lock_sha256": sha256_text(canonical_json(final_material)),
-        "next_generation_gate": "reports/EVALUATOR_STABLE.json must match this protocol lock and have status PASS",
+        "next_generation_gate": (
+            "reports/EVALUATOR_STABLE.json and reports/P2_P3_P4_ENRICHMENT.json must both match "
+            "this protocol lock and have status PASS"
+        ),
     }
     write_json(root / "manifests/protocol_manifest.json", payload)
     write_json(root / "PROTOCOL_LOCK.json", payload)

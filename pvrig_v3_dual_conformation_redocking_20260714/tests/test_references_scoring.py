@@ -1,5 +1,6 @@
 import gzip
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -24,23 +25,32 @@ def atom_line(serial, name, resname, chain, resseq, x, y, z):
 class ReferenceAndScoringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        run_cmd(PYTHON, "scripts/prepare_references.py")
-        cls.summary = json.loads((ROOT / "reports/reference_normalization_summary.json").read_text())
+        cls.generated_tmp = tempfile.TemporaryDirectory()
+        cls.generated_root = Path(cls.generated_tmp.name)
+        shutil.copytree(ROOT / "inputs/source", cls.generated_root / "inputs/source")
+        run_cmd(PYTHON, "scripts/prepare_references.py", "--root", str(cls.generated_root))
+        cls.summary = json.loads(
+            (cls.generated_root / "reports/reference_normalization_summary.json").read_text()
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.generated_tmp.cleanup()
 
     def test_reference_outputs_are_standard_atom_only_and_renumbered(self):
         summary = self.summary
         self.assertEqual(summary["hotspots"]["unique_interface_residue_count"], 23)
         self.assertEqual(summary["hotspots"]["air_anchor_count"], 12)
         self.assertEqual(summary["hotspots"]["holdout_count"], 11)
-        hotspot_table = ROOT / summary["hotspots"]["normalized_table"]
+        hotspot_table = self.generated_root / summary["hotspots"]["normalized_table"]
         self.assertTrue(hotspot_table.is_file())
         self.assertEqual(len(hotspot_table.read_text().splitlines()), 24)
         self.assertEqual(summary["hotspots"]["air_anchor_uniprot_positions"][:4], [71, 74, 82, 87])
         self.assertEqual(summary["hotspots"]["holdout_uniprot_positions"][:4], [72, 81, 83, 90])
 
         for reference_id in ("8x6b", "9e6y"):
-            tl_path = ROOT / summary["references"][reference_id]["outputs"]["tl_reference"]["path"]
-            receptor_path = ROOT / summary["references"][reference_id]["outputs"]["receptor_only"]["path"]
+            tl_path = self.generated_root / summary["references"][reference_id]["outputs"]["tl_reference"]["path"]
+            receptor_path = self.generated_root / summary["references"][reference_id]["outputs"]["receptor_only"]["path"]
             tl_lines = tl_path.read_text().splitlines()
             receptor_lines = receptor_path.read_text().splitlines()
             self.assertTrue(all(not line.startswith("HETATM") for line in tl_lines))

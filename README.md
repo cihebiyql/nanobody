@@ -82,7 +82,7 @@ Node1 机器/环境上的工具部署、运行手册和竞赛 QC 管线说明。
 
 ### `pvrig_v3_dual_conformation_redocking_20260714/`
 
-固定的 PVRIG 双构象独立 HADDOCK3 评价器。它冻结128条候选和47条协议回归控制，分别对 8X6B、9E6Y 执行3个显式 seed 的真正独立重对接，并在 native/cross 两个参考系形成2x2几何评分。该目录修复旧流程的跨构象残基编号漂移和 `HETATM` 污染问题；在控制组稳定性门禁通过前，下一批 P2/P3/P4 序列生成被硬锁定。
+固定的 PVRIG 双构象独立 HADDOCK3 评价器。它冻结128条候选和47条协议回归控制，分别对 8X6B、9E6Y 执行3个显式 seed 的真正独立重对接，并在 native/cross 两个参考系形成2x2几何评分。该目录修复旧流程的跨构象残基编号漂移和 `HETATM` 污染问题；下一批生成同时受“评价器稳定”和“固定面板 P2/P3/P4 统计富集”两道门禁约束，任一道未通过都保持硬锁。
 
 - 协议与复现入口：`pvrig_v3_dual_conformation_redocking_20260714/README.md`
 - 当前运行状态：`pvrig_v3_dual_conformation_redocking_20260714/RUN_STATUS.md`

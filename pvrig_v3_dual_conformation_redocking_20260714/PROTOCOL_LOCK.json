@@ -2,6 +2,16 @@
   "core_lock_sha256": "e56c9b9f409d5e773058caea157852bf0042e8adc104ddce99e7deae4e8cb5d2",
   "files": [
     {
+      "bytes": 1203,
+      "path": "config/evaluator_stability_gate.json",
+      "sha256": "1370e47f5826528ec8e39cf1ca9e2407e8da3583e5926b2fa5ad726e78df62f4"
+    },
+    {
+      "bytes": 1730,
+      "path": "config/next_generation_gate_spec.json",
+      "sha256": "880a66120bd9782e9937edbe804675c259c0d31964333858e95d3ef4a618bc94"
+    },
+    {
       "bytes": 1254293,
       "path": "manifests/docking_jobs.tsv",
       "sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e"
@@ -12,9 +22,14 @@
       "sha256": "37714022bfa233a8fe3b67be2874afb71d7654e0905d1606cea66f395d72d88d"
     },
     {
-      "bytes": 23747,
+      "bytes": 40131,
       "path": "scripts/aggregate_results.py",
-      "sha256": "62b51630bc4c43158fea4a95cad4b1822928487cdb87ba41fc29ac818f75ac39"
+      "sha256": "6fe245e206c47001eca06d2719830247520900e306ae87618a4e1a970d61cfeb"
+    },
+    {
+      "bytes": 20981,
+      "path": "scripts/analyze_p2_p3_p4_enrichment.py",
+      "sha256": "6bc70f34b1e2c43df1267f3baa15cc41a3e1c1b14b8f2dbeec9e02e1f26f02b3"
     },
     {
       "bytes": 16321,
@@ -22,19 +37,19 @@
       "sha256": "639627b8b5be6acb27e124e1f8f69ad2c7d2762af1c20651a7c912ab982f55e4"
     },
     {
-      "bytes": 1803,
+      "bytes": 1908,
       "path": "scripts/deploy_node1.sh",
-      "sha256": "e4c599c4afa0ccbddb3f5bb893e2d445d547b9a365e9be1b15658a8a2c0a4b9d"
+      "sha256": "3a99cd6e0a7981c8d2beaad30dbe2016f5c1ff1395db09ce489d490828047723"
     },
     {
-      "bytes": 6902,
+      "bytes": 7155,
       "path": "scripts/freeze_protocol.py",
-      "sha256": "530bf369223852b28eb842037f1998c20be3cbf05d77f1cebb1e4832dd7f6650"
+      "sha256": "129177feb74bae497f11ecc9312c474a3a9295c8ea3e176242f3e56a72c999fd"
     },
     {
-      "bytes": 2703,
+      "bytes": 9394,
       "path": "scripts/guard_next_generation.py",
-      "sha256": "5a62f99ba4e1d726a89748eea4bd0f77aaede311440a6520dcf6660f676b3dd6"
+      "sha256": "8c9ee409caf9454080e0cd01be394527bcec19d9a18299b882915a4889b4bc98"
     },
     {
       "bytes": 1956,
@@ -42,9 +57,9 @@
       "sha256": "be827862abb42bde92256aba2bf578ecee6e85d05cb68b82a3db5c4ebd3b7c13"
     },
     {
-      "bytes": 4778,
+      "bytes": 5263,
       "path": "scripts/orchestrate_smoke_then_full.py",
-      "sha256": "498ba23ebc0f5649afc97034c75587e915d920507a43cc19c09432a7628b672d"
+      "sha256": "eb582906829e8002a2b3042c271e30503730db03b822a4524aceeb1e31292006"
     },
     {
       "bytes": 8153,
@@ -67,14 +82,19 @@
       "sha256": "b4752a2aa3277d1ed08e820b2416a3c99c0200d4eb9ee347fa5ec7a1fb988c31"
     },
     {
-      "bytes": 13001,
+      "bytes": 14974,
       "path": "scripts/validate_protocol.py",
-      "sha256": "77edb875528425e2166bb30e2e2ff040b3b777e84d566d252bc63c90ae2ce690"
+      "sha256": "f015090fbcb2b6fe2fca97a272df14e3952a1be60f7948c5b8bbab147ac6fb32"
     },
     {
       "bytes": 5162,
       "path": "tests/test_candidate_panel.py",
       "sha256": "250fd4a4352522370a0fd2ef6a1c07998e44dcf58d6b4fe228c030fa4324db75"
+    },
+    {
+      "bytes": 12429,
+      "path": "tests/test_enrichment_gate.py",
+      "sha256": "2b29dfe565ec5cecc4fb90e2d79427653b8d5286d31ec587cd4e92997caeae08"
     },
     {
       "bytes": 11102,
@@ -87,22 +107,22 @@
       "sha256": "86a1bd104892afb99dd4c7a0a6090d93020e652c02f6638a6b74f6f8667f2c5c"
     },
     {
-      "bytes": 7469,
+      "bytes": 7883,
       "path": "tests/test_references_scoring.py",
-      "sha256": "10a528e878f6e651d48f91d4daa356fa3cdf8b348967de168c09b8a7360fc858"
+      "sha256": "f095942f3c3fedc8b5e7b998334b743cfac89212f0558feec3f0859288aaee4a"
     },
     {
-      "bytes": 7940,
+      "bytes": 20278,
       "path": "tests/test_stability_gate.py",
-      "sha256": "607bae57f799f5609825b4825f1689bb407ef93edd54d16fa25d97b3ef066cc6"
+      "sha256": "87b46257c3b003a289697faa5606765e78d200fb505b16a9352bec2ac0e5f25b"
     }
   ],
   "job_count": 1050,
   "job_manifest_sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
-  "next_generation_gate": "reports/EVALUATOR_STABLE.json must match this protocol lock and have status PASS",
+  "next_generation_gate": "reports/EVALUATOR_STABLE.json and reports/P2_P3_P4_ENRICHMENT.json must both match this protocol lock and have status PASS",
   "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
   "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
-  "protocol_lock_sha256": "f217f58f313794af932604a816f6c360e07bdcfc1a53b7ac4c2cae0a81ffeeed",
+  "protocol_lock_sha256": "a187a9addc60d66fd3ffba5221d1121b81029824ffaf0cd7f35a9278f017b4a1",
   "schema_version": 1,
   "status": "LOCKED"
 }

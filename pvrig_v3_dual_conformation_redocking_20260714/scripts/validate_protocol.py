@@ -134,10 +134,55 @@ def validate_core_lock(root: Path, rows: list[dict[str, str]]) -> dict[str, Any]
     reasons: list[str] = []
     if payload.get("status") != "CORE_LOCKED":
         reasons.append("core_lock_status_not_locked")
+    drifted: list[str] = []
+    for record in payload.get("files", []):
+        relative = str(record.get("path", ""))
+        file_path = root / relative
+        if not relative or not file_path.is_file() or sha256_file(file_path) != record.get("sha256"):
+            drifted.append(relative or "MISSING_PATH")
+    if drifted:
+        reasons.append(f"core_files_drifted:{','.join(sorted(drifted))}")
     observed = {row.get("protocol_core_sha256", "") for row in rows if row.get("protocol_core_sha256")}
     if rows and observed != {expected}:
         reasons.append(f"job_core_hash_mismatch:{sorted(observed)}")
-    return gate(PASS if not reasons else FAIL, reasons, protocol_core_sha256=expected, core_lock_file_sha256=sha256_file(path))
+    return gate(
+        PASS if not reasons else FAIL,
+        reasons,
+        protocol_core_sha256=expected,
+        core_lock_file_sha256=sha256_file(path),
+        checked_core_files=len(payload.get("files", [])),
+    )
+
+
+def validate_final_lock(root: Path) -> dict[str, Any]:
+    path = root / "PROTOCOL_LOCK.json"
+    if not path.is_file():
+        return gate(NOT_READY, ["PROTOCOL_LOCK.json_missing"])
+    payload = read_json(path)
+    reasons: list[str] = []
+    if payload.get("status") != "LOCKED":
+        reasons.append("final_lock_status_not_locked")
+    core_path = root / "PROTOCOL_CORE_LOCK.json"
+    if not core_path.is_file() or sha256_file(core_path) != payload.get("core_lock_sha256"):
+        reasons.append("core_lock_file_sha256_mismatch")
+    manifest_path = root / "manifests/docking_jobs.tsv"
+    if not manifest_path.is_file() or sha256_file(manifest_path) != payload.get("job_manifest_sha256"):
+        reasons.append("job_manifest_sha256_mismatch")
+    drifted: list[str] = []
+    for record in payload.get("files", []):
+        relative = str(record.get("path", ""))
+        file_path = root / relative
+        if not relative or not file_path.is_file() or sha256_file(file_path) != record.get("sha256"):
+            drifted.append(relative or "MISSING_PATH")
+    if drifted:
+        reasons.append(f"final_protocol_files_drifted:{','.join(sorted(drifted))}")
+    return gate(
+        PASS if not reasons else FAIL,
+        reasons,
+        final_lock_file_sha256=sha256_file(path),
+        protocol_lock_sha256=payload.get("protocol_lock_sha256", ""),
+        checked_final_files=len(payload.get("files", [])),
+    )
 
 
 def validate_job_manifest(protocol: dict[str, Any], rows: list[dict[str, str]], expected_total_jobs: int | None) -> dict[str, Any]:
@@ -228,6 +273,7 @@ def evaluate(
         "interface_split": interface,
         "normalized_references": validate_references(protocol, root, interface),
         "core_lock": validate_core_lock(root, rows),
+        "final_lock": validate_final_lock(root),
         "job_manifest": validate_job_manifest(protocol, rows, expected_total_jobs),
         "rendered_cfg_and_air": validate_rendered_configs(protocol, rows, interface),
     }

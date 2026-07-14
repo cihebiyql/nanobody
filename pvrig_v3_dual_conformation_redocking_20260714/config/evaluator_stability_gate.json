@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "gate_id": "pvrig_v3_evaluator_stability_v2",
+  "endpoint": {
+    "blocker_supported_classes": ["A", "B"],
+    "strict_class": "A",
+    "pair_labels": ["STRICT_A", "SUPPORTED_AB", "OTHER"]
+  },
+  "completion": {
+    "minimum_successful_seeds_per_entity_conformation": 2,
+    "minimum_pose_models_per_successful_job": 4
+  },
+  "reproducibility": {
+    "minimum_model_pair_consensus_fraction": 0.5,
+    "minimum_model_native_cross_support_agreement_fraction": 0.7,
+    "minimum_robust_control_job_fraction": 0.7,
+    "minimum_control_entity_conformation_seed_consensus_fraction": 0.7,
+    "maximum_control_native_cross_support_disagreement_fraction": 0.3
+  },
+  "control_calibration": {
+    "minimum_positive_robust_supported_entity_fraction": 0.5,
+    "maximum_destructive_robust_strict_a_entity_fraction": 0.5
+  },
+  "threshold_sensitivity": {
+    "scales": [0.9, 1.0, 1.1],
+    "cohort": "candidate",
+    "maximum_absolute_strict_a_rate_delta_from_scale_1": 0.2
+  },
+  "interpretation": {
+    "scope": "operational_and_geometry_evaluator_stability",
+    "does_not_establish": [
+      "binding_affinity",
+      "experimental_blocking",
+      "P2_P3_P4_enrichment"
+    ]
+  }
+}

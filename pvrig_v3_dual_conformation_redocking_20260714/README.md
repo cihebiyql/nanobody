@@ -9,7 +9,7 @@
 - 独立构象：`8x6b`、`9e6y`；
 - 显式随机种子：`917`、`1931`、`3253`；
 - 任务总数：`(128 + 47) x 2 x 3 = 1050`；
-- 下一批 P2/P3/P4 生成：评价器稳定门禁通过前硬锁定。
+- 下一批 P2/P3/P4 生成：评价器稳定与冻结面板富集两道门禁同时通过前硬锁定。
 
 ## 为什么需要 V3
 
@@ -64,6 +64,8 @@ dock_9e6y -> score_8x6b_cross
 - 2.5 A clash 原子对和残基对；
 - native/cross 参考系和对齐 RMSD。
 
+每个成功 job 还统计全部 selected models 的 native/cross 成对分类、主类占比、严格 A 占比和支持/不支持一致率，避免只用 HADDOCK 最优单个 pose 代表整个 job。
+
 旧 `BLOCKER_LIKE_A` 阈值只作为兼容性参考，必须由47条同协议控制重新评估；在稳定门禁通过前，不能把旧阈值称为已经重新校准。
 
 ## 目录
@@ -109,6 +111,11 @@ scripts/deploy_node1.sh
 scripts/launch_node1.sh validate
 scripts/launch_node1.sh pipeline
 scripts/launch_node1.sh status
+
+# 6. 全量结束后编排器会自动汇总；也可按相同顺序手工复核
+python3 scripts/aggregate_results.py
+python3 scripts/analyze_p2_p3_p4_enrichment.py
+python3 scripts/guard_next_generation.py
 ```
 
 node1 的固定运行目录是：
@@ -127,7 +134,7 @@ node1 的固定运行目录是：
 scripts/sync_remote_status.sh
 ```
 
-## 稳定性门禁
+## 第一道门禁：评价器稳定
 
 只有 `reports/EVALUATOR_STABLE.json` 同时满足下列条件，状态才允许为 `PASS`：
 
@@ -135,12 +142,28 @@ scripts/sync_remote_status.sh
 2. 每个实体在两个构象上均至少 2/3 seeds 成功；
 3. 两个构象是独立 HADDOCK run，且每个 pose 的 native/cross 2x2 评分完整；
 4. UniProt 编号、23=12+11 热点拆分和 HETATM 排除测试通过；
-5. 阳性控制不能整体塌陷为 evidence-only；
-6. 破坏性/alanine 控制若仍为 A，必须被报告为异常或评价器不稳定；
-7. 已生成 control drift 和 threshold sensitivity 报告；
-8. 报告中的协议核心 hash、最终协议锁 hash和任务清单 hash完全匹配。
+5. 成功控制 job 至少有4个完整2x2模型，并满足预注册的模型主类一致率和 native/cross 支持一致率；
+6. 控制实体-构象的 seed 分类多数复现率达到预注册下限；
+7. 已知阳性在两个构象均形成可复现 A/B 支持的实体比例达到下限；
+8. 破坏性/alanine 控制在两个构象均可复现保留严格 A 的比例不得超过上限，而不是“只标记异常也算通过”；
+9. 候选严格 A 率在阈值缩放0.9/1.0/1.1下不发生超过预注册范围的漂移；
+10. 报告中的协议核心 hash、最终协议锁 hash、门禁配置 hash和任务清单 hash完全匹配。
 
-任何下一批生成入口都必须先运行 `scripts/guard_next_generation.py`。门禁不是 `PASS`、hash 不匹配或报告缺失时，该脚本非零退出。
+具体阈值固定在 `config/evaluator_stability_gate.json`。该报告只证明工作流、几何评价和控制校准达到预注册稳定性，不证明 P2/P3/P4 已富集。
+
+## 第二道门禁：P2/P3/P4 富集
+
+第一道门禁生产 `PASS` 后，`scripts/analyze_p2_p3_p4_enrichment.py` 才会分析固定128面板：
+
+- 候选 `robust_A` 要求两个 docking 构象各至少2个成功 seed，且各至少2个 seed 的 representative native/cross 都为 A；
+- 支持 seed 还必须至少有4个完整模型、model-pair 主类占比不低于0.75、严格 A 模型占比不低于0.50；
+- P2、P3、P4 分别与预注册的 P1/P5/P6 pooled comparator 比较；
+- 输出覆盖率、2x2计数、风险差、风险比、Wilson 95% CI、单侧 Fisher exact p 和3次比较的 Holm 校正；
+- 至少一个 phase 同时满足样本量、覆盖率、robust-A率、效应量和校正后 p 值阈值，`reports/P2_P3_P4_ENRICHMENT.json` 才为 `PASS`。
+
+阈值固定在 `config/next_generation_gate_spec.json`。推断范围明确限定为 `frozen_panel_internal_enrichment_not_external_validation`，不能表述为外部验证或真实实验富集。
+
+任何下一批生成入口都必须先运行 `scripts/guard_next_generation.py`。它同时要求 `EVALUATOR_STABLE.json` 和 `P2_P3_P4_ENRICHMENT.json` 为生产 `PASS`、所有 hash 精确匹配且至少存在一个可靠 phase；同时核验 core/final 文件清单以及 candidates、job_results、pose_scores 的 SHA256，并在临时目录基于当前证据重算一次富集报告。任一条件不满足或重算结果不完全一致时非零退出。
 
 ## 解释边界
 

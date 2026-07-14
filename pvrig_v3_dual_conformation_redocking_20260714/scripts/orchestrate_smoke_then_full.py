@@ -102,14 +102,24 @@ def main() -> int:
         cwd=root,
         env={**os.environ, "PVRIG_PROJECT_ROOT": str(root)},
     )
+    enrichment = read_json(root / "reports/P2_P3_P4_ENRICHMENT.json", {})
+    if full.returncode != 0 or aggregate.returncode != 0:
+        final_status = "COMPLETE_REVIEW_REQUIRED"
+    elif enrichment.get("status") == "PASS":
+        final_status = "COMPLETE_ENRICHMENT_SUPPORTED"
+    else:
+        final_status = "COMPLETE_GENERATION_LOCKED_NO_RELIABLE_ENRICHMENT"
     write_json(
         root / "status/orchestrator.json",
         {
-            "status": "COMPLETE" if full.returncode == 0 and aggregate.returncode == 0 else "COMPLETE_REVIEW_REQUIRED",
+            "status": final_status,
             "full_controller_returncode": full.returncode,
             "aggregate_returncode": aggregate.returncode,
             "smoke_validation": "reports/SMOKE_VALIDATION.json",
             "evaluator": "reports/EVALUATOR_STABLE.json",
+            "enrichment": "reports/P2_P3_P4_ENRICHMENT.json",
+            "enrichment_status": enrichment.get("status", "MISSING"),
+            "eligible_phases": enrichment.get("eligible_phases", []),
         },
     )
     return aggregate.returncode if full.returncode == 0 else full.returncode

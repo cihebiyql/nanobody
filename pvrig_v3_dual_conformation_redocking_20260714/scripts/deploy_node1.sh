@@ -28,6 +28,7 @@ payload=(
   manifests
   reports
   scripts
+  tests
 )
 
 echo "Deploying frozen evaluator to $REMOTE_HOST:$REMOTE_ROOT"
@@ -42,6 +43,8 @@ tar -C "$RUN_ROOT" \
   --exclude='reports/control_drift.tsv' \
   --exclude='reports/threshold_sensitivity.tsv' \
   --exclude='reports/EVALUATOR_STABLE.json' \
+  --exclude='reports/P2_P3_P4_ENRICHMENT.json' \
+  --exclude='reports/p2_p3_p4_enrichment.tsv' \
   -czf - "${payload[@]}" \
   | "$SSH_BIN" "$REMOTE_HOST" "mkdir -p '$REMOTE_ROOT' && tar -xzf - -C '$REMOTE_ROOT'"
 
