@@ -2128,7 +2128,10 @@ def build_mutant_delta_rows(
         if fingerprint_by_case is not None:
             if case_id not in fingerprint_by_case or base_id not in fingerprint_by_case:
                 raise CalibrationError(f"Missing fingerprint pair for {case_id} -> {base_id}")
-            q_rank = normalized_rank_weights(8)
+            ranks = sorted(fingerprint_by_case[case_id]["poses"])
+            if ranks != sorted(fingerprint_by_case[base_id]["poses"]):
+                raise CalibrationError(f"Fingerprint rank mismatch for {case_id} -> {base_id}")
+            q_rank = normalized_rank_weights(len(ranks))
             fingerprint_values = {
                 "fingerprints_available": True,
                 "fingerprint_unavailable_reason": "",
@@ -2140,7 +2143,7 @@ def build_mutant_delta_rows(
                         fingerprint_by_case[case_id]["poses"][rank][channel],
                         fingerprint_by_case[base_id]["poses"][rank][channel],
                     )
-                    for rank in range(1, 9)
+                    for rank in ranks
                 )
                 candidate_clusters = fingerprint_by_case[case_id]["clusters"][channel][
                     "0.5"
@@ -2556,8 +2559,10 @@ def render_report(
     rules: Mapping[str, Any],
     run_rows: Sequence[Mapping[str, str]],
     positive_cases: Mapping[str, Mapping[str, str]],
-    lofo_rows: Sequence[Mapping[str, str]],
+    lofo_summary: Mapping[str, Any],
     bootstrap_summary: Mapping[str, Any],
+    bootstrap_anchor_summary: Mapping[str, Any],
+    acceptance_summary: Mapping[str, Any],
     mutant_delta_rows: Sequence[Mapping[str, str]],
     robustness_rows: Sequence[Mapping[str, str]],
     artifact_hashes: Mapping[str, Mapping[str, Any]],
@@ -2569,11 +2574,7 @@ def render_report(
     positive_runs = [row for row in run_rows if row["candidate_id"] in positive_cases]
     positive_tiers = summarize_tiers(positive_runs)
     all_tiers = summarize_tiers(run_rows)
-    lofo_tiers = summarize_tiers(lofo_rows)
     delta_values = [float(row["paired_delta_candidate_minus_base"]) for row in mutant_delta_rows]
-    primary_grid = [row for row in robustness_rows if row["primary_preregistered_row"] == "true"]
-    if len(primary_grid) != 1:
-        raise CalibrationError("Robustness grid must contain one preregistered primary row")
     lines = [
         "# PVRIG V3 P2 Docking Gold V1.2 family-aware 校准结果",
         "",
@@ -2587,82 +2588,76 @@ def render_report(
         "training_label_release_eligible=false",
         "```",
         "",
-        "本次产物只涉及 **8X6B docking 单一 pose ensemble** 上的 pose-level A/B/C/E 规则和 "
-        "`R_calibration_run_8x6b_dock`。8X6B/9E6Y 是对同一批 pose 的两个 post-hoc scoring channel，"
-        "不是两次独立 receptor docking，因此仍不能冻结或宣称 `R_gold`。",
+        f"失败 acceptance gates：`{acceptance_summary['failed_gates']}`。",
+        "本产物只涉及 8X6B docking 单一 pose ensemble 上的计算几何校准；两个 baseline 是同一 pose 的 post-hoc scoring channel，不是独立双 receptor docking。",
         "",
-        "## 数据与权重",
+        "## 中心阈值与单位",
         "",
-        f"- 已知成功 anchor：{len(positive_cases)} 个 case，{len(set(v['family'] for v in positive_cases.values()))} 个 family。",
-        f"- 全部计分 case：{len(run_rows)}；每个 case 固定 Top-8，每个 pose 对 8X6B/9E6Y 各计分一次。",
-        "- family 等权，family 内 case 等权，case 内 rank 使用 `1/log2(rank+1)` 归一化权重。",
-        "- mutant 不被当作负样本；只计算它与 manifest 声明的 base reference 之间的成对几何差值。",
-        "",
-        "## 主规则阈值",
-        "",
-        "| baseline | metric | L=q20 positive-part | U=q50 positive-part | zero weight |",
-        "| --- | --- | ---: | ---: | ---: |",
+        "| channel | metric | L raw | U raw | L transformed | U transformed | raw unit | transform |",
+        "| --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
     ]
-    thresholds = rules["thresholds"]
-    threshold_channels = [(CANONICAL_H_CHANNEL, "H", thresholds["H_canonical"])]
+    threshold_channels = [
+        (CANONICAL_H_CHANNEL, "H", rules["thresholds"]["H_canonical"])
+    ]
     threshold_channels.extend(
-        (baseline, metric, thresholds["baseline"][baseline][metric])
+        (baseline, metric, rules["thresholds"]["baseline"][baseline][metric])
         for baseline in BASELINES
         for metric in BASELINE_METRICS
     )
-    for baseline, metric, item in threshold_channels:
+    for channel, metric, item in threshold_channels:
         lines.append(
-            f"| {baseline} | {metric} | {item['L']:.6g} | {item['U']:.6g} | {item['zero_weight']:.4f} |"
+            f"| {channel} | {metric} | {item['L_raw']:.8g} | {item['U_raw']:.8g} | "
+            f"{item['L_transformed']:.8g} | {item['U_transformed']:.8g} | "
+            f"{item['raw_unit']} | {item['transform']} |"
         )
     lines.extend(
         [
             "",
-            "`H` 每个 source pose 只有一个 canonical shared channel，两个 baseline 共用同一组 H L/U 和 `mu_H`。"
-            "`O` 在阈值学习和规则应用中都使用 `log1p(total_occluding_residue_pair_count)`；"
-            "`P` 为 CDR1+CDR2+CDR3 的 residue-pair count 占 total pair count 的比例。"
-            "零值不参与 positive-part q20/q50，且 membership 为 0。",
+            "O 的 raw cutpoint 单位是 residue-pair count；membership 中只执行一次 `log1p`，禁止对已变换 cutpoint 再取对数。",
             "",
-            "## 主要输出",
+            "## 中心结果",
             "",
-            f"- 11 个 success anchor 的 tier：`{positive_tiers}`。",
-            f"- 47 个全部 case 的 tier：`{all_tiers}`。",
-            f"- leave-one-family-out 的 11 个留出 case tier：`{lofo_tiers}`。",
-            f"- mutant paired deltas：{len(mutant_delta_rows)} 对；median(candidate-base)="
-            f"`{median(delta_values):.6g}`。该值只是计算几何差值，不是活性方向真值。",
-            f"- robustness grid：{len(robustness_rows)} 个预先固定组合；`best_row_selected=false` "
-            "对所有行成立，没有按结果选最好的一行。",
+            f"- 11 个 success anchors：`{positive_tiers}`。",
+            f"- 47 个全部 case：`{all_tiers}`。",
+            f"- LOFO passed：`{lofo_summary['passed']}`；macro-family G1-G3 recall=`{lofo_summary['macro_family_G1_G3_recall']:.6g}`；tier shift<=1 为 `{lofo_summary['tier_shift_le_one_count']}/11`。",
+            f"- mutant paired deltas：{len(mutant_delta_rows)}；median(delta_R)=`{median(delta_values):.6g}`；不产生 binary negative label。",
+            f"- sensitivity grid：{len(robustness_rows)} 行；固定 54 组合；所有行 `best_row_selected=false`。",
             "",
-            "## Hierarchical family bootstrap",
+            "## Bootstrap",
             "",
-            "| baseline | metric/cutpoint | 2.5% | median | 97.5% |",
-            "| --- | --- | ---: | ---: | ---: |",
+            f"- seed={bootstrap_seed}，B={bootstrap_replicates}。",
+            f"- threshold rows={bootstrap_replicates * 10}；anchor evaluation rows={bootstrap_replicates * 11}。",
+            f"- undefined replicates={bootstrap_summary['undefined_replicate_count']}；U==L 被记录为 undefined，不使用 step membership。",
+            f"- modal probability>=0.70：`{bootstrap_anchor_summary['anchors_modal_probability_ge_0_70_count']}/11`，要求 >=9。",
+            f"- each-family retention gate：`{bootstrap_anchor_summary['family_retention_gate_passed']}`。",
+            "",
+            "### 未通过 modal/retention 的 anchors",
+            "",
         ]
     )
-    bootstrap_channels = {
-        CANONICAL_H_CHANNEL: ("H",),
-        **{baseline: BASELINE_METRICS for baseline in BASELINES},
-    }
-    for baseline, metrics in bootstrap_channels.items():
-        for metric in metrics:
-            for cutpoint in ("L", "U"):
-                item = bootstrap_summary[baseline][metric][cutpoint]
-                lines.append(
-                    f"| {baseline} | {metric}/{cutpoint} | {item['q025']:.6g} | "
-                    f"{item['median']:.6g} | {item['q975']:.6g} |"
-                )
+    for candidate_id, summary in bootstrap_anchor_summary["anchors"].items():
+        if (
+            not summary["modal_probability_gate_passed"]
+            or summary["g1_g3_retention_probability"] < 0.70
+        ):
+            lines.append(
+                f"- `{candidate_id}` family={summary['family']} modal={summary['modal_tier']} "
+                f"p_modal={summary['modal_tier_probability']:.4f} "
+                f"P(G1-G3)={summary['g1_g3_retention_probability']:.4f}"
+            )
     lines.extend(
         [
             "",
-            "Bootstrap 先对 family 有放回抽样，再在被抽中的 family 内对 case 有放回抽样；"
-            f"seed={bootstrap_seed}，B={bootstrap_replicates}。Top-8 rank 是预先固定的计算单元，"
-            "不再对 rank 独立重抽样。",
+            "## Acceptance summary",
             "",
-            "## 证据边界与下一关",
-            "",
-            "1. 这些规则可用于 V1.2 pose-level 和单个 8X6B-dock run 的可重复计分。",
-            "2. 它们不能单独解除 `P2_TRAINING_BLOCKED`，也不能把 mutant 变成 non-binder 负样本。",
-            "3. 必须继续完成 8-run smoke、52-run failure regression，并在 rebuilt Pilot64 中验证独立 "
-            "8X6B-dock/9E6Y-dock aggregation，才能进入全新 formal holdout。",
+            "| gate | passed |",
+            "| --- | --- |",
+        ]
+    )
+    for name, gate in acceptance_summary["gates"].items():
+        lines.append(f"| {name} | `{gate['passed']}` |")
+    lines.extend(
+        [
             "",
             "## Artifact hashes",
             "",
@@ -2676,21 +2671,72 @@ def render_report(
     return "\n".join(lines)
 
 
-def publish_directory(staging: Path, destination: Path) -> None:
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    backup = destination.with_name(destination.name + ".previous")
-    if backup.exists():
-        shutil.rmtree(backup)
-    if destination.exists():
-        os.replace(destination, backup)
+def publish_outputs_transaction(
+    staging_dir: Path,
+    destination_dir: Path,
+    staging_report: Path,
+    destination_report: Path,
+) -> None:
+    destination_dir.parent.mkdir(parents=True, exist_ok=True)
+    destination_report.parent.mkdir(parents=True, exist_ok=True)
+    if destination_dir.exists() and not destination_dir.is_dir():
+        raise CalibrationError(f"Output directory path is not a directory: {destination_dir}")
+    if destination_report.exists() and not destination_report.is_file():
+        raise CalibrationError(f"Report path is not a file: {destination_report}")
+    expected_dir_hashes = {
+        path.relative_to(staging_dir).as_posix(): sha256_file(path)
+        for path in sorted(staging_dir.rglob("*"))
+        if path.is_file()
+    }
+    expected_report_hash = sha256_file(staging_report)
+    directory_backup = Path(
+        tempfile.mkdtemp(prefix=f".{destination_dir.name}.previous-", dir=destination_dir.parent)
+    )
+    directory_backup.rmdir()
+    report_backup_handle = tempfile.NamedTemporaryFile(
+        prefix=f".{destination_report.name}.previous-",
+        dir=destination_report.parent,
+        delete=False,
+    )
+    report_backup = Path(report_backup_handle.name)
+    report_backup_handle.close()
+    report_backup.unlink()
+    had_directory = destination_dir.exists()
+    had_report = destination_report.exists()
+    installed_directory = False
+    installed_report = False
     try:
-        os.replace(staging, destination)
+        if had_directory:
+            os.replace(destination_dir, directory_backup)
+        if had_report:
+            os.replace(destination_report, report_backup)
+        os.replace(staging_dir, destination_dir)
+        installed_directory = True
+        os.replace(staging_report, destination_report)
+        installed_report = True
+        observed_dir_hashes = {
+            path.relative_to(destination_dir).as_posix(): sha256_file(path)
+            for path in sorted(destination_dir.rglob("*"))
+            if path.is_file()
+        }
+        if observed_dir_hashes != expected_dir_hashes:
+            raise CalibrationError("Published calibration directory hash-set mismatch")
+        if sha256_file(destination_report) != expected_report_hash:
+            raise CalibrationError("Published calibration report hash mismatch")
     except Exception:
-        if backup.exists() and not destination.exists():
-            os.replace(backup, destination)
+        if installed_directory and destination_dir.exists():
+            shutil.rmtree(destination_dir)
+        if installed_report and destination_report.exists():
+            destination_report.unlink()
+        if had_directory and directory_backup.exists():
+            os.replace(directory_backup, destination_dir)
+        if had_report and report_backup.exists():
+            os.replace(report_backup, destination_report)
         raise
-    if backup.exists():
-        shutil.rmtree(backup)
+    if directory_backup.exists():
+        shutil.rmtree(directory_backup)
+    if report_backup.exists():
+        report_backup.unlink()
 
 
 def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
@@ -2795,6 +2841,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
     staging = Path(
         tempfile.mkdtemp(prefix=f".{config.outdir.name}.staging-", dir=config.outdir.parent)
     )
+    report_staging: Path | None = None
     try:
         rules_path = staging / RULES_NAME
         pose_path = staging / POSE_SCORES_NAME
@@ -2864,8 +2911,10 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             rules=rules,
             run_rows=run_rows,
             positive_cases=positive_cases,
-            lofo_rows=lofo_rows,
+            lofo_summary=lofo_summary,
             bootstrap_summary=bootstrap_summary,
+            bootstrap_anchor_summary=bootstrap_anchor_summary,
+            acceptance_summary=acceptance_summary,
             mutant_delta_rows=mutant_delta_rows,
             robustness_rows=robustness_rows,
             artifact_hashes=artifact_hashes,
@@ -2874,7 +2923,14 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             bootstrap_seed=config.bootstrap_seed,
             bootstrap_replicates=config.bootstrap_replicates,
         )
-        report_staging = staging / config.report.name
+        config.report.parent.mkdir(parents=True, exist_ok=True)
+        report_handle = tempfile.NamedTemporaryFile(
+            prefix=f".{config.report.name}.staging-",
+            dir=config.report.parent,
+            delete=False,
+        )
+        report_staging = Path(report_handle.name)
+        report_handle.close()
         report_staging.write_text(report_text, encoding="utf-8")
         report_evidence = {
             "relpath": canonical_path(config.report),
@@ -2907,17 +2963,19 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
                 [row for row in run_rows if row["candidate_id"] in positive_cases]
             ),
             "all_case_tiers": summarize_tiers(run_rows),
-            "lofo_tiers": summarize_tiers(lofo_rows),
+            "lofo": lofo_summary,
             "bootstrap": {
                 "seed": config.bootstrap_seed,
                 "replicates": config.bootstrap_replicates,
                 "hierarchy": "family_with_replacement_then_case_within_family_with_replacement",
                 "summary": bootstrap_summary,
+                "anchor_evaluation_summary": bootstrap_anchor_summary,
             },
             "mutant_comparison": {
                 "paired_delta_count": len(mutant_delta_rows),
                 "binary_negative_labels_assigned": False,
                 "semantics": "declared-base paired computational geometry deltas only",
+                "fingerprint_evidence": fingerprint_evidence,
             },
             "robustness_grid": {
                 "rows": len(robustness_rows),
@@ -2926,24 +2984,24 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
                 "lower_quantiles": list(ROBUSTNESS_LOWER_QUANTILES),
                 "upper_quantiles": list(ROBUSTNESS_UPPER_QUANTILES),
                 "support_cutoffs": list(ROBUSTNESS_SUPPORT_CUTOFFS),
+                "minimum_supporting_poses": list(ROBUSTNESS_MIN_SUPPORTING_POSES),
             },
+            "acceptance_summary": acceptance_summary,
             "input_bindings": input_bindings,
             "toolchain": rules_payload["toolchain"],
             "output_sha256": artifact_hashes,
             "report": report_evidence,
         }
         write_json(staging / AUDIT_NAME, audit)
-        publish_directory(staging, config.outdir)
-        config.report.parent.mkdir(parents=True, exist_ok=True)
-        report_source = config.outdir / config.report.name
-        report_tmp = config.report.with_name(config.report.name + ".tmp")
-        shutil.copyfile(report_source, report_tmp)
-        os.replace(report_tmp, config.report)
-        report_source.unlink()
+        publish_outputs_transaction(
+            staging, config.outdir, report_staging, config.report
+        )
         return audit
     except Exception:
         if staging.exists():
             shutil.rmtree(staging)
+        if report_staging is not None and report_staging.exists():
+            report_staging.unlink()
         raise
 
 
@@ -2951,6 +3009,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics-csv", type=Path, default=DEFAULT_METRICS_CSV)
     parser.add_argument("--upstream-audit", type=Path, default=DEFAULT_UPSTREAM_AUDIT)
+    parser.add_argument("--contacts-jsonl", type=Path, default=DEFAULT_CONTACTS_JSONL)
+    parser.add_argument(
+        "--processor-release-manifest",
+        type=Path,
+        default=DEFAULT_PROCESSOR_RELEASE_MANIFEST,
+    )
     parser.add_argument("--positive-manifest", type=Path, default=DEFAULT_POSITIVE_MANIFEST)
     parser.add_argument("--mutant-manifest", type=Path, default=DEFAULT_MUTANT_MANIFEST)
     parser.add_argument("--outdir", type=Path, default=DEFAULT_OUTDIR)
@@ -2965,6 +3029,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     config = CalibrationConfig(
         metrics_csv=args.metrics_csv.resolve(),
         upstream_audit=args.upstream_audit.resolve(),
+        contacts_jsonl=args.contacts_jsonl.resolve(),
+        processor_release_manifest=args.processor_release_manifest.resolve(),
         positive_manifest=args.positive_manifest.resolve(),
         mutant_manifest=args.mutant_manifest.resolve(),
         outdir=args.outdir.resolve(),

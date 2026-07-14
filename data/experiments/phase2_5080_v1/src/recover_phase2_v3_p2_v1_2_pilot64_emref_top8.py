@@ -14,7 +14,6 @@ import configparser
 import csv
 import gzip
 import hashlib
-import io
 import json
 import math
 import os
@@ -118,6 +117,10 @@ CSV_FIELDS = (
     "source_stage",
     "selection_cohort",
     "run_id",
+    "case_id",
+    "candidate_id",
+    "family",
+    "role",
     "pilot_rank",
     "pilot_id",
     "source_cohort",
@@ -166,6 +169,13 @@ CSV_FIELDS = (
     "pvrig_excluded_hydrogen_or_deuterium_count",
     "pvrig_chain_inventory_json",
     "completion_status",
+    "config_relpath",
+    "completion_relpath",
+    "monomer_relpath",
+    "receptor_relpath",
+    "restraint_relpath",
+    "hotspot_relpath",
+    "emref_params_relpath",
     "completion_sha256",
     "config_sha256",
     "monomer_sha256",
@@ -176,8 +186,10 @@ CSV_FIELDS = (
     "source_io_sha256",
     "source_io_relpath",
     "remote_source_io_relpath",
+    "source_manifest_relpath",
     "source_manifest_sha256",
     "source_manifest_row_sha256",
+    "source_failed_audit_relpath",
     "source_failed_audit_sha256",
     "remote_inventory_request_sha256",
     "remote_file_hash_chain",
@@ -653,10 +665,8 @@ for run in request["runs"]:
         paths.add(matches[0][0])
 
 entries = []
-payloads = {}
 for rel in sorted(paths):
     data = local(rel).read_bytes()
-    payloads[rel] = data
     entries.append({"relpath": rel, "sha256": sha(data), "bytes": len(data)})
 inventory = {
     "schema_version": "phase2_v3_p2_v1_2_remote_file_inventory_v1",
@@ -668,13 +678,14 @@ inventory = {
 }
 inventory_bytes = (canonical(inventory) + "\n").encode("utf-8")
 with tarfile.open(fileobj=sys.stdout.buffer, mode="w|") as archive:
-    for rel in sorted(payloads):
-        data = payloads[rel]
+    for entry in entries:
+        rel = entry["relpath"]
         info = tarfile.TarInfo(rel)
-        info.size = len(data)
+        info.size = entry["bytes"]
         info.mode = 0o644
         info.mtime = 0
-        archive.addfile(info, io.BytesIO(data))
+        with local(rel).open("rb") as handle:
+            archive.addfile(info, handle)
     info = tarfile.TarInfo(request["inventory_relpath"])
     info.size = len(inventory_bytes)
     info.mode = 0o644
@@ -1158,6 +1169,10 @@ def build(
                 "source_stage": SOURCE_STAGE,
                 "selection_cohort": selection_label,
                 "run_id": run_id,
+                "case_id": row["pilot_id"],
+                "candidate_id": row["pilot_id"],
+                "family": row["source_cohort"],
+                "role": row["seed_role"],
                 "pilot_rank": row["pilot_rank"],
                 "pilot_id": row["pilot_id"],
                 "source_cohort": row["source_cohort"],
@@ -1206,6 +1221,13 @@ def build(
                 "pvrig_excluded_hydrogen_or_deuterium_count": pvrig["excluded_hydrogen_or_deuterium_count"],
                 "pvrig_chain_inventory_json": canonical_json(pvrig),
                 "completion_status": completion["status"],
+                "config_relpath": row["config_relpath"],
+                "completion_relpath": row["completion_relpath"],
+                "monomer_relpath": row["monomer_relpath"],
+                "receptor_relpath": row["receptor_relpath"],
+                "restraint_relpath": row["restraint_relpath"],
+                "hotspot_relpath": row["hotspot_relpath"],
+                "emref_params_relpath": params_relpath,
                 "completion_sha256": completion_sha256,
                 "config_sha256": sha256_file(config_path),
                 "monomer_sha256": sha256_file(monomer_path),
@@ -1216,8 +1238,12 @@ def build(
                 "source_io_sha256": io_sha256,
                 "source_io_relpath": workspace_relative(io_path, workspace_root),
                 "remote_source_io_relpath": io_relpath,
+                "source_manifest_relpath": workspace_relative(manifest.path, workspace_root),
                 "source_manifest_sha256": manifest.sha256,
                 "source_manifest_row_sha256": manifest.row_hashes[run_id],
+                "source_failed_audit_relpath": workspace_relative(
+                    failed_audit_path.resolve(), workspace_root
+                ),
                 "source_failed_audit_sha256": failed_audit_sha256,
                 "remote_inventory_request_sha256": request["request_sha256"],
                 "remote_file_hash_chain": remote_inventory["file_hash_chain"],
@@ -1243,6 +1269,16 @@ def build(
                 "iniseed": parse_int(row["iniseed"], f"{run_id}.iniseed"),
                 "cdr_ranges": {name: row[f"{name}_range"] for name in ("cdr1", "cdr2", "cdr3")},
                 "completion_status": completion["status"],
+                "input_relpaths": {
+                    "config": row["config_relpath"],
+                    "completion": row["completion_relpath"],
+                    "monomer": row["monomer_relpath"],
+                    "receptor": row["receptor_relpath"],
+                    "restraint": row["restraint_relpath"],
+                    "hotspot": row["hotspot_relpath"],
+                    "emref_params": params_relpath,
+                    "emref_io": io_relpath,
+                },
                 "completion_sha256": completion_sha256,
                 "config_sha256": row["config_sha256"],
                 "monomer_sha256": row["monomer_sha256"],

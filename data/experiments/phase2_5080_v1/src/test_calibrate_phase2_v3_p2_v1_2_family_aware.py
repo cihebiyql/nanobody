@@ -34,6 +34,27 @@ def metric_row(
     cdr1 = cdr_pairs // 3
     cdr2 = cdr_pairs // 3
     cdr3 = cdr_pairs - cdr1 - cdr2
+    reference_inventory = MOD.canonical_json(
+        {
+            "selection_rule": "protein ATOM heavy atoms only; all HETATM excluded",
+            "selected_protein_heavy_atom_count": 10,
+            "protein_atom_heavy_atom_count": 10,
+            "selected_protein_residue_count": 2,
+            "protein_atom_residue_count": 2,
+        }
+    )
+    region_inventory = MOD.canonical_json(
+        {
+            "selection_rule": "protein ATOM records; all HETATM excluded",
+            "selected_protein_heavy_atom_count": 10,
+            "protein_atom_heavy_atom_count": 10,
+            "selected_protein_residue_count": 2,
+            "protein_atom_residue_count": 2,
+        }
+    )
+    canonical_payload_hash = MOD.sha256_json(
+        {"candidate_id": candidate_id, "rank": rank, "channel": "canonical"}
+    )
     row = {
         "schema_version": "test_metrics_v1",
         "protocol_id": MOD.PROTOCOL_ID,
@@ -47,6 +68,14 @@ def metric_row(
         "family": family,
         "canonical_rank": str(rank),
         "baseline": baseline,
+        "selector_row_sha256": MOD.sha256_json(
+            {"candidate_id": candidate_id, "rank": rank, "selector": True}
+        ),
+        "aligned_pose_sha256": MOD.sha256_json(
+            {"candidate_id": candidate_id, "rank": rank, "baseline": baseline}
+        ),
+        "reference_relpath": f"reference_{baseline}.pdb",
+        "reference_sha256": MOD.sha256_json({"reference": baseline}),
         "pvrig_vhh_contact_pair_count": str(total_pairs + 50),
         "pvrig_contact_residue_count": "12",
         "vhh_contact_residue_count": "9",
@@ -61,6 +90,15 @@ def metric_row(
         "cdr1_occluding_residue_pair_count": str(cdr1),
         "cdr2_occluding_residue_pair_count": str(cdr2),
         "cdr3_occluding_residue_pair_count": str(cdr3),
+        "reference_pvrl2_record_inventory_json": reference_inventory,
+        "region_reference_pvrl2_record_inventory_json": region_inventory,
+        "canonical_internal_score_payload_sha256": canonical_payload_hash,
+        "baseline_pose_score_payload_sha256": MOD.sha256_json(
+            {"candidate_id": candidate_id, "rank": rank, "baseline": baseline, "pose": True}
+        ),
+        "region_score_payload_sha256": MOD.sha256_json(
+            {"candidate_id": candidate_id, "rank": rank, "baseline": baseline, "region": True}
+        ),
     }
     row["metrics_row_sha256"] = MOD.row_sha256(row, "metrics_row_sha256")
     return row
@@ -100,6 +138,19 @@ def positive_metadata(cases: dict[str, str]) -> dict[str, dict[str, str]]:
     }
 
 
+def threshold_payload(lower: float, upper: float, metric: str) -> dict[str, object]:
+    transform = "log1p" if metric == "O" else "identity"
+    return {
+        "L": lower,
+        "U": upper,
+        "L_raw": lower,
+        "U_raw": upper,
+        "L_transformed": math.log1p(lower) if metric == "O" else lower,
+        "U_transformed": math.log1p(upper) if metric == "O" else upper,
+        "transform": transform,
+    }
+
+
 def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
@@ -129,18 +180,24 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
 
     def test_positive_part_hurdle_and_zero_membership(self) -> None:
         threshold = MOD.threshold_from_weighted_values(
-            [(0.0, 0.7), (0.2, 0.1), (0.4, 0.2)], 0.2, 0.5
+            [(0.0, 0.7), (0.2, 0.1), (0.4, 0.2)], 0.2, 0.5, metric="H"
         )
         self.assertGreater(threshold["L"], 0.0)
         self.assertAlmostEqual(threshold["zero_weight"], 0.7)
         self.assertEqual(MOD.membership(0.0, threshold), 0.0)
         self.assertEqual(MOD.membership(threshold["L"] / 2.0, threshold), 0.0)
         with self.assertRaises(MOD.CalibrationError):
-            MOD.threshold_from_weighted_values([(0.0, 1.0)], 0.2, 0.5)
+            MOD.threshold_from_weighted_values(
+                [(0.0, 1.0)], 0.2, 0.5, metric="H"
+            )
 
     def test_pose_rule_boundaries(self) -> None:
         metric_rules = {
-            metric: {"L": 1.0 if metric == "O" else 0.2, "U": 2.0 if metric == "O" else 0.6}
+            metric: threshold_payload(
+                1.0 if metric == "O" else 0.2,
+                2.0 if metric == "O" else 0.6,
+                metric,
+            )
             for metric in MOD.METRICS
         }
         rules = {
@@ -201,7 +258,12 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
             "p3": (0.8, 30, 15),
         }
         rows = rows_for_cases(cases, 2, values)
-        output = MOD.build_lofo_rows(rows, positive_metadata(cases), 2)
+        metadata = positive_metadata(cases)
+        central_rules = MOD.derive_rules(rows, metadata, 2)
+        central_runs = MOD.aggregate_run_scores(
+            MOD.score_pose_rows(rows, central_rules), metadata
+        )
+        output = MOD.build_lofo_rows(rows, metadata, central_runs, 2)
         self.assertEqual(len(output), 3)
         self.assertEqual({row["held_out_family"] for row in output}, {"F1", "F2", "F3"})
         self.assertTrue(all(row["training_family_count"] == "2" for row in output))
@@ -211,17 +273,19 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
         cases = {"p1": "F1", "p2": "F1", "p3": "F2", "p4": "F3"}
         rows = rows_for_cases(cases, 2)
         metadata = positive_metadata(cases)
-        first = MOD.hierarchical_bootstrap_rows(
+        first_thresholds, first_anchors = MOD.hierarchical_bootstrap_rows(
             rows, metadata, 2, seed=20260714, replicates=7
         )
-        second = MOD.hierarchical_bootstrap_rows(
+        second_thresholds, second_anchors = MOD.hierarchical_bootstrap_rows(
             rows, metadata, 2, seed=20260714, replicates=7
         )
-        self.assertEqual(first, second)
-        self.assertEqual(len(first), 7 * (1 + 2 * 2) * 2)
+        self.assertEqual(first_thresholds, second_thresholds)
+        self.assertEqual(first_anchors, second_anchors)
+        self.assertEqual(len(first_thresholds), 7 * (1 + 2 * 2) * 2)
+        self.assertEqual(len(first_anchors), 7 * len(cases))
         self.assertEqual(
-            MOD.row_hash_chain(first, "bootstrap_row_sha256"),
-            MOD.row_hash_chain(second, "bootstrap_row_sha256"),
+            MOD.row_hash_chain(first_thresholds, "bootstrap_row_sha256"),
+            MOD.row_hash_chain(second_thresholds, "bootstrap_row_sha256"),
         )
 
     def test_nonfinite_hash_and_duplicate_rows_fail_closed(self) -> None:
@@ -343,6 +407,8 @@ class FamilyCalibrationEndToEndTests(unittest.TestCase):
             config = MOD.CalibrationConfig(
                 metrics_csv=metrics_csv,
                 upstream_audit=None,
+                contacts_jsonl=None,
+                processor_release_manifest=None,
                 positive_manifest=positive_manifest,
                 mutant_manifest=mutant_manifest,
                 outdir=outdir,
@@ -364,7 +430,7 @@ class FamilyCalibrationEndToEndTests(unittest.TestCase):
             self.assertEqual(first_hashes, second_hashes)
             self.assertEqual(first["status"], second["status"])
             self.assertEqual(
-                first["status"], "PASS_V1_2_FAMILY_AWARE_DRY_RUN_BUILT_NOT_FROZEN"
+                first["status"], "FAIL_V1_2_FAMILY_CALIBRATION_NOT_FROZEN"
             )
             self.assertFalse(first["formal_eligible"])
             self.assertFalse(first["pose_rule_threshold_freeze_eligible"])
