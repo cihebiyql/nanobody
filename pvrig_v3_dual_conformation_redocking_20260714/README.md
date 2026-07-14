@@ -124,6 +124,14 @@ node1 的固定运行目录是：
 /data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/
 ```
 
+该目录位于 node1/node23 共享的 `/data` NFS。由于 node1 持续高负载，唯一全量 controller 已于 `2026-07-15` 无损迁移到纯 CPU 节点 node23；已有成功结果和任务状态原地保留。`scripts/launch_node1.sh` 是兼容保留的旧文件名，查询当前生产控制器应使用：
+
+```bash
+REMOTE_HOST=node23 scripts/launch_node1.sh status
+```
+
+迁移记录位于 `status/controller_migration_node1_to_node23.json`。共享 `status/controller.lock` 保证 node1 与 node23 不会同时启动两个控制器。
+
 控制器按节点 1-minute load 自适应并发：`>=62: 0`、`56-62: 1`、`48-56: 2`、`<48: 4`，每个 HADDOCK3 任务4核、`nice -n 15`。HADDOCK3 是 CPU 工作负载，空闲 GPU 不会直接加速它。
 
 固定 smoke 集合包含 HR-151 阳性控制和旧几何排名第1候选，各自在 8X6B/9E6Y 上以 seed 917 独立运行，共4个任务。smoke 只验证配置、两个受体分支、候选/控制 monomer、selected-model 发现和2x2后处理能否闭合；它不用于判断评价器稳定。

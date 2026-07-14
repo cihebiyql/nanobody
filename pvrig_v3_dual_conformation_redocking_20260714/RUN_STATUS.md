@@ -1,15 +1,16 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-14 19:59 Asia/Shanghai`
-- 当前阶段：`SMOKE_PASS_FULL_QUEUE_RUNNING_LOAD_AWARE`
+- 更新时间：`2026-07-15 06:03 Asia/Shanghai`
+- 当前阶段：`FULL_QUEUE_MIGRATED_TO_NODE23_RUNNING_4_WAY`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
+- node23 协议验证：`PASS`
 - 评价器稳定性：`NOT_READY`
 - P2/P3/P4 固定面板富集：`NOT_READY`
 - 下一批 P2/P3/P4 生成：`LOCKED`
 - 本地目录：`/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714`
-- node1 目录：`/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714`
+- node1/node23 共享目录：`/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714`
 
 ## 冻结标识
 
@@ -38,16 +39,26 @@
 - [x] 评价器稳定门禁已加入模型、seed、native/cross、阳性、破坏性控制和阈值敏感性判据；
 - [x] 新增 P2/P3/P4 相对 P1/P5/P6 的 Fisher/Holm 固定面板富集门禁；
 - [x] `guard_next_generation.py` 现在要求两个生产报告同时 `PASS` 才能解锁。
+- [x] node1 长时间高负载后，在无活跃 job 的窗口将唯一控制器无损迁移到 node23；
+- [x] 迁移保留38个成功任务，node1旧PID已归档，共享控制锁已由node23接管。
 
-## node1 当前现场
+## 当前执行现场
 
-- 后台编排器 PID：`4072777`；全量 controller PID：`4074688`；
+- 当前控制器主机：`node23`；全量 controller PID：`3314757`；
+- node1 编排器 PID `4072777` 和 controller PID `4074688` 已停止，不存在双控制器；
 - smoke 结果：`4 SUCCESS / 0 FAIL`，selected models 数分别为 `10 / 10 / 10 / 9`；
 - smoke 已同时验证 HR-151 和 rank-1 候选的 8X6B、9E6Y 独立 HADDOCK run，以及每个 pose 的 native/cross 双参考评分；
-- 全量当前状态：`29 SUCCESS / 1021 PENDING`；已有 `8/350` 个实体-构象达到至少2个成功 seed；
-- 记录时 load1 约 `68.9`，故控制器暂不启动新任务；节点降载后自动恢复1/2/4并发；
-- 当前29个成功任务中控制任务27个、候选任务2个；远端部分汇总已有29个 pose-backed jobs，但所有终局门禁保持 `NOT_READY`；
-- node1 已验证最终锁文件 SHA256 为 `4d017059...b2693c`，远端 `PROTOCOL_VALIDATION.json` 为 `PASS`。
+- 全量当前状态：`38 SUCCESS / 4 RUNNING / 1008 PENDING`；已有 `11/350` 个实体-构象达到至少2个成功 seed；
+- node23 迁移前 load1 约 `4.2`，启动4个HADDOCK任务后约 `14.1`，当前并发上限为4；
+- 当前38个成功任务中控制任务36个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
+- 迁移证据：`status/controller_migration_node1_to_node23.json`；旧PID归档在 `status/migration_archive/`；
+- node23 已验证协议 `PASS`，现有38个结果未重算、未丢失。
+
+实时状态命令：
+
+```bash
+REMOTE_HOST=node23 scripts/launch_node1.sh status
+```
 
 ## 尚未完成
 
