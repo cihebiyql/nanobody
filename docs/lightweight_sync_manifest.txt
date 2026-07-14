@@ -737,6 +737,7 @@ data/experiments/phase2_5080_v1/src/test_pvrig_docking_scorers_v1_2.py
 data/experiments/phase2_5080_v1/src/test_pvrig_formal_candidate_meanpool.py
 data/experiments/phase2_5080_v1/src/test_recover_phase2_v3_p2_v1_2_pilot64_emref_top8.py
 data/experiments/phase2_5080_v1/src/test_recover_phase2_v3_p2_v1_3_dual47_emref_top8.py
+data/experiments/phase2_5080_v1/src/test_run_phase2_v3_p2_v1_3_production_autorun.py
 data/experiments/phase2_5080_v1/src/test_score_p3_late_fusion.py
 data/experiments/phase2_5080_v1/src/test_score_pvrig_candidates_v2_3.py
 data/experiments/phase2_5080_v1/src/test_score_pvrig_candidates_v2_4.py

@@ -406,7 +406,7 @@ def validate_calibration(release: Path) -> dict[str, Any]:
         raise AutorunError("Calibration release-input status mismatch")
     if rules.get("status") != "CALCULATED_PENDING_RELEASE_VALIDATION":
         raise AutorunError("Calibration rules status mismatch")
-    if release_input.get("release_id") != release.name:
+    if release_input.get("release_id") != release.resolve().name:
         raise AutorunError("Calibration release identity mismatch")
     audit_binding = release_input.get("calibration_audit", {})
     if not isinstance(audit_binding, dict) or audit_binding.get("sha256") != sha256_file(
@@ -753,6 +753,15 @@ class Autorun:
     def _command_hash(command: Sequence[str]) -> str:
         return sha256_bytes(canonical_json(list(command)).encode("utf-8"))
 
+    @staticmethod
+    def _implementation_hash(stage: Stage) -> str:
+        implementation = Path(stage.command[1])
+        if not implementation.is_file():
+            raise AutorunError(
+                f"Stage implementation is missing: {implementation}"
+            )
+        return sha256_file(implementation)
+
     def _receipt_valid(self, stage: Stage) -> bool:
         receipt = self.state["stages"].get(stage.name)
         if not isinstance(receipt, dict) or receipt.get("status") not in {
@@ -761,6 +770,12 @@ class Autorun:
         }:
             return False
         if receipt.get("command_sha256") != self._command_hash(stage.command):
+            return False
+        try:
+            implementation_sha256 = self._implementation_hash(stage)
+        except AutorunError:
+            return False
+        if receipt.get("implementation_sha256") != implementation_sha256:
             return False
         expected = receipt.get("artifacts")
         if not isinstance(expected, dict):
@@ -793,10 +808,31 @@ class Autorun:
         self.state["active_stage"] = stage.name
         self._save()
         self._log("stage_started", stage=stage.name, command=list(stage.command))
+        try:
+            implementation_sha256 = self._implementation_hash(stage)
+        except AutorunError as error:
+            receipt = {
+                "status": "FAILED_IMPLEMENTATION_VALIDATION",
+                "command": list(stage.command),
+                "command_sha256": self._command_hash(stage.command),
+                "error": str(error),
+                "started_at_utc": started,
+                "finished_at_utc": utc_now(),
+            }
+            self.state["stages"][stage.name] = receipt
+            self.state.pop("active_stage", None)
+            self._record_status(
+                STAGE_FAILURE,
+                failed_stage=stage.name,
+                failure_reason=str(error),
+            )
+            self._log("stage_failed", stage=stage.name, **receipt)
+            return False
         result = self.runner(stage.command, self.config.layout.data_root)
         command_evidence = {
             "command": list(stage.command),
             "command_sha256": self._command_hash(stage.command),
+            "implementation_sha256": implementation_sha256,
             "returncode": result.returncode,
             "stdout_sha256": sha256_bytes(result.stdout.encode("utf-8")),
             "stderr_sha256": sha256_bytes(result.stderr.encode("utf-8")),
