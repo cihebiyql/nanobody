@@ -102,7 +102,7 @@ class V13SyntheticFixture:
                     "full_inventory_equal": True,
                     "core_output_hashes_equal": True,
                     "content_addressed_release_id_equal": True,
-                    "release_id": "synthetic-pending-release",
+                    "release_id": "native-synthetic-pending-release",
                     "primary_inventory_sha256": "1" * 64,
                     "rebuild_inventory_sha256": "1" * 64,
                     "primary_processor_audit_sha256": calibration.sha256_file(
@@ -114,12 +114,12 @@ class V13SyntheticFixture:
                     "primary": {
                         "audit_path": "synthetic/primary/audit.json",
                         "audit_sha256": calibration.sha256_file(self.processor_audit),
-                        "release_id": "synthetic-pending-release",
+                        "release_id": "native-synthetic-pending-release",
                     },
                     "rebuild": {
                         "audit_path": "synthetic/rebuild/audit.json",
                         "audit_sha256": "2" * 64,
-                        "release_id": "synthetic-pending-release",
+                        "release_id": "native-synthetic-pending-release",
                     },
                 },
                 "publication": {
@@ -318,6 +318,14 @@ class V13SyntheticFixture:
                 "independent_qualification_required": True,
                 "validated": False,
             },
+            "publication_contract": {
+                "immutable_versioned_release": True,
+                "atomic_current_symlink_replacement": True,
+                "rollback_safe": True,
+                "release_id": "native-synthetic",
+                "release_relpath": "releases/native-synthetic",
+                "current_pointer_relpath": "current",
+            },
             "observed_contract": {
                 "case_count": 47,
                 "run_count": 94,
@@ -357,6 +365,9 @@ class V13SyntheticFixture:
             "input_sha256": {
                 "selector_csv": calibration.sha256_file(self.selector_csv),
                 "selector_audit": calibration.sha256_file(self.selector_audit),
+                "selector_publication_release_id": "synthetic-selector-release",
+                "execution_release_manifest": calibration.EXECUTION_RELEASE_SHA256,
+                "run_manifest": calibration.RUN_MANIFEST_SHA256,
                 "preregistration": calibration.PREREGISTRATION_SHA256,
                 "positive_manifest": calibration.POSITIVE_MANIFEST_SHA256,
                 "mutant_manifest": calibration.MUTANT_MANIFEST_SHA256,

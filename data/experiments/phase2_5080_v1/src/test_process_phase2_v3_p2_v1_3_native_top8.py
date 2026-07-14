@@ -5,6 +5,7 @@ import csv
 import gzip
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -337,31 +338,196 @@ class NativeFixture:
         self.selector_impl.parent.mkdir(parents=True, exist_ok=True)
         self.selector_impl.write_text("# synthetic selector\n", encoding="utf-8")
         self.selector_helper.write_text("# synthetic helper\n", encoding="utf-8")
-        rows: list[dict[str, str]] = []
-        fixed_hashes = {
-            name: MOD.sha256_bytes(name.encode("ascii"))
-            for name in (
-                "sequence",
-                "monomer",
-                "monomer_atom",
-                "monomer_residue",
-                "pose_vhh_atom",
-                "pose_vhh_residue",
-            )
-        }
+        self.selector_release_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(
+            MOD.selector_contract.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT,
+            self.identity_amendment,
+        )
+        amendment = MOD.selector_contract.load_identity_normalization_amendment()
+        with self.positive_manifest.open(newline="", encoding="utf-8") as handle:
+            teacher_row = next(csv.DictReader(handle))
+        teacher_row_hash = MOD.sha256_json(teacher_row)
+        sequence_hash = MOD.sha256_bytes(b"sequence")
+        write_csv(self.case_manifest, ["case_id", "candidate_id"], [{"case_id": "case_01", "candidate_id": "case_01"}])
+        write_csv(self.protocol_manifest, ["protocol_id"], [{"protocol_id": MOD.SELECTOR_PROTOCOL_ID}])
+
+        run_rows: list[dict[str, str]] = []
+        run_assets: dict[str, dict[str, object]] = {}
         for receptor in MOD.RECEPTORS:
             run_id = f"V13CAL_001__{receptor}__main"
+            run_dir = self.selector_release_dir / "assets" / run_id
+            run_dir.mkdir(parents=True, exist_ok=True)
+            pose_records: list[dict[str, object]] = []
             for native_rank in range(1, self.poses_per_run + 1):
                 coordinates = self._pose_bytes(receptor, native_rank)
-                coordinate_path = self.root / "materialized" / run_id / f"rank_{native_rank:02d}.pdb"
+                coordinate_path = run_dir / f"rank_{native_rank:02d}.pdb"
                 coordinate_path.parent.mkdir(parents=True, exist_ok=True)
                 coordinate_path.write_bytes(coordinates)
-                source_path = self.root / "sources" / run_id / f"rank_{native_rank:02d}.pdb.gz"
+                source_path = run_dir / f"rank_{native_rank:02d}.pdb.gz"
                 source_path.parent.mkdir(parents=True, exist_ok=True)
                 source_path.write_bytes(gzip.compress(coordinates, mtime=0))
                 self.coordinate_paths.append(coordinate_path)
                 self.source_poses.append(source_path)
+                pose_records.append(
+                    {
+                        "rank": native_rank,
+                        "coordinates": coordinates,
+                        "coordinate_path": coordinate_path,
+                        "source_path": source_path,
+                        "score": -10.0 - native_rank,
+                        "seed": 900 + native_rank,
+                    }
+                )
+
+            first_coordinates = pose_records[0]["coordinates"]
+            assert isinstance(first_coordinates, bytes)
+            monomer = run_dir / "monomer.pdb"
+            receptor_path = run_dir / "receptor.pdb"
+            monomer.write_text(
+                "\n".join(
+                    line
+                    for line in first_coordinates.decode("ascii").splitlines()
+                    if line.startswith("ATOM  ") and line[21] == "A"
+                )
+                + "\nEND\n"
+            )
+            receptor_path.write_text(
+                "\n".join(
+                    line
+                    for line in first_coordinates.decode("ascii").splitlines()
+                    if line.startswith("ATOM  ") and line[21] == "B"
+                )
+                + "\nEND\n"
+            )
+            restraint = run_dir / "restraint.tbl"
+            restraint.write_text("assign (segid A) (segid B) 2.0 2.0 0.0\n")
+            hotspot = run_dir / "hotspots.txt"
+            hotspot.write_text(
+                "\n".join(
+                    str(MOD.core.parse_pdb_residue_ref(item["mobile_ref"])[1])
+                    for item in MOD.build_native_alignment_pair_rows(self.hotspots, receptor)
+                )
+                + "\n"
+            )
+            params = run_dir / "params.cfg"
+            params.write_text("[emref]\niniseed = 917\ntolerance = 20\n")
+            io_path = run_dir / "io.json"
+            MOD.write_json(
+                io_path,
+                {
+                    "output": [
+                        {
+                            "file_name": Path(record["source_path"]).name,
+                            "score": record["score"],
+                            "seed": record["seed"],
+                        }
+                        for record in pose_records
+                    ]
+                },
+            )
+            rigidbody_seed = 917 if receptor == "8X6B" else 20917
+            config_path = run_dir / "run.cfg"
+            config_path.write_text(
+                f"# Protocol: {MOD.SELECTOR_PROTOCOL_ID}\n"
+                f'run_dir = "run_{run_id}"\nmode = "local"\nncores = 4\n'
+                f'molecules = ["{monomer.name}", "{receptor_path.name}"]\n'
+                "[topoaa]\niniseed = 917\n"
+                f"[rigidbody]\nambig_fname = \"{restraint.name}\"\niniseed = {rigidbody_seed}\ntolerance = 5\nsampling = 40\n"
+                "[seletop]\nselect = 10\n[flexref]\ntolerance = 20\n"
+                f'ambig_fname = "{restraint.name}"\n[emref]\ntolerance = 20\nambig_fname = "{restraint.name}"\n'
+            )
+            completion = run_dir / "completion.json"
+            MOD.write_json(
+                completion,
+                {
+                    "protocol_id": MOD.SELECTOR_PROTOCOL_ID,
+                    "run_id": run_id,
+                    "receptor_id": receptor,
+                    "status": "PASS_4_EMREF_TOP8_READY",
+                    "exit_code": 0,
+                    "config_sha256": MOD.sha256_file(config_path),
+                    "monomer_sha256": MOD.sha256_file(monomer),
+                    "receptor_sha256": MOD.sha256_file(receptor_path),
+                },
+            )
+            run_row: dict[str, str] = {
+                "run_id": run_id,
+                "case_id": "case_01",
+                "candidate_id": "case_01",
+                "family": "F1",
+                "receptor_id": receptor,
+                "execution_mode": MOD.NEW_SOURCE_MODE,
+                "sequence_sha256": sequence_hash,
+                "teacher_manifest_relpath": self.positive_manifest.relative_to(self.root).as_posix(),
+                "teacher_manifest_sha256": MOD.sha256_file(self.positive_manifest),
+                "teacher_manifest_row_sha256": teacher_row_hash,
+                "cdr1_range": "1-1",
+                "cdr2_range": "2-2",
+                "cdr3_range": "3-3",
+                "config_sha256": MOD.sha256_file(config_path),
+                "monomer_sha256": MOD.sha256_file(monomer),
+                "receptor_sha256": MOD.sha256_file(receptor_path),
+                "restraint_sha256": MOD.sha256_file(restraint),
+                "hotspot_sha256": MOD.sha256_file(hotspot),
+                "run_manifest_row_sha256": "",
+            }
+            run_row["run_manifest_row_sha256"] = MOD.row_sha256(
+                run_row, "run_manifest_row_sha256"
+            )
+            run_rows.append(run_row)
+            run_assets[receptor] = {
+                "run_id": run_id,
+                "run_row": run_row,
+                "pose_records": pose_records,
+                "config": config_path,
+                "completion": completion,
+                "monomer": monomer,
+                "receptor": receptor_path,
+                "restraint": restraint,
+                "hotspot": hotspot,
+                "params": params,
+                "io": io_path,
+                "rigidbody_seed": rigidbody_seed,
+            }
+
+        write_csv(self.run_manifest, list(run_rows[0]), run_rows)
+        execution_artifacts = []
+        for path in (self.preregistration, self.case_manifest, self.run_manifest, self.protocol_manifest):
+            execution_artifacts.append(
+                {
+                    "path": str(path.resolve()),
+                    "sha256": MOD.sha256_file(path),
+                    "bytes": path.stat().st_size,
+                }
+            )
+        MOD.write_json(
+            self.execution_release_manifest,
+            {
+                "schema_version": "phase2_v3_p2_v1_3_docking_execution_release_v1",
+                "status": "FROZEN_V1_3_DOCKING_EXECUTION_RELEASE",
+                "artifacts": execution_artifacts,
+            },
+        )
+
+        rows: list[dict[str, str]] = []
+        for receptor in MOD.RECEPTORS:
+            assets = run_assets[receptor]
+            run_id = str(assets["run_id"])
+            monomer = Path(assets["monomer"])
+            receptor_path = Path(assets["receptor"])
+            monomer_identity = MOD.selector_contract.atom_heavy_identity_signature(monomer.read_bytes(), "A", monomer)
+            receptor_identity = MOD.selector_contract.atom_heavy_identity_signature(receptor_path.read_bytes(), "B", receptor_path)
+            for record in assets["pose_records"]:
+                native_rank = int(record["rank"])
+                coordinates = record["coordinates"]
+                coordinate_path = Path(record["coordinate_path"])
+                source_path = Path(record["source_path"])
+                assert isinstance(coordinates, bytes)
                 source_payload = source_path.read_bytes()
+                pose_vhh = MOD.selector_contract.atom_heavy_identity_signature(coordinates, "A", coordinate_path)
+                pose_pvrig = MOD.selector_contract.atom_heavy_identity_signature(coordinates, "B", coordinate_path)
+                vhh_gate = MOD.selector_contract.require_identity_match(monomer_identity, pose_vhh, "synthetic VHH", "A", amendment)
+                pvrig_gate = MOD.selector_contract.require_identity_match(receptor_identity, pose_pvrig, "synthetic PVRIG", "B", amendment)
                 row: dict[str, object] = {
                     field: "" for field in MOD.SELECTOR_REQUIRED_FIELDS
                 }
@@ -369,27 +535,30 @@ class NativeFixture:
                     {
                         "schema_version": MOD.SELECTOR_SCHEMA,
                         "protocol_id": MOD.SELECTOR_PROTOCOL_ID,
+                        "source_protocol_id": MOD.SELECTOR_PROTOCOL_ID,
                         "source_protocol": MOD.POSE_SOURCE_PROTOCOL,
                         "source_stage": "4_emref",
-                        "source_mode": "SYNTHETIC",
+                        "source_mode": MOD.NEW_SOURCE_MODE,
                         "run_id": run_id,
-                        "source_run_id": f"source_{run_id}",
+                        "source_run_id": run_id,
                         "case_id": "case_01",
                         "candidate_id": "case_01",
                         "family": "F1",
                         "anchor_class": "known_positive",
-                        "sequence_sha256": fixed_hashes["sequence"],
+                        "sequence_sha256": sequence_hash,
                         "teacher_manifest_relpath": self.positive_manifest.relative_to(
                             self.root
                         ).as_posix(),
                         "teacher_manifest_sha256": MOD.sha256_file(
                             self.positive_manifest
                         ),
-                        "teacher_manifest_row_sha256": MOD.sha256_bytes(
-                            b"synthetic_teacher_row"
-                        ),
+                        "teacher_manifest_row_sha256": teacher_row_hash,
                         "generation_receptor": receptor,
                         "receptor_id": receptor,
+                        "topoaa_iniseed": 917,
+                        "rigidbody_iniseed": assets["rigidbody_seed"],
+                        "rigidbody_seed_start": int(assets["rigidbody_seed"]) + 1,
+                        "rigidbody_seed_end": int(assets["rigidbody_seed"]) + 40,
                         "cdr1_range": "1-1",
                         "cdr2_range": "2-2",
                         "cdr3_range": "3-3",
@@ -397,8 +566,8 @@ class NativeFixture:
                         "canonical_rank": native_rank,
                         "source_output_index": native_rank - 1,
                         "source_output_file": source_path.name,
-                        "source_score": -10.0 - native_rank,
-                        "source_seed": 900 + native_rank,
+                        "source_score": record["score"],
+                        "source_seed": record["seed"],
                         "source_pose_relpath": source_path.relative_to(self.root).as_posix(),
                         "materialized_coordinate_relpath": coordinate_path.relative_to(
                             self.root
@@ -424,44 +593,53 @@ class NativeFixture:
                         "pvrig_chain_inventory_json": MOD.canonical_json(
                             pose_inventory("B", 23, 23)
                         ),
-                        "monomer_atom_identity_sha256": fixed_hashes["monomer_atom"],
-                        "monomer_residue_identity_sha256": fixed_hashes[
-                            "monomer_residue"
-                        ],
-                        "pose_vhh_atom_identity_sha256": fixed_hashes["pose_vhh_atom"],
-                        "pose_vhh_residue_identity_sha256": fixed_hashes[
-                            "pose_vhh_residue"
-                        ],
-                        "receptor_atom_identity_sha256": MOD.sha256_bytes(
-                            f"{receptor}_atom".encode("ascii")
-                        ),
-                        "receptor_residue_identity_sha256": MOD.sha256_bytes(
-                            f"{receptor}_residue".encode("ascii")
-                        ),
-                        "pose_pvrig_atom_identity_sha256": MOD.sha256_bytes(
-                            f"{receptor}_atom".encode("ascii")
-                        ),
-                        "pose_pvrig_residue_identity_sha256": MOD.sha256_bytes(
-                            f"{receptor}_residue".encode("ascii")
-                        ),
-                        "completion_status": "FAIL_DOCKING_OUTPUT_INCOMPLETE",
+                        "monomer_atom_identity_sha256": monomer_identity["atom_identity_sha256"],
+                        "monomer_residue_identity_sha256": monomer_identity["residue_identity_sha256"],
+                        "pose_vhh_atom_identity_sha256": pose_vhh["atom_identity_sha256"],
+                        "pose_vhh_residue_identity_sha256": pose_vhh["residue_identity_sha256"],
+                        "receptor_atom_identity_sha256": receptor_identity["atom_identity_sha256"],
+                        "receptor_residue_identity_sha256": receptor_identity["residue_identity_sha256"],
+                        "pose_pvrig_atom_identity_sha256": pose_pvrig["atom_identity_sha256"],
+                        "pose_pvrig_residue_identity_sha256": pose_pvrig["residue_identity_sha256"],
+                        "vhh_identity_gate_rule_id": vhh_gate["rule_id"],
+                        "vhh_raw_atom_identity_exact": str(vhh_gate["raw_atom_identity_exact"]).lower(),
+                        "vhh_terminal_oxt_normalization_applied": str(vhh_gate["terminal_oxt_normalization_applied"]).lower(),
+                        "vhh_normalized_atom_identity_exact": str(vhh_gate["normalized_atom_identity_exact"]).lower(),
+                        "pvrig_raw_atom_identity_exact": str(pvrig_gate["raw_atom_identity_exact"]).lower(),
+                        "identity_normalization_amendment_relpath": self.identity_amendment.relative_to(self.root).as_posix(),
+                        "identity_normalization_amendment_sha256": MOD.sha256_file(self.identity_amendment),
+                        "completion_status": "PASS_4_EMREF_TOP8_READY",
                         "completion_exit_code": 0,
-                        "config_sha256": MOD.sha256_bytes(f"{run_id}_config".encode()),
-                        "monomer_sha256": fixed_hashes["monomer"],
-                        "receptor_sha256": MOD.sha256_bytes(receptor.encode()),
-                        "restraint_sha256": MOD.sha256_bytes(f"{receptor}_tbl".encode()),
-                        "hotspot_sha256": MOD.sha256_file(self.hotspots),
-                        "source_params_sha256": MOD.sha256_bytes(b"params"),
-                        "source_io_sha256": MOD.sha256_bytes(f"{run_id}_io".encode()),
-                        "run_manifest_sha256": MOD.sha256_bytes(b"run_manifest"),
-                        "run_manifest_row_sha256": MOD.sha256_bytes(run_id.encode()),
+                        "source_final_stage_ignored": "false",
+                        "config_relpath": Path(assets["config"]).relative_to(self.root).as_posix(),
+                        "completion_relpath": Path(assets["completion"]).relative_to(self.root).as_posix(),
+                        "monomer_relpath": monomer.relative_to(self.root).as_posix(),
+                        "remote_monomer_relpath": monomer.name,
+                        "receptor_relpath": receptor_path.relative_to(self.root).as_posix(),
+                        "remote_receptor_relpath": receptor_path.name,
+                        "restraint_relpath": Path(assets["restraint"]).relative_to(self.root).as_posix(),
+                        "remote_restraint_relpath": Path(assets["restraint"]).name,
+                        "hotspot_relpath": Path(assets["hotspot"]).relative_to(self.root).as_posix(),
+                        "source_params_relpath": Path(assets["params"]).relative_to(self.root).as_posix(),
+                        "source_io_relpath": Path(assets["io"]).relative_to(self.root).as_posix(),
+                        "config_sha256": MOD.sha256_file(Path(assets["config"])),
+                        "completion_sha256": MOD.sha256_file(Path(assets["completion"])),
+                        "monomer_sha256": MOD.sha256_file(monomer),
+                        "receptor_sha256": MOD.sha256_file(receptor_path),
+                        "restraint_sha256": MOD.sha256_file(Path(assets["restraint"])),
+                        "hotspot_sha256": MOD.sha256_file(Path(assets["hotspot"])),
+                        "source_params_sha256": MOD.sha256_file(Path(assets["params"])),
+                        "source_io_sha256": MOD.sha256_file(Path(assets["io"])),
+                        "run_manifest_relpath": self.run_manifest.relative_to(self.root).as_posix(),
+                        "run_manifest_sha256": MOD.sha256_file(self.run_manifest),
+                        "run_manifest_row_sha256": assets["run_row"]["run_manifest_row_sha256"],
                         "execution_release_manifest_relpath": (
                             self.execution_release_manifest.relative_to(self.root).as_posix()
                         ),
                         "execution_release_manifest_sha256": MOD.sha256_file(
                             self.execution_release_manifest
                         ),
-                        "publication_release_id": "V13_SYNTHETIC_RELEASE_001",
+                        "publication_release_id": self.selector_release_id,
                         "remote_inventory_request_sha256": MOD.sha256_bytes(b"request"),
                         "remote_file_hash_chain": MOD.sha256_bytes(b"files"),
                         "local_file_hash_chain": MOD.sha256_bytes(b"files"),
@@ -525,7 +703,10 @@ class NativeFixture:
                         "sha256": MOD.sha256_file(self.execution_release_manifest),
                     }
                 },
-                "publication": {"release_id": "V13_SYNTHETIC_RELEASE_001"},
+                "publication": {
+                    "release_id": self.selector_release_id,
+                    "release_relpath": self.selector_release_dir.relative_to(self.root).as_posix(),
+                },
                 "output_csv": {
                     "relpath": self.selector_csv.relative_to(self.root).as_posix(),
                     "sha256": MOD.sha256_file(self.selector_csv),
@@ -538,6 +719,9 @@ class NativeFixture:
                 },
             },
         )
+        current = self.selector_publication_root / "current"
+        current.parent.mkdir(parents=True, exist_ok=True)
+        os.symlink(os.path.relpath(self.selector_release_dir, current.parent), current, target_is_directory=True)
 
     @property
     def expected_reference_inventories(self) -> dict[str, dict[str, object]]:
@@ -586,7 +770,6 @@ class NativeFixture:
             selector_audit=self.selector_audit,
             selector_implementation=self.selector_impl,
             preregistration=self.preregistration,
-            release_manifest=self.release_manifest,
             positive_manifest=self.positive_manifest,
             mutant_manifest=self.mutant_manifest,
             aligner=MOD.DEFAULT_ALIGNER,

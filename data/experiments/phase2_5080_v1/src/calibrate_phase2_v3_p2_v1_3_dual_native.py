@@ -1314,6 +1314,9 @@ def validate_processor_audit(
     expected_inputs = {
         "selector_csv": selector_evidence["selector_csv"]["sha256"],
         "selector_audit": selector_evidence["selector_audit"]["sha256"],
+        "selector_publication_release_id": selector_evidence["publication_release_id"],
+        "execution_release_manifest": EXECUTION_RELEASE_SHA256,
+        "run_manifest": RUN_MANIFEST_SHA256,
         "preregistration": preregistration["sha256"],
         "positive_manifest": POSITIVE_MANIFEST_SHA256,
         "mutant_manifest": MUTANT_MANIFEST_SHA256,
@@ -1323,6 +1326,18 @@ def validate_processor_audit(
     for field, value in expected_inputs.items():
         if not isinstance(input_hashes, dict) or input_hashes.get(field) != value:
             failures.append(f"input_sha256.{field}")
+    publication_contract = payload.get("publication_contract", {})
+    if (
+        not isinstance(publication_contract, dict)
+        or publication_contract.get("immutable_versioned_release") is not True
+        or publication_contract.get("atomic_current_symlink_replacement") is not True
+        or publication_contract.get("rollback_safe") is not True
+        or not str(publication_contract.get("release_id", "")).startswith("native-")
+        or publication_contract.get("release_relpath")
+        != f"releases/{publication_contract.get('release_id', '')}"
+        or publication_contract.get("current_pointer_relpath") != "current"
+    ):
+        failures.append("publication_contract")
     expected_contract = payload.get("expected_contract", {})
     if not isinstance(expected_contract, dict) or any(
         expected_contract.get(field) != value
@@ -1349,6 +1364,7 @@ def validate_processor_audit(
         "status": payload["status"],
         "native_only": True,
         "selector_publication_release_id": selector_evidence["publication_release_id"],
+        "processor_release_id": publication_contract.get("release_id", ""),
         "metric_row_hash_chain": expected_metric["row_hash_chain"],
         "validated": True,
     }
@@ -1417,6 +1433,14 @@ def validate_processor_qualification(
     for field, expected in expected_determinism.items():
         if not isinstance(determinism, dict) or determinism.get(field) != expected:
             failures.append(f"determinism.{field}")
+    if not isinstance(determinism, dict) or any(
+        not re.fullmatch(r"[0-9a-f]{64}", str(determinism.get(field, "")))
+        for field in (
+            "primary_inventory_sha256", "rebuild_inventory_sha256",
+            "primary_processor_audit_sha256", "rebuild_processor_audit_sha256",
+        )
+    ) or not str(determinism.get("release_id", "")).startswith("native-"):
+        failures.append("determinism.hash_or_release_identity")
     publication = payload.get("publication", {})
     source_releases = payload.get("source_pending_releases", {})
     primary_source = source_releases.get("primary", {}) if isinstance(source_releases, dict) else {}
