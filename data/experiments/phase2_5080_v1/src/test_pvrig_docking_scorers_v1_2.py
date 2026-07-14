@@ -14,6 +14,7 @@ DATA_ROOT = Path(__file__).resolve().parents[3]
 SCRIPTS_DIR = DATA_ROOT.parent / "docking/scripts"
 POSE_SCORER_PATH = SCRIPTS_DIR / "score_pvrig_vhh_pose_v1_2.py"
 REGION_SCORER_PATH = SCRIPTS_DIR / "score_cdr_region_occlusion_v1_2.py"
+LEGACY_POSE_SCORER_PATH = SCRIPTS_DIR / "score_pvrig_vhh_pose.py"
 
 
 def load_module(name: str, path: Path):
@@ -27,6 +28,7 @@ def load_module(name: str, path: Path):
 
 POSE = load_module("score_pvrig_vhh_pose_v1_2", POSE_SCORER_PATH)
 REGION = load_module("score_cdr_region_occlusion_v1_2", REGION_SCORER_PATH)
+LEGACY_POSE = load_module("score_pvrig_vhh_pose_v1_1_read_only", LEGACY_POSE_SCORER_PATH)
 
 
 def pdb_line(
@@ -128,6 +130,7 @@ class PoseScorerV12Tests(unittest.TestCase):
         self.assertEqual(report["hotspot_overlap_count"], 1)
         self.assertEqual(report["pvrl2_vhh_occluding_contact_count"], 1)
         self.assertEqual(report["pvrl2_occluded_residue_count"], 1)
+        self.assertEqual(report["pvrl2_vhh_clash_count"], 0)
 
         pose_inventory = report["record_inventory"]["pose"]
         self.assertEqual(pose_inventory["pvrig_chain"]["selected_heavy_atom_count"], 1)
@@ -179,7 +182,76 @@ class PoseScorerV12Tests(unittest.TestCase):
             with outputs[0].open(encoding="utf-8", newline="") as handle:
                 row = next(csv.DictReader(handle))
             self.assertEqual(row["scoring_semantics_version"], "PVRIG_PVRL2_ATOM_ONLY_V1_2")
+            self.assertEqual(row["pose_pvrig_hetatm_heavy_atom_count"], "1")
+            self.assertEqual(row["pose_vhh_hetatm_heavy_atom_count"], "1")
             self.assertEqual(row["ref_pvrl2_excluded_hetatm_heavy_atom_count"], "3")
+
+    def test_non_occlusion_fields_match_v1_1_for_the_same_pose(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pose, reference, hotspots = write_fixture(root)
+            legacy_output = root / "legacy.json"
+            v12_output = root / "v12.json"
+            common = [
+                "--pose-pdb", str(pose),
+                "--reference-pdb", str(reference),
+                "--pvrig-chain", "B",
+                "--vhh-chain", "A",
+                "--ref-pvrig-chain", "C",
+                "--ref-pvrl2-chain", "D",
+                "--hotspots-csv", str(hotspots),
+                "--hotspot-ref-column", "pdb_test_ref",
+                "--cdr-ranges", "CDR3:100-100",
+                "--assume-aligned",
+            ]
+            self.assertEqual(LEGACY_POSE.main([*common, "--out-json", str(legacy_output)]), 0)
+            self.assertEqual(POSE.main([*common, "--out-json", str(v12_output)]), 0)
+            legacy = json.loads(legacy_output.read_text(encoding="utf-8"))
+            v12 = json.loads(v12_output.read_text(encoding="utf-8"))
+        invariant_fields = [
+            "pvrig_vhh_contact_pair_count",
+            "pvrig_contact_residue_count",
+            "vhh_contact_residue_count",
+            "pvrig_contact_residues",
+            "vhh_contact_residues",
+            "hotspot_count",
+            "hotspot_overlap_count",
+            "hotspot_overlap_fraction",
+            "hotspot_weight_overlap",
+            "cdr_contact_residue_count",
+            "cdr_contact_residues",
+            "cdr_contact_residues_by_label",
+        ]
+        for field in invariant_fields:
+            self.assertEqual(v12[field], legacy[field], field)
+        self.assertGreater(legacy["pvrl2_vhh_occluding_contact_count"], v12["pvrl2_vhh_occluding_contact_count"])
+
+    def test_reference_with_only_hetatm_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pose, reference, hotspots = write_fixture(root)
+            reference.write_text(
+                pdb_line("HETATM", 1, "O", "HOH", "D", 201, 4.5, element="O")
+                + "\nEND\n",
+                encoding="utf-8",
+            )
+            output = root / "must_not_exist.json"
+            code = POSE.main(
+                [
+                    "--pose-pdb", str(pose),
+                    "--reference-pdb", str(reference),
+                    "--pvrig-chain", "B",
+                    "--vhh-chain", "A",
+                    "--ref-pvrig-chain", "C",
+                    "--ref-pvrl2-chain", "D",
+                    "--hotspots-csv", str(hotspots),
+                    "--hotspot-ref-column", "pdb_test_ref",
+                    "--assume-aligned",
+                    "--out-json", str(output),
+                ]
+            )
+            self.assertEqual(code, 2)
+            self.assertFalse(output.exists())
 
 
 class RegionScorerV12Tests(unittest.TestCase):
@@ -206,6 +278,8 @@ class RegionScorerV12Tests(unittest.TestCase):
             _output, report = self.run_json(Path(tmp))
         self.assertEqual(report["total_occluding_atom_contact_count"], 2)
         self.assertEqual(report["total_occluding_residue_pair_count"], 1)
+        self.assertEqual(report["total_clash_atom_contact_count"], 0)
+        self.assertEqual(report["total_clash_residue_pair_count"], 0)
         self.assertEqual(report["regions"]["CDR3"]["occluding_atom_contact_count"], 2)
         self.assertEqual(report["regions"]["CDR3"]["occluding_residue_pair_count"], 1)
         self.assertEqual(
@@ -235,6 +309,41 @@ class RegionScorerV12Tests(unittest.TestCase):
             first, _report = self.run_json(root, "first.json")
             second, _report = self.run_json(root, "second.json")
             self.assertEqual(first.read_bytes(), second.read_bytes())
+
+    def test_reference_with_only_hetatm_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pose, reference, _hotspots = write_fixture(root)
+            reference.write_text(
+                pdb_line("HETATM", 1, "C1", "EDO", "D", 202, 4.5)
+                + "\nEND\n",
+                encoding="utf-8",
+            )
+            output = root / "must_not_exist.json"
+            code = REGION.main(
+                [
+                    "--pose-pdb", str(pose),
+                    "--reference-pdb", str(reference),
+                    "--vhh-chain", "A",
+                    "--ref-pvrl2-chain", "D",
+                    "--cdr3", "100-100",
+                    "--out-json", str(output),
+                ]
+            )
+            self.assertEqual(code, 2)
+            self.assertFalse(output.exists())
+
+    def test_region_parser_preserves_v1_1_h_only_policy(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "deuterium.pdb"
+            path.write_text(
+                pdb_line("ATOM", 1, "D", "ALA", "A", 1, 0.0, element="D")
+                + "\nEND\n",
+                encoding="utf-8",
+            )
+            atoms = REGION.parse_region_pdb(path)
+            selected = REGION.select_region_pose_chain(atoms, "A")
+        self.assertEqual(len(selected), 1)
 
 
 if __name__ == "__main__":

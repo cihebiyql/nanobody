@@ -62,11 +62,14 @@ def parse_pdb(path: str | Path) -> list[Atom]:
                 x = float(line[30:38])
                 y = float(line[38:46])
                 z = float(line[46:54])
-                occupancy_text = line[54:60].strip() if len(line) >= 60 else ""
-                occupancy = float(occupancy_text) if occupancy_text else None
                 element = line[76:78].strip() if len(line) >= 78 else ""
             except ValueError:
                 continue
+            occupancy_text = line[54:60].strip() if len(line) >= 60 else ""
+            try:
+                occupancy = float(occupancy_text) if occupancy_text else None
+            except ValueError:
+                occupancy = None
             atoms.append(
                 Atom(
                     record=record,
@@ -196,6 +199,19 @@ def flatten_reference_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
         ],
         "ref_pvrl2_atom_altloc_heavy_atom_count": inventory["atom_altloc_heavy_atom_count"],
         "ref_pvrl2_atom_altloc_labels": ";".join(inventory["atom_altloc_labels"]),
+    }
+
+
+def flatten_pose_inventory(prefix: str, inventory: dict[str, Any]) -> dict[str, Any]:
+    return {
+        f"{prefix}_selected_heavy_atom_count": inventory["selected_heavy_atom_count"],
+        f"{prefix}_selected_residue_count": inventory["selected_residue_count"],
+        f"{prefix}_atom_heavy_atom_count": inventory["atom_heavy_atom_count"],
+        f"{prefix}_atom_residue_count": inventory["atom_residue_count"],
+        f"{prefix}_hetatm_heavy_atom_count": inventory["hetatm_heavy_atom_count"],
+        f"{prefix}_hetatm_residue_count": inventory["hetatm_residue_count"],
+        f"{prefix}_altloc_heavy_atom_count": inventory["altloc_heavy_atom_count"],
+        f"{prefix}_altloc_labels": ";".join(inventory["altloc_labels"]),
     }
 
 

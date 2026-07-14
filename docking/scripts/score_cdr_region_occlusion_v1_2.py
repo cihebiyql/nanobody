@@ -19,6 +19,7 @@ from pvrig_scoring_semantics_v1_2 import (
     CLAIM_BOUNDARY,
     SCORING_SEMANTICS_VERSION,
     ZERO_DENOMINATOR_SEMANTICS,
+    flatten_pose_inventory,
     flatten_reference_inventory,
     semantics_manifest,
     write_json,
@@ -436,7 +437,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print(f"ERROR: {error}", file=sys.stderr)
         return 2
 
-    flattened_inventory = flatten_reference_inventory(ref_inventory)
+    flattened_inventory = {
+        **flatten_pose_inventory("pose_vhh", vhh_inventory),
+        **flatten_reference_inventory(ref_inventory),
+    }
     scorer_manifest = semantics_manifest()
     scorer_manifest["hydrogen_policy"] = (
         "preserve V1.1 region-scorer behavior: exclude element H only; D records remain"
@@ -448,8 +452,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "schema_version": SCHEMA_VERSION,
         "scoring_semantics_version": SCORING_SEMANTICS_VERSION,
         "claim_boundary": CLAIM_BOUNDARY,
-        "reference_pvrl2_selection": "protein ATOM heavy atoms only",
-        "pose_vhh_selection": "heavy ATOM and HETATM records",
+        "reference_pvrl2_selection": (
+            "protein ATOM records only with V1.1-compatible H-only exclusion"
+        ),
+        "pose_vhh_selection": (
+            "ATOM and HETATM records with V1.1-compatible H-only exclusion"
+        ),
+        "inventory_hydrogen_policy": "element H excluded; D retained to preserve V1.1 region semantics",
         "zero_denominator_semantics": ZERO_DENOMINATOR_SEMANTICS,
         "pose_pdb": str(pose_path),
         "reference_pdb": str(reference_path),
