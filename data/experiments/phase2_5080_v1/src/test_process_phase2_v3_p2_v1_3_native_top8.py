@@ -375,7 +375,7 @@ class NativeFixture:
                         "coordinates": coordinates,
                         "coordinate_path": coordinate_path,
                         "source_path": source_path,
-                        "score": -10.0 - native_rank,
+                        "score": -20.0 + native_rank,
                         "seed": 900 + native_rank,
                     }
                 )

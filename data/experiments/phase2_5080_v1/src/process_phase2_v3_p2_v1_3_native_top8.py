@@ -923,6 +923,32 @@ def validate_exact_reuse_provenance(
     return ledger
 
 
+def validate_completion_lane_contract(row: Mapping[str, str]) -> str:
+    source_mode = row["source_mode"]
+    ignored = parse_bool(row["source_final_stage_ignored"], "source_final_stage_ignored")
+    exit_code = parse_int(row["completion_exit_code"], "completion_exit_code")
+    if source_mode == NEW_SOURCE_MODE:
+        if (
+            row["completion_status"] != "PASS_4_EMREF_TOP8_READY"
+            or exit_code != 0
+            or ignored
+            or row["source_protocol_id"] != SELECTOR_PROTOCOL_ID
+        ):
+            raise ContractError(f"New-run completion semantics failed for {row['run_id']}")
+        return source_mode
+    if source_mode == REUSE_SOURCE_MODE:
+        if (
+            row["completion_status"]
+            not in {"PASS_DOCKING_OUTPUT_COMPLETE", "FAIL_DOCKING_OUTPUT_INCOMPLETE"}
+            or exit_code != 0
+            or not ignored
+            or row["source_protocol_id"] != selector_contract.OLD_PROTOCOL_ID
+        ):
+            raise ContractError(f"Reuse completion semantics failed for {row['run_id']}")
+        return source_mode
+    raise ContractError(f"Unknown source_mode for {row['run_id']}: {source_mode}")
+
+
 def validate_row_provenance(
     row: Mapping[str, str],
     case: core.CaseMetadata,
@@ -945,27 +971,12 @@ def validate_row_provenance(
         != selector_contract.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
     ):
         raise ContractError("Identity-normalization amendment binding mismatch")
-    source_mode = row["source_mode"]
+    source_mode = validate_completion_lane_contract(row)
     reuse_ledger: Mapping[str, str] | None = None
-    ignored = parse_bool(row["source_final_stage_ignored"], "source_final_stage_ignored")
     exit_code = parse_int(row["completion_exit_code"], "completion_exit_code")
     if source_mode == NEW_SOURCE_MODE:
-        if (
-            row["completion_status"] != "PASS_4_EMREF_TOP8_READY"
-            or exit_code != 0
-            or ignored
-            or row["source_protocol_id"] != SELECTOR_PROTOCOL_ID
-        ):
-            raise ContractError(f"New-run completion semantics failed for {row['run_id']}")
+        pass
     elif source_mode == REUSE_SOURCE_MODE:
-        if (
-            row["completion_status"]
-            not in {"PASS_DOCKING_OUTPUT_COMPLETE", "FAIL_DOCKING_OUTPUT_INCOMPLETE"}
-            or exit_code != 0
-            or not ignored
-            or row["source_protocol_id"] != selector_contract.OLD_PROTOCOL_ID
-        ):
-            raise ContractError(f"Reuse completion semantics failed for {row['run_id']}")
         reuse_ledger = validate_exact_reuse_provenance(
             row, config, file_bindings, manifest_cache
         )
@@ -991,8 +1002,6 @@ def validate_row_provenance(
             or old_row.get("receptor_sha256") != row["receptor_sha256"]
         ):
             raise ContractError(f"Old run-manifest provenance mismatch for {row['run_id']}")
-    else:
-        raise ContractError(f"Unknown source_mode for {row['run_id']}: {source_mode}")
 
     assets = {
         name: bind_local_file(row, f"{name}_relpath", f"{name}_sha256", config.workspace_root, file_bindings)
