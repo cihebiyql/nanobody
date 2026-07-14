@@ -19,17 +19,38 @@ sys.modules[SPEC.name] = MOD
 SPEC.loader.exec_module(MOD)
 
 
-def atom_line(serial: int, chain: str, residue: int, x: float) -> str:
+def atom_line(
+    serial: int,
+    chain: str,
+    residue: int,
+    x: float,
+    record: str = "ATOM",
+    resname: str = "ALA",
+) -> str:
     return (
-        f"ATOM  {serial:5d}  CA  ALA {chain}{residue:4d}    "
+        f"{record:<6}{serial:5d}  CA  {resname:>3} {chain}{residue:4d}    "
         f"{x:8.3f}{0.0:8.3f}{0.0:8.3f}  1.00 20.00           C  "
     )
 
 
-def pdb_bytes(index: int, include_chain_b: bool = True) -> bytes:
+def pdb_bytes(
+    index: int,
+    include_chain_b: bool = True,
+    chain_b_record: str = "ATOM",
+    chain_b_resname: str = "ALA",
+) -> bytes:
     lines = [atom_line(1, "A", 1, float(index))]
     if include_chain_b:
-        lines.append(atom_line(2, "B", 10, float(index) + 1.0))
+        lines.append(
+            atom_line(
+                2,
+                "B",
+                10,
+                float(index) + 1.0,
+                record=chain_b_record,
+                resname=chain_b_resname,
+            )
+        )
     lines.append("END")
     return ("\n".join(lines) + "\n").encode("ascii")
 
@@ -113,6 +134,10 @@ class EmrefTop8SelectionTests(unittest.TestCase):
             )
             self.assertEqual(rows[0]["vhh_chain_id"], "A")
             self.assertEqual(rows[0]["pvrig_chain_id"], "B")
+            self.assertEqual(rows[0]["protocol_id"], "DG_A_PVRIG_V1_2_DEV")
+            self.assertTrue(rows[0]["run_id"].startswith("run_"))
+            self.assertEqual(len(rows[0]["selector_implementation_sha256"]), 64)
+            self.assertEqual(len(rows[0]["selection_row_sha256"]), 64)
             self.assertEqual(rows[0]["reuse_role"], "development_only")
             self.assertEqual(rows[0]["formal_eligible"], "false")
             self.assertEqual(first_csv, output.read_bytes())
@@ -141,6 +166,25 @@ class EmrefTop8SelectionTests(unittest.TestCase):
             self.assertEqual(result["selected_pose_count"], 16)
             self.assertEqual([rows[0]["candidate_id"], rows[8]["candidate_id"]], ["mutant_case", "positive_case"])
             self.assertEqual(rows[0]["role"], "geometry perturbation control")
+
+    def test_hetatm_modified_residue_pose_chain_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest, workdir, _outputs = make_case(root)
+            pose = next(workdir.glob("haddock3/run_*/4_emref/emref_1.pdb"))
+            pose.write_bytes(
+                pdb_bytes(0, chain_b_record="HETATM", chain_b_resname="MSE")
+            )
+            output = root / "selected.csv"
+            MOD.build(
+                [manifest], output, root / "audit.json", workspace_root=Path("/")
+            )
+            row = next(
+                item for item in read_csv(output) if item["source_output_file"] == "emref_1.pdb"
+            )
+            self.assertEqual(row["pvrig_atom_heavy_atom_count"], "0")
+            self.assertEqual(row["pvrig_hetatm_heavy_atom_count"], "1")
+            self.assertEqual(row["pvrig_hetatm_residue_count"], "1")
 
     def test_invalid_score_missing_chain_and_duplicate_file_fail_closed(self) -> None:
         scenarios = ("invalid_score", "missing_chain", "duplicate_file")

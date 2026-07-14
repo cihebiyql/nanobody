@@ -26,7 +26,7 @@ EXP_DIR = SCRIPT_DIR.parent
 DATA_ROOT = EXP_DIR.parents[1]
 WORKSPACE_ROOT = DATA_ROOT.parent
 
-PROTOCOL_ID = "DG_A_PILOT64_V1_2"
+PROTOCOL_ID = "DG_A_PVRIG_V1_2_DEV"
 SOURCE_PROTOCOL = "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1"
 SOURCE_STAGE = "4_emref"
 REUSE_ROLE = "development_only"
@@ -61,6 +61,7 @@ CSV_FIELDS = (
     "protocol_id",
     "source_protocol",
     "source_stage",
+    "run_id",
     "case_id",
     "candidate_id",
     "family",
@@ -81,17 +82,32 @@ CSV_FIELDS = (
     "vhh_chain_id",
     "vhh_atom_count",
     "vhh_residue_count",
+    "vhh_atom_heavy_atom_count",
+    "vhh_atom_residue_count",
+    "vhh_hetatm_heavy_atom_count",
+    "vhh_hetatm_residue_count",
+    "vhh_excluded_hydrogen_or_deuterium_count",
+    "vhh_chain_inventory_json",
     "pvrig_chain_id",
     "pvrig_atom_count",
     "pvrig_residue_count",
+    "pvrig_atom_heavy_atom_count",
+    "pvrig_atom_residue_count",
+    "pvrig_hetatm_heavy_atom_count",
+    "pvrig_hetatm_residue_count",
+    "pvrig_excluded_hydrogen_or_deuterium_count",
+    "pvrig_chain_inventory_json",
     "source_io_relpath",
     "source_io_sha256",
     "source_manifest_relpath",
     "source_manifest_sha256",
     "source_manifest_row_sha256",
+    "selector_implementation_relpath",
+    "selector_implementation_sha256",
     "reuse_role",
     "formal_eligible",
     "claim_boundary",
+    "selection_row_sha256",
 )
 
 
@@ -121,10 +137,8 @@ class PoseRecord:
     source_bytes: int
     coordinate_sha256: str
     coordinate_bytes: int
-    vhh_atom_count: int
-    vhh_residue_count: int
-    pvrig_atom_count: int
-    pvrig_residue_count: int
+    vhh_inventory: Mapping[str, Any]
+    pvrig_inventory: Mapping[str, Any]
 
 
 def canonical_json(value: Any) -> str:
@@ -143,6 +157,14 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def row_sha256(row: Mapping[str, Any], hash_field: str) -> str:
+    return sha256_bytes(
+        canonical_json({key: value for key, value in row.items() if key != hash_field}).encode(
+            "utf-8"
+        )
+    )
 
 
 def workspace_relative(path: Path, workspace_root: Path) -> str:
@@ -322,20 +344,28 @@ def read_coordinate_bytes(path: Path) -> bytes:
     return coordinates
 
 
-def parse_chain_inventory(coordinates: bytes, path: Path) -> dict[str, tuple[int, int]]:
+def parse_chain_inventory(coordinates: bytes, path: Path) -> dict[str, dict[str, Any]]:
     try:
         text = coordinates.decode("ascii")
     except UnicodeDecodeError as error:
         raise SelectionError(f"PDB is not ASCII text: {path}") from error
-    atom_counts = {"A": 0, "B": 0}
+    parsed_counts = {"A": 0, "B": 0}
+    heavy_counts = {"A": 0, "B": 0}
+    atom_heavy_counts = {"A": 0, "B": 0}
+    hetatm_heavy_counts = {"A": 0, "B": 0}
     residues: dict[str, set[tuple[str, str, str]]] = {"A": set(), "B": set()}
+    atom_residues: dict[str, set[tuple[str, str, str]]] = {"A": set(), "B": set()}
+    hetatm_residues: dict[str, set[tuple[str, str, str]]] = {"A": set(), "B": set()}
+    altlocs: dict[str, set[str]] = {"A": set(), "B": set()}
+    altloc_heavy_counts = {"A": 0, "B": 0}
     for line_number, line in enumerate(text.splitlines(), start=1):
-        if not line.startswith("ATOM  "):
+        record = line[:6].strip()
+        if record not in {"ATOM", "HETATM"}:
             continue
         if len(line) < 54:
             raise SelectionError(f"Truncated ATOM record in {path}:{line_number}")
         chain = line[21:22]
-        if chain not in atom_counts:
+        if chain not in parsed_counts:
             continue
         try:
             serial = int(line[6:11])
@@ -348,16 +378,56 @@ def parse_chain_inventory(coordinates: bytes, path: Path) -> dict[str, tuple[int
         resname = line[17:20].strip()
         if not resname:
             raise SelectionError(f"Missing residue name in {path}:{line_number}")
+        atom_name = line[12:16].strip()
+        if not atom_name:
+            raise SelectionError(f"Missing atom name in {path}:{line_number}")
+        element = line[76:78].strip().upper() if len(line) >= 78 else ""
         insertion_code = line[26:27].strip()
-        atom_counts[chain] += 1
-        residues[chain].add((resname, str(residue_number), insertion_code))
-    inventory = {
-        chain: (atom_counts[chain], len(residues[chain])) for chain in ("A", "B")
-    }
+        altloc = line[16:17].strip()
+        parsed_counts[chain] += 1
+        is_heavy = (
+            element not in {"H", "D"}
+            if element
+            else not atom_name.upper().startswith(("H", "D"))
+        )
+        if not is_heavy:
+            continue
+        residue_key = (resname, str(residue_number), insertion_code)
+        heavy_counts[chain] += 1
+        residues[chain].add(residue_key)
+        if record == "ATOM":
+            atom_heavy_counts[chain] += 1
+            atom_residues[chain].add(residue_key)
+        else:
+            hetatm_heavy_counts[chain] += 1
+            hetatm_residues[chain].add(residue_key)
+        if altloc:
+            altlocs[chain].add(altloc)
+            altloc_heavy_counts[chain] += 1
+    inventory = {}
+    for chain in ("A", "B"):
+        inventory[chain] = {
+            "chain": chain,
+            "selection_rule": "heavy ATOM and HETATM records retained for pose protein chains",
+            "parsed_atom_and_hetatm_count": parsed_counts[chain],
+            "selected_heavy_atom_count": heavy_counts[chain],
+            "selected_residue_count": len(residues[chain]),
+            "atom_heavy_atom_count": atom_heavy_counts[chain],
+            "atom_residue_count": len(atom_residues[chain]),
+            "hetatm_heavy_atom_count": hetatm_heavy_counts[chain],
+            "hetatm_residue_count": len(hetatm_residues[chain]),
+            "excluded_hydrogen_or_deuterium_count": parsed_counts[chain] - heavy_counts[chain],
+            "altloc_heavy_atom_count": altloc_heavy_counts[chain],
+            "altloc_labels": sorted(altlocs[chain]),
+        }
     for chain, label in (("A", "VHH"), ("B", "PVRIG")):
-        atom_count, residue_count = inventory[chain]
+        atom_count = inventory[chain]["selected_heavy_atom_count"]
+        residue_count = inventory[chain]["selected_residue_count"]
         if atom_count < 1 or residue_count < 1:
-            raise SelectionError(f"Pose {path} has no parseable {label} chain {chain} ATOM records")
+            raise SelectionError(
+                f"Pose {path} has no parseable heavy {label} chain {chain} "
+                "ATOM/HETATM records"
+            )
     return inventory
 
 
@@ -403,10 +473,8 @@ def load_pose_records(
             source_bytes=len(source_payload),
             coordinate_sha256=coordinate_hash,
             coordinate_bytes=len(coordinates),
-            vhh_atom_count=chain_inventory["A"][0],
-            vhh_residue_count=chain_inventory["A"][1],
-            pvrig_atom_count=chain_inventory["B"][0],
-            pvrig_residue_count=chain_inventory["B"][1],
+            vhh_inventory=chain_inventory["A"],
+            pvrig_inventory=chain_inventory["B"],
         )
         records.append(record)
         inventory_rows.append(
@@ -419,10 +487,8 @@ def load_pose_records(
                 "source_pose_bytes": len(source_payload),
                 "decompressed_coordinate_sha256": coordinate_hash,
                 "decompressed_coordinate_bytes": len(coordinates),
-                "vhh_atom_count": record.vhh_atom_count,
-                "vhh_residue_count": record.vhh_residue_count,
-                "pvrig_atom_count": record.pvrig_atom_count,
-                "pvrig_residue_count": record.pvrig_residue_count,
+                "vhh_chain_inventory": record.vhh_inventory,
+                "pvrig_chain_inventory": record.pvrig_inventory,
             }
         )
     selected = sorted(
@@ -493,6 +559,9 @@ def build(
     ]
     for case in cases:
         io_path = locate_emref_io(case)
+        run_id = io_path.parent.parent.name
+        if not run_id.startswith("run_") or run_id == "run_":
+            raise SelectionError(f"Invalid HADDOCK run directory name: {run_id!r}")
         io_sha256 = sha256_file(io_path)
         selected, all_records, source_inventory = load_pose_records(io_path, k)
         file_bindings[io_path] = io_sha256
@@ -504,12 +573,12 @@ def build(
         selected_indices = [record.source_output_index for record in selected]
         for rank, record in enumerate(selected, start=1):
             source_format = "pdb.gz" if record.path.name.endswith(".gz") else "pdb"
-            rows.append(
-                {
+            row: dict[str, Any] = {
                     "schema_version": "phase2_v3_p2_v1_2_emref_topk_selection_v1",
                     "protocol_id": PROTOCOL_ID,
                     "source_protocol": SOURCE_PROTOCOL,
                     "source_stage": SOURCE_STAGE,
+                    "run_id": run_id,
                     "case_id": case.candidate_id,
                     "candidate_id": case.candidate_id,
                     "family": case.family,
@@ -528,23 +597,46 @@ def build(
                     "decompressed_coordinate_sha256": record.coordinate_sha256,
                     "decompressed_coordinate_bytes": record.coordinate_bytes,
                     "vhh_chain_id": "A",
-                    "vhh_atom_count": record.vhh_atom_count,
-                    "vhh_residue_count": record.vhh_residue_count,
+                    "vhh_atom_count": record.vhh_inventory["selected_heavy_atom_count"],
+                    "vhh_residue_count": record.vhh_inventory["selected_residue_count"],
+                    "vhh_atom_heavy_atom_count": record.vhh_inventory["atom_heavy_atom_count"],
+                    "vhh_atom_residue_count": record.vhh_inventory["atom_residue_count"],
+                    "vhh_hetatm_heavy_atom_count": record.vhh_inventory["hetatm_heavy_atom_count"],
+                    "vhh_hetatm_residue_count": record.vhh_inventory["hetatm_residue_count"],
+                    "vhh_excluded_hydrogen_or_deuterium_count": record.vhh_inventory[
+                        "excluded_hydrogen_or_deuterium_count"
+                    ],
+                    "vhh_chain_inventory_json": canonical_json(record.vhh_inventory),
                     "pvrig_chain_id": "B",
-                    "pvrig_atom_count": record.pvrig_atom_count,
-                    "pvrig_residue_count": record.pvrig_residue_count,
+                    "pvrig_atom_count": record.pvrig_inventory["selected_heavy_atom_count"],
+                    "pvrig_residue_count": record.pvrig_inventory["selected_residue_count"],
+                    "pvrig_atom_heavy_atom_count": record.pvrig_inventory["atom_heavy_atom_count"],
+                    "pvrig_atom_residue_count": record.pvrig_inventory["atom_residue_count"],
+                    "pvrig_hetatm_heavy_atom_count": record.pvrig_inventory["hetatm_heavy_atom_count"],
+                    "pvrig_hetatm_residue_count": record.pvrig_inventory["hetatm_residue_count"],
+                    "pvrig_excluded_hydrogen_or_deuterium_count": record.pvrig_inventory[
+                        "excluded_hydrogen_or_deuterium_count"
+                    ],
+                    "pvrig_chain_inventory_json": canonical_json(record.pvrig_inventory),
                     "source_io_relpath": workspace_relative(io_path, workspace_root),
                     "source_io_sha256": io_sha256,
                     "source_manifest_relpath": workspace_relative(case.manifest, workspace_root),
                     "source_manifest_sha256": case.manifest_sha256,
                     "source_manifest_row_sha256": case.manifest_row_sha256,
+                    "selector_implementation_relpath": workspace_relative(
+                        script_path, workspace_root
+                    ),
+                    "selector_implementation_sha256": selector_sha256,
                     "reuse_role": REUSE_ROLE,
                     "formal_eligible": "false",
                     "claim_boundary": CLAIM_BOUNDARY,
+                    "selection_row_sha256": "",
                 }
-            )
+            row["selection_row_sha256"] = row_sha256(row, "selection_row_sha256")
+            rows.append(row)
         case_audits.append(
             {
+                "run_id": run_id,
                 "case_id": case.candidate_id,
                 "candidate_id": case.candidate_id,
                 "family": case.family,
