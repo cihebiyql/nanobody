@@ -559,6 +559,7 @@ data/experiments/phase2_5080_v1/reports/phase2_v2_eval.md
 data/experiments/phase2_5080_v1/reports/phase2_v2_metrics.json
 data/experiments/phase2_5080_v1/src/analyze_pvrig_v2_5_assay_results.py
 data/experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_1_hetatm_contamination.py
+data/experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_identity_differences.py
 data/experiments/phase2_5080_v1/src/build_cdr_masks_v2_3.py
 data/experiments/phase2_5080_v1/src/build_clustered_splits_v2.py
 data/experiments/phase2_5080_v1/src/build_p3_pose_manifest.py
