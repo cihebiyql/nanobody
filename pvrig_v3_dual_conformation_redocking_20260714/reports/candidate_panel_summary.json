@@ -1,0 +1,88 @@
+{
+  "algorithm": "fixed128_deterministic_v1",
+  "bucket_counts": {
+    "DIVERSE_PLAUSIBLE": 24,
+    "LOCKED_DUAL_REFERENCE_A": 47,
+    "RF2_FORMAL_PASS": 4,
+    "RF2_NEAR_PASS": 28,
+    "SINGLE_BASELINE_RECHECK": 25
+  },
+  "cap_counts": {
+    "arm_id": {
+      "P1_ekg_L": 5,
+      "P1_ekg_S": 1,
+      "P1_qkg_L": 3,
+      "P1_qkg_S": 2,
+      "P1_qrg_L": 7,
+      "P1_qrg_S": 4,
+      "P2_ekg_L": 6,
+      "P2_ekg_S": 1,
+      "P2_qkg_L": 3,
+      "P2_qkg_S": 1,
+      "P2_qrg_L": 8,
+      "P2_qrg_S": 2,
+      "P3_ekg_L": 6,
+      "P3_ekg_S": 2,
+      "P3_qkg_L": 7,
+      "P3_qrg_L": 6,
+      "P3_qrg_S": 3,
+      "P4_ekg_L": 6,
+      "P4_ekg_S": 3,
+      "P4_qkg_L": 5,
+      "P4_qkg_S": 3,
+      "P4_qrg_L": 4,
+      "P4_qrg_S": 2,
+      "P5_ekg_L": 8,
+      "P5_ekg_S": 1,
+      "P5_qkg_L": 5,
+      "P5_qkg_S": 2,
+      "P5_qrg_L": 6,
+      "P5_qrg_S": 1,
+      "P6_ekg_L": 6,
+      "P6_ekg_S": 3,
+      "P6_qkg_L": 3,
+      "P6_qkg_S": 1,
+      "P6_qrg_L": 2
+    },
+    "backbone_group_id_max": 4,
+    "h3_regime": {
+      "L": 96,
+      "S": 32
+    },
+    "near_cdr3_family_id_max": 12,
+    "scaffold_id": {
+      "ekg": 48,
+      "qkg": 35,
+      "qrg": 45
+    }
+  },
+  "caps": {
+    "arm_id": 8,
+    "backbone_group_id": 4,
+    "h3_L_max": 96,
+    "h3_S_min": 32,
+    "near_cdr3_family_id": 12,
+    "scaffold_id": 48
+  },
+  "expected_count": 128,
+  "output_hashes": {
+    "candidates_128_tsv_sha256": "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78"
+  },
+  "panel_id": "fixed128_v1",
+  "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
+  "quota_contract": {
+    "DIVERSE_PLAUSIBLE": 24,
+    "LOCKED_DUAL_REFERENCE_A": 47,
+    "RF2_FORMAL_PASS": 4,
+    "RF2_NEAR_PASS": 28,
+    "SINGLE_BASELINE_RECHECK": 25
+  },
+  "selected_count": 128,
+  "source_rowset_hashes": {
+    "candidates": "a3f896f8c6bf78872e0d30f3934de8c1c3de23a2eafbb2c219d2d511c88ede5c",
+    "docking_pose_consensus": "dcf1cd28315f8063d7581dab95d62edc1ea60bdca2381c4e0f75eebad6bf6adb",
+    "ranked_blocker_geometry_candidates": "bfff88e00e8dd8cef9d10c06c4f1a51eec806d3b4ac30d1cd57c068fbebb60dd",
+    "rf2_candidate_gates": "870f64620c5e5677b28d18999bb8738080aa5c66cd56a28d6056a843c6dcbab3",
+    "sequence_qc": "6259af089a8eabb6576d7db7e141a89ffe15c7da9f5601b985e3a1de9dffd2cc"
+  }
+}

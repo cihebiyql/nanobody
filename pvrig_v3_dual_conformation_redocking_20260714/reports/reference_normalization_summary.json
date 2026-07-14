@@ -1,0 +1,110 @@
+{
+  "atom_filter": "standard_amino_acid_ATOM_only",
+  "hotspots": {
+    "air_anchor_count": 12,
+    "air_anchor_uniprot_positions": [
+      71,
+      74,
+      82,
+      87,
+      92,
+      96,
+      98,
+      135,
+      138,
+      140,
+      142,
+      144
+    ],
+    "all_uniprot_positions": [
+      71,
+      72,
+      74,
+      81,
+      82,
+      83,
+      87,
+      90,
+      92,
+      95,
+      96,
+      97,
+      98,
+      100,
+      135,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144
+    ],
+    "holdout_count": 11,
+    "holdout_uniprot_positions": [
+      72,
+      81,
+      83,
+      90,
+      95,
+      97,
+      100,
+      137,
+      139,
+      141,
+      143
+    ],
+    "soft_hint_rows_excluded": true,
+    "source": "inputs/source/PVRIG_hotspot_set_v1.csv",
+    "source_sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+    "split_algorithm": "sort_alignment_col_then_even_index_anchor",
+    "unique_interface_residue_count": 23
+  },
+  "numbering": "UniProt_Q6DKI7",
+  "references": {
+    "8x6b": {
+      "outputs": {
+        "receptor_only": {
+          "atom_count": 773,
+          "path": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+          "residue_count": 103,
+          "sha256": "31b530edf01fe9b8f354935cc6140d863ba78faf50f93cf5303d0223c2a94e5a"
+        },
+        "tl_reference": {
+          "atom_count": 1736,
+          "path": "inputs/normalized/8x6b_TL_reference.pdb",
+          "residue_count": 229,
+          "sha256": "80c9e36c63ba9fa8f28f606ad5864d9eb8c50b9b228424e1db5cdfc1bc6725b0"
+        }
+      },
+      "pvrig_chain": "T",
+      "pvrig_offset_applied": 38,
+      "pvrl2_chain": "L",
+      "source": "inputs/source/8X6B.pdb",
+      "source_sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    "9e6y": {
+      "outputs": {
+        "receptor_only": {
+          "atom_count": 808,
+          "path": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+          "residue_count": 108,
+          "sha256": "c850363e92aa0ed00266b0f49ecea364bc661a768b2ac3ebe90cc8946b6f64c6"
+        },
+        "tl_reference": {
+          "atom_count": 1810,
+          "path": "inputs/normalized/9e6y_TL_reference.pdb",
+          "residue_count": 238,
+          "sha256": "01f13b5899624cb8c0450c458fbe055cae706804a78a0f7997940b787e6f2744"
+        }
+      },
+      "pvrig_chain": "T",
+      "pvrig_offset_applied": 40,
+      "pvrl2_chain": "L",
+      "source": "inputs/source/9E6Y.pdb",
+      "source_sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    }
+  },
+  "schema_version": 1
+}
