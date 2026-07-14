@@ -33,10 +33,20 @@ DATA_ROOT = EXP_DIR.parents[1]
 PROTOCOL_ID = "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
 EXPECTED_REMOTE_RUNS = 30
 REMOTE_PASS_STATUS = "PASS_4_EMREF_TOP8_READY"
+FROZEN_NEW_RUN_MANIFEST_SHA256 = (
+    "1a51d482c5d755eeb587d0bbdfab7303327190bd6d54e1ad4ecfd74636fe5151"
+)
 REMOTE_ROOT = (
     "/data/qlyu/projects/"
     "pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714"
 )
+FROZEN_CONTROLLER_PID = 4059962
+FROZEN_CONTROLLER_PID_SHA256 = (
+    "d6bdae94ecac6baab46e1f1d83b360b529bc3a92facc106403378df7465b2028"
+)
+FROZEN_CONTROLLER_START_TICKS = 664578751
+FROZEN_CONTROLLER_PYTHON = "/data/qlyu/anaconda3/envs/haddock3/bin/python"
+FROZEN_HADDOCK_BIN = "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3"
 
 STATE_SCHEMA = "pvrig_v1_3_production_autorun_state_v1"
 FINAL_PASS = "COMPLETE_DEVELOPMENT_PASS_SMOKE_ELIGIBLE_FORMAL_BLOCKED"
@@ -202,7 +212,12 @@ class RemoteSnapshot:
     missing_count: int
     invalid_count: int
     controller_alive: bool
-    controller_pids: tuple[int, ...] = ()
+    manifest_sha256: str = ""
+    controller_pid: int | None = None
+    controller_start_ticks: int | None = None
+    controller_pid_file_valid: bool = False
+    controller_identity_valid: bool = False
+    controller_argv_sha256: str = ""
     failures: tuple[str, ...] = ()
 
     @classmethod
@@ -216,6 +231,12 @@ class RemoteSnapshot:
             "missing_count",
             "invalid_count",
             "controller_alive",
+            "manifest_sha256",
+            "controller_pid",
+            "controller_start_ticks",
+            "controller_pid_file_valid",
+            "controller_identity_valid",
+            "controller_argv_sha256",
         }
         if not required.issubset(payload):
             raise AutorunError("Remote snapshot lacks required fields")
@@ -228,11 +249,30 @@ class RemoteSnapshot:
             missing_count=int(payload["missing_count"]),
             invalid_count=int(payload["invalid_count"]),
             controller_alive=payload["controller_alive"] is True,
-            controller_pids=tuple(int(value) for value in payload.get("controller_pids", [])),
+            manifest_sha256=str(payload["manifest_sha256"]),
+            controller_pid=(
+                int(payload["controller_pid"])
+                if payload["controller_pid"] is not None
+                else None
+            ),
+            controller_start_ticks=(
+                int(payload["controller_start_ticks"])
+                if payload["controller_start_ticks"] is not None
+                else None
+            ),
+            controller_pid_file_valid=payload["controller_pid_file_valid"] is True,
+            controller_identity_valid=payload["controller_identity_valid"] is True,
+            controller_argv_sha256=str(payload["controller_argv_sha256"]),
             failures=tuple(str(value) for value in payload.get("failures", [])),
         )
+        # Explicit remote failures are terminal evidence even when the frozen
+        # manifest could not be read and therefore has zero observed rows.
+        if snapshot.status == "FAILURE":
+            return snapshot
         if snapshot.manifest_count != EXPECTED_REMOTE_RUNS:
             raise AutorunError("Remote frozen manifest is not exactly 30 runs")
+        if snapshot.manifest_sha256 != FROZEN_NEW_RUN_MANIFEST_SHA256:
+            raise AutorunError("Remote frozen manifest SHA256 mismatch")
         if snapshot.status == "READY":
             if (
                 snapshot.completion_count != EXPECTED_REMOTE_RUNS
@@ -243,7 +283,15 @@ class RemoteSnapshot:
             ):
                 raise AutorunError("Remote READY snapshot lacks exact 30/30 closure")
         elif snapshot.status == "WAITING":
-            if not snapshot.controller_alive or snapshot.failure_count or snapshot.invalid_count:
+            if (
+                not snapshot.controller_alive
+                or not snapshot.controller_pid_file_valid
+                or not snapshot.controller_identity_valid
+                or snapshot.controller_pid != FROZEN_CONTROLLER_PID
+                or snapshot.controller_start_ticks != FROZEN_CONTROLLER_START_TICKS
+                or snapshot.failure_count
+                or snapshot.invalid_count
+            ):
                 raise AutorunError("Remote WAITING snapshot is not controller-safe")
         elif snapshot.status != "FAILURE":
             raise AutorunError(f"Unknown remote snapshot status: {snapshot.status}")
@@ -259,7 +307,12 @@ class RemoteSnapshot:
             "missing_count": self.missing_count,
             "invalid_count": self.invalid_count,
             "controller_alive": self.controller_alive,
-            "controller_pids": list(self.controller_pids),
+            "manifest_sha256": self.manifest_sha256,
+            "controller_pid": self.controller_pid,
+            "controller_start_ticks": self.controller_start_ticks,
+            "controller_pid_file_valid": self.controller_pid_file_valid,
+            "controller_identity_valid": self.controller_identity_valid,
+            "controller_argv_sha256": self.controller_argv_sha256,
             "failures": list(self.failures),
         }
 
@@ -271,6 +324,14 @@ class Stage:
     release_root: Path
     marker: str
     validator: Callable[[Path], dict[str, Any]]
+    upstreams: tuple["Upstream", ...] = ()
+
+
+@dataclass(frozen=True)
+class Upstream:
+    name: str
+    release_root: Path
+    marker: str
 
 
 def utc_now() -> str:
@@ -458,15 +519,25 @@ def release_inventory(root: Path, marker: str) -> dict[str, Any]:
     releases = (root / "releases").resolve()
     if release.parent != releases or not (release / marker).is_file():
         raise AutorunError(f"Current pointer escapes or lacks marker: {current}")
+    members = sorted(release.rglob("*"))
+    internal_symlinks = [
+        path.relative_to(release).as_posix() for path in members if path.is_symlink()
+    ]
+    if internal_symlinks:
+        raise AutorunError(
+            f"Immutable release contains internal symlinks: {internal_symlinks}"
+        )
     files = {
         path.relative_to(release).as_posix(): sha256_file(path)
-        for path in sorted(release.rglob("*"))
-        if path.is_file() and not path.is_symlink()
+        for path in members
+        if path.is_file()
     }
     if not files:
         raise AutorunError(f"Immutable release is empty: {release}")
     return {
         "root": root.resolve().as_posix(),
+        "current_target": target_text,
+        "current_resolved": release.as_posix(),
         "release_id": release.name,
         "file_count": len(files),
         "files": files,
