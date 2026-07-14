@@ -7,7 +7,7 @@ REMOTE_ROOT=${REMOTE_ROOT:-/data/qlyu/projects/pvrig_v3_dual_conformation_redock
 SSH_BIN=${SSH_BIN:-ssh.exe}
 PYTHON=${REMOTE_PYTHON:-/data/qlyu/anaconda3/envs/haddock3/bin/python}
 HADDOCK3=${REMOTE_HADDOCK3:-/data/qlyu/anaconda3/envs/haddock3/bin/haddock3}
-LOCAL_SCRATCH_ROOT=${REMOTE_LOCAL_SCRATCH_ROOT:-}
+LOCAL_SCRATCH_ROOT=${REMOTE_LOCAL_SCRATCH_ROOT:-/tmp/pvrig_v3_haddock}
 
 case "$MODE" in
   validate)
@@ -27,7 +27,10 @@ case "$MODE" in
       name=full_controller
       entry=scripts/run_controller.py
     fi
-    "$SSH_BIN" "$REMOTE_HOST" "set -e; cd '$REMOTE_ROOT'; mkdir -p logs status; \
+    "$SSH_BIN" "$REMOTE_HOST" "set -e; cd '$REMOTE_ROOT'; mkdir -p logs status '$LOCAL_SCRATCH_ROOT'; \
+      test -d '$LOCAL_SCRATCH_ROOT' && test -w '$LOCAL_SCRATCH_ROOT' || { echo 'ERROR: local scratch is not writable' >&2; exit 3; }; \
+      scratch_fs=\$(stat -f -c %T '$LOCAL_SCRATCH_ROOT'); \
+      case \"\$scratch_fs\" in nfs*) echo 'ERROR: refusing NFS scratch filesystem' >&2; exit 4;; esac; \
       if test -s status/${name}.pid && kill -0 \$(cat status/${name}.pid) 2>/dev/null; then \
         echo '${name} already running pid='\$(cat status/${name}.pid); exit 0; \
       fi; \

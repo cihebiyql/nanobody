@@ -37,7 +37,13 @@ def manifest_rows() -> list[dict[str, str]]:
     return read_tsv(path)
 
 
+def validate_job_id(job_id: str) -> None:
+    if not job_id or job_id in {".", ".."} or "/" in job_id or "\\" in job_id:
+        raise RuntimeError(f"invalid job_id path component: {job_id!r}")
+
+
 def find_job(job_id: str) -> dict[str, str]:
+    validate_job_id(job_id)
     matches = [row for row in manifest_rows() if row["job_id"] == job_id]
     if len(matches) != 1:
         raise RuntimeError(f"job_id {job_id} matched {len(matches)} rows")
@@ -128,6 +134,28 @@ def copy_receptor(job: dict[str, str], destination: Path) -> None:
 def archive_previous_attempt(job_id: str, attempt: int) -> None:
     archive_root = root() / "failed_attempts" / job_id / f"attempt_{attempt - 1}_{int(time.time())}"
     moved = False
+    scratch_run = run_path(job_id)
+    if scratch_run != shared_run_path(job_id) and scratch_run.exists():
+        scratch = local_scratch_root()
+        if scratch is None:
+            raise RuntimeError("local scratch disappeared while archiving a failed attempt")
+        try:
+            scratch_run.resolve().relative_to(scratch)
+        except ValueError as exc:
+            raise RuntimeError(f"refusing to archive scratch path outside configured root: {scratch_run}") from exc
+        archive_root.mkdir(parents=True, exist_ok=True)
+        destination = archive_root / "scratch_run"
+        temporary = archive_root / f".scratch_run.copying.{os.getpid()}"
+        if destination.exists() or temporary.exists():
+            raise RuntimeError(f"scratch archive destination already exists: {archive_root}")
+        try:
+            shutil.copytree(scratch_run, temporary, copy_function=shutil.copy2)
+            temporary.replace(destination)
+        except Exception:
+            shutil.rmtree(temporary, ignore_errors=True)
+            raise
+        shutil.rmtree(scratch_run)
+        moved = True
     for label, source in (("run", shared_run_path(job_id)), ("result", result_path(job_id).parent)):
         if source.exists():
             archive_root.mkdir(parents=True, exist_ok=True)
@@ -192,7 +220,7 @@ def cleanup_local_scratch(run_dir: Path) -> None:
     if scratch is None or run_dir == shared_run_path(run_dir.name):
         return
     try:
-        run_dir.relative_to(scratch)
+        run_dir.resolve().relative_to(scratch)
     except ValueError as exc:
         raise RuntimeError(f"refusing to clean scratch path outside configured root: {run_dir}") from exc
     shutil.rmtree(run_dir)
@@ -221,7 +249,7 @@ def score_models(job: dict[str, str], models: list[Path]) -> list[dict[str, obje
     score_script = Path(os.environ.get("PVRIG_SCORE_POSE", root() / "scripts/score_pose.py"))
     if not score_script.is_file():
         raise RuntimeError(f"score_pose script missing: {score_script}")
-    io_json = run_path(job["job_id"]) / "haddock_run/6_seletopclusts/io.json"
+    io_json = shared_run_path(job["job_id"]) / "haddock_run/6_seletopclusts/io.json"
     score_dir = result_path(job["job_id"]).parent / "pose_scores"
     score_dir.mkdir(parents=True, exist_ok=True)
     evidence: list[dict[str, object]] = []
@@ -274,6 +302,8 @@ def success_is_complete(job_id: str) -> bool:
 
 
 def execute(job_id: str, max_attempts: int) -> int:
+    validate_job_id(job_id)
+    job = find_job(job_id)
     lock_path = root() / "status/locks" / f"{job_id}.lock"
     lock_path.parent.mkdir(parents=True, exist_ok=True)
     with lock_path.open("w") as lock:
@@ -291,11 +321,11 @@ def execute(job_id: str, max_attempts: int) -> int:
             write_state(job_id, {"status": "FAILED_MAX_ATTEMPTS", "attempts": attempt - 1})
             return 1
         run_dir = run_path(job_id)
-        if shared_run_path(job_id).exists() or result_path(job_id).parent.exists():
+        scratch_run_dir = run_dir if run_dir != shared_run_path(job_id) else None
+        if run_dir.exists() or shared_run_path(job_id).exists() or result_path(job_id).parent.exists():
             archive_previous_attempt(job_id, attempt)
-        if run_dir != shared_run_path(job_id) and run_dir.exists():
-            shutil.rmtree(run_dir)
-        job = find_job(job_id)
+        if run_dir.exists():
+            raise RuntimeError(f"previous run directory still exists after archival: {run_dir}")
         write_state(
             job_id,
             {
@@ -358,8 +388,9 @@ def execute(job_id: str, max_attempts: int) -> int:
                 },
             )
             try:
-                cleanup_local_scratch(run_path(job_id))
-            except OSError as exc:
+                if scratch_run_dir is not None:
+                    cleanup_local_scratch(scratch_run_dir)
+            except Exception as exc:
                 print(f"WARNING: could not clean local scratch for {job_id}: {exc}", file=sys.stderr)
             return 0
         except Exception as exc:

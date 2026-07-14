@@ -52,9 +52,9 @@
       "sha256": "8c9ee409caf9454080e0cd01be394527bcec19d9a18299b882915a4889b4bc98"
     },
     {
-      "bytes": 2063,
+      "bytes": 2407,
       "path": "scripts/launch_node1.sh",
-      "sha256": "21156f42e5b62686b24f7f0f9b49b00614aead6e4f60ac86aa24fa81690ad885"
+      "sha256": "920b7293d9811a4bbf84b1b3ea80b185b7c4635b6884324e811a8000f3a7471d"
     },
     {
       "bytes": 5263,
@@ -67,9 +67,9 @@
       "sha256": "1b612dfce039f508bfcdd39125ff3ab99869bc17392559a555a859cbe2295497"
     },
     {
-      "bytes": 15452,
+      "bytes": 17002,
       "path": "scripts/run_job.py",
-      "sha256": "20e2bbc2940c03abe817cfdf3ab2725e715196efce59b2da5b9781c5ae929d99"
+      "sha256": "9957e6dc80db2345737576d65606601064725c09b654518b1df76427e48a3d0a"
     },
     {
       "bytes": 3241,
@@ -97,9 +97,9 @@
       "sha256": "2b29dfe565ec5cecc4fb90e2d79427653b8d5286d31ec587cd4e92997caeae08"
     },
     {
-      "bytes": 12860,
+      "bytes": 17771,
       "path": "tests/test_job_manifest_and_controller.py",
-      "sha256": "b326b5b5a30433cfa7ec21b8316132196b125df9cb1022e079fb927601a23079"
+      "sha256": "c38bb3b6b5d0187bba61cf6e6d944cafa8755a5d16ade28f9fb2159b953d9c23"
     },
     {
       "bytes": 1438,
@@ -122,7 +122,7 @@
   "next_generation_gate": "reports/EVALUATOR_STABLE.json and reports/P2_P3_P4_ENRICHMENT.json must both match this protocol lock and have status PASS",
   "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
   "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
-  "protocol_lock_sha256": "2c813f99f26f664da679e3979039d790e53602fa459c833fd56f0f8d59cf3038",
+  "protocol_lock_sha256": "74b4cd7c7567f3ee68b7123a69fab021641cbdb8d96d12401375285cf91755f3",
   "schema_version": 1,
   "status": "LOCKED"
 }
