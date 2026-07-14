@@ -875,6 +875,39 @@ class V13Dual47RecoveryTests(unittest.TestCase):
                         identity, label, chain, role, amendment_v2
                     )
 
+    def test_reference_heavy_hetatm_injection_fails_inside_build(self) -> None:
+        for chain, asset_key, label in (
+            ("A", "monomer", "frozen monomer"),
+            ("B", "receptor", "frozen receptor"),
+        ):
+            with self.subTest(chain=chain), tempfile.TemporaryDirectory() as temporary:
+                fixture = Fixture(Path(temporary))
+                original_verify = MOD.verify_asset_hashes
+                injected = False
+
+                def verify_then_inject(
+                    source_root: Path, descriptor: object
+                ) -> dict[str, Path]:
+                    nonlocal injected
+                    assets = original_verify(source_root, descriptor)
+                    if not injected:
+                        inject_pdb_record(
+                            assets[asset_key], hetatm_line(99, chain, 201)
+                        )
+                        injected = True
+                    return assets
+
+                with mock.patch.object(
+                    MOD, "verify_asset_hashes", side_effect=verify_then_inject
+                ):
+                    with self.assertRaisesRegex(
+                        MOD.RecoveryError,
+                        f"{label} chain {chain} heavy HETATM identity count must be zero",
+                    ):
+                        fixture.build()
+                self.assertTrue(injected)
+                self.assertFalse(fixture.output.exists())
+
     def test_dual_lane_metadata_and_monomer_hash_identity_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             fixture = Fixture(Path(temporary))
