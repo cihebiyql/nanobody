@@ -53,6 +53,13 @@ DEFAULT_SELECTOR_AUDIT = (
 DEFAULT_SELECTOR_IMPLEMENTATION = (
     SCRIPT_DIR / "select_phase2_v3_p2_v1_2_emref_top8.py"
 )
+DEFAULT_PROCESSOR_TEST = SCRIPT_DIR / "test_process_phase2_v3_p2_v1_2_top8_calibration.py"
+DEFAULT_PROCESSOR_RELEASE_MANIFEST = (
+    EXP_DIR
+    / "audits/phase2_v3_p2_v1_2_top8_processor_release_manifest.json"
+)
+PROCESSOR_RELEASE_SCHEMA = "pvrig_v1_2_top8_processor_release_manifest_v1"
+PROCESSOR_RELEASE_STATUS = "FROZEN_V1_2_TOP8_PROCESSOR_RELEASE"
 DEFAULT_POSITIVE_MANIFEST = (
     WORKSPACE_ROOT / "docking/calibration/patent_success_validation/batch_manifest.csv"
 )
@@ -442,6 +449,7 @@ class BuildConfig:
     scoring_helper: Path = DEFAULT_SCORING_HELPER
     hotspots: Path = DEFAULT_HOTSPOTS
     reconciliation: Path = DEFAULT_RECONCILIATION
+    processor_release_manifest: Path = DEFAULT_PROCESSOR_RELEASE_MANIFEST
     references: Mapping[str, Path] = field(
         default_factory=lambda: {
             baseline: Path(spec["reference"]) for baseline, spec in BASELINES.items()
@@ -1505,11 +1513,19 @@ def validate_toolchain(config: BuildConfig) -> dict[str, dict[str, str]]:
         "scoring_helper": "pvrig_scoring_semantics_v1_2.py",
     }
     paths = {
+        "processor": Path(__file__).resolve(),
+        "processor_test": DEFAULT_PROCESSOR_TEST.resolve(),
         "aligner": config.aligner.resolve(),
         "pose_scorer": config.pose_scorer.resolve(),
         "region_scorer": config.region_scorer.resolve(),
         "scoring_helper": config.scoring_helper.resolve(),
+        "processor": Path(__file__).resolve(),
+        "processor_test": DEFAULT_PROCESSOR_TEST.resolve(),
     }
+    if config.processor_release_manifest.is_file():
+        required_inputs["processor_release_manifest"] = (
+            config.processor_release_manifest.resolve()
+        )
     for name, expected_name in expected_names.items():
         if paths[name].name != expected_name:
             raise ContractError(
@@ -2262,10 +2278,8 @@ def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -
         shutil.rmtree(backup)
 
 
-def canonical_anchor_paths(config: BuildConfig, selector_evidence: Mapping[str, Any]) -> tuple[
-    dict[str, Path], dict[str, Path | None]
-]:
-    expected = {
+def canonical_expected_anchor_paths() -> dict[str, Path]:
+    return {
         "selector_csv": DEFAULT_SELECTOR_CSV,
         "selector_audit": DEFAULT_SELECTOR_AUDIT,
         "selector_implementation": DEFAULT_SELECTOR_IMPLEMENTATION,
@@ -2280,6 +2294,12 @@ def canonical_anchor_paths(config: BuildConfig, selector_evidence: Mapping[str, 
         "reference_8x6b": Path(BASELINES["8x6b"]["reference"]),
         "reference_9e6y": Path(BASELINES["9e6y"]["reference"]),
     }
+
+
+def canonical_anchor_paths(config: BuildConfig, selector_evidence: Mapping[str, Any]) -> tuple[
+    dict[str, Path], dict[str, Path | None]
+]:
+    expected = canonical_expected_anchor_paths()
     selector_implementation: Path | None = None
     raw_selector_implementation = str(
         selector_evidence.get("selector_implementation_path", "")
@@ -2309,11 +2329,113 @@ def canonical_anchor_paths(config: BuildConfig, selector_evidence: Mapping[str, 
     return expected, observed
 
 
+def current_processor_release_manifest_payload() -> dict[str, Any]:
+    return {
+        "schema_version": PROCESSOR_RELEASE_SCHEMA,
+        "protocol_id": PROTOCOL_ID,
+        "status": PROCESSOR_RELEASE_STATUS,
+        "processor": {
+            "path": canonical_input_path(Path(__file__).resolve(), WORKSPACE_ROOT),
+            "sha256": sha256_file(Path(__file__).resolve()),
+        },
+        "processor_test": {
+            "path": canonical_input_path(DEFAULT_PROCESSOR_TEST, WORKSPACE_ROOT),
+            "sha256": sha256_file(DEFAULT_PROCESSOR_TEST),
+        },
+        "canonical_anchors": {
+            name: {
+                "path": canonical_input_path(path, WORKSPACE_ROOT),
+                "sha256": CANONICAL_TRUST_ANCHOR_SHA256[name],
+            }
+            for name, path in sorted(canonical_expected_anchor_paths().items())
+        },
+    }
+
+
+def validate_processor_release_manifest(
+    path: Path,
+    *,
+    canonical_manifest_path: Path = DEFAULT_PROCESSOR_RELEASE_MANIFEST,
+) -> dict[str, Any]:
+    resolved = path.resolve()
+    canonical_resolved = canonical_manifest_path.resolve()
+    result: dict[str, Any] = {
+        "path": resolved.as_posix(),
+        "canonical_path": canonical_resolved.as_posix(),
+        "canonical_path_match": resolved == canonical_resolved,
+        "exists": resolved.is_file(),
+        "manifest_sha256": "",
+        "schema_protocol_status_match": False,
+        "processor_path_and_current_sha256_match": False,
+        "processor_test_path_and_current_sha256_match": False,
+        "canonical_anchor_count": 0,
+        "all_13_external_canonical_anchors_match": False,
+        "content_validated": False,
+        "validated": False,
+        "errors": [],
+    }
+    if not resolved.is_file():
+        result["errors"].append("release_manifest_missing")
+        return result
+    result["manifest_sha256"] = sha256_file(resolved)
+    try:
+        payload = json.loads(resolved.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        result["errors"].append("release_manifest_invalid_json")
+        return result
+    if not isinstance(payload, dict):
+        result["errors"].append("release_manifest_not_object")
+        return result
+
+    expected = current_processor_release_manifest_payload()
+    result["schema_protocol_status_match"] = all(
+        payload.get(field_name) == expected[field_name]
+        for field_name in ("schema_version", "protocol_id", "status")
+    )
+    result["processor_path_and_current_sha256_match"] = (
+        payload.get("processor") == expected["processor"]
+    )
+    result["processor_test_path_and_current_sha256_match"] = (
+        payload.get("processor_test") == expected["processor_test"]
+    )
+    anchors = payload.get("canonical_anchors")
+    if isinstance(anchors, dict):
+        result["canonical_anchor_count"] = len(anchors)
+        result["all_13_external_canonical_anchors_match"] = (
+            len(anchors) == len(CANONICAL_TRUST_ANCHOR_SHA256) == 13
+            and anchors == expected["canonical_anchors"]
+        )
+    checks = (
+        result["schema_protocol_status_match"],
+        result["processor_path_and_current_sha256_match"],
+        result["processor_test_path_and_current_sha256_match"],
+        result["all_13_external_canonical_anchors_match"],
+    )
+    result["content_validated"] = all(checks)
+    result["validated"] = bool(
+        result["canonical_path_match"] and result["content_validated"]
+    )
+    if not result["canonical_path_match"]:
+        result["errors"].append("release_manifest_noncanonical_path")
+    if not result["schema_protocol_status_match"]:
+        result["errors"].append("release_manifest_schema_protocol_status_mismatch")
+    if not result["processor_path_and_current_sha256_match"]:
+        result["errors"].append("release_manifest_processor_mismatch")
+    if not result["processor_test_path_and_current_sha256_match"]:
+        result["errors"].append("release_manifest_processor_test_mismatch")
+    if not result["all_13_external_canonical_anchors_match"]:
+        result["errors"].append("release_manifest_canonical_anchors_mismatch")
+    return result
+
+
 def evaluate_canonical_pose_rule_contract(
     config: BuildConfig,
     selector_evidence: Mapping[str, Any],
 ) -> dict[str, Any]:
     expected_paths, observed_paths = canonical_anchor_paths(config, selector_evidence)
+    release_manifest_check = validate_processor_release_manifest(
+        config.processor_release_manifest
+    )
     anchor_checks: dict[str, Any] = {}
     for name, expected_path in expected_paths.items():
         observed_path = observed_paths[name]
@@ -2357,11 +2479,14 @@ def evaluate_canonical_pose_rule_contract(
             and selector_audit_closure_match
             and inventory_match
             and anchors_match
+            and release_manifest_check["validated"]
         ),
         "default_47x8_contract_match": contract_match,
         "selector_audit_closure_match": selector_audit_closure_match,
         "exact_expected_reference_inventories_match": inventory_match,
         "all_path_and_sha256_anchors_match": anchors_match,
+        "processor_release_manifest_validated": release_manifest_check["validated"],
+        "processor_release_manifest_check": release_manifest_check,
         "anchors": anchor_checks,
     }
 
