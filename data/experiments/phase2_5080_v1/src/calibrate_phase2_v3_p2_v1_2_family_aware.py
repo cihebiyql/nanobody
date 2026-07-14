@@ -16,6 +16,7 @@ import json
 import math
 import os
 import random
+import re
 import shutil
 import tempfile
 from collections import Counter, defaultdict
@@ -403,6 +404,10 @@ REQUIRED_METRICS_FIELDS = {
     "dual_receptor_r_gold_freeze_eligible",
     "source_docking_receptor",
     "baseline_channel_semantics",
+    "selector_row_sha256",
+    "aligned_pose_sha256",
+    "reference_relpath",
+    "reference_sha256",
     "candidate_id",
     "family",
     "canonical_rank",
@@ -421,6 +426,11 @@ REQUIRED_METRICS_FIELDS = {
     "cdr1_occluding_residue_pair_count",
     "cdr2_occluding_residue_pair_count",
     "cdr3_occluding_residue_pair_count",
+    "reference_pvrl2_record_inventory_json",
+    "region_reference_pvrl2_record_inventory_json",
+    "canonical_internal_score_payload_sha256",
+    "baseline_pose_score_payload_sha256",
+    "region_score_payload_sha256",
     "metrics_row_sha256",
 }
 
@@ -435,7 +445,46 @@ CANONICAL_INTERNAL_CONTACT_FIELDS = (
     "hotspot_weight_total",
     "hotspot_weight_overlap",
     "hotspot_weight_fraction",
+    "canonical_internal_score_payload_sha256",
 )
+
+
+def validate_atom_only_reference_inventory(raw: str, field_name: str) -> str:
+    try:
+        inventory = json.loads(raw)
+    except json.JSONDecodeError as error:
+        raise CalibrationError(f"Invalid {field_name} JSON") from error
+    if not isinstance(inventory, dict):
+        raise CalibrationError(f"{field_name} must be a JSON object")
+    selection_rule = str(inventory.get("selection_rule", ""))
+    selected_atoms = parse_int(
+        inventory.get("selected_protein_heavy_atom_count"),
+        f"{field_name}.selected_protein_heavy_atom_count",
+        1,
+    )
+    protein_atoms = parse_int(
+        inventory.get("protein_atom_heavy_atom_count"),
+        f"{field_name}.protein_atom_heavy_atom_count",
+        1,
+    )
+    selected_residues = parse_int(
+        inventory.get("selected_protein_residue_count"),
+        f"{field_name}.selected_protein_residue_count",
+        1,
+    )
+    protein_residues = parse_int(
+        inventory.get("protein_atom_residue_count"),
+        f"{field_name}.protein_atom_residue_count",
+        1,
+    )
+    if (
+        "protein ATOM" not in selection_rule
+        or "all HETATM excluded" not in selection_rule
+        or selected_atoms != protein_atoms
+        or selected_residues != protein_residues
+    ):
+        raise CalibrationError(f"{field_name} is not closed protein-ATOM-only evidence")
+    return canonical_json(inventory)
 
 
 def validate_metrics_rows(
@@ -470,6 +519,8 @@ def validate_metrics_rows(
     case_rows: Counter[str] = Counter()
     family_by_case: dict[str, str] = {}
     shared_internal_by_pose: dict[tuple[str, int], tuple[str, ...]] = {}
+    reference_inventory_variants: dict[str, set[str]] = defaultdict(set)
+    region_inventory_variants: dict[str, set[str]] = defaultdict(set)
     for row_number, row in enumerate(rows, start=2):
         observed_hash = row.get("metrics_row_sha256", "")
         expected_hash = row_sha256(row, "metrics_row_sha256")
@@ -533,6 +584,28 @@ def validate_metrics_rows(
         if candidate_id in family_by_case and family_by_case[candidate_id] != family:
             raise CalibrationError(f"Family drift within {candidate_id}")
         family_by_case[candidate_id] = family
+        for hash_field in (
+            "selector_row_sha256",
+            "aligned_pose_sha256",
+            "reference_sha256",
+            "canonical_internal_score_payload_sha256",
+            "baseline_pose_score_payload_sha256",
+            "region_score_payload_sha256",
+        ):
+            if not re.fullmatch(r"[0-9a-f]{64}", row.get(hash_field, "")):
+                raise CalibrationError(f"Invalid SHA256 field {hash_field} at row {row_number}")
+        reference_inventory_variants[baseline].add(
+            validate_atom_only_reference_inventory(
+                row["reference_pvrl2_record_inventory_json"],
+                "reference_pvrl2_record_inventory_json",
+            )
+        )
+        region_inventory_variants[baseline].add(
+            validate_atom_only_reference_inventory(
+                row["region_reference_pvrl2_record_inventory_json"],
+                "region_reference_pvrl2_record_inventory_json",
+            )
+        )
         derive_features(row)
     expected_per_case = contract.ranks_per_case * contract.baseline_count
     bad_cases = {
@@ -551,6 +624,10 @@ def validate_metrics_rows(
     }
     if keys != expected_keys:
         raise CalibrationError("Fixed Top-8 x baseline key closure failed")
+    if any(len(reference_inventory_variants[baseline]) != 1 for baseline in BASELINES):
+        raise CalibrationError("Reference PVRL2 ATOM-only inventory changed within a baseline")
+    if any(len(region_inventory_variants[baseline]) != 1 for baseline in BASELINES):
+        raise CalibrationError("Region PVRL2 ATOM-only inventory changed within a baseline")
     return {
         "case_count": len(case_rows),
         "metric_rows": len(rows),
@@ -558,6 +635,15 @@ def validate_metrics_rows(
         "positive_families": len({record["family"] for record in positive_cases.values()}),
         "mutant_panel_cases": len(mutant_cases),
         "rows_by_baseline": dict(sorted(Counter(row["baseline"] for row in rows).items())),
+        "atom_only_reference_inventory_gate_passed": True,
+        "reference_inventory_sha256_by_baseline": {
+            baseline: sha256_bytes(next(iter(reference_inventory_variants[baseline])).encode())
+            for baseline in BASELINES
+        },
+        "region_reference_inventory_sha256_by_baseline": {
+            baseline: sha256_bytes(next(iter(region_inventory_variants[baseline])).encode())
+            for baseline in BASELINES
+        },
     }
 
 
@@ -1608,6 +1694,209 @@ def summarize_bootstrap_anchors(
     }
 
 
+FINGERPRINT_SCHEMA = {
+    "AG": "sorted unique VHH-residue--PVRIG-residue pairs from pvrig_vhh_contacts",
+    "O8": "sorted unique VHH-residue--PVRL2-residue occluding pairs from all 8x6b regions",
+    "O9": "sorted unique VHH-residue--PVRL2-residue occluding pairs from all 9e6y regions",
+    "matched_pair_jaccard": "rank-matched Top-8 Jaccard aggregated with frozen rank weights",
+    "clustering": "deterministic agglomerative complete-link at tau 0.40/0.50/0.60",
+}
+
+
+def jaccard(left: set[str], right: set[str]) -> float:
+    union = left | right
+    return len(left & right) / len(union) if union else 1.0
+
+
+def complete_link_clusters(
+    fingerprints: Mapping[int, set[str]], threshold: float
+) -> list[tuple[int, ...]]:
+    clusters: list[tuple[int, ...]] = [(rank,) for rank in sorted(fingerprints)]
+    while True:
+        candidates: list[tuple[float, tuple[int, ...], int, int]] = []
+        for left_index in range(len(clusters)):
+            for right_index in range(left_index + 1, len(clusters)):
+                left = clusters[left_index]
+                right = clusters[right_index]
+                similarity = min(
+                    jaccard(fingerprints[a], fingerprints[b])
+                    for a in left
+                    for b in right
+                )
+                merged = tuple(sorted((*left, *right)))
+                if similarity + 1e-15 >= threshold:
+                    candidates.append((similarity, merged, left_index, right_index))
+        if not candidates:
+            break
+        _similarity, merged, left_index, right_index = max(
+            candidates, key=lambda item: (item[0], tuple(-rank for rank in item[1]))
+        )
+        clusters = [
+            cluster
+            for index, cluster in enumerate(clusters)
+            if index not in {left_index, right_index}
+        ]
+        clusters.append(merged)
+        clusters.sort()
+    return clusters
+
+
+def fingerprint_cluster_summary(
+    fingerprints: Mapping[int, set[str]], threshold: float
+) -> dict[str, Any]:
+    clusters = complete_link_clusters(fingerprints, threshold)
+    total = sum(len(cluster) for cluster in clusters)
+    fractions = [len(cluster) / total for cluster in clusters]
+    entropy = -sum(fraction * math.log(fraction) for fraction in fractions if fraction)
+    return {
+        "threshold": threshold,
+        "cluster_count": len(clusters),
+        "clusters": [list(cluster) for cluster in clusters],
+        "cluster_entropy": entropy,
+        "largest_cluster_fraction": max(fractions),
+        "single_fingerprint_basin": len(clusters) == 1,
+    }
+
+
+def canonical_ag_set(record: Mapping[str, Any]) -> set[str]:
+    contacts = record.get("pvrig_vhh_contacts")
+    if not isinstance(contacts, list):
+        raise CalibrationError("Contact JSONL pvrig_vhh_contacts must be a list")
+    output: set[str] = set()
+    for contact in contacts:
+        if not isinstance(contact, dict):
+            raise CalibrationError("Contact JSONL AG entry must be an object")
+        vhh = str(contact.get("vhh_residue", "")).strip()
+        antigen = str(contact.get("pvrig_residue", "")).strip()
+        if not vhh or not antigen:
+            raise CalibrationError("Contact JSONL AG residue key is empty")
+        output.add(f"{vhh}--{antigen}")
+    return output
+
+
+def canonical_occlusion_set(record: Mapping[str, Any]) -> set[str]:
+    regions = record.get("region_residue_pairs")
+    if not isinstance(regions, dict):
+        raise CalibrationError("Contact JSONL region_residue_pairs must be an object")
+    output: set[str] = set()
+    for region in ("CDR1", "CDR2", "CDR3", "framework"):
+        payload = regions.get(region)
+        if not isinstance(payload, dict):
+            raise CalibrationError(f"Contact JSONL lacks region {region}")
+        pairs = payload.get("occluding_residue_pairs")
+        if not isinstance(pairs, list) or any(not str(value).strip() for value in pairs):
+            raise CalibrationError(f"Contact JSONL {region} occluding pairs are invalid")
+        output.update(str(value).strip() for value in pairs)
+    return output
+
+
+def load_contact_fingerprints(
+    path: Path | None,
+    metrics_rows: Sequence[Mapping[str, str]],
+    ranks_per_case: int,
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    if path is None or not path.is_file():
+        return None, {
+            "available": False,
+            "validated": False,
+            "failure_reason": "contacts_jsonl_missing",
+            "schema_sha256": sha256_json(FINGERPRINT_SCHEMA),
+        }
+    records: list[dict[str, Any]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            if not line.strip():
+                raise CalibrationError(f"Blank contact JSONL line {line_number}")
+            payload = json.loads(line)
+            if not isinstance(payload, dict):
+                raise CalibrationError(f"Contact JSONL line {line_number} is not an object")
+            if payload.get("contact_record_sha256") != row_sha256(
+                payload, "contact_record_sha256"
+            ):
+                raise CalibrationError(f"Contact JSONL row hash mismatch at line {line_number}")
+            records.append(payload)
+    if len(records) != len(metrics_rows):
+        raise CalibrationError(
+            f"Contact JSONL rows {len(records)} != metric rows {len(metrics_rows)}"
+        )
+    metrics_by_key = {
+        (row["candidate_id"], int(row["canonical_rank"]), row["baseline"]): row
+        for row in metrics_rows
+    }
+    contact_by_key: dict[tuple[str, int, str], Mapping[str, Any]] = {}
+    for record in records:
+        key = (
+            str(record.get("candidate_id", "")),
+            int(record.get("canonical_rank", 0)),
+            str(record.get("baseline", "")),
+        )
+        if key in contact_by_key or key not in metrics_by_key:
+            raise CalibrationError(f"Contact JSONL duplicate/unknown key: {key}")
+        metric = metrics_by_key[key]
+        expected_fields = {
+            "selector_row_sha256": metric["selector_row_sha256"],
+            "aligned_pose_sha256": metric["aligned_pose_sha256"],
+            "canonical_internal_score_payload_sha256": metric[
+                "canonical_internal_score_payload_sha256"
+            ],
+            "baseline_pose_score_payload_sha256": metric[
+                "baseline_pose_score_payload_sha256"
+            ],
+        }
+        mismatches = {
+            field: (record.get(field), expected)
+            for field, expected in expected_fields.items()
+            if record.get(field) != expected
+        }
+        if mismatches:
+            raise CalibrationError(f"Contact/metric payload closure mismatch {key}: {mismatches}")
+        contact_by_key[key] = record
+    if set(contact_by_key) != set(metrics_by_key):
+        raise CalibrationError("Contact/metric key closure failed")
+
+    case_ids = sorted({key[0] for key in contact_by_key})
+    fingerprint_by_case: dict[str, Any] = {}
+    for candidate_id in case_ids:
+        poses: dict[int, dict[str, set[str]]] = {}
+        for rank in range(1, ranks_per_case + 1):
+            left = contact_by_key[(candidate_id, rank, "8x6b")]
+            right = contact_by_key[(candidate_id, rank, "9e6y")]
+            ag_left = canonical_ag_set(left)
+            ag_right = canonical_ag_set(right)
+            if ag_left != ag_right:
+                raise CalibrationError(
+                    f"Canonical AG fingerprint differs across baselines for {candidate_id}/rank{rank}"
+                )
+            poses[rank] = {
+                "AG": ag_left,
+                "O8": canonical_occlusion_set(left),
+                "O9": canonical_occlusion_set(right),
+            }
+        clusters = {
+            channel: {
+                scalar_text(threshold): fingerprint_cluster_summary(
+                    {rank: poses[rank][channel] for rank in poses}, threshold
+                )
+                for threshold in (0.40, 0.50, 0.60)
+            }
+            for channel in ("AG", "O8", "O9")
+        }
+        fingerprint_by_case[candidate_id] = {"poses": poses, "clusters": clusters}
+    return fingerprint_by_case, {
+        "available": True,
+        "validated": True,
+        "failure_reason": "",
+        "relpath": canonical_path(path),
+        "sha256": sha256_file(path),
+        "records": len(records),
+        "record_hash_chain": sha256_json(
+            [record["contact_record_sha256"] for record in records]
+        ),
+        "schema": FINGERPRINT_SCHEMA,
+        "schema_sha256": sha256_json(FINGERPRINT_SCHEMA),
+    }
+
+
 MUTANT_DELTA_FIELDS = (
     "schema_version",
     "method_id",
@@ -1622,6 +1911,26 @@ MUTANT_DELTA_FIELDS = (
     "paired_delta_candidate_minus_base",
     "candidate_run_tier",
     "base_run_tier",
+    "delta_tier_strength",
+    "delta_F1",
+    "delta_F2",
+    "delta_F3",
+    "delta_F4",
+    "delta_N1",
+    "delta_N2",
+    "delta_N3",
+    "delta_N4",
+    "candidate_baseline_gap",
+    "base_baseline_gap",
+    "delta_baseline_gap",
+    "fingerprints_available",
+    "fingerprint_unavailable_reason",
+    "AG_matched_rank_weighted_jaccard",
+    "O8_matched_rank_weighted_jaccard",
+    "O9_matched_rank_weighted_jaccard",
+    "AG_cluster_transition_tau_0_50",
+    "O8_cluster_transition_tau_0_50",
+    "O9_cluster_transition_tau_0_50",
     "comparison_semantics",
     "binary_negative_label_assigned",
     "formal_eligible",
@@ -1633,6 +1942,7 @@ def build_mutant_delta_rows(
     run_rows: Sequence[Mapping[str, str]],
     mutant_cases: Mapping[str, Mapping[str, str]],
     base_by_molecule: Mapping[str, str],
+    fingerprint_by_case: Mapping[str, Any] | None,
 ) -> list[dict[str, str]]:
     run_by_case = {row["candidate_id"]: row for row in run_rows}
     output: list[dict[str, str]] = []
@@ -1645,6 +1955,48 @@ def build_mutant_delta_rows(
             raise CalibrationError(f"Missing paired run score for {case_id} -> {base_id}")
         candidate_score = float(run_by_case[case_id]["R_calibration_run_8x6b_dock"])
         base_score = float(run_by_case[base_id]["R_calibration_run_8x6b_dock"])
+        candidate_run = run_by_case[case_id]
+        base_run = run_by_case[base_id]
+        tier_strength = {"G1": 4, "G2": 3, "G3": 2, "G4": 1, "G5": 0}
+        fingerprint_values: dict[str, Any] = {
+            "fingerprints_available": False,
+            "fingerprint_unavailable_reason": "contacts_jsonl_not_available_or_not_validated",
+            **{
+                f"{channel}_matched_rank_weighted_jaccard": ""
+                for channel in ("AG", "O8", "O9")
+            },
+            **{
+                f"{channel}_cluster_transition_tau_0_50": "unavailable"
+                for channel in ("AG", "O8", "O9")
+            },
+        }
+        if fingerprint_by_case is not None:
+            if case_id not in fingerprint_by_case or base_id not in fingerprint_by_case:
+                raise CalibrationError(f"Missing fingerprint pair for {case_id} -> {base_id}")
+            q_rank = normalized_rank_weights(8)
+            fingerprint_values = {
+                "fingerprints_available": True,
+                "fingerprint_unavailable_reason": "",
+            }
+            for channel in ("AG", "O8", "O9"):
+                matched = sum(
+                    q_rank[rank]
+                    * jaccard(
+                        fingerprint_by_case[case_id]["poses"][rank][channel],
+                        fingerprint_by_case[base_id]["poses"][rank][channel],
+                    )
+                    for rank in range(1, 9)
+                )
+                candidate_clusters = fingerprint_by_case[case_id]["clusters"][channel][
+                    "0.5"
+                ]["cluster_count"]
+                base_clusters = fingerprint_by_case[base_id]["clusters"][channel]["0.5"][
+                    "cluster_count"
+                ]
+                fingerprint_values[f"{channel}_matched_rank_weighted_jaccard"] = matched
+                fingerprint_values[f"{channel}_cluster_transition_tau_0_50"] = (
+                    f"{base_clusters}->{candidate_clusters}"
+                )
         record: dict[str, Any] = {
             "schema_version": SCHEMA_VERSION,
             "method_id": METHOD_ID,
@@ -1657,8 +2009,27 @@ def build_mutant_delta_rows(
             "candidate_R_calibration_run_8x6b_dock": candidate_score,
             "base_R_calibration_run_8x6b_dock": base_score,
             "paired_delta_candidate_minus_base": candidate_score - base_score,
-            "candidate_run_tier": run_by_case[case_id]["run_tier"],
-            "base_run_tier": run_by_case[base_id]["run_tier"],
+            "candidate_run_tier": candidate_run["run_tier"],
+            "base_run_tier": base_run["run_tier"],
+            "delta_tier_strength": (
+                tier_strength[candidate_run["run_tier"]]
+                - tier_strength[base_run["run_tier"]]
+            ),
+            **{
+                f"delta_F{k}": float(candidate_run[f"F{k}"]) - float(base_run[f"F{k}"])
+                for k in range(1, 5)
+            },
+            **{
+                f"delta_N{k}": int(candidate_run[f"N{k}"]) - int(base_run[f"N{k}"])
+                for k in range(1, 5)
+            },
+            "candidate_baseline_gap": candidate_run["baseline_gap_rank_weighted_mean"],
+            "base_baseline_gap": base_run["baseline_gap_rank_weighted_mean"],
+            "delta_baseline_gap": (
+                float(candidate_run["baseline_gap_rank_weighted_mean"])
+                - float(base_run["baseline_gap_rank_weighted_mean"])
+            ),
+            **fingerprint_values,
             "comparison_semantics": "paired_geometry_delta_to_declared_base_only_not_binary_truth",
             "binary_negative_label_assigned": False,
             "formal_eligible": False,
@@ -1682,6 +2053,9 @@ ROBUSTNESS_FIELDS = (
     "lower_quantile",
     "upper_quantile",
     "support_cutoff",
+    "minimum_supporting_poses",
+    "grid_defined",
+    "failure_reason",
     "primary_preregistered_row",
     "best_row_selected",
     "selection_semantics",
@@ -1715,59 +2089,96 @@ def build_robustness_rows(
     for lower in ROBUSTNESS_LOWER_QUANTILES:
         for upper in ROBUSTNESS_UPPER_QUANTILES:
             for support in ROBUSTNESS_SUPPORT_CUTOFFS:
-                grid_index += 1
-                rules = derive_rules(
-                    metrics_rows,
-                    positive_cases,
-                    ranks_per_case,
-                    lower_quantile=lower,
-                    upper_quantile=upper,
-                )
-                poses = score_pose_rows(metrics_rows, rules)
-                runs = aggregate_run_scores(
-                    poses, positive_cases, support_cutoff=support
-                )
-                deltas = build_mutant_delta_rows(runs, mutant_cases, base_by_molecule)
-                positive_tiers = Counter(
-                    row["run_tier"] for row in runs if row["candidate_id"] in positive_cases
-                )
-                all_tiers = Counter(row["run_tier"] for row in runs)
-                positive_scores = [
-                    float(row["R_calibration_run_8x6b_dock"])
-                    for row in runs
-                    if row["candidate_id"] in positive_cases
-                ]
-                delta_values = [float(row["paired_delta_candidate_minus_base"]) for row in deltas]
-                record: dict[str, Any] = {
-                    "schema_version": SCHEMA_VERSION,
-                    "method_id": METHOD_ID,
-                    "grid_id": f"GRID_{grid_index:02d}",
-                    "lower_quantile": lower,
-                    "upper_quantile": upper,
-                    "support_cutoff": support,
-                    "primary_preregistered_row": (
-                        lower == LOWER_QUANTILE
-                        and upper == UPPER_QUANTILE
-                        and support == SUPPORT_CUTOFF
-                    ),
-                    "best_row_selected": False,
-                    "selection_semantics": "fixed_grid_robustness_only_no_best_row_selection",
-                    **{f"positive_{tier}_count": positive_tiers[tier] for tier in ("G1", "G2", "G3", "G4", "G5")},
-                    **{f"all_{tier}_count": all_tiers[tier] for tier in ("G1", "G2", "G3", "G4", "G5")},
-                    "positive_run_score_median": median(positive_scores),
-                    "mutant_paired_delta_median": median(delta_values),
-                    "rules_sha256": sha256_json(rules),
-                    "formal_eligible": False,
-                }
-                normalized = {
-                    field: scalar_text(record.get(field), field)
-                    for field in ROBUSTNESS_FIELDS
-                    if field != "robustness_row_sha256"
-                }
-                normalized["robustness_row_sha256"] = row_sha256(
-                    normalized, "robustness_row_sha256"
-                )
-                output.append(normalized)
+                for minimum_poses in ROBUSTNESS_MIN_SUPPORTING_POSES:
+                    grid_index += 1
+                    grid_defined = True
+                    failure_reason = ""
+                    rules_hash = ""
+                    positive_tiers: Counter[str] = Counter()
+                    all_tiers: Counter[str] = Counter()
+                    positive_score_median: float | None = None
+                    mutant_delta_median: float | None = None
+                    try:
+                        rules = derive_rules(
+                            metrics_rows,
+                            positive_cases,
+                            ranks_per_case,
+                            lower_quantile=lower,
+                            upper_quantile=upper,
+                        )
+                        rules_hash = sha256_json(rules)
+                        poses = score_pose_rows(metrics_rows, rules)
+                        runs = aggregate_run_scores(
+                            poses,
+                            positive_cases,
+                            support_cutoff=support,
+                            min_supporting_poses=minimum_poses,
+                        )
+                        deltas = build_mutant_delta_rows(
+                            runs, mutant_cases, base_by_molecule, fingerprint_by_case=None
+                        )
+                        positive_tiers = Counter(
+                            row["run_tier"]
+                            for row in runs
+                            if row["candidate_id"] in positive_cases
+                        )
+                        all_tiers = Counter(row["run_tier"] for row in runs)
+                        positive_scores = [
+                            float(row["R_calibration_run_8x6b_dock"])
+                            for row in runs
+                            if row["candidate_id"] in positive_cases
+                        ]
+                        delta_values = [
+                            float(row["paired_delta_candidate_minus_base"])
+                            for row in deltas
+                        ]
+                        positive_score_median = median(positive_scores)
+                        mutant_delta_median = median(delta_values)
+                    except CalibrationError as error:
+                        grid_defined = False
+                        failure_reason = str(error)
+                    record: dict[str, Any] = {
+                        "schema_version": SCHEMA_VERSION,
+                        "method_id": METHOD_ID,
+                        "grid_id": f"GRID_{grid_index:02d}",
+                        "lower_quantile": lower,
+                        "upper_quantile": upper,
+                        "support_cutoff": support,
+                        "minimum_supporting_poses": minimum_poses,
+                        "grid_defined": grid_defined,
+                        "failure_reason": failure_reason,
+                        "primary_preregistered_row": (
+                            lower == LOWER_QUANTILE
+                            and upper == UPPER_QUANTILE
+                            and support == SUPPORT_CUTOFF
+                            and minimum_poses == MIN_SUPPORTING_POSES
+                        ),
+                        "best_row_selected": False,
+                        "selection_semantics": "fixed_54_grid_robustness_only_no_best_row_selection",
+                        **{
+                            f"positive_{tier}_count": positive_tiers[tier] if grid_defined else ""
+                            for tier in ("G1", "G2", "G3", "G4", "G5")
+                        },
+                        **{
+                            f"all_{tier}_count": all_tiers[tier] if grid_defined else ""
+                            for tier in ("G1", "G2", "G3", "G4", "G5")
+                        },
+                        "positive_run_score_median": positive_score_median,
+                        "mutant_paired_delta_median": mutant_delta_median,
+                        "rules_sha256": rules_hash,
+                        "formal_eligible": False,
+                    }
+                    normalized = {
+                        field: scalar_text(record.get(field), field)
+                        for field in ROBUSTNESS_FIELDS
+                        if field != "robustness_row_sha256"
+                    }
+                    normalized["robustness_row_sha256"] = row_sha256(
+                        normalized, "robustness_row_sha256"
+                    )
+                    output.append(normalized)
+    if len(output) != 54:
+        raise CalibrationError(f"Robustness grid cardinality {len(output)} != 54")
     return output
 
 
