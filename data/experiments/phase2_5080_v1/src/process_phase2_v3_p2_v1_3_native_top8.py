@@ -179,6 +179,13 @@ SELECTOR_REQUIRED_FIELDS = {
     "receptor_residue_identity_sha256",
     "pose_pvrig_atom_identity_sha256",
     "pose_pvrig_residue_identity_sha256",
+    "vhh_identity_gate_rule_id",
+    "vhh_raw_atom_identity_exact",
+    "vhh_terminal_oxt_normalization_applied",
+    "vhh_normalized_atom_identity_exact",
+    "pvrig_raw_atom_identity_exact",
+    "identity_normalization_amendment_relpath",
+    "identity_normalization_amendment_sha256",
     "completion_status",
     "completion_exit_code",
     "source_final_stage_ignored",
@@ -665,6 +672,397 @@ def load_case_metadata(config: BuildConfig) -> dict[str, core.CaseMetadata]:
     if overlap:
         raise ContractError(f"Case manifests overlap: {overlap}")
     return {**positives, **mutants}
+
+
+def read_json_object(path: Path, context: str) -> Mapping[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ContractError(f"Invalid JSON for {context}: {path}") from error
+    if not isinstance(payload, dict):
+        raise ContractError(f"JSON for {context} is not an object: {path}")
+    return payload
+
+
+def bind_local_file(
+    row: Mapping[str, str],
+    path_field: str,
+    hash_field: str,
+    workspace_root: Path,
+    file_bindings: dict[str, str],
+) -> Path:
+    path = resolve_workspace_path(row.get(path_field, ""), workspace_root)
+    observed = sha256_file(path)
+    expected = row.get(hash_field, "")
+    if observed != expected:
+        raise ContractError(
+            f"Frozen local asset hash mismatch for {path_field}: {observed} != {expected}"
+        )
+    previous = file_bindings.setdefault(str(path), observed)
+    if previous != observed:
+        raise ContractError(f"Conflicting frozen hash bindings for {path}")
+    return path
+
+
+def load_bound_csv_row(
+    path: Path,
+    expected_file_sha256: str,
+    expected_row_sha256: str,
+    hash_field: str,
+    run_id: str,
+    cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
+) -> dict[str, str]:
+    key = (str(path.resolve()), hash_field)
+    if key not in cache:
+        fields, rows = read_csv_strict(path)
+        if hash_field not in fields or "run_id" not in fields:
+            raise ContractError(f"Manifest lacks run/hash fields: {path}")
+        by_run: dict[str, dict[str, str]] = {}
+        for row_number, item in enumerate(rows, start=2):
+            observed_row_hash = row_sha256(item, hash_field)
+            if item.get(hash_field) != observed_row_hash:
+                raise ContractError(f"Manifest row hash mismatch at {path}:{row_number}")
+            item_run = item.get("run_id", "")
+            if not item_run or item_run in by_run:
+                raise ContractError(f"Missing/duplicate run_id in {path}:{row_number}")
+            by_run[item_run] = item
+        cache[key] = (sha256_file(path), by_run)
+    observed_file_hash, by_run = cache[key]
+    if observed_file_hash != expected_file_sha256:
+        raise ContractError(f"Manifest file hash mismatch: {path}")
+    item = by_run.get(run_id)
+    if item is None or item.get(hash_field) != expected_row_sha256:
+        raise ContractError(f"Manifest row binding mismatch for {run_id}: {path}")
+    return item
+
+
+def validate_config_provenance(path: Path, row: Mapping[str, str]) -> None:
+    try:
+        text, values = selector_contract.parse_config_assignments(path)
+    except selector_contract.RecoveryError as error:
+        raise ContractError(str(error)) from error
+    marker = f"# Protocol: {row['source_protocol_id']}"
+    expected = {
+        ("root", "run_dir"): json.dumps(f"run_{row['source_run_id']}"),
+        ("root", "ncores"): "4",
+        ("topoaa", "iniseed"): row["topoaa_iniseed"],
+        ("rigidbody", "iniseed"): row["rigidbody_iniseed"],
+        ("rigidbody", "tolerance"): "5",
+        ("rigidbody", "sampling"): "40",
+        ("seletop", "select"): "10",
+        ("flexref", "tolerance"): "20",
+        ("emref", "tolerance"): "20",
+    }
+    if marker not in text:
+        raise ContractError(f"Config protocol marker mismatch: {path}")
+    mismatches = {
+        f"{section}.{field}": (values.get((section, field)), wanted)
+        for (section, field), wanted in expected.items()
+        if values.get((section, field)) != wanted
+    }
+    for asset_field in (
+        "remote_monomer_relpath",
+        "remote_receptor_relpath",
+        "remote_restraint_relpath",
+    ):
+        basename = Path(row.get(asset_field, "")).name
+        if not basename or basename not in text:
+            mismatches[asset_field] = ("basename_not_in_config", basename)
+    if mismatches:
+        raise ContractError(f"Config provenance mismatch for {row['run_id']}: {mismatches}")
+
+
+def validate_params_provenance(path: Path, row: Mapping[str, str]) -> None:
+    parser = configparser.ConfigParser(interpolation=None)
+    try:
+        with path.open(encoding="utf-8") as handle:
+            parser.read_file(handle)
+        observed_seed = parser.getint("emref", "iniseed")
+        tolerance = parser.getfloat("emref", "tolerance")
+    except (OSError, ValueError, configparser.Error) as error:
+        raise ContractError(f"Invalid emref params: {path}") from error
+    if observed_seed != parse_int(row["topoaa_iniseed"], "topoaa_iniseed"):
+        raise ContractError(f"emref params seed mismatch for {row['run_id']}")
+    if tolerance != 20.0:
+        raise ContractError(f"emref params tolerance mismatch for {row['run_id']}")
+
+
+def validate_io_provenance(path: Path, row: Mapping[str, str]) -> None:
+    payload = read_json_object(path, "4_emref io")
+    outputs = payload.get("output")
+    index = parse_int(row["source_output_index"], "source_output_index", 0)
+    if not isinstance(outputs, list) or index >= len(outputs):
+        raise ContractError(f"4_emref io index is unavailable for {row['run_id']}")
+    item = outputs[index]
+    if not isinstance(item, dict):
+        raise ContractError(f"4_emref io output is not an object for {row['run_id']}")
+    if str(item.get("file_name", "")).strip() != row["source_output_file"]:
+        raise ContractError(f"4_emref file_name mismatch for {row['run_id']}")
+    if parse_float(item.get("score"), "io.score") != parse_float(
+        row["source_score"], "source_score"
+    ):
+        raise ContractError(f"4_emref score mismatch for {row['run_id']}")
+    if parse_int(item.get("seed"), "io.seed") != parse_int(
+        row["source_seed"], "source_seed"
+    ):
+        raise ContractError(f"4_emref seed mismatch for {row['run_id']}")
+
+
+def validate_exact_reuse_provenance(
+    row: Mapping[str, str],
+    config: BuildConfig,
+    file_bindings: dict[str, str],
+    manifest_cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
+) -> None:
+    reuse_path = bind_local_file(
+        row,
+        "exact_reuse_manifest_relpath",
+        "exact_reuse_manifest_sha256",
+        config.workspace_root,
+        file_bindings,
+    )
+    ledger = load_bound_csv_row(
+        reuse_path,
+        row["exact_reuse_manifest_sha256"],
+        row["exact_reuse_manifest_row_sha256"],
+        "reuse_manifest_row_sha256",
+        row["run_id"],
+        manifest_cache,
+    )
+    expected = {
+        "v1_3_emref_gate_status": "PASS_4_EMREF_TOP8_READY",
+        "source_final_stage_ignored": "true",
+        "source_completion_status": row["completion_status"],
+        "source_completion_exit_code": row["completion_exit_code"],
+        "source_config_sha256": row["config_sha256"],
+        "source_completion_sha256": row["completion_sha256"],
+        "source_emref_io_sha256": row["source_io_sha256"],
+        "source_emref_params_sha256": row["source_params_sha256"],
+        "source_old_run_manifest_sha256": row["source_old_run_manifest_sha256"],
+        "source_old_run_manifest_row_sha256": row[
+            "source_old_run_manifest_row_sha256"
+        ],
+    }
+    mismatches = {
+        field: (ledger.get(field), wanted)
+        for field, wanted in expected.items()
+        if ledger.get(field) != wanted
+    }
+    if parse_int(ledger.get("source_emref_output_count"), "source_emref_output_count") < 8:
+        mismatches["source_emref_output_count"] = (
+            ledger.get("source_emref_output_count"),
+            ">=8",
+        )
+    if mismatches:
+        raise ContractError(f"Exact-reuse ledger mismatch for {row['run_id']}: {mismatches}")
+
+
+def validate_row_provenance(
+    row: Mapping[str, str],
+    case: core.CaseMetadata,
+    config: BuildConfig,
+    file_bindings: dict[str, str],
+    manifest_cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
+    identity_amendment: Mapping[str, Any],
+) -> None:
+    candidate_id = row["candidate_id"]
+    receptor = row["generation_receptor"]
+    source_mode = row["source_mode"]
+    ignored = parse_bool(row["source_final_stage_ignored"], "source_final_stage_ignored")
+    exit_code = parse_int(row["completion_exit_code"], "completion_exit_code")
+    if source_mode == NEW_SOURCE_MODE:
+        if (
+            row["completion_status"] != "PASS_4_EMREF_TOP8_READY"
+            or exit_code != 0
+            or ignored
+            or row["source_protocol_id"] != SELECTOR_PROTOCOL_ID
+        ):
+            raise ContractError(f"New-run completion semantics failed for {row['run_id']}")
+    elif source_mode == REUSE_SOURCE_MODE:
+        if (
+            row["completion_status"]
+            not in {"PASS_DOCKING_OUTPUT_COMPLETE", "FAIL_DOCKING_OUTPUT_INCOMPLETE"}
+            or exit_code != 0
+            or not ignored
+            or row["source_protocol_id"] != selector_contract.OLD_PROTOCOL_ID
+        ):
+            raise ContractError(f"Reuse completion semantics failed for {row['run_id']}")
+        validate_exact_reuse_provenance(
+            row, config, file_bindings, manifest_cache
+        )
+    else:
+        raise ContractError(f"Unknown source_mode for {row['run_id']}: {source_mode}")
+
+    assets = {
+        name: bind_local_file(row, f"{name}_relpath", f"{name}_sha256", config.workspace_root, file_bindings)
+        for name in ("config", "completion", "monomer", "receptor", "restraint", "hotspot")
+    }
+    assets["params"] = bind_local_file(
+        row, "source_params_relpath", "source_params_sha256", config.workspace_root, file_bindings
+    )
+    assets["io"] = bind_local_file(
+        row, "source_io_relpath", "source_io_sha256", config.workspace_root, file_bindings
+    )
+    validate_config_provenance(assets["config"], row)
+    validate_params_provenance(assets["params"], row)
+    validate_io_provenance(assets["io"], row)
+
+    completion = read_json_object(assets["completion"], "completion")
+    expected_completion = {
+        "protocol_id": row["source_protocol_id"],
+        "run_id": row["source_run_id"],
+        "receptor_id": receptor,
+        "status": row["completion_status"],
+        "exit_code": exit_code,
+        "config_sha256": row["config_sha256"],
+        "monomer_sha256": row["monomer_sha256"],
+        "receptor_sha256": row["receptor_sha256"],
+    }
+    completion_mismatches = {
+        field: (completion.get(field), wanted)
+        for field, wanted in expected_completion.items()
+        if completion.get(field) != wanted
+    }
+    if completion_mismatches:
+        raise ContractError(
+            f"Completion payload mismatch for {row['run_id']}: {completion_mismatches}"
+        )
+
+    run_manifest = bind_local_file(
+        row,
+        "run_manifest_relpath",
+        "run_manifest_sha256",
+        config.workspace_root,
+        file_bindings,
+    )
+    run_row = load_bound_csv_row(
+        run_manifest,
+        row["run_manifest_sha256"],
+        row["run_manifest_row_sha256"],
+        "run_manifest_row_sha256",
+        row["run_id"],
+        manifest_cache,
+    )
+    run_expected = {
+        "case_id": candidate_id,
+        "candidate_id": candidate_id,
+        "family": case.family,
+        "receptor_id": receptor,
+        "execution_mode": source_mode,
+        "sequence_sha256": row["sequence_sha256"],
+        "teacher_manifest_sha256": row["teacher_manifest_sha256"],
+        "teacher_manifest_row_sha256": row["teacher_manifest_row_sha256"],
+        "cdr1_range": case.cdr1_range,
+        "cdr2_range": case.cdr2_range,
+        "cdr3_range": case.cdr3_range,
+    }
+    run_mismatches = {
+        field: (run_row.get(field), wanted)
+        for field, wanted in run_expected.items()
+        if run_row.get(field) != wanted
+    }
+    if run_mismatches:
+        raise ContractError(f"Run manifest mismatch for {row['run_id']}: {run_mismatches}")
+
+    teacher_path = resolve_workspace_path(
+        row["teacher_manifest_relpath"], config.workspace_root
+    )
+    if (
+        teacher_path != case.source_manifest
+        or row["teacher_manifest_sha256"] != case.source_manifest_sha256
+        or row["teacher_manifest_row_sha256"] != case.source_manifest_row_sha256
+    ):
+        raise ContractError(f"Teacher manifest provenance mismatch for {candidate_id}")
+    file_bindings[str(teacher_path)] = sha256_file(teacher_path)
+
+    monomer_identity = selector_contract.atom_heavy_identity_signature(
+        assets["monomer"].read_bytes(), "A", assets["monomer"]
+    )
+    receptor_identity = selector_contract.atom_heavy_identity_signature(
+        assets["receptor"].read_bytes(), "B", assets["receptor"]
+    )
+    coordinate_path = resolve_workspace_path(
+        row["materialized_coordinate_relpath"], config.workspace_root
+    )
+    coordinate_bytes = coordinate_path.read_bytes()
+    pose_vhh_identity = selector_contract.atom_heavy_identity_signature(
+        coordinate_bytes, "A", coordinate_path
+    )
+    pose_pvrig_identity = selector_contract.atom_heavy_identity_signature(
+        coordinate_bytes, "B", coordinate_path
+    )
+    identity_expected = {
+        "monomer_atom_identity_sha256": monomer_identity["atom_identity_sha256"],
+        "monomer_residue_identity_sha256": monomer_identity["residue_identity_sha256"],
+        "receptor_atom_identity_sha256": receptor_identity["atom_identity_sha256"],
+        "receptor_residue_identity_sha256": receptor_identity["residue_identity_sha256"],
+        "pose_vhh_atom_identity_sha256": pose_vhh_identity["atom_identity_sha256"],
+        "pose_vhh_residue_identity_sha256": pose_vhh_identity["residue_identity_sha256"],
+        "pose_pvrig_atom_identity_sha256": pose_pvrig_identity["atom_identity_sha256"],
+        "pose_pvrig_residue_identity_sha256": pose_pvrig_identity["residue_identity_sha256"],
+    }
+    identity_mismatches = {
+        field: (row.get(field), wanted)
+        for field, wanted in identity_expected.items()
+        if row.get(field) != wanted
+    }
+    if identity_mismatches:
+        raise ContractError(f"ATOM identity hash mismatch for {row['run_id']}")
+    try:
+        vhh_gate = selector_contract.require_identity_match(
+            monomer_identity,
+            pose_vhh_identity,
+            f"{row['run_id']} VHH",
+            "A",
+            identity_amendment,
+        )
+        pvrig_gate = selector_contract.require_identity_match(
+            receptor_identity,
+            pose_pvrig_identity,
+            f"{row['run_id']} PVRIG",
+            "B",
+            identity_amendment,
+        )
+    except selector_contract.RecoveryError as error:
+        raise ContractError(str(error)) from error
+    gate_expected = {
+        "vhh_identity_gate_rule_id": vhh_gate["rule_id"],
+        "vhh_raw_atom_identity_exact": str(vhh_gate["raw_atom_identity_exact"]).lower(),
+        "vhh_terminal_oxt_normalization_applied": str(
+            vhh_gate["terminal_oxt_normalization_applied"]
+        ).lower(),
+        "vhh_normalized_atom_identity_exact": str(
+            vhh_gate["normalized_atom_identity_exact"]
+        ).lower(),
+        "pvrig_raw_atom_identity_exact": str(
+            pvrig_gate["raw_atom_identity_exact"]
+        ).lower(),
+    }
+    if any(row.get(field) != wanted for field, wanted in gate_expected.items()):
+        raise ContractError(f"Identity-gate provenance mismatch for {row['run_id']}")
+
+    reference_path = config.references[receptor].resolve()
+    reference_chain = str(RECEPTORS[receptor]["reference_pvrig_chain"])
+    reference_identity = selector_contract.atom_heavy_identity_signature(
+        reference_path.read_bytes(), reference_chain, reference_path
+    )
+    if (
+        reference_identity["atom_identity_sha256"]
+        != receptor_identity["atom_identity_sha256"]
+        or reference_identity["residue_identity_sha256"]
+        != receptor_identity["residue_identity_sha256"]
+    ):
+        raise ContractError(f"Generation receptor/reference identity mismatch for {row['run_id']}")
+    hotspot_numbers = {
+        int(value)
+        for value in assets["hotspot"].read_text(encoding="utf-8").split()
+    }
+    expected_hotspots = {
+        core.parse_pdb_residue_ref(item["mobile_ref"])[1]
+        for item in build_native_alignment_pair_rows(config.hotspots, receptor)
+    }
+    if hotspot_numbers != expected_hotspots:
+        raise ContractError(f"Generation receptor hotspot mismatch for {row['run_id']}")
 
 
 def verify_selector_audit(

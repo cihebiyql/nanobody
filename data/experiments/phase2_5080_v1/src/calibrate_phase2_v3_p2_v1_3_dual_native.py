@@ -3245,6 +3245,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics-csv", type=Path, default=DEFAULT_METRICS_CSV)
     parser.add_argument("--processor-audit", type=Path, default=DEFAULT_PROCESSOR_AUDIT)
+    parser.add_argument(
+        "--processor-qualification",
+        type=Path,
+        default=DEFAULT_PROCESSOR_QUALIFICATION,
+    )
     parser.add_argument("--selector-csv", type=Path, default=DEFAULT_SELECTOR_CSV)
     parser.add_argument("--selector-audit", type=Path, default=DEFAULT_SELECTOR_AUDIT)
     parser.add_argument("--execution-release", type=Path, default=DEFAULT_EXECUTION_RELEASE)
@@ -3268,6 +3273,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     config = CalibrationConfig(
         metrics_csv=args.metrics_csv.resolve(),
         processor_audit=args.processor_audit.resolve(),
+        processor_qualification=args.processor_qualification.resolve(),
         selector_csv=args.selector_csv.resolve(),
         selector_audit=args.selector_audit.resolve(),
         execution_release=args.execution_release.resolve(),
