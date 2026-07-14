@@ -174,6 +174,28 @@ def identity_record(value: tuple[str, ...]) -> dict[str, str]:
     return result
 
 
+def compare_hetatm_identity(
+    reference: Mapping[str, Any], pose: Mapping[str, Any]
+) -> dict[str, Any]:
+    reference_identities = set(reference["identities"])
+    pose_identities = set(pose["identities"])
+    return {
+        "reference_count": int(reference["identity_count"]),
+        "pose_count": int(pose["identity_count"]),
+        "reference_identity_sha256": str(reference["identity_sha256"]),
+        "pose_identity_sha256": str(pose["identity_sha256"]),
+        "raw_identity_exact": reference_identities == pose_identities,
+        "missing_identities": [
+            identity_record(item)
+            for item in sorted(reference_identities - pose_identities)
+        ],
+        "extra_identities": [
+            identity_record(item)
+            for item in sorted(pose_identities - reference_identities)
+        ],
+    }
+
+
 def compare_identity(
     reference: Mapping[str, Any], pose: Mapping[str, Any]
 ) -> dict[str, Any]:
@@ -257,9 +279,7 @@ def compare_pose(
         reference_hetatm = hetatm_heavy_identity_payload(
             reference_coordinates, chain, reference_path
         )
-        pose_hetatm = hetatm_heavy_identity_payload(coordinates, chain, pose_path)
-        reference_hetatm_set = set(reference_hetatm["identities"])
-        pose_hetatm_set = set(pose_hetatm["identities"])
+        pose_hetatm = hetatm_heavy_identity_payload(pose_coordinates, chain, pose_path)
         chains[chain] = {
             "reference_relpath": (
                 reference_provenance_paths[chain]
@@ -268,21 +288,7 @@ def compare_pose(
             ),
             "reference_sha256": sha256_file(reference_path),
             **compare_identity(reference, pose),
-            "heavy_hetatm": {
-                "reference_count": reference_hetatm["identity_count"],
-                "pose_count": pose_hetatm["identity_count"],
-                "reference_identity_sha256": reference_hetatm["identity_sha256"],
-                "pose_identity_sha256": pose_hetatm["identity_sha256"],
-                "raw_identity_exact": reference_hetatm_set == pose_hetatm_set,
-                "missing_identities": [
-                    identity_record(item)
-                    for item in sorted(reference_hetatm_set - pose_hetatm_set)
-                ],
-                "extra_identities": [
-                    identity_record(item)
-                    for item in sorted(pose_hetatm_set - reference_hetatm_set)
-                ],
-            },
+            "heavy_hetatm": compare_hetatm_identity(reference_hetatm, pose_hetatm),
         }
     return {
         "cohort": cohort,
@@ -596,6 +602,18 @@ def aggregate(poses: Sequence[Mapping[str, Any]], runs: Sequence[Mapping[str, An
                 "heavy_hetatm_raw_identity_exact_count": sum(
                     item["raw_identity_exact"] for item in hetatm
                 ),
+                "heavy_hetatm_reference_nonzero_comparison_count": sum(
+                    item["reference_count"] > 0 for item in hetatm
+                ),
+                "heavy_hetatm_pose_nonzero_comparison_count": sum(
+                    item["pose_count"] > 0 for item in hetatm
+                ),
+                "heavy_hetatm_missing_identity_count": sum(
+                    len(item["missing_identities"]) for item in hetatm
+                ),
+                "heavy_hetatm_extra_identity_count": sum(
+                    len(item["extra_identities"]) for item in hetatm
+                ),
             }
     return {
         "pose_count": len(poses),
@@ -624,6 +642,8 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
     summary = audit["summary"]
     a = summary["chains"]["A"]
     b = summary["chains"]["B"]
+    a_hetatm = a["heavy_hetatm"]
+    b_hetatm = b["heavy_hetatm"]
     receptor_rows = []
     for receptor, chains in summary["chains_by_receptor"].items():
         for chain, values in chains.items():
@@ -631,14 +651,31 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
                 f"| {receptor} | {chain} | {values['comparison_count']} | "
                 f"{values['residue_identity_exact_count']} | {values['atom_identity_exact_count']} | "
                 f"{values['terminal_oxt_normalized_atom_identity_exact_count']} | "
-                f"{values['non_oxt_difference_count']} |"
+                f"{values['non_oxt_difference_count']} | "
+                f"{values['heavy_hetatm_reference_identity_count_total']} | "
+                f"{values['heavy_hetatm_pose_identity_count_total']} | "
+                f"{values['heavy_hetatm_raw_identity_exact_count']} | "
+                f"{values['heavy_hetatm_missing_identity_count']} | "
+                f"{values['heavy_hetatm_extra_identity_count']} |"
             )
     receptor_table = "\n".join(receptor_rows)
-    return f"""# PVRIG V1.3 ATOM identity 差异审计与窄化 normalization 修订提案
+    heavy_hetatm_policy = audit["proposed_rule"]["heavy_hetatm_policy"]
+    if audit["acceptance"]["all_heavy_hetatm_counts_zero"]:
+        hetatm_interpretation = (
+            "544 个 pose 及其 chain A/B reference 中 heavy `HETATM` 计数均为 0。"
+            "因此最窄的可冻结规则是：reference 和 pose 的 chain A/B heavy `HETATM` "
+            "计数必须同时为 0，任何注入均 fail-closed。"
+        )
+    else:
+        hetatm_interpretation = (
+            "观察到非零 heavy `HETATM`，本 addendum 不满足 zero-evidence 接受线，"
+            "不得据此启用 selector。"
+        )
+    return f"""# PVRIG V1.3 ATOM/OXT 与 heavy-HETATM identity 证据 addendum
 
 ## 结论
 
-本次仅执行只读坐标 identity 审计，没有运行 docking、selector、几何评分或训练标签生成。
+本次仅执行只读坐标 identity 审计，没有运行 docking、selector、scoring、几何评分或训练标签生成。
 
 状态：`{audit['status']}`
 
@@ -648,41 +685,53 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
 - V1.3 新 boundary4：{summary['pose_counts_by_cohort'].get('new_v1_3_boundary4', 0)} poses；
 - 总闭包：`64 × 8 + 4 × 8 = 544` poses。
 
-核心结果：
+重用 v1 ATOM/OXT 结论：
 
-| chain | comparisons | residue exact | raw atom exact | OXT-normalized exact | non-OXT differences |
+| chain | comparisons | residue exact | raw ATOM exact | OXT-normalized exact | non-OXT differences |
 |---|---:|---:|---:|---:|---:|
 | A / VHH | {a['comparison_count']} | {a['residue_identity_exact_count']} | {a['atom_identity_exact_count']} | {a['terminal_oxt_normalized_atom_identity_exact_count']} | {a['non_oxt_difference_count']} |
 | B / PVRIG | {b['comparison_count']} | {b['residue_identity_exact_count']} | {b['atom_identity_exact_count']} | {b['terminal_oxt_normalized_atom_identity_exact_count']} | {b['non_oxt_difference_count']} |
 
+heavy `HETATM` 新证据：
+
+| chain | comparisons | ref identity total | pose identity total | ref nonzero | pose nonzero | raw exact | missing | extra |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| A / VHH | {a['comparison_count']} | {a_hetatm['reference_identity_count_total']} | {a_hetatm['pose_identity_count_total']} | {a_hetatm['reference_nonzero_comparison_count']} | {a_hetatm['pose_nonzero_comparison_count']} | {a_hetatm['raw_identity_exact_count']} | {a_hetatm['missing_identity_count']} | {a_hetatm['extra_identity_count']} |
+| B / PVRIG | {b['comparison_count']} | {b_hetatm['reference_identity_count_total']} | {b_hetatm['pose_identity_count_total']} | {b_hetatm['reference_nonzero_comparison_count']} | {b_hetatm['pose_nonzero_comparison_count']} | {b_hetatm['raw_identity_exact_count']} | {b_hetatm['missing_identity_count']} | {b_hetatm['extra_identity_count']} |
+
+{hetatm_interpretation}
+
 按 docking receptor 和 chain 分层：
 
-| receptor | chain | comparisons | residue exact | raw atom exact | OXT-normalized exact | non-OXT differences |
-|---|---|---:|---:|---:|---:|---:|
+| receptor | chain | comparisons | residue exact | raw ATOM exact | OXT-normalized exact | non-OXT diff | ref HETATM | pose HETATM | HETATM exact | HETATM missing | HETATM extra |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 {receptor_table}
 
-观察到的 raw atom identity 差异仅为 VHH C 端终止残基 `OXT` 在 frozen monomer 中存在、在 HADDOCK pose 中缺失。所有 residue identity 与所有非 `OXT` heavy-ATOM identity 均完全一致；PVRIG chain B 为 raw exact match。
+观察到的 raw `ATOM` identity 差异仅为 VHH C 端终止残基 `OXT` 在 frozen monomer 中存在、在 HADDOCK pose 中缺失。所有 residue identity 与所有非 `OXT` heavy-`ATOM` identity 均完全一致；PVRIG chain B 为 raw exact match。
 
 ## 建议冻结的最窄规则
 
-建议另行预注册、审查并冻结以下规则，**当前脚本和现有 preregistration 不自动启用**：
+本 addendum 提供修订证据，**不改写现有 preregistration，也不自动启用 selector**：
 
 ```text
 只允许链末端最后一个 ATOM residue 上 atom_name == OXT 的存在/缺失差异；
 比较 residue identity 时不做任何归一化；
-比较 atom identity 时仅移除 terminal OXT 后再比较；
-任何非末端 OXT、任何其他 atom、residue、chain、resname、resseq、icode、altloc 或 element 差异均 fail-closed。
+比较 ATOM identity 时仅移除 terminal OXT 后再比较；
+OXT normalization 仅作用于 ATOM，绝不作用于 HETATM；
+heavy HETATM policy = {heavy_hetatm_policy}；
+任何非末端 OXT、任何其他 ATOM、HETATM、residue、chain、resname、resseq、icode、altloc 或 element 差异均 fail-closed。
 ```
 
-该规则不允许任意删去氧原子，也不允许忽略 HETATM、残基缺失、侧链缺原子或 chain swap。它仅描述本次数据中观察到的 HADDOCK terminal topology 变化。
+该规则不允许任意删去氧原子，也不允许忽略 heavy `HETATM`、残基缺失、侧链缺原子或 chain swap。它仅描述本次数据中观察到的 HADDOCK terminal topology 变化及 heavy-`HETATM` zero evidence。
 
 ## 方法与边界
 
-- identity 输入仅使用 `ATOM` heavy atoms；坐标、serial、occupancy 和 B-factor 不参与 identity。
+- `ATOM` identity 输入使用 chain A/B heavy atoms；坐标、serial、occupancy 和 B-factor 不参与 identity。
+- `HETATM` identity 独立使用 chain A/B heavy atoms，不与 `ATOM` 集合合并。
 - residue key：`(resseq, icode, resname)`。
-- atom key：`(resseq, icode, resname, atom_name, altloc, element)`。
+- ATOM/HETATM atom key：`(resseq, icode, resname, atom_name, altloc, element)`。
 - 旧 exact-reuse64 与新 boundary4 均从各自冻结 remote root 只读归档，并分别验证 remote/local inventory hash-chain 相等。
-- 审计不证明 binding、affinity 或 blocking，也不使 V1.3 training/formal Gold 合格。
+- 审计不证明 binding、affinity 或 blocking，也不使 V1.3 training/formal Gold/P2 合格。
 
 ## 可复核产物
 
@@ -762,11 +811,11 @@ def build_audit(
         and all_residues_exact
         and all_non_oxt_exact
         and all_heavy_hetatm_raw_exact
-        and boundary_complete
+        and all_heavy_hetatm_zero
     )
     implementation = Path(__file__).resolve()
     audit: dict[str, Any] = {
-        "schema_version": "phase2_v3_p2_v1_3_atom_identity_difference_audit_v1",
+        "schema_version": "phase2_v3_p2_v1_3_atom_hetatm_identity_addendum_audit_v1",
         "status": AUDIT_STATUS_PASS if passed else AUDIT_STATUS_FAIL,
         "claim_boundary": CLAIM_BOUNDARY,
         "formal_eligible": False,
@@ -775,10 +824,11 @@ def build_audit(
         "selector_or_scoring_performed": False,
         "normalization_activated": False,
         "proposed_rule": {
-            "name": "TERMINAL_OXT_PRESENCE_NORMALIZATION_ONLY",
+            "name": "TERMINAL_OXT_ATOM_NORMALIZATION_PLUS_HEAVY_HETATM_GATE",
             "allowed_difference": "presence_or_absence_of_atom_name_OXT_on_last_ATOM_residue_only",
+            "oxt_normalization_record_scope": "ATOM_only_never_HETATM",
             "residue_normalization": "none",
-            "all_other_atom_or_residue_differences": "fail_closed",
+            "all_other_atom_hetatm_or_residue_differences": "fail_closed",
             "requires_separate_preregistration_and_freeze": True,
             "heavy_hetatm_policy": (
                 "require_zero_on_reference_and_pose_chains_A_and_B"
