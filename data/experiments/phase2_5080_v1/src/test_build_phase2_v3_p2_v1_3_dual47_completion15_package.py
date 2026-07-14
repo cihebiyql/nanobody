@@ -59,6 +59,8 @@ class BuildV13Dual47Completion15PackageTest(unittest.TestCase):
             self.assertFalse(self.audit[key])
         self.assertFalse(self.audit["remote_jobs_launched"])
         self.assertFalse(self.audit["scoring_or_calibration_performed"])
+        self.assertEqual(self.audit["builder_sha256"], MOD.sha256_file(MODULE_PATH))
+        self.assertEqual(self.audit["builder_test_sha256"], MOD.sha256_file(Path(__file__)))
 
     def test_candidate_provenance_and_row_hashes_are_closed(self) -> None:
         for row in self.cases:

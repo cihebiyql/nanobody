@@ -29,6 +29,7 @@ DEFAULT_8X6B_RECEPTOR = WORKSPACE_ROOT / "docking/candidates/v2_5_pose_batch/inp
 DEFAULT_9E6Y_STRUCTURE = DATA_ROOT / "structures/9E6Y.pdb"
 DEFAULT_HOTSPOT_MANIFEST = DATA_ROOT / "structures/PVRIG_hotspot_set_v1.csv"
 DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package"
+TEST_PATH = SCRIPT_DIR / "test_build_phase2_v3_p2_v1_3_dual47_completion15_package.py"
 
 PROTOCOL_ID = "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
 OLD_PROTOCOL_ID = "DG_A_PILOT64_V1_1"
@@ -804,6 +805,8 @@ def _build_into(outdir: Path, teacher_manifest: Path, pilot_manifest: Path, old_
         "controller_sha256": sha256_file(controller),
         "builder_relpath": workspace_relative(Path(__file__)),
         "builder_sha256": sha256_file(Path(__file__)),
+        "builder_test_relpath": workspace_relative(TEST_PATH),
+        "builder_test_sha256": sha256_file(TEST_PATH),
         "manifests": {name: {"path": path.relative_to(outdir).as_posix(), "sha256": sha256_file(path)}
                       for name, path in paths.items()},
         "package_content_hash_manifest": content.relative_to(outdir).as_posix(),
