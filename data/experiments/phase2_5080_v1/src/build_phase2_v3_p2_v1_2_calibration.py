@@ -2,9 +2,9 @@
 """Build the V1.2 ATOM-only development-sensitivity rescore package.
 
 The legacy aligned pose directories contain variable-size final
-``6_seletopclusts`` ensembles.  They are useful for scorer sensitivity and
-threshold-development analysis, but they are not a fixed-K calibration Gold
-set and are never formal-eligible in this builder.
+``6_seletopclusts`` ensembles.  They may validate scorer sensitivity, record
+inventory, and numeric closure only.  They must not inform threshold fitting,
+are not a fixed-K calibration Gold set, and are never formal-eligible here.
 """
 from __future__ import annotations
 
@@ -29,14 +29,14 @@ EXP_DIR = SCRIPT_DIR.parent
 DATA_ROOT = EXP_DIR.parents[1]
 WORKSPACE_ROOT = DATA_ROOT.parent
 
-PROTOCOL_ID = "DG_A_PILOT64_V1_2"
+PROTOCOL_ID = "DG_A_PVRIG_V1_2_DEV"
 SENSITIVITY_DATASET_ID = "V1_2_ATOM_ONLY_SCORER_SENSITIVITY_FINAL_POSES"
-DATASET_PURPOSE = "development_sensitivity_only"
+DATASET_PURPOSE = "development_sensitivity_inventory_numeric_closure_only"
 POSE_SOURCE_PROTOCOL = "legacy_6_seletopclusts_variable_final_pose_set"
 CLAIM_BOUNDARY = (
-    "ATOM-only computational scorer sensitivity on legacy variable-size final poses; "
-    "not fixed-K calibration Gold, not formal validation, and not experimental binding "
-    "or blocking truth"
+    "ATOM-only computational scorer sensitivity, record inventory, and numeric closure "
+    "on legacy variable-size final poses; prohibited for threshold fitting; not fixed-K "
+    "calibration Gold, not formal validation, and not experimental binding or blocking truth"
 )
 SCORING_SEMANTICS_VERSION = "PVRIG_PVRL2_ATOM_ONLY_V1_2"
 
@@ -125,6 +125,7 @@ MANIFEST_FIELDS = [
     "sensitivity_dataset_id",
     "dataset_purpose",
     "formal_eligible",
+    "threshold_freeze_eligible",
     "pose_source_protocol",
     "source_dataset",
     "source_order",
@@ -513,6 +514,7 @@ def build_pose_manifest(
                     "sensitivity_dataset_id": SENSITIVITY_DATASET_ID,
                     "dataset_purpose": DATASET_PURPOSE,
                     "formal_eligible": "false",
+                    "threshold_freeze_eligible": "false",
                     "pose_source_protocol": config.pose_source_protocol,
                     "source_dataset": source,
                     "source_order": str(case["source_order"]),
@@ -936,6 +938,7 @@ def build_package(config: BuildConfig, *, manifest_only: bool) -> dict[str, Any]
         "sensitivity_dataset_id": SENSITIVITY_DATASET_ID,
         "dataset_purpose": DATASET_PURPOSE,
         "formal_eligible": False,
+        "threshold_freeze_eligible": False,
         "pose_source_protocol": config.pose_source_protocol,
         "claim_boundary": CLAIM_BOUNDARY,
         "thresholds_or_classes_applied": False,
