@@ -283,7 +283,7 @@ INTERNAL_CONTACT_LIST_FIELDS = (
     "pvrig_vhh_contacts",
     "hotspot_overlaps",
 )
-INTERNAL_CONTACT_CHANNEL = "aligned_to_8x6b_source_docking_receptor"
+INTERNAL_CONTACT_CHANNEL = "raw_4_emref_pose_8x6b_source_numbering"
 REGION_TOTAL_METRICS = (
     "total_occluding_atom_contact_count",
     "total_clash_atom_contact_count",
@@ -1532,6 +1532,100 @@ def validate_toolchain(config: BuildConfig) -> dict[str, dict[str, str]]:
     }
 
 
+def score_raw_internal_contact_channel(
+    *,
+    config: BuildConfig,
+    selector_row: Mapping[str, str],
+    case: CaseMetadata,
+    raw_pose: Path,
+    work_root: Path,
+) -> Mapping[str, Any]:
+    """Score transform-invariant PVRIG-VHH contacts on the raw emref pose."""
+    output = work_root / "raw_internal_pose_score.json"
+    report = run_json_tool(
+        [
+            sys.executable,
+            config.pose_scorer,
+            "--pose-pdb",
+            raw_pose,
+            "--reference-pdb",
+            config.references["8x6b"].resolve(),
+            "--pvrig-chain",
+            "B",
+            "--vhh-chain",
+            "A",
+            "--ref-pvrig-chain",
+            BASELINES["8x6b"]["ref_pvrig_chain"],
+            "--ref-pvrl2-chain",
+            BASELINES["8x6b"]["ref_pvrl2_chain"],
+            "--hotspots-csv",
+            config.hotspots,
+            "--hotspot-ref-column",
+            BASELINES["8x6b"]["hotspot_ref_column"],
+            "--cdr-ranges",
+            (
+                f"CDR1:{case.cdr1_range},CDR2:{case.cdr2_range},"
+                f"CDR3:{case.cdr3_range}"
+            ),
+            "--assume-aligned",
+            "--out-json",
+            output,
+        ],
+        output,
+        cwd=config.workspace_root,
+        label=(
+            "raw-emref canonical internal scorer "
+            f"{selector_row['candidate_id']}/rank{selector_row['canonical_rank']}"
+        ),
+    )
+    if report.get("schema_version") != "pvrig_vhh_pose_score_v1_2":
+        raise ContractError("Raw internal scorer returned an unexpected schema")
+    if report.get("scoring_semantics_version") != SCORING_SEMANTICS_VERSION:
+        raise ContractError("Raw internal scorer returned unexpected semantics")
+    if parse_int(report.get("hotspot_count"), "raw internal hotspot_count") != 23:
+        raise ContractError("Raw internal scorer hotspot_count != 23")
+    inventory_root = required_mapping(
+        report, "record_inventory", "raw internal scorer report"
+    )
+    pose_inventory = required_mapping(
+        inventory_root, "pose", "raw internal scorer inventory"
+    )
+    pvrig_inventory = required_mapping(
+        pose_inventory, "pvrig_chain", "raw internal scorer inventory"
+    )
+    vhh_inventory = required_mapping(
+        pose_inventory, "vhh_chain", "raw internal scorer inventory"
+    )
+    reference_inventory = required_mapping(
+        inventory_root,
+        "reference_pvrl2_chain",
+        "raw internal scorer inventory",
+    )
+    assert_inventory_agreement(
+        parse_inventory_json(selector_row, "pvrig_chain_inventory_json"),
+        pvrig_inventory,
+        INVENTORY_AGREEMENT_FIELDS,
+        "selector/raw internal PVRIG",
+    )
+    assert_inventory_agreement(
+        parse_inventory_json(selector_row, "vhh_chain_inventory_json"),
+        vhh_inventory,
+        INVENTORY_AGREEMENT_FIELDS,
+        "selector/raw internal VHH",
+    )
+    assert_expected_reference_inventory(
+        reference_inventory,
+        config.expected_reference_inventories["8x6b"],
+        "raw internal scorer 8x6b reference",
+    )
+    for field_name in (*INTERNAL_CONTACT_METRICS, *INTERNAL_CONTACT_LIST_FIELDS):
+        if field_name not in report:
+            raise ContractError(
+                f"Raw internal scorer omitted canonical field {field_name}"
+            )
+    return report
+
+
 def materialize_and_score_baseline(
     *,
     config: BuildConfig,
@@ -1880,18 +1974,21 @@ def contact_record(
 
 
 def raw_internal_contact_drift(
+    canonical_internal_report: Mapping[str, Any],
     baseline_results: Mapping[str, BaselineResult],
 ) -> dict[str, Any]:
-    left = baseline_results["8x6b"].pose_report
-    right = baseline_results["9e6y"].pose_report
-    differing_fields = [
-        field_name
-        for field_name in (*INTERNAL_CONTACT_METRICS, *INTERNAL_CONTACT_LIST_FIELDS)
-        if left.get(field_name) != right.get(field_name)
-    ]
+    differing_by_baseline = {
+        baseline: [
+            field_name
+            for field_name in (*INTERNAL_CONTACT_METRICS, *INTERNAL_CONTACT_LIST_FIELDS)
+            if canonical_internal_report.get(field_name)
+            != result.pose_report.get(field_name)
+        ]
+        for baseline, result in baseline_results.items()
+    }
     return {
-        "has_drift": bool(differing_fields),
-        "differing_fields": differing_fields,
+        "has_drift": any(differing_by_baseline.values()),
+        "differing_fields_by_baseline": differing_by_baseline,
     }
 
 
@@ -1928,6 +2025,14 @@ def process_selector_row(
     raw_pose = work_root / "raw_emref_pose.pdb"
     raw_pose.write_bytes(coordinates)
 
+    canonical_internal_report = score_raw_internal_contact_channel(
+        config=config,
+        selector_row=selector_row,
+        case=case,
+        raw_pose=raw_pose,
+        work_root=work_root,
+    )
+
     baseline_results: dict[str, BaselineResult] = {}
     for baseline in BASELINES:
         baseline_results[baseline] = materialize_and_score_baseline(
@@ -1944,8 +2049,9 @@ def process_selector_row(
 
     result_8x6b = baseline_results["8x6b"]
     result_9e6y = baseline_results["9e6y"]
-    canonical_internal_report = result_8x6b.pose_report
-    raw_drift = raw_internal_contact_drift(baseline_results)
+    raw_drift = raw_internal_contact_drift(
+        canonical_internal_report, baseline_results
+    )
     material_row: dict[str, Any] = {
         "schema_version": "pvrig_v1_2_top8_pose_materialization_v1",
         "protocol_id": PROTOCOL_ID,
@@ -2058,40 +2164,163 @@ def hash_chain(rows: Iterable[Mapping[str, str]], field_name: str) -> str:
     )
 
 
-def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -> None:
-    outdir.mkdir(parents=True, exist_ok=True)
-    published_audit = outdir / AUDIT_NAME
-    if published_audit.exists():
-        published_audit.unlink()
-    files = sorted(
-        (path for path in staging_root.rglob("*") if path.is_file()),
-        key=lambda path: path.relative_to(staging_root).as_posix(),
-    )
-    audit_source = staging_root / AUDIT_NAME
-    for source in files:
-        if source == audit_source:
+def managed_file_hashes(root: Path) -> dict[str, str]:
+    output: dict[str, str] = {}
+    for entry_name in sorted(MANAGED_PACKAGE_ENTRIES):
+        entry = root / entry_name
+        if entry.is_symlink():
+            raise ContractError(f"Managed package entry cannot be a symlink: {entry}")
+        if entry.is_file():
+            output[entry_name] = sha256_file(entry)
+        elif entry.is_dir():
+            for path in sorted(entry.rglob("*")):
+                if path.is_symlink():
+                    raise ContractError(
+                        f"Managed package file cannot be a symlink: {path}"
+                    )
+                if path.is_file():
+                    output[path.relative_to(root).as_posix()] = sha256_file(path)
+    return output
+
+
+def preserve_unmanaged_entries(source_root: Path, staging_root: Path) -> None:
+    if not source_root.exists():
+        return
+    if not source_root.is_dir():
+        raise ContractError(f"Output path exists but is not a directory: {source_root}")
+    for source in sorted(source_root.iterdir(), key=lambda path: path.name):
+        if source.name in MANAGED_PACKAGE_ENTRIES:
             continue
-        relative = source.relative_to(staging_root)
-        destination = outdir / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        os.replace(source, destination)
-    if not emitted_contacts:
-        stale_contacts = outdir / RESIDUE_CONTACTS_NAME
-        if stale_contacts.exists():
-            stale_contacts.unlink()
+        destination = staging_root / source.name
+        if destination.exists() or destination.is_symlink():
+            raise ContractError(
+                f"Staging path collides with preserved output entry: {destination}"
+            )
+        if source.is_symlink():
+            destination.symlink_to(os.readlink(source), target_is_directory=source.is_dir())
+        elif source.is_dir():
+            shutil.copytree(source, destination, symlinks=True)
+        else:
+            shutil.copy2(source, destination)
+
+
+def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -> None:
+    audit_source = staging_root / AUDIT_NAME
+    contacts_source = staging_root / RESIDUE_CONTACTS_NAME
     if not audit_source.is_file():
         raise ContractError("Staging package has no final audit marker")
-    os.replace(audit_source, published_audit)
+    if contacts_source.is_file() != emitted_contacts:
+        raise ContractError("Staging residue-contact JSONL emission contract mismatch")
+    shutil.rmtree(staging_root / ".work", ignore_errors=True)
+    expected_managed = managed_file_hashes(staging_root)
+    preserve_unmanaged_entries(outdir, staging_root)
+
+    outdir.parent.mkdir(parents=True, exist_ok=True)
+    backup = Path(
+        tempfile.mkdtemp(prefix=f".{outdir.name}.previous.", dir=outdir.parent)
+    )
+    backup.rmdir()
+    had_previous = outdir.exists()
+    installed_new = False
+    try:
+        if had_previous:
+            os.replace(outdir, backup)
+        os.replace(staging_root, outdir)
+        installed_new = True
+        observed_managed = managed_file_hashes(outdir)
+        if observed_managed != expected_managed:
+            raise ContractError(
+                "Post-publish managed path/hash set differs from staging package"
+            )
+    except Exception:
+        if installed_new and outdir.exists():
+            shutil.rmtree(outdir)
+        if had_previous and backup.exists():
+            os.replace(backup, outdir)
+        raise
+    if backup.exists():
+        shutil.rmtree(backup)
 
 
-def canonical_pose_rule_contract(
+def canonical_anchor_paths(config: BuildConfig, selector_evidence: Mapping[str, Any]) -> tuple[
+    dict[str, Path], dict[str, Path | None]
+]:
+    expected = {
+        "selector_csv": DEFAULT_SELECTOR_CSV,
+        "selector_audit": DEFAULT_SELECTOR_AUDIT,
+        "selector_implementation": DEFAULT_SELECTOR_IMPLEMENTATION,
+        "positive_manifest": DEFAULT_POSITIVE_MANIFEST,
+        "mutant_manifest": DEFAULT_MUTANT_MANIFEST,
+        "aligner": DEFAULT_ALIGNER,
+        "pose_scorer": DEFAULT_POSE_SCORER,
+        "region_scorer": DEFAULT_REGION_SCORER,
+        "scoring_helper": DEFAULT_SCORING_HELPER,
+        "hotspots": DEFAULT_HOTSPOTS,
+        "reconciliation": DEFAULT_RECONCILIATION,
+        "reference_8x6b": Path(BASELINES["8x6b"]["reference"]),
+        "reference_9e6y": Path(BASELINES["9e6y"]["reference"]),
+    }
+    selector_implementation: Path | None = None
+    raw_selector_implementation = str(
+        selector_evidence.get("selector_implementation_path", "")
+    )
+    if raw_selector_implementation:
+        try:
+            selector_implementation = resolve_selector_path(
+                raw_selector_implementation, config.workspace_root
+            )
+        except ContractError:
+            selector_implementation = None
+    observed: dict[str, Path | None] = {
+        "selector_csv": config.selector_csv,
+        "selector_audit": config.selector_audit,
+        "selector_implementation": selector_implementation,
+        "positive_manifest": config.positive_manifest,
+        "mutant_manifest": config.mutant_manifest,
+        "aligner": config.aligner,
+        "pose_scorer": config.pose_scorer,
+        "region_scorer": config.region_scorer,
+        "scoring_helper": config.scoring_helper,
+        "hotspots": config.hotspots,
+        "reconciliation": config.reconciliation,
+        "reference_8x6b": config.references.get("8x6b"),
+        "reference_9e6y": config.references.get("9e6y"),
+    }
+    return expected, observed
+
+
+def evaluate_canonical_pose_rule_contract(
     config: BuildConfig,
     selector_evidence: Mapping[str, Any],
-) -> bool:
-    return (
-        config.contract == DatasetContract()
-        and selector_evidence.get("selector_audit_validated") is True
-        and {
+) -> dict[str, Any]:
+    expected_paths, observed_paths = canonical_anchor_paths(config, selector_evidence)
+    anchor_checks: dict[str, Any] = {}
+    for name, expected_path in expected_paths.items():
+        observed_path = observed_paths[name]
+        observed_sha256 = ""
+        if observed_path is not None and observed_path.is_file():
+            observed_sha256 = sha256_file(observed_path.resolve())
+        path_match = (
+            observed_path is not None
+            and observed_path.resolve() == expected_path.resolve()
+        )
+        hash_match = observed_sha256 == CANONICAL_TRUST_ANCHOR_SHA256[name]
+        anchor_checks[name] = {
+            "expected_path": expected_path.resolve().as_posix(),
+            "observed_path": (
+                observed_path.resolve().as_posix() if observed_path is not None else ""
+            ),
+            "path_match": path_match,
+            "expected_sha256": CANONICAL_TRUST_ANCHOR_SHA256[name],
+            "observed_sha256": observed_sha256,
+            "sha256_match": hash_match,
+            "passed": path_match and hash_match,
+        }
+    contract_match = config.contract == DatasetContract()
+    selector_audit_closure_match = (
+        selector_evidence.get("selector_audit_validated") is True
+    )
+    inventory_match = {
             baseline: dict(values)
             for baseline, values in config.expected_reference_inventories.items()
         }
@@ -2099,7 +2328,27 @@ def canonical_pose_rule_contract(
             baseline: dict(values)
             for baseline, values in DEFAULT_EXPECTED_REFERENCE_INVENTORIES.items()
         }
-    )
+    anchors_match = all(check["passed"] for check in anchor_checks.values())
+    return {
+        "eligible": (
+            contract_match
+            and selector_audit_closure_match
+            and inventory_match
+            and anchors_match
+        ),
+        "default_47x8_contract_match": contract_match,
+        "selector_audit_closure_match": selector_audit_closure_match,
+        "exact_expected_reference_inventories_match": inventory_match,
+        "all_path_and_sha256_anchors_match": anchors_match,
+        "anchors": anchor_checks,
+    }
+
+
+def canonical_pose_rule_contract(
+    config: BuildConfig,
+    selector_evidence: Mapping[str, Any],
+) -> bool:
+    return bool(evaluate_canonical_pose_rule_contract(config, selector_evidence)["eligible"])
 
 
 def build_package(config: BuildConfig) -> dict[str, Any]:

@@ -944,6 +944,12 @@ def aggregate_run_scores(
             "dual_receptor_r_gold_freeze_eligible": False,
             "source_docking_receptor": "8x6b",
             "baseline_channel_semantics": "two_posthoc_scoring_baselines_on_same_8x6b_docked_pose_ensemble",
+            "canonical_shared_h_and_internal_contact_gate": {
+                "passed": True,
+                "fields": list(CANONICAL_INTERNAL_CONTACT_FIELDS),
+                "H_cutpoint_count": 1,
+                "shared_between_baselines": True,
+            },
             "candidate_id": case_id,
             "family": family_by_case[case_id],
             "case_source": "positive_anchor" if case_id in positive_cases else "mutant_panel_control",
@@ -1080,8 +1086,12 @@ def hierarchical_bootstrap_rows(
     rng = random.Random(seed)
     output: list[dict[str, str]] = []
     for replicate in range(1, replicates + 1):
-        sampled_values: dict[str, dict[str, list[tuple[float, float]]]] = {
-            baseline: {metric: [] for metric in METRICS} for baseline in BASELINES
+        sampled_values: dict[str, Any] = {
+            "H_canonical": [],
+            "baseline": {
+                baseline: {metric: [] for metric in BASELINE_METRICS}
+                for baseline in BASELINES
+            },
         }
         family_draws = [rng.choice(families) for _ in families]
         for family in family_draws:
@@ -1094,38 +1104,61 @@ def hierarchical_bootstrap_rows(
                 }
                 for rank in range(1, ranks_per_case + 1):
                     weight = (1.0 / len(families)) * (1.0 / len(case_ids)) * q_rank[rank]
+                    rank_rows = {
+                        baseline: by_key[(rank, baseline)] for baseline in BASELINES
+                    }
+                    shared_values = {
+                        baseline: tuple(
+                            rank_rows[baseline].get(field, "").strip()
+                            for field in CANONICAL_INTERNAL_CONTACT_FIELDS
+                        )
+                        for baseline in BASELINES
+                    }
+                    if shared_values["8x6b"] != shared_values["9e6y"]:
+                        raise CalibrationError(
+                            f"Bootstrap canonical H/internal channel drift for "
+                            f"{case_id}/rank{rank}"
+                        )
+                    sampled_values["H_canonical"].append(
+                        (float(derive_features(rank_rows["8x6b"])["H"]), weight)
+                    )
                     for baseline in BASELINES:
-                        features = derive_features(by_key[(rank, baseline)])
-                        for metric in METRICS:
-                            sampled_values[baseline][metric].append(
+                        features = derive_features(rank_rows[baseline])
+                        for metric in BASELINE_METRICS:
+                            sampled_values["baseline"][baseline][metric].append(
                                 (float(features[metric]), weight)
                             )
-        for baseline in BASELINES:
-            for metric in METRICS:
-                threshold = threshold_from_weighted_values(
-                    sampled_values[baseline][metric], LOWER_QUANTILE, UPPER_QUANTILE
+        channels = [(CANONICAL_H_CHANNEL, "H", sampled_values["H_canonical"])]
+        channels.extend(
+            (baseline, metric, sampled_values["baseline"][baseline][metric])
+            for baseline in BASELINES
+            for metric in BASELINE_METRICS
+        )
+        for baseline, metric, metric_values in channels:
+            threshold = threshold_from_weighted_values(
+                metric_values, LOWER_QUANTILE, UPPER_QUANTILE
+            )
+            for cutpoint in ("L", "U"):
+                record: dict[str, Any] = {
+                    "schema_version": SCHEMA_VERSION,
+                    "method_id": METHOD_ID,
+                    "bootstrap_seed": seed,
+                    "bootstrap_replicate": replicate,
+                    "baseline": baseline,
+                    "metric": metric,
+                    "cutpoint": cutpoint,
+                    "value": threshold[cutpoint],
+                    "formal_eligible": False,
+                }
+                normalized = {
+                    field: scalar_text(record.get(field), field)
+                    for field in BOOTSTRAP_FIELDS
+                    if field != "bootstrap_row_sha256"
+                }
+                normalized["bootstrap_row_sha256"] = row_sha256(
+                    normalized, "bootstrap_row_sha256"
                 )
-                for cutpoint in ("L", "U"):
-                    record: dict[str, Any] = {
-                        "schema_version": SCHEMA_VERSION,
-                        "method_id": METHOD_ID,
-                        "bootstrap_seed": seed,
-                        "bootstrap_replicate": replicate,
-                        "baseline": baseline,
-                        "metric": metric,
-                        "cutpoint": cutpoint,
-                        "value": threshold[cutpoint],
-                        "formal_eligible": False,
-                    }
-                    normalized = {
-                        field: scalar_text(record.get(field), field)
-                        for field in BOOTSTRAP_FIELDS
-                        if field != "bootstrap_row_sha256"
-                    }
-                    normalized["bootstrap_row_sha256"] = row_sha256(
-                        normalized, "bootstrap_row_sha256"
-                    )
-                    output.append(normalized)
+                output.append(normalized)
     return output
 
 
@@ -1135,6 +1168,10 @@ def summarize_bootstrap(rows: Sequence[Mapping[str, str]]) -> dict[str, Any]:
         grouped[(row["baseline"], row["metric"], row["cutpoint"])].append(
             float(row["value"])
         )
+    channels = {
+        CANONICAL_H_CHANNEL: ("H",),
+        **{baseline: BASELINE_METRICS for baseline in BASELINES},
+    }
     return {
         baseline: {
             metric: {
@@ -1145,9 +1182,9 @@ def summarize_bootstrap(rows: Sequence[Mapping[str, str]]) -> dict[str, Any]:
                 }
                 for cutpoint in ("L", "U")
             }
-            for metric in METRICS
+            for metric in metrics
         }
-        for baseline in BASELINES
+        for baseline, metrics in channels.items()
     }
 
 
@@ -1319,14 +1356,27 @@ def rules_document(
     config: CalibrationConfig,
     input_bindings: Mapping[str, Any],
 ) -> dict[str, Any]:
+    freeze_eligible = (
+        config.bootstrap_seed == BOOTSTRAP_SEED
+        and config.bootstrap_replicates == BOOTSTRAP_REPLICATES
+        and config.contract == CalibrationContract()
+        and input_bindings.get("upstream_audit", {}).get("required") is True
+    )
+    status = (
+        "PASS_V1_2_FAMILY_AWARE_POSE_AND_SINGLE_RUN_RULES_FROZEN"
+        if freeze_eligible
+        else "PASS_V1_2_FAMILY_AWARE_DRY_RUN_BUILT_NOT_FROZEN"
+    )
     core = {
         "method_id": METHOD_ID,
         "feature_definitions": {
-            "H": "hotspot_weight_fraction",
+            "H": "one canonical shared hotspot_weight_fraction per source pose",
             "O": "log1p(total_occluding_residue_pair_count)",
             "P": "(cdr1+cdr2+cdr3 occluding residue-pair count)/total occluding residue-pair count",
         },
         "calibration": rules,
+        "canonical_shared_channel_gate": list(CANONICAL_INTERNAL_CONTACT_FIELDS),
+        "H_cutpoint_semantics": "one family-balanced H_canonical L/U shared by both post-hoc baselines",
         "pose_score": "sqrt(mu_O * (mu_H + mu_P) / 2)",
         "pose_classes": {
             "A": "O>=U_O and H>=U_H and P>=L_P",
@@ -1352,12 +1402,12 @@ def rules_document(
     }
     return {
         "schema_version": SCHEMA_VERSION,
-        "status": "PASS_V1_2_FAMILY_AWARE_POSE_AND_SINGLE_RUN_RULES_FROZEN",
+        "status": status,
         "protocol_id": PROTOCOL_ID,
         "formal_eligible": False,
         "threshold_freeze_eligible": False,
-        "pose_rule_threshold_freeze_eligible": True,
-        "single_8x6b_dock_run_method_freeze_eligible": True,
+        "pose_rule_threshold_freeze_eligible": freeze_eligible,
+        "single_8x6b_dock_run_method_freeze_eligible": freeze_eligible,
         "dual_receptor_r_gold_freeze_eligible": False,
         "training_label_release_eligible": False,
         "computational_geometry_teacher_only": True,
@@ -1391,6 +1441,10 @@ def render_report(
     mutant_delta_rows: Sequence[Mapping[str, str]],
     robustness_rows: Sequence[Mapping[str, str]],
     artifact_hashes: Mapping[str, Mapping[str, Any]],
+    status: str,
+    freeze_eligible: bool,
+    bootstrap_seed: int,
+    bootstrap_replicates: int,
 ) -> str:
     positive_runs = [row for row in run_rows if row["candidate_id"] in positive_cases]
     positive_tiers = summarize_tiers(positive_runs)
@@ -1406,13 +1460,14 @@ def render_report(
         "## 结论",
         "",
         "```text",
-        "PASS_V1_2_FAMILY_AWARE_POSE_AND_SINGLE_RUN_RULES_FROZEN",
+        status,
+        f"pose_rule_threshold_freeze_eligible={str(freeze_eligible).lower()}",
         "formal_eligible=false",
         "dual_receptor_r_gold_freeze_eligible=false",
         "training_label_release_eligible=false",
         "```",
         "",
-        "本次冻结的只是 **8X6B docking 单一 pose ensemble** 上的 pose-level A/B/C/E 规则和 "
+        "本次产物只涉及 **8X6B docking 单一 pose ensemble** 上的 pose-level A/B/C/E 规则和 "
         "`R_calibration_run_8x6b_dock`。8X6B/9E6Y 是对同一批 pose 的两个 post-hoc scoring channel，"
         "不是两次独立 receptor docking，因此仍不能冻结或宣称 `R_gold`。",
         "",
@@ -1429,15 +1484,20 @@ def render_report(
         "| --- | --- | ---: | ---: | ---: |",
     ]
     thresholds = rules["thresholds"]
-    for baseline in BASELINES:
-        for metric in METRICS:
-            item = thresholds[baseline][metric]
-            lines.append(
-                f"| {baseline} | {metric} | {item['L']:.6g} | {item['U']:.6g} | {item['zero_weight']:.4f} |"
-            )
+    threshold_channels = [(CANONICAL_H_CHANNEL, "H", thresholds["H_canonical"])]
+    threshold_channels.extend(
+        (baseline, metric, thresholds["baseline"][baseline][metric])
+        for baseline in BASELINES
+        for metric in BASELINE_METRICS
+    )
+    for baseline, metric, item in threshold_channels:
+        lines.append(
+            f"| {baseline} | {metric} | {item['L']:.6g} | {item['U']:.6g} | {item['zero_weight']:.4f} |"
+        )
     lines.extend(
         [
             "",
+            "`H` 每个 source pose 只有一个 canonical shared channel，两个 baseline 共用同一组 H L/U 和 `mu_H`。"
             "`O` 在阈值学习和规则应用中都使用 `log1p(total_occluding_residue_pair_count)`；"
             "`P` 为 CDR1+CDR2+CDR3 的 residue-pair count 占 total pair count 的比例。"
             "零值不参与 positive-part q20/q50，且 membership 为 0。",
@@ -1458,8 +1518,12 @@ def render_report(
             "| --- | --- | ---: | ---: | ---: |",
         ]
     )
-    for baseline in BASELINES:
-        for metric in METRICS:
+    bootstrap_channels = {
+        CANONICAL_H_CHANNEL: ("H",),
+        **{baseline: BASELINE_METRICS for baseline in BASELINES},
+    }
+    for baseline, metrics in bootstrap_channels.items():
+        for metric in metrics:
             for cutpoint in ("L", "U"):
                 item = bootstrap_summary[baseline][metric][cutpoint]
                 lines.append(
@@ -1470,7 +1534,8 @@ def render_report(
         [
             "",
             "Bootstrap 先对 family 有放回抽样，再在被抽中的 family 内对 case 有放回抽样；"
-            f"固定 seed={BOOTSTRAP_SEED}。Top-8 rank 是预先固定的计算单元，不再对 rank 独立重抽样。",
+            f"seed={bootstrap_seed}，B={bootstrap_replicates}。Top-8 rank 是预先固定的计算单元，"
+            "不再对 rank 独立重抽样。",
             "",
             "## 证据边界与下一关",
             "",
@@ -1537,6 +1602,8 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
     }
     rules = derive_rules(metrics_rows, positive_cases, config.contract.ranks_per_case)
     rules_payload = rules_document(rules, config, input_bindings)
+    freeze_eligible = bool(rules_payload["pose_rule_threshold_freeze_eligible"])
+    status = str(rules_payload["status"])
     pose_rows = score_pose_rows(metrics_rows, rules)
     run_rows = aggregate_run_scores(pose_rows, positive_cases)
     lofo_rows = build_lofo_rows(
@@ -1632,6 +1699,10 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             mutant_delta_rows=mutant_delta_rows,
             robustness_rows=robustness_rows,
             artifact_hashes=artifact_hashes,
+            status=status,
+            freeze_eligible=freeze_eligible,
+            bootstrap_seed=config.bootstrap_seed,
+            bootstrap_replicates=config.bootstrap_replicates,
         )
         report_staging = staging / config.report.name
         report_staging.write_text(report_text, encoding="utf-8")
@@ -1641,13 +1712,13 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         }
         audit = {
             "schema_version": SCHEMA_VERSION,
-            "status": "PASS_V1_2_FAMILY_AWARE_POSE_AND_SINGLE_RUN_RULES_FROZEN",
+            "status": status,
             "protocol_id": PROTOCOL_ID,
             "method_id": METHOD_ID,
             "formal_eligible": False,
             "threshold_freeze_eligible": False,
-            "pose_rule_threshold_freeze_eligible": True,
-            "single_8x6b_dock_run_method_freeze_eligible": True,
+            "pose_rule_threshold_freeze_eligible": freeze_eligible,
+            "single_8x6b_dock_run_method_freeze_eligible": freeze_eligible,
             "dual_receptor_r_gold_freeze_eligible": False,
             "training_label_release_eligible": False,
             "p2_training_blocked": True,
