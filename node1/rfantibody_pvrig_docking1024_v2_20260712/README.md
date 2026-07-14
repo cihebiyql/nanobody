@@ -2,6 +2,12 @@
 
 ## 目标
 
+概念和溯源说明（P2/P3/P4、8X6B/9E6Y、阳性 VHH 使用范围与当前校准标准）见：
+
+```text
+reports/PIPELINE_ORIGIN_CALIBRATION_GOLD_STANDARD_ZH.md
+```
+
 本目录是第一代 RFantibody 结果的独立 V2 运行包，不修改第一代交付。最终停止条件是：
 
 1. 冻结不少于 1,024 条 exact-unique VHH 序列；
