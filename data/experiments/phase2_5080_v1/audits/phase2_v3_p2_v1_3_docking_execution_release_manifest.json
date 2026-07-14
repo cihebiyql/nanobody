@@ -1,0 +1,210 @@
+{
+  "anchor_panel_gate": {
+    "current_anchor_count": 11,
+    "current_independent_family_count": 5,
+    "formal_validation_permitted": false,
+    "new_eligible_family_count": 0,
+    "status": "FAIL_FORMAL_ANCHOR_READINESS_ZERO_NEW_FAMILIES"
+  },
+  "anchor_readiness_path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_anchor_readiness_audit.json",
+  "artifacts": [
+    {
+      "bytes": 18307,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_development_preregistration.json",
+      "sha256": "930c40cd09423a786bb10319f986ec03d890b086e378bfc7198440a8fd92fdff"
+    },
+    {
+      "bytes": 19841,
+      "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_3_DEVELOPMENT_PREREGISTRATION_ZH.md",
+      "sha256": "f1f0871b0ae9afb273fc7011ff6cdf581313d2cfd496d2f0fce62f94422e1746"
+    },
+    {
+      "bytes": 6791,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_anchor_readiness_audit.json",
+      "sha256": "538558ff943936a1caf4e5e44d590a6a2edcb6185067c48ed91a819cd67e8fa8"
+    },
+    {
+      "bytes": 4797,
+      "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_3_ANCHOR_READINESS_ZH.md",
+      "sha256": "bd7979302faaca5d834f503a9bc700ab4f1664f3dd4adbc43dd277cd083103d1"
+    },
+    {
+      "bytes": 31750,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_failed_rc_freeze_manifest.json",
+      "sha256": "341f1f1f6db11d1b874745acddd976dc9bbaf9e38434f578b6ddd91cca25eb1f"
+    },
+    {
+      "bytes": 2528,
+      "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_FAILED_RC_FREEZE_ZH.md",
+      "sha256": "0d256922b9997e53d765e46918a43b518d6fec3443296a6ecc9cc5458537f45a"
+    },
+    {
+      "bytes": 12765,
+      "path": "experiments/phase2_5080_v1/src/validate_phase2_v3_p2_v1_2_failed_rc_freeze.py",
+      "sha256": "a528f3f2ace5b8eed16a40124ecde6802e081ce3a6188ee8ec855396e2490684"
+    },
+    {
+      "bytes": 3831,
+      "path": "experiments/phase2_5080_v1/src/test_validate_phase2_v3_p2_v1_2_failed_rc_freeze.py",
+      "sha256": "13ac53e57643c127d5cda3d40dbff00f3769acf1804f25d093c30e1bfdfadb65"
+    },
+    {
+      "bytes": 48319,
+      "path": "experiments/phase2_5080_v1/src/build_phase2_v3_p2_v1_3_dual47_completion15_package.py",
+      "sha256": "0124bcceafe061dcd70e5bc17d816d350b8c0b0f1de402c5ac6f3076f7a2e448"
+    },
+    {
+      "bytes": 10503,
+      "path": "experiments/phase2_5080_v1/src/test_build_phase2_v3_p2_v1_3_dual47_completion15_package.py",
+      "sha256": "6e66ae3a0b27755e5c0ab5f5c380136b92537c178673e8e01cc750fb205145d7"
+    },
+    {
+      "bytes": 5391,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/package_audit.json",
+      "sha256": "c0635e513bab0450d959b8fbde28d2ec43315b4cfffabaf366e1f307d7de5314"
+    },
+    {
+      "bytes": 43040,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/case_manifest.csv",
+      "sha256": "63e08d11d548afd98cca93d66d54395b0084d7398f4c8e94f288aa64cc326e81"
+    },
+    {
+      "bytes": 106784,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/run_manifest.csv",
+      "sha256": "7db0b4865169020381d3df22bd7dd39113c33d679d24960f73aedf75cdb8175f"
+    },
+    {
+      "bytes": 172069,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/exact_reuse_manifest.csv",
+      "sha256": "0de3d46b9454fe48e10283d22a8ce8a4130ba9a49e123210cb879019b66b5e8e"
+    },
+    {
+      "bytes": 49386,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/new_run_manifest.csv",
+      "sha256": "1a51d482c5d755eeb587d0bbdfab7303327190bd6d54e1ad4ecfd74636fe5151"
+    },
+    {
+      "bytes": 12266,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/new_monomer_manifest.csv",
+      "sha256": "c231fecf66fe46a77287d186804dc099a9fc830e4ea18a036c8af8bacbf66bb9"
+    },
+    {
+      "bytes": 1406,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/protocol_manifest.csv",
+      "sha256": "79308811f52715308bb9d52aaee6d361b1e4f62dec5beec94b6d5a3054dc5709"
+    },
+    {
+      "bytes": 9995,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/manifests/package_content_sha256.tsv",
+      "sha256": "867e6c94fb4e998343fce02816ab36f7712102ba60d0c6062baccfdd4ae9fdae"
+    },
+    {
+      "bytes": 9272,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/scripts/run_v1_3_completion15.py",
+      "sha256": "9a0251de5b169c562f8a37e509771ba8bc92ea304704dae0fa0b4ed0366dad3b"
+    },
+    {
+      "bytes": 62621,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/receptors/pvrig_8x6b_chainB.pdb",
+      "sha256": "b8560ca059ca5f16b85a8e17219864a644089fbdc51d0b4f98cc71e469c56b10"
+    },
+    {
+      "bytes": 65456,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/receptors/pvrig_9e6y_chainB.pdb",
+      "sha256": "1ee84df844dd10a1b5ba59e055c6b5ba46bac843e011cfc47c3cfcf52191607d"
+    },
+    {
+      "bytes": 76,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/hotspots/hotspot_residues_8x6b.txt",
+      "sha256": "7d332b9b6b812465ec67375be96d2a6a8e69c7ac3e556f3aae2d6e61084ad8bb"
+    },
+    {
+      "bytes": 74,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/hotspots/hotspot_residues_9e6y.txt",
+      "sha256": "7829bf3aba9bd27d2ae2aea1b6eedafbe356f5189a4d3b0f47571bcfe831dd57"
+    },
+    {
+      "bytes": 3321,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_package_v2/package_audit.json",
+      "sha256": "9a347b8200b5bb1d06c76e52cf34aa0393facc04e24314d45f333725e3f28280"
+    },
+    {
+      "bytes": 175745,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_package_v2/manifests/run_manifest.csv",
+      "sha256": "e8a420471f68f646c82063ea3254347859f155409cad413a971f37d30b3278a9"
+    },
+    {
+      "bytes": 11883,
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/dual_docking_pilot64_package_v2/scripts/run_dual_docking_pilot64.py",
+      "sha256": "044d3c03acf7c0338586e0fbc308c2b5c7dc375f5f531cabc0f1c64027d29974"
+    },
+    {
+      "bytes": 340443,
+      "path": "structures/8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    {
+      "bytes": 197883,
+      "path": "structures/9E6Y.pdb",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    {
+      "bytes": 5558,
+      "path": "structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    {
+      "bytes": 36196,
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_teacher_v1_manifest.csv",
+      "sha256": "d75884cbc7f87fab389c1a273661f0d9f724db098b1af99facdae2b4194be4e9"
+    },
+    {
+      "bytes": 5979,
+      "path": "experiments/phase2_5080_v1/src/validate_phase2_v3_p2_v1_3_docking_execution_release.py",
+      "sha256": "82400e5a3dd15872a41a81a35f52edab25f708e19fd77f3fc4abcfaabd337952"
+    },
+    {
+      "bytes": 1168,
+      "path": "experiments/phase2_5080_v1/src/test_validate_phase2_v3_p2_v1_3_docking_execution_release.py",
+      "sha256": "918a2f3f0f54d12d8769740be70534ed409585f2d43ff5651e302e8fe6848747"
+    }
+  ],
+  "claim_boundary": "development-only independent dual-receptor computational docking execution; not formal docking Gold, training labels, experimental binding, affinity, or blocking truth",
+  "created_at": "2026-07-14T13:35:30+08:00",
+  "docking_gold_release_eligible": false,
+  "execution_closure": {
+    "candidate_count": 47,
+    "new_completion15_run_count": 30,
+    "reused_pilot64_main_run_count": 64,
+    "run_count_per_receptor": 47,
+    "total_main_run_count": 94
+  },
+  "formal_eligible": false,
+  "p2_training_ready": false,
+  "package_audit_path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/package_audit.json",
+  "preregistration_path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_development_preregistration.json",
+  "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+  "remote_launch_contract": {
+    "backfill_allowed": false,
+    "boundary_case_ids": [
+      "mut_01_PVRIG-20_base_reference",
+      "mut_36_39H4_fw_cons_Y59F"
+    ],
+    "boundary_run_count": 4,
+    "expected_new_cases": 15,
+    "expected_new_runs": 30,
+    "fixed_top_k": 8,
+    "load_poll_seconds": 30,
+    "max_load1": 50,
+    "max_workers": 5,
+    "source_stage": "4_emref",
+    "success_status": "PASS_4_EMREF_TOP8_READY"
+  },
+  "remote_launch_eligible": true,
+  "remote_launch_run_count": 30,
+  "remote_root": "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+  "schema_version": "phase2_v3_p2_v1_3_docking_execution_release_v1",
+  "status": "FROZEN_V1_3_DOCKING_EXECUTION_RELEASE",
+  "training_label_release_eligible": false,
+  "v1_2_failed_rc_freeze_path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_failed_rc_freeze_manifest.json"
+}

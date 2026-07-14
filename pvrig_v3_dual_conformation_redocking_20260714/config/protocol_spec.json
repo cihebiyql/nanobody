@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
+  "status": "PRELOCK_VALIDATION_REQUIRED",
+  "evidence_boundary": "independent_dual_conformation_guided_docking_geometry_proxy_not_binding_affinity_or_functional_blocking_proof",
+  "candidate_panel": {
+    "panel_id": "fixed128_v1",
+    "expected_count": 128,
+    "selection_algorithm": "fixed128_deterministic_v1",
+    "bucket_quotas": {
+      "LOCKED_DUAL_REFERENCE_A": 47,
+      "RF2_FORMAL_PASS": 4,
+      "RF2_NEAR_PASS": 28,
+      "SINGLE_BASELINE_RECHECK": 25,
+      "DIVERSE_PLAUSIBLE": 24
+    },
+    "caps": {
+      "backbone_group_id": 4,
+      "near_cdr3_family_id": 12,
+      "arm_id": 8,
+      "scaffold_id": 48,
+      "h3_L_max": 96,
+      "h3_S_min": 32
+    }
+  },
+  "controls": {
+    "panel_id": "protocol_regression_controls_47_v1",
+    "expected_count": 47,
+    "evidence_scope": "protocol_regression_controls_not_external_holdout"
+  },
+  "references": {
+    "receptor_chain": "T",
+    "ligand_chain": "L",
+    "numbering": "UniProt_Q6DKI7",
+    "conformations": {
+      "8x6b": {
+        "source_pdb": "inputs/source/8X6B.pdb",
+        "source_receptor_chain": "B",
+        "source_ligand_chain": "A",
+        "receptor_number_offset": 38
+      },
+      "9e6y": {
+        "source_pdb": "inputs/source/9E6Y.pdb",
+        "source_receptor_chain": "A",
+        "source_ligand_chain": "D",
+        "receptor_number_offset": 40
+      }
+    }
+  },
+  "interface": {
+    "source": "inputs/source/PVRIG_hotspot_set_v1.csv",
+    "unique_interface_residue_count": 23,
+    "split_algorithm": "sort_alignment_col_then_even_index_anchor",
+    "air_anchor_count": 12,
+    "holdout_count": 11,
+    "soft_hint_rows_excluded": true
+  },
+  "docking": {
+    "engine": "HADDOCK3",
+    "validated_engine_version": "2025.11.0",
+    "seeds": [917, 1931, 3253],
+    "ncores": 4,
+    "sampling": 40,
+    "seletop_select": 10,
+    "seletopclusts_top_models": 4,
+    "rigidbody_tolerance": 5,
+    "flexref_tolerance": 10,
+    "randremoval": true,
+    "npart": 2,
+    "module_seed_fields": [
+      "topoaa.iniseed",
+      "rigidbody.iniseed",
+      "flexref.iniseed",
+      "emref.iniseed"
+    ],
+    "expected_candidate_jobs": 768,
+    "expected_control_jobs": 282,
+    "expected_total_jobs": 1050
+  },
+  "scoring": {
+    "atom_records": "standard_amino_acid_ATOM_only",
+    "pvrig_vhh_contact_cutoff_a": 4.5,
+    "pvrl2_occlusion_cutoff_a": 4.5,
+    "clash_cutoff_a": 2.5,
+    "score_matrix": "dock_8x6b_to_8x6b_and_9e6y_plus_dock_9e6y_to_9e6y_and_8x6b",
+    "legacy_blocker_like_a_thresholds_are_compatibility_references_only": true
+  },
+  "scheduler": {
+    "cpu_nice": 15,
+    "max_parallel": 4,
+    "load_policy": [
+      {"load1_min": 62, "parallel_jobs": 0},
+      {"load1_min": 56, "parallel_jobs": 1},
+      {"load1_min": 48, "parallel_jobs": 2},
+      {"load1_min": 0, "parallel_jobs": 4}
+    ],
+    "control_jobs_first": true,
+    "retry_failed": true,
+    "max_attempts": 2
+  },
+  "stability_gate": {
+    "minimum_successful_seeds_per_entity_conformation": 2,
+    "require_all_47_controls": true,
+    "require_independent_runs_for_both_conformations": true,
+    "require_complete_2x2_scoring": true,
+    "require_control_drift_report": true,
+    "require_threshold_sensitivity_report": true,
+    "next_generation_requires": "reports/EVALUATOR_STABLE.json:status=PASS"
+  }
+}
