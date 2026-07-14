@@ -310,6 +310,37 @@ class RegionScorerV12Tests(unittest.TestCase):
             second, _report = self.run_json(root, "second.json")
             self.assertEqual(first.read_bytes(), second.read_bytes())
 
+    def test_region_csv_is_byte_deterministic_and_carries_inventory(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pose, reference, _hotspots = write_fixture(root)
+            outputs = [root / "first.csv", root / "second.csv"]
+            for output in outputs:
+                self.assertEqual(
+                    REGION.main(
+                        [
+                            "--pose-pdb", str(pose),
+                            "--reference-pdb", str(reference),
+                            "--vhh-chain", "A",
+                            "--ref-pvrl2-chain", "D",
+                            "--cdr3", "100-100",
+                            "--out-csv", str(output),
+                        ]
+                    ),
+                    0,
+                )
+            self.assertEqual(outputs[0].read_bytes(), outputs[1].read_bytes())
+            with outputs[0].open(encoding="utf-8", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+        self.assertEqual(len(rows), 4)
+        self.assertTrue(
+            all(row["scoring_semantics_version"] == "PVRIG_PVRL2_ATOM_ONLY_V1_2" for row in rows)
+        )
+        self.assertTrue(
+            all(row["ref_pvrl2_excluded_hetatm_heavy_atom_count"] == "3" for row in rows)
+        )
+        self.assertTrue(all(row["pose_vhh_hetatm_heavy_atom_count"] == "1" for row in rows))
+
     def test_reference_with_only_hetatm_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -344,6 +375,17 @@ class RegionScorerV12Tests(unittest.TestCase):
             atoms = REGION.parse_region_pdb(path)
             selected = REGION.select_region_pose_chain(atoms, "A")
         self.assertEqual(len(selected), 1)
+
+    def test_region_parser_preserves_whitespace_coordinate_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "fallback.pdb"
+            prefix = f"ATOM  {1:5d}  CA  ALA A{1:4d}    "
+            line = (prefix + "1.0 2.0 3.0").ljust(80)
+            self.assertRaises(ValueError, float, line[30:38])
+            path.write_text(line + "\nEND\n", encoding="utf-8")
+            atoms = REGION.parse_region_pdb(path)
+        self.assertEqual(len(atoms), 1)
+        self.assertEqual((atoms[0].x, atoms[0].y, atoms[0].z), (1.0, 2.0, 3.0))
 
 
 if __name__ == "__main__":
