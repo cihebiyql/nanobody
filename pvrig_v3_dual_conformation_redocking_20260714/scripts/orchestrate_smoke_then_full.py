@@ -92,9 +92,27 @@ def main() -> int:
     if payload["status"] != "PASS":
         return 1
     write_json(root / "status/orchestrator.json", {"status": "SMOKE_PASS_STARTING_FULL", "smoke_validation": "reports/SMOKE_VALIDATION.json"})
-    command = [python, str(root / "scripts/run_controller.py"), "--poll-seconds", "60"]
-    os.execvpe(python, command, {**os.environ, "PVRIG_PROJECT_ROOT": str(root)})
-    return 1
+    full = subprocess.run(
+        [python, str(root / "scripts/run_controller.py"), "--poll-seconds", "60"],
+        cwd=root,
+        env={**os.environ, "PVRIG_PROJECT_ROOT": str(root)},
+    )
+    aggregate = subprocess.run(
+        [python, str(root / "scripts/aggregate_results.py")],
+        cwd=root,
+        env={**os.environ, "PVRIG_PROJECT_ROOT": str(root)},
+    )
+    write_json(
+        root / "status/orchestrator.json",
+        {
+            "status": "COMPLETE" if full.returncode == 0 and aggregate.returncode == 0 else "COMPLETE_REVIEW_REQUIRED",
+            "full_controller_returncode": full.returncode,
+            "aggregate_returncode": aggregate.returncode,
+            "smoke_validation": "reports/SMOKE_VALIDATION.json",
+            "evaluator": "reports/EVALUATOR_STABLE.json",
+        },
+    )
+    return aggregate.returncode if full.returncode == 0 else full.returncode
 
 
 if __name__ == "__main__":

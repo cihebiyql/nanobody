@@ -408,8 +408,8 @@
   "pose_score_count": 0,
   "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
   "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
-  "protocol_lock_file_sha256": "a6740daabdc481a096cbc83ad17405f0a0b55bd8f7f412af63e23b9c5fe6a91e",
-  "protocol_lock_sha256": "0f2d5eeafdc75949f4e422a091248ba33ff33c984f993dbba955827c71eb7daa",
+  "protocol_lock_file_sha256": "0a68f2efee0af98711d17a740ca376a55942f55865d3a4afc168a7d91a78262b",
+  "protocol_lock_sha256": "f217f58f313794af932604a816f6c360e07bdcfc1a53b7ac4c2cae0a81ffeeed",
   "reports": {
     "control_drift": "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/control_drift.tsv",
     "job_results": "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/job_results.tsv",

@@ -36,7 +36,7 @@ case "$MODE" in
     ;;
   status)
     "$SSH_BIN" "$REMOTE_HOST" "cd '$REMOTE_ROOT' && PVRIG_PROJECT_ROOT='$REMOTE_ROOT' '$PYTHON' scripts/status.py --json; \
-      for f in status/*controller.pid; do test -e \"\$f\" || continue; p=\$(cat \"\$f\"); \
+      for f in status/*.pid; do test -e \"\$f\" || continue; p=\$(cat \"\$f\"); \
       if kill -0 \"\$p\" 2>/dev/null; then echo \"\$f RUNNING pid=\$p\"; else echo \"\$f STOPPED pid=\$p\"; fi; done"
     ;;
   *)

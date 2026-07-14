@@ -37,19 +37,19 @@
       "sha256": "5a62f99ba4e1d726a89748eea4bd0f77aaede311440a6520dcf6660f676b3dd6"
     },
     {
-      "bytes": 1966,
+      "bytes": 1956,
       "path": "scripts/launch_node1.sh",
-      "sha256": "aa803a475dc78ba1a9412d3c408aeb51e16f8397b0b42baafa44aaa602098dfe"
+      "sha256": "be827862abb42bde92256aba2bf578ecee6e85d05cb68b82a3db5c4ebd3b7c13"
     },
     {
-      "bytes": 4063,
+      "bytes": 4778,
       "path": "scripts/orchestrate_smoke_then_full.py",
-      "sha256": "abf14786eafd8dc7061590ac4259620f29edf057c394fce758d6015b932357cf"
+      "sha256": "498ba23ebc0f5649afc97034c75587e915d920507a43cc19c09432a7628b672d"
     },
     {
-      "bytes": 7941,
+      "bytes": 8153,
       "path": "scripts/run_controller.py",
-      "sha256": "f8629ab3ec21b2feae906bf7c17b8f525d6e1296990b12f08918822a9166da37"
+      "sha256": "1b612dfce039f508bfcdd39125ff3ab99869bc17392559a555a859cbe2295497"
     },
     {
       "bytes": 12971,
@@ -102,7 +102,7 @@
   "next_generation_gate": "reports/EVALUATOR_STABLE.json must match this protocol lock and have status PASS",
   "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
   "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
-  "protocol_lock_sha256": "0f2d5eeafdc75949f4e422a091248ba33ff33c984f993dbba955827c71eb7daa",
+  "protocol_lock_sha256": "f217f58f313794af932604a816f6c360e07bdcfc1a53b7ac4c2cae0a81ffeeed",
   "schema_version": 1,
   "status": "LOCKED"
 }

@@ -120,6 +120,11 @@ DEFAULT_REFERENCES = {
     "8X6B": WORKSPACE_ROOT / "structures/8X6B.pdb",
     "9E6Y": WORKSPACE_ROOT / "structures/9E6Y.pdb",
 }
+DEFAULT_CALIBRATOR_TEST = (
+    Path(__file__).resolve().with_name(
+        "test_calibrate_phase2_v3_p2_v1_3_dual_native.py"
+    )
+)
 DEFAULT_PREREGISTRATION = (
     WORKSPACE_ROOT
     / "experiments/phase2_5080_v1/audits/"
@@ -247,6 +252,14 @@ def canonical_path(path: Path) -> str:
         return resolved.relative_to(WORKSPACE_ROOT.resolve()).as_posix()
     except ValueError:
         return resolved.as_posix()
+
+
+def canonical_path_lexical(path: Path) -> str:
+    absolute = Path(os.path.abspath(path))
+    try:
+        return absolute.relative_to(Path(os.path.abspath(WORKSPACE_ROOT))).as_posix()
+    except ValueError:
+        return absolute.as_posix()
 
 
 def scalar_text(value: Any, field_name: str = "value") -> str:
@@ -2841,7 +2854,11 @@ def promote_versioned_release(
         raise
 
 
-def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
+def build_calibration(
+    config: CalibrationConfig,
+    *,
+    pointer_promoter: PointerPromoter = promote_current_symlink,
+) -> dict[str, Any]:
     preregistration = validate_preregistration(config.preregistration)
     execution_release, execution_ledger = validate_execution_release(
         config.execution_release
@@ -2970,6 +2987,9 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         "training_state": "P2_TRAINING_BLOCKED",
         "development_method_evaluation_eligible": True,
         "development_method_passed": acceptance["development_method_passed"],
+        "computed_gate_outcome": acceptance["computed_gate_outcome"],
+        "external_release_validation_required": True,
+        "development_smoke_eligible": False,
         "claim_boundary": CLAIM_BOUNDARY,
         "rules": rules,
         "aggregation": {
@@ -2988,14 +3008,46 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         "implementation": {
             "relpath": canonical_path(Path(__file__)),
             "sha256": sha256_file(Path(__file__)),
+            "test_relpath": canonical_path(DEFAULT_CALIBRATOR_TEST),
+            "test_sha256": sha256_file(DEFAULT_CALIBRATOR_TEST),
         },
     }
-
-    config.outdir.parent.mkdir(parents=True, exist_ok=True)
+    release_identity = {
+        "schema_version": SCHEMA_VERSION,
+        "protocol_id": PROTOCOL_ID,
+        "method_id": METHOD_ID,
+        "input_sha256": {
+            name: evidence.get("sha256", "")
+            for name, evidence in {
+                "preregistration": preregistration,
+                "execution_release": execution_release,
+                "selector_csv": selector_evidence["selector_csv"],
+                "selector_audit": selector_evidence["selector_audit"],
+                "processor_audit": processor_audit,
+                "continuous_metrics": input_bindings["continuous_metrics"],
+                "positive_manifest": input_bindings["positive_manifest"],
+                "mutant_manifest": input_bindings["mutant_manifest"],
+            }.items()
+        },
+        "implementation_sha256": rules_document["implementation"]["sha256"],
+        "implementation_test_sha256": rules_document["implementation"]["test_sha256"],
+        "bootstrap_seed": config.bootstrap_seed,
+        "bootstrap_replicates": config.bootstrap_replicates,
+    }
+    release_id = f"calc-{sha256_json(release_identity)[:24]}"
+    publication_root = config.outdir.resolve()
+    releases_root = publication_root / "releases"
+    release_dir = releases_root / release_id
+    current_link = publication_root / "current"
+    expected_report = current_link / REPORT_NAME
+    if Path(os.path.abspath(config.report)) != Path(os.path.abspath(expected_report)):
+        raise CalibrationError(
+            f"Report path must be the versioned current view: {expected_report}"
+        )
+    publication_root.mkdir(parents=True, exist_ok=True)
     staging = Path(
-        tempfile.mkdtemp(prefix=f".{config.outdir.name}.staging-", dir=config.outdir.parent)
+        tempfile.mkdtemp(prefix=f".{release_id}.staging-", dir=publication_root)
     )
-    report_staging: Path | None = None
     try:
         payloads: dict[str, tuple[Sequence[Mapping[str, str]], Sequence[str], str]] = {
             POSE_SCORES_NAME: (pose_rows, POSE_SCORE_FIELDS, "pose_score_row_sha256"),
@@ -3050,15 +3102,8 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             artifact_hashes=artifact_hashes,
             config=config,
         )
-        config.report.parent.mkdir(parents=True, exist_ok=True)
-        report_handle = tempfile.NamedTemporaryFile(
-            prefix=f".{config.report.name}.staging-",
-            dir=config.report.parent,
-            delete=False,
-        )
-        report_staging = Path(report_handle.name)
-        report_handle.close()
-        report_staging.write_text(report_text, encoding="utf-8")
+        report_path = staging / REPORT_NAME
+        report_path.write_text(report_text, encoding="utf-8")
         audit = {
             "schema_version": SCHEMA_VERSION,
             "status": status,
@@ -3072,6 +3117,9 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             "development_method_evaluation_eligible": True,
             "computational_geometry_teacher_only": True,
             "development_method_passed": acceptance["development_method_passed"],
+            "computed_gate_outcome": acceptance["computed_gate_outcome"],
+            "external_release_validation_required": True,
+            "development_smoke_eligible": False,
             "claim_boundary": CLAIM_BOUNDARY,
             "observed_contract": observed_contract,
             "input_bindings": input_bindings,
@@ -3097,6 +3145,8 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             "mutant_sensitivity": {
                 "paired_delta_count": len(mutant_rows),
                 "exact_base_only": True,
+                "sequence_hashes_validated": True,
+                "mutation_semantics_validated": True,
                 "binary_negative_labels_assigned": False,
                 "directions_preserved": True,
             },
@@ -3109,18 +3159,67 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             "implementation": rules_document["implementation"],
             "output_sha256": artifact_hashes,
             "report": {
-                "relpath": canonical_path(config.report),
-                "sha256": sha256_file(report_staging),
+                "relpath": REPORT_NAME,
+                "sha256": sha256_file(report_path),
+            },
+            "publication": {
+                "release_id": release_id,
+                "release_relpath": canonical_path(release_dir),
+                "current_pointer_relpath": canonical_path_lexical(current_link),
+                "immutable_versioned_release": True,
+                "promotion": "single atomic current symlink replacement",
+                "rollback_safe": True,
             },
         }
-        write_json(staging / AUDIT_NAME, audit)
-        publish_outputs_transaction(staging, config.outdir, report_staging, config.report)
+        audit_path = staging / AUDIT_NAME
+        write_json(audit_path, audit)
+        release_input = {
+            "schema_version": "pvrig_v1_3_calibration_release_input_v1",
+            "status": RELEASE_INPUT_STATUS,
+            "protocol_id": PROTOCOL_ID,
+            "method_id": METHOD_ID,
+            "release_id": release_id,
+            "calculation_status": CALCULATED_STATUS,
+            "computed_gate_outcome": acceptance["computed_gate_outcome"],
+            "external_validator_required": True,
+            "development_smoke_eligible": False,
+            "formal_eligible": False,
+            "docking_gold_release_eligible": False,
+            "training_label_release_eligible": False,
+            "p2_training_ready": False,
+            "calibration_audit": {
+                "relpath": AUDIT_NAME,
+                "sha256": sha256_file(audit_path),
+            },
+            "calibrator": rules_document["implementation"],
+            "upstream_sha256": release_identity["input_sha256"],
+            "output_sha256": artifact_hashes,
+            "required_external_checks": [
+                "canonical_upstream_paths_and_frozen_hashes",
+                "immutable_release_inventory",
+                "current_pointer_identity",
+                "computed_gate_outcome",
+                "B2000_output_cardinality",
+                "formal_and_training_vetoes",
+            ],
+        }
+        write_json(staging / RELEASE_INPUT_NAME, release_input)
+        staged_inventory = directory_inventory(staging)
+        if staged_inventory["file_count"] != len(payloads) + 4:
+            raise CalibrationError("Calibration immutable release inventory is incomplete")
+        promote_versioned_release(
+            staging, release_dir, current_link, pointer_promoter
+        )
+        if sha256_file(current_link / AUDIT_NAME) != sha256_file(release_dir / AUDIT_NAME):
+            raise CalibrationError("Published calibration audit hash mismatch")
+        if sha256_file(current_link / RELEASE_INPUT_NAME) != sha256_file(
+            release_dir / RELEASE_INPUT_NAME
+        ):
+            raise CalibrationError("Published release-input contract hash mismatch")
         return audit
     except Exception:
         if staging.exists():
             shutil.rmtree(staging)
-        if report_staging is not None and report_staging.exists():
-            report_staging.unlink()
         raise
 
 
@@ -3128,6 +3227,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics-csv", type=Path, default=DEFAULT_METRICS_CSV)
     parser.add_argument("--processor-audit", type=Path, default=DEFAULT_PROCESSOR_AUDIT)
+    parser.add_argument("--selector-csv", type=Path, default=DEFAULT_SELECTOR_CSV)
+    parser.add_argument("--selector-audit", type=Path, default=DEFAULT_SELECTOR_AUDIT)
+    parser.add_argument("--execution-release", type=Path, default=DEFAULT_EXECUTION_RELEASE)
+    parser.add_argument("--case-manifest", type=Path, default=DEFAULT_CASE_MANIFEST)
+    parser.add_argument("--run-manifest", type=Path, default=DEFAULT_RUN_MANIFEST)
+    parser.add_argument("--protocol-manifest", type=Path, default=DEFAULT_PROTOCOL_MANIFEST)
+    parser.add_argument("--reference-8x6b", type=Path, default=DEFAULT_REFERENCES["8X6B"])
+    parser.add_argument("--reference-9e6y", type=Path, default=DEFAULT_REFERENCES["9E6Y"])
     parser.add_argument("--preregistration", type=Path, default=DEFAULT_PREREGISTRATION)
     parser.add_argument("--positive-manifest", type=Path, default=DEFAULT_POSITIVE_MANIFEST)
     parser.add_argument("--mutant-manifest", type=Path, default=DEFAULT_MUTANT_MANIFEST)
@@ -3143,6 +3250,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     config = CalibrationConfig(
         metrics_csv=args.metrics_csv.resolve(),
         processor_audit=args.processor_audit.resolve(),
+        selector_csv=args.selector_csv.resolve(),
+        selector_audit=args.selector_audit.resolve(),
+        execution_release=args.execution_release.resolve(),
+        case_manifest=args.case_manifest.resolve(),
+        run_manifest=args.run_manifest.resolve(),
+        protocol_manifest=args.protocol_manifest.resolve(),
+        references={
+            "8X6B": args.reference_8x6b.resolve(),
+            "9E6Y": args.reference_9e6y.resolve(),
+        },
         preregistration=args.preregistration.resolve(),
         positive_manifest=args.positive_manifest.resolve(),
         mutant_manifest=args.mutant_manifest.resolve(),

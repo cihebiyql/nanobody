@@ -7,6 +7,7 @@ import argparse
 import fcntl
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
@@ -103,7 +104,6 @@ def launch(row: dict[str, str], max_attempts: int, dry_run: bool) -> int | None:
         return None
     log_dir = root() / "logs/jobs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    log = (log_dir / f"{row['job_id']}.controller.log").open("ab")
     command = [
         "nice",
         "-n",
@@ -114,14 +114,15 @@ def launch(row: dict[str, str], max_attempts: int, dry_run: bool) -> int | None:
         "--max-attempts",
         str(max_attempts),
     ]
-    process = subprocess.Popen(
-        command,
-        cwd=root(),
-        stdout=log,
-        stderr=subprocess.STDOUT,
-        start_new_session=True,
-        env={**os.environ, "PVRIG_PROJECT_ROOT": str(root())},
-    )
+    with (log_dir / f"{row['job_id']}.controller.log").open("ab") as log:
+        process = subprocess.Popen(
+            command,
+            cwd=root(),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+            env={**os.environ, "PVRIG_PROJECT_ROOT": str(root())},
+        )
     return process.pid
 
 
@@ -199,6 +200,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--load1", type=float, help="Testing override; do not use for production")
     args = parser.parse_args(argv)
+    # Jobs are tracked through atomic state files; auto-reap children to avoid one zombie per completed job.
+    signal.signal(signal.SIGCHLD, signal.SIG_IGN)
     lock_path = root() / "status/controller.lock"
     lock_path.parent.mkdir(parents=True, exist_ok=True)
     with lock_path.open("w") as lock:
