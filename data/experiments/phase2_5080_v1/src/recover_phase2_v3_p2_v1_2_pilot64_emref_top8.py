@@ -22,6 +22,7 @@ import shlex
 import subprocess
 import tarfile
 import tempfile
+import zlib
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -602,7 +603,7 @@ def file_inventory(root: Path, relpaths: Sequence[str]) -> dict[str, Any]:
 
 
 REMOTE_ARCHIVE_PY = r'''
-import base64, hashlib, io, json, math, pathlib, sys, tarfile
+import base64, hashlib, io, json, pathlib, sys, tarfile, zlib
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
@@ -610,7 +611,7 @@ def canonical(value):
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
-request = json.loads(base64.urlsafe_b64decode(sys.argv[1].encode("ascii")))
+request = json.loads(zlib.decompress(base64.urlsafe_b64decode(sys.argv[1].encode("ascii"))))
 base = {key: request[key] for key in ("schema_version", "remote_root", "required_relpaths", "runs")}
 if sha(canonical(base).encode("utf-8")) != request["request_sha256"]:
     raise SystemExit("request hash mismatch")
@@ -694,12 +695,17 @@ with tarfile.open(fileobj=sys.stdout.buffer, mode="w|") as archive:
 '''
 
 
+def encode_request(request: Mapping[str, Any]) -> str:
+    payload = zlib.compress(canonical_json(request).encode("utf-8"), level=9)
+    return base64.urlsafe_b64encode(payload).decode("ascii")
+
+
 def ssh_command_args(ssh_executable: str, host: str, request: Mapping[str, Any]) -> list[str]:
     if not ssh_executable.strip() or "\x00" in ssh_executable:
         raise RecoveryError("SSH executable is empty or invalid")
     if not host.strip() or "\x00" in host or any(character.isspace() for character in host):
         raise RecoveryError(f"SSH host is invalid: {host!r}")
-    encoded = base64.urlsafe_b64encode(canonical_json(request).encode("utf-8")).decode("ascii")
+    encoded = encode_request(request)
     remote_command = shlex.join(["python3", "-c", REMOTE_ARCHIVE_PY, encoded])
     return [ssh_executable, host, remote_command]
 

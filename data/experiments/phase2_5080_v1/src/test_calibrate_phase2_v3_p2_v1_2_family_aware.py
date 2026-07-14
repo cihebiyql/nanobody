@@ -297,7 +297,7 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
         self.assertEqual(run["qualifying_supporting_pose_count"], "2")
 
     def test_lofo_covers_each_family_and_case(self) -> None:
-        cases = {"p1": "F1", "p2": "F2", "p3": "F3"}
+        cases = {"p1": "F1", "p2": "F2"}
         values = {
             "p1": (0.4, 10, 5),
             "p2": (0.6, 20, 10),
@@ -621,6 +621,47 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
                     )
             self.assertEqual((destination / "old.txt").read_text(), "old")
             self.assertEqual(report.read_text(), "old report")
+
+    def test_default_contract_cannot_freeze_without_explicit_acceptance(self) -> None:
+        cases = {"p1": "F1", "p2": "F2", "p3": "F3"}
+        rows = rows_for_cases(
+            cases,
+            2,
+            {
+                "p1": (0.4, 10, 2),
+                "p2": (0.6, 20, 10),
+                "p3": (0.8, 30, 20),
+            },
+        )
+        rules = MOD.derive_rules(rows, positive_metadata(cases), 2)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            config = MOD.CalibrationConfig(
+                metrics_csv=root / "metrics.csv",
+                upstream_audit=root / "audit.json",
+                contacts_jsonl=root / "contacts.jsonl",
+                processor_release_manifest=root / "release.json",
+                positive_manifest=root / "positive.csv",
+                mutant_manifest=root / "mutant.csv",
+                outdir=root / "out",
+                report=root / "report.md",
+            )
+            acceptance = {
+                "all_gates_passed": False,
+                "failed_gates": ["bootstrap"],
+                "gates": {"bootstrap": {"passed": False}},
+            }
+            document = MOD.rules_document(
+                rules,
+                config,
+                {"upstream_audit": {"validated": True}},
+                acceptance,
+            )
+        self.assertEqual(
+            document["status"], "FAIL_V1_2_FAMILY_CALIBRATION_NOT_FROZEN"
+        )
+        self.assertFalse(document["pose_rule_threshold_freeze_eligible"])
+        self.assertFalse(document["single_8x6b_dock_run_method_freeze_eligible"])
 
 
 class FamilyCalibrationEndToEndTests(unittest.TestCase):

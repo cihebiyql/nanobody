@@ -2416,6 +2416,7 @@ def build_acceptance_summary(
     bootstrap_anchor_summary: Mapping[str, Any],
     mutant_delta_rows: Sequence[Mapping[str, str]],
     fingerprint_evidence: Mapping[str, Any],
+    fingerprint_rows: Sequence[Mapping[str, str]],
 ) -> dict[str, Any]:
     thresholds = [rules["thresholds"]["H_canonical"]]
     thresholds.extend(
@@ -2512,8 +2513,10 @@ def build_acceptance_summary(
                     for row in mutant_delta_rows
                 )
                 and all(row["fingerprints_available"] == "true" for row in mutant_delta_rows)
+                and len(fingerprint_rows) == 376
             ),
             "paired_delta_rows": len(mutant_delta_rows),
+            "fingerprint_rows": len(fingerprint_rows),
             "fingerprint_evidence": dict(fingerprint_evidence),
         },
         "claim_boundary": {
@@ -2824,6 +2827,13 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
     fingerprint_by_case, fingerprint_evidence = load_contact_fingerprints(
         config.contacts_jsonl, metrics_rows, config.contract.ranks_per_case
     )
+    family_by_case = {
+        **{case_id: record["family"] for case_id, record in positive_cases.items()},
+        **{case_id: record["family"] for case_id, record in mutant_cases.items()},
+    }
+    fingerprint_rows = build_fingerprint_rows(
+        fingerprint_by_case, family_by_case
+    )
     input_bindings = {
         "continuous_metrics": {
             "relpath": canonical_path(config.metrics_csv),
@@ -2891,6 +2901,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         bootstrap_anchor_summary=bootstrap_anchor_summary,
         mutant_delta_rows=mutant_delta_rows,
         fingerprint_evidence=fingerprint_evidence,
+        fingerprint_rows=fingerprint_rows,
     )
     rules_payload = rules_document(
         rules, config, input_bindings, acceptance_summary
@@ -2911,6 +2922,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
         lofo_path = staging / LOFO_NAME
         bootstrap_path = staging / BOOTSTRAP_NAME
         bootstrap_anchor_path = staging / BOOTSTRAP_ANCHOR_NAME
+        fingerprint_path = staging / FINGERPRINT_NAME
         mutant_path = staging / MUTANT_DELTAS_NAME
         robustness_path = staging / ROBUSTNESS_NAME
         write_json(rules_path, rules_payload)
@@ -2923,6 +2935,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             bootstrap_anchor_rows,
             BOOTSTRAP_ANCHOR_FIELDS,
         )
+        write_csv(fingerprint_path, fingerprint_rows, FINGERPRINT_FIELDS)
         write_csv(mutant_path, mutant_delta_rows, MUTANT_DELTA_FIELDS)
         write_csv(robustness_path, robustness_rows, ROBUSTNESS_FIELDS)
         artifact_paths: dict[str, tuple[Path, int | None, str | None]] = {
@@ -2939,6 +2952,11 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
                 bootstrap_anchor_path,
                 len(bootstrap_anchor_rows),
                 "bootstrap_anchor_row_sha256",
+            ),
+            FINGERPRINT_NAME: (
+                fingerprint_path,
+                len(fingerprint_rows),
+                "fingerprint_row_sha256",
             ),
             MUTANT_DELTAS_NAME: (
                 mutant_path,
@@ -2958,6 +2976,7 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             LOFO_NAME: lofo_rows,
             BOOTSTRAP_NAME: bootstrap_rows,
             BOOTSTRAP_ANCHOR_NAME: bootstrap_anchor_rows,
+            FINGERPRINT_NAME: fingerprint_rows,
             MUTANT_DELTAS_NAME: mutant_delta_rows,
             ROBUSTNESS_NAME: robustness_rows,
         }

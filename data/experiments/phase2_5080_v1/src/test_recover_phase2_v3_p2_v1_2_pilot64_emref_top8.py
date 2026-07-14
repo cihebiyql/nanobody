@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import base64
 import csv
 import gzip
 import importlib.util
@@ -395,7 +394,7 @@ class Pilot64EmrefRecoveryTests(unittest.TestCase):
                 item for item in fixture.rows if item["run_id"] == "P2PILOT_001__8X6B__main"
             )
             request = MOD.build_sync_request([row], str(fixture.remote))
-            encoded = base64.urlsafe_b64encode(MOD.canonical_json(request).encode("utf-8")).decode("ascii")
+            encoded = MOD.encode_request(request)
             archive_path = Path(temporary) / "remote.tar"
             with archive_path.open("wb") as handle:
                 completed = subprocess.run(
