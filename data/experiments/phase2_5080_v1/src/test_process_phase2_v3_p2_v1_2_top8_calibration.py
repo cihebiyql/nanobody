@@ -535,7 +535,11 @@ class V12Top8CalibrationTests(unittest.TestCase):
                 ["canonical_internal_contact_source"],
                 "raw_4_emref_pose",
             )
-            self.assertNotIn("processor", audit_first["toolchain"])
+            self.assertIn("processor", audit_first["toolchain"])
+            self.assertEqual(
+                audit_first["toolchain"]["processor"]["sha256"],
+                MOD.sha256_file(MODULE_PATH),
+            )
             serialized = json.dumps(audit_first, sort_keys=True)
             for forbidden in ("geometry_tier", "blocker_class", "classification"):
                 self.assertNotIn(forbidden, serialized)
@@ -577,21 +581,59 @@ class V12Top8CalibrationTests(unittest.TestCase):
                 MOD.DEFAULT_SELECTOR_IMPLEMENTATION, MOD.WORKSPACE_ROOT
             ),
         }
-        canonical = MOD.evaluate_canonical_pose_rule_contract(
-            MOD.BuildConfig(), selector_evidence
+        absent = Path(tempfile.gettempdir()) / "definitely_absent_v1_2_release.json"
+        absent.unlink(missing_ok=True)
+        canonical_without_release = MOD.evaluate_canonical_pose_rule_contract(
+            MOD.BuildConfig(processor_release_manifest=absent), selector_evidence
         )
-        self.assertTrue(canonical["eligible"])
+        self.assertFalse(canonical_without_release["eligible"])
+        self.assertFalse(
+            canonical_without_release["processor_release_manifest_validated"]
+        )
         self.assertEqual(
-            set(canonical["anchors"]), set(MOD.CANONICAL_TRUST_ANCHOR_SHA256)
+            set(canonical_without_release["anchors"]),
+            set(MOD.CANONICAL_TRUST_ANCHOR_SHA256),
         )
         with tempfile.TemporaryDirectory() as temporary:
-            substituted = Path(temporary) / MOD.DEFAULT_ALIGNER.name
+            temporary_root = Path(temporary)
+            release_manifest = temporary_root / "release.json"
+            MOD.write_json(
+                release_manifest, MOD.current_processor_release_manifest_payload()
+            )
+            release_check = MOD.validate_processor_release_manifest(
+                release_manifest, canonical_manifest_path=release_manifest
+            )
+            self.assertTrue(release_check["validated"])
+
+            previous_default = MOD.DEFAULT_PROCESSOR_RELEASE_MANIFEST
+            MOD.DEFAULT_PROCESSOR_RELEASE_MANIFEST = release_manifest
+            try:
+                canonical = MOD.evaluate_canonical_pose_rule_contract(
+                    MOD.BuildConfig(processor_release_manifest=release_manifest),
+                    selector_evidence,
+                )
+            finally:
+                MOD.DEFAULT_PROCESSOR_RELEASE_MANIFEST = previous_default
+            self.assertTrue(canonical["eligible"])
+
+            drifted_payload = MOD.current_processor_release_manifest_payload()
+            drifted_payload["processor"]["sha256"] = "0" * 64
+            MOD.write_json(release_manifest, drifted_payload)
+            drifted = MOD.validate_processor_release_manifest(
+                release_manifest, canonical_manifest_path=release_manifest
+            )
+            self.assertFalse(drifted["validated"])
+            self.assertFalse(drifted["processor_path_and_current_sha256_match"])
+
+            substituted = temporary_root / MOD.DEFAULT_ALIGNER.name
             shutil.copyfile(MOD.DEFAULT_ALIGNER, substituted)
             substituted.write_text(
                 substituted.read_text(encoding="utf-8") + "\n# valid substituted tool\n",
                 encoding="utf-8",
             )
-            config = MOD.BuildConfig(aligner=substituted)
+            config = MOD.BuildConfig(
+                aligner=substituted, processor_release_manifest=release_manifest
+            )
             check = MOD.evaluate_canonical_pose_rule_contract(
                 config, selector_evidence
             )

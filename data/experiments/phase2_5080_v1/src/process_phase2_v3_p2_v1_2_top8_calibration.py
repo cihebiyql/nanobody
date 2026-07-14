@@ -2355,10 +2355,12 @@ def current_processor_release_manifest_payload() -> dict[str, Any]:
 def validate_processor_release_manifest(
     path: Path,
     *,
-    canonical_manifest_path: Path = DEFAULT_PROCESSOR_RELEASE_MANIFEST,
+    canonical_manifest_path: Path | None = None,
 ) -> dict[str, Any]:
     resolved = path.resolve()
-    canonical_resolved = canonical_manifest_path.resolve()
+    canonical_resolved = (
+        canonical_manifest_path or DEFAULT_PROCESSOR_RELEASE_MANIFEST
+    ).resolve()
     result: dict[str, Any] = {
         "path": resolved.as_posix(),
         "canonical_path": canonical_resolved.as_posix(),
@@ -2845,6 +2847,9 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
             "fixed_k_pose_ensemble": True,
             "selector_contract": selector_evidence,
             "pose_rule_trust_anchor_check": pose_rule_trust_check,
+            "processor_release_manifest_check": pose_rule_trust_check[
+                "processor_release_manifest_check"
+            ],
             "canonical_internal_contact_contract": {
                 "canonical_internal_contact_source": "raw_4_emref_pose",
                 "canonical_internal_contact_numbering": "8x6b_source_numbering",
@@ -2920,6 +2925,13 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 "mutant_manifest": sha256_file(config.mutant_manifest.resolve()),
                 "hotspots": sha256_file(config.hotspots.resolve()),
                 "reconciliation": sha256_file(config.reconciliation.resolve()),
+                "processor": sha256_file(Path(__file__).resolve()),
+                "processor_test": sha256_file(DEFAULT_PROCESSOR_TEST.resolve()),
+                "processor_release_manifest": (
+                    sha256_file(config.processor_release_manifest.resolve())
+                    if config.processor_release_manifest.is_file()
+                    else ""
+                ),
                 **{
                     f"reference_{baseline}": sha256_file(path.resolve())
                     for baseline, path in config.references.items()
@@ -2955,6 +2967,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--hotspots", type=Path, default=DEFAULT_HOTSPOTS)
     parser.add_argument("--reconciliation", type=Path, default=DEFAULT_RECONCILIATION)
     parser.add_argument(
+        "--processor-release-manifest",
+        type=Path,
+        default=DEFAULT_PROCESSOR_RELEASE_MANIFEST,
+    )
+    parser.add_argument(
         "--reference-8x6b", type=Path, default=BASELINES["8x6b"]["reference"]
     )
     parser.add_argument(
@@ -2983,6 +3000,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         scoring_helper=args.scoring_helper.resolve(),
         hotspots=args.hotspots.resolve(),
         reconciliation=args.reconciliation.resolve(),
+        processor_release_manifest=args.processor_release_manifest.resolve(),
         references={
             "8x6b": args.reference_8x6b.resolve(),
             "9e6y": args.reference_9e6y.resolve(),

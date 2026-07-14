@@ -39,9 +39,10 @@ SUPPORT_CUTOFF = 0.25
 MIN_SUPPORTING_POSES = 2
 BOOTSTRAP_SEED = 20260714
 BOOTSTRAP_REPLICATES = 2000
-ROBUSTNESS_LOWER_QUANTILES = (0.15, 0.20, 0.25)
-ROBUSTNESS_UPPER_QUANTILES = (0.45, 0.50, 0.55)
-ROBUSTNESS_SUPPORT_CUTOFFS = (0.20, 0.25, 0.30)
+ROBUSTNESS_LOWER_QUANTILES = (0.10, 0.20, 0.30)
+ROBUSTNESS_UPPER_QUANTILES = (0.40, 0.50, 0.60)
+ROBUSTNESS_SUPPORT_CUTOFFS = (0.20, 0.25, 0.33)
+ROBUSTNESS_MIN_SUPPORTING_POSES = (2, 3)
 CLAIM_BOUNDARY = (
     "Computational geometry teacher calibration on fixed Top-8 poses from one "
     "8X6B docking ensemble with two post-hoc scoring baselines; not binder, "
@@ -59,6 +60,14 @@ DEFAULT_METRICS_CSV = (
 )
 DEFAULT_UPSTREAM_AUDIT = DEFAULT_METRICS_CSV.with_name(
     "pvrig_v1_2_top8_calibration_audit.json"
+)
+DEFAULT_CONTACTS_JSONL = DEFAULT_METRICS_CSV.with_name(
+    "pvrig_v1_2_top8_residue_contacts.jsonl"
+)
+DEFAULT_PROCESSOR_RELEASE_MANIFEST = (
+    WORKSPACE_ROOT
+    / "experiments/phase2_5080_v1/audits/"
+    "phase2_v3_p2_v1_2_top8_processor_release_manifest.json"
 )
 DEFAULT_POSITIVE_MANIFEST = (
     WORKSPACE_ROOT.parent
@@ -84,6 +93,7 @@ POSE_SCORES_NAME = "pvrig_v1_2_pose_scores.csv"
 RUN_SCORES_NAME = "pvrig_v1_2_calibration_run_scores.csv"
 LOFO_NAME = "pvrig_v1_2_family_lofo.csv"
 BOOTSTRAP_NAME = "pvrig_v1_2_bootstrap_thresholds.csv"
+BOOTSTRAP_ANCHOR_NAME = "pvrig_v1_2_bootstrap_anchor_evaluations.csv"
 MUTANT_DELTAS_NAME = "pvrig_v1_2_mutant_paired_deltas.csv"
 ROBUSTNESS_NAME = "pvrig_v1_2_robustness_grid.csv"
 AUDIT_NAME = "pvrig_v1_2_family_calibration_audit.json"
@@ -112,6 +122,8 @@ class CalibrationContract:
 class CalibrationConfig:
     metrics_csv: Path
     upstream_audit: Path | None
+    contacts_jsonl: Path | None
+    processor_release_manifest: Path | None
     positive_manifest: Path
     mutant_manifest: Path
     outdir: Path
@@ -311,7 +323,8 @@ def derive_features(row: Mapping[str, str]) -> dict[str, float | int]:
         p_value = cdr_pairs / total_pairs
     return {
         "H": min(h_value, 1.0),
-        "O": math.log1p(total_pairs),
+        "O": float(total_pairs),
+        "O_log1p": math.log1p(total_pairs),
         "P": p_value,
         "O_raw": total_pairs,
         "P_numerator": cdr_pairs,
@@ -641,7 +654,11 @@ def anchor_metric_values(
 
 
 def threshold_from_weighted_values(
-    values: Sequence[tuple[float, float]], lower_quantile: float, upper_quantile: float
+    values: Sequence[tuple[float, float]],
+    lower_quantile: float,
+    upper_quantile: float,
+    *,
+    metric: str,
 ) -> dict[str, Any]:
     total_weight = sum(weight for _, weight in values)
     positive = [(value, weight) for value, weight in values if value > 0.0 and weight > 0.0]
@@ -650,11 +667,25 @@ def threshold_from_weighted_values(
         raise CalibrationError("A threshold metric has no positive anchor support")
     lower = weighted_quantile(positive, lower_quantile)
     upper = weighted_quantile(positive, upper_quantile)
-    if not math.isfinite(lower) or not math.isfinite(upper) or upper < lower:
+    if (
+        not math.isfinite(lower)
+        or not math.isfinite(upper)
+        or lower <= 0.0
+        or upper <= lower
+    ):
         raise CalibrationError(f"Invalid threshold interval L={lower}, U={upper}")
+    transform = "log1p" if metric == "O" else "identity"
+    lower_transformed = math.log1p(lower) if metric == "O" else lower
+    upper_transformed = math.log1p(upper) if metric == "O" else upper
     return {
         "L": lower,
         "U": upper,
+        "L_raw": lower,
+        "U_raw": upper,
+        "L_transformed": lower_transformed,
+        "U_transformed": upper_transformed,
+        "raw_unit": "residue_pair_count" if metric == "O" else "unitless_fraction",
+        "transform": transform,
         "lower_quantile": lower_quantile,
         "upper_quantile": upper_quantile,
         "positive_part_only": True,
@@ -662,6 +693,8 @@ def threshold_from_weighted_values(
         "positive_support_count": len(positive),
         "positive_weight": positive_weight / total_weight,
         "zero_weight": 1.0 - (positive_weight / total_weight),
+        "defined": True,
+        "failure_reason": "",
     }
 
 
@@ -678,7 +711,7 @@ def derive_rules(
     values = anchor_metric_values(rows, positive_cases, ranks_per_case)
     thresholds = {
         "H_canonical": threshold_from_weighted_values(
-            values["H_canonical"], lower_quantile, upper_quantile
+            values["H_canonical"], lower_quantile, upper_quantile, metric="H"
         ),
         "baseline": {
             baseline: {
@@ -686,6 +719,7 @@ def derive_rules(
                     values["baseline"][baseline][metric],
                     lower_quantile,
                     upper_quantile,
+                    metric=metric,
                 )
                 for metric in BASELINE_METRICS
             }
@@ -707,17 +741,18 @@ def derive_rules(
 def membership(value: float, threshold: Mapping[str, Any]) -> float:
     if not math.isfinite(value):
         raise CalibrationError("Membership received a non-finite value")
-    lower = float(threshold["L"])
-    upper = float(threshold["U"])
-    if value <= 0.0 or value < lower:
+    lower_raw = float(threshold["L_raw"])
+    upper_raw = float(threshold["U_raw"])
+    lower = float(threshold["L_transformed"])
+    upper = float(threshold["U_transformed"])
+    if value <= 0.0 or value < lower_raw:
         return 0.0
-    if upper < lower:
-        raise CalibrationError("Membership threshold has U < L")
-    if upper == lower:
+    if upper <= lower or upper_raw <= lower_raw:
+        raise CalibrationError("Membership threshold requires strict U > L")
+    transformed = math.log1p(value) if threshold.get("transform") == "log1p" else value
+    if value >= upper_raw:
         return 1.0
-    if value >= upper:
-        return 1.0
-    return (value - lower) / (upper - lower)
+    return (transformed - lower) / (upper - lower)
 
 
 def classify_pose(features: Mapping[str, float | int], rules: Mapping[str, Any], baseline: str) -> tuple[str, float, dict[str, float]]:
@@ -813,7 +848,7 @@ def score_pose_rows(
             "canonical_internal_channel_agreement": True,
             "H_hotspot_weight_fraction": float(features["H"]),
             "O_total_occluding_residue_pair_count_raw": int(features["O_raw"]),
-            "O_log1p_total_occluding_residue_pair_count": float(features["O"]),
+            "O_log1p_total_occluding_residue_pair_count": float(features["O_log1p"]),
             "P_cdr_residue_pair_fraction": float(features["P"]),
             "P_cdr_residue_pair_count": int(features["P_numerator"]),
             "mu_H": memberships["H"],
@@ -1139,7 +1174,10 @@ def hierarchical_bootstrap_rows(
         )
         for baseline, metric, metric_values in channels:
             threshold = threshold_from_weighted_values(
-                metric_values, LOWER_QUANTILE, UPPER_QUANTILE
+                metric_values,
+                LOWER_QUANTILE,
+                UPPER_QUANTILE,
+                metric=metric,
             )
             for cutpoint in ("L", "U"):
                 record: dict[str, Any] = {
