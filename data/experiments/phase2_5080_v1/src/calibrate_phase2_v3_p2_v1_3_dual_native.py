@@ -141,6 +141,16 @@ DEFAULT_PROCESSOR_TEST = (
         "test_process_phase2_v3_p2_v1_3_native_top8.py"
     )
 )
+DEFAULT_PROCESSOR_QUALIFICATION_VALIDATOR = (
+    Path(__file__).resolve().with_name(
+        "validate_phase2_v3_p2_v1_3_native_processor_release.py"
+    )
+)
+DEFAULT_PROCESSOR_QUALIFICATION_TEST = (
+    Path(__file__).resolve().with_name(
+        "test_validate_phase2_v3_p2_v1_3_native_processor_release.py"
+    )
+)
 DEFAULT_PREREGISTRATION = (
     WORKSPACE_ROOT
     / "experiments/phase2_5080_v1/audits/"
@@ -1365,6 +1375,7 @@ def validate_processor_qualification(
         "docking_gold_release_eligible": False,
         "training_label_release_eligible": False,
         "p2_training_ready": False,
+        "native_only": True,
     }
     failures = [
         field for field, expected in expected_scalars.items()
@@ -1390,6 +1401,8 @@ def validate_processor_qualification(
         "reference_sha256": dict(REFERENCE_SHA256),
         "processor_sha256": sha256_file(DEFAULT_PROCESSOR_IMPLEMENTATION),
         "processor_test_sha256": sha256_file(DEFAULT_PROCESSOR_TEST),
+        "validator_sha256": sha256_file(DEFAULT_PROCESSOR_QUALIFICATION_VALIDATOR),
+        "validator_test_sha256": sha256_file(DEFAULT_PROCESSOR_QUALIFICATION_TEST),
     }
     for field, expected in expected_qualified.items():
         if not isinstance(qualified, dict) or qualified.get(field) != expected:
@@ -1399,17 +1412,37 @@ def validate_processor_qualification(
         "independent_publication_count": 2,
         "full_inventory_equal": True,
         "core_output_hashes_equal": True,
+        "content_addressed_release_id_equal": True,
     }
     for field, expected in expected_determinism.items():
         if not isinstance(determinism, dict) or determinism.get(field) != expected:
             failures.append(f"determinism.{field}")
     publication = payload.get("publication", {})
+    source_releases = payload.get("source_pending_releases", {})
+    primary_source = source_releases.get("primary", {}) if isinstance(source_releases, dict) else {}
+    rebuild_source = source_releases.get("rebuild", {}) if isinstance(source_releases, dict) else {}
+    if (
+        not isinstance(primary_source, dict)
+        or not isinstance(rebuild_source, dict)
+        or not primary_source.get("audit_path")
+        or not rebuild_source.get("audit_path")
+        or primary_source.get("audit_path") == rebuild_source.get("audit_path")
+        or primary_source.get("audit_sha256")
+        != determinism.get("primary_processor_audit_sha256")
+        or rebuild_source.get("audit_sha256")
+        != determinism.get("rebuild_processor_audit_sha256")
+        or primary_source.get("release_id") != rebuild_source.get("release_id")
+        or primary_source.get("release_id") != determinism.get("release_id")
+    ):
+        failures.append("source_pending_releases")
     if (
         not isinstance(publication, dict)
         or not str(publication.get("release_id", "")).strip()
         or publication.get("immutable_versioned_release") is not True
-        or publication.get("promotion") != "single atomic current symlink replacement"
-        or publication.get("rollback_safe") is not True
+        or publication.get("atomic_current_symlink_replacement") is not True
+        or publication.get("current_pointer_relpath") != "current"
+        or publication.get("release_relpath")
+        != f"releases/{publication.get('release_id', '')}"
     ):
         failures.append("publication")
     if failures:

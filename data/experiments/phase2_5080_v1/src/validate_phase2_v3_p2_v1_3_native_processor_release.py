@@ -310,6 +310,26 @@ def qualify(config: QualificationConfig) -> dict[str, Any]:
         },
     }
     hashes = {name: sha256_file(path) for name, path in paths.items()}
+    execution_payload = read_json(paths["execution_release"], "execution release")
+    if (
+        execution_payload.get("schema_version")
+        != "phase2_v3_p2_v1_3_docking_execution_release_v1"
+        or execution_payload.get("status")
+        != "FROZEN_V1_3_DOCKING_EXECUTION_RELEASE"
+    ):
+        raise QualificationError("Frozen execution-release status/schema mismatch")
+    artifacts = execution_payload.get("artifacts")
+    if not isinstance(artifacts, list):
+        raise QualificationError("Execution release lacks artifact ledger")
+    execution_ledger = {
+        str(item.get("path", "")): str(item.get("sha256", ""))
+        for item in artifacts
+        if isinstance(item, dict)
+    }
+    for name in ("preregistration", "case_manifest", "run_manifest", "protocol_manifest"):
+        relpath = processor.canonical_input_path(paths[name], DATA_ROOT)
+        if execution_ledger.get(relpath) != hashes[name]:
+            raise QualificationError(f"Execution release does not bind {name}")
     audit = primary["audit"]
     for field in (
         "selector_csv",

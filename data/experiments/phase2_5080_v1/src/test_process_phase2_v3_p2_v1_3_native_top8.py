@@ -98,10 +98,18 @@ class NativeFixture:
         self.preregistration = root / "inputs/preregistration.json"
         self.selector_impl = root / "tools/selector.py"
         self.selector_helper = root / "tools/helper.py"
-        self.selector_csv = root / "inputs/selector.csv"
-        self.selector_audit = root / "inputs/selector_audit.json"
-        self.release_manifest = root / "inputs/absent_release.json"
+        self.selector_release_id = "V13_SYNTHETIC_RELEASE_001"
+        self.selector_publication_root = root / "selector_publication"
+        self.selector_release_dir = (
+            self.selector_publication_root / "releases" / self.selector_release_id
+        )
+        self.selector_csv = self.selector_release_dir / "selector.csv"
+        self.selector_audit = self.selector_release_dir / "selector_audit.json"
         self.execution_release_manifest = root / "inputs/execution_release.json"
+        self.case_manifest = root / "inputs/case_manifest.csv"
+        self.run_manifest = root / "inputs/run_manifest.csv"
+        self.protocol_manifest = root / "inputs/protocol_manifest.csv"
+        self.identity_amendment = self.selector_release_dir / "identity_amendment.json"
         self.hotspots = root / "inputs/hotspots.csv"
         self.reconciliation = root / "inputs/reconciliation.csv"
         self.references = {
@@ -114,10 +122,6 @@ class NativeFixture:
         self._write_preregistration()
         self._write_hotspots_and_reconciliation()
         self._write_references()
-        MOD.write_json(
-            self.execution_release_manifest,
-            {"status": "FROZEN_SYNTHETIC_EXECUTION_RELEASE"},
-        )
         self._write_selector_and_audit()
 
     def _write_manifests(self) -> None:

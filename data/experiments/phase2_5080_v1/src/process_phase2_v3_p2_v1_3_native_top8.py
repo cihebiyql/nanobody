@@ -886,9 +886,7 @@ def validate_row_provenance(
         file_bindings,
     )
     if (
-        amendment_path
-        != selector_contract.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.resolve()
-        or row["identity_normalization_amendment_sha256"]
+        row["identity_normalization_amendment_sha256"]
         != selector_contract.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
     ):
         raise ContractError("Identity-normalization amendment binding mismatch")

@@ -58,6 +58,7 @@ class V13SyntheticFixture:
                 "docking_gold_release_eligible": False,
                 "training_label_release_eligible": False,
                 "p2_training_ready": False,
+                "native_only": True,
                 "qualified_input": {
                     "processor_audit_sha256": calibration.sha256_file(
                         self.processor_audit
@@ -89,17 +90,44 @@ class V13SyntheticFixture:
                     "processor_test_sha256": calibration.sha256_file(
                         calibration.DEFAULT_PROCESSOR_TEST
                     ),
+                    "validator_sha256": calibration.sha256_file(
+                        calibration.DEFAULT_PROCESSOR_QUALIFICATION_VALIDATOR
+                    ),
+                    "validator_test_sha256": calibration.sha256_file(
+                        calibration.DEFAULT_PROCESSOR_QUALIFICATION_TEST
+                    ),
                 },
                 "determinism": {
                     "independent_publication_count": 2,
                     "full_inventory_equal": True,
                     "core_output_hashes_equal": True,
+                    "content_addressed_release_id_equal": True,
+                    "release_id": "synthetic-pending-release",
+                    "primary_inventory_sha256": "1" * 64,
+                    "rebuild_inventory_sha256": "1" * 64,
+                    "primary_processor_audit_sha256": calibration.sha256_file(
+                        self.processor_audit
+                    ),
+                    "rebuild_processor_audit_sha256": "2" * 64,
+                },
+                "source_pending_releases": {
+                    "primary": {
+                        "audit_path": "synthetic/primary/audit.json",
+                        "audit_sha256": calibration.sha256_file(self.processor_audit),
+                        "release_id": "synthetic-pending-release",
+                    },
+                    "rebuild": {
+                        "audit_path": "synthetic/rebuild/audit.json",
+                        "audit_sha256": "2" * 64,
+                        "release_id": "synthetic-pending-release",
+                    },
                 },
                 "publication": {
                     "release_id": "synthetic-qualification-release",
+                    "release_relpath": "releases/synthetic-qualification-release",
+                    "current_pointer_relpath": "current",
                     "immutable_versioned_release": True,
-                    "promotion": "single atomic current symlink replacement",
-                    "rollback_safe": True,
+                    "atomic_current_symlink_replacement": True,
                 },
             },
         )
