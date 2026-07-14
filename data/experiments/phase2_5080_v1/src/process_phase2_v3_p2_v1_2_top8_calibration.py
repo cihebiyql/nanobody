@@ -1519,13 +1519,7 @@ def validate_toolchain(config: BuildConfig) -> dict[str, dict[str, str]]:
         "pose_scorer": config.pose_scorer.resolve(),
         "region_scorer": config.region_scorer.resolve(),
         "scoring_helper": config.scoring_helper.resolve(),
-        "processor": Path(__file__).resolve(),
-        "processor_test": DEFAULT_PROCESSOR_TEST.resolve(),
     }
-    if config.processor_release_manifest.is_file():
-        required_inputs["processor_release_manifest"] = (
-            config.processor_release_manifest.resolve()
-        )
     for name, expected_name in expected_names.items():
         if paths[name].name != expected_name:
             raise ContractError(
@@ -2624,7 +2618,13 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         "pose_scorer": config.pose_scorer.resolve(),
         "region_scorer": config.region_scorer.resolve(),
         "scoring_helper": config.scoring_helper.resolve(),
+        "processor": Path(__file__).resolve(),
+        "processor_test": DEFAULT_PROCESSOR_TEST.resolve(),
     }
+    if config.processor_release_manifest.is_file():
+        required_inputs["processor_release_manifest"] = (
+            config.processor_release_manifest.resolve()
+        )
     file_bindings = dict(selector_bindings)
     for path in required_inputs.values():
         file_bindings[str(path)] = sha256_file(path)

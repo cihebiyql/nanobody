@@ -1,0 +1,67 @@
+{
+  "canonical_anchors": {
+    "aligner": {
+      "path": "docking/scripts/align_pdb_by_chain.py",
+      "sha256": "e6b863979db5a1ac6702ae7f04da49d3d425069a070fc441221341a202a9d7f7"
+    },
+    "hotspots": {
+      "path": "data/structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    "mutant_manifest": {
+      "path": "docking/calibration/mutant_validation_panel/mutant_panel.csv",
+      "sha256": "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248"
+    },
+    "pose_scorer": {
+      "path": "docking/scripts/score_pvrig_vhh_pose_v1_2.py",
+      "sha256": "7fcb7bb8864d171995dd00a16c804bfa82cd731278558ec8a46b40b547467875"
+    },
+    "positive_manifest": {
+      "path": "docking/calibration/patent_success_validation/batch_manifest.csv",
+      "sha256": "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8"
+    },
+    "reconciliation": {
+      "path": "data/structures/PVRIG_numbering_reconciliation.csv",
+      "sha256": "d7decf3be4a19dd9da2a42d9c8825a0b5d95ca350aea553b0933ad5c30c3c552"
+    },
+    "reference_8x6b": {
+      "path": "data/structures/8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    "reference_9e6y": {
+      "path": "data/structures/9E6Y.pdb",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    "region_scorer": {
+      "path": "docking/scripts/score_cdr_region_occlusion_v1_2.py",
+      "sha256": "b60e333c9417693b058357ce45fe99cf4ca641f78e0607028b5475d10025939a"
+    },
+    "scoring_helper": {
+      "path": "docking/scripts/pvrig_scoring_semantics_v1_2.py",
+      "sha256": "afcddd97b0070768b28f54ffbfb0959e71929f962cca89985cb3abb70abe0d9c"
+    },
+    "selector_audit": {
+      "path": "data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_calibration_emref_top8_selection_audit.json",
+      "sha256": "ad925357a30a6cf37bdf13fc23b512db08d3917761ebd4b0462ac2244f57aa40"
+    },
+    "selector_csv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v3_p2/v1_2_calibration_emref_top8_manifest.csv",
+      "sha256": "f42ada6cd3fb1ddf754154b6fb076da8c651ecaab2ff28ae58d1806d9a6de70b"
+    },
+    "selector_implementation": {
+      "path": "data/experiments/phase2_5080_v1/src/select_phase2_v3_p2_v1_2_emref_top8.py",
+      "sha256": "91455d5135e35ee206c3a416c24a11b762774d691610819412f17cc8514ac4eb"
+    }
+  },
+  "processor": {
+    "path": "data/experiments/phase2_5080_v1/src/process_phase2_v3_p2_v1_2_top8_calibration.py",
+    "sha256": "3787ba2df55244d0d3d6738c0766cd9547869657965e9a94be9c02c5548992a4"
+  },
+  "processor_test": {
+    "path": "data/experiments/phase2_5080_v1/src/test_process_phase2_v3_p2_v1_2_top8_calibration.py",
+    "sha256": "5b3c82f937560b8cfc94043fd8346856db56739adebb874b701e5f7cbcb60d56"
+  },
+  "protocol_id": "DG_A_PVRIG_V1_2_DEV",
+  "schema_version": "pvrig_v1_2_top8_processor_release_manifest_v1",
+  "status": "FROZEN_V1_2_TOP8_PROCESSOR_RELEASE"
+}

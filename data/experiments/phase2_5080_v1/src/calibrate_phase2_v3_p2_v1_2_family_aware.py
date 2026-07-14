@@ -653,7 +653,7 @@ def anchor_metric_values(
     return output
 
 
-def threshold_from_weighted_values(
+def threshold_fit_diagnostic(
     values: Sequence[tuple[float, float]],
     lower_quantile: float,
     upper_quantile: float,
@@ -663,20 +663,39 @@ def threshold_from_weighted_values(
     total_weight = sum(weight for _, weight in values)
     positive = [(value, weight) for value, weight in values if value > 0.0 and weight > 0.0]
     positive_weight = sum(weight for _, weight in positive)
+    transform = "log1p" if metric == "O" else "identity"
+    raw_unit = "residue_pair_count" if metric == "O" else "unitless_fraction"
     if total_weight <= 0.0 or positive_weight <= 0.0:
-        raise CalibrationError("A threshold metric has no positive anchor support")
+        return {
+            "L": None,
+            "U": None,
+            "L_raw": None,
+            "U_raw": None,
+            "L_transformed": None,
+            "U_transformed": None,
+            "raw_unit": raw_unit,
+            "transform": transform,
+            "lower_quantile": lower_quantile,
+            "upper_quantile": upper_quantile,
+            "positive_part_only": True,
+            "zero_hurdle": 0.0,
+            "positive_support_count": 0,
+            "positive_weight": 0.0,
+            "zero_weight": 1.0,
+            "defined": False,
+            "failure_reason": "no_positive_anchor_support",
+        }
     lower = weighted_quantile(positive, lower_quantile)
     upper = weighted_quantile(positive, upper_quantile)
-    if (
-        not math.isfinite(lower)
-        or not math.isfinite(upper)
-        or lower <= 0.0
-        or upper <= lower
-    ):
-        raise CalibrationError(f"Invalid threshold interval L={lower}, U={upper}")
-    transform = "log1p" if metric == "O" else "identity"
     lower_transformed = math.log1p(lower) if metric == "O" else lower
     upper_transformed = math.log1p(upper) if metric == "O" else upper
+    failure_reason = ""
+    if not math.isfinite(lower) or not math.isfinite(upper):
+        failure_reason = "non_finite_cutpoint"
+    elif lower <= 0.0:
+        failure_reason = "non_positive_lower_cutpoint"
+    elif upper <= lower:
+        failure_reason = "upper_cutpoint_not_strictly_greater_than_lower"
     return {
         "L": lower,
         "U": upper,
@@ -684,7 +703,7 @@ def threshold_from_weighted_values(
         "U_raw": upper,
         "L_transformed": lower_transformed,
         "U_transformed": upper_transformed,
-        "raw_unit": "residue_pair_count" if metric == "O" else "unitless_fraction",
+        "raw_unit": raw_unit,
         "transform": transform,
         "lower_quantile": lower_quantile,
         "upper_quantile": upper_quantile,
@@ -693,9 +712,27 @@ def threshold_from_weighted_values(
         "positive_support_count": len(positive),
         "positive_weight": positive_weight / total_weight,
         "zero_weight": 1.0 - (positive_weight / total_weight),
-        "defined": True,
-        "failure_reason": "",
+        "defined": not failure_reason,
+        "failure_reason": failure_reason,
     }
+
+
+def threshold_from_weighted_values(
+    values: Sequence[tuple[float, float]],
+    lower_quantile: float,
+    upper_quantile: float,
+    *,
+    metric: str,
+) -> dict[str, Any]:
+    result = threshold_fit_diagnostic(
+        values, lower_quantile, upper_quantile, metric=metric
+    )
+    if not result["defined"]:
+        raise CalibrationError(
+            f"Invalid {metric} threshold fit: {result['failure_reason']} "
+            f"(L={result['L_raw']}, U={result['U_raw']})"
+        )
+    return result
 
 
 def derive_rules(
@@ -901,6 +938,15 @@ RUN_SCORE_FIELDS = (
     "run_relevance",
     "qualifying_support_weight",
     "qualifying_supporting_pose_count",
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "baseline_gap_rank_weighted_mean",
     "support_weight_at_or_above_4",
     "support_count_at_or_above_4",
     "support_weight_at_or_above_3",
@@ -952,15 +998,23 @@ def aggregate_run_scores(
             classes = [row["pose_class"] for row in baseline_rows]
             relevance, pair_class = pair_relevance(classes)
             mean_score = sum(float(row["S_pose_baseline"]) for row in baseline_rows) / 2.0
+            baseline_gap = abs(
+                float(baseline_rows[0]["S_pose_baseline"])
+                - float(baseline_rows[1]["S_pose_baseline"])
+            )
             rank_records.append(
                 {
                     "rank": rank,
                     "relevance": relevance,
                     "pair_class": pair_class,
                     "mean_score": mean_score,
+                    "baseline_gap": baseline_gap,
                 }
             )
         run_score = sum(q_rank[item["rank"]] * item["mean_score"] for item in rank_records)
+        baseline_gap_mean = sum(
+            q_rank[item["rank"]] * item["baseline_gap"] for item in rank_records
+        )
         supports: dict[int, tuple[float, int]] = {}
         for relevance in (4, 3, 2, 1):
             supporting = [item for item in rank_records if item["relevance"] >= relevance]
@@ -996,6 +1050,15 @@ def aggregate_run_scores(
             "run_relevance": selected_relevance,
             "qualifying_support_weight": qualifying_weight,
             "qualifying_supporting_pose_count": qualifying_count,
+            "F1": supports[1][0],
+            "F2": supports[2][0],
+            "F3": supports[3][0],
+            "F4": supports[4][0],
+            "N1": supports[1][1],
+            "N2": supports[2][1],
+            "N3": supports[3][1],
+            "N4": supports[4][1],
+            "baseline_gap_rank_weighted_mean": baseline_gap_mean,
             "support_weight_at_or_above_4": supports[4][0],
             "support_count_at_or_above_4": supports[4][1],
             "support_weight_at_or_above_3": supports[3][0],
@@ -1032,10 +1095,15 @@ LOFO_FIELDS = (
     "held_out_candidate_id",
     "training_family_count",
     "training_case_count",
+    "fold_defined",
+    "failure_reason",
     "lofo_rules_sha256",
     "R_calibration_run_8x6b_dock",
-    "run_tier",
-    "run_relevance",
+    "all_family_tier",
+    "held_out_fit_tier",
+    "held_out_fit_relevance",
+    "absolute_tier_shift",
+    "held_out_G1_G3_retained",
     "qualifying_support_weight",
     "qualifying_supporting_pose_count",
     "formal_eligible",
@@ -1047,9 +1115,18 @@ LOFO_FIELDS = (
 def build_lofo_rows(
     rows: Sequence[Mapping[str, str]],
     positive_cases: Mapping[str, Mapping[str, str]],
+    all_family_run_rows: Sequence[Mapping[str, str]],
     ranks_per_case: int,
 ) -> list[dict[str, str]]:
     families = sorted({record["family"] for record in positive_cases.values()})
+    all_tier = {
+        row["candidate_id"]: row["run_tier"]
+        for row in all_family_run_rows
+        if row["candidate_id"] in positive_cases
+    }
+    if set(all_tier) != set(positive_cases):
+        raise CalibrationError("All-family anchor tier closure failed before LOFO")
+    tier_strength = {"G1": 4, "G2": 3, "G3": 2, "G4": 1, "G5": 0}
     output: list[dict[str, str]] = []
     for held_out in families:
         train_cases = {
@@ -1062,25 +1139,57 @@ def build_lofo_rows(
             for case_id, record in positive_cases.items()
             if record["family"] == held_out
         }
-        lofo_rules = derive_rules(rows, train_cases, ranks_per_case)
-        lofo_rule_hash = sha256_json(lofo_rules)
-        held_out_rows = [row for row in rows if row["candidate_id"] in held_out_cases]
-        pose_scores = score_pose_rows(held_out_rows, lofo_rules)
-        run_scores = aggregate_run_scores(pose_scores, held_out_cases)
-        for run in run_scores:
+        fold_defined = True
+        failure_reason = ""
+        lofo_rule_hash = ""
+        run_by_case: dict[str, Mapping[str, str]] = {}
+        try:
+            lofo_rules = derive_rules(rows, train_cases, ranks_per_case)
+            lofo_rule_hash = sha256_json(lofo_rules)
+            held_out_rows = [
+                row for row in rows if row["candidate_id"] in held_out_cases
+            ]
+            pose_scores = score_pose_rows(held_out_rows, lofo_rules)
+            run_by_case = {
+                row["candidate_id"]: row
+                for row in aggregate_run_scores(pose_scores, held_out_cases)
+            }
+        except CalibrationError as error:
+            fold_defined = False
+            failure_reason = str(error)
+        for candidate_id in sorted(held_out_cases):
+            run = run_by_case.get(candidate_id)
+            candidate_defined = fold_defined and run is not None
+            held_tier = run["run_tier"] if candidate_defined else ""
+            shift = (
+                abs(tier_strength[held_tier] - tier_strength[all_tier[candidate_id]])
+                if candidate_defined
+                else None
+            )
             record: dict[str, Any] = {
                 "schema_version": SCHEMA_VERSION,
                 "method_id": METHOD_ID,
                 "held_out_family": held_out,
-                "held_out_candidate_id": run["candidate_id"],
+                "held_out_candidate_id": candidate_id,
                 "training_family_count": len(families) - 1,
                 "training_case_count": len(train_cases),
+                "fold_defined": candidate_defined,
+                "failure_reason": "" if candidate_defined else failure_reason,
                 "lofo_rules_sha256": lofo_rule_hash,
-                "R_calibration_run_8x6b_dock": run["R_calibration_run_8x6b_dock"],
-                "run_tier": run["run_tier"],
-                "run_relevance": run["run_relevance"],
-                "qualifying_support_weight": run["qualifying_support_weight"],
-                "qualifying_supporting_pose_count": run["qualifying_supporting_pose_count"],
+                "R_calibration_run_8x6b_dock": (
+                    run["R_calibration_run_8x6b_dock"] if candidate_defined else ""
+                ),
+                "all_family_tier": all_tier[candidate_id],
+                "held_out_fit_tier": held_tier,
+                "held_out_fit_relevance": run["run_relevance"] if candidate_defined else "",
+                "absolute_tier_shift": shift,
+                "held_out_G1_G3_retained": held_tier in {"G1", "G2", "G3"},
+                "qualifying_support_weight": (
+                    run["qualifying_support_weight"] if candidate_defined else ""
+                ),
+                "qualifying_supporting_pose_count": (
+                    run["qualifying_supporting_pose_count"] if candidate_defined else ""
+                ),
                 "formal_eligible": False,
                 "dual_receptor_r_gold_freeze_eligible": False,
             }
@@ -1089,9 +1198,69 @@ def build_lofo_rows(
                 for field in LOFO_FIELDS
                 if field != "lofo_row_sha256"
             }
-            normalized["lofo_row_sha256"] = row_sha256(normalized, "lofo_row_sha256")
+            normalized["lofo_row_sha256"] = row_sha256(
+                normalized, "lofo_row_sha256"
+            )
             output.append(normalized)
-    return sorted(output, key=lambda row: (row["held_out_family"], row["held_out_candidate_id"]))
+    return sorted(
+        output, key=lambda row: (row["held_out_family"], row["held_out_candidate_id"])
+    )
+
+
+def summarize_lofo(
+    rows: Sequence[Mapping[str, str]], positive_cases: Mapping[str, Mapping[str, str]]
+) -> dict[str, Any]:
+    by_family: dict[str, list[Mapping[str, str]]] = defaultdict(list)
+    for row in rows:
+        by_family[row["held_out_family"]].append(row)
+    expected_families = {record["family"] for record in positive_cases.values()}
+    fold_definition_gate = (
+        set(by_family) == expected_families
+        and all(row["fold_defined"] == "true" for row in rows)
+    )
+    family_summary: dict[str, Any] = {}
+    recalls: list[float] = []
+    for family in sorted(expected_families):
+        family_rows = by_family.get(family, [])
+        retained = sum(row["held_out_G1_G3_retained"] == "true" for row in family_rows)
+        recall = retained / len(family_rows) if family_rows else 0.0
+        recalls.append(recall)
+        family_summary[family] = {
+            "anchor_count": len(family_rows),
+            "G1_G3_retained_count": retained,
+            "G1_G3_recall": recall,
+            "at_least_one_G1_G3": retained >= 1,
+            "fold_defined": bool(family_rows) and all(
+                row["fold_defined"] == "true" for row in family_rows
+            ),
+        }
+    macro_recall = sum(recalls) / len(recalls) if recalls else 0.0
+    defined_shifts = [
+        int(row["absolute_tier_shift"])
+        for row in rows
+        if row["fold_defined"] == "true"
+    ]
+    shift_le_one_count = sum(shift <= 1 for shift in defined_shifts)
+    max_shift = max(defined_shifts) if defined_shifts else None
+    family_gate = all(item["at_least_one_G1_G3"] for item in family_summary.values())
+    macro_gate = macro_recall >= 0.80
+    shift_count_gate = len(defined_shifts) == 11 and shift_le_one_count >= 9
+    max_shift_gate = max_shift is not None and max_shift <= 2
+    return {
+        "fold_definition_gate_passed": fold_definition_gate,
+        "families": family_summary,
+        "each_family_at_least_one_G1_G3_gate_passed": family_gate,
+        "macro_family_G1_G3_recall": macro_recall,
+        "macro_family_recall_gate_passed": macro_gate,
+        "tier_shift_le_one_count": shift_le_one_count,
+        "tier_shift_le_one_required": 9,
+        "tier_shift_count_gate_passed": shift_count_gate,
+        "maximum_absolute_tier_shift": max_shift,
+        "maximum_shift_gate_passed": max_shift_gate,
+        "passed": all(
+            (fold_definition_gate, family_gate, macro_gate, shift_count_gate, max_shift_gate)
+        ),
+    }
 
 
 BOOTSTRAP_FIELDS = (
@@ -1099,12 +1268,45 @@ BOOTSTRAP_FIELDS = (
     "method_id",
     "bootstrap_seed",
     "bootstrap_replicate",
+    "replicate_defined",
     "baseline",
     "metric",
     "cutpoint",
-    "value",
+    "metric_defined",
+    "value_raw",
+    "value_transformed",
+    "raw_unit",
+    "transform",
+    "failure_reason",
     "formal_eligible",
     "bootstrap_row_sha256",
+)
+
+BOOTSTRAP_ANCHOR_FIELDS = (
+    "schema_version",
+    "method_id",
+    "bootstrap_seed",
+    "bootstrap_replicate",
+    "evaluation_defined",
+    "failure_reason",
+    "candidate_id",
+    "family",
+    "R_calibration_run_8x6b_dock",
+    "run_tier",
+    "run_relevance",
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "qualifying_support_weight",
+    "qualifying_supporting_pose_count",
+    "baseline_gap_rank_weighted_mean",
+    "formal_eligible",
+    "bootstrap_anchor_row_sha256",
 )
 
 
@@ -1115,14 +1317,18 @@ def hierarchical_bootstrap_rows(
     *,
     seed: int,
     replicates: int,
-) -> list[dict[str, str]]:
+) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     if replicates < 1:
         raise CalibrationError("Bootstrap replicate count must be positive")
     index = family_case_index(rows, positive_cases)
     families = sorted(index)
     q_rank = normalized_rank_weights(ranks_per_case)
     rng = random.Random(seed)
-    output: list[dict[str, str]] = []
+    threshold_output: list[dict[str, str]] = []
+    anchor_output: list[dict[str, str]] = []
+    original_anchor_rows = [row for row in rows if row["candidate_id"] in positive_cases]
+    ordered_anchor_ids = sorted(positive_cases)
+
     for replicate in range(1, replicates + 1):
         sampled_values: dict[str, Any] = {
             "H_canonical": [],
@@ -1166,29 +1372,44 @@ def hierarchical_bootstrap_rows(
                             sampled_values["baseline"][baseline][metric].append(
                                 (float(features[metric]), weight)
                             )
+
         channels = [(CANONICAL_H_CHANNEL, "H", sampled_values["H_canonical"])]
         channels.extend(
             (baseline, metric, sampled_values["baseline"][baseline][metric])
             for baseline in BASELINES
             for metric in BASELINE_METRICS
         )
+        fits: dict[tuple[str, str], dict[str, Any]] = {}
         for baseline, metric, metric_values in channels:
-            threshold = threshold_from_weighted_values(
-                metric_values,
-                LOWER_QUANTILE,
-                UPPER_QUANTILE,
-                metric=metric,
+            fits[(baseline, metric)] = threshold_fit_diagnostic(
+                metric_values, LOWER_QUANTILE, UPPER_QUANTILE, metric=metric
             )
+        replicate_defined = all(fit["defined"] for fit in fits.values())
+        replicate_failures = sorted(
+            f"{baseline}/{metric}:{fit['failure_reason']}"
+            for (baseline, metric), fit in fits.items()
+            if not fit["defined"]
+        )
+        replicate_failure = ";".join(replicate_failures)
+
+        for baseline, metric, _metric_values in channels:
+            fit = fits[(baseline, metric)]
             for cutpoint in ("L", "U"):
                 record: dict[str, Any] = {
                     "schema_version": SCHEMA_VERSION,
                     "method_id": METHOD_ID,
                     "bootstrap_seed": seed,
                     "bootstrap_replicate": replicate,
+                    "replicate_defined": replicate_defined,
                     "baseline": baseline,
                     "metric": metric,
                     "cutpoint": cutpoint,
-                    "value": threshold[cutpoint],
+                    "metric_defined": fit["defined"],
+                    "value_raw": fit[f"{cutpoint}_raw"],
+                    "value_transformed": fit[f"{cutpoint}_transformed"],
+                    "raw_unit": fit["raw_unit"],
+                    "transform": fit["transform"],
+                    "failure_reason": fit["failure_reason"],
                     "formal_eligible": False,
                 }
                 normalized = {
@@ -1199,33 +1420,191 @@ def hierarchical_bootstrap_rows(
                 normalized["bootstrap_row_sha256"] = row_sha256(
                     normalized, "bootstrap_row_sha256"
                 )
-                output.append(normalized)
-    return output
+                threshold_output.append(normalized)
 
+        runs_by_case: dict[str, Mapping[str, str]] = {}
+        if replicate_defined:
+            bootstrap_rules = {
+                "thresholds": {
+                    "H_canonical": fits[(CANONICAL_H_CHANNEL, "H")],
+                    "baseline": {
+                        baseline: {
+                            metric: fits[(baseline, metric)]
+                            for metric in BASELINE_METRICS
+                        }
+                        for baseline in BASELINES
+                    },
+                }
+            }
+            bootstrap_poses = score_pose_rows(original_anchor_rows, bootstrap_rules)
+            runs_by_case = {
+                row["candidate_id"]: row
+                for row in aggregate_run_scores(bootstrap_poses, positive_cases)
+            }
+        for candidate_id in ordered_anchor_ids:
+            run = runs_by_case.get(candidate_id)
+            record = {
+                "schema_version": SCHEMA_VERSION,
+                "method_id": METHOD_ID,
+                "bootstrap_seed": seed,
+                "bootstrap_replicate": replicate,
+                "evaluation_defined": run is not None,
+                "failure_reason": "" if run is not None else replicate_failure,
+                "candidate_id": candidate_id,
+                "family": positive_cases[candidate_id]["family"],
+                "R_calibration_run_8x6b_dock": (
+                    run["R_calibration_run_8x6b_dock"] if run is not None else ""
+                ),
+                "run_tier": run["run_tier"] if run is not None else "",
+                "run_relevance": run["run_relevance"] if run is not None else "",
+                **{
+                    field: run[field] if run is not None else ""
+                    for field in (
+                        "F1", "F2", "F3", "F4", "N1", "N2", "N3", "N4",
+                        "qualifying_support_weight",
+                        "qualifying_supporting_pose_count",
+                        "baseline_gap_rank_weighted_mean",
+                    )
+                },
+                "formal_eligible": False,
+            }
+            normalized = {
+                field: scalar_text(record.get(field), field)
+                for field in BOOTSTRAP_ANCHOR_FIELDS
+                if field != "bootstrap_anchor_row_sha256"
+            }
+            normalized["bootstrap_anchor_row_sha256"] = row_sha256(
+                normalized, "bootstrap_anchor_row_sha256"
+            )
+            anchor_output.append(normalized)
+    return threshold_output, anchor_output
 
 def summarize_bootstrap(rows: Sequence[Mapping[str, str]]) -> dict[str, Any]:
-    grouped: dict[tuple[str, str, str], list[float]] = defaultdict(list)
+    grouped_raw: dict[tuple[str, str, str], list[float]] = defaultdict(list)
+    grouped_transformed: dict[tuple[str, str, str], list[float]] = defaultdict(list)
+    replicate_ids: set[int] = set()
+    undefined_replicates: set[int] = set()
+    undefined_by_channel: Counter[str] = Counter()
     for row in rows:
-        grouped[(row["baseline"], row["metric"], row["cutpoint"])].append(
-            float(row["value"])
-        )
+        replicate = int(row["bootstrap_replicate"])
+        replicate_ids.add(replicate)
+        if row["replicate_defined"] != "true":
+            undefined_replicates.add(replicate)
+        key = (row["baseline"], row["metric"], row["cutpoint"])
+        if row["metric_defined"] == "true":
+            grouped_raw[key].append(float(row["value_raw"]))
+            grouped_transformed[key].append(float(row["value_transformed"]))
+        elif row["cutpoint"] == "L":
+            undefined_by_channel[f"{row['baseline']}/{row['metric']}"] += 1
     channels = {
         CANONICAL_H_CHANNEL: ("H",),
         **{baseline: BASELINE_METRICS for baseline in BASELINES},
     }
-    return {
-        baseline: {
-            metric: {
-                cutpoint: {
-                    "q025": ordinary_quantile(grouped[(baseline, metric, cutpoint)], 0.025),
-                    "median": ordinary_quantile(grouped[(baseline, metric, cutpoint)], 0.50),
-                    "q975": ordinary_quantile(grouped[(baseline, metric, cutpoint)], 0.975),
+    thresholds: dict[str, Any] = {}
+    for baseline, metrics in channels.items():
+        thresholds[baseline] = {}
+        for metric in metrics:
+            thresholds[baseline][metric] = {}
+            for cutpoint in ("L", "U"):
+                key = (baseline, metric, cutpoint)
+                raw_values = grouped_raw[key]
+                transformed_values = grouped_transformed[key]
+                thresholds[baseline][metric][cutpoint] = {
+                    "defined_replicates": len(raw_values),
+                    "undefined_replicates": len(replicate_ids) - len(raw_values),
+                    "raw_q025": ordinary_quantile(raw_values, 0.025) if raw_values else None,
+                    "raw_median": ordinary_quantile(raw_values, 0.50) if raw_values else None,
+                    "raw_q975": ordinary_quantile(raw_values, 0.975) if raw_values else None,
+                    "transformed_q025": ordinary_quantile(transformed_values, 0.025) if transformed_values else None,
+                    "transformed_median": ordinary_quantile(transformed_values, 0.50) if transformed_values else None,
+                    "transformed_q975": ordinary_quantile(transformed_values, 0.975) if transformed_values else None,
                 }
-                for cutpoint in ("L", "U")
-            }
-            for metric in metrics
+    return {
+        "replicate_count": len(replicate_ids),
+        "undefined_replicate_count": len(undefined_replicates),
+        "undefined_replicate_fraction": (
+            len(undefined_replicates) / len(replicate_ids) if replicate_ids else 1.0
+        ),
+        "undefined_by_channel": dict(sorted(undefined_by_channel.items())),
+        "thresholds": thresholds,
+    }
+
+
+def summarize_bootstrap_anchors(
+    rows: Sequence[Mapping[str, str]],
+    positive_cases: Mapping[str, Mapping[str, str]],
+    replicates: int,
+) -> dict[str, Any]:
+    by_case: dict[str, list[Mapping[str, str]]] = defaultdict(list)
+    for row in rows:
+        by_case[row["candidate_id"]].append(row)
+    if set(by_case) != set(positive_cases):
+        raise CalibrationError("Bootstrap anchor-evaluation candidate closure failed")
+    anchor_summary: dict[str, Any] = {}
+    modal_pass_count = 0
+    family_retention: dict[str, list[float]] = defaultdict(list)
+    for candidate_id in sorted(positive_cases):
+        candidate_rows = by_case[candidate_id]
+        if len(candidate_rows) != replicates:
+            raise CalibrationError(
+                f"Bootstrap anchor rows for {candidate_id}: {len(candidate_rows)} != {replicates}"
+            )
+        defined = [row for row in candidate_rows if row["evaluation_defined"] == "true"]
+        tiers = Counter(row["run_tier"] for row in defined)
+        modal_tier = max(
+            ("G1", "G2", "G3", "G4", "G5"),
+            key=lambda tier: (tiers[tier], -int(tier[1:])),
+        )
+        modal_probability = tiers[modal_tier] / replicates
+        retention_probability = sum(
+            tiers[tier] for tier in ("G1", "G2", "G3")
+        ) / replicates
+        modal_pass = modal_probability >= 0.70
+        modal_pass_count += int(modal_pass)
+        family = positive_cases[candidate_id]["family"]
+        family_retention[family].append(retention_probability)
+        scores = [float(row["R_calibration_run_8x6b_dock"]) for row in defined]
+        gaps = [float(row["baseline_gap_rank_weighted_mean"]) for row in defined]
+        supports = [float(row["qualifying_support_weight"]) for row in defined]
+        anchor_summary[candidate_id] = {
+            "family": family,
+            "defined_replicates": len(defined),
+            "undefined_replicates": replicates - len(defined),
+            "tier_counts": {tier: tiers[tier] for tier in ("G1", "G2", "G3", "G4", "G5")},
+            "tier_probabilities": {
+                tier: tiers[tier] / replicates for tier in ("G1", "G2", "G3", "G4", "G5")
+            },
+            "modal_tier": modal_tier,
+            "modal_tier_probability": modal_probability,
+            "modal_probability_gate_passed": modal_pass,
+            "g1_g3_retention_probability": retention_probability,
+            "R_q025": ordinary_quantile(scores, 0.025) if scores else None,
+            "R_median": ordinary_quantile(scores, 0.50) if scores else None,
+            "R_q975": ordinary_quantile(scores, 0.975) if scores else None,
+            "baseline_gap_median": ordinary_quantile(gaps, 0.50) if gaps else None,
+            "qualifying_support_median": ordinary_quantile(supports, 0.50) if supports else None,
         }
-        for baseline, metrics in channels.items()
+    family_summary = {
+        family: {
+            "best_anchor_retention_probability": max(values),
+            "at_least_one_anchor_retention_ge_0_70": max(values) >= 0.70,
+        }
+        for family, values in sorted(family_retention.items())
+    }
+    modal_gate = modal_pass_count >= 9
+    family_gate = all(
+        item["at_least_one_anchor_retention_ge_0_70"]
+        for item in family_summary.values()
+    )
+    return {
+        "replicates": replicates,
+        "anchors": anchor_summary,
+        "families": family_summary,
+        "anchors_modal_probability_ge_0_70_count": modal_pass_count,
+        "anchors_modal_probability_gate_required": 9,
+        "modal_probability_gate_passed": modal_gate,
+        "family_retention_gate_passed": family_gate,
+        "passed": modal_gate and family_gate,
     }
 
 

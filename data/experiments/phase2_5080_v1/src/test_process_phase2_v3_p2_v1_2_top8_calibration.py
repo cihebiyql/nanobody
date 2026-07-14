@@ -99,12 +99,17 @@ class CalibrationFixture:
         self.reconciliation = root / "inputs/reconciliation.csv"
         self.reference_8x6b = root / "references/8X6B.pdb"
         self.reference_9e6y = root / "references/9E6Y.pdb"
+        self.processor_release_manifest = root / "inputs/processor_release.json"
         self.source_io = root / "poses/4_emref/io.json"
         self.source_poses: list[Path] = []
         self._write_case_manifests()
         self._write_hotspots_and_reconciliation()
         self._write_references()
         self._write_selector()
+        MOD.write_json(
+            self.processor_release_manifest,
+            MOD.current_processor_release_manifest_payload(),
+        )
 
     def _write_case_manifests(self) -> None:
         positive_fields = [
@@ -423,6 +428,7 @@ class CalibrationFixture:
             scoring_helper=MOD.DEFAULT_SCORING_HELPER,
             hotspots=self.hotspots,
             reconciliation=self.reconciliation,
+            processor_release_manifest=self.processor_release_manifest,
             references={
                 "8x6b": self.reference_8x6b,
                 "9e6y": self.reference_9e6y,
@@ -489,6 +495,14 @@ class V12Top8CalibrationTests(unittest.TestCase):
             self.assertFalse(audit_first["threshold_freeze_eligible"])
             self.assertFalse(audit_first["pose_rule_threshold_freeze_eligible"])
             self.assertFalse(audit_first["dual_receptor_r_gold_freeze_eligible"])
+            release_check = audit_first["processor_release_manifest_check"]
+            self.assertTrue(release_check["exists"])
+            self.assertTrue(release_check["content_validated"])
+            self.assertFalse(release_check["canonical_path_match"])
+            self.assertEqual(
+                audit_first["input_sha256"]["processor_release_manifest"],
+                MOD.sha256_file(fixture.processor_release_manifest),
+            )
             contact_records = [json.loads(line) for line in contacts]
             for record in contact_records:
                 self.assertFalse(record["threshold_freeze_eligible"])
