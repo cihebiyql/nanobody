@@ -1323,6 +1323,36 @@ def validate_selected_pose_invariants(
     return coordinate_hashes, selected_seeds, seed_start, seed_end
 
 
+def publication_release_id(
+    *,
+    execution_release_sha256: str,
+    run_manifest_sha256: str,
+    reuse_manifest_sha256: str,
+    selector_sha256: str,
+    selector_helper_sha256: str,
+) -> str:
+    binding = {
+        "execution_release_sha256": execution_release_sha256,
+        "run_manifest_sha256": run_manifest_sha256,
+        "reuse_manifest_sha256": reuse_manifest_sha256,
+        "selector_sha256": selector_sha256,
+        "selector_helper_sha256": selector_helper_sha256,
+        "identity_normalization_amendment_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
+        ),
+        "identity_normalization_amendment_validator_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_VALIDATOR_SHA256
+        ),
+        "identity_normalization_amendment_v2_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256
+        ),
+        "identity_normalization_amendment_v2_validator_sha256": (
+            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256
+        ),
+    }
+    return "v1_3_" + sha256_bytes(canonical_json(binding).encode("utf-8"))[:24]
+
+
 def build(
     run_manifest_path: Path = DEFAULT_RUN_MANIFEST,
     reuse_manifest_path: Path = DEFAULT_REUSE_MANIFEST,
@@ -1414,25 +1444,13 @@ def build(
     script_sha = sha256_file(script_path)
     helper_path = Path(recovery_base.__file__).resolve()
     helper_sha = sha256_file(helper_path)
-    release_id = "v1_3_" + sha256_bytes(canonical_json({
-        "execution_release_sha256": release.sha256,
-        "run_manifest_sha256": runs.sha256,
-        "reuse_manifest_sha256": reuse.sha256,
-        "selector_sha256": script_sha,
-        "selector_helper_sha256": helper_sha,
-        "identity_normalization_amendment_sha256": (
-            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
-        ),
-        "identity_normalization_amendment_validator_sha256": (
-            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_VALIDATOR_SHA256
-        ),
-        "identity_normalization_amendment_v2_sha256": (
-            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256
-        ),
-        "identity_normalization_amendment_v2_validator_sha256": (
-            FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256
-        ),
-    }).encode("utf-8"))[:24]
+    release_id = publication_release_id(
+        execution_release_sha256=release.sha256,
+        run_manifest_sha256=runs.sha256,
+        reuse_manifest_sha256=reuse.sha256,
+        selector_sha256=script_sha,
+        selector_helper_sha256=helper_sha,
+    )
     release_dir = outdir / "releases" / release_id
     outdir.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=f".{release_id}.staging.", dir=outdir))

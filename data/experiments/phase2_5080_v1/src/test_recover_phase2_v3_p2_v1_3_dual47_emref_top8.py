@@ -32,6 +32,30 @@ def atom_line(serial: int, chain: str, residue: int, x: float) -> str:
     )
 
 
+def hetatm_line(
+    serial: int,
+    chain: str,
+    residue: int,
+    atom_name: str = "ZN",
+    resname: str = "ZN",
+    element: str = "ZN",
+) -> str:
+    return (
+        f"HETATM{serial:5d} {atom_name:^4} {resname:>3} {chain}{residue:4d}    "
+        f"{0.0:8.3f}{0.0:8.3f}{0.0:8.3f}  1.00 20.00          {element:>2}  "
+    )
+
+
+def with_pdb_record(coordinates: bytes, record: str) -> bytes:
+    lines = coordinates.decode("ascii").splitlines()
+    lines.insert(lines.index("END"), record)
+    return ("\n".join(lines) + "\n").encode("ascii")
+
+
+def inject_pdb_record(path: Path, record: str) -> None:
+    path.write_bytes(with_pdb_record(path.read_bytes(), record))
+
+
 def pdb_bytes(chains: str, offset: float = 0.0) -> bytes:
     lines = [atom_line(index, chain, 1, offset + index) for index, chain in enumerate(chains, 1)]
     return ("\n".join(lines + ["END"]) + "\n").encode("ascii")
@@ -571,17 +595,109 @@ class V13Dual47RecoveryTests(unittest.TestCase):
             self.assertEqual(first[0]["vhh_normalized_atom_identity_exact"], "true")
             self.assertEqual(first[0]["pvrig_raw_atom_identity_exact"], "true")
             self.assertEqual(
+                first[0]["schema_version"],
+                "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v2",
+            )
+            self.assertEqual(
                 first[0]["identity_normalization_amendment_sha256"],
                 MOD.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256,
+            )
+            self.assertEqual(
+                {row["identity_normalization_amendment_v2_sha256"] for row in rows},
+                {MOD.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256},
+            )
+            self.assertEqual(
+                {
+                    row["identity_normalization_amendment_v2_validator_sha256"]
+                    for row in rows
+                },
+                {MOD.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256},
+            )
+            for field in (
+                "monomer_vhh_heavy_hetatm_identity_count",
+                "pose_vhh_heavy_hetatm_identity_count",
+                "receptor_pvrig_heavy_hetatm_identity_count",
+                "pose_pvrig_heavy_hetatm_identity_count",
+            ):
+                self.assertEqual({row[field] for row in rows}, {"0"})
+            for field in (
+                "monomer_vhh_heavy_hetatm_zero_gate_pass",
+                "pose_vhh_heavy_hetatm_zero_gate_pass",
+                "receptor_pvrig_heavy_hetatm_zero_gate_pass",
+                "pose_pvrig_heavy_hetatm_zero_gate_pass",
+                "heavy_hetatm_zero_gate_pass",
+            ):
+                self.assertEqual({row[field] for row in rows}, {"true"})
+            self.assertEqual(
+                {row["heavy_hetatm_zero_gate_rule_id"] for row in rows},
+                {"CHAIN_A_B_ZERO_HEAVY_HETATM_V1"},
             )
             self.assertEqual(
                 first[0]["receptor_residue_identity_sha256"],
                 first[0]["pose_pvrig_residue_identity_sha256"],
             )
+            self.assertEqual(
+                audit["schema_version"],
+                "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
+            )
+            self.assertEqual(
+                audit["inputs"]["atom_hetatm_identity_amendment_v2"]["sha256"],
+                MOD.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256,
+            )
+            self.assertEqual(
+                audit["inputs"]["atom_hetatm_identity_amendment_v2"][
+                    "validator_sha256"
+                ],
+                MOD.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256,
+            )
+            identity_summary = audit["identity_gate_summary"]
+            self.assertEqual(
+                identity_summary["monomer_vhh_heavy_hetatm_identity_count_total"], 0
+            )
+            self.assertEqual(
+                identity_summary["receptor_pvrig_heavy_hetatm_identity_count_total"],
+                0,
+            )
+            self.assertEqual(
+                identity_summary["pose_vhh_heavy_hetatm_identity_count_total"], 0
+            )
+            self.assertEqual(
+                identity_summary["pose_pvrig_heavy_hetatm_identity_count_total"], 0
+            )
+            self.assertEqual(
+                identity_summary["monomer_vhh_heavy_hetatm_zero_gate_pass_count"],
+                94,
+            )
+            self.assertEqual(
+                identity_summary["receptor_pvrig_heavy_hetatm_zero_gate_pass_count"],
+                94,
+            )
+            self.assertEqual(
+                identity_summary["pose_vhh_heavy_hetatm_zero_gate_pass_count"], 752
+            )
+            self.assertEqual(
+                identity_summary["pose_pvrig_heavy_hetatm_zero_gate_pass_count"],
+                752,
+            )
+            self.assertEqual(identity_summary["heavy_hetatm_zero_gate_pass_count"], 752)
+            self.assertFalse(identity_summary["coordinate_or_score_modified"])
+            self.assertEqual(
+                [row["source_score"] for row in first],
+                ["-2", "-2", "0", "1", "2", "3", "4", "5"],
+            )
             for row in (first[0], rows[-1]):
                 materialized = Path("/") / row["materialized_coordinate_relpath"]
+                source = Path("/") / row["source_pose_relpath"]
                 self.assertTrue(materialized.is_file())
                 self.assertEqual(MOD.sha256_file(materialized), row["materialized_coordinate_sha256"])
+                self.assertEqual(
+                    MOD.recovery_base.read_coordinate_bytes(source),
+                    materialized.read_bytes(),
+                )
+                self.assertEqual(
+                    MOD.sha256_bytes(materialized.read_bytes()),
+                    row["decompressed_coordinate_sha256"],
+                )
                 self.assertEqual(row["selection_row_sha256"], MOD.row_sha256(row, "selection_row_sha256"))
 
     def test_inventory_only_rebuild_is_byte_deterministic(self) -> None:
