@@ -48,6 +48,32 @@ FROZEN_CONTROLLER_PID_SHA256 = (
 FROZEN_CONTROLLER_START_TICKS = 664578751
 FROZEN_CONTROLLER_PYTHON = "/data/qlyu/anaconda3/envs/haddock3/bin/python"
 FROZEN_HADDOCK_BIN = "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3"
+FROZEN_CONTROLLER_SCRIPT_SHA256 = (
+    "9a0251de5b169c562f8a37e509771ba8bc92ea304704dae0fa0b4ed0366dad3b"
+)
+FROZEN_CONTROLLER_PYTHON_SHA256 = (
+    "377159f8604e0fbfe362218df369a651be2123158a25296f6ace4b5c58c6c62a"
+)
+FROZEN_HADDOCK_SHA256 = (
+    "58ee77335c4665cdea4b1ffdcc8722963db9244184b96d23548daee22bdbd44a"
+)
+FROZEN_NODE23_REMAINING_RUN_IDS_SHA256 = (
+    "f08afaebbc9236894a82e4f07cf8a33aa408a44e0dd353a57dc5f1a598ebdce2"
+)
+FROZEN_PRE_MIGRATION_COMPLETIONS = {
+    "runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json": (
+        "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72"
+    ),
+    "runs/V13CAL_012__9E6Y__main/V13CAL_012__9E6Y__main.complete.json": (
+        "e1bc029a09054a6776c650d1bc5eac939c6f0ac25936f1916c8ba5ab7ccf692c"
+    ),
+    "runs/V13CAL_047__8X6B__main/V13CAL_047__8X6B__main.complete.json": (
+        "84b8b2adc033f93d131f167abd8a61da73edb0ff5428be188ef771f93d23e139"
+    ),
+    "runs/V13CAL_047__9E6Y__main/V13CAL_047__9E6Y__main.complete.json": (
+        "e6437d5eec96a86c3031131c26ec824e1bd67d9b766ff9e5e2880f3b67d93532"
+    ),
+}
 
 STATE_SCHEMA = "pvrig_v1_3_production_autorun_state_v2"
 MIGRATION_RECEIPT_SCHEMA = "pvrig_v1_3_controller_migration_receipt_v1"
@@ -250,10 +276,15 @@ class RemoteSnapshot:
     controller_pid_file_valid: bool = False
     controller_identity_valid: bool = False
     controller_argv_sha256: str = ""
+    observed_hostname: str = ""
+    observed_boot_id: str = ""
+    host_identity_valid: bool = False
     failures: tuple[str, ...] = ()
 
     @classmethod
-    def parse(cls, payload: Mapping[str, Any]) -> "RemoteSnapshot":
+    def parse(
+        cls, payload: Mapping[str, Any], contract: ControllerContract
+    ) -> "RemoteSnapshot":
         required = {
             "status",
             "manifest_count",
@@ -269,6 +300,9 @@ class RemoteSnapshot:
             "controller_pid_file_valid",
             "controller_identity_valid",
             "controller_argv_sha256",
+            "observed_hostname",
+            "observed_boot_id",
+            "host_identity_valid",
         }
         if not required.issubset(payload):
             raise AutorunError("Remote snapshot lacks required fields")
@@ -295,6 +329,9 @@ class RemoteSnapshot:
             controller_pid_file_valid=payload["controller_pid_file_valid"] is True,
             controller_identity_valid=payload["controller_identity_valid"] is True,
             controller_argv_sha256=str(payload["controller_argv_sha256"]),
+            observed_hostname=str(payload["observed_hostname"]),
+            observed_boot_id=str(payload["observed_boot_id"]),
+            host_identity_valid=payload["host_identity_valid"] is True,
             failures=tuple(str(value) for value in payload.get("failures", [])),
         )
         # Explicit remote failures are terminal evidence even when the frozen
@@ -305,6 +342,8 @@ class RemoteSnapshot:
             raise AutorunError("Remote frozen manifest is not exactly 30 runs")
         if snapshot.manifest_sha256 != FROZEN_NEW_RUN_MANIFEST_SHA256:
             raise AutorunError("Remote frozen manifest SHA256 mismatch")
+        if not snapshot.host_identity_valid:
+            raise AutorunError("Remote host/boot identity mismatch")
         if snapshot.status == "READY":
             if (
                 snapshot.completion_count != EXPECTED_REMOTE_RUNS
@@ -319,8 +358,8 @@ class RemoteSnapshot:
                 not snapshot.controller_alive
                 or not snapshot.controller_pid_file_valid
                 or not snapshot.controller_identity_valid
-                or snapshot.controller_pid != FROZEN_CONTROLLER_PID
-                or snapshot.controller_start_ticks != FROZEN_CONTROLLER_START_TICKS
+                or snapshot.controller_pid != contract.pid
+                or snapshot.controller_start_ticks != contract.start_ticks
                 or snapshot.failure_count
                 or snapshot.invalid_count
             ):
@@ -345,6 +384,9 @@ class RemoteSnapshot:
             "controller_pid_file_valid": self.controller_pid_file_valid,
             "controller_identity_valid": self.controller_identity_valid,
             "controller_argv_sha256": self.controller_argv_sha256,
+            "observed_hostname": self.observed_hostname,
+            "observed_boot_id": self.observed_boot_id,
+            "host_identity_valid": self.host_identity_valid,
             "failures": list(self.failures),
         }
 
@@ -394,6 +436,180 @@ def read_json(path: Path) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise AutorunError(f"JSON artifact is not an object: {path}")
     return payload
+
+
+def legacy_controller_contract(host: str = "node1") -> ControllerContract:
+    argv = (
+        FROZEN_CONTROLLER_PYTHON,
+        "scripts/run_v1_3_completion15.py",
+        "--root",
+        REMOTE_ROOT,
+        "--haddock-bin",
+        FROZEN_HADDOCK_BIN,
+        "--max-workers",
+        "5",
+        "--max-load1",
+        "50",
+        "--load-poll-seconds",
+        "30",
+    )
+    return ControllerContract(
+        host=host,
+        boot_id="",
+        pid=FROZEN_CONTROLLER_PID,
+        pid_file_sha256=FROZEN_CONTROLLER_PID_SHA256,
+        start_ticks=FROZEN_CONTROLLER_START_TICKS,
+        python=FROZEN_CONTROLLER_PYTHON,
+        haddock_bin=FROZEN_HADDOCK_BIN,
+        argv=argv,
+        source="legacy_node1_constants",
+    )
+
+
+def _require_sha256(value: Any, label: str) -> str:
+    text = str(value)
+    if re.fullmatch(r"[0-9a-f]{64}", text) is None:
+        raise AutorunError(f"Migration receipt {label} is not SHA256")
+    return text
+
+
+def load_controller_contract(path: Path, configured_host: str) -> ControllerContract:
+    receipt_path = path.resolve(strict=True)
+    receipt = read_json(receipt_path)
+    if (
+        receipt.get("schema_version") != MIGRATION_RECEIPT_SCHEMA
+        or receipt.get("status") != MIGRATION_RECEIPT_STATUS
+        or receipt.get("protocol_id") != PROTOCOL_ID
+        or receipt.get("remote_root") != REMOTE_ROOT
+        or receipt.get("migration_generation") != 2
+    ):
+        raise AutorunError("Controller migration receipt contract mismatch")
+    require_false(receipt, FALSE_BOUNDARIES)
+
+    single_writer = receipt.get("single_writer_handoff", {})
+    if not isinstance(single_writer, dict) or any(
+        single_writer.get(field) is not expected
+        for field, expected in {
+            "old_controller_stopped": True,
+            "old_children_zero_after_sigstop": True,
+            "old_descendants_zero_after_sigstop": True,
+            "no_controller_overlap": True,
+            "combined_active_controller_count": 1,
+        }.items()
+    ):
+        raise AutorunError("Migration receipt lacks a closed single-writer handoff")
+
+    frozen = receipt.get("frozen_contract", {})
+    if not isinstance(frozen, dict) or (
+        frozen.get("manifest_sha256") != FROZEN_NEW_RUN_MANIFEST_SHA256
+        or frozen.get("controller_script_sha256")
+        != FROZEN_CONTROLLER_SCRIPT_SHA256
+        or frozen.get("python_sha256") != FROZEN_CONTROLLER_PYTHON_SHA256
+        or frozen.get("haddock_sha256") != FROZEN_HADDOCK_SHA256
+        or frozen.get("max_workers") != 5
+        or frozen.get("max_load1") != 50
+        or frozen.get("load_poll_seconds") != 30
+    ):
+        raise AutorunError("Migration receipt changed the frozen execution contract")
+
+    pre = receipt.get("pre_handoff_completion_ledger", {})
+    post = receipt.get("post_handoff_completion_ledger", {})
+    if not isinstance(pre, dict) or not isinstance(post, dict):
+        raise AutorunError("Migration receipt lacks completion ledgers")
+    expected_completions = dict(sorted(FROZEN_PRE_MIGRATION_COMPLETIONS.items()))
+    if (
+        pre.get("count") != 4
+        or post.get("count") != 4
+        or pre.get("files") != expected_completions
+        or post.get("files") != expected_completions
+    ):
+        raise AutorunError("Migration rewrote or lost a frozen completion receipt")
+
+    remaining = receipt.get("remaining_run_ledger", {})
+    run_ids = remaining.get("run_ids") if isinstance(remaining, dict) else None
+    if (
+        not isinstance(run_ids, list)
+        or len(run_ids) != 26
+        or len(set(run_ids)) != 26
+        or any(not isinstance(value, str) or not value for value in run_ids)
+        or remaining.get("run_ids_sha256")
+        != FROZEN_NODE23_REMAINING_RUN_IDS_SHA256
+        or sha256_bytes(canonical_json(run_ids).encode("utf-8"))
+        != FROZEN_NODE23_REMAINING_RUN_IDS_SHA256
+    ):
+        raise AutorunError("Migration receipt remaining-run ledger mismatch")
+
+    target = receipt.get("target_controller", {})
+    if not isinstance(target, dict) or target.get("host") != configured_host:
+        raise AutorunError("Configured SSH host differs from migration receipt")
+    if target.get("host") != "node23":
+        raise AutorunError("V1.3 generation-2 controller is not bound to node23")
+    python = str(target.get("python", ""))
+    haddock = str(target.get("haddock_bin", ""))
+    expected_argv = [
+        python,
+        "scripts/run_v1_3_completion15.py",
+        "--root",
+        REMOTE_ROOT,
+        "--haddock-bin",
+        haddock,
+        "--max-workers",
+        "5",
+        "--max-load1",
+        "50",
+        "--load-poll-seconds",
+        "30",
+    ]
+    for run_id in run_ids:
+        expected_argv.extend(("--run-id", run_id))
+    argv = target.get("argv")
+    if argv != expected_argv:
+        raise AutorunError("Migration controller argv is not the exact 26-run command")
+    argv_bytes = b"\0".join(value.encode("utf-8") for value in expected_argv) + b"\0"
+    if target.get("argv_bytes_sha256") != sha256_bytes(argv_bytes):
+        raise AutorunError("Migration controller argv byte hash mismatch")
+    if (
+        python != FROZEN_CONTROLLER_PYTHON
+        or haddock != FROZEN_HADDOCK_BIN
+        or target.get("cwd") != REMOTE_ROOT
+        or target.get("executable")
+        != "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11"
+    ):
+        raise AutorunError("Migration controller path identity mismatch")
+    boot_id = str(target.get("boot_id", ""))
+    if re.fullmatch(r"[0-9a-f-]{36}", boot_id) is None:
+        raise AutorunError("Migration controller boot ID is invalid")
+    try:
+        pid = int(target["pid"])
+        start_ticks = int(target["start_ticks"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise AutorunError("Migration controller PID identity is invalid") from error
+    if pid <= 1 or start_ticks <= 0:
+        raise AutorunError("Migration controller PID identity is non-positive")
+    pid_file_sha256 = _require_sha256(
+        target.get("pid_file_sha256"), "target pid file"
+    )
+    if pid_file_sha256 != sha256_bytes(f"{pid}\n".encode("ascii")):
+        raise AutorunError("Migration controller PID-file hash mismatch")
+
+    return ControllerContract(
+        host=configured_host,
+        boot_id=boot_id,
+        pid=pid,
+        pid_file_sha256=pid_file_sha256,
+        start_ticks=start_ticks,
+        python=python,
+        haddock_bin=haddock,
+        argv=tuple(expected_argv),
+        source=receipt_path.as_posix(),
+        source_sha256=sha256_file(receipt_path),
+    )
+
+
+def controller_contract(config: Config) -> ControllerContract:
+    if config.controller_receipt is None:
+        return legacy_controller_contract(config.host)
+    return load_controller_contract(config.controller_receipt, config.host)
 
 
 def csv_rows(path: Path) -> int:
