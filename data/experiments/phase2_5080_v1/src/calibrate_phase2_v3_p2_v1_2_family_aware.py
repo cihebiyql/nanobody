@@ -95,6 +95,7 @@ RUN_SCORES_NAME = "pvrig_v1_2_calibration_run_scores.csv"
 LOFO_NAME = "pvrig_v1_2_family_lofo.csv"
 BOOTSTRAP_NAME = "pvrig_v1_2_bootstrap_thresholds.csv"
 BOOTSTRAP_ANCHOR_NAME = "pvrig_v1_2_bootstrap_anchor_evaluations.csv"
+FINGERPRINT_NAME = "pvrig_v1_2_fingerprint_diagnostics.csv"
 MUTANT_DELTAS_NAME = "pvrig_v1_2_mutant_paired_deltas.csv"
 ROBUSTNESS_NAME = "pvrig_v1_2_robustness_grid.csv"
 AUDIT_NAME = "pvrig_v1_2_family_calibration_audit.json"
@@ -2050,6 +2051,67 @@ def load_contact_fingerprints(
         "schema": FINGERPRINT_SCHEMA,
         "schema_sha256": sha256_json(FINGERPRINT_SCHEMA),
     }
+
+
+FINGERPRINT_FIELDS = (
+    "schema_version",
+    "method_id",
+    "candidate_id",
+    "family",
+    "canonical_rank",
+    "AG_pairs_json",
+    "AG_pair_count",
+    "AG_sha256",
+    "O8_pairs_json",
+    "O8_pair_count",
+    "O8_sha256",
+    "O9_pairs_json",
+    "O9_pair_count",
+    "O9_sha256",
+    "AG_cluster_count_tau_0_50",
+    "O8_cluster_count_tau_0_50",
+    "O9_cluster_count_tau_0_50",
+    "formal_eligible",
+    "fingerprint_row_sha256",
+)
+
+
+def build_fingerprint_rows(
+    fingerprint_by_case: Mapping[str, Any] | None,
+    family_by_case: Mapping[str, str],
+) -> list[dict[str, str]]:
+    if fingerprint_by_case is None:
+        return []
+    output: list[dict[str, str]] = []
+    for candidate_id in sorted(fingerprint_by_case):
+        payload = fingerprint_by_case[candidate_id]
+        for rank in sorted(payload["poses"]):
+            record: dict[str, Any] = {
+                "schema_version": SCHEMA_VERSION,
+                "method_id": METHOD_ID,
+                "candidate_id": candidate_id,
+                "family": family_by_case[candidate_id],
+                "canonical_rank": rank,
+                "formal_eligible": False,
+            }
+            for channel in ("AG", "O8", "O9"):
+                pairs = sorted(payload["poses"][rank][channel])
+                record[f"{channel}_pairs_json"] = canonical_json(pairs)
+                record[f"{channel}_pair_count"] = len(pairs)
+                record[f"{channel}_sha256"] = sha256_json(pairs)
+                record[f"{channel}_cluster_count_tau_0_50"] = payload["clusters"][
+                    channel
+                ]["0.5"]["cluster_count"]
+            normalized = {
+                field: scalar_text(record.get(field), field)
+                for field in FINGERPRINT_FIELDS
+                if field != "fingerprint_row_sha256"
+            }
+            normalized["fingerprint_row_sha256"] = row_sha256(
+                normalized, "fingerprint_row_sha256"
+            )
+            output.append(normalized)
+    return output
 
 
 MUTANT_DELTA_FIELDS = (

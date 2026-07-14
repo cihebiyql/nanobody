@@ -1,0 +1,42 @@
+{
+  "byte_identical": true,
+  "claim_boundary": "byte-deterministic fixed-emref Top-8 computational geometry calibration input; not dual-receptor R_gold and not experimental binding, affinity, or blocking truth",
+  "dual_receptor_r_gold_freeze_eligible": false,
+  "elapsed_seconds_observed": [
+    269.87,
+    278.79
+  ],
+  "file_count_each": 758,
+  "file_hash_listing": {
+    "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_deterministic_file_hashes.sha256",
+    "sha256": "82d0b2f4879b26c5b1490f1f59f558ff31f1e29570e813e3c14703a153cabf48"
+  },
+  "formal_eligible": false,
+  "jobs_per_rebuild": 4,
+  "p2_training_ready": false,
+  "package": {
+    "audit_sha256": "6d7e67fdf6c25d14723e762e00cbf8058a01661815198ed313079212ea9330d4",
+    "continuous_metrics_sha256": "9a18d3f8002f6f827b33e0ec7144506add4e925e9907a872d992f01a36f347c2",
+    "materialization_manifest_sha256": "2358316c9e8d0d71d75993bab1a93bd0c3508621da9286421aca89008d3b1522",
+    "residue_contacts_sha256": "cc29c580d3e0256536c3d2191b83a32cfd8bc7870c5315cd2ff4cae234199052"
+  },
+  "pose_rule_threshold_fit_input_eligible": true,
+  "processor": {
+    "path": "experiments/phase2_5080_v1/src/process_phase2_v3_p2_v1_2_top8_calibration.py",
+    "sha256": "3787ba2df55244d0d3d6738c0766cd9547869657965e9a94be9c02c5548992a4"
+  },
+  "processor_release_manifest": {
+    "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_top8_processor_release_manifest.json",
+    "sha256": "a4c876594434076a86b75a073ff4ac02914c88ea20b97c946e299f72c7552cd7"
+  },
+  "processor_test": {
+    "path": "experiments/phase2_5080_v1/src/test_process_phase2_v3_p2_v1_2_top8_calibration.py",
+    "sha256": "5b3c82f937560b8cfc94043fd8346856db56739adebb874b701e5f7cbcb60d56"
+  },
+  "protocol_id": "DG_A_PVRIG_V1_2_DEV",
+  "rebuild_1_listing_sha256": "82d0b2f4879b26c5b1490f1f59f558ff31f1e29570e813e3c14703a153cabf48",
+  "rebuild_2_listing_sha256": "82d0b2f4879b26c5b1490f1f59f558ff31f1e29570e813e3c14703a153cabf48",
+  "rebuild_count": 2,
+  "schema_version": "phase2_v3_p2_v1_2_top8_deterministic_rebuild_audit_v1",
+  "status": "PASS_V1_2_TOP8_BYTE_DETERMINISTIC_REBUILD"
+}

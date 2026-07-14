@@ -991,7 +991,7 @@ def validate_params(path: Path, row: Mapping[str, str]) -> None:
         raise RecoveryError(f"Cannot parse emref params: {path}") from error
     if not parser.has_section("emref"):
         raise RecoveryError(f"emref params has no [emref] section: {path}")
-    expected_seed = parse_int(row["iniseed"], f"{row['run_id']}.iniseed")
+    expected_seed = parse_int(row["topoaa_iniseed"], f"{row['run_id']}.topoaa_iniseed")
     try:
         observed_seed = parser.getint("emref", "iniseed")
         tolerance = parser.getfloat("emref", "tolerance")

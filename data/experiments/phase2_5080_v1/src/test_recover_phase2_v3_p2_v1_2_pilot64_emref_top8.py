@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
 import csv
 import gzip
 import importlib.util
 import io
 import json
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -105,7 +107,7 @@ class Fixture:
         stage = f"{run_dir}/4_emref"
         self._asset(
             f"{stage}/params.cfg",
-            f"[emref]\niniseed = {seed}\ntolerance = 20\n".encode("ascii"),
+            b"[emref]\niniseed = 917\ntolerance = 20\n",
         )
         outputs = []
         for index in range(source_count):
@@ -297,6 +299,8 @@ class Pilot64EmrefRecoveryTests(unittest.TestCase):
             self.assertEqual(run_rows[0]["source_pose_format"], "pdb.gz")
             self.assertNotEqual(run_rows[0]["source_pose_sha256"], run_rows[0]["decompressed_coordinate_sha256"])
             self.assertEqual(run_rows[0]["source_docking_receptor"], "8x6b")
+            self.assertEqual(run_rows[0]["candidate_id"], "P2PILOT_001")
+            self.assertEqual(run_rows[0]["role"], "main")
             self.assertEqual(run_rows[0]["execution_mode"], MOD.EXECUTION_MODE)
             self.assertEqual(run_rows[0]["formal_eligible"], "false")
             self.assertEqual(run_rows[0]["selection_row_sha256"], MOD.row_sha256(run_rows[0], "selection_row_sha256"))
@@ -383,6 +387,29 @@ class Pilot64EmrefRecoveryTests(unittest.TestCase):
             self.assertIn("python3", command[2])
             with self.assertRaises(MOD.RecoveryError):
                 MOD.select_rows(manifest, failed, "smoke8", [selected[0]["run_id"]])
+
+    def test_remote_archive_program_round_trips_a_local_fixture_without_network(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = Fixture(Path(temporary))
+            row = next(
+                item for item in fixture.rows if item["run_id"] == "P2PILOT_001__8X6B__main"
+            )
+            request = MOD.build_sync_request([row], str(fixture.remote))
+            encoded = base64.urlsafe_b64encode(MOD.canonical_json(request).encode("utf-8")).decode("ascii")
+            archive_path = Path(temporary) / "remote.tar"
+            with archive_path.open("wb") as handle:
+                completed = subprocess.run(
+                    [sys.executable, "-c", MOD.REMOTE_ARCHIVE_PY, encoded],
+                    stdout=handle,
+                    stderr=subprocess.PIPE,
+                    check=False,
+                )
+            self.assertEqual(completed.returncode, 0, completed.stderr.decode("utf-8"))
+            destination = Path(temporary) / "roundtrip"
+            remote = MOD.safe_extract_archive(archive_path, destination, request)
+            persisted, local = MOD.load_and_verify_inventory(destination, request)
+            self.assertEqual(remote["file_hash_chain"], persisted["file_hash_chain"])
+            self.assertEqual(persisted["file_hash_chain"], local["file_hash_chain"])
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 MODULE_PATH = Path(__file__).with_name(
@@ -158,6 +159,51 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
+def write_contacts(path: Path, metric_rows: list[dict[str, str]]) -> None:
+    records: list[dict[str, object]] = []
+    for row in metric_rows:
+        rank = int(row["canonical_rank"])
+        candidate = row["candidate_id"]
+        baseline = row["baseline"]
+        record: dict[str, object] = {
+            "protocol_id": MOD.PROTOCOL_ID,
+            "candidate_id": candidate,
+            "canonical_rank": rank,
+            "baseline": baseline,
+            "selector_row_sha256": row["selector_row_sha256"],
+            "aligned_pose_sha256": row["aligned_pose_sha256"],
+            "canonical_internal_score_payload_sha256": row[
+                "canonical_internal_score_payload_sha256"
+            ],
+            "baseline_pose_score_payload_sha256": row[
+                "baseline_pose_score_payload_sha256"
+            ],
+            "pvrig_vhh_contacts": [
+                {
+                    "vhh_residue": f"A:{rank}ALA",
+                    "pvrig_residue": f"B:{rank + 10}SER",
+                }
+            ],
+            "region_residue_pairs": {
+                region: {
+                    "occluding_residue_pairs": (
+                        [f"A:{rank}ALA--{baseline}:{rank + 20}GLY"]
+                        if region == "CDR3"
+                        else []
+                    )
+                }
+                for region in ("CDR1", "CDR2", "CDR3", "framework")
+            },
+        }
+        record["contact_record_sha256"] = MOD.row_sha256(
+            record, "contact_record_sha256"
+        )
+        records.append(record)
+    with path.open("w", encoding="utf-8") as handle:
+        for record in records:
+            handle.write(MOD.canonical_json(record) + "\n")
+
+
 class FamilyCalibrationUnitTests(unittest.TestCase):
     def test_family_then_case_weighting_is_not_case_pooled(self) -> None:
         cases = {"a1": "A", "b1": "B", "b2": "B", "b3": "B"}
@@ -267,7 +313,12 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
         self.assertEqual(len(output), 3)
         self.assertEqual({row["held_out_family"] for row in output}, {"F1", "F2", "F3"})
         self.assertTrue(all(row["training_family_count"] == "2" for row in output))
-        self.assertTrue(all(len(row["lofo_rules_sha256"]) == 64 for row in output))
+        summary = MOD.summarize_lofo(output, metadata)
+        self.assertEqual(set(summary["families"]), {"F1", "F2", "F3"})
+        self.assertEqual(
+            summary["fold_definition_gate_passed"],
+            all(row["fold_defined"] == "true" for row in output),
+        )
 
     def test_hierarchical_bootstrap_is_deterministic(self) -> None:
         cases = {"p1": "F1", "p2": "F1", "p3": "F2", "p4": "F3"}
@@ -342,6 +393,234 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
             MOD.validate_metrics_rows(
                 list(rows[0]), rows, positive, mutant, contract
             )
+
+    def test_strict_equal_cutpoints_are_undefined_without_step_membership(self) -> None:
+        diagnostic = MOD.threshold_fit_diagnostic(
+            [(0.5, 0.5), (0.5, 0.5)], 0.2, 0.5, metric="H"
+        )
+        self.assertFalse(diagnostic["defined"])
+        self.assertEqual(
+            diagnostic["failure_reason"],
+            "upper_cutpoint_not_strictly_greater_than_lower",
+        )
+        with self.assertRaisesRegex(MOD.CalibrationError, "strict U > L"):
+            MOD.membership(0.5, diagnostic)
+
+        cases = {"p1": "F1", "p2": "F2"}
+        rows = []
+        for candidate_id, family in cases.items():
+            for rank in (1, 2):
+                for baseline in MOD.BASELINES:
+                    rows.append(
+                        metric_row(
+                            candidate_id,
+                            family,
+                            rank,
+                            baseline,
+                            h_value=0.5,
+                            total_pairs=10,
+                            cdr_pairs=5,
+                        )
+                    )
+        thresholds, anchors = MOD.hierarchical_bootstrap_rows(
+            rows, positive_metadata(cases), 2, seed=20260714, replicates=3
+        )
+        h_rows = [
+            row
+            for row in thresholds
+            if row["baseline"] == MOD.CANONICAL_H_CHANNEL
+        ]
+        self.assertTrue(all(row["metric_defined"] == "false" for row in h_rows))
+        self.assertTrue(all(row["replicate_defined"] == "false" for row in thresholds))
+        self.assertTrue(all(row["evaluation_defined"] == "false" for row in anchors))
+        self.assertEqual(len(thresholds), 3 * 10)
+        self.assertEqual(len(anchors), 3 * 2)
+
+    def test_o_cutpoint_units_apply_log1p_exactly_once(self) -> None:
+        threshold = MOD.threshold_from_weighted_values(
+            [(9.0, 0.2), (99.0, 0.3), (999.0, 0.5)],
+            0.2,
+            0.5,
+            metric="O",
+        )
+        self.assertEqual(threshold["L_raw"], 9.0)
+        self.assertEqual(threshold["U_raw"], 99.0)
+        self.assertAlmostEqual(threshold["L_transformed"], math.log1p(9.0))
+        self.assertAlmostEqual(threshold["U_transformed"], math.log1p(99.0))
+        midpoint_raw = math.exp(
+            (math.log1p(9.0) + math.log1p(99.0)) / 2.0
+        ) - 1.0
+        self.assertAlmostEqual(MOD.membership(midpoint_raw, threshold), 0.5)
+
+    def test_atom_only_inventory_gate_rejects_hetatm_selection(self) -> None:
+        rows = rows_for_cases({"p1": "F1", "m_base": "F2"}, 1)
+        bad = rows[0]
+        inventory = json.loads(bad["reference_pvrl2_record_inventory_json"])
+        inventory["selection_rule"] = "protein ATOM and HETATM"
+        bad["reference_pvrl2_record_inventory_json"] = MOD.canonical_json(inventory)
+        bad["metrics_row_sha256"] = MOD.row_sha256(bad, "metrics_row_sha256")
+        contract = MOD.CalibrationContract(
+            case_count=2,
+            positive_case_count=1,
+            positive_family_count=1,
+            mutant_panel_case_count=1,
+            mutant_delta_count=0,
+            ranks_per_case=1,
+            baseline_count=2,
+        )
+        with self.assertRaisesRegex(MOD.CalibrationError, "ATOM-only"):
+            MOD.validate_metrics_rows(
+                list(rows[0]),
+                rows,
+                {"p1": {"family": "F1"}},
+                {"m_base": {"family": "F2"}},
+                contract,
+            )
+
+    def test_contacts_generate_canonical_fingerprints_and_mutant_jaccard(self) -> None:
+        cases = {"m_base": "F1", "m1": "F1"}
+        rows = rows_for_cases(cases, 2)
+        with tempfile.TemporaryDirectory() as temporary:
+            contacts = Path(temporary) / "contacts.jsonl"
+            write_contacts(contacts, rows)
+            fingerprints, evidence = MOD.load_contact_fingerprints(contacts, rows, 2)
+        self.assertTrue(evidence["validated"])
+        assert fingerprints is not None
+        pose_rows: list[dict[str, str]] = []
+        for candidate_id in cases:
+            for rank in (1, 2):
+                for baseline in MOD.BASELINES:
+                    pose_rows.append(
+                        {
+                            "candidate_id": candidate_id,
+                            "family": "F1",
+                            "canonical_rank": str(rank),
+                            "baseline": baseline,
+                            "pose_class": "B",
+                            "S_pose_baseline": "0.5",
+                        }
+                    )
+        runs = MOD.aggregate_run_scores(pose_rows, {})
+        mutant_metadata = {
+            "m_base": {
+                "family": "F1",
+                "base_molecule": "BASE",
+                "control_type": "base_reference",
+                "mutation_class": "base",
+                "mutations_1based": "none",
+            },
+            "m1": {
+                "family": "F1",
+                "base_molecule": "BASE",
+                "control_type": "mutant",
+                "mutation_class": "test",
+                "mutations_1based": "A1G",
+            },
+        }
+        deltas = MOD.build_mutant_delta_rows(
+            runs, mutant_metadata, {"BASE": "m_base"}, fingerprints
+        )
+        self.assertEqual(len(deltas), 1)
+        self.assertEqual(deltas[0]["fingerprints_available"], "true")
+        self.assertEqual(float(deltas[0]["AG_matched_rank_weighted_jaccard"]), 1.0)
+        self.assertRegex(deltas[0]["O8_cluster_transition_tau_0_50"], r"\d+->\d+")
+
+    def test_external_release_manifest_validates_all_current_hash_entries(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            positive = root / "positive.csv"
+            mutant = root / "mutant.csv"
+            positive.write_text("positive\n", encoding="utf-8")
+            mutant.write_text("mutant\n", encoding="utf-8")
+            files = [root / f"anchor_{index}.txt" for index in range(11)]
+            for index, path in enumerate(files):
+                path.write_text(str(index), encoding="utf-8")
+            processor = root / "processor.py"
+            processor_test = root / "test_processor.py"
+            processor.write_text("pass\n", encoding="utf-8")
+            processor_test.write_text("pass\n", encoding="utf-8")
+            anchors = {
+                "positive_manifest": {
+                    "path": str(positive),
+                    "sha256": MOD.sha256_file(positive),
+                },
+                "mutant_manifest": {
+                    "path": str(mutant),
+                    "sha256": MOD.sha256_file(mutant),
+                },
+            }
+            anchors.update(
+                {
+                    f"extra_{index}": {
+                        "path": str(path),
+                        "sha256": MOD.sha256_file(path),
+                    }
+                    for index, path in enumerate(files)
+                }
+            )
+            release = root / "release.json"
+            release.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "pvrig_v1_2_top8_processor_release_manifest_v1",
+                        "protocol_id": MOD.PROTOCOL_ID,
+                        "status": "FROZEN_V1_2_TOP8_PROCESSOR_RELEASE",
+                        "processor": {
+                            "path": str(processor),
+                            "sha256": MOD.sha256_file(processor),
+                        },
+                        "processor_test": {
+                            "path": str(processor_test),
+                            "sha256": MOD.sha256_file(processor_test),
+                        },
+                        "canonical_anchors": anchors,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with mock.patch.object(
+                MOD, "DEFAULT_PROCESSOR_RELEASE_MANIFEST", release
+            ):
+                evidence = MOD.validate_processor_release_manifest(
+                    release, positive, mutant
+                )
+            self.assertTrue(evidence["validated"])
+            files[0].write_text("drift", encoding="utf-8")
+            with mock.patch.object(
+                MOD, "DEFAULT_PROCESSOR_RELEASE_MANIFEST", release
+            ):
+                drift = MOD.validate_processor_release_manifest(
+                    release, positive, mutant
+                )
+            self.assertFalse(drift["validated"])
+
+    def test_output_and_external_report_publish_roll_back_together(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            staging = root / "staging"
+            destination = root / "output"
+            staging.mkdir()
+            destination.mkdir()
+            (staging / "new.txt").write_text("new", encoding="utf-8")
+            (destination / "old.txt").write_text("old", encoding="utf-8")
+            staging_report = root / "report.staging"
+            report = root / "report.md"
+            staging_report.write_text("new report", encoding="utf-8")
+            report.write_text("old report", encoding="utf-8")
+            original_replace = MOD.os.replace
+
+            def fail_report(source: object, target: object) -> None:
+                if Path(source) == staging_report and Path(target) == report:
+                    raise OSError("injected report publish failure")
+                original_replace(source, target)
+
+            with mock.patch.object(MOD.os, "replace", side_effect=fail_report):
+                with self.assertRaisesRegex(OSError, "injected"):
+                    MOD.publish_outputs_transaction(
+                        staging, destination, staging_report, report
+                    )
+            self.assertEqual((destination / "old.txt").read_text(), "old")
+            self.assertEqual(report.read_text(), "old report")
 
 
 class FamilyCalibrationEndToEndTests(unittest.TestCase):
@@ -437,6 +716,11 @@ class FamilyCalibrationEndToEndTests(unittest.TestCase):
             self.assertFalse(first["dual_receptor_r_gold_freeze_eligible"])
             self.assertFalse(first["training_label_release_eligible"])
             self.assertTrue(first["p2_training_blocked"])
+            self.assertFalse(first["acceptance_summary"]["all_gates_passed"])
+            self.assertIn(
+                "upstream_provenance",
+                first["acceptance_summary"]["failed_gates"],
+            )
             with (outdir / MOD.MUTANT_DELTAS_NAME).open(
                 newline="", encoding="utf-8"
             ) as handle:
@@ -445,6 +729,40 @@ class FamilyCalibrationEndToEndTests(unittest.TestCase):
             self.assertTrue(
                 all(row["binary_negative_label_assigned"] == "false" for row in delta_rows)
             )
+            self.assertTrue(all(row["fingerprints_available"] == "false" for row in delta_rows))
+            for field in (
+                "delta_F1",
+                "delta_F2",
+                "delta_F3",
+                "delta_F4",
+                "delta_N1",
+                "delta_N2",
+                "delta_N3",
+                "delta_N4",
+                "delta_tier_strength",
+                "delta_baseline_gap",
+            ):
+                self.assertIn(field, delta_rows[0])
+            with (outdir / MOD.ROBUSTNESS_NAME).open(
+                newline="", encoding="utf-8"
+            ) as handle:
+                robustness_rows = list(csv.DictReader(handle))
+            self.assertEqual(len(robustness_rows), 54)
+            self.assertTrue(all(row["best_row_selected"] == "false" for row in robustness_rows))
+            self.assertEqual(
+                {row["minimum_supporting_poses"] for row in robustness_rows},
+                {"2", "3"},
+            )
+            with (outdir / MOD.BOOTSTRAP_NAME).open(
+                newline="", encoding="utf-8"
+            ) as handle:
+                threshold_rows = list(csv.DictReader(handle))
+            with (outdir / MOD.BOOTSTRAP_ANCHOR_NAME).open(
+                newline="", encoding="utf-8"
+            ) as handle:
+                anchor_rows = list(csv.DictReader(handle))
+            self.assertEqual(len(threshold_rows), 5 * 10)
+            self.assertEqual(len(anchor_rows), 5 * 3)
             rules = json.loads((outdir / MOD.RULES_NAME).read_text(encoding="utf-8"))
             self.assertEqual(rules["rules_core"]["run_score_name"], "R_calibration_run_8x6b_dock")
             self.assertNotIn("R_gold", rules["rules_core"]["run_score_name"])
