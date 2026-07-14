@@ -228,6 +228,11 @@ class V13SyntheticFixture:
             "cross_receptor_rank_pairing_performed": False,
             "dual_candidate_score_outputs_emitted": False,
             "p2_training_ready": False,
+            "development_release_state": {
+                "status": "NOT_EVALUATED_BY_PROCESSOR_BUILDER",
+                "independent_qualification_required": True,
+                "validated": False,
+            },
             "observed_contract": {
                 "case_count": 47,
                 "run_count": 94,
@@ -531,27 +536,29 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         self.assertTrue((outdir / "current" / calibration.RELEASE_INPUT_NAME).is_file())
 
     def test_full_B2000_two_builds_are_byte_deterministic(self) -> None:
-        outdir = self.root / "determinism" / "calibration"
+        outdir_a = self.root / "determinism" / "build_a"
+        outdir_b = self.root / "determinism" / "build_b"
         first = calibration.build_calibration(
-            self._config(outdir, calibration.BOOTSTRAP_REPLICATES)
+            self._config(outdir_a, calibration.BOOTSTRAP_REPLICATES)
         )
-        first_release = (outdir / "current").resolve()
+        first_release = (outdir_a / "current").resolve()
         first_files = {
             path.relative_to(first_release).as_posix(): path.read_bytes()
             for path in first_release.rglob("*")
             if path.is_file()
         }
         second = calibration.build_calibration(
-            self._config(outdir, calibration.BOOTSTRAP_REPLICATES)
+            self._config(outdir_b, calibration.BOOTSTRAP_REPLICATES)
         )
-        second_release = (outdir / "current").resolve()
+        second_release = (outdir_b / "current").resolve()
         second_files = {
             path.relative_to(second_release).as_posix(): path.read_bytes()
             for path in second_release.rglob("*")
             if path.is_file()
         }
         self.assertEqual(first, second)
-        self.assertEqual(first_release, second_release)
+        self.assertNotEqual(first_release, second_release)
+        self.assertEqual(first_release.name, second_release.name)
         self.assertEqual(first_files, second_files)
         self.assertEqual(first["status"], calibration.CALCULATED_STATUS)
         self.assertFalse(first["development_smoke_eligible"])

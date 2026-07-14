@@ -192,8 +192,11 @@ SELECTOR_REQUIRED_FIELDS = {
     "config_relpath",
     "completion_relpath",
     "monomer_relpath",
+    "remote_monomer_relpath",
     "receptor_relpath",
+    "remote_receptor_relpath",
     "restraint_relpath",
+    "remote_restraint_relpath",
     "hotspot_relpath",
     "source_params_relpath",
     "source_io_relpath",
@@ -867,6 +870,20 @@ def validate_row_provenance(
 ) -> None:
     candidate_id = row["candidate_id"]
     receptor = row["generation_receptor"]
+    amendment_path = bind_local_file(
+        row,
+        "identity_normalization_amendment_relpath",
+        "identity_normalization_amendment_sha256",
+        config.workspace_root,
+        file_bindings,
+    )
+    if (
+        amendment_path
+        != selector_contract.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.resolve()
+        or row["identity_normalization_amendment_sha256"]
+        != selector_contract.FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_SHA256
+    ):
+        raise ContractError("Identity-normalization amendment binding mismatch")
     source_mode = row["source_mode"]
     ignored = parse_bool(row["source_final_stage_ignored"], "source_final_stage_ignored")
     exit_code = parse_int(row["completion_exit_code"], "completion_exit_code")
@@ -890,6 +907,28 @@ def validate_row_provenance(
         validate_exact_reuse_provenance(
             row, config, file_bindings, manifest_cache
         )
+        old_manifest = bind_local_file(
+            row,
+            "source_old_run_manifest_relpath",
+            "source_old_run_manifest_sha256",
+            config.workspace_root,
+            file_bindings,
+        )
+        old_row = load_bound_csv_row(
+            old_manifest,
+            row["source_old_run_manifest_sha256"],
+            row["source_old_run_manifest_row_sha256"],
+            "run_manifest_row_sha256",
+            row["source_run_id"],
+            manifest_cache,
+        )
+        if (
+            old_row.get("receptor_id") != receptor
+            or old_row.get("config_sha256") != row["config_sha256"]
+            or old_row.get("monomer_sha256") != row["monomer_sha256"]
+            or old_row.get("receptor_sha256") != row["receptor_sha256"]
+        ):
+            raise ContractError(f"Old run-manifest provenance mismatch for {row['run_id']}")
     else:
         raise ContractError(f"Unknown source_mode for {row['run_id']}: {source_mode}")
 
@@ -1221,6 +1260,13 @@ def verify_selector(
     selector_helper_hashes: set[str] = set()
     selector_helper_paths: set[str] = set()
     publication_release_ids: set[str] = set()
+    manifest_cache: dict[
+        tuple[str, str], tuple[str, dict[str, dict[str, str]]]
+    ] = {}
+    try:
+        identity_amendment = selector_contract.load_identity_normalization_amendment()
+    except selector_contract.RecoveryError as error:
+        raise ContractError(str(error)) from error
 
     for row_number, row in enumerate(rows, start=2):
         expected_hash = row_sha256(row, "selection_row_sha256")
@@ -1400,6 +1446,14 @@ def verify_selector(
             previous = file_bindings.setdefault(str(path), digest)
             if previous != digest:
                 raise ContractError(f"Conflicting selector hash bindings for {path}")
+        validate_row_provenance(
+            row,
+            case,
+            config,
+            file_bindings,
+            manifest_cache,
+            identity_amendment,
+        )
         grouped[(candidate_id, receptor)].append(row)
         run_ids[(candidate_id, receptor)].add(row.get("source_run_id", ""))
 

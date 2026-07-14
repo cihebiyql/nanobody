@@ -1314,10 +1314,14 @@ def validate_processor_audit(
         }.items()
     ):
         failures.append("expected_contract")
-    release_check = payload.get("development_release_manifest_check", {})
-    if isinstance(release_check, dict) and release_check.get("exists") is True:
-        if release_check.get("validated") is not True:
-            failures.append("development_release_manifest_check")
+    release_state = payload.get("development_release_state", {})
+    if (
+        not isinstance(release_state, dict)
+        or release_state.get("status") != "NOT_EVALUATED_BY_PROCESSOR_BUILDER"
+        or release_state.get("independent_qualification_required") is not True
+        or release_state.get("validated") is not False
+    ):
+        failures.append("development_release_state")
     if failures:
         raise CalibrationError(f"Processor audit closure failed: {sorted(failures)}")
     return {
@@ -3182,8 +3186,8 @@ def build_calibration(
             },
             "publication": {
                 "release_id": release_id,
-                "release_relpath": canonical_path(release_dir),
-                "current_pointer_relpath": canonical_path_lexical(current_link),
+                "release_relpath": f"releases/{release_id}",
+                "current_pointer_relpath": "current",
                 "immutable_versioned_release": True,
                 "promotion": "single atomic current symlink replacement",
                 "rollback_safe": True,
