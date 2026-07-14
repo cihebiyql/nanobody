@@ -1891,7 +1891,7 @@ def flatten_metrics_row(
             ),
             "canonical_internal_score_payload_sha256": (
                 normalized_raw_internal_payload_sha256(
-                    canonical_internal_report, selector_row, config
+                    canonical_internal_report, selector_row
                 )
             ),
             "baseline_pose_score_payload_sha256": normalized_scorer_payload_sha256(
@@ -1932,19 +1932,32 @@ def normalized_scorer_payload_sha256(
 def normalized_raw_internal_payload_sha256(
     report: Mapping[str, Any],
     selector_row: Mapping[str, str],
-    config: BuildConfig,
 ) -> str:
-    normalized = dict(report)
-    if "pose_pdb" in normalized:
-        normalized["pose_pdb"] = (
-            "raw_4_emref_pose_sha256:"
-            f"{selector_row['decompressed_coordinate_sha256']}"
-        )
-    if "reference_pdb" in normalized:
-        normalized["reference_pdb"] = canonical_input_path(
-            config.references["8x6b"], config.workspace_root
-        )
-    return sha256_json(normalized)
+    pose_inventory_root = required_mapping(
+        report, "record_inventory", "raw internal scorer report"
+    )
+    payload = {
+        "schema_version": "pvrig_v1_2_raw_internal_effective_payload_v1",
+        "scorer_schema_version": report.get("schema_version"),
+        "scoring_semantics_version": report.get("scoring_semantics_version"),
+        "internal_contact_channel": INTERNAL_CONTACT_CHANNEL,
+        "source_coordinate_sha256": selector_row[
+            "decompressed_coordinate_sha256"
+        ],
+        "hotspot_ref_column": BASELINES["8x6b"]["hotspot_ref_column"],
+        "pose_record_inventory": required_mapping(
+            pose_inventory_root, "pose", "raw internal scorer inventory"
+        ),
+        "effective_scalars": {
+            field_name: report[field_name]
+            for field_name in INTERNAL_CONTACT_METRICS
+        },
+        "effective_lists": {
+            field_name: report[field_name]
+            for field_name in INTERNAL_CONTACT_LIST_FIELDS
+        },
+    }
+    return sha256_json(payload)
 
 
 def contact_record(
@@ -1980,7 +1993,7 @@ def contact_record(
         ],
         "canonical_internal_score_payload_sha256": (
             normalized_raw_internal_payload_sha256(
-                canonical_internal_report, selector_row, config
+                canonical_internal_report, selector_row
             )
         ),
         "baseline_pose_score_payload_sha256": normalized_scorer_payload_sha256(
@@ -2221,6 +2234,8 @@ def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -
     expected_package = package_file_hashes(staging_root)
 
     outdir.parent.mkdir(parents=True, exist_ok=True)
+    if outdir.exists() and not outdir.is_dir():
+        raise ContractError(f"Output path exists but is not a directory: {outdir}")
     backup = Path(
         tempfile.mkdtemp(prefix=f".{outdir.name}.previous.", dir=outdir.parent)
     )
@@ -2670,6 +2685,11 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 "sha256": sha256_file(contacts_path),
                 "records": len(contact_rows),
             }
+        pre_audit_package_hashes = package_file_hashes(staging_root)
+        output_hashes["full_generated_package_excluding_self_referential_audit"] = {
+            "file_count": len(pre_audit_package_hashes),
+            "path_sha256_manifest": sha256_json(pre_audit_package_hashes),
+        }
 
         raw_drift_pose_count_by_baseline: Counter[str] = Counter()
         raw_drift_field_count_by_baseline: dict[str, Counter[str]] = defaultdict(
@@ -2716,7 +2736,8 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 "pvrl2_occlusion_remains_baseline_specific": True,
                 "payload_hash_semantics": {
                     "canonical_internal_score_payload_sha256": (
-                        "normalized raw 4_emref V1.2 pose-scorer payload"
+                        "effective raw 4_emref internal scalars, contact lists, "
+                        "source-coordinate hash, and pose inventory"
                     ),
                     "baseline_pose_score_payload_sha256": (
                         "normalized aligned baseline V1.2 pose-scorer payload; "
