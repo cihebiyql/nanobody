@@ -19,6 +19,15 @@
 | A / VHH | 512 | 512 | 0 | 512 | 0 |
 | B / PVRIG | 512 | 512 | 512 | 512 | 0 |
 
+按 docking receptor 和 chain 分层：
+
+| receptor | chain | comparisons | residue exact | raw atom exact | OXT-normalized exact | non-OXT differences |
+|---|---|---:|---:|---:|---:|---:|
+| 8X6B | A | 272 | 272 | 0 | 272 | 0 |
+| 8X6B | B | 272 | 272 | 272 | 272 | 0 |
+| 9E6Y | A | 240 | 240 | 0 | 240 | 0 |
+| 9E6Y | B | 240 | 240 | 240 | 240 | 0 |
+
 观察到的 raw atom identity 差异仅为 VHH C 端终止残基 `OXT` 在 frozen monomer 中存在、在 HADDOCK pose 中缺失。所有 residue identity 与所有非 `OXT` heavy-ATOM identity 均完全一致；PVRIG chain B 为 raw exact match。
 
 ## 建议冻结的最窄规则
@@ -45,9 +54,9 @@
 ## 可复核产物
 
 - Audit：`data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_identity_difference_audit.json`
-- Audit SHA256：`235d8c0deaf6d58ce5fcf67a0e16ef3c538441ecc7d1543a76964010dde3cac8`
+- Audit SHA256：`7b4e3637bb22d51c6d47aee27237e632aaff19bcbb370c763cf44a58db0daf1a`
 - 审计脚本：`data/experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_identity_differences.py`
-- 审计脚本 SHA256：`a65c9ca16a0fe1280e3f7d2e95fa48e36224f7cfbb7651a5751ace4a9b287e16`
+- 审计脚本 SHA256：`9536524b206784b4316ad3e2a5acb377e77fffd3d609f8c1d6cc34298bdfa09a`
 - Boundary remote inventory chain：`580590a1d55f6f684ecb732dcd3112250d921a016864f146040ee0334d0a1819`
 
 完整 per-run、per-pose、per-chain 差异记录见 audit JSON。

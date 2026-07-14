@@ -1,5 +1,6 @@
 {
   "acceptance": {
+    "all_480_locally_available_old_poses_covered": true,
     "all_non_terminal_oxt_atom_identities_exact": true,
     "all_residue_identities_exact": true,
     "boundary4_complete_and_hash_closed": true
@@ -9,7 +10,7 @@
   "formal_eligible": false,
   "implementation": {
     "relpath": "data/experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_identity_differences.py",
-    "sha256": "a65c9ca16a0fe1280e3f7d2e95fa48e36224f7cfbb7651a5751ace4a9b287e16"
+    "sha256": "9536524b206784b4316ad3e2a5acb377e77fffd3d609f8c1d6cc34298bdfa09a"
   },
   "inputs": {
     "boundary4_remote_inventory": {
@@ -47959,6 +47960,44 @@
         "residue_difference_count": 0,
         "residue_identity_exact_count": 512,
         "terminal_oxt_normalized_atom_identity_exact_count": 512
+      }
+    },
+    "chains_by_receptor": {
+      "8X6B": {
+        "A": {
+          "atom_identity_exact_count": 0,
+          "comparison_count": 272,
+          "non_oxt_difference_count": 0,
+          "residue_difference_count": 0,
+          "residue_identity_exact_count": 272,
+          "terminal_oxt_normalized_atom_identity_exact_count": 272
+        },
+        "B": {
+          "atom_identity_exact_count": 272,
+          "comparison_count": 272,
+          "non_oxt_difference_count": 0,
+          "residue_difference_count": 0,
+          "residue_identity_exact_count": 272,
+          "terminal_oxt_normalized_atom_identity_exact_count": 272
+        }
+      },
+      "9E6Y": {
+        "A": {
+          "atom_identity_exact_count": 0,
+          "comparison_count": 240,
+          "non_oxt_difference_count": 0,
+          "residue_difference_count": 0,
+          "residue_identity_exact_count": 240,
+          "terminal_oxt_normalized_atom_identity_exact_count": 240
+        },
+        "B": {
+          "atom_identity_exact_count": 240,
+          "comparison_count": 240,
+          "non_oxt_difference_count": 0,
+          "residue_difference_count": 0,
+          "residue_identity_exact_count": 240,
+          "terminal_oxt_normalized_atom_identity_exact_count": 240
+        }
       }
     },
     "pose_count": 512,
