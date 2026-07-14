@@ -297,11 +297,11 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
         self.assertEqual(run["qualifying_supporting_pose_count"], "2")
 
     def test_lofo_covers_each_family_and_case(self) -> None:
-        cases = {"p1": "F1", "p2": "F2"}
+        cases = {"p1": "F1", "p2": "F2", "p3": "F3"}
         values = {
-            "p1": (0.4, 10, 5),
+            "p1": (0.4, 10, 2),
             "p2": (0.6, 20, 10),
-            "p3": (0.8, 30, 15),
+            "p3": (0.8, 30, 24),
         }
         rows = rows_for_cases(cases, 2, values)
         metadata = positive_metadata(cases)
@@ -338,6 +338,65 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
             MOD.row_hash_chain(first_thresholds, "bootstrap_row_sha256"),
             MOD.row_hash_chain(second_thresholds, "bootstrap_row_sha256"),
         )
+
+    def test_bootstrap_anchor_probabilities_use_all_replicates_as_denominator(self) -> None:
+        positive = {"p1": {"family": "F1"}, "p2": {"family": "F2"}}
+        rows: list[dict[str, str]] = []
+        for replicate in range(1, 11):
+            for candidate_id in positive:
+                if candidate_id == "p1":
+                    defined = replicate <= 7
+                    tier = "G1" if defined else ""
+                else:
+                    defined = True
+                    tier = "G2" if replicate <= 6 else "G5"
+                rows.append(
+                    {
+                        "candidate_id": candidate_id,
+                        "family": positive[candidate_id]["family"],
+                        "evaluation_defined": str(defined).lower(),
+                        "run_tier": tier,
+                        "R_calibration_run_8x6b_dock": "0.5" if defined else "",
+                        "baseline_gap_rank_weighted_mean": "0.1" if defined else "",
+                        "qualifying_support_weight": "0.4" if defined else "",
+                    }
+                )
+        summary = MOD.summarize_bootstrap_anchors(rows, positive, 10)
+        self.assertAlmostEqual(
+            summary["anchors"]["p1"]["modal_tier_probability"], 0.7
+        )
+        self.assertAlmostEqual(
+            summary["anchors"]["p1"]["g1_g3_retention_probability"], 0.7
+        )
+        self.assertAlmostEqual(
+            summary["anchors"]["p2"]["modal_tier_probability"], 0.6
+        )
+        self.assertFalse(summary["passed"])
+        self.assertFalse(summary["family_retention_gate_passed"])
+
+    def test_lofo_summary_enforces_all_documented_gates(self) -> None:
+        family_sizes = {"F1": 3, "F2": 2, "F3": 2, "F4": 2, "F5": 2}
+        positive: dict[str, dict[str, str]] = {}
+        rows: list[dict[str, str]] = []
+        for family, size in family_sizes.items():
+            for index in range(size):
+                candidate = f"{family}_{index}"
+                positive[candidate] = {"family": family}
+                rows.append(
+                    {
+                        "held_out_family": family,
+                        "fold_defined": "true",
+                        "held_out_G1_G3_retained": "true",
+                        "absolute_tier_shift": "1",
+                    }
+                )
+        passing = MOD.summarize_lofo(rows, positive)
+        self.assertTrue(passing["passed"])
+        failing_rows = [dict(row) for row in rows]
+        failing_rows[0]["absolute_tier_shift"] = "3"
+        failing = MOD.summarize_lofo(failing_rows, positive)
+        self.assertFalse(failing["passed"])
+        self.assertFalse(failing["maximum_shift_gate_passed"])
 
     def test_nonfinite_hash_and_duplicate_rows_fail_closed(self) -> None:
         positive = {"p1": {"family": "F1"}}
