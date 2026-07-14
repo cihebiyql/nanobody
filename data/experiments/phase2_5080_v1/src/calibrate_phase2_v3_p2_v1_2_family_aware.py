@@ -31,6 +31,8 @@ METHOD_ID = "PVRIG_V1_2_FAMILY_AWARE_TOP8_CALIBRATION_V1"
 SCHEMA_VERSION = "pvrig_v1_2_family_aware_calibration_v1"
 BASELINES = ("8x6b", "9e6y")
 METRICS = ("H", "O", "P")
+BASELINE_METRICS = ("O", "P")
+CANONICAL_H_CHANNEL = "canonical_shared"
 LOWER_QUANTILE = 0.20
 UPPER_QUANTILE = 0.50
 SUPPORT_CUTOFF = 0.25
@@ -389,6 +391,15 @@ REQUIRED_METRICS_FIELDS = {
     "family",
     "canonical_rank",
     "baseline",
+    "pvrig_vhh_contact_pair_count",
+    "pvrig_contact_residue_count",
+    "vhh_contact_residue_count",
+    "cdr_contact_residue_count",
+    "hotspot_count",
+    "hotspot_overlap_count",
+    "hotspot_overlap_fraction",
+    "hotspot_weight_total",
+    "hotspot_weight_overlap",
     "hotspot_weight_fraction",
     "total_occluding_residue_pair_count",
     "cdr1_occluding_residue_pair_count",
@@ -396,6 +407,19 @@ REQUIRED_METRICS_FIELDS = {
     "cdr3_occluding_residue_pair_count",
     "metrics_row_sha256",
 }
+
+CANONICAL_INTERNAL_CONTACT_FIELDS = (
+    "pvrig_vhh_contact_pair_count",
+    "pvrig_contact_residue_count",
+    "vhh_contact_residue_count",
+    "cdr_contact_residue_count",
+    "hotspot_count",
+    "hotspot_overlap_count",
+    "hotspot_overlap_fraction",
+    "hotspot_weight_total",
+    "hotspot_weight_overlap",
+    "hotspot_weight_fraction",
+)
 
 
 def validate_metrics_rows(
@@ -429,6 +453,7 @@ def validate_metrics_rows(
     keys: set[tuple[str, int, str]] = set()
     case_rows: Counter[str] = Counter()
     family_by_case: dict[str, str] = {}
+    shared_internal_by_pose: dict[tuple[str, int], tuple[str, ...]] = {}
     for row_number, row in enumerate(rows, start=2):
         observed_hash = row.get("metrics_row_sha256", "")
         expected_hash = row_sha256(row, "metrics_row_sha256")
@@ -465,6 +490,21 @@ def validate_metrics_rows(
         if key in keys:
             raise CalibrationError(f"Duplicate continuous metric key: {key}")
         keys.add(key)
+        shared_key = (candidate_id, rank)
+        shared_values = tuple(row.get(field, "").strip() for field in CANONICAL_INTERNAL_CONTACT_FIELDS)
+        previous_shared = shared_internal_by_pose.setdefault(shared_key, shared_values)
+        if previous_shared != shared_values:
+            differing = [
+                field
+                for field, previous, observed in zip(
+                    CANONICAL_INTERNAL_CONTACT_FIELDS, previous_shared, shared_values
+                )
+                if previous != observed
+            ]
+            raise CalibrationError(
+                f"Canonical internal-contact/H channel drift for {candidate_id}/rank{rank}: "
+                f"{differing}"
+            )
         case_rows[candidate_id] += 1
         expected_family = (
             positive_cases.get(candidate_id, mutant_cases.get(candidate_id, {})).get("family")
@@ -546,14 +586,18 @@ def anchor_metric_values(
     rows: Sequence[Mapping[str, str]],
     positive_cases: Mapping[str, Mapping[str, str]],
     ranks_per_case: int,
-) -> dict[str, dict[str, list[tuple[float, float]]]]:
+) -> dict[str, Any]:
     index = family_case_index(rows, positive_cases)
     families = sorted(index)
     if not families:
         raise CalibrationError("No positive families are available for calibration")
     q_rank = normalized_rank_weights(ranks_per_case)
-    output: dict[str, dict[str, list[tuple[float, float]]]] = {
-        baseline: {metric: [] for metric in METRICS} for baseline in BASELINES
+    output: dict[str, Any] = {
+        "H_canonical": [],
+        "baseline": {
+            baseline: {metric: [] for metric in BASELINE_METRICS}
+            for baseline in BASELINES
+        },
     }
     for family in families:
         cases = index[family]
@@ -562,14 +606,32 @@ def anchor_metric_values(
         for case_id, case_rows in cases.items():
             by_key = {(int(row["canonical_rank"]), row["baseline"]): row for row in case_rows}
             for rank in range(1, ranks_per_case + 1):
+                weight = (1.0 / len(families)) * (1.0 / len(cases)) * q_rank[rank]
+                rank_rows: dict[str, Mapping[str, str]] = {}
                 for baseline in BASELINES:
                     key = (rank, baseline)
                     if key not in by_key:
                         raise CalibrationError(f"Positive anchor lacks {case_id}/{rank}/{baseline}")
-                    features = derive_features(by_key[key])
-                    weight = (1.0 / len(families)) * (1.0 / len(cases)) * q_rank[rank]
-                    for metric in METRICS:
-                        output[baseline][metric].append((float(features[metric]), weight))
+                    rank_rows[baseline] = by_key[key]
+                    features = derive_features(rank_rows[baseline])
+                    for metric in BASELINE_METRICS:
+                        output["baseline"][baseline][metric].append(
+                            (float(features[metric]), weight)
+                        )
+                shared_values = {
+                    baseline: tuple(
+                        rank_rows[baseline].get(field, "").strip()
+                        for field in CANONICAL_INTERNAL_CONTACT_FIELDS
+                    )
+                    for baseline in BASELINES
+                }
+                if shared_values["8x6b"] != shared_values["9e6y"]:
+                    raise CalibrationError(
+                        f"Positive anchor canonical H/internal channel drift for "
+                        f"{case_id}/rank{rank}"
+                    )
+                canonical_h = float(derive_features(rank_rows["8x6b"])["H"])
+                output["H_canonical"].append((canonical_h, weight))
     return output
 
 
@@ -610,13 +672,20 @@ def derive_rules(
         raise CalibrationError("Upper calibration quantile must exceed lower quantile")
     values = anchor_metric_values(rows, positive_cases, ranks_per_case)
     thresholds = {
-        baseline: {
-            metric: threshold_from_weighted_values(
-                values[baseline][metric], lower_quantile, upper_quantile
-            )
-            for metric in METRICS
-        }
-        for baseline in BASELINES
+        "H_canonical": threshold_from_weighted_values(
+            values["H_canonical"], lower_quantile, upper_quantile
+        ),
+        "baseline": {
+            baseline: {
+                metric: threshold_from_weighted_values(
+                    values["baseline"][baseline][metric],
+                    lower_quantile,
+                    upper_quantile,
+                )
+                for metric in BASELINE_METRICS
+            }
+            for baseline in BASELINES
+        },
     }
     return {
         "thresholds": thresholds,
@@ -647,31 +716,32 @@ def membership(value: float, threshold: Mapping[str, Any]) -> float:
 
 
 def classify_pose(features: Mapping[str, float | int], rules: Mapping[str, Any], baseline: str) -> tuple[str, float, dict[str, float]]:
-    thresholds = rules["thresholds"][baseline]
+    h_threshold = rules["thresholds"]["H_canonical"]
+    thresholds = rules["thresholds"]["baseline"][baseline]
     h_value = float(features["H"])
     o_value = float(features["O"])
     p_value = float(features["P"])
     memberships = {
-        "H": membership(h_value, thresholds["H"]),
+        "H": membership(h_value, h_threshold),
         "O": membership(o_value, thresholds["O"]),
         "P": membership(p_value, thresholds["P"]),
     }
     score = math.sqrt(memberships["O"] * (memberships["H"] + memberships["P"]) / 2.0)
     if (
         o_value >= thresholds["O"]["U"]
-        and h_value >= thresholds["H"]["U"]
+        and h_value >= h_threshold["U"]
         and p_value >= thresholds["P"]["L"]
     ):
         pose_class = "A"
     elif (
         o_value >= thresholds["O"]["L"]
         and (
-            h_value >= thresholds["H"]["L"]
+            h_value >= h_threshold["L"]
             or p_value >= thresholds["P"]["L"]
         )
     ):
         pose_class = "B"
-    elif h_value >= thresholds["H"]["L"] and o_value < thresholds["O"]["L"]:
+    elif h_value >= h_threshold["L"] and o_value < thresholds["O"]["L"]:
         pose_class = "C"
     else:
         pose_class = "E"

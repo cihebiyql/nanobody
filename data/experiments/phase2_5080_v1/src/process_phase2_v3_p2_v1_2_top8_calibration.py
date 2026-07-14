@@ -50,6 +50,9 @@ DEFAULT_SELECTOR_AUDIT = (
     EXP_DIR
     / "audits/phase2_v3_p2_v1_2_calibration_emref_top8_selection_audit.json"
 )
+DEFAULT_SELECTOR_IMPLEMENTATION = (
+    SCRIPT_DIR / "select_phase2_v3_p2_v1_2_emref_top8.py"
+)
 DEFAULT_POSITIVE_MANIFEST = (
     WORKSPACE_ROOT / "docking/calibration/patent_success_validation/batch_manifest.csv"
 )
@@ -63,6 +66,25 @@ DEFAULT_SCORING_HELPER = DOCKING_SCRIPTS / "pvrig_scoring_semantics_v1_2.py"
 DEFAULT_HOTSPOTS = DATA_ROOT / "structures/PVRIG_hotspot_set_v1.csv"
 DEFAULT_RECONCILIATION = DATA_ROOT / "structures/PVRIG_numbering_reconciliation.csv"
 DEFAULT_OUTDIR = EXP_DIR / "runs/pvrig_v3_p2/docking_gold_v1_2_top8_calibration"
+
+# These hashes freeze the canonical 47-case development calibration inputs and
+# tools.  Custom builds remain supported, but can never claim pose-rule
+# threshold-freeze eligibility.
+CANONICAL_TRUST_ANCHOR_SHA256: Mapping[str, str] = {
+    "selector_csv": "f42ada6cd3fb1ddf754154b6fb076da8c651ecaab2ff28ae58d1806d9a6de70b",
+    "selector_audit": "ad925357a30a6cf37bdf13fc23b512db08d3917761ebd4b0462ac2244f57aa40",
+    "selector_implementation": "91455d5135e35ee206c3a416c24a11b762774d691610819412f17cc8514ac4eb",
+    "positive_manifest": "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8",
+    "mutant_manifest": "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248",
+    "aligner": "e6b863979db5a1ac6702ae7f04da49d3d425069a070fc441221341a202a9d7f7",
+    "pose_scorer": "7fcb7bb8864d171995dd00a16c804bfa82cd731278558ec8a46b40b547467875",
+    "region_scorer": "b60e333c9417693b058357ce45fe99cf4ca641f78e0607028b5475d10025939a",
+    "scoring_helper": "afcddd97b0070768b28f54ffbfb0959e71929f962cca89985cb3abb70abe0d9c",
+    "hotspots": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+    "reconciliation": "d7decf3be4a19dd9da2a42d9c8825a0b5d95ca350aea553b0933ad5c30c3c552",
+    "reference_8x6b": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+    "reference_9e6y": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+}
 
 BASELINES: Mapping[str, Mapping[str, Any]] = {
     "8x6b": {
@@ -124,6 +146,16 @@ MATERIALIZATION_MANIFEST_NAME = "pvrig_v1_2_top8_pose_materialization_manifest.c
 CONTINUOUS_METRICS_NAME = "pvrig_v1_2_top8_continuous_metrics.csv"
 RESIDUE_CONTACTS_NAME = "pvrig_v1_2_top8_residue_contacts.jsonl"
 AUDIT_NAME = "pvrig_v1_2_top8_calibration_audit.json"
+MANAGED_PACKAGE_ENTRIES = frozenset(
+    {
+        "aligned_poses",
+        "alignment_maps",
+        MATERIALIZATION_MANIFEST_NAME,
+        CONTINUOUS_METRICS_NAME,
+        RESIDUE_CONTACTS_NAME,
+        AUDIT_NAME,
+    }
+)
 
 SELECTOR_REQUIRED_FIELDS = {
     "schema_version",
@@ -235,6 +267,23 @@ POSE_METRICS = (
     "pvrl2_clash_residue_count",
     "vhh_clash_residue_count",
 )
+INTERNAL_CONTACT_METRICS = (
+    "pvrig_vhh_contact_pair_count",
+    "pvrig_contact_residue_count",
+    "vhh_contact_residue_count",
+    "cdr_contact_residue_count",
+    "hotspot_count",
+    "hotspot_overlap_count",
+    "hotspot_overlap_fraction",
+    "hotspot_weight_total",
+    "hotspot_weight_overlap",
+    "hotspot_weight_fraction",
+)
+INTERNAL_CONTACT_LIST_FIELDS = (
+    "pvrig_vhh_contacts",
+    "hotspot_overlaps",
+)
+INTERNAL_CONTACT_CHANNEL = "aligned_to_8x6b_source_docking_receptor"
 REGION_TOTAL_METRICS = (
     "total_occluding_atom_contact_count",
     "total_clash_atom_contact_count",
@@ -296,6 +345,7 @@ METRICS_FIELDS = (
     "pose_score_schema_version",
     "region_score_schema_version",
     "scoring_semantics_version",
+    "internal_contact_channel",
     *POSE_METRICS,
     *REGION_TOTAL_METRICS,
     *(
@@ -647,6 +697,48 @@ def required_mapping(parent: Mapping[str, Any], key: str, context: str) -> Mappi
     if not isinstance(value, dict):
         raise ContractError(f"Missing mapping {key!r} in {context}")
     return value
+
+
+def validate_nullable_region_min_distances(
+    region_report: Mapping[str, Any],
+    context: str,
+) -> None:
+    """Validate the only nullable continuous metric emitted by the region scorer."""
+    regions = required_mapping(region_report, "regions", context)
+    zero_evidence_fields = (
+        "occluding_atom_contact_count",
+        "occluding_residue_pair_count",
+        "vhh_residue_count",
+        "pvrl2_residue_count",
+    )
+    for region in REGIONS:
+        values = required_mapping(regions, region, f"{context}.{region}")
+        minimum = values.get("min_distance_a")
+        is_null = minimum is None or (
+            isinstance(minimum, str) and not minimum.strip()
+        )
+        if is_null:
+            nonzero = {
+                field_name: values.get(field_name)
+                for field_name in zero_evidence_fields
+                if parse_int(
+                    values.get(field_name),
+                    f"{context}.{region}.{field_name}",
+                    0,
+                )
+                != 0
+            }
+            if nonzero:
+                raise ContractError(
+                    f"{context}.{region}.min_distance_a is null despite "
+                    f"occluding evidence: {nonzero}"
+                )
+            continue
+        parsed = parse_float(minimum, f"{context}.{region}.min_distance_a")
+        if parsed < 0:
+            raise ContractError(
+                f"{context}.{region}.min_distance_a must be non-negative: {parsed}"
+            )
 
 
 def load_case_manifest(
@@ -1343,6 +1435,10 @@ def validate_scorer_reports(
             f"V1.2 pose scorer hotspot_count != 23 for "
             f"{selector_row['candidate_id']}/rank{selector_row['canonical_rank']}/{baseline}"
         )
+    validate_nullable_region_min_distances(
+        region_report,
+        f"{selector_row['candidate_id']}/rank{selector_row['canonical_rank']}/{baseline}",
+    )
 
     pose_inventory_root = required_mapping(
         pose_report, "record_inventory", "pose scorer report"
@@ -1417,7 +1513,6 @@ def validate_toolchain(config: BuildConfig) -> dict[str, dict[str, str]]:
         "scoring_helper": "pvrig_scoring_semantics_v1_2.py",
     }
     paths = {
-        "processor": Path(__file__).resolve(),
         "aligner": config.aligner.resolve(),
         "pose_scorer": config.pose_scorer.resolve(),
         "region_scorer": config.region_scorer.resolve(),
@@ -1591,6 +1686,7 @@ def flatten_metrics_row(
     selector_row: Mapping[str, str],
     case: CaseMetadata,
     result: BaselineResult,
+    canonical_internal_report: Mapping[str, Any],
     config: BuildConfig,
     pose_rule_eligible: bool,
 ) -> dict[str, str]:
@@ -1667,11 +1763,17 @@ def flatten_metrics_row(
         "pose_score_schema_version": pose_report["schema_version"],
         "region_score_schema_version": region_report["schema_version"],
         "scoring_semantics_version": SCORING_SEMANTICS_VERSION,
+        "internal_contact_channel": INTERNAL_CONTACT_CHANNEL,
     }
     for metric in POSE_METRICS:
-        if metric not in pose_report:
+        source_report = (
+            canonical_internal_report
+            if metric in INTERNAL_CONTACT_METRICS
+            else pose_report
+        )
+        if metric not in source_report:
             raise ContractError(f"Pose scorer omitted continuous metric {metric}")
-        row[metric] = pose_report[metric]
+        row[metric] = source_report[metric]
     for metric in REGION_TOTAL_METRICS:
         if metric not in region_report:
             raise ContractError(f"Region scorer omitted continuous metric {metric}")
@@ -1734,22 +1836,31 @@ def normalized_scorer_payload_sha256(
 def contact_record(
     selector_row: Mapping[str, str],
     result: BaselineResult,
+    canonical_internal_report: Mapping[str, Any],
+    pose_rule_eligible: bool,
 ) -> dict[str, Any]:
     regions = required_mapping(result.region_report, "regions", "region scorer report")
     record: dict[str, Any] = {
         "schema_version": "pvrig_v1_2_top8_residue_contacts_v1",
         "protocol_id": PROTOCOL_ID,
         "formal_eligible": False,
+        "threshold_freeze_eligible": False,
+        "pose_rule_threshold_freeze_eligible": pose_rule_eligible,
+        "dual_receptor_r_gold_freeze_eligible": False,
         "source_docking_receptor": "8x6b",
         "baseline_channel_semantics": "posthoc_scoring_baseline_same_8x6b_docked_pose_ensemble",
+        "internal_contact_channel": INTERNAL_CONTACT_CHANNEL,
+        "claim_boundary": CLAIM_BOUNDARY,
         "run_id": selector_row["run_id"],
         "candidate_id": selector_row["candidate_id"],
         "canonical_rank": int(selector_row["canonical_rank"]),
         "baseline": result.baseline,
         "selector_row_sha256": selector_row["selection_row_sha256"],
         "aligned_pose_sha256": result.aligned_pose_sha256,
-        "pvrig_vhh_contacts": result.pose_report.get("pvrig_vhh_contacts", []),
-        "hotspot_overlaps": result.pose_report.get("hotspot_overlaps", []),
+        "pvrig_vhh_contacts": canonical_internal_report.get(
+            "pvrig_vhh_contacts", []
+        ),
+        "hotspot_overlaps": canonical_internal_report.get("hotspot_overlaps", []),
         "region_residue_pairs": {
             region: {
                 "occluding_residue_pairs": required_mapping(
@@ -1768,6 +1879,22 @@ def contact_record(
     return record
 
 
+def raw_internal_contact_drift(
+    baseline_results: Mapping[str, BaselineResult],
+) -> dict[str, Any]:
+    left = baseline_results["8x6b"].pose_report
+    right = baseline_results["9e6y"].pose_report
+    differing_fields = [
+        field_name
+        for field_name in (*INTERNAL_CONTACT_METRICS, *INTERNAL_CONTACT_LIST_FIELDS)
+        if left.get(field_name) != right.get(field_name)
+    ]
+    return {
+        "has_drift": bool(differing_fields),
+        "differing_fields": differing_fields,
+    }
+
+
 def process_selector_row(
     index: int,
     selector_row: Mapping[str, str],
@@ -1778,7 +1905,13 @@ def process_selector_row(
     alignment_maps: Mapping[str, Mapping[str, Any]],
     reconciliation_map: Mapping[tuple[int, str], tuple[int, str]],
     pose_rule_eligible: bool,
-) -> tuple[int, dict[str, str], list[dict[str, str]], list[dict[str, Any]]]:
+) -> tuple[
+    int,
+    dict[str, str],
+    list[dict[str, str]],
+    list[dict[str, Any]],
+    dict[str, Any],
+]:
     candidate_id = selector_row["candidate_id"]
     case = cases[candidate_id]
     rank = parse_int(selector_row["canonical_rank"], "canonical_rank", 1)
@@ -1811,6 +1944,8 @@ def process_selector_row(
 
     result_8x6b = baseline_results["8x6b"]
     result_9e6y = baseline_results["9e6y"]
+    canonical_internal_report = result_8x6b.pose_report
+    raw_drift = raw_internal_contact_drift(baseline_results)
     material_row: dict[str, Any] = {
         "schema_version": "pvrig_v1_2_top8_pose_materialization_v1",
         "protocol_id": PROTOCOL_ID,
@@ -1883,16 +2018,23 @@ def process_selector_row(
             selector_row,
             case,
             baseline_results[baseline],
+            canonical_internal_report,
             config,
             pose_rule_eligible,
         )
         for baseline in BASELINES
     ]
     contacts = [
-        contact_record(selector_row, baseline_results[baseline]) for baseline in BASELINES
+        contact_record(
+            selector_row,
+            baseline_results[baseline],
+            canonical_internal_report,
+            pose_rule_eligible,
+        )
+        for baseline in BASELINES
     ]
     shutil.rmtree(work_root)
-    return index, normalized_material, metrics, contacts
+    return index, normalized_material, metrics, contacts, raw_drift
 
 
 def verify_frozen_files(bindings: Mapping[str, str]) -> None:
