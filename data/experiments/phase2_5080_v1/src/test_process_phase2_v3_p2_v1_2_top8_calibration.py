@@ -6,6 +6,7 @@ import gzip
 import importlib.util
 import json
 import math
+import shutil
 import sys
 import tempfile
 import unittest
@@ -488,6 +489,33 @@ class V12Top8CalibrationTests(unittest.TestCase):
             self.assertFalse(audit_first["threshold_freeze_eligible"])
             self.assertFalse(audit_first["pose_rule_threshold_freeze_eligible"])
             self.assertFalse(audit_first["dual_receptor_r_gold_freeze_eligible"])
+            contact_records = [json.loads(line) for line in contacts]
+            for record in contact_records:
+                self.assertFalse(record["threshold_freeze_eligible"])
+                self.assertFalse(record["pose_rule_threshold_freeze_eligible"])
+                self.assertFalse(record["dual_receptor_r_gold_freeze_eligible"])
+                self.assertEqual(record["claim_boundary"], MOD.CLAIM_BOUNDARY)
+                self.assertEqual(
+                    record["internal_contact_channel"],
+                    MOD.INTERNAL_CONTACT_CHANNEL,
+                )
+            for rank in {row["canonical_rank"] for row in metrics}:
+                paired = [row for row in metrics if row["canonical_rank"] == rank]
+                self.assertEqual(len(paired), 2)
+                for field_name in MOD.INTERNAL_CONTACT_METRICS:
+                    self.assertEqual(
+                        paired[0][field_name], paired[1][field_name], field_name
+                    )
+            self.assertTrue(
+                audit_first["canonical_internal_contact_contract"]
+                ["cross_baseline_equality_hard_gate_passed"]
+            )
+            self.assertEqual(
+                audit_first["canonical_internal_contact_contract"]
+                ["canonical_internal_contact_source"],
+                "raw_4_emref_pose",
+            )
+            self.assertNotIn("processor", audit_first["toolchain"])
             serialized = json.dumps(audit_first, sort_keys=True)
             for forbidden in ("geometry_tier", "blocker_class", "classification"):
                 self.assertNotIn(forbidden, serialized)
@@ -503,6 +531,86 @@ class V12Top8CalibrationTests(unittest.TestCase):
             self.assertEqual(residue_numbers, set(range(101, 124)))
             self.assertEqual(material[0]["remap_remapped_receptor_residues_9e6y"], "23")
             self.assertEqual(material[0]["remap_unmapped_receptor_residues_9e6y"], "0")
+
+            stale = outdir / "aligned_poses/STALE/rank_99/aligned_to_8x6b.pdb"
+            stale.parent.mkdir(parents=True)
+            stale.write_text("STALE\n", encoding="utf-8")
+            unrelated = outdir / "operator_notes.txt"
+            unrelated.write_text("preserve me\n", encoding="utf-8")
+            audit_third = MOD.build_package(fixture.config(outdir))
+            self.assertFalse(stale.exists())
+            self.assertEqual(unrelated.read_text(encoding="utf-8"), "preserve me\n")
+            expected_managed = {
+                item["relpath"]: item["sha256"]
+                for item in audit_third["output_sha256"]["aligned_poses"]["files"]
+            }
+            observed_managed = {
+                path.relative_to(outdir).as_posix(): MOD.sha256_file(path)
+                for path in (outdir / "aligned_poses").rglob("*.pdb")
+            }
+            self.assertEqual(observed_managed, expected_managed)
+
+    def test_canonical_trust_anchor_hash_substitution_disables_eligibility(self) -> None:
+        selector_evidence = {
+            "selector_audit_validated": True,
+            "selector_implementation_path": MOD.canonical_input_path(
+                MOD.DEFAULT_SELECTOR_IMPLEMENTATION, MOD.WORKSPACE_ROOT
+            ),
+        }
+        canonical = MOD.evaluate_canonical_pose_rule_contract(
+            MOD.BuildConfig(), selector_evidence
+        )
+        self.assertTrue(canonical["eligible"])
+        with tempfile.TemporaryDirectory() as temporary:
+            substituted = Path(temporary) / MOD.DEFAULT_ALIGNER.name
+            shutil.copyfile(MOD.DEFAULT_ALIGNER, substituted)
+            substituted.write_text(
+                substituted.read_text(encoding="utf-8") + "\n# valid substituted tool\n",
+                encoding="utf-8",
+            )
+            config = MOD.BuildConfig(aligner=substituted)
+            check = MOD.evaluate_canonical_pose_rule_contract(
+                config, selector_evidence
+            )
+            self.assertFalse(check["eligible"])
+            self.assertFalse(check["anchors"]["aligner"]["path_match"])
+            self.assertFalse(check["anchors"]["aligner"]["sha256_match"])
+
+    def test_internal_invariance_and_nullable_distance_fail_closed(self) -> None:
+        base = {
+            "candidate_id": "case_01",
+            "canonical_rank": "1",
+            "baseline": "8x6b",
+            **{field_name: "1" for field_name in MOD.INTERNAL_CONTACT_METRICS},
+        }
+        other = {**base, "baseline": "9e6y", "hotspot_overlap_count": "2"}
+        contacts = [
+            {
+                "candidate_id": "case_01",
+                "canonical_rank": 1,
+                "baseline": baseline,
+                "pvrig_vhh_contacts": [],
+                "hotspot_overlaps": [],
+            }
+            for baseline in MOD.BASELINES
+        ]
+        with self.assertRaises(MOD.ContractError):
+            MOD.validate_canonical_internal_contact_outputs([base, other], contacts)
+
+        regions = {
+            region: {
+                "occluding_atom_contact_count": 0,
+                "occluding_residue_pair_count": 0,
+                "vhh_residue_count": 0,
+                "pvrl2_residue_count": 0,
+                "min_distance_a": None,
+            }
+            for region in MOD.REGIONS
+        }
+        MOD.validate_nullable_region_min_distances({"regions": regions}, "valid")
+        regions["CDR2"]["occluding_atom_contact_count"] = 1
+        with self.assertRaises(MOD.ContractError):
+            MOD.validate_nullable_region_min_distances({"regions": regions}, "invalid")
 
     def test_wrong_hotspot_count_inventory_and_source_hash_fail_closed(self) -> None:
         scenarios = ("hotspot_count", "inventory", "source_hash")

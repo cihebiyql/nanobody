@@ -48,6 +48,9 @@ CLAIM_BOUNDARY = (
     "affinity, experimental blocking, independent dual-receptor docking, or "
     "formal-holdout truth."
 )
+UPSTREAM_BASELINE_SEMANTICS = (
+    "posthoc_scoring_baseline_same_8x6b_docked_pose_ensemble"
+)
 
 DEFAULT_METRICS_CSV = (
     WORKSPACE_ROOT
@@ -477,6 +480,8 @@ def validate_metrics_rows(
             raise CalibrationError("Dual-receptor R_gold eligibility is forbidden here")
         if row.get("source_docking_receptor", "").strip().lower() != "8x6b":
             raise CalibrationError("Calibration source must be the 8X6B docking ensemble")
+        if row.get("baseline_channel_semantics", "").strip() != UPSTREAM_BASELINE_SEMANTICS:
+            raise CalibrationError("Unexpected post-hoc baseline-channel semantics")
         candidate_id = row.get("candidate_id", "").strip()
         if candidate_id not in expected_cases:
             raise CalibrationError(f"Unknown candidate in metrics: {candidate_id!r}")
@@ -760,6 +765,8 @@ POSE_SCORE_FIELDS = (
     "canonical_rank",
     "baseline",
     "input_metrics_row_sha256",
+    "H_channel",
+    "canonical_internal_channel_agreement",
     "H_hotspot_weight_fraction",
     "O_total_occluding_residue_pair_count_raw",
     "O_log1p_total_occluding_residue_pair_count",
@@ -802,6 +809,8 @@ def score_pose_rows(
             "canonical_rank": int(row["canonical_rank"]),
             "baseline": row["baseline"],
             "input_metrics_row_sha256": row["metrics_row_sha256"],
+            "H_channel": CANONICAL_H_CHANNEL,
+            "canonical_internal_channel_agreement": True,
             "H_hotspot_weight_fraction": float(features["H"]),
             "O_total_occluding_residue_pair_count_raw": int(features["O_raw"]),
             "O_log1p_total_occluding_residue_pair_count": float(features["O"]),
@@ -944,12 +953,6 @@ def aggregate_run_scores(
             "dual_receptor_r_gold_freeze_eligible": False,
             "source_docking_receptor": "8x6b",
             "baseline_channel_semantics": "two_posthoc_scoring_baselines_on_same_8x6b_docked_pose_ensemble",
-            "canonical_shared_h_and_internal_contact_gate": {
-                "passed": True,
-                "fields": list(CANONICAL_INTERNAL_CONTACT_FIELDS),
-                "H_cutpoint_count": 1,
-                "shared_between_baselines": True,
-            },
             "candidate_id": case_id,
             "family": family_by_case[case_id],
             "case_source": "positive_anchor" if case_id in positive_cases else "mutant_panel_control",
@@ -1413,6 +1416,12 @@ def rules_document(
         "computational_geometry_teacher_only": True,
         "source_docking_receptor": "8x6b",
         "baseline_channel_semantics": "two_posthoc_scoring_baselines_on_same_8x6b_docked_pose_ensemble",
+        "canonical_shared_h_and_internal_contact_gate": {
+            "passed": True,
+            "fields": list(CANONICAL_INTERNAL_CONTACT_FIELDS),
+            "H_cutpoint_count": 1,
+            "shared_between_baselines": True,
+        },
         "claim_boundary": CLAIM_BOUNDARY,
         "rules_core": core,
         "rules_core_sha256": sha256_json(core),
@@ -1725,6 +1734,12 @@ def build_calibration(config: CalibrationConfig) -> dict[str, Any]:
             "computational_geometry_teacher_only": True,
             "source_docking_receptor": "8x6b",
             "baseline_channel_semantics": "two_posthoc_scoring_baselines_on_same_8x6b_docked_pose_ensemble",
+            "canonical_shared_h_and_internal_contact_gate": {
+                "passed": True,
+                "fields": list(CANONICAL_INTERNAL_CONTACT_FIELDS),
+                "H_cutpoint_count": 1,
+                "shared_between_baselines": True,
+            },
             "claim_boundary": CLAIM_BOUNDARY,
             "observed_contract": observed_contract,
             "positive_tiers": summarize_tiers(

@@ -2320,7 +2320,8 @@ def evaluate_canonical_pose_rule_contract(
     selector_audit_closure_match = (
         selector_evidence.get("selector_audit_validated") is True
     )
-    inventory_match = {
+    inventory_match = (
+        {
             baseline: dict(values)
             for baseline, values in config.expected_reference_inventories.items()
         }
@@ -2328,6 +2329,7 @@ def evaluate_canonical_pose_rule_contract(
             baseline: dict(values)
             for baseline, values in DEFAULT_EXPECTED_REFERENCE_INVENTORIES.items()
         }
+    )
     anchors_match = all(check["passed"] for check in anchor_checks.values())
     return {
         "eligible": (
@@ -2351,6 +2353,97 @@ def canonical_pose_rule_contract(
     return bool(evaluate_canonical_pose_rule_contract(config, selector_evidence)["eligible"])
 
 
+def validate_canonical_internal_contact_outputs(
+    metric_rows: Sequence[Mapping[str, str]],
+    contact_rows: Sequence[Mapping[str, Any]],
+) -> int:
+    metric_groups: dict[tuple[str, str], list[Mapping[str, str]]] = defaultdict(list)
+    for row in metric_rows:
+        metric_groups[(row["candidate_id"], row["canonical_rank"])].append(row)
+    for key, rows in metric_groups.items():
+        if {row["baseline"] for row in rows} != set(BASELINES) or len(rows) != 2:
+            raise ContractError(f"Canonical internal metric baseline closure failed: {key}")
+        left, right = rows
+        mismatches = {
+            field_name: (left.get(field_name), right.get(field_name))
+            for field_name in INTERNAL_CONTACT_METRICS
+            if left.get(field_name) != right.get(field_name)
+        }
+        if mismatches:
+            raise ContractError(
+                f"Canonical internal metrics differ across baselines for {key}: "
+                f"{mismatches}"
+            )
+
+    contact_groups: dict[tuple[str, int], list[Mapping[str, Any]]] = defaultdict(list)
+    for record in contact_rows:
+        contact_groups[
+            (str(record["candidate_id"]), int(record["canonical_rank"]))
+        ].append(record)
+    if set(contact_groups) != {
+        (candidate_id, int(rank)) for candidate_id, rank in metric_groups
+    }:
+        raise ContractError("Canonical contact JSONL/metric pose sets differ")
+    for key, records in contact_groups.items():
+        if {record["baseline"] for record in records} != set(BASELINES) or len(records) != 2:
+            raise ContractError(f"Canonical contact baseline closure failed: {key}")
+        left, right = records
+        mismatches = {
+            field_name: (left.get(field_name), right.get(field_name))
+            for field_name in INTERNAL_CONTACT_LIST_FIELDS
+            if left.get(field_name) != right.get(field_name)
+        }
+        if mismatches:
+            raise ContractError(
+                f"Canonical internal contact lists differ across baselines for {key}: "
+                f"{sorted(mismatches)}"
+            )
+    return len(metric_groups)
+
+
+def summarize_nullable_min_distance_contract(
+    metric_rows: Sequence[Mapping[str, str]],
+) -> dict[str, Any]:
+    blank_by_field: Counter[str] = Counter()
+    non_null_count = 0
+    total_count = 0
+    for row in metric_rows:
+        for region in REGIONS:
+            prefix = region.lower()
+            field_name = f"{prefix}_min_distance_a"
+            total_count += 1
+            value = row[field_name].strip()
+            if value:
+                parse_float(value, field_name)
+                non_null_count += 1
+                continue
+            zero_fields = (
+                f"{prefix}_occluding_atom_contact_count",
+                f"{prefix}_occluding_residue_pair_count",
+                f"{prefix}_vhh_residue_count",
+                f"{prefix}_pvrl2_residue_count",
+            )
+            if any(parse_int(row[name], name, 0) != 0 for name in zero_fields):
+                raise ContractError(
+                    f"Blank {field_name} has nonzero occluding evidence for "
+                    f"{row['candidate_id']}/rank{row['canonical_rank']}/{row['baseline']}"
+                )
+            blank_by_field[field_name] += 1
+    return {
+        "nullable_fields": [f"{region.lower()}_min_distance_a" for region in REGIONS],
+        "blank_representation": "empty_csv_cell_from_json_null",
+        "null_allowed_only_when": (
+            "region occluding atom contacts, residue pairs, VHH residues, and "
+            "PVRL2 residues are all zero"
+        ),
+        "non_null_values_must_be_finite": True,
+        "total_value_count": total_count,
+        "non_null_finite_value_count": non_null_count,
+        "null_value_count": sum(blank_by_field.values()),
+        "null_value_count_by_field": dict(sorted(blank_by_field.items())),
+    }
+
+
 def build_package(config: BuildConfig) -> dict[str, Any]:
     if config.jobs < 1:
         raise ContractError(f"jobs must be positive, got {config.jobs}")
@@ -2368,7 +2461,10 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
     cases = load_case_metadata(config)
     toolchain = validate_toolchain(config)
     selector_rows, selector_bindings, selector_evidence = verify_selector(config, cases)
-    pose_rule_eligible = canonical_pose_rule_contract(config, selector_evidence)
+    pose_rule_trust_check = evaluate_canonical_pose_rule_contract(
+        config, selector_evidence
+    )
+    pose_rule_eligible = bool(pose_rule_trust_check["eligible"])
 
     required_inputs = {
         "hotspots": config.hotspots.resolve(),
@@ -2381,7 +2477,6 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         "pose_scorer": config.pose_scorer.resolve(),
         "region_scorer": config.region_scorer.resolve(),
         "scoring_helper": config.scoring_helper.resolve(),
-        "processor": Path(__file__).resolve(),
     }
     file_bindings = dict(selector_bindings)
     for path in required_inputs.values():
@@ -2400,7 +2495,13 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         validate_hotspot_reconciliation(pair_rows_9e6y, reconciliation_map)
 
         indexed_results: dict[
-            int, tuple[dict[str, str], list[dict[str, str]], list[dict[str, Any]]]
+            int,
+            tuple[
+                dict[str, str],
+                list[dict[str, str]],
+                list[dict[str, Any]],
+                dict[str, Any],
+            ],
         ] = {}
         if config.jobs == 1:
             for index, selector_row in enumerate(selector_rows):
@@ -2447,11 +2548,13 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         material_rows: list[dict[str, str]] = []
         metric_rows: list[dict[str, str]] = []
         contact_rows: list[dict[str, Any]] = []
+        raw_internal_drift_rows: list[dict[str, Any]] = []
         for index in range(len(selector_rows)):
-            material, metrics, contacts = indexed_results[index]
+            material, metrics, contacts, raw_drift = indexed_results[index]
             material_rows.append(material)
             metric_rows.extend(metrics)
             contact_rows.extend(contacts)
+            raw_internal_drift_rows.append(raw_drift)
         if len(material_rows) != config.contract.materialization_rows:
             raise ContractError(
                 f"Materialization cardinality {len(material_rows)} != "
@@ -2469,6 +2572,17 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         duplicates = [key for key, count in observed_metric_keys.items() if count != 1]
         if duplicates:
             raise ContractError(f"Missing/duplicate continuous metric keys: {duplicates[:10]}")
+        invariant_pose_count = validate_canonical_internal_contact_outputs(
+            metric_rows, contact_rows
+        )
+        if invariant_pose_count != config.contract.materialization_rows:
+            raise ContractError(
+                f"Canonical internal invariant pose count {invariant_pose_count} != "
+                f"{config.contract.materialization_rows}"
+            )
+        nullable_min_distance_contract = summarize_nullable_min_distance_contract(
+            metric_rows
+        )
         if any(is_forbidden_output_field(field_name) for field_name in MATERIALIZATION_FIELDS):
             raise ContractError("Materialization schema contains classification/tier fields")
         if any(is_forbidden_output_field(field_name) for field_name in METRICS_FIELDS):
@@ -2552,6 +2666,17 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 "records": len(contact_rows),
             }
 
+        raw_drift_pose_count_by_baseline: Counter[str] = Counter()
+        raw_drift_field_count_by_baseline: dict[str, Counter[str]] = defaultdict(
+            Counter
+        )
+        for drift in raw_internal_drift_rows:
+            differing = drift["differing_fields_by_baseline"]
+            for baseline, fields in differing.items():
+                if fields:
+                    raw_drift_pose_count_by_baseline[baseline] += 1
+                    raw_drift_field_count_by_baseline[baseline].update(fields)
+
         audit: dict[str, Any] = {
             "schema_version": "pvrig_v1_2_top8_calibration_audit_v1",
             "status": "PASS_V1_2_TOP8_CALIBRATION_CONTINUOUS_METRICS_BUILT",
@@ -2569,6 +2694,31 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
             "thresholds_or_classes_applied": False,
             "fixed_k_pose_ensemble": True,
             "selector_contract": selector_evidence,
+            "pose_rule_trust_anchor_check": pose_rule_trust_check,
+            "canonical_internal_contact_contract": {
+                "canonical_internal_contact_source": "raw_4_emref_pose",
+                "canonical_internal_contact_numbering": "8x6b_source_numbering",
+                "channel": INTERNAL_CONTACT_CHANNEL,
+                "scalar_fields_reused_for_both_baselines": list(
+                    INTERNAL_CONTACT_METRICS
+                ),
+                "list_fields_reused_for_both_baselines": list(
+                    INTERNAL_CONTACT_LIST_FIELDS
+                ),
+                "pvrl2_occlusion_remains_baseline_specific": True,
+                "cross_baseline_equality_hard_gate_passed": True,
+                "cross_baseline_equal_pose_count": invariant_pose_count,
+                "raw_vs_aligned_diagnostic_drift_pose_count_by_baseline": dict(
+                    sorted(raw_drift_pose_count_by_baseline.items())
+                ),
+                "raw_vs_aligned_diagnostic_drift_field_count_by_baseline": {
+                    baseline: dict(sorted(counts.items()))
+                    for baseline, counts in sorted(
+                        raw_drift_field_count_by_baseline.items()
+                    )
+                },
+            },
+            "nullable_min_distance_contract": nullable_min_distance_contract,
             "expected_contract": config.contract.as_dict(),
             "observed_contract": {
                 "case_count": len(cases),

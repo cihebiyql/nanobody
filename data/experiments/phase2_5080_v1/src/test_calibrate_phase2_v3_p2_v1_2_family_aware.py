@@ -42,11 +42,20 @@ def metric_row(
         "pose_rule_threshold_freeze_eligible": "true",
         "dual_receptor_r_gold_freeze_eligible": "false",
         "source_docking_receptor": "8x6b",
-        "baseline_channel_semantics": "posthoc_test",
+        "baseline_channel_semantics": MOD.UPSTREAM_BASELINE_SEMANTICS,
         "candidate_id": candidate_id,
         "family": family,
         "canonical_rank": str(rank),
         "baseline": baseline,
+        "pvrig_vhh_contact_pair_count": str(total_pairs + 50),
+        "pvrig_contact_residue_count": "12",
+        "vhh_contact_residue_count": "9",
+        "cdr_contact_residue_count": "5",
+        "hotspot_count": "23",
+        "hotspot_overlap_count": "10",
+        "hotspot_overlap_fraction": MOD.scalar_text(h_value),
+        "hotspot_weight_total": "11.2",
+        "hotspot_weight_overlap": MOD.scalar_text(h_value * 11.2),
         "hotspot_weight_fraction": MOD.scalar_text(h_value),
         "total_occluding_residue_pair_count": str(total_pairs),
         "cdr1_occluding_residue_pair_count": str(cdr1),
@@ -111,10 +120,10 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
         rules = MOD.derive_rules(rows, positive_metadata(cases), 1)
         # Family B owns half the mass and its three cases split that half.  The
         # step-CDF q50 is therefore B's third value rather than a pooled median.
-        self.assertAlmostEqual(rules["thresholds"]["8x6b"]["H"]["U"], 0.31)
+        self.assertAlmostEqual(rules["thresholds"]["H_canonical"]["U"], 0.31)
         weights = MOD.anchor_metric_values(rows, positive_metadata(cases), 1)
         family_a_weight = sum(
-            weight for value, weight in weights["8x6b"]["H"] if value > 0.8
+            weight for value, weight in weights["H_canonical"] if value > 0.8
         )
         self.assertAlmostEqual(family_a_weight, 0.5)
 
@@ -134,7 +143,15 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
             metric: {"L": 1.0 if metric == "O" else 0.2, "U": 2.0 if metric == "O" else 0.6}
             for metric in MOD.METRICS
         }
-        rules = {"thresholds": {baseline: metric_rules for baseline in MOD.BASELINES}}
+        rules = {
+            "thresholds": {
+                "H_canonical": metric_rules["H"],
+                "baseline": {
+                    baseline: {metric: metric_rules[metric] for metric in MOD.BASELINE_METRICS}
+                    for baseline in MOD.BASELINES
+                },
+            }
+        }
         cases = [
             ({"H": 0.6, "O": 2.0, "P": 0.2}, "A"),
             ({"H": 0.2, "O": 1.0, "P": 0.0}, "B"),
@@ -201,7 +218,7 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
             rows, metadata, 2, seed=20260714, replicates=7
         )
         self.assertEqual(first, second)
-        self.assertEqual(len(first), 7 * 2 * 3 * 2)
+        self.assertEqual(len(first), 7 * (1 + 2 * 2) * 2)
         self.assertEqual(
             MOD.row_hash_chain(first, "bootstrap_row_sha256"),
             MOD.row_hash_chain(second, "bootstrap_row_sha256"),
@@ -234,6 +251,33 @@ class FamilyCalibrationUnitTests(unittest.TestCase):
                 rows[-1] = dict(rows[0])
             with self.subTest(scenario=scenario), self.assertRaises(MOD.CalibrationError):
                 MOD.validate_metrics_rows(fields, rows, positive, mutant, contract)
+
+    def test_baseline_internal_contact_or_h_drift_fails_closed(self) -> None:
+        positive = {"p1": {"family": "F1"}}
+        mutant = {"m_base": {"family": "F2"}}
+        contract = MOD.CalibrationContract(
+            case_count=2,
+            positive_case_count=1,
+            positive_family_count=1,
+            mutant_panel_case_count=1,
+            mutant_delta_count=0,
+            ranks_per_case=1,
+            baseline_count=2,
+        )
+        rows = rows_for_cases({"p1": "F1", "m_base": "F2"}, 1)
+        drifted = next(
+            row
+            for row in rows
+            if row["candidate_id"] == "p1" and row["baseline"] == "9e6y"
+        )
+        drifted["hotspot_weight_fraction"] = "0.123"
+        drifted["metrics_row_sha256"] = MOD.row_sha256(
+            drifted, "metrics_row_sha256"
+        )
+        with self.assertRaisesRegex(MOD.CalibrationError, "Canonical.*drift"):
+            MOD.validate_metrics_rows(
+                list(rows[0]), rows, positive, mutant, contract
+            )
 
 
 class FamilyCalibrationEndToEndTests(unittest.TestCase):
@@ -319,7 +363,11 @@ class FamilyCalibrationEndToEndTests(unittest.TestCase):
             }
             self.assertEqual(first_hashes, second_hashes)
             self.assertEqual(first["status"], second["status"])
+            self.assertEqual(
+                first["status"], "PASS_V1_2_FAMILY_AWARE_DRY_RUN_BUILT_NOT_FROZEN"
+            )
             self.assertFalse(first["formal_eligible"])
+            self.assertFalse(first["pose_rule_threshold_freeze_eligible"])
             self.assertFalse(first["dual_receptor_r_gold_freeze_eligible"])
             self.assertFalse(first["training_label_release_eligible"])
             self.assertTrue(first["p2_training_blocked"])
@@ -334,7 +382,9 @@ class FamilyCalibrationEndToEndTests(unittest.TestCase):
             rules = json.loads((outdir / MOD.RULES_NAME).read_text(encoding="utf-8"))
             self.assertEqual(rules["rules_core"]["run_score_name"], "R_calibration_run_8x6b_dock")
             self.assertNotIn("R_gold", rules["rules_core"]["run_score_name"])
-            self.assertIn("dual_receptor_r_gold_freeze_eligible=false", report.read_text(encoding="utf-8"))
+            report_text = report.read_text(encoding="utf-8")
+            self.assertIn("pose_rule_threshold_freeze_eligible=false", report_text)
+            self.assertIn("dual_receptor_r_gold_freeze_eligible=false", report_text)
 
 
 if __name__ == "__main__":
