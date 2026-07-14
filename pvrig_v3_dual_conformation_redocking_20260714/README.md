@@ -132,6 +132,16 @@ REMOTE_HOST=node23 scripts/launch_node1.sh status
 
 迁移记录位于 `status/controller_migration_node1_to_node23.json`。共享 `status/controller.lock` 保证 node1 与 node23 不会同时启动两个控制器。
 
+node23 的 `/data` 也是 NFS。实测直接在该目录运行 CNS 时，4个任务在 `flexref` 阶段约26分钟才完成，而同一任务在 node23 本地 ext4 `/tmp` 中4分47秒完成。因此当前生产模式保留共享状态、锁和最终结果，但将 HADDOCK 工作目录放在本地 scratch：
+
+```bash
+REMOTE_HOST=node23 \
+REMOTE_LOCAL_SCRATCH_ROOT=/tmp/pvrig_v3_haddock \
+scripts/launch_node1.sh full
+```
+
+`run_job.py` 会在本地完成 HADDOCK，将完整 run 复制到共享 `runs/` 下的隐藏临时目录，再用原子 rename 发布；评分和 `job_result.json` 仍使用共享路径。成功后本地目录自动清理，失败目录暂时保留供诊断。首个正式 scratch 批次4/4成功并自动进入下一批。
+
 控制器按节点 1-minute load 自适应并发：`>=62: 0`、`56-62: 1`、`48-56: 2`、`<48: 4`，每个 HADDOCK3 任务4核、`nice -n 15`。HADDOCK3 是 CPU 工作负载，空闲 GPU 不会直接加速它。
 
 固定 smoke 集合包含 HR-151 阳性控制和旧几何排名第1候选，各自在 8X6B/9E6Y 上以 seed 917 独立运行，共4个任务。smoke 只验证配置、两个受体分支、候选/控制 monomer、selected-model 发现和2x2后处理能否闭合；它不用于判断评价器稳定。
