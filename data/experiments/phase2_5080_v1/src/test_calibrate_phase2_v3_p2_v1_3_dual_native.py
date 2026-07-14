@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import contextlib
+import io
 import json
 import shutil
 import tempfile
@@ -479,6 +481,44 @@ class TestV13NativeDualCalibration(unittest.TestCase):
             float(selected["R_dual_dev"]),
             (float(native_runs["8X6B"]["R_native"]) + float(native_runs["9E6Y"]["R_native"])) / 2,
         )
+
+    def test_default_publication_wiring_and_stale_root_preflight(self) -> None:
+        args = calibration.parse_args([])
+        self.assertEqual(args.metrics_csv, calibration.DEFAULT_PROCESSING_DIR / "current" / calibration.DEFAULT_METRICS_CSV.name)
+        self.assertEqual(args.processor_audit, calibration.DEFAULT_PROCESSING_DIR / "current" / calibration.DEFAULT_PROCESSOR_AUDIT.name)
+        self.assertEqual(
+            args.processor_qualification,
+            calibration.DEFAULT_PROCESSOR_QUALIFICATION_ROOT
+            / "current"
+            / calibration.DEFAULT_PROCESSOR_QUALIFICATION.name,
+        )
+        self.assertEqual(args.selector_csv.parent.name, "current")
+        self.assertEqual(args.selector_audit.parent.name, "current")
+        wiring = calibration.validate_publication_input_wiring(
+            metrics_csv=args.metrics_csv,
+            processor_audit=args.processor_audit,
+            processor_qualification=args.processor_qualification,
+            selector_csv=args.selector_csv,
+            selector_audit=args.selector_audit,
+        )
+        self.assertEqual(set(wiring), {
+            "continuous_metrics", "processor_audit", "processor_qualification",
+            "selector_csv", "selector_audit",
+        })
+        stale_metrics = calibration.DEFAULT_PROCESSING_DIR / calibration.DEFAULT_METRICS_CSV.name
+        with self.assertRaisesRegex(calibration.CalibrationError, "Stale root-level"):
+            calibration.validate_publication_input_wiring(
+                metrics_csv=stale_metrics,
+                processor_audit=args.processor_audit,
+                processor_qualification=args.processor_qualification,
+                selector_csv=args.selector_csv,
+                selector_audit=args.selector_audit,
+            )
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            exit_code = calibration.main(["--metrics-csv", str(stale_metrics)])
+        self.assertEqual(exit_code, 2)
+        self.assertIn("PREFLIGHT", output.getvalue())
 
     def test_full_B2000_bootstrap_exact_counts_and_small_B_determinism(self) -> None:
         _fields, rows, positive, _mutants, _bases = self.fixture.load_inputs()

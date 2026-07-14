@@ -92,23 +92,28 @@ DEFAULT_PROCESSING_DIR = (
     / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
     "docking_gold_v1_3_native_processing"
 )
+DEFAULT_PROCESSING_CURRENT = DEFAULT_PROCESSING_DIR / "current"
 DEFAULT_METRICS_CSV = (
-    DEFAULT_PROCESSING_DIR / "pvrig_v1_3_native_top8_continuous_metrics.csv"
+    DEFAULT_PROCESSING_CURRENT / "pvrig_v1_3_native_top8_continuous_metrics.csv"
 )
 DEFAULT_PROCESSOR_AUDIT = (
-    DEFAULT_PROCESSING_DIR / "pvrig_v1_3_native_top8_processing_audit.json"
+    DEFAULT_PROCESSING_CURRENT / "pvrig_v1_3_native_top8_processing_audit.json"
+)
+DEFAULT_PROCESSOR_QUALIFICATION_ROOT = (
+    WORKSPACE_ROOT
+    / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
+    "docking_gold_v1_3_native_processor_qualification"
 )
 DEFAULT_PROCESSOR_QUALIFICATION = (
+    DEFAULT_PROCESSOR_QUALIFICATION_ROOT
+    / "current/pvrig_v1_3_native_processor_qualification.json"
+)
+DEFAULT_SELECTOR_ROOT = (
     WORKSPACE_ROOT
     / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
-    "docking_gold_v1_3_native_processor_qualification/current/"
-    "pvrig_v1_3_native_processor_qualification.json"
+    "docking_gold_v1_3_dual47_top8_recovery"
 )
-DEFAULT_SELECTOR_DIR = (
-    WORKSPACE_ROOT
-    / "experiments/phase2_5080_v1/runs/pvrig_v3_p2/"
-    "docking_gold_v1_3_dual47_top8_recovery/current"
-)
+DEFAULT_SELECTOR_DIR = DEFAULT_SELECTOR_ROOT / "current"
 DEFAULT_SELECTOR_CSV = DEFAULT_SELECTOR_DIR / "pvrig_v1_3_dual47_emref_top8_selector.csv"
 DEFAULT_SELECTOR_AUDIT = DEFAULT_SELECTOR_DIR / "pvrig_v1_3_dual47_emref_top8_recovery_audit.json"
 DEFAULT_EXECUTION_RELEASE = (
@@ -3408,6 +3413,63 @@ def build_calibration(
         raise
 
 
+def validate_publication_input_wiring(
+    *,
+    metrics_csv: Path,
+    processor_audit: Path,
+    processor_qualification: Path,
+    selector_csv: Path,
+    selector_audit: Path,
+) -> dict[str, str]:
+    entries = {
+        "continuous_metrics": (
+            metrics_csv,
+            DEFAULT_PROCESSING_DIR,
+            DEFAULT_METRICS_CSV.name,
+            DEFAULT_METRICS_CSV,
+        ),
+        "processor_audit": (
+            processor_audit,
+            DEFAULT_PROCESSING_DIR,
+            DEFAULT_PROCESSOR_AUDIT.name,
+            DEFAULT_PROCESSOR_AUDIT,
+        ),
+        "processor_qualification": (
+            processor_qualification,
+            DEFAULT_PROCESSOR_QUALIFICATION_ROOT,
+            DEFAULT_PROCESSOR_QUALIFICATION.name,
+            DEFAULT_PROCESSOR_QUALIFICATION,
+        ),
+        "selector_csv": (
+            selector_csv,
+            DEFAULT_SELECTOR_ROOT,
+            DEFAULT_SELECTOR_CSV.name,
+            DEFAULT_SELECTOR_CSV,
+        ),
+        "selector_audit": (
+            selector_audit,
+            DEFAULT_SELECTOR_ROOT,
+            DEFAULT_SELECTOR_AUDIT.name,
+            DEFAULT_SELECTOR_AUDIT,
+        ),
+    }
+    validated: dict[str, str] = {}
+    for label, (selected, publication_root, filename, canonical_default) in entries.items():
+        default_lexical = Path(os.path.abspath(canonical_default))
+        expected_default = Path(os.path.abspath(publication_root / "current" / filename))
+        if default_lexical != expected_default:
+            raise CalibrationError(f"Internal {label} default is not wired through current")
+        selected_lexical = Path(os.path.abspath(selected))
+        stale_root_level = Path(os.path.abspath(publication_root / filename))
+        if selected_lexical == stale_root_level:
+            raise CalibrationError(
+                f"Stale root-level {label} is forbidden; use publication current: "
+                f"{canonical_default}"
+            )
+        validated[label] = selected_lexical.as_posix()
+    return validated
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics-csv", type=Path, default=DEFAULT_METRICS_CSV)
@@ -3437,6 +3499,17 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
+    try:
+        validate_publication_input_wiring(
+            metrics_csv=args.metrics_csv,
+            processor_audit=args.processor_audit,
+            processor_qualification=args.processor_qualification,
+            selector_csv=args.selector_csv,
+            selector_audit=args.selector_audit,
+        )
+    except CalibrationError as error:
+        print(f"FAIL_V1_3_NATIVE_DUAL_CALIBRATION_PREFLIGHT: {error}")
+        return 2
     config = CalibrationConfig(
         metrics_csv=args.metrics_csv.resolve(),
         processor_audit=args.processor_audit.resolve(),
