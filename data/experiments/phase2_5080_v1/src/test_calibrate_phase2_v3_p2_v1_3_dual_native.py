@@ -26,6 +26,7 @@ class V13SyntheticFixture:
         self.selector_audit = root / "selector_audit.json"
         self.metrics_csv = root / "native_metrics.csv"
         self.processor_audit = root / "processor_audit.json"
+        self.processor_qualification = root / "processor_qualification.json"
         self.preregistration = calibration.DEFAULT_PREREGISTRATION
         self.positive_cases = calibration.load_positive_manifest(self.positive_manifest)
         self.mutant_cases, self.base_by_molecule = calibration.load_mutant_manifest(
@@ -46,6 +47,62 @@ class V13SyntheticFixture:
         self._build_selector()
         self._build_metrics()
         self._build_processor_audit()
+        calibration.write_json(
+            self.processor_qualification,
+            {
+                "schema_version": calibration.PROCESSOR_QUALIFICATION_SCHEMA,
+                "status": calibration.PROCESSOR_QUALIFICATION_STATUS,
+                "protocol_id": calibration.PROTOCOL_ID,
+                "calibration_input_eligible": True,
+                "formal_eligible": False,
+                "docking_gold_release_eligible": False,
+                "training_label_release_eligible": False,
+                "p2_training_ready": False,
+                "qualified_input": {
+                    "processor_audit_sha256": calibration.sha256_file(
+                        self.processor_audit
+                    ),
+                    "continuous_metrics_sha256": calibration.sha256_file(
+                        self.metrics_csv
+                    ),
+                    "continuous_metrics_row_hash_chain": calibration.newline_hash_chain(
+                        self.metrics_rows, "metrics_row_sha256"
+                    ),
+                    "selector_csv_sha256": calibration.sha256_file(
+                        self.selector_csv
+                    ),
+                    "selector_audit_sha256": calibration.sha256_file(
+                        self.selector_audit
+                    ),
+                    "selector_publication_release_id": "synthetic-selector-release",
+                    "preregistration_sha256": calibration.PREREGISTRATION_SHA256,
+                    "execution_release_sha256": calibration.EXECUTION_RELEASE_SHA256,
+                    "positive_manifest_sha256": calibration.POSITIVE_MANIFEST_SHA256,
+                    "mutant_manifest_sha256": calibration.MUTANT_MANIFEST_SHA256,
+                    "case_manifest_sha256": calibration.CASE_MANIFEST_SHA256,
+                    "run_manifest_sha256": calibration.RUN_MANIFEST_SHA256,
+                    "protocol_manifest_sha256": calibration.PROTOCOL_MANIFEST_SHA256,
+                    "reference_sha256": dict(calibration.REFERENCE_SHA256),
+                    "processor_sha256": calibration.sha256_file(
+                        calibration.DEFAULT_PROCESSOR_IMPLEMENTATION
+                    ),
+                    "processor_test_sha256": calibration.sha256_file(
+                        calibration.DEFAULT_PROCESSOR_TEST
+                    ),
+                },
+                "determinism": {
+                    "independent_publication_count": 2,
+                    "full_inventory_equal": True,
+                    "core_output_hashes_equal": True,
+                },
+                "publication": {
+                    "release_id": "synthetic-qualification-release",
+                    "immutable_versioned_release": True,
+                    "promotion": "single atomic current symlink replacement",
+                    "rollback_safe": True,
+                },
+            },
+        )
 
     def _write_rows(
         self, path: Path, fields: list[str], rows: list[dict[str, str]]
@@ -489,6 +546,7 @@ class TestV13NativeDualCalibration(unittest.TestCase):
         return calibration.CalibrationConfig(
             metrics_csv=self.fixture.metrics_csv,
             processor_audit=self.fixture.processor_audit,
+            processor_qualification=self.fixture.processor_qualification,
             selector_csv=self.fixture.selector_csv,
             selector_audit=self.fixture.selector_audit,
             execution_release=self.fixture.execution_release,

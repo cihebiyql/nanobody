@@ -1268,6 +1268,8 @@ def verify_selector(
     selector_helper_hashes: set[str] = set()
     selector_helper_paths: set[str] = set()
     publication_release_ids: set[str] = set()
+    execution_release_hashes: set[str] = set()
+    run_manifest_hashes: set[str] = set()
     manifest_cache: dict[
         tuple[str, str], tuple[str, dict[str, dict[str, str]]]
     ] = {}
@@ -1427,6 +1429,8 @@ def verify_selector(
         publication_release_ids.add(
             safe_component(row.get("publication_release_id", ""), "publication_release_id")
         )
+        execution_release_hashes.add(row["execution_release_manifest_sha256"])
+        run_manifest_hashes.add(row["run_manifest_sha256"])
         execution_release = resolve_workspace_path(
             row.get("execution_release_manifest_relpath", ""), config.workspace_root
         )
@@ -1505,6 +1509,8 @@ def verify_selector(
         raise ContractError("Selector rows do not bind one helper implementation")
     if len(publication_release_ids) != 1:
         raise ContractError("Selector rows span multiple publication releases")
+    if len(execution_release_hashes) != 1 or len(run_manifest_hashes) != 1:
+        raise ContractError("Selector rows span multiple execution/run manifests")
     publication_release_id = next(iter(publication_release_ids))
     if immutable_release_id(config.selector_csv.resolve()) != publication_release_id:
         raise ContractError("Selector CSV is not in its immutable publication release")
@@ -1534,6 +1540,8 @@ def verify_selector(
         "selector_helper_relpath": next(iter(selector_helper_paths)),
         "selector_helper_sha256": next(iter(selector_helper_hashes)),
         "publication_release_id": publication_release_id,
+        "execution_release_manifest_sha256": next(iter(execution_release_hashes)),
+        "run_manifest_sha256": next(iter(run_manifest_hashes)),
         "selector_audit_validated": audit_validated,
         "selection_row_hash_chain": sha256_bytes(
             "\n".join(row["selection_row_sha256"] for row in rows).encode("ascii")
@@ -2359,33 +2367,61 @@ def package_file_hashes(root: Path) -> dict[str, str]:
     return files
 
 
-def publish_stage(staging_root: Path, outdir: Path) -> None:
+def promote_current_symlink(release_dir: Path, current_link: Path) -> None:
+    current_link.parent.mkdir(parents=True, exist_ok=True)
+    if current_link.exists() and not current_link.is_symlink():
+        raise ContractError(f"Current publication pointer is not a symlink: {current_link}")
+    descriptor, raw_temporary = tempfile.mkstemp(
+        prefix=".current.", dir=current_link.parent
+    )
+    os.close(descriptor)
+    temporary = Path(raw_temporary)
+    temporary.unlink()
+    try:
+        os.symlink(
+            os.path.relpath(release_dir, current_link.parent),
+            temporary,
+            target_is_directory=True,
+        )
+        os.replace(temporary, current_link)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def promote_versioned_release(
+    staging_root: Path,
+    release_dir: Path,
+    current_link: Path,
+    pointer_promoter: Any = promote_current_symlink,
+) -> None:
     if not (staging_root / AUDIT_NAME).is_file():
         raise ContractError("Staging package lacks final audit marker")
     shutil.rmtree(staging_root / ".work", ignore_errors=True)
     expected = package_file_hashes(staging_root)
-    outdir.parent.mkdir(parents=True, exist_ok=True)
-    if outdir.exists() and not outdir.is_dir():
-        raise ContractError(f"Output path is not a directory: {outdir}")
-    backup = Path(tempfile.mkdtemp(prefix=f".{outdir.name}.previous.", dir=outdir.parent))
-    backup.rmdir()
-    had_previous = outdir.exists()
-    installed = False
+    release_dir.parent.mkdir(parents=True, exist_ok=True)
+    previous_release = current_link.resolve() if current_link.is_symlink() else None
+    created = False
+    if release_dir.exists():
+        if not release_dir.is_dir() or package_file_hashes(release_dir) != expected:
+            raise ContractError(f"Immutable native-processing release collision: {release_dir.name}")
+        shutil.rmtree(staging_root)
+    else:
+        os.replace(staging_root, release_dir)
+        created = True
     try:
-        if had_previous:
-            os.replace(outdir, backup)
-        os.replace(staging_root, outdir)
-        installed = True
-        if package_file_hashes(outdir) != expected:
-            raise ContractError("Post-publish package hash set differs from staging")
+        pointer_promoter(release_dir, current_link)
+        if not current_link.is_symlink() or current_link.resolve() != release_dir.resolve():
+            raise ContractError("Atomic current publication pointer verification failed")
+        if package_file_hashes(release_dir) != expected:
+            raise ContractError("Published immutable release differs from staging inventory")
     except Exception:
-        if installed and outdir.exists():
-            shutil.rmtree(outdir)
-        if had_previous and backup.exists():
-            os.replace(backup, outdir)
+        if previous_release is not None:
+            promote_current_symlink(previous_release, current_link)
+        elif current_link.is_symlink():
+            current_link.unlink()
+        if created and release_dir.exists():
+            shutil.rmtree(release_dir)
         raise
-    if backup.exists():
-        shutil.rmtree(backup)
 
 
 def build_package(config: BuildConfig) -> dict[str, Any]:
@@ -2413,6 +2449,9 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
         "positive_manifest": config.positive_manifest.resolve(),
         "mutant_manifest": config.mutant_manifest.resolve(),
         "selector_implementation": config.selector_implementation.resolve(),
+        "identity_normalization_amendment": (
+            selector_contract.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.resolve()
+        ),
         "hotspots": config.hotspots.resolve(),
         "reconciliation": config.reconciliation.resolve(),
         "aligner": config.aligner.resolve(),
@@ -2432,10 +2471,10 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
     for path in required_inputs.values():
         file_bindings[str(path)] = sha256_file(path)
 
-    outdir = config.outdir.resolve()
-    outdir.parent.mkdir(parents=True, exist_ok=True)
+    publication_root = config.outdir.resolve()
+    publication_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(
-        prefix=f".{outdir.name}.staging.", dir=outdir.parent
+        prefix=".native-processing.staging.", dir=publication_root
     ) as temporary:
         staging_root = Path(temporary)
         validate_native_hotspot_reconciliation(
@@ -2579,6 +2618,25 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
             "file_count": len(before_audit),
             "path_sha256_manifest": sha256_json(before_audit),
         }
+        release_identity = {
+            "schema_version": "pvrig_v1_3_native_processing_release_identity_v1",
+            "protocol_id": PROTOCOL_ID,
+            "selector_csv_sha256": sha256_file(config.selector_csv.resolve()),
+            "selector_audit_sha256": sha256_file(config.selector_audit.resolve()),
+            "selector_publication_release_id": selector_evidence[
+                "publication_release_id"
+            ],
+            "preregistration_sha256": sha256_file(config.preregistration.resolve()),
+            "processor_sha256": sha256_file(Path(__file__).resolve()),
+            "processor_test_sha256": sha256_file(DEFAULT_PROCESSOR_TEST.resolve()),
+            "frozen_file_binding_sha256": sha256_json(
+                dict(sorted(file_bindings.items()))
+            ),
+            "core_output_sha256": output_hashes,
+        }
+        release_id = f"native-{sha256_json(release_identity)[:24]}"
+        release_dir = publication_root / "releases" / release_id
+        current_link = publication_root / "current"
         audit: dict[str, Any] = {
             "schema_version": "pvrig_v1_3_native_top8_processing_audit_v1",
             "status": PROCESSOR_PENDING_STATUS,
@@ -2639,9 +2697,12 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 for receptor in config.contract.receptors
             },
             "publication_contract": {
-                "atomic_full_directory_replacement": True,
-                "post_publish_path_and_hash_set_verified": True,
-                "stale_prior_files_preserved": False,
+                "immutable_versioned_release": True,
+                "atomic_current_symlink_replacement": True,
+                "rollback_safe": True,
+                "release_id": release_id,
+                "release_relpath": f"releases/{release_id}",
+                "current_pointer_relpath": "current",
             },
             "input_sha256": {
                 "selector_csv": sha256_file(config.selector_csv.resolve()),
@@ -2650,6 +2711,13 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                     if config.selector_audit is not None
                     else ""
                 ),
+                "selector_publication_release_id": selector_evidence[
+                    "publication_release_id"
+                ],
+                "execution_release_manifest": selector_evidence[
+                    "execution_release_manifest_sha256"
+                ],
+                "run_manifest": selector_evidence["run_manifest_sha256"],
                 "preregistration": sha256_file(config.preregistration.resolve()),
                 "positive_manifest": sha256_file(config.positive_manifest.resolve()),
                 "mutant_manifest": sha256_file(config.mutant_manifest.resolve()),
@@ -2657,6 +2725,9 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 "reconciliation": sha256_file(config.reconciliation.resolve()),
                 "processor": sha256_file(Path(__file__).resolve()),
                 "processor_test": sha256_file(DEFAULT_PROCESSOR_TEST.resolve()),
+                "identity_normalization_amendment": sha256_file(
+                    selector_contract.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT.resolve()
+                ),
                 "frozen_file_binding_sha256": sha256_json(dict(sorted(file_bindings.items()))),
                 "frozen_file_binding_count": len(file_bindings),
                 **{
@@ -2665,11 +2736,12 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 },
             },
             "toolchain": toolchain,
+            "release_identity": release_identity,
             "output_sha256": output_hashes,
         }
         # Eligibility fields above are boundaries, not emitted training labels.
         write_json(audit_path, audit)
-        publish_stage(staging_root, outdir)
+        promote_versioned_release(staging_root, release_dir, current_link)
     return audit
 
 
@@ -2739,7 +2811,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "docking_gold_release_eligible": audit[
                     "docking_gold_release_eligible"
                 ],
-                "output": config.outdir.resolve().as_posix(),
+                "output": (config.outdir.resolve() / "current").as_posix(),
             },
             sort_keys=True,
         )

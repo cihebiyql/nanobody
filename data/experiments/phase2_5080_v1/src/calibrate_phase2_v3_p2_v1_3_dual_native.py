@@ -133,6 +133,14 @@ DEFAULT_CALIBRATOR_TEST = (
         "test_calibrate_phase2_v3_p2_v1_3_dual_native.py"
     )
 )
+DEFAULT_PROCESSOR_IMPLEMENTATION = (
+    Path(__file__).resolve().with_name("process_phase2_v3_p2_v1_3_native_top8.py")
+)
+DEFAULT_PROCESSOR_TEST = (
+    Path(__file__).resolve().with_name(
+        "test_process_phase2_v3_p2_v1_3_native_top8.py"
+    )
+)
 DEFAULT_PREREGISTRATION = (
     WORKSPACE_ROOT
     / "experiments/phase2_5080_v1/audits/"
@@ -1332,6 +1340,90 @@ def validate_processor_audit(
         "native_only": True,
         "selector_publication_release_id": selector_evidence["publication_release_id"],
         "metric_row_hash_chain": expected_metric["row_hash_chain"],
+        "validated": True,
+    }
+
+
+def validate_processor_qualification(
+    path: Path,
+    config: CalibrationConfig,
+    processor_audit: Mapping[str, Any],
+    metric_rows: Sequence[Mapping[str, str]],
+    selector_evidence: Mapping[str, Any],
+    preregistration: Mapping[str, Any],
+    execution_release: Mapping[str, Any],
+) -> dict[str, Any]:
+    if not path.is_file():
+        raise CalibrationError(f"Independent processor qualification is missing: {path}")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    expected_scalars = {
+        "schema_version": PROCESSOR_QUALIFICATION_SCHEMA,
+        "status": PROCESSOR_QUALIFICATION_STATUS,
+        "protocol_id": PROTOCOL_ID,
+        "calibration_input_eligible": True,
+        "formal_eligible": False,
+        "docking_gold_release_eligible": False,
+        "training_label_release_eligible": False,
+        "p2_training_ready": False,
+    }
+    failures = [
+        field for field, expected in expected_scalars.items()
+        if payload.get(field) != expected
+    ]
+    qualified = payload.get("qualified_input", {})
+    expected_qualified = {
+        "processor_audit_sha256": processor_audit["sha256"],
+        "continuous_metrics_sha256": sha256_file(config.metrics_csv),
+        "continuous_metrics_row_hash_chain": newline_hash_chain(
+            metric_rows, "metrics_row_sha256"
+        ),
+        "selector_csv_sha256": selector_evidence["selector_csv"]["sha256"],
+        "selector_audit_sha256": selector_evidence["selector_audit"]["sha256"],
+        "selector_publication_release_id": selector_evidence["publication_release_id"],
+        "preregistration_sha256": preregistration["sha256"],
+        "execution_release_sha256": execution_release["sha256"],
+        "positive_manifest_sha256": POSITIVE_MANIFEST_SHA256,
+        "mutant_manifest_sha256": MUTANT_MANIFEST_SHA256,
+        "case_manifest_sha256": CASE_MANIFEST_SHA256,
+        "run_manifest_sha256": RUN_MANIFEST_SHA256,
+        "protocol_manifest_sha256": PROTOCOL_MANIFEST_SHA256,
+        "reference_sha256": dict(REFERENCE_SHA256),
+        "processor_sha256": sha256_file(DEFAULT_PROCESSOR_IMPLEMENTATION),
+        "processor_test_sha256": sha256_file(DEFAULT_PROCESSOR_TEST),
+    }
+    for field, expected in expected_qualified.items():
+        if not isinstance(qualified, dict) or qualified.get(field) != expected:
+            failures.append(f"qualified_input.{field}")
+    determinism = payload.get("determinism", {})
+    expected_determinism = {
+        "independent_publication_count": 2,
+        "full_inventory_equal": True,
+        "core_output_hashes_equal": True,
+    }
+    for field, expected in expected_determinism.items():
+        if not isinstance(determinism, dict) or determinism.get(field) != expected:
+            failures.append(f"determinism.{field}")
+    publication = payload.get("publication", {})
+    if (
+        not isinstance(publication, dict)
+        or not str(publication.get("release_id", "")).strip()
+        or publication.get("immutable_versioned_release") is not True
+        or publication.get("promotion") != "single atomic current symlink replacement"
+        or publication.get("rollback_safe") is not True
+    ):
+        failures.append("publication")
+    if failures:
+        raise CalibrationError(
+            f"Independent processor qualification closure failed: {sorted(failures)}"
+        )
+    return {
+        "relpath": canonical_path(path),
+        "sha256": sha256_file(path),
+        "schema_version": payload["schema_version"],
+        "status": payload["status"],
+        "calibration_input_eligible": True,
+        "deterministic_publication_count": 2,
+        "publication_release_id": publication["release_id"],
         "validated": True,
     }
 
@@ -2622,6 +2714,9 @@ def build_acceptance_summary(
                     "immutable_publication_validated"
                 ) is True
                 and input_bindings["processor_audit"].get("validated") is True
+                and input_bindings["processor_qualification"].get(
+                    "calibration_input_eligible"
+                ) is True
                 and input_bindings["fixed_case_semantics"].get(
                     "mutation_semantics_validated"
                 ) is True
@@ -2922,6 +3017,15 @@ def build_calibration(
         selector_evidence,
         preregistration,
     )
+    processor_qualification = validate_processor_qualification(
+        config.processor_qualification,
+        config,
+        processor_audit,
+        metric_rows,
+        selector_evidence,
+        preregistration,
+        execution_release,
+    )
     input_bindings = {
         "preregistration": preregistration,
         "execution_release": execution_release,
@@ -2929,6 +3033,7 @@ def build_calibration(
         "fixed_case_semantics": case_semantics,
         "selector_publication": selector_evidence,
         "processor_audit": processor_audit,
+        "processor_qualification": processor_qualification,
         "continuous_metrics": {
             "relpath": canonical_path(config.metrics_csv),
             "sha256": sha256_file(config.metrics_csv),
@@ -3046,6 +3151,7 @@ def build_calibration(
                 "selector_csv": selector_evidence["selector_csv"],
                 "selector_audit": selector_evidence["selector_audit"],
                 "processor_audit": processor_audit,
+                "processor_qualification": processor_qualification,
                 "continuous_metrics": input_bindings["continuous_metrics"],
                 "positive_manifest": input_bindings["positive_manifest"],
                 "mutant_manifest": input_bindings["mutant_manifest"],
