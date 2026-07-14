@@ -625,6 +625,8 @@ class V13Dual47RecoveryTests(unittest.TestCase):
                 "pose_vhh_heavy_hetatm_zero_gate_pass",
                 "receptor_pvrig_heavy_hetatm_zero_gate_pass",
                 "pose_pvrig_heavy_hetatm_zero_gate_pass",
+                "vhh_heavy_hetatm_raw_identity_exact",
+                "pvrig_heavy_hetatm_raw_identity_exact",
                 "heavy_hetatm_zero_gate_pass",
             ):
                 self.assertEqual({row[field] for row in rows}, {"true"})
@@ -678,6 +680,12 @@ class V13Dual47RecoveryTests(unittest.TestCase):
             self.assertEqual(
                 identity_summary["pose_pvrig_heavy_hetatm_zero_gate_pass_count"],
                 752,
+            )
+            self.assertEqual(
+                identity_summary["vhh_heavy_hetatm_raw_identity_exact_count"], 752
+            )
+            self.assertEqual(
+                identity_summary["pvrig_heavy_hetatm_raw_identity_exact_count"], 752
             )
             self.assertEqual(identity_summary["heavy_hetatm_zero_gate_pass_count"], 752)
             self.assertFalse(identity_summary["coordinate_or_score_modified"])
@@ -805,6 +813,68 @@ class V13Dual47RecoveryTests(unittest.TestCase):
                     fixture.build()
                 self.assertFalse(fixture.output.exists())
 
+    def test_pose_heavy_hetatm_injection_fails_closed_for_both_chains(self) -> None:
+        for chain in ("A", "B"):
+            with self.subTest(chain=chain), tempfile.TemporaryDirectory() as temporary:
+                fixture = Fixture(Path(temporary))
+                run_id = "P2PILOT_001__8X6B__main"
+                pose = (
+                    fixture.remote_old
+                    / f"runs/{run_id}/run_{run_id}/4_emref/emref_1.pdb"
+                )
+                inject_pdb_record(pose, hetatm_line(99, chain, 201))
+                with self.assertRaisesRegex(
+                    MOD.RecoveryError,
+                    f"pose chain {chain} heavy HETATM identity count must be zero",
+                ):
+                    fixture.build()
+                self.assertFalse(fixture.output.exists())
+
+    def test_reference_and_hetatm_oxt_injections_fail_closed(self) -> None:
+        amendment_v2 = MOD.load_identity_normalization_amendment_v2()
+        cases = (
+            (
+                "A",
+                "reference",
+                with_pdb_record(monomer_pdb_bytes(), hetatm_line(9, "A", 201)),
+                "frozen monomer",
+            ),
+            (
+                "B",
+                "reference",
+                with_pdb_record(pdb_bytes("B"), hetatm_line(9, "B", 201)),
+                "frozen receptor",
+            ),
+            (
+                "A",
+                "pose",
+                with_pdb_record(
+                    pdb_bytes("AB"),
+                    hetatm_line(
+                        9,
+                        "A",
+                        1,
+                        atom_name="OXT",
+                        resname="ALA",
+                        element="O",
+                    ),
+                ),
+                "HETATM OXT pose",
+            ),
+        )
+        for chain, role, coordinates, label in cases:
+            with self.subTest(chain=chain, role=role, label=label):
+                identity = MOD.hetatm_heavy_identity_signature(
+                    coordinates, chain, Path(f"{label}.pdb")
+                )
+                with self.assertRaisesRegex(
+                    MOD.RecoveryError,
+                    f"chain {chain} heavy HETATM identity count must be zero",
+                ):
+                    MOD.require_zero_heavy_hetatm(
+                        identity, label, chain, role, amendment_v2
+                    )
+
     def test_dual_lane_metadata_and_monomer_hash_identity_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             fixture = Fixture(Path(temporary))
@@ -916,6 +986,55 @@ class V13Dual47RecoveryTests(unittest.TestCase):
             tampered.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
             with self.assertRaisesRegex(MOD.RecoveryError, "amendment hash mismatch"):
                 MOD.load_identity_normalization_amendment(tampered)
+
+    def test_amendment_v2_and_validator_are_hard_bound(self) -> None:
+        amendment_v2 = MOD.load_identity_normalization_amendment_v2()
+        self.assertEqual(
+            amendment_v2["heavy_hetatm_rule"]["rule_id"],
+            "CHAIN_A_B_ZERO_HEAVY_HETATM_V1",
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            tampered = Path(temporary) / "amendment_v2.json"
+            payload = json.loads(
+                MOD.DEFAULT_IDENTITY_NORMALIZATION_AMENDMENT_V2.read_text(
+                    encoding="utf-8"
+                )
+            )
+            payload["heavy_hetatm_rule"]["any_heavy_hetatm_identity"] = "allow"
+            tampered.write_text(
+                json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(
+                MOD.RecoveryError, "amendment v2 hash mismatch"
+            ):
+                MOD.load_identity_normalization_amendment_v2(tampered)
+        with mock.patch.object(
+            MOD,
+            "FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256",
+            "0" * 64,
+        ):
+            with self.assertRaisesRegex(MOD.RecoveryError, "validator hash mismatch"):
+                MOD.load_identity_normalization_amendment_v2()
+
+    def test_publication_release_id_binds_amendment_v2_and_validator(self) -> None:
+        kwargs = {
+            "execution_release_sha256": "1" * 64,
+            "run_manifest_sha256": "2" * 64,
+            "reuse_manifest_sha256": "3" * 64,
+            "selector_sha256": "4" * 64,
+            "selector_helper_sha256": "5" * 64,
+        }
+        baseline = MOD.publication_release_id(**kwargs)
+        with mock.patch.object(
+            MOD, "FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256", "6" * 64
+        ):
+            self.assertNotEqual(baseline, MOD.publication_release_id(**kwargs))
+        with mock.patch.object(
+            MOD,
+            "FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_VALIDATOR_SHA256",
+            "7" * 64,
+        ):
+            self.assertNotEqual(baseline, MOD.publication_release_id(**kwargs))
 
     def test_versioned_publication_pointer_failure_rolls_back_everything(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

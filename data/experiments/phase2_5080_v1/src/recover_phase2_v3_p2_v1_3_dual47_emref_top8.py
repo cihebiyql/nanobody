@@ -174,7 +174,8 @@ CSV_FIELDS = (
     "pose_pvrig_heavy_hetatm_identity_count", "pose_pvrig_heavy_hetatm_identity_sha256",
     "heavy_hetatm_zero_gate_rule_id", "monomer_vhh_heavy_hetatm_zero_gate_pass",
     "pose_vhh_heavy_hetatm_zero_gate_pass", "receptor_pvrig_heavy_hetatm_zero_gate_pass",
-    "pose_pvrig_heavy_hetatm_zero_gate_pass", "heavy_hetatm_zero_gate_pass",
+    "pose_pvrig_heavy_hetatm_zero_gate_pass", "vhh_heavy_hetatm_raw_identity_exact",
+    "pvrig_heavy_hetatm_raw_identity_exact", "heavy_hetatm_zero_gate_pass",
     "identity_normalization_amendment_v2_relpath",
     "identity_normalization_amendment_v2_sha256",
     "identity_normalization_amendment_v2_validator_relpath",
@@ -1576,6 +1577,8 @@ def build(
             pose_pvrig_heavy_hetatm_identity_count_total = 0
             pose_vhh_heavy_hetatm_zero_gate_pass_count = 0
             pose_pvrig_heavy_hetatm_zero_gate_pass_count = 0
+            vhh_heavy_hetatm_raw_identity_exact_count = 0
+            pvrig_heavy_hetatm_raw_identity_exact_count = 0
             for rank, record in enumerate(selected, start=1):
                 selected_indices.append(record.output_index)
                 materialized_rel = f"materialized_coordinates/{run['run_id']}/native_rank_{rank:02d}.pdb"
@@ -1636,6 +1639,22 @@ def build(
                     "pose",
                     identity_amendment_v2,
                 )
+                vhh_heavy_hetatm_raw_identity_exact = (
+                    monomer_hetatm_identity["identities"]
+                    == pose_vhh_hetatm_identity["identities"]
+                )
+                pvrig_heavy_hetatm_raw_identity_exact = (
+                    receptor_hetatm_identity["identities"]
+                    == pose_pvrig_hetatm_identity["identities"]
+                )
+                if not vhh_heavy_hetatm_raw_identity_exact:
+                    raise RecoveryError(
+                        f"{run['run_id']} rank {rank} chain A heavy HETATM raw identity mismatch"
+                    )
+                if not pvrig_heavy_hetatm_raw_identity_exact:
+                    raise RecoveryError(
+                        f"{run['run_id']} rank {rank} chain B heavy HETATM raw identity mismatch"
+                    )
                 vhh_terminal_oxt_normalization_count += int(
                     vhh_identity_gate["terminal_oxt_normalization_applied"]
                 )
@@ -1653,6 +1672,12 @@ def build(
                 )
                 pose_pvrig_heavy_hetatm_zero_gate_pass_count += int(
                     pose_pvrig_hetatm_gate["zero_gate_pass"]
+                )
+                vhh_heavy_hetatm_raw_identity_exact_count += int(
+                    vhh_heavy_hetatm_raw_identity_exact
+                )
+                pvrig_heavy_hetatm_raw_identity_exact_count += int(
+                    pvrig_heavy_hetatm_raw_identity_exact
                 )
                 atomic_write_bytes(materialized, coordinates)
                 if sha256_file(materialized) != record.coordinate_sha256:
@@ -1753,6 +1778,8 @@ def build(
                     "pose_vhh_heavy_hetatm_zero_gate_pass": str(pose_vhh_hetatm_gate["zero_gate_pass"]).lower(),
                     "receptor_pvrig_heavy_hetatm_zero_gate_pass": str(receptor_hetatm_gate["zero_gate_pass"]).lower(),
                     "pose_pvrig_heavy_hetatm_zero_gate_pass": str(pose_pvrig_hetatm_gate["zero_gate_pass"]).lower(),
+                    "vhh_heavy_hetatm_raw_identity_exact": str(vhh_heavy_hetatm_raw_identity_exact).lower(),
+                    "pvrig_heavy_hetatm_raw_identity_exact": str(pvrig_heavy_hetatm_raw_identity_exact).lower(),
                     "heavy_hetatm_zero_gate_pass": str(all((
                         monomer_hetatm_gate["zero_gate_pass"],
                         pose_vhh_hetatm_gate["zero_gate_pass"],
@@ -1865,6 +1892,12 @@ def build(
                 ),
                 "pose_pvrig_heavy_hetatm_zero_gate_pass_count": (
                     pose_pvrig_heavy_hetatm_zero_gate_pass_count
+                ),
+                "vhh_heavy_hetatm_raw_identity_exact_count": (
+                    vhh_heavy_hetatm_raw_identity_exact_count
+                ),
+                "pvrig_heavy_hetatm_raw_identity_exact_count": (
+                    pvrig_heavy_hetatm_raw_identity_exact_count
                 ),
                 "identity_normalization_amendment_v2_sha256": (
                     FROZEN_IDENTITY_NORMALIZATION_AMENDMENT_V2_SHA256
@@ -2044,6 +2077,14 @@ def build(
                 ),
                 "pose_pvrig_heavy_hetatm_zero_gate_pass_count": sum(
                     row["pose_pvrig_heavy_hetatm_zero_gate_pass"] == "true"
+                    for row in output_rows
+                ),
+                "vhh_heavy_hetatm_raw_identity_exact_count": sum(
+                    row["vhh_heavy_hetatm_raw_identity_exact"] == "true"
+                    for row in output_rows
+                ),
+                "pvrig_heavy_hetatm_raw_identity_exact_count": sum(
+                    row["pvrig_heavy_hetatm_raw_identity_exact"] == "true"
                     for row in output_rows
                 ),
                 "heavy_hetatm_zero_gate_pass_count": sum(
