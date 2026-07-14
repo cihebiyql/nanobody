@@ -11,6 +11,7 @@ import sys
 import tempfile
 import unittest
 from contextlib import redirect_stdout
+from dataclasses import replace
 from pathlib import Path
 from typing import Sequence
 from unittest import mock
@@ -62,6 +63,9 @@ class FixturePublisher:
             write_json(
                 release / autorun.SELECTOR_AUDIT,
                 {
+                    "schema_version": (
+                        "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2"
+                    ),
                     "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
                     **boundaries(include_p2=False),
                     "counts": {
@@ -199,6 +203,10 @@ def snapshot(
     failures: Sequence[str] = (),
     manifest_count: int = 30,
     manifest_sha256: str = autorun.FROZEN_NEW_RUN_MANIFEST_SHA256,
+    observed_hostname: str = "fixture-node",
+    observed_boot_id: str = "",
+    controller_pid: int = autorun.FROZEN_CONTROLLER_PID,
+    controller_start_ticks: int = autorun.FROZEN_CONTROLLER_START_TICKS,
 ) -> autorun.CommandResult:
     payload = {
         "status": status,
@@ -210,19 +218,108 @@ def snapshot(
         "invalid_count": invalid,
         "controller_alive": alive,
         "manifest_sha256": manifest_sha256,
-        "controller_pid": autorun.FROZEN_CONTROLLER_PID if alive else None,
+        "controller_pid": controller_pid if alive else None,
         "controller_start_ticks": (
-            autorun.FROZEN_CONTROLLER_START_TICKS if alive else None
+            controller_start_ticks if alive else None
         ),
         "controller_pid_file_valid": alive,
         "controller_identity_valid": alive,
         "controller_argv_sha256": "a" * 64 if alive else "",
-        "observed_hostname": "fixture-node",
-        "observed_boot_id": "",
+        "observed_hostname": observed_hostname,
+        "observed_boot_id": observed_boot_id,
         "host_identity_valid": True,
         "failures": list(failures),
     }
     return autorun.CommandResult(0, json.dumps(payload) + "\n", "")
+
+
+def migration_run_ids() -> list[str]:
+    completed = {
+        "V13CAL_012__8X6B__main",
+        "V13CAL_012__9E6Y__main",
+        "V13CAL_047__8X6B__main",
+        "V13CAL_047__9E6Y__main",
+    }
+    with frozen_manifest_path().open(newline="", encoding="utf-8-sig") as handle:
+        return [
+            row["run_id"]
+            for row in csv.DictReader(handle)
+            if row["run_id"] not in completed
+        ]
+
+
+def write_migration_receipt(path: Path) -> dict[str, object]:
+    run_ids = migration_run_ids()
+    pid = 765432
+    argv = [
+        autorun.FROZEN_CONTROLLER_PYTHON,
+        "scripts/run_v1_3_completion15.py",
+        "--root",
+        autorun.REMOTE_ROOT,
+        "--haddock-bin",
+        autorun.FROZEN_HADDOCK_BIN,
+        "--max-workers",
+        "5",
+        "--max-load1",
+        "50",
+        "--load-poll-seconds",
+        "30",
+    ]
+    for run_id in run_ids:
+        argv.extend(("--run-id", run_id))
+    argv_bytes = b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+    payload: dict[str, object] = {
+        "schema_version": autorun.MIGRATION_RECEIPT_SCHEMA,
+        "status": autorun.MIGRATION_RECEIPT_STATUS,
+        "protocol_id": autorun.PROTOCOL_ID,
+        "remote_root": autorun.REMOTE_ROOT,
+        "migration_generation": 2,
+        **boundaries(),
+        "single_writer_handoff": {
+            "old_controller_stopped": True,
+            "old_children_zero_after_sigstop": True,
+            "old_descendants_zero_after_sigstop": True,
+            "no_controller_overlap": True,
+            "combined_active_controller_count": 1,
+        },
+        "frozen_contract": {
+            "manifest_sha256": autorun.FROZEN_NEW_RUN_MANIFEST_SHA256,
+            "controller_script_sha256": autorun.FROZEN_CONTROLLER_SCRIPT_SHA256,
+            "python_sha256": autorun.FROZEN_CONTROLLER_PYTHON_SHA256,
+            "haddock_sha256": autorun.FROZEN_HADDOCK_SHA256,
+            "max_workers": 5,
+            "max_load1": 50,
+            "load_poll_seconds": 30,
+        },
+        "pre_handoff_completion_ledger": {
+            "count": 4,
+            "files": dict(sorted(autorun.FROZEN_PRE_MIGRATION_COMPLETIONS.items())),
+        },
+        "post_handoff_completion_ledger": {
+            "count": 4,
+            "files": dict(sorted(autorun.FROZEN_PRE_MIGRATION_COMPLETIONS.items())),
+        },
+        "remaining_run_ledger": {
+            "count": 26,
+            "run_ids": run_ids,
+            "run_ids_sha256": autorun.FROZEN_NODE23_REMAINING_RUN_IDS_SHA256,
+        },
+        "target_controller": {
+            "host": "node23",
+            "boot_id": "12345678-1234-1234-1234-123456789abc",
+            "pid": pid,
+            "pid_file_sha256": autorun.sha256_bytes(f"{pid}\n".encode("ascii")),
+            "start_ticks": 123456789,
+            "python": autorun.FROZEN_CONTROLLER_PYTHON,
+            "haddock_bin": autorun.FROZEN_HADDOCK_BIN,
+            "argv": argv,
+            "argv_bytes_sha256": autorun.sha256_bytes(argv_bytes),
+            "cwd": autorun.REMOTE_ROOT,
+            "executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+        },
+    }
+    write_json(path, payload)
+    return payload
 
 
 def frozen_manifest_path() -> Path:
@@ -280,21 +377,16 @@ def create_remote_probe_fixture(base: Path) -> tuple[Path, Path]:
     return remote_root, proc_root
 
 
-def execute_remote_probe(remote_root: Path, proc_root: Path) -> dict[str, object]:
-    base = autorun.legacy_controller_contract(os.uname().nodename)
-    argv = list(base.argv)
-    argv[argv.index("--root") + 1] = remote_root.resolve().as_posix()
-    contract = autorun.ControllerContract(
-        host=base.host,
-        boot_id=base.boot_id,
-        pid=base.pid,
-        pid_file_sha256=base.pid_file_sha256,
-        start_ticks=base.start_ticks,
-        python=base.python,
-        haddock_bin=base.haddock_bin,
-        argv=tuple(argv),
-        source=base.source,
-    )
+def execute_remote_probe(
+    remote_root: Path,
+    proc_root: Path,
+    contract: autorun.ControllerContract | None = None,
+) -> dict[str, object]:
+    if contract is None:
+        base = autorun.legacy_controller_contract(os.uname().nodename)
+        argv = list(base.argv)
+        argv[argv.index("--root") + 1] = remote_root.resolve().as_posix()
+        contract = replace(base, argv=tuple(argv))
     completed = subprocess.run(
         [
             sys.executable,
@@ -503,6 +595,88 @@ class AutorunTest(unittest.TestCase):
                 self.assertIn(
                     "controller_not_alive_with_pending_runs", observed["failures"]
                 )
+
+    def test_remote_probe_rejects_host_and_boot_identity_drift(self) -> None:
+        for variant in ("host", "boot"):
+            with self.subTest(variant=variant):
+                remote, proc = create_remote_probe_fixture(self.root / f"probe-{variant}")
+                base = autorun.legacy_controller_contract(os.uname().nodename)
+                argv = list(base.argv)
+                argv[argv.index("--root") + 1] = remote.resolve().as_posix()
+                contract = replace(base, argv=tuple(argv))
+                if variant == "host":
+                    contract = replace(contract, host="not-this-host")
+                else:
+                    contract = replace(
+                        contract,
+                        boot_id="00000000-0000-0000-0000-000000000000",
+                    )
+                observed = execute_remote_probe(remote, proc, contract)
+                self.assertEqual(observed["status"], "FAILURE")
+                self.assertIn(
+                    "remote_host_or_boot_identity_mismatch", observed["failures"]
+                )
+
+    def test_migration_receipt_binds_exact_node23_remaining_run_controller(self) -> None:
+        receipt = self.root / "migration.json"
+        write_migration_receipt(receipt)
+        contract = autorun.load_controller_contract(receipt, "node23")
+        self.assertEqual(contract.host, "node23")
+        self.assertEqual(contract.argv.count("--run-id"), 26)
+        self.assertEqual(
+            list(contract.argv)[-2:], ["--run-id", migration_run_ids()[-1]]
+        )
+        self.assertRegex(contract.source_sha256, r"^[0-9a-f]{64}$")
+
+    def test_migration_receipt_rejects_host_ledger_and_single_writer_drift(self) -> None:
+        mutations = {
+            "host": lambda payload: payload["target_controller"].update(host="node25"),
+            "run_order": lambda payload: payload["remaining_run_ledger"][
+                "run_ids"
+            ].reverse(),
+            "completion": lambda payload: payload["post_handoff_completion_ledger"][
+                "files"
+            ].pop(next(iter(autorun.FROZEN_PRE_MIGRATION_COMPLETIONS))),
+            "single_writer": lambda payload: payload["single_writer_handoff"].update(
+                no_controller_overlap=False
+            ),
+            "unfiltered": lambda payload: payload["target_controller"].update(
+                argv=payload["target_controller"]["argv"][:12]
+            ),
+        }
+        for name, mutation in mutations.items():
+            with self.subTest(name=name):
+                receipt = self.root / f"migration-{name}.json"
+                payload = write_migration_receipt(receipt)
+                mutation(payload)
+                write_json(receipt, payload)
+                with self.assertRaises(autorun.AutorunError):
+                    autorun.load_controller_contract(receipt, "node23")
+
+    def test_migration_receipt_hash_is_part_of_state_resume_contract(self) -> None:
+        receipt = self.root / "migration-state.json"
+        payload = write_migration_receipt(receipt)
+        config = self.config(host="node23", controller_receipt=receipt)
+        runner = FakeRunner(
+            self.layout,
+            [
+                snapshot(
+                    "WAITING",
+                    completion=4,
+                    passed=4,
+                    alive=True,
+                    observed_hostname="node23",
+                    observed_boot_id=payload["target_controller"]["boot_id"],
+                    controller_pid=payload["target_controller"]["pid"],
+                    controller_start_ticks=payload["target_controller"]["start_ticks"],
+                )
+            ],
+        )
+        self.assertEqual(autorun.Autorun(config, runner=runner).run(), autorun.WAITING)
+        payload["operator_note"] = "byte drift"
+        write_json(receipt, payload)
+        with self.assertRaisesRegex(autorun.AutorunError, "state contract mismatch"):
+            autorun.Autorun(config, runner=runner)
 
     def test_remote_probe_rejects_manifest_hash_duplicates_and_unsafe_paths(self) -> None:
         def rewrite(remote: Path, mutation) -> None:

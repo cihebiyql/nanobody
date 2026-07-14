@@ -26,14 +26,18 @@ def root() -> Path:
     return Path(os.environ.get("PVRIG_PROJECT_ROOT", project_root())).resolve()
 
 
-def load_limit(load1: float) -> int:
-    if load1 >= 62:
+def load_limit(load1: float, max_parallel: int = 4, cpu_count: int = 64) -> int:
+    if max_parallel < 1 or cpu_count < 1:
+        raise ValueError("max_parallel and cpu_count must be positive")
+    if load1 >= cpu_count - 2:
         return 0
-    if load1 >= 56:
-        return 1
-    if load1 >= 48:
-        return 2
-    return 4
+    if load1 >= cpu_count * 0.875:
+        return max(1, (max_parallel + 3) // 4)
+    if load1 >= cpu_count * 0.75:
+        return max(1, (max_parallel + 1) // 2)
+    if max_parallel > 4 and load1 >= cpu_count * 0.625:
+        return max(1, (max_parallel * 3 + 3) // 4)
+    return max_parallel
 
 
 def pid_alive(value: object) -> bool:
@@ -132,11 +136,17 @@ def snapshot(rows: list[dict[str, str]], max_attempts: int) -> tuple[dict[str, s
 
 
 def scheduling_pass(
-    rows: list[dict[str, str]], max_attempts: int, dry_run: bool = False, forced_load: float | None = None
+    rows: list[dict[str, str]],
+    max_attempts: int,
+    dry_run: bool = False,
+    forced_load: float | None = None,
+    max_parallel: int = 4,
+    cpu_count: int | None = None,
 ) -> dict[str, object]:
     statuses, counts = snapshot(rows, max_attempts)
     load1 = os.getloadavg()[0] if forced_load is None else forced_load
-    parallel_limit = load_limit(load1)
+    detected_cpu_count = cpu_count or os.cpu_count() or 64
+    parallel_limit = load_limit(load1, max_parallel=max_parallel, cpu_count=detected_cpu_count)
     active_count = sum(status in ACTIVE for status in statuses.values())
     slots = max(0, parallel_limit - active_count)
     launched: list[dict[str, object]] = []
@@ -153,6 +163,8 @@ def scheduling_pass(
         "controller_pid": os.getpid(),
         "selected_job_count": len(rows),
         "load1": load1,
+        "cpu_count": detected_cpu_count,
+        "max_parallel": max_parallel,
         "parallel_limit": parallel_limit,
         "active_before": active_count,
         "available_slots": slots,
@@ -173,7 +185,13 @@ def run_loop(args: argparse.Namespace) -> int:
         requested_jobs.update(row["job_id"] for row in read_tsv(job_list_path))
     rows = selected_rows(requested_jobs, set(args.entity_id))
     while True:
-        payload = scheduling_pass(rows, args.max_attempts, args.dry_run, args.load1)
+        payload = scheduling_pass(
+            rows,
+            args.max_attempts,
+            args.dry_run,
+            args.load1,
+            max_parallel=args.max_parallel,
+        )
         print(json.dumps(payload, ensure_ascii=False, sort_keys=True), flush=True)
         if args.once or args.dry_run:
             return 0
@@ -195,11 +213,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--job-list", help="TSV containing a job_id column, e.g. manifests/smoke_jobs.tsv")
     parser.add_argument("--entity-id", action="append", default=[], help="Limit queue to complete 2x3 matrix for entity")
     parser.add_argument("--max-attempts", type=int, default=2)
+    parser.add_argument("--max-parallel", type=int, default=int(os.environ.get("PVRIG_MAX_PARALLEL", "4")))
     parser.add_argument("--poll-seconds", type=float, default=60.0)
     parser.add_argument("--once", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--load1", type=float, help="Testing override; do not use for production")
     args = parser.parse_args(argv)
+    if args.max_parallel < 1:
+        parser.error("--max-parallel must be positive")
     # Jobs are tracked through atomic state files; auto-reap children to avoid one zombie per completed job.
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)
     lock_path = root() / "status/controller.lock"

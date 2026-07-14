@@ -677,7 +677,7 @@ def validate_selector_publication(
         raise CalibrationError("Selector rows do not bind one immutable publication release")
     audit = json.loads(selector_audit.read_text(encoding="utf-8"))
     expected_audit = {
-        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v1",
+        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
         "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
         "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
         "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",

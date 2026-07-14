@@ -8,6 +8,12 @@ SSH_BIN=${SSH_BIN:-ssh.exe}
 PYTHON=${REMOTE_PYTHON:-/data/qlyu/anaconda3/envs/haddock3/bin/python}
 HADDOCK3=${REMOTE_HADDOCK3:-/data/qlyu/anaconda3/envs/haddock3/bin/haddock3}
 LOCAL_SCRATCH_ROOT=${REMOTE_LOCAL_SCRATCH_ROOT:-/tmp/pvrig_v3_haddock}
+MAX_PARALLEL=${REMOTE_MAX_PARALLEL:-8}
+
+if [[ ! "$MAX_PARALLEL" =~ ^[1-9][0-9]*$ ]]; then
+  echo "REMOTE_MAX_PARALLEL must be a positive integer" >&2
+  exit 2
+fi
 
 case "$MODE" in
   validate)
@@ -35,7 +41,7 @@ case "$MODE" in
         echo '${name} already running pid='\$(cat status/${name}.pid); exit 0; \
       fi; \
       nohup env PVRIG_PROJECT_ROOT='$REMOTE_ROOT' HADDOCK3='$HADDOCK3' PATH='/data/qlyu/anaconda3/envs/haddock3/bin':\"\$PATH\" \
-        PVRIG_LOCAL_SCRATCH_ROOT='$LOCAL_SCRATCH_ROOT' \
+        PVRIG_LOCAL_SCRATCH_ROOT='$LOCAL_SCRATCH_ROOT' PVRIG_MAX_PARALLEL='$MAX_PARALLEL' \
         '$PYTHON' '$entry' $extra > logs/${name}.log 2>&1 < /dev/null & \
       pid=\$!; echo \$pid > status/${name}.pid; echo '${name} started pid='\$pid"
     ;;

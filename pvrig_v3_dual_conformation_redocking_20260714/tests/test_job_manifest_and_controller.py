@@ -162,6 +162,29 @@ class JobManifestControllerTests(unittest.TestCase):
         self.assertEqual(load_limit(56), 1)
         self.assertEqual(load_limit(48), 2)
         self.assertEqual(load_limit(47.99), 4)
+        self.assertEqual(load_limit(62, max_parallel=8), 0)
+        self.assertEqual(load_limit(56, max_parallel=8), 2)
+        self.assertEqual(load_limit(48, max_parallel=8), 4)
+        self.assertEqual(load_limit(40, max_parallel=8), 6)
+        self.assertEqual(load_limit(39.99, max_parallel=8), 8)
+
+    def test_controller_dry_run_exposes_eight_slots_on_low_load(self) -> None:
+        self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
+        process = self.run_script(
+            "run_controller.py",
+            "--once",
+            "--dry-run",
+            "--load1",
+            "20",
+            "--max-parallel",
+            "8",
+        )
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+        payload = json.loads(process.stdout.strip().splitlines()[-1])
+        self.assertEqual(payload["max_parallel"], 8)
+        self.assertEqual(payload["parallel_limit"], 8)
+        self.assertEqual(payload["available_slots"], 8)
+        self.assertEqual(len(payload["launched"]), 8)
 
     def test_run_job_produces_complete_native_cross_evidence_and_skips_success(self) -> None:
         self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
@@ -310,6 +333,7 @@ class JobManifestControllerTests(unittest.TestCase):
         self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
         command = capture.read_text(encoding="utf-8")
         self.assertIn("PVRIG_LOCAL_SCRATCH_ROOT='/tmp/pvrig_v3_haddock'", command)
+        self.assertIn("PVRIG_MAX_PARALLEL='8'", command)
         self.assertIn("stat -f -c %T", command)
 
     def test_smoke_verifier_requires_hash_selected_model_and_both_references(self) -> None:

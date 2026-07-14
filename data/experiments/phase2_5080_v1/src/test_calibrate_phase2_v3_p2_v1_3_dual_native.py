@@ -184,7 +184,7 @@ class V13SyntheticFixture:
         calibration.write_json(
             self.selector_audit,
             {
-                "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v1",
+                "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
                 "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
                 "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
                 "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",

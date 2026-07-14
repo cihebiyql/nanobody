@@ -342,7 +342,14 @@ class RemoteSnapshot:
             raise AutorunError("Remote frozen manifest is not exactly 30 runs")
         if snapshot.manifest_sha256 != FROZEN_NEW_RUN_MANIFEST_SHA256:
             raise AutorunError("Remote frozen manifest SHA256 mismatch")
-        if not snapshot.host_identity_valid:
+        if (
+            not snapshot.host_identity_valid
+            or snapshot.observed_hostname != contract.host
+            or (
+                contract.boot_id
+                and snapshot.observed_boot_id != contract.boot_id
+            )
+        ):
             raise AutorunError("Remote host/boot identity mismatch")
         if snapshot.status == "READY":
             if (
@@ -625,6 +632,10 @@ def require_false(payload: Mapping[str, Any], fields: Sequence[str]) -> None:
 
 def validate_selector(release: Path) -> dict[str, Any]:
     audit = read_json(release / SELECTOR_AUDIT)
+    if audit.get("schema_version") != (
+        "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2"
+    ):
+        raise AutorunError("Selector audit schema mismatch")
     if audit.get("status") != "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED":
         raise AutorunError("Selector audit status mismatch")
     require_false(audit, FALSE_BOUNDARIES[:3])
