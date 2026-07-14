@@ -1,0 +1,28 @@
+{
+  "first_success": {
+    "job_id": "CONTROL_CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151_8x6b_s917_f8fab9ee3ba5",
+    "native_cross_score_matrix_complete": true,
+    "pose_1_8x6b_cdr3_occlusion": 190,
+    "pose_1_8x6b_hotspot_overlap": 17,
+    "pose_1_8x6b_total_occlusion": 630,
+    "pose_1_9e6y_hotspot_overlap": 17,
+    "pose_1_9e6y_total_occlusion": 615,
+    "pose_1_haddock_score": -83.1801,
+    "selected_model_count": 10
+  },
+  "full_queue_policy": "starts automatically only after all 4 smoke jobs pass SMOKE_VALIDATION",
+  "next_generation_guard": "LOCKED until EVALUATOR_STABLE.json status PASS with matching hashes",
+  "pipeline_pid": 4062901,
+  "protocol_lock_file_sha256": "a6740daabdc481a096cbc83ad17405f0a0b55bd8f7f412af63e23b9c5fe6a91e",
+  "protocol_validation": "PASS",
+  "recorded_at": "2026-07-14T15:00:31+08:00",
+  "remote_host": "node1",
+  "remote_root": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714",
+  "smoke_controller_pid": 4062903,
+  "smoke_counts": {
+    "PENDING": 2,
+    "RUNNING": 1,
+    "SUCCESS": 1
+  },
+  "stage": "SMOKE_RUNNING_LOAD_AWARE"
+}

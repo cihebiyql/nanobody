@@ -1,8 +1,8 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-14 14:47 Asia/Shanghai`
-- 当前阶段：`DEPLOYED_SMOKE_WAITING_FOR_NODE1_LOAD_GATE`
+- 更新时间：`2026-07-14 15:00 Asia/Shanghai`
+- 当前阶段：`DEPLOYED_SMOKE_RUNNING_LOAD_AWARE`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
 - 评价器稳定性：`NOT_READY`
@@ -36,7 +36,8 @@
 
 - 后台编排器 PID：`4062901`；smoke controller PID：`4062903`；
 - 启动时 load1 约 `65.2`，协议规定 `load1 >= 62` 时并发为0；
-- 因此当前4个 smoke 任务均为 `PENDING`，控制器正在等待，不会抢占节点现有高负载任务；
+- 当前 smoke 状态为 `1 SUCCESS / 1 RUNNING / 2 PENDING`；控制器只在 load 门禁允许时启动下一个任务；
+- 首个 HR-151 × 8X6B 任务已成功产生10个 selected models；代表 pose 的 HADDOCK score 为 `-83.1801`，8X6B/9E6Y 两参考评分均完整；
 - load1 下降后，控制器会自动运行 smoke；只有4/4 均为 `SUCCESS`、selected model非空、job hash匹配且每个pose同时具有8X6B/9E6Y评分，才会写 `SMOKE_VALIDATION.json: PASS` 并自动进入全量1050任务。
 
 ## 尚未完成
