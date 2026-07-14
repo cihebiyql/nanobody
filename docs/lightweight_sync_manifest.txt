@@ -570,6 +570,7 @@ data/experiments/phase2_5080_v1/src/build_pvrig_teacher_pilot96_package.py
 data/experiments/phase2_5080_v1/src/build_pvrig_teacher_v1.py
 data/experiments/phase2_5080_v1/src/build_pvrig_v2_5_assay_execution_package.py
 data/experiments/phase2_5080_v1/src/build_structure_contact_maps_v2.py
+data/experiments/phase2_5080_v1/src/calibrate_phase2_v3_p2_v1_2_family_aware.py
 data/experiments/phase2_5080_v1/src/collect_pvrig_formal_rfantibody_candidates.py
 data/experiments/phase2_5080_v1/src/evaluate_phase2_v2_5_readiness.py
 data/experiments/phase2_5080_v1/src/evaluate_phase2_v3_formal.py
@@ -659,6 +660,7 @@ data/experiments/phase2_5080_v1/src/test_build_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_teacher_pilot96_package.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_teacher_v1.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_v2_5_assay_execution_package.py
+data/experiments/phase2_5080_v1/src/test_calibrate_phase2_v3_p2_v1_2_family_aware.py
 data/experiments/phase2_5080_v1/src/test_collect_pvrig_formal_rfantibody_candidates.py
 data/experiments/phase2_5080_v1/src/test_evaluate_phase2_v3_g2_final.py
 data/experiments/phase2_5080_v1/src/test_evaluate_phase2_v3_g2_meanpool_baselines.py
