@@ -205,6 +205,20 @@ SHA256：
 
 这些证据支持 `pose_rule_threshold_fit_input_eligible=true`，不支持阈值、tier 或 Gold 标签已冻结。
 
+### 4.6 实现与回归验证
+
+本次终验重跑了 scorer、校准数据 builder、Top-8 selector、Top-8 processor、sensitivity summarizer、Pilot64 recovery adapter 和 family calibrator 的定向测试：
+
+```text
+targeted unit/regression tests = 59/59 PASS
+family-aware subset = 18/18 PASS
+calibrator py_compile = PASS
+git diff whitespace checks = PASS
+live Top-8 package hash check = 758/758 PASS
+```
+
+这些测试证明代码的 fail-closed 行为、输入闭包、选择规则、ATOM-only 语义和确定性没有已知工程回归；它们不能替代 family bootstrap 的科学 acceptance gate，因此不改变最终 FAIL 决策。
+
 ## 5. family-aware 校准：9/10 gates 通过，但总决策必须 FAIL
 
 ### 5.1 中心阈值
@@ -505,6 +519,7 @@ P2_TRAINING_BLOCKED -> P2_TRAINING_READY
 | family calibration report | `experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_FAMILY_CALIBRATION_ZH.md` |
 | smoke8 recovery audit | `experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_smoke8_emref_recovery_audit.json` |
 | failed52 recovery audit | `experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_pilot64_failed52_emref_recovery_audit.json` |
+| V1.2 执行/状态修订 | `experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_2_EXECUTION_STATUS_AMENDMENT_ZH.md` |
 
 ## 11. 最终状态块
 
