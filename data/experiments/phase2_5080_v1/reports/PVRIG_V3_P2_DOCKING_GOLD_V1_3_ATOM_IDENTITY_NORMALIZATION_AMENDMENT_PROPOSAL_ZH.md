@@ -6,18 +6,18 @@
 
 状态：`PASS_V1_3_ATOM_IDENTITY_TERMINAL_OXT_ONLY_SUPPORTED`
 
-审计覆盖 `64` 个 runs、`512` 个 fixed Top-8 poses：
+审计覆盖 `68` 个 V1.3 目标 runs、`544` 个 fixed Top-8 poses：
 
-- 本地旧 Pilot64：480 poses；
+- exact-reuse ledger 64 个旧 Pilot64 runs：512 poses；
 - V1.3 新 boundary4：32 poses；
-- 其中与 V1.3 exact-reuse ledger 重叠：21 runs / 168 poses。
+- 总闭包：`64 × 8 + 4 × 8 = 544` poses。
 
 核心结果：
 
 | chain | comparisons | residue exact | raw atom exact | OXT-normalized exact | non-OXT differences |
 |---|---:|---:|---:|---:|---:|
-| A / VHH | 512 | 512 | 0 | 512 | 0 |
-| B / PVRIG | 512 | 512 | 512 | 512 | 0 |
+| A / VHH | 544 | 544 | 0 | 544 | 0 |
+| B / PVRIG | 544 | 544 | 544 | 544 | 0 |
 
 按 docking receptor 和 chain 分层：
 
@@ -25,8 +25,8 @@
 |---|---|---:|---:|---:|---:|---:|
 | 8X6B | A | 272 | 272 | 0 | 272 | 0 |
 | 8X6B | B | 272 | 272 | 272 | 272 | 0 |
-| 9E6Y | A | 240 | 240 | 0 | 240 | 0 |
-| 9E6Y | B | 240 | 240 | 240 | 240 | 0 |
+| 9E6Y | A | 272 | 272 | 0 | 272 | 0 |
+| 9E6Y | B | 272 | 272 | 272 | 272 | 0 |
 
 观察到的 raw atom identity 差异仅为 VHH C 端终止残基 `OXT` 在 frozen monomer 中存在、在 HADDOCK pose 中缺失。所有 residue identity 与所有非 `OXT` heavy-ATOM identity 均完全一致；PVRIG chain B 为 raw exact match。
 
@@ -48,15 +48,16 @@
 - identity 输入仅使用 `ATOM` heavy atoms；坐标、serial、occupancy 和 B-factor 不参与 identity。
 - residue key：`(resseq, icode, resname)`。
 - atom key：`(resseq, icode, resname, atom_name, altloc, element)`。
-- 旧数据读取两个冻结 V1.2 selector；新 boundary4 通过冻结 remote root 只读归档，并验证 remote/local inventory hash-chain 相等。
+- 旧 exact-reuse64 与新 boundary4 均从各自冻结 remote root 只读归档，并分别验证 remote/local inventory hash-chain 相等。
 - 审计不证明 binding、affinity 或 blocking，也不使 V1.3 training/formal Gold 合格。
 
 ## 可复核产物
 
 - Audit：`data/experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_identity_difference_audit.json`
-- Audit SHA256：`7b4e3637bb22d51c6d47aee27237e632aaff19bcbb370c763cf44a58db0daf1a`
+- Audit SHA256：`57058e8a0fab81380372b0c4e19967b47cff5d8c5f0d9c411ed3e9acaa2c1545`
 - 审计脚本：`data/experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_identity_differences.py`
-- 审计脚本 SHA256：`9536524b206784b4316ad3e2a5acb377e77fffd3d609f8c1d6cc34298bdfa09a`
-- Boundary remote inventory chain：`580590a1d55f6f684ecb732dcd3112250d921a016864f146040ee0334d0a1819`
+- 审计脚本 SHA256：`f2a2c487bb1b9dffe5bb363beaaa8fd862625cc7b2fe088ab6b8167453464f07`
+- Exact-reuse64 remote inventory chain：`7944c79dda27401b6e637d6d9611578a3b862b693a8f76e7018f7ff8bc8cf285`
+- Boundary4 remote inventory chain：`580590a1d55f6f684ecb732dcd3112250d921a016864f146040ee0334d0a1819`
 
 完整 per-run、per-pose、per-chain 差异记录见 audit JSON。

@@ -461,6 +461,240 @@ def load_mutant_manifest(
     return records, base_by_molecule
 
 
+def apply_declared_mutations(base_sequence: str, mutation_text: str) -> str:
+    sequence = list(base_sequence)
+    mutations = mutation_text.split(";") if mutation_text != "none" else []
+    if not mutations:
+        return base_sequence
+    seen_positions: set[int] = set()
+    for mutation in mutations:
+        match = re.fullmatch(r"([A-Z])(\d+)([A-Z])", mutation)
+        if not match:
+            raise CalibrationError(f"Invalid mutation declaration: {mutation!r}")
+        source, raw_position, target = match.groups()
+        position = int(raw_position)
+        if position < 1 or position > len(sequence) or position in seen_positions:
+            raise CalibrationError(f"Invalid/repeated mutation position: {mutation}")
+        seen_positions.add(position)
+        if base_sequence[position - 1] != source:
+            raise CalibrationError(
+                f"Mutation source mismatch at {mutation}: "
+                f"base has {base_sequence[position - 1]}"
+            )
+        sequence[position - 1] = target
+    return "".join(sequence)
+
+
+def validate_fixed_case_semantics(
+    config: CalibrationConfig,
+    frozen_cases: Mapping[str, Mapping[str, str]],
+    positive_cases: Mapping[str, Mapping[str, str]],
+    mutant_cases: Mapping[str, Mapping[str, str]],
+    base_by_molecule: Mapping[str, str],
+) -> dict[str, Any]:
+    positive_evidence = require_canonical_frozen_file(
+        config.positive_manifest,
+        DEFAULT_POSITIVE_MANIFEST,
+        POSITIVE_MANIFEST_SHA256,
+        "positive manifest",
+    )
+    mutant_evidence = require_canonical_frozen_file(
+        config.mutant_manifest,
+        DEFAULT_MUTANT_MANIFEST,
+        MUTANT_MANIFEST_SHA256,
+        "mutant manifest",
+    )
+    expected_cases = set(positive_cases) | set(mutant_cases)
+    if set(frozen_cases) != expected_cases:
+        raise CalibrationError("Frozen case manifest and positive/control manifests differ")
+    for case_id, record in positive_cases.items():
+        frozen = frozen_cases[case_id]
+        if frozen["family"] != record["family"]:
+            raise CalibrationError(f"Positive family mismatch in frozen case ledger: {case_id}")
+    validated_mutations = 0
+    validated_bases = 0
+    for case_id, record in mutant_cases.items():
+        frozen = frozen_cases[case_id]
+        if frozen["family"] != record["family"]:
+            raise CalibrationError(f"Control family mismatch in frozen case ledger: {case_id}")
+        base_id = base_by_molecule[record["base_molecule"]]
+        base_sequence = frozen_cases[base_id]["sequence"]
+        expected_sequence = apply_declared_mutations(
+            base_sequence, record["mutations_1based"]
+        )
+        if record["control_type"] == "base_reference":
+            validated_bases += 1
+            if record["mutations_1based"] != "none" or frozen["sequence"] != base_sequence:
+                raise CalibrationError(f"Base-reference semantics mismatch: {case_id}")
+        else:
+            validated_mutations += 1
+            if expected_sequence != frozen["sequence"]:
+                raise CalibrationError(f"Declared mutations do not reproduce sequence: {case_id}")
+        if sha256_bytes(frozen["sequence"].encode("ascii")) != frozen["sequence_sha256"]:
+            raise CalibrationError(f"Frozen sequence SHA256 mismatch: {case_id}")
+    if validated_bases != 7 or validated_mutations != 29:
+        raise CalibrationError("Expected 7 exact bases and 29 declared mutation sequences")
+    return {
+        "positive_manifest": positive_evidence,
+        "mutant_manifest": mutant_evidence,
+        "positive_case_count": len(positive_cases),
+        "control_case_count": len(mutant_cases),
+        "exact_base_count": validated_bases,
+        "declared_mutation_count": validated_mutations,
+        "sequence_hashes_validated": True,
+        "mutation_semantics_validated": True,
+    }
+
+
+SELECTOR_REQUIRED_FIELDS = {
+    "schema_version", "protocol_id", "source_protocol", "source_stage", "run_id",
+    "case_id", "candidate_id", "family", "sequence_sha256",
+    "generation_receptor", "receptor_id", "native_rank", "canonical_rank",
+    "receptor_sha256", "run_manifest_sha256", "run_manifest_row_sha256",
+    "execution_release_manifest_sha256", "publication_release_id",
+    "formal_eligible", "training_label_release_eligible",
+    "docking_gold_release_eligible", "selection_row_sha256",
+}
+
+
+def validate_selector_publication(
+    selector_csv: Path,
+    selector_audit: Path,
+    frozen_cases: Mapping[str, Mapping[str, str]],
+    frozen_runs: Mapping[tuple[str, str], Mapping[str, str]],
+    protocols: Mapping[str, Mapping[str, str]],
+) -> tuple[dict[tuple[str, str, int], dict[str, str]], dict[str, Any]]:
+    fields, rows = read_csv_strict(selector_csv)
+    missing = sorted(SELECTOR_REQUIRED_FIELDS - set(fields))
+    if missing or len(rows) != 752:
+        raise CalibrationError(
+            f"Selector publication schema/cardinality mismatch: missing={missing}, rows={len(rows)}"
+        )
+    selector_by_key: dict[tuple[str, str, int], dict[str, str]] = {}
+    selector_hashes: set[str] = set()
+    release_ids: set[str] = set()
+    for row_number, row in enumerate(rows, start=2):
+        if row["selection_row_sha256"] != row_sha256(row, "selection_row_sha256"):
+            raise CalibrationError(f"Selector row SHA256 mismatch at row {row_number}")
+        case_id = row["candidate_id"]
+        receptor = row["generation_receptor"].upper()
+        rank = parse_int(row["native_rank"], "native_rank", 1)
+        key = (case_id, receptor, rank)
+        frozen_case = frozen_cases.get(case_id)
+        frozen_run = frozen_runs.get((case_id, receptor))
+        if (
+            row["schema_version"] != "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v1"
+            or row["protocol_id"] != "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
+            or row["source_protocol"] != "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1"
+            or row["source_stage"] != "4_emref"
+            or receptor not in RECEPTORS
+            or row["receptor_id"].upper() != receptor
+            or rank > 8
+            or parse_int(row["canonical_rank"], "canonical_rank", 1) != rank
+            or key in selector_by_key
+            or frozen_case is None
+            or frozen_run is None
+            or row["case_id"] != case_id
+            or row["family"] != frozen_case["family"]
+            or row["sequence_sha256"] != frozen_case["sequence_sha256"]
+            or row["run_id"] != frozen_run["run_id"]
+            or row["run_manifest_sha256"] != RUN_MANIFEST_SHA256
+            or row["run_manifest_row_sha256"] != frozen_run["run_manifest_row_sha256"]
+            or row["receptor_sha256"] != protocols[receptor]["receptor_sha256"]
+            or row["execution_release_manifest_sha256"] != EXECUTION_RELEASE_SHA256
+            or any(
+                parse_bool(row[field], field)
+                for field in (
+                    "formal_eligible", "training_label_release_eligible",
+                    "docking_gold_release_eligible",
+                )
+            )
+        ):
+            raise CalibrationError(f"Selector native identity mismatch at row {row_number}")
+        selector_by_key[key] = row
+        selector_hashes.add(row["selection_row_sha256"])
+        release_ids.add(row["publication_release_id"])
+    expected_keys = {
+        (case_id, receptor, rank)
+        for case_id in frozen_cases
+        for receptor in RECEPTORS
+        for rank in range(1, 9)
+    }
+    if set(selector_by_key) != expected_keys or len(selector_hashes) != 752:
+        raise CalibrationError("Selector 94-run/752-pose identity/hash closure failed")
+    if len(release_ids) != 1 or "" in release_ids:
+        raise CalibrationError("Selector rows do not bind one immutable publication release")
+    audit = json.loads(selector_audit.read_text(encoding="utf-8"))
+    expected_audit = {
+        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v1",
+        "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
+        "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+        "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",
+        "k": 8,
+        "selection_backfill": False,
+        "scoring_performed": False,
+        "remote_local_hash_chain_equal": True,
+        "formal_eligible": False,
+        "training_label_release_eligible": False,
+        "docking_gold_release_eligible": False,
+    }
+    for field, value in expected_audit.items():
+        if audit.get(field) != value:
+            raise CalibrationError(f"Selector audit {field} mismatch")
+    counts = audit.get("counts", {})
+    if not isinstance(counts, dict) or any(
+        counts.get(field) != value
+        for field, value in {
+            "manifest_runs": 94, "selected_runs": 94, "selected_poses": 752,
+            "cases": 47, "reuse_runs": 64, "new_runs": 30,
+        }.items()
+    ):
+        raise CalibrationError("Selector audit 94-run/752-pose count closure failed")
+    output = audit.get("output_csv", {})
+    selector_chain = sha256_bytes(
+        "\n".join(row["selection_row_sha256"] for row in rows).encode("ascii")
+    )
+    if not isinstance(output, dict) or any(
+        output.get(field) != value
+        for field, value in {
+            "sha256": sha256_file(selector_csv),
+            "rows": 752,
+            "selection_row_hash_chain": selector_chain,
+        }.items()
+    ):
+        raise CalibrationError("Selector audit output hash closure failed")
+    publication = audit.get("publication", {})
+    release_id = next(iter(release_ids))
+    if (
+        not isinstance(publication, dict)
+        or publication.get("release_id") != release_id
+        or publication.get("promotion") != "single atomic current symlink replacement"
+        or publication.get("rollback_safe") is not True
+    ):
+        raise CalibrationError("Selector immutable publication contract mismatch")
+    inputs = audit.get("inputs", {})
+    release_input = inputs.get("execution_release_manifest", {}) if isinstance(inputs, dict) else {}
+    if not isinstance(release_input, dict) or release_input.get("sha256") != EXECUTION_RELEASE_SHA256:
+        raise CalibrationError("Selector audit does not bind frozen execution release")
+    return selector_by_key, {
+        "selector_csv": {
+            "relpath": canonical_path(selector_csv),
+            "sha256": sha256_file(selector_csv),
+            "rows": len(rows),
+            "row_hash_chain": selector_chain,
+        },
+        "selector_audit": {
+            "relpath": canonical_path(selector_audit),
+            "sha256": sha256_file(selector_audit),
+            "status": audit["status"],
+        },
+        "publication_release_id": release_id,
+        "immutable_publication_validated": True,
+        "run_count": 94,
+        "pose_count": 752,
+    }
+
+
 def validate_preregistration(path: Path) -> dict[str, Any]:
     observed_hash = sha256_file(path)
     if observed_hash != PREREGISTRATION_SHA256:
@@ -534,12 +768,244 @@ def validate_preregistration(path: Path) -> dict[str, Any]:
     }
 
 
+def require_canonical_frozen_file(
+    path: Path, canonical: Path, expected_hash: str, label: str
+) -> dict[str, Any]:
+    if path.resolve() != canonical.resolve():
+        raise CalibrationError(f"{label} must use canonical path: {canonical}")
+    observed_hash = sha256_file(path)
+    if observed_hash != expected_hash:
+        raise CalibrationError(f"Frozen {label} SHA256 mismatch: {observed_hash}")
+    return {
+        "relpath": canonical_path(path),
+        "sha256": observed_hash,
+        "bytes": path.stat().st_size,
+        "validated": True,
+    }
+
+
+def validate_execution_release(path: Path) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
+    evidence = require_canonical_frozen_file(
+        path, DEFAULT_EXECUTION_RELEASE, EXECUTION_RELEASE_SHA256, "execution release"
+    )
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    expected = {
+        "schema_version": "phase2_v3_p2_v1_3_docking_execution_release_v1",
+        "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+        "status": "FROZEN_V1_3_DOCKING_EXECUTION_RELEASE",
+        "remote_launch_eligible": True,
+        "remote_launch_run_count": 30,
+        "formal_eligible": False,
+        "docking_gold_release_eligible": False,
+        "training_label_release_eligible": False,
+        "p2_training_ready": False,
+    }
+    for field, value in expected.items():
+        if payload.get(field) != value:
+            raise CalibrationError(f"Execution release {field} mismatch")
+    closure = payload.get("execution_closure", {})
+    if not isinstance(closure, dict) or closure != {
+        "candidate_count": 47,
+        "new_completion15_run_count": 30,
+        "reused_pilot64_main_run_count": 64,
+        "run_count_per_receptor": 47,
+        "total_main_run_count": 94,
+    }:
+        raise CalibrationError("Execution release 94-run closure mismatch")
+    artifacts = payload.get("artifacts")
+    if not isinstance(artifacts, list) or len(artifacts) < 30:
+        raise CalibrationError("Execution release artifact ledger is incomplete")
+    ledger: dict[str, dict[str, Any]] = {}
+    for index, item in enumerate(artifacts):
+        if not isinstance(item, dict):
+            raise CalibrationError(f"Execution release artifact[{index}] is invalid")
+        relpath = str(item.get("path", ""))
+        if not relpath or relpath in ledger:
+            raise CalibrationError(f"Duplicate/empty execution artifact path: {relpath!r}")
+        artifact_path = (WORKSPACE_ROOT / relpath).resolve()
+        expected_bytes = parse_int(item.get("bytes"), f"execution artifact {relpath} bytes", 1)
+        expected_hash = str(item.get("sha256", ""))
+        if (
+            not artifact_path.is_file()
+            or artifact_path.stat().st_size != expected_bytes
+            or sha256_file(artifact_path) != expected_hash
+        ):
+            raise CalibrationError(f"Execution release artifact drift: {relpath}")
+        ledger[relpath] = {
+            "path": relpath,
+            "sha256": expected_hash,
+            "bytes": expected_bytes,
+        }
+    evidence.update(
+        {
+            "status": payload["status"],
+            "artifact_count": len(ledger),
+            "artifact_ledger_sha256": sha256_json(list(ledger.values())),
+        }
+    )
+    return evidence, ledger
+
+
+def require_execution_binding(
+    path: Path,
+    expected_hash: str,
+    ledger: Mapping[str, Mapping[str, Any]],
+    label: str,
+) -> dict[str, Any]:
+    relpath = canonical_path(path)
+    item = ledger.get(relpath)
+    observed = sha256_file(path)
+    if not isinstance(item, Mapping) or item.get("sha256") != observed or observed != expected_hash:
+        raise CalibrationError(f"{label} is not closed by the frozen execution release")
+    return {
+        "relpath": relpath,
+        "sha256": observed,
+        "bytes": path.stat().st_size,
+        "validated": True,
+    }
+
+
+def validate_frozen_manifests(
+    config: CalibrationConfig,
+    execution_ledger: Mapping[str, Mapping[str, Any]],
+) -> tuple[
+    dict[str, dict[str, str]],
+    dict[tuple[str, str], dict[str, str]],
+    dict[str, dict[str, str]],
+    dict[str, Any],
+]:
+    fixed_paths = (
+        (config.case_manifest, DEFAULT_CASE_MANIFEST, CASE_MANIFEST_SHA256, "case manifest"),
+        (config.run_manifest, DEFAULT_RUN_MANIFEST, RUN_MANIFEST_SHA256, "run manifest"),
+        (
+            config.protocol_manifest,
+            DEFAULT_PROTOCOL_MANIFEST,
+            PROTOCOL_MANIFEST_SHA256,
+            "protocol manifest",
+        ),
+    )
+    evidence: dict[str, Any] = {}
+    for path, canonical, digest, label in fixed_paths:
+        if path.resolve() != canonical.resolve():
+            raise CalibrationError(f"{label} must use canonical path")
+        evidence[label.replace(" ", "_")] = require_execution_binding(
+            path, digest, execution_ledger, label
+        )
+    case_fields, case_rows = read_csv_strict(config.case_manifest)
+    required_case = {
+        "schema_version", "case_id", "candidate_id", "family", "sequence",
+        "sequence_sha256", "formal_eligible", "training_label_release_eligible",
+        "docking_gold_release_eligible", "case_manifest_row_sha256",
+    }
+    if not required_case <= set(case_fields) or len(case_rows) != 47:
+        raise CalibrationError("Frozen case manifest schema/cardinality mismatch")
+    cases: dict[str, dict[str, str]] = {}
+    for row in case_rows:
+        case_id = row["case_id"]
+        if (
+            row["schema_version"] != "phase2_v3_p2_v1_3_dual47_case_manifest_v1"
+            or row["candidate_id"] != case_id
+            or case_id in cases
+            or row["case_manifest_row_sha256"] != row_sha256(row, "case_manifest_row_sha256")
+            or sha256_bytes(row["sequence"].encode("ascii")) != row["sequence_sha256"]
+            or any(
+                parse_bool(row[field], field)
+                for field in (
+                    "formal_eligible", "training_label_release_eligible",
+                    "docking_gold_release_eligible",
+                )
+            )
+        ):
+            raise CalibrationError(f"Frozen case manifest row invalid: {case_id}")
+        cases[case_id] = row
+
+    run_fields, run_rows = read_csv_strict(config.run_manifest)
+    required_run = {
+        "schema_version", "protocol_id", "run_id", "case_id", "candidate_id",
+        "family", "sequence_sha256", "receptor_id", "seed_role", "topoaa_iniseed",
+        "rigidbody_iniseed", "rigidbody_seed_start", "rigidbody_seed_end",
+        "rigidbody_sampling", "rigidbody_tolerance", "seletop_select",
+        "flexref_tolerance", "emref_tolerance", "ncores", "fixed_top8_policy",
+        "formal_eligible", "training_label_release_eligible",
+        "docking_gold_release_eligible", "run_manifest_row_sha256",
+    }
+    if not required_run <= set(run_fields) or len(run_rows) != 94:
+        raise CalibrationError("Frozen run manifest schema/cardinality mismatch")
+    runs: dict[tuple[str, str], dict[str, str]] = {}
+    for row in run_rows:
+        case_id = row["case_id"]
+        receptor = row["receptor_id"].upper()
+        key = (case_id, receptor)
+        case = cases.get(case_id)
+        expected_seed = "917" if receptor == "8X6B" else "20917"
+        if (
+            row["schema_version"] != "phase2_v3_p2_v1_3_dual47_run_manifest_v1"
+            or row["protocol_id"] != "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
+            or receptor not in RECEPTORS
+            or key in runs
+            or case is None
+            or row["candidate_id"] != case_id
+            or row["family"] != case["family"]
+            or row["sequence_sha256"] != case["sequence_sha256"]
+            or row["seed_role"] != "main"
+            or row["topoaa_iniseed"] != "917"
+            or row["rigidbody_iniseed"] != expected_seed
+            or row["rigidbody_sampling"] != "40"
+            or row["rigidbody_tolerance"] != "5"
+            or row["seletop_select"] != "10"
+            or row["flexref_tolerance"] != "20"
+            or row["emref_tolerance"] != "20"
+            or row["ncores"] != "4"
+            or row["fixed_top8_policy"] != "deferred_4_emref_score_order_no_backfill"
+            or row["run_manifest_row_sha256"] != row_sha256(row, "run_manifest_row_sha256")
+            or any(
+                parse_bool(row[field], field)
+                for field in (
+                    "formal_eligible", "training_label_release_eligible",
+                    "docking_gold_release_eligible",
+                )
+            )
+        ):
+            raise CalibrationError(f"Frozen run manifest row invalid: {key}")
+        runs[key] = row
+    if set(runs) != {(case_id, receptor) for case_id in cases for receptor in RECEPTORS}:
+        raise CalibrationError("Frozen 94-run candidate/receptor closure failed")
+
+    protocol_fields, protocol_rows = read_csv_strict(config.protocol_manifest)
+    if len(protocol_rows) != 2 or "receptor_sha256" not in protocol_fields:
+        raise CalibrationError("Frozen protocol manifest schema/cardinality mismatch")
+    protocols: dict[str, dict[str, str]] = {}
+    for row in protocol_rows:
+        receptor = row["receptor_id"].upper()
+        expected_seed = "917" if receptor == "8X6B" else "20917"
+        if (
+            receptor not in RECEPTORS
+            or receptor in protocols
+            or row["protocol_id"] != "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
+            or row["rigidbody_iniseed"] != expected_seed
+            or row["last_module"] != "4_emref"
+            or row["haddock3_version_contract"] != "2025.11.0"
+            or row["hotspot_count"] != "23"
+        ):
+            raise CalibrationError(f"Frozen protocol manifest row invalid: {receptor}")
+        protocols[receptor] = row
+    if set(protocols) != set(RECEPTORS):
+        raise CalibrationError("Frozen two-receptor protocol closure failed")
+    evidence["case_row_hash_chain"] = row_hash_chain(case_rows, "case_manifest_row_sha256")
+    evidence["run_row_hash_chain"] = row_hash_chain(run_rows, "run_manifest_row_sha256")
+    evidence["case_count"] = len(cases)
+    evidence["run_count"] = len(runs)
+    evidence["protocol_count"] = len(protocols)
+    return cases, runs, protocols, evidence
+
+
 REQUIRED_METRICS_FIELDS = {
     "schema_version", "protocol_id", "formal_eligible",
     "training_label_release_eligible", "docking_gold_release_eligible",
-    "primary_native_metric_eligible", "candidate_id", "family", "run_id",
+    "primary_native_metric_eligible", "native_only", "candidate_id", "family", "run_id",
     "generation_receptor", "native_rank", "selector_row_sha256",
-    "aligned_pose_sha256", "reference_sha256", "hotspot_weight_fraction",
+    "aligned_pose_sha256", "reference_relpath", "reference_sha256",
+    "native_hotspot_ref_column", "internal_contact_channel", "hotspot_weight_fraction",
     "total_occluding_residue_pair_count",
     "cdr1_occluding_residue_pair_count", "cdr2_occluding_residue_pair_count",
     "cdr3_occluding_residue_pair_count",
@@ -582,6 +1048,8 @@ def validate_metrics_rows(
     positive_cases: Mapping[str, Mapping[str, str]],
     mutant_cases: Mapping[str, Mapping[str, str]],
     contract: CalibrationContract,
+    selector_by_key: Mapping[tuple[str, str, int], Mapping[str, str]],
+    references: Mapping[str, Path],
 ) -> dict[str, Any]:
     missing = sorted(REQUIRED_METRICS_FIELDS - set(fields))
     if missing:
@@ -601,6 +1069,18 @@ def validate_metrics_rows(
     run_ids: dict[tuple[str, str], str] = {}
     inventories: dict[str, set[str]] = defaultdict(set)
     rows_by_receptor: Counter[str] = Counter()
+    reference_evidence: dict[str, dict[str, Any]] = {}
+    if set(references) != set(RECEPTORS):
+        raise CalibrationError("Exactly two canonical native references are required")
+    for receptor in RECEPTORS:
+        canonical_reference = DEFAULT_REFERENCES[receptor].resolve()
+        reference = references[receptor].resolve()
+        if reference != canonical_reference or sha256_file(reference) != REFERENCE_SHA256[receptor]:
+            raise CalibrationError(f"Frozen native reference drift: {receptor}")
+        reference_evidence[receptor] = {
+            "relpath": reference.relative_to(WORKSPACE_ROOT.parent).as_posix(),
+            "sha256": REFERENCE_SHA256[receptor],
+        }
     for row_number, row in enumerate(rows, start=2):
         if row.get("schema_version") != METRICS_SCHEMA_VERSION:
             raise CalibrationError(f"Metrics schema mismatch at row {row_number}")
@@ -616,6 +1096,8 @@ def validate_metrics_rows(
             raise CalibrationError("Release-eligible processor input is forbidden")
         if not parse_bool(row.get("primary_native_metric_eligible"), "primary_native_metric_eligible"):
             raise CalibrationError("Non-primary metric row entered native calibration")
+        if not parse_bool(row.get("native_only"), "native_only"):
+            raise CalibrationError("Processor metric row is not native_only=true")
         if row.get("metrics_row_sha256") != row_sha256(row, "metrics_row_sha256"):
             raise CalibrationError(f"metrics_row_sha256 mismatch at row {row_number}")
         case_id = row.get("candidate_id", "").strip()
@@ -636,12 +1118,30 @@ def validate_metrics_rows(
         if key in keys:
             raise CalibrationError(f"Duplicate native metric key: {key}")
         keys.add(key)
+        selector = selector_by_key.get(key)
+        if selector is None:
+            raise CalibrationError(f"Native metric row has no selector identity: {key}")
         run_id = row.get("run_id", "").strip()
         if not run_id:
             raise CalibrationError("Empty run_id")
         previous_run = run_ids.setdefault((case_id, receptor), run_id)
         if previous_run != run_id:
             raise CalibrationError(f"Run drift within {case_id}/{receptor}")
+        if (
+            run_id != selector["run_id"]
+            or row["selector_row_sha256"] != selector["selection_row_sha256"]
+            or row["family"] != selector["family"]
+        ):
+            raise CalibrationError(f"Metric/selector native identity mismatch: {key}")
+        expected_reference = reference_evidence[receptor]
+        if (
+            row["reference_relpath"] != expected_reference["relpath"]
+            or row["reference_sha256"] != expected_reference["sha256"]
+            or row["native_hotspot_ref_column"] != NATIVE_HOTSPOT_COLUMN[receptor]
+            or row["internal_contact_channel"]
+            != f"raw_4_emref_pose_{receptor.lower()}_native_numbering"
+        ):
+            raise CalibrationError(f"Generation/native reference identity mismatch: {key}")
         for hash_field in (
             "selector_row_sha256", "aligned_pose_sha256", "reference_sha256",
         ):
@@ -673,11 +1173,15 @@ def validate_metrics_rows(
         "positive_family_count": len({x["family"] for x in positive_cases.values()}),
         "control_case_count": len(mutant_cases),
         "native_rank_pairing_across_receptors": False,
+        "native_only_validated": True,
+        "generation_native_receptor_identity_validated": True,
+        "metric_selector_identity_count": len(keys),
         "atom_only_reference_inventory_gate_passed": True,
         "reference_inventory_sha256_by_receptor": {
             receptor: sha256_bytes(next(iter(inventories[receptor])).encode())
             for receptor in RECEPTORS
         },
+        "reference_evidence": reference_evidence,
     }
 
 
@@ -954,7 +1458,8 @@ POSE_SCORE_FIELDS = (
     "O_total_occluding_residue_pair_count_raw", "O_log1p_once",
     "P_cdr_residue_pair_fraction", "P_cdr_residue_pair_count",
     "mu_H", "mu_O", "mu_P", "S_native_pose", "native_pose_class",
-    "native_pose_relevance_strength", "cross_reference_used", "claim_boundary",
+    "native_pose_relevance_strength", "input_native_only",
+    "native_reference_sha256", "claim_boundary",
     "pose_score_row_sha256",
 )
 
@@ -997,7 +1502,8 @@ def score_pose_rows(
             "S_native_pose": score,
             "native_pose_class": pose_class,
             "native_pose_relevance_strength": CLASS_RELEVANCE[pose_class],
-            "cross_reference_used": False,
+            "input_native_only": row["native_only"],
+            "native_reference_sha256": row["reference_sha256"],
             "claim_boundary": CLAIM_BOUNDARY,
         }
         output.append(normalize_record(record, POSE_SCORE_FIELDS, "pose_score_row_sha256"))

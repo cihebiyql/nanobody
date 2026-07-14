@@ -587,11 +587,11 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
 
 状态：`{audit['status']}`
 
-审计覆盖 `{summary['run_count']}` 个 runs、`{summary['pose_count']}` 个 fixed Top-8 poses：
+审计覆盖 `{summary['run_count']}` 个 V1.3 目标 runs、`{summary['pose_count']}` 个 fixed Top-8 poses：
 
-- 本地旧 Pilot64：{summary['pose_counts_by_cohort'].get('old_smoke8', 0) + summary['pose_counts_by_cohort'].get('old_failed52', 0)} poses；
+- exact-reuse ledger 64 个旧 Pilot64 runs：{summary['pose_counts_by_cohort'].get('old_v1_3_exact_reuse64', 0)} poses；
 - V1.3 新 boundary4：{summary['pose_counts_by_cohort'].get('new_v1_3_boundary4', 0)} poses；
-- 其中与 V1.3 exact-reuse ledger 重叠：{summary['v1_3_reuse_overlap_runs']} runs / {summary['v1_3_reuse_overlap_poses']} poses。
+- 总闭包：`64 × 8 + 4 × 8 = 544` poses。
 
 核心结果：
 
@@ -626,7 +626,7 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
 - identity 输入仅使用 `ATOM` heavy atoms；坐标、serial、occupancy 和 B-factor 不参与 identity。
 - residue key：`(resseq, icode, resname)`。
 - atom key：`(resseq, icode, resname, atom_name, altloc, element)`。
-- 旧数据读取两个冻结 V1.2 selector；新 boundary4 通过冻结 remote root 只读归档，并验证 remote/local inventory hash-chain 相等。
+- 旧 exact-reuse64 与新 boundary4 均从各自冻结 remote root 只读归档，并分别验证 remote/local inventory hash-chain 相等。
 - 审计不证明 binding、affinity 或 blocking，也不使 V1.3 training/formal Gold 合格。
 
 ## 可复核产物
@@ -635,7 +635,8 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
 - Audit SHA256：`{audit_sha256}`
 - 审计脚本：`{audit['implementation']['relpath']}`
 - 审计脚本 SHA256：`{audit['implementation']['sha256']}`
-- Boundary remote inventory chain：`{audit['inputs']['boundary4_remote_inventory']['remote_file_hash_chain']}`
+- Exact-reuse64 remote inventory chain：`{audit['inputs']['exact_reuse64_remote_inventory']['remote_file_hash_chain']}`
+- Boundary4 remote inventory chain：`{audit['inputs']['boundary4_remote_inventory']['remote_file_hash_chain']}`
 
 完整 per-run、per-pose、per-chain 差异记录见 audit JSON。
 """
@@ -643,12 +644,10 @@ def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -
 
 def build_audit(
     *,
-    old_selector_paths: Sequence[Path] = DEFAULT_OLD_SELECTORS,
     audit_path: Path = DEFAULT_AUDIT,
     report_path: Path = DEFAULT_REPORT,
     ssh_executable: str = "ssh.exe",
     host: str = "node1",
-    include_boundary_remote: bool = True,
 ) -> dict[str, Any]:
     release = selector.load_execution_release(
         selector.DEFAULT_EXECUTION_RELEASE_MANIFEST, selector.DATA_ROOT
@@ -662,17 +661,12 @@ def build_audit(
         runs, reuse, old_manifest, old_root, str(release.payload["remote_root"])
     )
     selector.validate_dual_lane_identity(descriptors)
-    reuse_run_ids = {item.source_run_id for item in descriptors if item.source_mode == selector.REUSE_MODE}
-    old_poses, old_inputs = audit_old_selectors(old_selector_paths, reuse_run_ids)
-    if include_boundary_remote:
-        boundary_poses, boundary_inventory = audit_boundary_runs(
-            descriptors, release, ssh_executable, host
-        )
-    else:
-        boundary_poses, boundary_inventory = [], {
-            "status": "SKIPPED_BY_EXPLICIT_OPTION",
-            "remote_local_hash_chain_equal": None,
-        }
+    old_poses, old_inventory = audit_exact_reuse_runs(
+        descriptors, old_root, ssh_executable, host
+    )
+    boundary_poses, boundary_inventory = audit_boundary_runs(
+        descriptors, release, ssh_executable, host
+    )
     poses = old_poses + boundary_poses
     run_rows = summarize_runs(poses)
     summary = aggregate(poses, run_rows)
@@ -685,19 +679,22 @@ def build_audit(
         and comparison["all_atom_differences_are_terminal_oxt"]
         for pose in poses for comparison in pose["chains"].values()
     )
-    boundary_complete = (
-        not include_boundary_remote
-        or (
-            len(boundary_poses) == 32
-            and boundary_inventory["remote_local_hash_chain_equal"] is True
-        )
+    exact_reuse_complete = (
+        len(old_poses) == 512
+        and len({pose["run_id"] for pose in old_poses}) == 64
+        and old_inventory["remote_local_hash_chain_equal"] is True
     )
-    old_pose_count = len(old_poses)
-    old_run_count = len({pose["run_id"] for pose in old_poses})
-    local_old_complete = old_pose_count == 480 and old_run_count == 60
+    boundary_complete = (
+        len(boundary_poses) == 32
+        and len({pose["run_id"] for pose in boundary_poses}) == 4
+        and boundary_inventory["remote_local_hash_chain_equal"] is True
+    )
+    total_complete = len(poses) == 544 and len(run_rows) == 68
     passed = (
         bool(poses)
-        and local_old_complete
+        and exact_reuse_complete
+        and boundary_complete
+        and total_complete
         and all_residues_exact
         and all_non_oxt_exact
         and boundary_complete
@@ -722,8 +719,9 @@ def build_audit(
         "acceptance": {
             "all_residue_identities_exact": all_residues_exact,
             "all_non_terminal_oxt_atom_identities_exact": all_non_oxt_exact,
-            "all_480_locally_available_old_poses_covered": local_old_complete,
+            "all_512_targeted_exact_reuse_poses_covered": exact_reuse_complete,
             "boundary4_complete_and_hash_closed": boundary_complete,
+            "total_544_pose_closure": total_complete,
         },
         "summary": summary,
         "inputs": {
@@ -736,7 +734,7 @@ def build_audit(
                 "sha256": reuse.sha256,
                 "run_count": len(reuse.rows),
             },
-            "old_selectors": old_inputs,
+            "exact_reuse64_remote_inventory": old_inventory,
             "boundary4_remote_inventory": boundary_inventory,
         },
         "implementation": {
@@ -754,24 +752,20 @@ def build_audit(
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--old-selector", action="append", type=Path, dest="old_selectors")
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--ssh-executable", default="ssh.exe")
     parser.add_argument("--host", default="node1")
-    parser.add_argument("--skip-boundary-remote", action="store_true")
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
     audit = build_audit(
-        old_selector_paths=tuple(args.old_selectors or DEFAULT_OLD_SELECTORS),
         audit_path=args.audit,
         report_path=args.report,
         ssh_executable=args.ssh_executable,
         host=args.host,
-        include_boundary_remote=not args.skip_boundary_remote,
     )
     print(json.dumps({
         "status": audit["status"],
