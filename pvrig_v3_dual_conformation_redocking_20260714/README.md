@@ -134,6 +134,8 @@ node1 的固定运行目录是：
 scripts/sync_remote_status.sh
 ```
 
+全量运行期间，node1 的 `status/` 和 `reports/` 是生产状态权威源；同步副本位于本地 `status/remote/status/` 与 `status/remote/reports/`。本地顶层 `reports/` 只反映本地是否持有原始 job evidence，可能仍显示全 pending，不能用来覆盖 node1 的生产进度判断。
+
 ## 第一道门禁：评价器稳定
 
 只有 `reports/EVALUATOR_STABLE.json` 同时满足下列条件，状态才允许为 `PASS`：
