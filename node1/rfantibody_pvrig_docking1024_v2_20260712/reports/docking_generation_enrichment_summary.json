@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-14T00:38:52.540281+00:00",
+  "generated_at": "2026-07-14T00:42:58.826895+00:00",
   "objective": "maximize computational dual-reference docking-geometry successes, not experimental outcomes",
   "success_definitions": {
     "any_consensus_a": "candidate has at least one of four poses classified CONSENSUS_BLOCKER_LIKE_A",

@@ -190,7 +190,13 @@ def sha256_file(path: Path) -> str:
 
 
 def canonical_json(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
 
 
 def sha256_json(value: Any) -> str:
@@ -775,7 +781,14 @@ def write_text_atomic(path: Path, text: str) -> None:
 def write_json_atomic(path: Path, payload: Mapping[str, Any]) -> None:
     write_text_atomic(
         path,
-        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+            allow_nan=False,
+        )
+        + "\n",
     )
 
 
@@ -837,6 +850,7 @@ def build_chinese_report(
         f"- 旧规则 class 计数：{compact_counts(overall['legacy_class_counts'])}。",
         f"- V1.2 metrics 上的旧规则诊断计数：{compact_counts(overall['old_rule_diagnostic_class_counts'])}。",
         f"- 发生诊断 class 变化的 pose：{overall['changed_class_rows']}/{overall['row_count']}。",
+        f"- 其中 `BLOCKER_PLAUSIBLE_B->BLOCKER_LIKE_A` 为 {overall['old_rule_transition_counts'].get('BLOCKER_PLAUSIBLE_B->BLOCKER_LIKE_A', 0)} 行；这可由排除 HETATM 后分母改变、CDR3 fraction 上升造成，不能解读为几何或生物学改善。",
         "",
         "## 主要数值敏感性",
         "",

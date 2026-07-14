@@ -1696,8 +1696,12 @@ def flatten_metrics_row(
             "region_reference_pvrl2_record_inventory_json": canonical_json(
                 region_reference_inventory
             ),
-            "pose_score_payload_sha256": sha256_json(pose_report),
-            "region_score_payload_sha256": sha256_json(region_report),
+            "pose_score_payload_sha256": normalized_scorer_payload_sha256(
+                pose_report, result, config
+            ),
+            "region_score_payload_sha256": normalized_scorer_payload_sha256(
+                region_report, result, config
+            ),
         }
     )
     normalized = {
@@ -1710,6 +1714,21 @@ def flatten_metrics_row(
     )
     assert_no_classification_fields(normalized, "continuous metrics row")
     return normalized
+
+
+def normalized_scorer_payload_sha256(
+    report: Mapping[str, Any],
+    result: BaselineResult,
+    config: BuildConfig,
+) -> str:
+    normalized = dict(report)
+    if "pose_pdb" in normalized:
+        normalized["pose_pdb"] = result.aligned_pose_relpath
+    if "reference_pdb" in normalized:
+        normalized["reference_pdb"] = canonical_input_path(
+            config.references[result.baseline], config.workspace_root
+        )
+    return sha256_json(normalized)
 
 
 def contact_record(
@@ -1747,3 +1766,539 @@ def contact_record(
     assert_no_classification_fields(record, "residue contact record")
     record["contact_record_sha256"] = sha256_json(record)
     return record
+
+
+def process_selector_row(
+    index: int,
+    selector_row: Mapping[str, str],
+    *,
+    config: BuildConfig,
+    cases: Mapping[str, CaseMetadata],
+    staging_root: Path,
+    alignment_maps: Mapping[str, Mapping[str, Any]],
+    reconciliation_map: Mapping[tuple[int, str], tuple[int, str]],
+    pose_rule_eligible: bool,
+) -> tuple[int, dict[str, str], list[dict[str, str]], list[dict[str, Any]]]:
+    candidate_id = selector_row["candidate_id"]
+    case = cases[candidate_id]
+    rank = parse_int(selector_row["canonical_rank"], "canonical_rank", 1)
+    source_path = resolve_selector_path(
+        selector_row["source_pose_relpath"], config.workspace_root
+    )
+    coordinates = read_coordinate_bytes(source_path)
+    if sha256_bytes(coordinates) != selector_row["decompressed_coordinate_sha256"]:
+        raise ContractError(
+            f"Coordinate hash drift before processing {candidate_id}/rank{rank}"
+        )
+    work_root = staging_root / ".work" / f"{index:04d}_{candidate_id}_rank_{rank:02d}"
+    work_root.mkdir(parents=True, exist_ok=True)
+    raw_pose = work_root / "raw_emref_pose.pdb"
+    raw_pose.write_bytes(coordinates)
+
+    baseline_results: dict[str, BaselineResult] = {}
+    for baseline in BASELINES:
+        baseline_results[baseline] = materialize_and_score_baseline(
+            config=config,
+            selector_row=selector_row,
+            case=case,
+            baseline=baseline,
+            raw_pose=raw_pose,
+            staging_root=staging_root,
+            work_root=work_root,
+            alignment_map=alignment_maps[baseline],
+            reconciliation_map=reconciliation_map,
+        )
+
+    result_8x6b = baseline_results["8x6b"]
+    result_9e6y = baseline_results["9e6y"]
+    material_row: dict[str, Any] = {
+        "schema_version": "pvrig_v1_2_top8_pose_materialization_v1",
+        "protocol_id": PROTOCOL_ID,
+        "formal_eligible": "false",
+        "threshold_freeze_eligible": "false",
+        "pose_rule_threshold_freeze_eligible": str(pose_rule_eligible).lower(),
+        "dual_receptor_r_gold_freeze_eligible": "false",
+        "source_docking_receptor": "8x6b",
+        "baseline_channel_semantics": "posthoc_scoring_baseline_same_8x6b_docked_pose_ensemble",
+        "run_id": selector_row["run_id"],
+        "candidate_id": candidate_id,
+        "family": case.family,
+        "evidence_role": case.evidence_role,
+        "control_descriptor": case.control_descriptor,
+        "usage_boundary": case.usage_boundary,
+        "canonical_rank": selector_row["canonical_rank"],
+        "source_output_index": selector_row["source_output_index"],
+        "source_score": selector_row["source_score"],
+        "source_seed": selector_row["source_seed"],
+        "selector_row_sha256": selector_row["selection_row_sha256"],
+        "source_pose_relpath": selector_row["source_pose_relpath"],
+        "source_pose_sha256": selector_row["source_pose_sha256"],
+        "decompressed_coordinate_sha256": selector_row[
+            "decompressed_coordinate_sha256"
+        ],
+        "decompressed_coordinate_bytes": selector_row[
+            "decompressed_coordinate_bytes"
+        ],
+        "cdr1_range": case.cdr1_range,
+        "cdr2_range": case.cdr2_range,
+        "cdr3_range": case.cdr3_range,
+        "alignment_map_8x6b_relpath": result_8x6b.alignment_map_relpath,
+        "alignment_map_8x6b_sha256": result_8x6b.alignment_map_sha256,
+        "alignment_pair_count_8x6b": result_8x6b.alignment.pair_count,
+        "alignment_rmsd_a_8x6b": result_8x6b.alignment.rmsd_a,
+        "aligned_pose_8x6b_relpath": result_8x6b.aligned_pose_relpath,
+        "aligned_pose_8x6b_sha256": result_8x6b.aligned_pose_sha256,
+        "aligned_pose_8x6b_bytes": result_8x6b.aligned_pose_bytes,
+        "alignment_map_9e6y_relpath": result_9e6y.alignment_map_relpath,
+        "alignment_map_9e6y_sha256": result_9e6y.alignment_map_sha256,
+        "alignment_pair_count_9e6y": result_9e6y.alignment.pair_count,
+        "alignment_rmsd_a_9e6y": result_9e6y.alignment.rmsd_a,
+        "aligned_pose_9e6y_relpath": result_9e6y.aligned_pose_relpath,
+        "aligned_pose_9e6y_sha256": result_9e6y.aligned_pose_sha256,
+        "aligned_pose_9e6y_bytes": result_9e6y.aligned_pose_bytes,
+        "remap_observed_receptor_residues_9e6y": result_9e6y.remap[
+            "observed_receptor_residues"
+        ],
+        "remap_remapped_receptor_residues_9e6y": result_9e6y.remap[
+            "remapped_receptor_residues"
+        ],
+        "remap_unmapped_receptor_residues_9e6y": result_9e6y.remap[
+            "unmapped_receptor_residues"
+        ],
+    }
+    normalized_material = {
+        field_name: scalar_text(material_row.get(field_name), field_name)
+        for field_name in MATERIALIZATION_FIELDS
+        if field_name != "materialization_row_sha256"
+    }
+    normalized_material["materialization_row_sha256"] = row_sha256(
+        normalized_material, "materialization_row_sha256"
+    )
+    assert_no_classification_fields(
+        normalized_material, "pose materialization manifest row"
+    )
+
+    metrics = [
+        flatten_metrics_row(
+            selector_row,
+            case,
+            baseline_results[baseline],
+            config,
+            pose_rule_eligible,
+        )
+        for baseline in BASELINES
+    ]
+    contacts = [
+        contact_record(selector_row, baseline_results[baseline]) for baseline in BASELINES
+    ]
+    shutil.rmtree(work_root)
+    return index, normalized_material, metrics, contacts
+
+
+def verify_frozen_files(bindings: Mapping[str, str]) -> None:
+    mismatches: list[str] = []
+    for raw_path, expected in sorted(bindings.items()):
+        path = Path(raw_path)
+        try:
+            observed = sha256_file(path)
+        except ContractError as error:
+            mismatches.append(str(error))
+            continue
+        if observed != expected:
+            mismatches.append(f"{path}:{observed}!={expected}")
+    if mismatches:
+        raise ContractError("Frozen input hash drift: " + "; ".join(mismatches))
+
+
+def hash_chain(rows: Iterable[Mapping[str, str]], field_name: str) -> str:
+    return sha256_bytes(
+        "\n".join(row[field_name] for row in rows).encode("ascii")
+    )
+
+
+def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -> None:
+    outdir.mkdir(parents=True, exist_ok=True)
+    files = sorted(
+        (path for path in staging_root.rglob("*") if path.is_file()),
+        key=lambda path: path.relative_to(staging_root).as_posix(),
+    )
+    for source in files:
+        relative = source.relative_to(staging_root)
+        destination = outdir / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        os.replace(source, destination)
+    if not emitted_contacts:
+        stale_contacts = outdir / RESIDUE_CONTACTS_NAME
+        if stale_contacts.exists():
+            stale_contacts.unlink()
+
+
+def canonical_pose_rule_contract(
+    config: BuildConfig,
+    selector_evidence: Mapping[str, Any],
+) -> bool:
+    return (
+        config.contract == DatasetContract()
+        and selector_evidence.get("selector_audit_validated") is True
+        and {
+            baseline: dict(values)
+            for baseline, values in config.expected_reference_inventories.items()
+        }
+        == {
+            baseline: dict(values)
+            for baseline, values in DEFAULT_EXPECTED_REFERENCE_INVENTORIES.items()
+        }
+    )
+
+
+def build_package(config: BuildConfig) -> dict[str, Any]:
+    if config.jobs < 1:
+        raise ContractError(f"jobs must be positive, got {config.jobs}")
+    if min(config.contract.as_dict().values()) < 0:
+        raise ContractError("Dataset contract counts cannot be negative")
+    if config.contract.case_count < 1 or config.contract.poses_per_case < 1:
+        raise ContractError("Dataset contract must contain cases and poses")
+    if set(config.references) != set(BASELINES):
+        raise ContractError(
+            f"Reference baseline set mismatch: {sorted(config.references)}"
+        )
+    if set(config.expected_reference_inventories) != set(BASELINES):
+        raise ContractError("Expected reference inventories must cover both baselines")
+
+    cases = load_case_metadata(config)
+    toolchain = validate_toolchain(config)
+    selector_rows, selector_bindings, selector_evidence = verify_selector(config, cases)
+    pose_rule_eligible = canonical_pose_rule_contract(config, selector_evidence)
+
+    required_inputs = {
+        "hotspots": config.hotspots.resolve(),
+        "reconciliation": config.reconciliation.resolve(),
+        **{
+            f"reference_{baseline}": path.resolve()
+            for baseline, path in config.references.items()
+        },
+        "aligner": config.aligner.resolve(),
+        "pose_scorer": config.pose_scorer.resolve(),
+        "region_scorer": config.region_scorer.resolve(),
+        "scoring_helper": config.scoring_helper.resolve(),
+        "processor": Path(__file__).resolve(),
+    }
+    file_bindings = dict(selector_bindings)
+    for path in required_inputs.values():
+        file_bindings[str(path)] = sha256_file(path)
+
+    outdir = config.outdir.resolve()
+    outdir.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(
+        prefix=f".{outdir.name}.staging.", dir=outdir.parent
+    ) as temporary:
+        staging_root = Path(temporary)
+        alignment_maps = materialize_alignment_maps(config, staging_root)
+        reconciliation = parse_reconciliation(config.reconciliation.resolve())
+        reconciliation_map = residue_number_map(reconciliation)
+        pair_rows_9e6y = build_alignment_pair_rows(config.hotspots.resolve(), "9e6y")
+        validate_hotspot_reconciliation(pair_rows_9e6y, reconciliation_map)
+
+        indexed_results: dict[
+            int, tuple[dict[str, str], list[dict[str, str]], list[dict[str, Any]]]
+        ] = {}
+        if config.jobs == 1:
+            for index, selector_row in enumerate(selector_rows):
+                result = process_selector_row(
+                    index,
+                    selector_row,
+                    config=config,
+                    cases=cases,
+                    staging_root=staging_root,
+                    alignment_maps=alignment_maps,
+                    reconciliation_map=reconciliation_map,
+                    pose_rule_eligible=pose_rule_eligible,
+                )
+                indexed_results[result[0]] = result[1:]
+        else:
+            with ThreadPoolExecutor(max_workers=config.jobs) as executor:
+                futures = {
+                    executor.submit(
+                        process_selector_row,
+                        index,
+                        selector_row,
+                        config=config,
+                        cases=cases,
+                        staging_root=staging_root,
+                        alignment_maps=alignment_maps,
+                        reconciliation_map=reconciliation_map,
+                        pose_rule_eligible=pose_rule_eligible,
+                    ): index
+                    for index, selector_row in enumerate(selector_rows)
+                }
+                try:
+                    for future in as_completed(futures):
+                        result = future.result()
+                        indexed_results[result[0]] = result[1:]
+                except Exception:
+                    for future in futures:
+                        future.cancel()
+                    raise
+
+        if len(indexed_results) != len(selector_rows):
+            raise ContractError(
+                f"Processed selector row count {len(indexed_results)} != {len(selector_rows)}"
+            )
+        material_rows: list[dict[str, str]] = []
+        metric_rows: list[dict[str, str]] = []
+        contact_rows: list[dict[str, Any]] = []
+        for index in range(len(selector_rows)):
+            material, metrics, contacts = indexed_results[index]
+            material_rows.append(material)
+            metric_rows.extend(metrics)
+            contact_rows.extend(contacts)
+        if len(material_rows) != config.contract.materialization_rows:
+            raise ContractError(
+                f"Materialization cardinality {len(material_rows)} != "
+                f"{config.contract.materialization_rows}"
+            )
+        if len(metric_rows) != config.contract.metric_rows:
+            raise ContractError(
+                f"Continuous metric cardinality {len(metric_rows)} != "
+                f"{config.contract.metric_rows}"
+            )
+        observed_metric_keys = Counter(
+            (row["candidate_id"], row["canonical_rank"], row["baseline"])
+            for row in metric_rows
+        )
+        duplicates = [key for key, count in observed_metric_keys.items() if count != 1]
+        if duplicates:
+            raise ContractError(f"Missing/duplicate continuous metric keys: {duplicates[:10]}")
+        if any(is_forbidden_output_field(field_name) for field_name in MATERIALIZATION_FIELDS):
+            raise ContractError("Materialization schema contains classification/tier fields")
+        if any(is_forbidden_output_field(field_name) for field_name in METRICS_FIELDS):
+            raise ContractError("Metrics schema contains classification/tier fields")
+
+        reference_inventory_variants: dict[str, set[str]] = defaultdict(set)
+        for row in metric_rows:
+            reference_inventory_variants[row["baseline"]].add(
+                row["reference_pvrl2_record_inventory_json"]
+            )
+        for baseline in BASELINES:
+            variants = reference_inventory_variants.get(baseline, set())
+            if len(variants) != 1:
+                raise ContractError(
+                    f"Reference inventory changed across {baseline} metrics: "
+                    f"{len(variants)} variants"
+                )
+
+        manifest_path = staging_root / MATERIALIZATION_MANIFEST_NAME
+        metrics_path = staging_root / CONTINUOUS_METRICS_NAME
+        contacts_path = staging_root / RESIDUE_CONTACTS_NAME
+        audit_path = staging_root / AUDIT_NAME
+        write_csv(manifest_path, material_rows, MATERIALIZATION_FIELDS)
+        write_csv(metrics_path, metric_rows, METRICS_FIELDS)
+        if config.emit_contact_jsonl:
+            with contacts_path.open("w", encoding="utf-8") as handle:
+                for record in contact_rows:
+                    handle.write(canonical_json(record) + "\n")
+
+        verify_frozen_files(file_bindings)
+        aligned_pose_files = sorted(
+            (staging_root / "aligned_poses").rglob("*.pdb"),
+            key=lambda path: path.relative_to(staging_root).as_posix(),
+        )
+        if len(aligned_pose_files) != config.contract.metric_rows:
+            raise ContractError(
+                f"Aligned pose file count {len(aligned_pose_files)} != "
+                f"{config.contract.metric_rows}"
+            )
+        aligned_hash_rows = [
+            {
+                "relpath": output_relative(path, staging_root),
+                "sha256": sha256_file(path),
+                "bytes": path.stat().st_size,
+            }
+            for path in aligned_pose_files
+        ]
+        output_hashes: dict[str, Any] = {
+            "materialization_manifest": {
+                "relpath": MATERIALIZATION_MANIFEST_NAME,
+                "sha256": sha256_file(manifest_path),
+                "rows": len(material_rows),
+                "row_hash_chain": hash_chain(
+                    material_rows, "materialization_row_sha256"
+                ),
+            },
+            "continuous_metrics": {
+                "relpath": CONTINUOUS_METRICS_NAME,
+                "sha256": sha256_file(metrics_path),
+                "rows": len(metric_rows),
+                "row_hash_chain": hash_chain(metric_rows, "metrics_row_sha256"),
+            },
+            "aligned_poses": {
+                "count": len(aligned_hash_rows),
+                "manifest_sha256": sha256_json(aligned_hash_rows),
+                "files": aligned_hash_rows,
+            },
+            "alignment_maps": {
+                baseline: {
+                    "relpath": values["relpath"],
+                    "sha256": values["sha256"],
+                    "pair_count": values["pair_count"],
+                }
+                for baseline, values in alignment_maps.items()
+            },
+        }
+        if config.emit_contact_jsonl:
+            output_hashes["residue_contacts"] = {
+                "relpath": RESIDUE_CONTACTS_NAME,
+                "sha256": sha256_file(contacts_path),
+                "records": len(contact_rows),
+            }
+
+        audit: dict[str, Any] = {
+            "schema_version": "pvrig_v1_2_top8_calibration_audit_v1",
+            "status": "PASS_V1_2_TOP8_CALIBRATION_CONTINUOUS_METRICS_BUILT",
+            "protocol_id": PROTOCOL_ID,
+            "formal_eligible": False,
+            "threshold_freeze_eligible": False,
+            "pose_rule_threshold_freeze_eligible": pose_rule_eligible,
+            "dual_receptor_r_gold_freeze_eligible": False,
+            "source_docking_receptor": "8x6b",
+            "baseline_channel_semantics": (
+                "8x6b_and_9e6y_are_posthoc_scoring_channels_on_the_same_8x6b_"
+                "docked_pose_ensemble_not_independent_receptor_docking_runs"
+            ),
+            "claim_boundary": CLAIM_BOUNDARY,
+            "thresholds_or_classes_applied": False,
+            "fixed_k_pose_ensemble": True,
+            "selector_contract": selector_evidence,
+            "expected_contract": config.contract.as_dict(),
+            "observed_contract": {
+                "case_count": len(cases),
+                "materialization_rows": len(material_rows),
+                "metric_rows": len(metric_rows),
+                "rows_by_baseline": dict(
+                    sorted(Counter(row["baseline"] for row in metric_rows).items())
+                ),
+                "alignment_pair_count_values": sorted(
+                    {int(row["alignment_pair_count"]) for row in metric_rows}
+                ),
+            },
+            "reference_inventory_expected": {
+                baseline: dict(values)
+                for baseline, values in config.expected_reference_inventories.items()
+            },
+            "reference_inventory_observed": {
+                baseline: json.loads(next(iter(reference_inventory_variants[baseline])))
+                for baseline in BASELINES
+            },
+            "input_sha256": {
+                "selector_csv": sha256_file(config.selector_csv.resolve()),
+                "selector_audit": (
+                    sha256_file(config.selector_audit.resolve())
+                    if config.selector_audit is not None
+                    else ""
+                ),
+                "positive_manifest": sha256_file(config.positive_manifest.resolve()),
+                "mutant_manifest": sha256_file(config.mutant_manifest.resolve()),
+                "hotspots": sha256_file(config.hotspots.resolve()),
+                "reconciliation": sha256_file(config.reconciliation.resolve()),
+                **{
+                    f"reference_{baseline}": sha256_file(path.resolve())
+                    for baseline, path in config.references.items()
+                },
+                "frozen_file_binding_sha256": sha256_json(
+                    dict(sorted(file_bindings.items()))
+                ),
+                "frozen_file_binding_count": len(file_bindings),
+            },
+            "toolchain": toolchain,
+            "output_sha256": output_hashes,
+        }
+        assert_no_classification_fields(audit, "calibration audit")
+        write_json(audit_path, audit)
+        publish_stage(
+            staging_root,
+            outdir,
+            emitted_contacts=config.emit_contact_jsonl,
+        )
+    return audit
+
+
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--selector-csv", type=Path, default=DEFAULT_SELECTOR_CSV)
+    parser.add_argument("--selector-audit", type=Path, default=DEFAULT_SELECTOR_AUDIT)
+    parser.add_argument("--positive-manifest", type=Path, default=DEFAULT_POSITIVE_MANIFEST)
+    parser.add_argument("--mutant-manifest", type=Path, default=DEFAULT_MUTANT_MANIFEST)
+    parser.add_argument("--aligner", type=Path, default=DEFAULT_ALIGNER)
+    parser.add_argument("--pose-scorer", type=Path, default=DEFAULT_POSE_SCORER)
+    parser.add_argument("--region-scorer", type=Path, default=DEFAULT_REGION_SCORER)
+    parser.add_argument("--scoring-helper", type=Path, default=DEFAULT_SCORING_HELPER)
+    parser.add_argument("--hotspots", type=Path, default=DEFAULT_HOTSPOTS)
+    parser.add_argument("--reconciliation", type=Path, default=DEFAULT_RECONCILIATION)
+    parser.add_argument(
+        "--reference-8x6b", type=Path, default=BASELINES["8x6b"]["reference"]
+    )
+    parser.add_argument(
+        "--reference-9e6y", type=Path, default=BASELINES["9e6y"]["reference"]
+    )
+    parser.add_argument("--outdir", type=Path, default=DEFAULT_OUTDIR)
+    parser.add_argument("--jobs", type=int, default=1)
+    parser.add_argument(
+        "--no-contact-jsonl",
+        action="store_true",
+        help="Skip the optional per-pose residue-contact JSONL artifact.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_args(argv)
+    config = BuildConfig(
+        selector_csv=args.selector_csv.resolve(),
+        selector_audit=args.selector_audit.resolve(),
+        positive_manifest=args.positive_manifest.resolve(),
+        mutant_manifest=args.mutant_manifest.resolve(),
+        aligner=args.aligner.resolve(),
+        pose_scorer=args.pose_scorer.resolve(),
+        region_scorer=args.region_scorer.resolve(),
+        scoring_helper=args.scoring_helper.resolve(),
+        hotspots=args.hotspots.resolve(),
+        reconciliation=args.reconciliation.resolve(),
+        references={
+            "8x6b": args.reference_8x6b.resolve(),
+            "9e6y": args.reference_9e6y.resolve(),
+        },
+        outdir=args.outdir.resolve(),
+        jobs=args.jobs,
+        emit_contact_jsonl=not args.no_contact_jsonl,
+    )
+    try:
+        audit = build_package(config)
+    except ContractError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 2
+    print(
+        json.dumps(
+            {
+                "status": audit["status"],
+                "formal_eligible": audit["formal_eligible"],
+                "pose_rule_threshold_freeze_eligible": audit[
+                    "pose_rule_threshold_freeze_eligible"
+                ],
+                "dual_receptor_r_gold_freeze_eligible": audit[
+                    "dual_receptor_r_gold_freeze_eligible"
+                ],
+                "materialization_rows": audit["observed_contract"][
+                    "materialization_rows"
+                ],
+                "metric_rows": audit["observed_contract"]["metric_rows"],
+                "outdir": str(config.outdir),
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

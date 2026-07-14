@@ -435,7 +435,7 @@ def render_markdown(summary: dict[str, Any], groups: list[dict[str, Any]], budge
             f"如果 100 条富集子集的历史比例完全复现，1,024 条 docking 可得到约 "
             f"`{projection['if_p2_p3_p4_long_h3_cdr3_13_rate_repeats_any_a']}` 条任一 A、"
             f"`{projection['if_rate_repeats_strict_good']}` 条严格 good。这个数字只能作为容量规划上限，"
-            "实际 prospective yield 应按回归到均值后的 100-170 条严格 good 规划。",
+            "不是 prospective 产量承诺；当前没有经过未来批次校准的可信预测区间，应先用 512 条 docking pilot 实测新分布。",
             "",
             "## 7. 主动学习循环",
             "",
