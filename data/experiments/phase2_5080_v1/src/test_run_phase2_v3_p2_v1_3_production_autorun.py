@@ -3,11 +3,16 @@ from __future__ import annotations
 
 import json
 import io
+import os
+import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Sequence
+from unittest import mock
 
 from experiments.phase2_5080_v1.src import (
     run_phase2_v3_p2_v1_3_production_autorun as autorun,
@@ -49,7 +54,7 @@ class FixturePublisher:
         self.layout = layout
         self.development_pass = development_pass
 
-    def selector(self) -> None:
+    def selector(self, release_id: str = "selector-fixture") -> None:
         def build(release: Path) -> None:
             table = release / autorun.SELECTOR_CSV
             write_csv(table, 752)
@@ -68,7 +73,7 @@ class FixturePublisher:
                 },
             )
 
-        publish(self.layout.selector, "selector-fixture", build)
+        publish(self.layout.selector, release_id, build)
 
     def processor(self, root: Path) -> None:
         def build(release: Path) -> None:
@@ -191,20 +196,102 @@ def snapshot(
     invalid: int = 0,
     alive: bool,
     failures: Sequence[str] = (),
+    manifest_count: int = 30,
+    manifest_sha256: str = autorun.FROZEN_NEW_RUN_MANIFEST_SHA256,
 ) -> autorun.CommandResult:
     payload = {
         "status": status,
-        "manifest_count": 30,
+        "manifest_count": manifest_count,
         "completion_count": completion,
         "pass_count": passed,
         "failure_count": failure,
         "missing_count": 30 - completion,
         "invalid_count": invalid,
         "controller_alive": alive,
-        "controller_pids": [123] if alive else [],
+        "manifest_sha256": manifest_sha256,
+        "controller_pid": autorun.FROZEN_CONTROLLER_PID if alive else None,
+        "controller_start_ticks": (
+            autorun.FROZEN_CONTROLLER_START_TICKS if alive else None
+        ),
+        "controller_pid_file_valid": alive,
+        "controller_identity_valid": alive,
+        "controller_argv_sha256": "a" * 64 if alive else "",
         "failures": list(failures),
     }
     return autorun.CommandResult(0, json.dumps(payload) + "\n", "")
+
+
+def frozen_manifest_path() -> Path:
+    return (
+        autorun.EXP_DIR
+        / "runs/pvrig_v3_p2/docking_gold_v1_3_dual47_completion15_package/"
+        "manifests/new_run_manifest.csv"
+    )
+
+
+def create_fake_controller(remote_root: Path, proc_root: Path) -> None:
+    (remote_root / "controller_full.pid").write_text(
+        f"{autorun.FROZEN_CONTROLLER_PID}\n", encoding="ascii"
+    )
+    proc = proc_root / str(autorun.FROZEN_CONTROLLER_PID)
+    proc.mkdir(parents=True, exist_ok=True)
+    argv = [
+        autorun.FROZEN_CONTROLLER_PYTHON,
+        "scripts/run_v1_3_completion15.py",
+        "--root",
+        remote_root.resolve().as_posix(),
+        "--haddock-bin",
+        autorun.FROZEN_HADDOCK_BIN,
+        "--max-workers",
+        "5",
+        "--max-load1",
+        "50",
+        "--load-poll-seconds",
+        "30",
+    ]
+    (proc / "cmdline").write_bytes(
+        b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+    )
+    stat_fields = ["S", *("0" for _ in range(18)), str(autorun.FROZEN_CONTROLLER_START_TICKS)]
+    (proc / "stat").write_text(
+        f"{autorun.FROZEN_CONTROLLER_PID} (python) "
+        + " ".join(stat_fields)
+        + "\n",
+        encoding="ascii",
+    )
+    (proc / "cwd").symlink_to(remote_root.resolve(), target_is_directory=True)
+    (proc / "exe").symlink_to(autorun.FROZEN_CONTROLLER_PYTHON)
+
+
+def create_remote_probe_fixture(base: Path) -> tuple[Path, Path]:
+    remote_root = base / "remote"
+    proc_root = base / "proc"
+    (remote_root / "manifests").mkdir(parents=True)
+    (remote_root / "runs").mkdir()
+    proc_root.mkdir()
+    shutil.copyfile(
+        frozen_manifest_path(), remote_root / "manifests/new_run_manifest.csv"
+    )
+    create_fake_controller(remote_root, proc_root)
+    return remote_root, proc_root
+
+
+def execute_remote_probe(remote_root: Path, proc_root: Path) -> dict[str, object]:
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            autorun.remote_probe_script(),
+            str(remote_root),
+            str(proc_root),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise AssertionError(completed.stderr)
+    return json.loads(completed.stdout.splitlines()[-1])
 
 
 class FakeRunner:

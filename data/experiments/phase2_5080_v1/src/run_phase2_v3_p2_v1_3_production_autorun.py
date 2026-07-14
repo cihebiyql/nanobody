@@ -546,63 +546,193 @@ def release_inventory(root: Path, marker: str) -> dict[str, Any]:
 
 
 def remote_probe_script() -> str:
-    # Keep the controller filename split so this probe cannot match its own
-    # /proc command line while detecting the long-running controller.
-    return r'''import csv, json, os, pathlib, sys
+    script = r'''import csv, hashlib, io, json, os, pathlib, re, sys
 root = pathlib.Path(sys.argv[1])
+proc_root = pathlib.Path(sys.argv[2]) if len(sys.argv) == 3 else pathlib.Path("/proc")
 protocol = "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
 passed = "PASS_4_EMREF_TOP8_READY"
-failures = []
+expected_manifest_sha = "__MANIFEST_SHA__"
+expected_pid = __CONTROLLER_PID__
+expected_pid_sha = "__CONTROLLER_PID_SHA__"
+expected_start_ticks = __CONTROLLER_START_TICKS__
+expected_python = "__CONTROLLER_PYTHON__"
+expected_haddock = "__HADDOCK_BIN__"
+
+def emit(status, manifest_count=0, completion_count=0, pass_count=0,
+         failure_count=0, missing_count=30, invalid_count=0,
+         manifest_sha256="", controller_alive=False, controller_pid=None,
+         controller_start_ticks=None, controller_pid_file_valid=False,
+         controller_identity_valid=False, controller_argv_sha256="", failures=()):
+    print(json.dumps({"status":status,"manifest_count":manifest_count,
+        "completion_count":completion_count,"pass_count":pass_count,
+        "failure_count":failure_count,"missing_count":missing_count,
+        "invalid_count":invalid_count,"manifest_sha256":manifest_sha256,
+        "controller_alive":controller_alive,"controller_pid":controller_pid,
+        "controller_start_ticks":controller_start_ticks,
+        "controller_pid_file_valid":controller_pid_file_valid,
+        "controller_identity_valid":controller_identity_valid,
+        "controller_argv_sha256":controller_argv_sha256,
+        "failures":list(failures)}, sort_keys=True))
+
+manifest = root / "manifests/new_run_manifest.csv"
 try:
-    with (root / "manifests/new_run_manifest.csv").open(newline="", encoding="utf-8-sig") as handle:
-        rows = list(csv.DictReader(handle))
+    manifest_bytes = manifest.read_bytes()
+    manifest_sha = hashlib.sha256(manifest_bytes).hexdigest()
+    text = manifest_bytes.decode("utf-8-sig")
+    rows = list(csv.DictReader(io.StringIO(text, newline="")))
 except Exception as error:
-    print(json.dumps({"status":"FAILURE","manifest_count":0,"completion_count":0,"pass_count":0,"failure_count":1,"missing_count":30,"invalid_count":1,"controller_alive":False,"controller_pids":[],"failures":["manifest:"+str(error)]}, sort_keys=True)); raise SystemExit
-manifest_count = len(rows)
-expected_paths = {str(row.get("completion_relpath", "")) for row in rows}
-found_paths = {path.relative_to(root).as_posix() for path in (root / "runs").glob("*/*.complete.json")}
-if found_paths - expected_paths:
-    failures.append("unexpected_completion_files:" + ",".join(sorted(found_paths - expected_paths)))
+    emit("FAILURE", failure_count=1, invalid_count=1,
+         failures=["manifest_unreadable_or_malformed:" + str(error)])
+    raise SystemExit
+
+manifest_failures = []
+required = {"protocol_id", "run_id", "config_sha256", "completion_relpath"}
+if not rows or not required.issubset(rows[0]):
+    manifest_failures.append("manifest_required_fields_missing")
+run_ids = [str(row.get("run_id", "")) for row in rows]
+config_hashes = [str(row.get("config_sha256", "")) for row in rows]
+if manifest_sha != expected_manifest_sha:
+    manifest_failures.append("manifest_sha256_mismatch")
+if len(rows) != 30:
+    manifest_failures.append("manifest_row_count_not_30")
+if len(run_ids) != 30 or len(set(run_ids)) != 30 or any(not value for value in run_ids):
+    manifest_failures.append("manifest_run_ids_not_30_unique")
+if (len(config_hashes) != 30 or len(set(config_hashes)) != 30
+        or any(re.fullmatch(r"[0-9a-f]{64}", value) is None for value in config_hashes)):
+    manifest_failures.append("manifest_config_hashes_not_30_unique_sha256")
+
+root_resolved = root.resolve()
+normalized_paths = []
+for index, row in enumerate(rows, start=2):
+    if row.get("protocol_id") != protocol:
+        manifest_failures.append("manifest_protocol_mismatch_row_" + str(index))
+    raw = str(row.get("completion_relpath", ""))
+    pure = pathlib.PurePosixPath(raw)
+    valid = bool(raw) and not pure.is_absolute() and raw == pure.as_posix()
+    valid = valid and all(part not in {"", ".", ".."} for part in pure.parts)
+    if valid:
+        candidate = (root / pathlib.Path(*pure.parts)).resolve(strict=False)
+        try:
+            candidate.relative_to(root_resolved)
+        except ValueError:
+            valid = False
+    if not valid:
+        manifest_failures.append("manifest_completion_path_unsafe_row_" + str(index))
+    normalized_paths.append(raw)
+if len(normalized_paths) != 30 or len(set(normalized_paths)) != 30:
+    manifest_failures.append("manifest_completion_paths_not_30_unique")
+if manifest_failures:
+    emit("FAILURE", manifest_count=len(rows), failure_count=1,
+         missing_count=max(0, 30 - len(rows)), invalid_count=len(manifest_failures),
+         manifest_sha256=manifest_sha, failures=manifest_failures)
+    raise SystemExit
+
+expected_paths = set(normalized_paths)
+found_paths = {
+    path.relative_to(root).as_posix()
+    for path in (root / "runs").glob("*/*.complete.json")
+}
+failures = []
+unexpected = found_paths - expected_paths
+if unexpected:
+    failures.append("unexpected_completion_files:" + ",".join(sorted(unexpected)))
 pass_count = invalid_count = failure_count = completion_count = 0
 for row in rows:
-    path = root / row.get("completion_relpath", "")
+    path = root / row["completion_relpath"]
     if not path.is_file():
         continue
     completion_count += 1
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
-        valid = (payload.get("protocol_id") == protocol and payload.get("run_id") == row.get("run_id") and payload.get("config_sha256") == row.get("config_sha256"))
+        valid = (payload.get("protocol_id") == protocol
+            and payload.get("run_id") == row["run_id"]
+            and payload.get("config_sha256") == row["config_sha256"])
         if not valid:
-            invalid_count += 1; failures.append(row.get("run_id", "") + ":invalid_binding")
+            invalid_count += 1
+            failures.append(row["run_id"] + ":invalid_binding")
         elif payload.get("status") == passed and payload.get("exit_code") == 0:
             pass_count += 1
         else:
-            failure_count += 1; failures.append(row.get("run_id", "") + ":" + str(payload.get("status")))
+            failure_count += 1
+            failures.append(row["run_id"] + ":" + str(payload.get("status")))
     except Exception as error:
-        invalid_count += 1; failures.append(row.get("run_id", "") + ":invalid_json:" + str(error))
-script_name = "run_v1_3_" + "completion15.py"
-controller_pids = []
-for proc in pathlib.Path("/proc").iterdir():
-    if not proc.name.isdigit() or int(proc.name) == os.getpid():
-        continue
+        invalid_count += 1
+        failures.append(row["run_id"] + ":invalid_json:" + str(error))
+missing_count = 30 - completion_count
+
+controller_alive = False
+controller_pid = None
+controller_start_ticks = None
+controller_pid_file_valid = False
+controller_identity_valid = False
+controller_argv_sha256 = ""
+ready = (completion_count == 30 and pass_count == 30 and missing_count == 0
+         and not unexpected and not invalid_count and not failure_count)
+if not ready and not unexpected and not invalid_count and not failure_count:
+    pid_file = root / "controller_full.pid"
     try:
-        command = (proc / "cmdline").read_bytes().replace(b"\0", b" ").decode("utf-8", "replace")
-    except OSError:
-        continue
-    if script_name in command and str(root) in command:
-        controller_pids.append(int(proc.name))
-controller_pids.sort()
-controller_alive = bool(controller_pids)
-missing_count = max(0, manifest_count - completion_count)
-if manifest_count != 30 or len(expected_paths) != 30 or found_paths - expected_paths or invalid_count or failure_count:
+        pid_bytes = pid_file.read_bytes()
+        controller_pid = int(pid_bytes.decode("ascii").strip())
+        controller_pid_file_valid = (
+            controller_pid == expected_pid
+            and hashlib.sha256(pid_bytes).hexdigest() == expected_pid_sha
+        )
+    except Exception as error:
+        failures.append("controller_pid_file_missing_or_invalid:" + str(error))
+    if not controller_pid_file_valid:
+        failures.append("controller_pid_file_identity_mismatch")
+    else:
+        proc = proc_root / str(controller_pid)
+        try:
+            argv_bytes = (proc / "cmdline").read_bytes()
+            argv = [part.decode("utf-8") for part in argv_bytes.split(b"\0") if part]
+            controller_argv_sha256 = hashlib.sha256(argv_bytes).hexdigest()
+            cwd = pathlib.Path(os.readlink(proc / "cwd")).resolve()
+            executable = pathlib.Path(os.readlink(proc / "exe")).resolve().as_posix()
+            stat_text = (proc / "stat").read_text(encoding="ascii")
+            stat_fields = stat_text.rsplit(")", 1)[1].strip().split()
+            controller_start_ticks = int(stat_fields[19])
+            expected_argv = [expected_python, "scripts/run_v1_3_completion15.py",
+                "--root", root_resolved.as_posix(), "--haddock-bin", expected_haddock,
+                "--max-workers", "5", "--max-load1", "50",
+                "--load-poll-seconds", "30"]
+            controller_identity_valid = (
+                argv == expected_argv
+                and cwd == root_resolved
+                and executable == pathlib.Path(expected_python).resolve().as_posix()
+                and controller_start_ticks == expected_start_ticks
+            )
+            controller_alive = controller_identity_valid
+            if not controller_identity_valid:
+                failures.append("controller_proc_argv_root_start_identity_mismatch")
+        except Exception as error:
+            failures.append("controller_proc_missing_or_dead:" + str(error))
+
+if unexpected or invalid_count or failure_count:
     status = "FAILURE"
-elif completion_count == 30 and pass_count == 30 and missing_count == 0:
+elif ready:
     status = "READY"
 elif controller_alive:
     status = "WAITING"
 else:
-    status = "FAILURE"; failures.append("controller_not_alive_with_pending_runs")
-print(json.dumps({"status":status,"manifest_count":manifest_count,"completion_count":completion_count,"pass_count":pass_count,"failure_count":failure_count,"missing_count":missing_count,"invalid_count":invalid_count,"controller_alive":controller_alive,"controller_pids":controller_pids,"failures":failures}, sort_keys=True))'''
+    status = "FAILURE"
+    failures.append("controller_not_alive_with_pending_runs")
+emit(status, manifest_count=30, completion_count=completion_count,
+     pass_count=pass_count, failure_count=failure_count,
+     missing_count=missing_count, invalid_count=invalid_count,
+     manifest_sha256=manifest_sha, controller_alive=controller_alive,
+     controller_pid=controller_pid, controller_start_ticks=controller_start_ticks,
+     controller_pid_file_valid=controller_pid_file_valid,
+     controller_identity_valid=controller_identity_valid,
+     controller_argv_sha256=controller_argv_sha256, failures=failures)'''
+    return (
+        script.replace("__MANIFEST_SHA__", FROZEN_NEW_RUN_MANIFEST_SHA256)
+        .replace("__CONTROLLER_PID__", str(FROZEN_CONTROLLER_PID))
+        .replace("__CONTROLLER_PID_SHA__", FROZEN_CONTROLLER_PID_SHA256)
+        .replace("__CONTROLLER_START_TICKS__", str(FROZEN_CONTROLLER_START_TICKS))
+        .replace("__CONTROLLER_PYTHON__", FROZEN_CONTROLLER_PYTHON)
+        .replace("__HADDOCK_BIN__", FROZEN_HADDOCK_BIN)
+    )
 
 
 def remote_command(config: Config) -> tuple[str, ...]:
@@ -637,6 +767,24 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
     processor_rebuild_audit = layout.processor_rebuild / "current" / PROCESSOR_AUDIT
     calibration_primary_input = layout.calibration_primary / "current" / CALIBRATION_INPUT
     calibration_rebuild_input = layout.calibration_rebuild / "current" / CALIBRATION_INPUT
+    selector_upstream = Upstream("selector", layout.selector, SELECTOR_AUDIT)
+    processor_primary_upstream = Upstream(
+        "processor_primary", layout.processor_primary, PROCESSOR_AUDIT
+    )
+    processor_rebuild_upstream = Upstream(
+        "processor_rebuild", layout.processor_rebuild, PROCESSOR_AUDIT
+    )
+    qualification_upstream = Upstream(
+        "processor_qualification",
+        layout.processor_qualification,
+        PROCESSOR_QUALIFICATION,
+    )
+    calibration_primary_upstream = Upstream(
+        "calibration_primary", layout.calibration_primary, CALIBRATION_AUDIT
+    )
+    calibration_rebuild_upstream = Upstream(
+        "calibration_rebuild", layout.calibration_rebuild, CALIBRATION_AUDIT
+    )
     return (
         Stage(
             "selector",
@@ -658,6 +806,7 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
             layout.processor_primary,
             PROCESSOR_AUDIT,
             validate_processor,
+            (selector_upstream,),
         ),
         Stage(
             "processor_rebuild",
@@ -670,6 +819,7 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
             layout.processor_rebuild,
             PROCESSOR_AUDIT,
             validate_processor,
+            (selector_upstream,),
         ),
         Stage(
             "processor_qualification",
@@ -684,6 +834,11 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
             layout.processor_qualification,
             PROCESSOR_QUALIFICATION,
             validate_processor_qualification,
+            (
+                selector_upstream,
+                processor_primary_upstream,
+                processor_rebuild_upstream,
+            ),
         ),
         Stage(
             "calibration_primary",
@@ -691,6 +846,11 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
             layout.calibration_primary,
             CALIBRATION_AUDIT,
             validate_calibration,
+            (
+                selector_upstream,
+                processor_primary_upstream,
+                qualification_upstream,
+            ),
         ),
         Stage(
             "calibration_rebuild",
@@ -703,6 +863,11 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
             layout.calibration_rebuild,
             CALIBRATION_AUDIT,
             validate_calibration,
+            (
+                selector_upstream,
+                processor_primary_upstream,
+                qualification_upstream,
+            ),
         ),
         Stage(
             "development_release",
@@ -717,6 +882,13 @@ def build_stages(config: Config) -> tuple[Stage, ...]:
             layout.development_release,
             DEVELOPMENT_RELEASE,
             validate_development,
+            (
+                selector_upstream,
+                processor_primary_upstream,
+                qualification_upstream,
+                calibration_primary_upstream,
+                calibration_rebuild_upstream,
+            ),
         ),
     )
 
@@ -726,11 +898,11 @@ class Autorun:
         self,
         config: Config,
         *,
-        runner: Runner = subprocess_runner,
+        runner: Runner | None = None,
         sleeper: Callable[[float], None] = time.sleep,
     ) -> None:
         self.config = config
-        self.runner = runner
+        self.runner = runner or subprocess_runner
         self.sleeper = sleeper
         self.state = self._load_state()
 
@@ -840,6 +1012,21 @@ class Autorun:
             )
         return sha256_file(implementation)
 
+    @staticmethod
+    def _upstream_bindings(stage: Stage) -> dict[str, dict[str, Any]]:
+        bindings: dict[str, dict[str, Any]] = {}
+        for upstream in stage.upstreams:
+            inventory = release_inventory(upstream.release_root, upstream.marker)
+            bindings[upstream.name] = {
+                "root": inventory["root"],
+                "current_target": inventory["current_target"],
+                "current_resolved": inventory["current_resolved"],
+                "release_id": inventory["release_id"],
+                "file_count": inventory["file_count"],
+                "inventory_sha256": inventory["inventory_sha256"],
+            }
+        return bindings
+
     def _receipt_valid(self, stage: Stage) -> bool:
         receipt = self.state["stages"].get(stage.name)
         if not isinstance(receipt, dict) or receipt.get("status") not in {
@@ -855,10 +1042,15 @@ class Autorun:
             return False
         if receipt.get("implementation_sha256") != implementation_sha256:
             return False
+        expected_upstreams = receipt.get("upstreams")
+        if not isinstance(expected_upstreams, dict):
+            return False
         expected = receipt.get("artifacts")
         if not isinstance(expected, dict):
             return False
         try:
+            if self._upstream_bindings(stage) != expected_upstreams:
+                return False
             current = release_inventory(stage.release_root, stage.marker)
             if current != expected:
                 return False
@@ -867,8 +1059,8 @@ class Autorun:
             return False
         return True
 
-    def _execute_stage(self, stage: Stage) -> bool:
-        if self._receipt_valid(stage):
+    def _execute_stage(self, stage: Stage, *, force: bool = False) -> bool:
+        if not force and self._receipt_valid(stage):
             receipt = dict(self.state["stages"][stage.name])
             receipt["status"] = "REUSED"
             receipt["reused_at_utc"] = utc_now()
@@ -878,6 +1070,7 @@ class Autorun:
                 "stage_reused",
                 stage=stage.name,
                 command=list(stage.command),
+                upstreams=receipt["upstreams"],
                 artifacts=receipt["artifacts"],
             )
             return True
@@ -885,12 +1078,18 @@ class Autorun:
         started = utc_now()
         self.state["active_stage"] = stage.name
         self._save()
-        self._log("stage_started", stage=stage.name, command=list(stage.command))
+        self._log(
+            "stage_started",
+            stage=stage.name,
+            command=list(stage.command),
+            forced_by_upstream_invalidation=force,
+        )
         try:
             implementation_sha256 = self._implementation_hash(stage)
-        except AutorunError as error:
+            upstreams_before = self._upstream_bindings(stage)
+        except (AutorunError, OSError, ValueError) as error:
             receipt = {
-                "status": "FAILED_IMPLEMENTATION_VALIDATION",
+                "status": "FAILED_IMPLEMENTATION_OR_UPSTREAM_VALIDATION",
                 "command": list(stage.command),
                 "command_sha256": self._command_hash(stage.command),
                 "error": str(error),
@@ -911,6 +1110,7 @@ class Autorun:
             "command": list(stage.command),
             "command_sha256": self._command_hash(stage.command),
             "implementation_sha256": implementation_sha256,
+            "upstreams": upstreams_before,
             "returncode": result.returncode,
             "stdout_sha256": sha256_bytes(result.stdout.encode("utf-8")),
             "stderr_sha256": sha256_bytes(result.stderr.encode("utf-8")),
@@ -929,6 +1129,11 @@ class Autorun:
             self._log("stage_failed", stage=stage.name, **receipt)
             return False
         try:
+            upstreams_after = self._upstream_bindings(stage)
+            if upstreams_after != upstreams_before:
+                raise AutorunError(
+                    "Direct upstream immutable release changed during stage execution"
+                )
             semantics = stage.validator(stage.release_root / "current")
             artifacts = release_inventory(stage.release_root, stage.marker)
         except (AutorunError, OSError, ValueError) as error:
@@ -950,6 +1155,7 @@ class Autorun:
             "status": "COMPLETED",
             **command_evidence,
             "semantics": semantics,
+            "upstreams": upstreams_after,
             "artifacts": artifacts,
         }
         self.state["stages"][stage.name] = receipt
@@ -1011,8 +1217,11 @@ class Autorun:
                 return WAITING
             self.sleeper(self.config.poll_seconds)
 
+        force_descendants = False
         for stage in stages:
-            if not self._execute_stage(stage):
+            if force_descendants or not self._receipt_valid(stage):
+                force_descendants = True
+            if not self._execute_stage(stage, force=force_descendants):
                 return STAGE_FAILURE
 
         development = stages[-1].validator(
