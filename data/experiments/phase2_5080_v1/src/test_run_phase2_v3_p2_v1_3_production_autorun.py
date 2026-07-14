@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import json
+import io
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Sequence
 
@@ -357,6 +359,19 @@ class AutorunTest(unittest.TestCase):
         self.assertEqual(receipt["status"], "REUSED")
         self.assertEqual(receipt["artifacts"]["file_count"], 2)
 
+        (self.layout.selector / "current" / autorun.SELECTOR_CSV).write_text(
+            "tampered\n", encoding="utf-8"
+        )
+        third = FakeRunner(
+            self.layout,
+            [snapshot("READY", completion=30, passed=30, alive=False)],
+            fail_stage="processor_primary",
+        )
+        self.assertEqual(
+            autorun.Autorun(self.config(), runner=third).run(), autorun.STAGE_FAILURE
+        )
+        self.assertEqual(third.stage_names, ["selector", "processor_primary"])
+
     def test_full_pass_uses_exact_current_wiring_and_no_downstream_commands(self) -> None:
         runner = FakeRunner(
             self.layout,
@@ -437,8 +452,10 @@ class AutorunTest(unittest.TestCase):
         def forbidden_runner(_command: Sequence[str], _cwd: Path) -> autorun.CommandResult:
             raise AssertionError("dry-run executed a command")
 
-        status = autorun.Autorun(config, runner=forbidden_runner).run()
+        with redirect_stdout(io.StringIO()) as output:
+            status = autorun.Autorun(config, runner=forbidden_runner).run()
         self.assertEqual(status, "DRY_RUN_ONLY")
+        self.assertIn('"automatic_smoke_or_formal_commands": false', output.getvalue())
         self.assertFalse(self.state.exists())
         self.assertFalse(self.log.exists())
 

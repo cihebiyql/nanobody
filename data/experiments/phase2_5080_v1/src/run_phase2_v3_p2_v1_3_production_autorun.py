@@ -745,6 +745,13 @@ class Autorun:
 
     def _record_status(self, status: str, **extra: Any) -> None:
         self.state["status"] = status
+        if status not in {PROBE_ERROR, REMOTE_FAILURE, STAGE_FAILURE}:
+            for field_name in (
+                "remote_probe_error",
+                "failed_stage",
+                "failure_reason",
+            ):
+                self.state.pop(field_name, None)
         self.state.update(extra)
         self._save()
         self._log("status", status=status, **extra)
