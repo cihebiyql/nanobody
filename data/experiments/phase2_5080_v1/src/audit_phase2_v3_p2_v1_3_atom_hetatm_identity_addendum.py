@@ -638,6 +638,31 @@ def write_text_atomic(path: Path, text: str) -> None:
     os.replace(temporary, path)
 
 
+def identity_evidence_passes(
+    *,
+    has_poses: bool,
+    exact_reuse_complete: bool,
+    boundary_complete: bool,
+    total_complete: bool,
+    all_residues_exact: bool,
+    all_non_oxt_exact: bool,
+    all_heavy_hetatm_raw_exact: bool,
+    all_heavy_hetatm_zero: bool,
+) -> bool:
+    return all(
+        (
+            has_poses,
+            exact_reuse_complete,
+            boundary_complete,
+            total_complete,
+            all_residues_exact,
+            all_non_oxt_exact,
+            all_heavy_hetatm_raw_exact,
+            all_heavy_hetatm_zero,
+        )
+    )
+
+
 def report_text(audit: Mapping[str, Any], audit_path: Path, audit_sha256: str) -> str:
     summary = audit["summary"]
     a = summary["chains"]["A"]
@@ -803,15 +828,15 @@ def build_audit(
         and boundary_inventory["remote_local_hash_chain_equal"] is True
     )
     total_complete = len(poses) == 544 and len(run_rows) == 68
-    passed = (
-        bool(poses)
-        and exact_reuse_complete
-        and boundary_complete
-        and total_complete
-        and all_residues_exact
-        and all_non_oxt_exact
-        and all_heavy_hetatm_raw_exact
-        and all_heavy_hetatm_zero
+    passed = identity_evidence_passes(
+        has_poses=bool(poses),
+        exact_reuse_complete=exact_reuse_complete,
+        boundary_complete=boundary_complete,
+        total_complete=total_complete,
+        all_residues_exact=all_residues_exact,
+        all_non_oxt_exact=all_non_oxt_exact,
+        all_heavy_hetatm_raw_exact=all_heavy_hetatm_raw_exact,
+        all_heavy_hetatm_zero=all_heavy_hetatm_zero,
     )
     implementation = Path(__file__).resolve()
     audit: dict[str, Any] = {
