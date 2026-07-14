@@ -502,6 +502,26 @@ class V12Top8CalibrationTests(unittest.TestCase):
             for rank in {row["canonical_rank"] for row in metrics}:
                 paired = [row for row in metrics if row["canonical_rank"] == rank]
                 self.assertEqual(len(paired), 2)
+                self.assertEqual(
+                    {row["canonical_internal_hotspot_ref_column"] for row in paired},
+                    {"pdb_8x6b_ref"},
+                )
+                self.assertEqual(
+                    {row["baseline_alignment_hotspot_ref_column"] for row in paired},
+                    {"pdb_8x6b_ref", "pdb_9e6y_ref"},
+                )
+                self.assertEqual(
+                    len(
+                        {
+                            row["canonical_internal_score_payload_sha256"]
+                            for row in paired
+                        }
+                    ),
+                    1,
+                )
+                self.assertTrue(
+                    all(row["baseline_pose_score_payload_sha256"] for row in paired)
+                )
                 for field_name in MOD.INTERNAL_CONTACT_METRICS:
                     self.assertEqual(
                         paired[0][field_name], paired[1][field_name], field_name
@@ -539,7 +559,7 @@ class V12Top8CalibrationTests(unittest.TestCase):
             unrelated.write_text("preserve me\n", encoding="utf-8")
             audit_third = MOD.build_package(fixture.config(outdir))
             self.assertFalse(stale.exists())
-            self.assertEqual(unrelated.read_text(encoding="utf-8"), "preserve me\n")
+            self.assertFalse(unrelated.exists())
             expected_managed = {
                 item["relpath"]: item["sha256"]
                 for item in audit_third["output_sha256"]["aligned_poses"]["files"]
@@ -561,6 +581,9 @@ class V12Top8CalibrationTests(unittest.TestCase):
             MOD.BuildConfig(), selector_evidence
         )
         self.assertTrue(canonical["eligible"])
+        self.assertEqual(
+            set(canonical["anchors"]), set(MOD.CANONICAL_TRUST_ANCHOR_SHA256)
+        )
         with tempfile.TemporaryDirectory() as temporary:
             substituted = Path(temporary) / MOD.DEFAULT_ALIGNER.name
             shutil.copyfile(MOD.DEFAULT_ALIGNER, substituted)

@@ -146,16 +146,6 @@ MATERIALIZATION_MANIFEST_NAME = "pvrig_v1_2_top8_pose_materialization_manifest.c
 CONTINUOUS_METRICS_NAME = "pvrig_v1_2_top8_continuous_metrics.csv"
 RESIDUE_CONTACTS_NAME = "pvrig_v1_2_top8_residue_contacts.jsonl"
 AUDIT_NAME = "pvrig_v1_2_top8_calibration_audit.json"
-MANAGED_PACKAGE_ENTRIES = frozenset(
-    {
-        "aligned_poses",
-        "alignment_maps",
-        MATERIALIZATION_MANIFEST_NAME,
-        CONTINUOUS_METRICS_NAME,
-        RESIDUE_CONTACTS_NAME,
-        AUDIT_NAME,
-    }
-)
 
 SELECTOR_REQUIRED_FIELDS = {
     "schema_version",
@@ -338,7 +328,8 @@ METRICS_FIELDS = (
     "remap_unmapped_receptor_residues",
     "reference_relpath",
     "reference_sha256",
-    "hotspot_ref_column",
+    "baseline_alignment_hotspot_ref_column",
+    "canonical_internal_hotspot_ref_column",
     "cdr1_range",
     "cdr2_range",
     "cdr3_range",
@@ -358,7 +349,8 @@ METRICS_FIELDS = (
     "region_pose_vhh_record_inventory_json",
     "reference_pvrl2_record_inventory_json",
     "region_reference_pvrl2_record_inventory_json",
-    "pose_score_payload_sha256",
+    "canonical_internal_score_payload_sha256",
+    "baseline_pose_score_payload_sha256",
     "region_score_payload_sha256",
     "metrics_row_sha256",
 )
@@ -1850,7 +1842,12 @@ def flatten_metrics_row(
         ],
         "reference_relpath": canonical_input_path(reference, config.workspace_root),
         "reference_sha256": sha256_file(reference),
-        "hotspot_ref_column": BASELINES[result.baseline]["hotspot_ref_column"],
+        "baseline_alignment_hotspot_ref_column": BASELINES[result.baseline][
+            "hotspot_ref_column"
+        ],
+        "canonical_internal_hotspot_ref_column": BASELINES["8x6b"][
+            "hotspot_ref_column"
+        ],
         "cdr1_range": case.cdr1_range,
         "cdr2_range": case.cdr2_range,
         "cdr3_range": case.cdr3_range,
@@ -1892,7 +1889,12 @@ def flatten_metrics_row(
             "region_reference_pvrl2_record_inventory_json": canonical_json(
                 region_reference_inventory
             ),
-            "pose_score_payload_sha256": normalized_scorer_payload_sha256(
+            "canonical_internal_score_payload_sha256": (
+                normalized_raw_internal_payload_sha256(
+                    canonical_internal_report, selector_row, config
+                )
+            ),
+            "baseline_pose_score_payload_sha256": normalized_scorer_payload_sha256(
                 pose_report, result, config
             ),
             "region_score_payload_sha256": normalized_scorer_payload_sha256(
@@ -1927,11 +1929,30 @@ def normalized_scorer_payload_sha256(
     return sha256_json(normalized)
 
 
+def normalized_raw_internal_payload_sha256(
+    report: Mapping[str, Any],
+    selector_row: Mapping[str, str],
+    config: BuildConfig,
+) -> str:
+    normalized = dict(report)
+    if "pose_pdb" in normalized:
+        normalized["pose_pdb"] = (
+            "raw_4_emref_pose_sha256:"
+            f"{selector_row['decompressed_coordinate_sha256']}"
+        )
+    if "reference_pdb" in normalized:
+        normalized["reference_pdb"] = canonical_input_path(
+            config.references["8x6b"], config.workspace_root
+        )
+    return sha256_json(normalized)
+
+
 def contact_record(
     selector_row: Mapping[str, str],
     result: BaselineResult,
     canonical_internal_report: Mapping[str, Any],
     pose_rule_eligible: bool,
+    config: BuildConfig,
 ) -> dict[str, Any]:
     regions = required_mapping(result.region_report, "regions", "region scorer report")
     record: dict[str, Any] = {
@@ -1951,6 +1972,20 @@ def contact_record(
         "baseline": result.baseline,
         "selector_row_sha256": selector_row["selection_row_sha256"],
         "aligned_pose_sha256": result.aligned_pose_sha256,
+        "canonical_internal_hotspot_ref_column": BASELINES["8x6b"][
+            "hotspot_ref_column"
+        ],
+        "baseline_alignment_hotspot_ref_column": BASELINES[result.baseline][
+            "hotspot_ref_column"
+        ],
+        "canonical_internal_score_payload_sha256": (
+            normalized_raw_internal_payload_sha256(
+                canonical_internal_report, selector_row, config
+            )
+        ),
+        "baseline_pose_score_payload_sha256": normalized_scorer_payload_sha256(
+            result.pose_report, result, config
+        ),
         "pvrig_vhh_contacts": canonical_internal_report.get(
             "pvrig_vhh_contacts", []
         ),
@@ -2136,6 +2171,7 @@ def process_selector_row(
             baseline_results[baseline],
             canonical_internal_report,
             pose_rule_eligible,
+            config,
         )
         for baseline in BASELINES
     ]
@@ -2164,44 +2200,14 @@ def hash_chain(rows: Iterable[Mapping[str, str]], field_name: str) -> str:
     )
 
 
-def managed_file_hashes(root: Path) -> dict[str, str]:
+def package_file_hashes(root: Path) -> dict[str, str]:
     output: dict[str, str] = {}
-    for entry_name in sorted(MANAGED_PACKAGE_ENTRIES):
-        entry = root / entry_name
-        if entry.is_symlink():
-            raise ContractError(f"Managed package entry cannot be a symlink: {entry}")
-        if entry.is_file():
-            output[entry_name] = sha256_file(entry)
-        elif entry.is_dir():
-            for path in sorted(entry.rglob("*")):
-                if path.is_symlink():
-                    raise ContractError(
-                        f"Managed package file cannot be a symlink: {path}"
-                    )
-                if path.is_file():
-                    output[path.relative_to(root).as_posix()] = sha256_file(path)
+    for path in sorted(root.rglob("*")):
+        if path.is_symlink():
+            raise ContractError(f"Generated package path cannot be a symlink: {path}")
+        if path.is_file():
+            output[path.relative_to(root).as_posix()] = sha256_file(path)
     return output
-
-
-def preserve_unmanaged_entries(source_root: Path, staging_root: Path) -> None:
-    if not source_root.exists():
-        return
-    if not source_root.is_dir():
-        raise ContractError(f"Output path exists but is not a directory: {source_root}")
-    for source in sorted(source_root.iterdir(), key=lambda path: path.name):
-        if source.name in MANAGED_PACKAGE_ENTRIES:
-            continue
-        destination = staging_root / source.name
-        if destination.exists() or destination.is_symlink():
-            raise ContractError(
-                f"Staging path collides with preserved output entry: {destination}"
-            )
-        if source.is_symlink():
-            destination.symlink_to(os.readlink(source), target_is_directory=source.is_dir())
-        elif source.is_dir():
-            shutil.copytree(source, destination, symlinks=True)
-        else:
-            shutil.copy2(source, destination)
 
 
 def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -> None:
@@ -2212,8 +2218,7 @@ def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -
     if contacts_source.is_file() != emitted_contacts:
         raise ContractError("Staging residue-contact JSONL emission contract mismatch")
     shutil.rmtree(staging_root / ".work", ignore_errors=True)
-    expected_managed = managed_file_hashes(staging_root)
-    preserve_unmanaged_entries(outdir, staging_root)
+    expected_package = package_file_hashes(staging_root)
 
     outdir.parent.mkdir(parents=True, exist_ok=True)
     backup = Path(
@@ -2227,10 +2232,10 @@ def publish_stage(staging_root: Path, outdir: Path, *, emitted_contacts: bool) -
             os.replace(outdir, backup)
         os.replace(staging_root, outdir)
         installed_new = True
-        observed_managed = managed_file_hashes(outdir)
-        if observed_managed != expected_managed:
+        observed_package = package_file_hashes(outdir)
+        if observed_package != expected_package:
             raise ContractError(
-                "Post-publish managed path/hash set differs from staging package"
+                "Post-publish full path/hash set differs from staging package"
             )
     except Exception:
         if installed_new and outdir.exists():
@@ -2698,6 +2703,9 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
             "canonical_internal_contact_contract": {
                 "canonical_internal_contact_source": "raw_4_emref_pose",
                 "canonical_internal_contact_numbering": "8x6b_source_numbering",
+                "canonical_internal_hotspot_ref_column": BASELINES["8x6b"][
+                    "hotspot_ref_column"
+                ],
                 "channel": INTERNAL_CONTACT_CHANNEL,
                 "scalar_fields_reused_for_both_baselines": list(
                     INTERNAL_CONTACT_METRICS
@@ -2706,6 +2714,16 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                     INTERNAL_CONTACT_LIST_FIELDS
                 ),
                 "pvrl2_occlusion_remains_baseline_specific": True,
+                "payload_hash_semantics": {
+                    "canonical_internal_score_payload_sha256": (
+                        "normalized raw 4_emref V1.2 pose-scorer payload"
+                    ),
+                    "baseline_pose_score_payload_sha256": (
+                        "normalized aligned baseline V1.2 pose-scorer payload; "
+                        "its internal fields are diagnostic and are not copied into "
+                        "the effective metrics row"
+                    ),
+                },
                 "cross_baseline_equality_hard_gate_passed": True,
                 "cross_baseline_equal_pose_count": invariant_pose_count,
                 "raw_vs_aligned_diagnostic_drift_pose_count_by_baseline": dict(
@@ -2719,6 +2737,12 @@ def build_package(config: BuildConfig) -> dict[str, Any]:
                 },
             },
             "nullable_min_distance_contract": nullable_min_distance_contract,
+            "publication_contract": {
+                "dedicated_generated_package": True,
+                "full_directory_replacement": True,
+                "post_publish_full_path_and_sha256_set_verified": True,
+                "stale_or_unhashed_prior_files_preserved": False,
+            },
             "expected_contract": config.contract.as_dict(),
             "observed_contract": {
                 "case_count": len(cases),
