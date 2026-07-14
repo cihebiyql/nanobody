@@ -81,12 +81,18 @@ class BuildV13Dual47Completion15PackageTest(unittest.TestCase):
         self.assertEqual(binding["package_audit_sha256"], MOD.sha256_file(MOD.DEFAULT_OLD_PACKAGE / "package_audit.json"))
         self.assertEqual(binding["run_manifest_sha256"], MOD.sha256_file(MOD.DEFAULT_OLD_PACKAGE / "manifests/run_manifest.csv"))
         self.assertEqual(binding["controller_sha256"], MOD.sha256_file(MOD.DEFAULT_OLD_PACKAGE / "scripts/run_dual_docking_pilot64.py"))
+        self.assertEqual(self.audit["old_source_completion_status_counts"], {
+            "FAIL_DOCKING_OUTPUT_INCOMPLETE": 19, "PASS_DOCKING_OUTPUT_COMPLETE": 45,
+        })
+        self.assertEqual(self.audit["v1_3_reuse_emref_gate_status_counts"], {"PASS_4_EMREF_TOP8_READY": 64})
         self.assertEqual(len({(row["case_id"], row["receptor_id"]) for row in self.reuse}), 64)
         for row in self.reuse:
             self.assertEqual(row["source_protocol_id"], "DG_A_PILOT64_V1_1")
             self.assertEqual(row["v1_3_emref_gate_status"], "PASS_4_EMREF_TOP8_READY")
             self.assertEqual(row["source_final_stage_ignored"], "true")
-            self.assertEqual(row["exact_reuse_hash_closed"], "true")
+            self.assertEqual(row["exact_reuse_run_identity_hash_closed"], "true")
+            self.assertEqual(row["source_emref_coordinate_payload_hash_closed"], "false")
+            self.assertEqual(row["coordinate_payload_state"], "REMOTE_RECOVERY_REQUIRED_BEFORE_SCORING")
             self.assertGreaterEqual(int(row["source_emref_output_count"]), 8)
             counts = json.loads(row["source_stage_output_counts_json"])
             self.assertTrue(MOD.stage_counts_pass(counts))

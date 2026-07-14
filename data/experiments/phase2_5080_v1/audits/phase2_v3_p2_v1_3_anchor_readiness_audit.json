@@ -1,0 +1,169 @@
+{
+  "schema_version": "phase2_v3_p2_v1_3_anchor_readiness_audit_v1",
+  "audit_id": "PVRIG_V3_P2_DOCKING_GOLD_V1_3_ANCHOR_READINESS_20260714",
+  "status": "FAIL_FORMAL_ANCHOR_READINESS_ZERO_NEW_FAMILIES",
+  "audit_scope": "registered local PVRIG blocker-VHH calibration evidence available before V1.3 implementation; not an assertion that no additional families exist outside the audited local evidence set",
+  "decision": {
+    "v1_3_development_execution_permitted": true,
+    "v1_3_formal_validation_permitted": false,
+    "docking_gold_release_permitted": false,
+    "training_label_release_permitted": false,
+    "p2_training_ready": false,
+    "training_state": "P2_TRAINING_BLOCKED",
+    "reason": "The registered anchor set is unchanged from V1.2: 11 anchors in 5 families and 0 newly eligible independent blocker-VHH families. V1.3 may only evaluate the dual-receptor development method."
+  },
+  "eligibility_definition": {
+    "required_evidence": [
+      "sequence-resolved VHH against PVRIG",
+      "traceable experimental PVRIG binding evidence",
+      "traceable blocking, competition, or functional-inhibition evidence relevant to the PVRIG-PVRL2 mechanism",
+      "source and family provenance sufficient for leakage exclusion"
+    ],
+    "family_independence": "A family must represent an independently sourced or independently derived parental lineage, not a humanized variant, point mutant, alanine scan, docking seed, pose, repeated measurement, or reformatted construct of an already counted family.",
+    "anchor_independence_within_family": "The two required anchors in a family must be distinct sequence-resolved molecules with evidence provenance; repeated docking runs, receptor conformers, random seeds, identical sequences, and purely computational mutants do not increase anchor count.",
+    "excluded_from_new_family_count": [
+      "the existing families 151, 20, 30, 38, and 39",
+      "the 36 perturbation or matched-control cases",
+      "Teacher500 or other generated candidates without experimental blocker evidence",
+      "docking-only or model-only positives",
+      "mutants presumed negative without independent experimental evidence"
+    ]
+  },
+  "observed_registered_evidence": {
+    "anchor_count": 11,
+    "family_count": 5,
+    "new_eligible_independent_family_count": 0,
+    "new_eligible_anchor_count": 0,
+    "control_or_perturbation_case_count": 36,
+    "families": {
+      "151": {
+        "anchor_count": 3,
+        "anchors": [
+          "case02_pos_01_PVRIG-151_HR151",
+          "case02_pos_10_151H7",
+          "case02_pos_11_151H8"
+        ]
+      },
+      "20": {
+        "anchor_count": 2,
+        "anchors": [
+          "case02_pos_02_PVRIG-20",
+          "case02_pos_06_20H5"
+        ]
+      },
+      "30": {
+        "anchor_count": 2,
+        "anchors": [
+          "case02_pos_03_PVRIG-30",
+          "case02_pos_07_30H2"
+        ]
+      },
+      "38": {
+        "anchor_count": 1,
+        "anchors": [
+          "case02_pos_04_PVRIG-38"
+        ]
+      },
+      "39": {
+        "anchor_count": 3,
+        "anchors": [
+          "case02_pos_05_PVRIG-39",
+          "case02_pos_08_39H2",
+          "case02_pos_09_39H4"
+        ]
+      }
+    }
+  },
+  "future_formal_entry_contract": {
+    "minimum_blocker_family_count": 8,
+    "minimum_anchor_count_per_family": 2,
+    "minimum_total_anchor_count": 16,
+    "minimum_unseen_family_count_relative_to_v1_2": 3,
+    "all_conditions_required": true,
+    "current_absolute_deficits": {
+      "families": 3,
+      "anchors_to_nominal_total_floor": 5,
+      "unseen_families": 3
+    },
+    "current_actionable_minimum_additions": {
+      "new_unseen_families": 3,
+      "anchors_across_new_unseen_families": 6,
+      "additional_anchor_for_existing_singleton_family_38": 1,
+      "minimum_new_eligible_anchors_given_current_composition": 7,
+      "resulting_minimum_total_anchor_count_given_current_composition": 18
+    },
+    "interpretation": "The nominal total-anchor floor is 16, but the conjunction of all entry conditions and the current 3/2/2/1/3 family composition requires at least 7 new eligible anchors and therefore at least 18 total anchors."
+  },
+  "gates": {
+    "registered_anchor_manifest_closed": {
+      "passed": true,
+      "observed": 11
+    },
+    "existing_family_count_recorded": {
+      "passed": true,
+      "observed": 5
+    },
+    "new_unseen_families_at_least_3": {
+      "passed": false,
+      "required": 3,
+      "observed": 0
+    },
+    "total_families_at_least_8": {
+      "passed": false,
+      "required": 8,
+      "observed": 5
+    },
+    "at_least_2_anchors_per_family": {
+      "passed": false,
+      "failing_families": [
+        "38"
+      ]
+    },
+    "total_anchors_at_least_16": {
+      "passed": false,
+      "required": 16,
+      "observed": 11
+    }
+  },
+  "unconditional_veto": {
+    "active": true,
+    "condition": "V1.3 uses the same 11 anchors in the same 5 families and has 0 new eligible independent blocker-VHH families.",
+    "effect": "formal_eligible=false, docking_gold_release_eligible=false, training_label_release_eligible=false, and p2_training_ready=false regardless of any V1.3 development-gate result",
+    "non_overrideable_by": [
+      "development PASS",
+      "dual-receptor completeness",
+      "LOFO PASS",
+      "bootstrap PASS",
+      "receptor-consistency PASS",
+      "favorable mutant deltas",
+      "post-hoc threshold or grid selection"
+    ]
+  },
+  "evidence_bindings": [
+    {
+      "path": "../docking/calibration/patent_success_validation/batch_manifest.csv",
+      "sha256": "ad1930b5c9938d0969c6645b4be05b9a3b9e49d48b4fb95b8a904a64f31bdef8",
+      "bytes": 4971,
+      "role": "registered 11-anchor positive manifest"
+    },
+    {
+      "path": "../docking/calibration/mutant_validation_panel/mutant_panel.csv",
+      "sha256": "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248",
+      "bytes": 18811,
+      "role": "36 perturbation controls excluded from independent-family counts"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_2_failed_rc_freeze_manifest.json",
+      "sha256": "341f1f1f6db11d1b874745acddd976dc9bbaf9e38434f578b6ddd91cca25eb1f",
+      "bytes": 31750,
+      "role": "immutable V1.2 failed-RC and eligibility boundary"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/runs/pvrig_v3_p2/docking_gold_v1_2_family_calibration/pvrig_v1_2_family_calibration_audit.json",
+      "sha256": "8aef0ed8ba8e2dbaf46f5dffa3940d7da8283469cfe6aa8d98b521518976eac7",
+      "bytes": 48434,
+      "role": "V1.2 observed 11-anchor, 5-family, bootstrap-failed result"
+    }
+  ],
+  "claim_boundary": "Anchor-readiness and sample-independence audit only. It does not assign binding, affinity, blocking, geometry tier, Docking Gold, or training labels."
+}

@@ -109,7 +109,9 @@ REUSE_EXTRA_FIELDS = [
     "source_completion_sha256", "source_completion_status", "source_completion_exit_code",
     "source_stage_output_counts_json", "source_emref_io_relpath", "source_emref_io_sha256",
     "source_emref_output_count", "source_emref_params_relpath", "source_emref_params_sha256",
-    "v1_3_emref_gate_status", "source_final_stage_ignored", "exact_reuse_hash_closed",
+    "v1_3_emref_gate_status", "source_final_stage_ignored",
+    "exact_reuse_run_identity_hash_closed", "source_emref_coordinate_payload_hash_closed",
+    "coordinate_payload_state",
     "reuse_manifest_row_sha256",
 ]
 
@@ -625,6 +627,9 @@ def build_runs(outdir: Path, cases: Sequence[dict[str, str]], matched: Mapping[s
                         raise ValueError(f"Old run protocol mismatch {source['run_id']}: {key}")
                 completion_path = old["selected_root"] / source["completion_relpath"]
                 completion = json.loads(completion_path.read_text(encoding="utf-8"))
+                source_config_path = Path(old["audit_path"]).parent / source["config_relpath"]
+                if sha256_file(source_config_path) != source["config_sha256"]:
+                    raise ValueError(f"Old run config hash mismatch: {source['run_id']}")
                 counts = {k: int(v) for k, v in completion["stage_output_counts"].items() if k in STAGE_OUTPUT_REQUIREMENTS}
                 if not stage_counts_pass(counts):
                     raise ValueError(f"Old run does not pass V1.3 4_emref gate: {source['run_id']}")
@@ -659,7 +664,9 @@ def build_runs(outdir: Path, cases: Sequence[dict[str, str]], matched: Mapping[s
                     "source_emref_params_relpath": workspace_relative(params_path),
                     "source_emref_params_sha256": sha256_file(params_path),
                     "v1_3_emref_gate_status": "PASS_4_EMREF_TOP8_READY",
-                    "source_final_stage_ignored": "true", "exact_reuse_hash_closed": "true",
+                    "source_final_stage_ignored": "true", "exact_reuse_run_identity_hash_closed": "true",
+                    "source_emref_coordinate_payload_hash_closed": "false",
+                    "coordinate_payload_state": "REMOTE_RECOVERY_REQUIRED_BEFORE_SCORING",
                     "reuse_manifest_row_sha256": "",
                 }
                 reuse = {**row, **extra}
@@ -778,6 +785,14 @@ def _build_into(outdir: Path, teacher_manifest: Path, pilot_manifest: Path, old_
             "run_manifest_sha256": sha256_file(old["run_manifest"]),
             "controller_relpath": workspace_relative(old["controller"]),
             "controller_sha256": sha256_file(old["controller"])},
+        "old_source_completion_status_counts": dict(sorted(Counter(
+            row["source_completion_status"] for row in reuse_rows
+        ).items())),
+        "v1_3_reuse_emref_gate_status_counts": dict(sorted(Counter(
+            row["v1_3_emref_gate_status"] for row in reuse_rows
+        ).items())),
+        "reuse_coordinate_payload_state": "REMOTE_RECOVERY_REQUIRED_BEFORE_SCORING",
+        "reuse_coordinate_payload_hash_closed": False,
         "protocol_contract": {"vhh_chain": "A", "receptor_chain": "B", "hotspots_per_receptor": 23,
             "ncores": 4, "topoaa_iniseed": 917, "rigidbody_iniseed": SEED_BY_RECEPTOR,
             "rigidbody_sampling": 40, "module_failure_tolerances": {"rigidbody": 5, "flexref": 20, "emref": 20},
@@ -787,6 +802,8 @@ def _build_into(outdir: Path, teacher_manifest: Path, pilot_manifest: Path, old_
         "teacher_manifest_relpath": workspace_relative(teacher_manifest),
         "teacher_manifest_sha256": sha256_file(teacher_manifest), "controller": controller.relative_to(outdir).as_posix(),
         "controller_sha256": sha256_file(controller),
+        "builder_relpath": workspace_relative(Path(__file__)),
+        "builder_sha256": sha256_file(Path(__file__)),
         "manifests": {name: {"path": path.relative_to(outdir).as_posix(), "sha256": sha256_file(path)}
                       for name, path in paths.items()},
         "package_content_hash_manifest": content.relative_to(outdir).as_posix(),
