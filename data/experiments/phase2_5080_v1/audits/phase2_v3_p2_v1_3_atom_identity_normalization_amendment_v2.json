@@ -1,0 +1,167 @@
+{
+  "schema_version": "phase2_v3_p2_v1_3_atom_identity_normalization_amendment_v2",
+  "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+  "status": "FROZEN_V1_3_TERMINAL_OXT_AND_ZERO_HEAVY_HETATM_AMENDMENT_V2",
+  "claim_boundary": "coordinate-identity comparison gates only; no coordinate, source or decompressed coordinate hash, docking score, rank, pose selection, geometry, binding, affinity, blocking, formal Gold, P2 readiness, or training-label change",
+  "supersedes": {
+    "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_identity_normalization_amendment.json",
+    "sha256": "daf5c628e424c185c9d33c13b90bdf8d875261a990cbbd04a07b48e272d5df23",
+    "schema_version": "phase2_v3_p2_v1_3_atom_identity_normalization_amendment_v1",
+    "status": "FROZEN_V1_3_TERMINAL_OXT_NORMALIZATION_AMENDMENT",
+    "history_rewritten": false
+  },
+  "evidence_scope": {
+    "exact_reuse_run_count": 64,
+    "exact_reuse_pose_count": 512,
+    "boundary_run_count": 4,
+    "boundary_pose_count": 32,
+    "total_run_count": 68,
+    "total_pose_count": 544,
+    "receptor_pose_counts": {
+      "8X6B": 272,
+      "9E6Y": 272
+    },
+    "vhh_chain_a_residue_exact_count": 544,
+    "vhh_chain_a_raw_atom_exact_count": 0,
+    "vhh_chain_a_terminal_oxt_normalized_exact_count": 544,
+    "vhh_chain_a_non_oxt_difference_count": 0,
+    "pvrig_chain_b_residue_exact_count": 544,
+    "pvrig_chain_b_raw_atom_exact_count": 544,
+    "pvrig_chain_b_difference_count": 0,
+    "vhh_chain_a_reference_heavy_hetatm_identity_count_total": 0,
+    "vhh_chain_a_pose_heavy_hetatm_identity_count_total": 0,
+    "vhh_chain_a_heavy_hetatm_raw_exact_count": 544,
+    "vhh_chain_a_heavy_hetatm_missing_identity_count": 0,
+    "vhh_chain_a_heavy_hetatm_extra_identity_count": 0,
+    "pvrig_chain_b_reference_heavy_hetatm_identity_count_total": 0,
+    "pvrig_chain_b_pose_heavy_hetatm_identity_count_total": 0,
+    "pvrig_chain_b_heavy_hetatm_raw_exact_count": 544,
+    "pvrig_chain_b_heavy_hetatm_missing_identity_count": 0,
+    "pvrig_chain_b_heavy_hetatm_extra_identity_count": 0,
+    "exact_reuse64_remote_inventory_hash_chain": "7944c79dda27401b6e637d6d9611578a3b862b693a8f76e7018f7ff8bc8cf285",
+    "boundary4_remote_inventory_hash_chain": "580590a1d55f6f684ecb732dcd3112250d921a016864f146040ee0334d0a1819"
+  },
+  "normalization_rule": {
+    "rule_id": "VHH_CHAIN_A_TERMINAL_OXT_PRESENCE_ONLY_V1",
+    "applicable_chain": "A",
+    "reference_role": "frozen_vhh_monomer",
+    "pose_role": "native_haddock_4_emref_pose",
+    "record_scope": "ATOM_heavy_atoms_only",
+    "residue_identity_key": [
+      "resseq",
+      "icode",
+      "resname"
+    ],
+    "atom_identity_key": [
+      "resseq",
+      "icode",
+      "resname",
+      "atom_name",
+      "altloc",
+      "element"
+    ],
+    "terminal_residue_definition": "last_ATOM_heavy_residue_in_file_order",
+    "terminal_residue_identity_must_match": true,
+    "residue_identity_normalization": "none",
+    "allowed_atom_name": "OXT",
+    "allowed_difference": "presence_or_absence_only_on_the_identical_terminal_residue",
+    "symmetric_difference_maximum_atom_identities": 1,
+    "non_terminal_oxt_allowed": false,
+    "all_non_oxt_atoms_must_match": true,
+    "all_other_atom_or_residue_differences": "fail_closed"
+  },
+  "receptor_rule": {
+    "applicable_chain": "B",
+    "residue_identity_normalization": "none",
+    "atom_identity_normalization": "none",
+    "raw_residue_identity_must_match": true,
+    "raw_atom_identity_must_match": true,
+    "all_differences": "fail_closed"
+  },
+  "heavy_hetatm_rule": {
+    "rule_id": "CHAIN_A_B_ZERO_HEAVY_HETATM_V1",
+    "applicable_chains": [
+      "A",
+      "B"
+    ],
+    "reference_roles": [
+      "frozen_vhh_monomer",
+      "frozen_pvrig_receptor"
+    ],
+    "pose_role": "native_haddock_4_emref_pose",
+    "record_scope": "HETATM_heavy_atoms_only",
+    "identity_key": [
+      "resseq",
+      "icode",
+      "resname",
+      "atom_name",
+      "altloc",
+      "element"
+    ],
+    "identity_normalization": "none",
+    "terminal_oxt_normalization_applies": false,
+    "reference_heavy_hetatm_identity_count_must_equal": 0,
+    "pose_heavy_hetatm_identity_count_must_equal": 0,
+    "raw_reference_pose_identity_must_match": true,
+    "any_heavy_hetatm_identity": "fail_closed"
+  },
+  "side_effect_contract": {
+    "coordinate_bytes_modified": false,
+    "atom_records_modified": false,
+    "hetatm_records_modified": false,
+    "source_pose_hash_modified": false,
+    "decompressed_coordinate_hash_modified": false,
+    "haddock_score_modified": false,
+    "native_rank_modified": false,
+    "pose_selection_modified": false,
+    "geometry_metric_modified": false,
+    "normalization_used_only_for_atom_identity_gate": true,
+    "heavy_hetatm_rule_used_only_for_identity_gate": true
+  },
+  "eligibility": {
+    "development_identity_gate_use_permitted": true,
+    "formal_eligible": false,
+    "training_label_release_eligible": false,
+    "docking_gold_release_eligible": false,
+    "p2_training_ready": false
+  },
+  "selector_activation_contract": {
+    "hard_bound_amendment_v2_sha256_required": true,
+    "hard_bound_superseded_v1_sha256_required": true,
+    "both_amendment_validators_must_pass": true,
+    "silent_rule_expansion_forbidden": true,
+    "future_rule_change_requires_new_amendment": true
+  },
+  "artifacts": [
+    {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_identity_normalization_amendment.json",
+      "sha256": "daf5c628e424c185c9d33c13b90bdf8d875261a990cbbd04a07b48e272d5df23",
+      "bytes": 4184,
+      "role": "superseded_frozen_v1_amendment"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_atom_hetatm_identity_addendum_audit.json",
+      "sha256": "5288e2b87612d06ca263914c10463d2abbb387c8d187c7174d62487dafc0f325",
+      "bytes": 2797129,
+      "role": "544_pose_machine_readable_atom_hetatm_addendum_evidence"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/reports/PVRIG_V3_P2_DOCKING_GOLD_V1_3_ATOM_HETATM_IDENTITY_ADDENDUM_ZH.md",
+      "sha256": "38e63cf29c257d897fbe14670fe872d59b075111748cca88f8a5876c743a473a",
+      "bytes": 4189,
+      "role": "chinese_atom_hetatm_addendum_report"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/src/audit_phase2_v3_p2_v1_3_atom_hetatm_identity_addendum.py",
+      "sha256": "becf88f2dad5afa43bbf11b1ea8748036d6ba6447f4cff8efbb7393265479222",
+      "bytes": 42158,
+      "role": "atom_hetatm_addendum_audit_implementation"
+    },
+    {
+      "path": "experiments/phase2_5080_v1/src/test_audit_phase2_v3_p2_v1_3_atom_hetatm_identity_addendum.py",
+      "sha256": "41529e912e63de6411c76c8e9572f7c4b00355cdfe6eb576d5e166a8cbdbb4b5",
+      "bytes": 7606,
+      "role": "atom_hetatm_addendum_adversarial_unit_evidence"
+    }
+  ]
+}
