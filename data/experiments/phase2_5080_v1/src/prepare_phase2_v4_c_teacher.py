@@ -16,7 +16,11 @@ from typing import Any, Iterable, Mapping
 
 SCHEMA_VERSION = "phase2_v4_c_continuous_teacher_v1"
 EXPECTED_JOB_MANIFEST_SHA256 = "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e"
+EXPECTED_SPLIT_MANIFEST_SHA256 = "53198a1c16de239ba6f8d32dc29cc3add6569a5ef793b6327f347090cbc35c5e"
+EXPECTED_CANDIDATES_SHA256 = "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78"
+EXPECTED_PROTOCOL_CORE_SHA256 = "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8"
 EXPECTED_PROTOCOL_LOCK_SHA256 = "6ea729edc9b070bba7271bea3c64da0fffad46921ea8899548eb9b1ad8a120a7"
+EXPECTED_STABILITY_SPEC_SHA256 = "1370e47f5826528ec8e39cf1ca9e2407e8da3583e5926b2fa5ad726e78df62f4"
 EXPECTED_TOTAL_JOBS = 1050
 CONFORMATIONS = ("8x6b", "9e6y")
 SUCCESS_STATES = {"SUCCESS", "PASS", "PASSED", "COMPLETE", "COMPLETED", "DONE"}
@@ -41,6 +45,19 @@ def sha256_file(path: Path) -> str:
 def read_tsv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8-sig") as handle:
         return list(csv.DictReader(handle, delimiter="\t"))
+
+
+def read_tsv_for_entities(path: Path, allowed_entities: set[str]) -> list[dict[str, str]]:
+    """Stream a mixed aggregate and retain only preselected entity rows."""
+    output = []
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        if "entity_id" not in (reader.fieldnames or []):
+            raise TeacherBuildError(f"entity_id_missing:{path}")
+        for row in reader:
+            if row["entity_id"] in allowed_entities:
+                output.append(row)
+    return output
 
 
 def write_tsv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -79,18 +96,29 @@ def soft_scale(value: float, threshold: float) -> float:
 
 
 def native_pose_utility(row: Mapping[str, Any]) -> float:
+    as_float(row.get("haddock_score"), field="haddock_score")
+    as_float(row.get("air_energy"), field="air_energy")
+    overlay_rmsd = as_float(row.get("overlay_rmsd_a"), field="overlay_rmsd_a")
+    if overlay_rmsd > 1.0:
+        raise TeacherBuildError(f"native_overlay_rmsd_above_1A:{overlay_rmsd}")
     full_hotspot = as_float(row.get("hotspot_overlap"), field="hotspot_overlap")
     holdout_hotspot = as_float(row.get("holdout_overlap"), field="holdout_overlap")
     total_occlusion = as_float(row.get("total_occlusion"), field="total_occlusion")
     cdr3_occlusion = as_float(row.get("cdr3_occlusion"), field="cdr3_occlusion")
     cdr3_fraction = as_float(row.get("cdr3_fraction"), field="cdr3_fraction")
-    score = (
+    base_score = (
         0.15 * min(max(full_hotspot / 23.0, 0.0), 1.0)
         + 0.25 * min(max(holdout_hotspot / 11.0, 0.0), 1.0)
         + 0.25 * soft_scale(total_occlusion, 500.0)
         + 0.20 * soft_scale(cdr3_occlusion, 100.0)
         + 0.15 * soft_scale(cdr3_fraction, 0.15)
     )
+    pvrig_clashes = as_float(
+        row.get("vhh_pvrig_clash_residue_pairs"),
+        field="vhh_pvrig_clash_residue_pairs",
+    )
+    clash_reliability = 1.0 / (1.0 + pvrig_clashes / 5.0)
+    score = base_score * clash_reliability
     if not 0.0 <= score <= 1.0:
         raise TeacherBuildError(f"pose_utility_out_of_bounds:{score}")
     return score
@@ -143,26 +171,35 @@ def job_summary(
         "total_occlusion",
         "cdr3_occlusion",
         "cdr3_fraction",
-        "clash_residue_pairs",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs",
         "overlay_rmsd_a",
     )
+    agreement = as_float(
+        job_result.get("model_native_cross_support_agreement_fraction", 0.0),
+        field="model_native_cross_support_agreement_fraction",
+    )
+    consensus = as_float(
+        job_result.get("model_pair_consensus_fraction", 0.0),
+        field="model_pair_consensus_fraction",
+    )
+    raw_utility = sum(
+        weight * native_pose_utility(refs[dock_conformation])
+        for weight, refs in zip(weights, complete)
+    )
+    model_count_reliability = 0.5 + 0.5 * min(len(complete) / 8.0, 1.0)
+    agreement_reliability = 0.5 + 0.25 * agreement + 0.25 * consensus
     summary: dict[str, Any] = {
         "job_id": job_id,
         "dock_conformation": dock_conformation,
         "seed": str(job_result.get("seed", "")),
         "complete_model_count": len(complete),
-        "job_utility": sum(
-            weight * native_pose_utility(refs[dock_conformation])
-            for weight, refs in zip(weights, complete)
-        ),
-        "native_cross_support_agreement": as_float(
-            job_result.get("model_native_cross_support_agreement_fraction", 0.0),
-            field="model_native_cross_support_agreement_fraction",
-        ),
-        "model_pair_consensus_fraction": as_float(
-            job_result.get("model_pair_consensus_fraction", 0.0),
-            field="model_pair_consensus_fraction",
-        ),
+        "job_utility_raw": raw_utility,
+        "job_utility": raw_utility * model_count_reliability * agreement_reliability,
+        "model_count_reliability": model_count_reliability,
+        "agreement_reliability": agreement_reliability,
+        "native_cross_support_agreement": agreement,
+        "model_pair_consensus_fraction": consensus,
         "model_strict_a_fraction": as_float(
             job_result.get("model_strict_a_fraction", 0.0),
             field="model_strict_a_fraction",
