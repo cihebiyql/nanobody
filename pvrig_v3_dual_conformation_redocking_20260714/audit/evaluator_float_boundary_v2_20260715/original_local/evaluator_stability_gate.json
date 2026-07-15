@@ -1,12 +1,6 @@
 {
   "schema_version": 1,
-  "gate_id": "pvrig_v3_evaluator_stability_v3_decimal_thresholds",
-  "numeric_comparison": {
-    "boundary_policy": "inclusive_greater_than_or_equal",
-    "scaled_threshold_arithmetic": "decimal_string_product",
-    "supersedes": "pvrig_v3_evaluator_stability_v2",
-    "correction_reason": "avoid binary-float inflation such as 100.0 * 1.1 becoming 110.00000000000001"
-  },
+  "gate_id": "pvrig_v3_evaluator_stability_v2",
   "endpoint": {
     "blocker_supported_classes": ["A", "B"],
     "strict_class": "A",

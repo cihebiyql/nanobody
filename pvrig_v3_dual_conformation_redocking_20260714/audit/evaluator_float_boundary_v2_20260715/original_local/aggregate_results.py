@@ -9,7 +9,6 @@ import math
 import subprocess
 import sys
 from collections import Counter, defaultdict
-from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -25,11 +24,6 @@ SUCCESS_STATES = {"SUCCESS", "PASS", "PASSED", "COMPLETE", "COMPLETED", "DONE"}
 PENDING_STATES = {"", "PENDING", "QUEUED", "RUNNING", "MISSING_EVIDENCE"}
 CLASS_ORDER = ["A", "B", "C", "E"]
 LEGACY_THRESHOLDS = {"hotspot": 14.0, "total_occlusion": 500.0, "cdr3_occlusion": 100.0, "cdr3_fraction": 0.15}
-
-
-def decimal_scaled(value: float, scale: float) -> float:
-    """Scale decimal thresholds without binary-float boundary inflation."""
-    return float(Decimal(str(value)) * Decimal(str(scale)))
 
 
 def entity_id(row: dict[str, str]) -> str:
@@ -65,12 +59,12 @@ def classify_geometry(score: dict[str, Any], scale: float = 1.0) -> str:
     total = metric(score, "vhh_pvrl2_occlusion", "residue_pair_count")
     cdr3 = metric(score, "vhh_pvrl2_occlusion", "by_vhh_region_pair_count", "cdr3")
     fraction = metric(score, "vhh_pvrl2_occlusion", "cdr3_fraction")
-    thresholds = {key: decimal_scaled(value, scale) for key, value in LEGACY_THRESHOLDS.items()}
+    thresholds = {key: value * scale for key, value in LEGACY_THRESHOLDS.items()}
     if hotspot >= thresholds["hotspot"] and total >= thresholds["total_occlusion"] and cdr3 >= thresholds["cdr3_occlusion"] and fraction >= thresholds["cdr3_fraction"]:
         return "A"
-    if hotspot >= thresholds["hotspot"] and total < decimal_scaled(50.0, scale):
+    if hotspot >= thresholds["hotspot"] and total < 50 * scale:
         return "C"
-    if hotspot >= decimal_scaled(10.0, scale) and total >= decimal_scaled(100.0, scale) and cdr3 >= decimal_scaled(20.0, scale) and fraction >= decimal_scaled(0.10, scale):
+    if hotspot >= 10 * scale and total >= 100 * scale and cdr3 >= 20 * scale and fraction >= 0.10 * scale:
         return "B"
     return "E"
 
@@ -757,10 +751,8 @@ def aggregate(
         "pose_score_count": len(pose_rows),
         "completed_pose_backed_jobs": completed_pose_backed_jobs,
         "successful_control_entities": successful_control_entities,
-        "stability_gate_id": stability_spec.get("gate_id"),
         "stability_gate_spec": str(stability_spec_path),
         "stability_gate_spec_sha256": sha256_file(stability_spec_path),
-        "numeric_comparison": stability_spec.get("numeric_comparison", {}),
         "gates": gates,
         "reports": {
             "protocol_validation": str(validation_path),

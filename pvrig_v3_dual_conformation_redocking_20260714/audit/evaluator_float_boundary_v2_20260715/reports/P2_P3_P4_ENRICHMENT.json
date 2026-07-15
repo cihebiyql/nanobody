@@ -1,0 +1,59 @@
+{
+  "bindings": {
+    "candidates_sha256": "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78",
+    "evaluator_evidence_mode": "production_pose_backed",
+    "evaluator_file_sha256": "8b4b5ae890156a91b861a781470ac4f379f10b67f4cc80fbf0e2c2fe5b6de8ef",
+    "evaluator_reported_candidates_sha256": "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78",
+    "evaluator_reported_job_manifest_sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
+    "evaluator_reported_job_results_sha256": "7400a88e0bce3c55fafd304f00d8a6e17e5f7eca10256f70d6935815ad280d1e",
+    "evaluator_reported_pose_scores_sha256": "616f7c9420a52d8fdf66a8322e217add85f638571a7649a6c35e8a0f70d105b7",
+    "evaluator_reported_protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+    "evaluator_reported_protocol_lock_sha256": "a187a9addc60d66fd3ffba5221d1121b81029824ffaf0cd7f35a9278f017b4a1",
+    "evaluator_unlockable": false,
+    "job_manifest_sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
+    "job_results_sha256": "7400a88e0bce3c55fafd304f00d8a6e17e5f7eca10256f70d6935815ad280d1e",
+    "pose_scores_sha256": "616f7c9420a52d8fdf66a8322e217add85f638571a7649a6c35e8a0f70d105b7",
+    "protocol_core_lock_file_sha256": "e56c9b9f409d5e773058caea157852bf0042e8adc104ddce99e7deae4e8cb5d2",
+    "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+    "protocol_lock_file_sha256": "4d017059a5043140341298e5deb93dd4e7adac90cedbba074c329a74c7b2693c",
+    "protocol_lock_sha256": "a187a9addc60d66fd3ffba5221d1121b81029824ffaf0cd7f35a9278f017b4a1"
+  },
+  "eligible_phases": [],
+  "evidence_mode": "production_pose_backed",
+  "gate_id": "p2_p3_p4_frozen_panel_internal_enrichment_v1",
+  "gate_spec_file_sha256": "880a66120bd9782e9937edbe804675c259c0d31964333858e95d3ef4a618bc94",
+  "inference_scope": "frozen_panel_internal_enrichment_not_external_validation",
+  "paths": {
+    "candidates": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/inputs/candidates_128.tsv",
+    "evaluator": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/EVALUATOR_STABLE.json",
+    "job_manifest": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/manifests/docking_jobs.tsv",
+    "job_results": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/job_results.tsv",
+    "pose_scores": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/pose_scores.tsv",
+    "protocol_core_lock": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/PROTOCOL_CORE_LOCK.json",
+    "protocol_lock": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/PROTOCOL_LOCK.json"
+  },
+  "phase_results": [],
+  "reasons": [
+    "evaluator_not_unlockable",
+    "evaluator_status_not_pass:NOT_READY",
+    "one_or_more_evaluator_gates_not_pass"
+  ],
+  "robust_a_definition": {
+    "minimum_pose_models_per_supporting_seed": 4,
+    "minimum_successful_seeds_per_conformation": 2,
+    "minimum_supporting_a_a_seeds_per_conformation": 2,
+    "model_pair_consensus_fraction_min": 0.75,
+    "model_strict_a_fraction_min": 0.5
+  },
+  "status": "NOT_READY",
+  "thresholds": {
+    "maximum_holm_adjusted_p": 0.1,
+    "minimum_comparator_n": 30,
+    "minimum_coverage_fraction": 0.9,
+    "minimum_phase_n": 15,
+    "minimum_risk_difference": 0.1,
+    "minimum_risk_ratio": 1.5,
+    "minimum_target_robust_a_rate": 0.2
+  },
+  "unlockable": false
+}

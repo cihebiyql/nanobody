@@ -34,21 +34,6 @@ class StabilityGateTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tmpdir.cleanup()
 
-    def test_scaled_threshold_boundary_uses_decimal_semantics(self) -> None:
-        score = {
-            "hotspot_overlap": {"full": {"count": 16}},
-            "vhh_pvrl2_occlusion": {
-                "residue_pair_count": 550,
-                "by_vhh_region_pair_count": {"cdr3": 110},
-                "cdr3_fraction": 0.165,
-            },
-        }
-        self.assertEqual(aggregate_results.decimal_scaled(100.0, 1.1), 110.0)
-        self.assertEqual(aggregate_results.classify_geometry(score, 1.1), "A")
-
-        score["vhh_pvrl2_occlusion"]["by_vhh_region_pair_count"]["cdr3"] = 109.999999999
-        self.assertNotEqual(aggregate_results.classify_geometry(score, 1.1), "A")
-
     def reduced_valid_jobs(self) -> list[dict[str, str]]:
         rows = read_tsv(FULL_JOBS)
         controls = [row for row in rows if row["entity_type"] == "control"]
