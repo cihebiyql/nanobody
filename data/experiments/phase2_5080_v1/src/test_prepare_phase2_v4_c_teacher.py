@@ -20,13 +20,15 @@ def pose(model: str, reference: str, score: float, multiplier: float = 1.0) -> d
         "model": model,
         "scoring_reference": reference,
         "haddock_score": str(score),
+        "air_energy": "1.0",
         "hotspot_overlap": str(12 * multiplier),
         "anchor_overlap": str(7 * multiplier),
         "holdout_overlap": str(5 * multiplier),
         "total_occlusion": str(400 * multiplier),
         "cdr3_occlusion": str(80 * multiplier),
         "cdr3_fraction": str(0.12 * multiplier),
-        "clash_residue_pairs": "0",
+        "vhh_pvrig_clash_residue_pairs": "0",
+        "vhh_pvrl2_clash_residue_pairs": "10",
         "overlay_rmsd_a": "0.2",
     }
 
@@ -38,6 +40,13 @@ class PrepareV4CTeacherTest(unittest.TestCase):
         self.assertGreater(high, low)
         self.assertGreaterEqual(low, 0.0)
         self.assertLessEqual(high, 1.0)
+
+    def test_pose_utility_penalizes_pvrig_clash_and_rejects_bad_overlay(self) -> None:
+        clean = pose("m1", "8x6b", -10.0, 1.0)
+        clashing = dict(clean, vhh_pvrig_clash_residue_pairs="20")
+        self.assertLess(MOD.native_pose_utility(clashing), MOD.native_pose_utility(clean))
+        with self.assertRaises(MOD.TeacherBuildError):
+            MOD.native_pose_utility(dict(clean, overlay_rmsd_a="1.01"))
 
     def test_candidate_uses_median_seed_and_dual_min(self) -> None:
         split = {
@@ -64,13 +73,16 @@ class PrepareV4CTeacherTest(unittest.TestCase):
                         "native_cross_support_agreement": 0.8,
                         "model_pair_consensus_fraction": 0.75,
                         "model_strict_a_fraction": 0.5,
+                        "model_count_reliability": 1.0,
+                        "agreement_reliability": 0.9,
                         "hotspot_overlap": 12.0,
                         "anchor_overlap": 7.0,
                         "holdout_overlap": 5.0,
                         "total_occlusion": 400.0,
                         "cdr3_occlusion": 80.0,
                         "cdr3_fraction": 0.12,
-                        "clash_residue_pairs": 0.0,
+                        "vhh_pvrig_clash_residue_pairs": 0.0,
+                        "vhh_pvrl2_clash_residue_pairs": 10.0,
                         "overlay_rmsd_a": 0.2,
                     }
                 )
@@ -95,11 +107,33 @@ class PrepareV4CTeacherTest(unittest.TestCase):
         self.assertEqual(summary["complete_model_count"], 4)
         self.assertGreater(summary["job_utility"], 0.0)
 
-    def test_formal_release_requires_explicit_unseal(self) -> None:
-        rows = [{"model_split": "UNTOUCHED_TEST"} for _ in range(32)]
+    def test_open_selection_never_returns_challenge_rows(self) -> None:
+        rows = [
+            {"candidate_id": f"o{index}", "model_split": "OPEN_DEVELOPMENT"}
+            for index in range(96)
+        ] + [
+            {"candidate_id": f"t{index}", "model_split": "RETROSPECTIVE_GROUPED_CHALLENGE"}
+            for index in range(32)
+        ]
+        selected = MOD.select_open_split(rows)
+        self.assertEqual(len(selected), 96)
+        self.assertTrue(all(row["candidate_id"].startswith("o") for row in selected))
+
+    def test_spoofed_evaluator_is_rejected(self) -> None:
         with self.assertRaises(MOD.TeacherBuildError):
-            MOD.release_rows(rows, "formal", False)
-        self.assertEqual(len(MOD.release_rows(rows, "formal", True)), 32)
+            MOD.validate_evaluator(
+                {
+                    "status": "PASS",
+                    "evidence_mode": "production_pose_backed",
+                    "unlockable": False,
+                    "job_count": 1050,
+                    "job_manifest_sha256": MOD.EXPECTED_JOB_MANIFEST_SHA256,
+                    "protocol_lock_sha256": MOD.EXPECTED_PROTOCOL_LOCK_SHA256,
+                    "gates": {"all_jobs_terminal": {"status": "PASS"}},
+                },
+                job_results_sha256="forged",
+                pose_scores_sha256="forged",
+            )
 
 
 if __name__ == "__main__":

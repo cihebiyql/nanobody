@@ -139,6 +139,80 @@ def mean(values: Iterable[float]) -> float:
     return sum(values) / len(values)
 
 
+def nested_metric(payload: Mapping[str, Any], *path: str) -> Any:
+    value: Any = payload
+    for key in path:
+        if not isinstance(value, Mapping) or key not in value:
+            raise TeacherBuildError(f"raw_pose_metric_missing:{'.'.join(path)}")
+        value = value[key]
+    return value
+
+
+def raw_pose_rows_for_jobs(
+    results_root: Path,
+    selected_jobs: list[dict[str, str]],
+    successful_job_ids: set[str],
+) -> tuple[list[dict[str, str]], str]:
+    """Open only result JSON files belonging to the preselected development IDs."""
+    output: list[dict[str, str]] = []
+    evidence_bindings: list[tuple[str, str]] = []
+    for job in selected_jobs:
+        job_id = job["job_id"]
+        if job_id not in successful_job_ids:
+            continue
+        path = results_root / job_id / "job_result.json"
+        if not path.is_file():
+            raise TeacherBuildError(f"selected_success_job_result_missing:{job_id}")
+        raw = path.read_bytes()
+        evidence_bindings.append((job_id, hashlib.sha256(raw).hexdigest()))
+        evidence = json.loads(raw)
+        if evidence.get("job_id") != job_id or evidence.get("job_hash") != job.get("job_hash"):
+            raise TeacherBuildError(f"raw_job_identity_or_hash_mismatch:{job_id}")
+        if evidence.get("protocol_core_sha256") != EXPECTED_PROTOCOL_CORE_SHA256:
+            raise TeacherBuildError(f"raw_job_protocol_core_mismatch:{job_id}")
+        for pose in evidence.get("pose_scores", []):
+            model = Path(str(pose.get("pose", ""))).name
+            if not model:
+                raise TeacherBuildError(f"raw_pose_model_missing:{job_id}")
+            haddock = pose.get("haddock_io") or {}
+            for score in pose.get("scores", []):
+                reference = str(score.get("reference_id", "")).lower()
+                if reference not in CONFORMATIONS:
+                    raise TeacherBuildError(f"raw_pose_reference_invalid:{job_id}:{reference}")
+                clashes = nested_metric(score, "clashes_2p5a")
+                output.append(
+                    {
+                        "job_id": job_id,
+                        "model": model,
+                        "scoring_reference": reference,
+                        "haddock_score": str(haddock.get("score", "")),
+                        "air_energy": str(haddock.get("unw_energies.air", "")),
+                        "hotspot_overlap": str(nested_metric(score, "hotspot_overlap", "full", "count")),
+                        "anchor_overlap": str(nested_metric(score, "hotspot_overlap", "anchor", "count")),
+                        "holdout_overlap": str(nested_metric(score, "hotspot_overlap", "holdout", "count")),
+                        "total_occlusion": str(nested_metric(score, "vhh_pvrl2_occlusion", "residue_pair_count")),
+                        "cdr3_occlusion": str(
+                            nested_metric(
+                                score,
+                                "vhh_pvrl2_occlusion",
+                                "by_vhh_region_pair_count",
+                                "cdr3",
+                            )
+                        ),
+                        "cdr3_fraction": str(nested_metric(score, "vhh_pvrl2_occlusion", "cdr3_fraction")),
+                        "vhh_pvrig_clash_residue_pairs": str(
+                            nested_metric(clashes, "vhh_pvrig", "residue_pair_count")
+                        ),
+                        "vhh_pvrl2_clash_residue_pairs": str(
+                            nested_metric(clashes, "vhh_pvrl2", "residue_pair_count")
+                        ),
+                        "overlay_rmsd_a": str(nested_metric(score, "overlay", "t_ca_rmsd_a")),
+                    }
+                )
+    binding_payload = json.dumps(sorted(evidence_bindings), separators=(",", ":"))
+    return output, hashlib.sha256(binding_payload.encode("utf-8")).hexdigest()
+
+
 def job_summary(
     job_id: str,
     dock_conformation: str,
@@ -147,7 +221,12 @@ def job_summary(
 ) -> dict[str, Any]:
     by_model: dict[str, dict[str, dict[str, str]]] = defaultdict(dict)
     for row in pose_rows:
-        by_model[row["model"]][row["scoring_reference"].lower()] = row
+        reference = row["scoring_reference"].lower()
+        if reference in by_model[row["model"]]:
+            raise TeacherBuildError(
+                f"duplicate_model_reference:{job_id}:{row['model']}:{reference}"
+            )
+        by_model[row["model"]][reference] = row
     complete = [
         refs for refs in by_model.values() if set(refs) == set(CONFORMATIONS)
     ]
@@ -156,10 +235,7 @@ def job_summary(
 
     def score_key(refs: Mapping[str, Mapping[str, str]]) -> tuple[float, str]:
         native = refs[dock_conformation]
-        try:
-            score = as_float(native.get("haddock_score"), field="haddock_score")
-        except TeacherBuildError:
-            score = math.inf
+        score = as_float(native.get("haddock_score"), field="haddock_score")
         return score, native.get("model", "")
 
     complete.sort(key=score_key)
@@ -274,6 +350,12 @@ def build_candidate_teacher(
         "model_strict_a_fraction_mean": round(
             mean(row["model_strict_a_fraction"] for row in job_summaries), 9
         ),
+        "model_count_reliability_mean": round(
+            mean(row["model_count_reliability"] for row in job_summaries), 9
+        ),
+        "agreement_reliability_mean": round(
+            mean(row["agreement_reliability"] for row in job_summaries), 9
+        ),
     }
     for conformation in CONFORMATIONS:
         suffix = "8X6B" if conformation == "8x6b" else "9E6Y"
@@ -284,34 +366,69 @@ def build_candidate_teacher(
             "total_occlusion",
             "cdr3_occlusion",
             "cdr3_fraction",
-            "clash_residue_pairs",
+            "vhh_pvrig_clash_residue_pairs",
+            "vhh_pvrl2_clash_residue_pairs",
             "overlay_rmsd_a",
         ):
             result[f"{field}_median_{suffix}"] = round(
                 statistics.median(row[field] for row in by_conformation[conformation]), 9
             )
+    missing_seed_fraction = sum(
+        3 - len(by_conformation[conformation]) for conformation in CONFORMATIONS
+    ) / 6.0
+    result["missing_seed_fraction"] = round(missing_seed_fraction, 9)
     result["teacher_uncertainty"] = round(
-        max(receptor_sd.values()) + abs(r8 - r9), 9
+        max(receptor_sd.values()) + abs(r8 - r9) + 0.1 * missing_seed_fraction,
+        9,
     )
     result["claim_boundary"] = CLAIM_BOUNDARY
     return result
 
 
-def validate_evaluator(evaluator: Mapping[str, Any]) -> None:
+def validate_evaluator(
+    evaluator: Mapping[str, Any],
+    *,
+    job_results_sha256: str | None = None,
+    pose_scores_sha256: str | None = None,
+) -> None:
     failures: list[str] = []
     if evaluator.get("status") != "PASS":
         failures.append(f"evaluator_status_{evaluator.get('status', 'MISSING')}")
     if evaluator.get("evidence_mode") != "production_pose_backed":
         failures.append("evaluator_not_production_pose_backed")
+    if evaluator.get("unlockable") is not True:
+        failures.append("evaluator_unlockable_not_true")
     if int(evaluator.get("job_count", 0) or 0) != EXPECTED_TOTAL_JOBS:
         failures.append("evaluator_job_count_not_1050")
     if evaluator.get("job_manifest_sha256") != EXPECTED_JOB_MANIFEST_SHA256:
         failures.append("evaluator_job_manifest_sha256_mismatch")
     if evaluator.get("protocol_lock_sha256") != EXPECTED_PROTOCOL_LOCK_SHA256:
         failures.append("evaluator_protocol_lock_sha256_mismatch")
-    terminal = evaluator.get("gates", {}).get("all_jobs_terminal", {}).get("status")
+    if evaluator.get("protocol_core_sha256") != EXPECTED_PROTOCOL_CORE_SHA256:
+        failures.append("evaluator_protocol_core_sha256_mismatch")
+    if evaluator.get("candidates_sha256") != EXPECTED_CANDIDATES_SHA256:
+        failures.append("evaluator_candidates_sha256_mismatch")
+    if evaluator.get("stability_gate_spec_sha256") != EXPECTED_STABILITY_SPEC_SHA256:
+        failures.append("evaluator_stability_spec_sha256_mismatch")
+    if not evaluator.get("job_set_hash"):
+        failures.append("evaluator_job_set_hash_missing")
+    gates = evaluator.get("gates", {})
+    if not isinstance(gates, Mapping) or not gates:
+        failures.append("evaluator_gates_missing")
+        gates = {}
+    failed_gates = sorted(
+        name for name, payload in gates.items()
+        if not isinstance(payload, Mapping) or payload.get("status") != "PASS"
+    )
+    if failed_gates:
+        failures.append("evaluator_nonpass_gates:" + ";".join(failed_gates))
+    terminal = gates.get("all_jobs_terminal", {}).get("status")
     if terminal != "PASS":
         failures.append(f"all_jobs_terminal_gate_{terminal or 'MISSING'}")
+    if job_results_sha256 is not None and evaluator.get("job_results_sha256") != job_results_sha256:
+        failures.append("job_results_file_not_bound_to_evaluator")
+    if pose_scores_sha256 is not None and evaluator.get("pose_scores_sha256") != pose_scores_sha256:
+        failures.append("pose_scores_file_not_bound_to_evaluator")
     if failures:
         raise TeacherBuildError("teacher_release_gate_failed:" + ",".join(failures))
 
@@ -322,11 +439,19 @@ def build_teacher_rows(
     job_results: list[dict[str, str]],
     pose_rows: list[dict[str, str]],
 ) -> list[dict[str, Any]]:
+    if len({row["candidate_id"] for row in split_rows}) != len(split_rows):
+        raise TeacherBuildError("duplicate_candidate_in_selected_split")
+    if len({row["job_id"] for row in job_manifest}) != len(job_manifest):
+        raise TeacherBuildError("duplicate_job_id_in_selected_manifest")
+    if len({row["job_id"] for row in job_results}) != len(job_results):
+        raise TeacherBuildError("duplicate_job_id_in_selected_results")
     jobs_by_id = {row["job_id"]: row for row in job_manifest}
     results_by_id = {row["job_id"]: row for row in job_results}
-    if len(jobs_by_id) != EXPECTED_TOTAL_JOBS or len(results_by_id) != EXPECTED_TOTAL_JOBS:
+    expected_jobs = len(split_rows) * 6
+    if len(jobs_by_id) != expected_jobs or set(results_by_id) != set(jobs_by_id):
         raise TeacherBuildError(
-            f"expected_1050_jobs_and_results_got_{len(jobs_by_id)}_{len(results_by_id)}"
+            f"selected_job_result_closure_failed:expected={expected_jobs}:"
+            f"jobs={len(jobs_by_id)}:results={len(results_by_id)}"
         )
     for job_id, result in results_by_id.items():
         manifest = jobs_by_id.get(job_id)
@@ -339,7 +464,7 @@ def build_teacher_rows(
     summaries_by_candidate: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for job_id, manifest in jobs_by_id.items():
         if manifest.get("entity_type") != "candidate":
-            continue
+            raise TeacherBuildError(f"non_candidate_job_in_selected_manifest:{job_id}")
         result = results_by_id[job_id]
         if str(result.get("state", "")).upper() not in SUCCESS_STATES:
             continue
@@ -357,19 +482,10 @@ def build_teacher_rows(
     return output
 
 
-def release_rows(rows: list[dict[str, Any]], release: str, formal_unseal: bool) -> list[dict[str, Any]]:
-    if release == "open":
-        selected = [row for row in rows if row["model_split"] == "OPEN_DEVELOPMENT"]
-        expected = 96
-    elif release == "formal":
-        if not formal_unseal:
-            raise TeacherBuildError("formal_release_requires_explicit_formal_unseal")
-        selected = [row for row in rows if row["model_split"] == "UNTOUCHED_TEST"]
-        expected = 32
-    else:
-        raise TeacherBuildError(f"unknown_release:{release}")
-    if len(selected) != expected:
-        raise TeacherBuildError(f"expected_{expected}_{release}_rows_got_{len(selected)}")
+def select_open_split(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    selected = [row for row in rows if row["model_split"] == "OPEN_DEVELOPMENT"]
+    if len(selected) != 96:
+        raise TeacherBuildError(f"expected_96_open_rows_got_{len(selected)}")
     return selected
 
 
@@ -384,23 +500,48 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--job-manifest", type=Path, required=True)
     parser.add_argument("--job-results", type=Path, required=True)
     parser.add_argument("--pose-scores", type=Path, required=True)
+    parser.add_argument("--results-root", type=Path, required=True)
     parser.add_argument("--evaluator", type=Path, required=True)
-    parser.add_argument("--release", choices=("open", "formal"), default="open")
-    parser.add_argument("--formal-unseal", action="store_true")
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args(argv)
 
+    if sha256_file(args.split_manifest) != EXPECTED_SPLIT_MANIFEST_SHA256:
+        raise TeacherBuildError("split_manifest_file_sha256_mismatch")
+    split_rows = select_open_split(read_tsv(args.split_manifest))
+    allowed_entities = {row["candidate_id"] for row in split_rows}
+    job_results_sha256 = sha256_file(args.job_results)
+    pose_scores_sha256 = sha256_file(args.pose_scores)
     evaluator = json.loads(args.evaluator.read_text(encoding="utf-8"))
-    validate_evaluator(evaluator)
+    validate_evaluator(
+        evaluator,
+        job_results_sha256=job_results_sha256,
+        pose_scores_sha256=pose_scores_sha256,
+    )
     if sha256_file(args.job_manifest) != EXPECTED_JOB_MANIFEST_SHA256:
         raise TeacherBuildError("job_manifest_file_sha256_mismatch")
-    all_rows = build_teacher_rows(
-        read_tsv(args.split_manifest),
-        read_tsv(args.job_manifest),
-        read_tsv(args.job_results),
-        read_tsv(args.pose_scores),
+    selected_jobs = [
+        row
+        for row in read_tsv(args.job_manifest)
+        if row.get("entity_type") == "candidate" and row.get("entity_id") in allowed_entities
+    ]
+    selected_results = read_tsv_for_entities(args.job_results, allowed_entities)
+    successful_job_ids = {
+        row["job_id"]
+        for row in selected_results
+        if str(row.get("state", "")).upper() in SUCCESS_STATES
+        and str(row.get("pose_backed_2x2", "")).lower() == "true"
+    }
+    raw_pose_rows, raw_evidence_hash_chain = raw_pose_rows_for_jobs(
+        args.results_root,
+        selected_jobs,
+        successful_job_ids,
     )
-    selected = release_rows(all_rows, args.release, args.formal_unseal)
+    selected = build_teacher_rows(
+        split_rows,
+        selected_jobs,
+        selected_results,
+        raw_pose_rows,
+    )
     write_tsv(args.out, selected)
     audit_path = args.out.with_suffix(args.out.suffix + ".audit.json")
     write_json(
@@ -408,15 +549,18 @@ def main(argv: list[str] | None = None) -> int:
         {
             "schema_version": SCHEMA_VERSION,
             "status": "PASS_V4_C_CONTINUOUS_TEACHER_RELEASE",
-            "release": args.release,
+            "release": "open_development_only",
             "row_count": len(selected),
-            "formal_unseal": bool(args.formal_unseal),
+            "retrospective_challenge_labels_read": False,
             "inputs": {
                 "split_manifest_sha256": sha256_file(args.split_manifest),
                 "job_manifest_sha256": sha256_file(args.job_manifest),
-                "job_results_sha256": sha256_file(args.job_results),
-                "pose_scores_sha256": sha256_file(args.pose_scores),
+                "job_results_sha256": job_results_sha256,
+                "pose_scores_sha256_for_evaluator_binding_only": pose_scores_sha256,
                 "evaluator_sha256": sha256_file(args.evaluator),
+                "selected_raw_result_root": str(args.results_root),
+                "selected_successful_job_count": len(successful_job_ids),
+                "selected_raw_result_sha256_chain": raw_evidence_hash_chain,
             },
             "output": {"path": str(args.out), "sha256": sha256_file(args.out)},
             "primary_target": "R_dual_min",
@@ -427,7 +571,7 @@ def main(argv: list[str] | None = None) -> int:
         json.dumps(
             {
                 "status": "PASS",
-                "release": args.release,
+                "release": "open_development_only",
                 "row_count": len(selected),
                 "out": str(args.out),
                 "audit": str(audit_path),
