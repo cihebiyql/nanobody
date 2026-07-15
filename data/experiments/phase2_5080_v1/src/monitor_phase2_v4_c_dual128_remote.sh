@@ -25,9 +25,30 @@ while true; do
     sleep "$POLL_SECONDS"
     continue
   fi
-  counts="$($PYTHON_BIN -c 'import json,sys; x=json.load(sys.stdin); c=x.get("counts",{}); print(sum(int(c.get(k,0)) for k in ("PENDING","QUEUED","RUNNING","MISSING_EVIDENCE")))' <<<"$summary")"
-  printf '%s nonterminal=%s\n' "$(date -Is)" "$counts" >>"$LOG_FILE"
-  if [[ "$counts" == "0" ]]; then
+  counts="$($PYTHON_BIN -c '
+import json, sys
+x = json.load(sys.stdin)
+c = x.get("counts")
+known = {"SUCCESS", "FAILED_MAX_ATTEMPTS", "PENDING", "QUEUED", "RUNNING", "MISSING_EVIDENCE"}
+if not isinstance(c, dict) or not c or set(c) - known:
+    raise SystemExit("invalid_or_unknown_status_counts")
+values = {key: int(value) for key, value in c.items()}
+if sum(values.values()) != 1050:
+    raise SystemExit("status_count_total_not_1050")
+nonterminal = sum(values.get(key, 0) for key in ("PENDING", "QUEUED", "RUNNING", "MISSING_EVIDENCE"))
+terminal = values.get("SUCCESS", 0) + values.get("FAILED_MAX_ATTEMPTS", 0)
+print(f"{nonterminal}\t{terminal}")
+' <<<"$summary" 2>>"$LOG_FILE")"
+  parse_rc=$?
+  if [[ $parse_rc -ne 0 ]]; then
+    printf '%s status_schema_blocked rc=%s\n' "$(date -Is)" "$parse_rc" >>"$LOG_FILE"
+    sleep "$POLL_SECONDS"
+    continue
+  fi
+  nonterminal="${counts%%$'\t'*}"
+  terminal="${counts##*$'\t'}"
+  printf '%s nonterminal=%s terminal=%s\n' "$(date -Is)" "$nonterminal" "$terminal" >>"$LOG_FILE"
+  if [[ "$nonterminal" == "0" && "$terminal" == "1050" ]]; then
     break
   fi
   sleep "$POLL_SECONDS"
@@ -70,9 +91,9 @@ payload = {
     "evaluator_evidence_mode": evaluator.get("evidence_mode", "MISSING"),
     "enrichment_status": enrichment.get("status", "MISSING"),
     "teacher_release_ready": (
-        int(aggregate_rc) == 0
-        and int(hash_rc) == 0
+        int(hash_rc) == 0
         and evaluator.get("status") == "PASS"
+        and evaluator.get("unlockable") is True
         and evaluator.get("evidence_mode") == "production_pose_backed"
     ),
     "claim_boundary": "Computational dual-docking evidence only; not experimental binding or blocking.",

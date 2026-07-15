@@ -21,7 +21,10 @@ AA_INDEX = {aa: index for index, aa in enumerate(AA_ORDER)}
 ALPHAS = (0.01, 0.1, 1.0, 10.0, 100.0)
 FOLDS = 5
 EXPECTED_OPEN_ROWS = 96
+EXPECTED_SPLIT_MANIFEST_SHA256 = "4660260cdf1f863281b12200aeee4b5d58b251ebd3774befae2eace9ca2465fe"
 PRIMARY_TARGET = "R_dual_min"
+GROUP_NULL_REPLICATES = 100
+GROUP_NULL_SEED = 20260715
 CLAIM_BOUNDARY = (
     "Development-only fixed-PVRIG computational docking surrogate baseline; "
     "not binding, affinity, competition, experimental blocking, or Docking Gold."
@@ -296,6 +299,72 @@ def select_alpha(
     return alpha, prediction, score
 
 
+def nested_grouped_predictions(
+    rows: list[dict[str, str]],
+    y: np.ndarray,
+    model_name: str,
+    outer_folds: list[int],
+) -> tuple[np.ndarray, list[float]]:
+    output = np.zeros(len(rows), dtype=np.float64)
+    selected_alphas: list[float] = []
+    for outer in sorted(set(outer_folds)):
+        train_indices = [index for index, value in enumerate(outer_folds) if value != outer]
+        eval_indices = [index for index, value in enumerate(outer_folds) if value == outer]
+        train_rows = [rows[index] for index in train_indices]
+        eval_rows = [rows[index] for index in eval_indices]
+        train_y = y[train_indices]
+        inner_fold_count = min(4, len({row["near_cdr3_family_id"] for row in train_rows}))
+        inner_folds = grouped_folds(train_rows, inner_fold_count)
+        alpha, _inner_prediction, _inner_metrics = select_alpha(
+            train_rows, train_y, model_name, inner_folds
+        )
+        x_train, x_eval = feature_matrices(model_name, train_rows, eval_rows)
+        output[eval_indices] = predict_ridge(x_eval, fit_ridge(x_train, train_y, alpha))
+        selected_alphas.append(float(alpha))
+    return output, selected_alphas
+
+
+def group_permuted_target(
+    rows: list[dict[str, str]], y: np.ndarray, rng: np.random.Generator
+) -> np.ndarray:
+    groups: dict[str, list[int]] = {}
+    for index, row in enumerate(rows):
+        groups.setdefault(row["near_cdr3_family_id"], []).append(index)
+    names = sorted(groups)
+    means = {name: float(np.mean(y[groups[name]])) for name in names}
+    permuted_names = names.copy()
+    rng.shuffle(permuted_names)
+    mapping = {name: means[source] for name, source in zip(names, permuted_names)}
+    output = y.copy()
+    for name, indices in groups.items():
+        residuals = y[indices] - means[name]
+        output[indices] = mapping[name] + residuals
+    return output
+
+
+def group_null_distribution(
+    rows: list[dict[str, str]],
+    y: np.ndarray,
+    folds: list[int],
+    alpha: float,
+) -> dict[str, Any]:
+    rng = np.random.default_rng(GROUP_NULL_SEED)
+    values = []
+    for _replicate in range(GROUP_NULL_REPLICATES):
+        shuffled = group_permuted_target(rows, y, rng)
+        prediction = cross_validated_predictions(rows, shuffled, "full_sequence", alpha, folds)
+        values.append(spearman(y, prediction))
+    array = np.asarray(values, dtype=np.float64)
+    return {
+        "replicates": GROUP_NULL_REPLICATES,
+        "seed": GROUP_NULL_SEED,
+        "permutation_unit": "near_cdr3_family_mean_within_family_residual_preserved",
+        "spearman_mean": round(float(np.mean(array)), 9),
+        "spearman_95th_percentile": round(float(np.quantile(array, 0.95)), 9),
+        "spearman_max": round(float(np.max(array)), 9),
+    }
+
+
 def validate_teacher(rows: list[dict[str, str]], target: str) -> np.ndarray:
     if len(rows) != EXPECTED_OPEN_ROWS:
         raise BaselineError(f"expected_{EXPECTED_OPEN_ROWS}_open_rows_got_{len(rows)}")
@@ -312,14 +381,55 @@ def validate_teacher(rows: list[dict[str, str]], target: str) -> np.ndarray:
     return y
 
 
+def validate_teacher_binding(
+    teacher_path: Path,
+    audit_path: Path,
+    split_manifest_path: Path,
+    teacher_rows: list[dict[str, str]],
+) -> dict[str, Any]:
+    if sha256_file(split_manifest_path) != EXPECTED_SPLIT_MANIFEST_SHA256:
+        raise BaselineError("split_manifest_sha256_mismatch")
+    audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    if audit.get("status") != "PASS_V4_C_CONTINUOUS_TEACHER_RELEASE":
+        raise BaselineError("teacher_audit_status_not_pass")
+    if audit.get("release") != "open_development_only":
+        raise BaselineError("teacher_audit_not_open_development")
+    if audit.get("inputs", {}).get("split_manifest_sha256") != EXPECTED_SPLIT_MANIFEST_SHA256:
+        raise BaselineError("teacher_audit_split_binding_mismatch")
+    if audit.get("output", {}).get("sha256") != sha256_file(teacher_path):
+        raise BaselineError("teacher_file_not_bound_to_audit")
+    split_rows = read_tsv(split_manifest_path)
+    expected_ids = {
+        row["candidate_id"] for row in split_rows if row["model_split"] == "OPEN_DEVELOPMENT"
+    }
+    actual_ids = {row["candidate_id"] for row in teacher_rows}
+    if actual_ids != expected_ids or len(actual_ids) != EXPECTED_OPEN_ROWS:
+        raise BaselineError("teacher_candidate_ids_do_not_match_frozen_open_split")
+    return audit
+
+
 def main(argv: list[str] | None = None) -> int:
+    root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--teacher", type=Path, required=True)
+    parser.add_argument("--teacher-audit", type=Path)
+    parser.add_argument(
+        "--split-manifest",
+        type=Path,
+        default=root / "data_splits/pvrig_v4_c/dual128_split_manifest.tsv",
+    )
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--target", default=PRIMARY_TARGET)
     args = parser.parse_args(argv)
 
     rows = read_tsv(args.teacher)
+    teacher_audit_path = args.teacher_audit or args.teacher.with_suffix(args.teacher.suffix + ".audit.json")
+    validate_teacher_binding(
+        args.teacher,
+        teacher_audit_path,
+        args.split_manifest,
+        rows,
+    )
     y = validate_teacher(rows, args.target)
     folds = grouped_folds(rows)
     model_names = ["constant", "scaffold_only", "metadata_shortcut", "cdr3_only", "full_sequence"]
@@ -336,29 +446,32 @@ def main(argv: list[str] | None = None) -> int:
         for index, row in enumerate(rows)
     ]
     for model_name in model_names:
-        alpha, prediction, score = select_alpha(rows, y, model_name, folds)
-        results[model_name] = {"alpha": alpha, "metrics": score}
-        for index, value in enumerate(prediction):
+        alpha, tuned_prediction, tuned_score = select_alpha(rows, y, model_name, folds)
+        nested_prediction, outer_alphas = nested_grouped_predictions(
+            rows, y, model_name, folds
+        )
+        nested_score = metrics(y, nested_prediction)
+        results[model_name] = {
+            "full_open_tuning_alpha": alpha,
+            "tuned_grouped_cv_metrics": tuned_score,
+            "nested_grouped_cv_metrics": nested_score,
+            "nested_outer_selected_alphas": outer_alphas,
+        }
+        for index, value in enumerate(nested_prediction):
             prediction_rows[index][f"prediction_{model_name}"] = round(float(value), 9)
 
-    rng = np.random.default_rng(20260715)
-    shuffled = y.copy()
-    rng.shuffle(shuffled)
-    alpha = float(results["full_sequence"]["alpha"])
-    shuffled_prediction = cross_validated_predictions(
-        rows, shuffled, "full_sequence", alpha, folds
-    )
-    shuffled_score = metrics(y, shuffled_prediction)
-    results["label_shuffle_null"] = {"alpha": alpha, "metrics": shuffled_score}
-    for index, value in enumerate(shuffled_prediction):
-        prediction_rows[index]["prediction_label_shuffle_null"] = round(float(value), 9)
+    null_alpha = float(results["full_sequence"]["full_open_tuning_alpha"])
+    results["label_shuffle_null"] = {
+        "alpha": null_alpha,
+        "distribution": group_null_distribution(rows, y, folds, null_alpha),
+    }
 
-    eligible_models = [name for name in results if name not in {"metadata_shortcut", "label_shuffle_null"}]
+    eligible_models = [name for name in results if name != "label_shuffle_null"]
     strongest = max(
         eligible_models,
         key=lambda name: (
-            results[name]["metrics"]["spearman"],
-            results[name]["metrics"]["ndcg"],
+            results[name]["nested_grouped_cv_metrics"]["spearman"],
+            results[name]["nested_grouped_cv_metrics"]["ndcg"],
             name,
         ),
     )

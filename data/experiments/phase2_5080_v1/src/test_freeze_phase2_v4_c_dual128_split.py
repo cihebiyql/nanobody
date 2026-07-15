@@ -36,7 +36,7 @@ class FreezeDual128SplitTest(unittest.TestCase):
         test_families = {
             row["near_cdr3_family_id"]
             for row in rows
-            if row["model_split"] == "UNTOUCHED_TEST"
+            if row["model_split"] == "RETROSPECTIVE_GROUPED_CHALLENGE"
         }
         self.assertFalse(open_families & test_families)
         self.assertEqual(test_families, MOD.FROZEN_HOLDOUT_FAMILIES)

@@ -16,7 +16,7 @@ SCHEMA_VERSION = "phase2_v4_c_dual128_split_v1"
 FROZEN_AT = "2026-07-15T17:25:37+08:00"
 SOURCE_SHA256 = "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78"
 EXPECTED_CANDIDATES = 128
-EXPECTED_SPLIT_COUNTS = {"OPEN_DEVELOPMENT": 96, "UNTOUCHED_TEST": 32}
+EXPECTED_SPLIT_COUNTS = {"OPEN_DEVELOPMENT": 96, "RETROSPECTIVE_GROUPED_CHALLENGE": 32}
 
 # Selected before reading any result-level labels from the new 1050-job campaign.
 FROZEN_HOLDOUT_FAMILIES = {
@@ -141,7 +141,9 @@ def freeze_rows(source_rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:
     for source in source_rows:
         family = source["near_cdr3_family_id"]
         model_split = (
-            "UNTOUCHED_TEST" if family in FROZEN_HOLDOUT_FAMILIES else "OPEN_DEVELOPMENT"
+            "RETROSPECTIVE_GROUPED_CHALLENGE"
+            if family in FROZEN_HOLDOUT_FAMILIES
+            else "OPEN_DEVELOPMENT"
         )
         output.append(
             {
@@ -161,8 +163,8 @@ def freeze_rows(source_rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:
                 "cdr3": source["cdr3"],
                 "model_split": model_split,
                 "new_docking_label_policy": (
-                    "SEALED_UNTIL_FORMAL_UNSEAL"
-                    if model_split == "UNTOUCHED_TEST"
+                    "DESCRIPTIVE_CHALLENGE_NOT_FORMAL"
+                    if model_split == "RETROSPECTIVE_GROUPED_CHALLENGE"
                     else "OPEN_AFTER_EVALUATOR_STABLE_PASS"
                 ),
                 "claim_boundary": CLAIM_BOUNDARY,
@@ -188,12 +190,15 @@ def validate_frozen_rows(rows: list[dict[str, str]]) -> None:
         for split in EXPECTED_SPLIT_COUNTS
     }
     open_families = {row["near_cdr3_family_id"] for row in by_split["OPEN_DEVELOPMENT"]}
-    test_families = {row["near_cdr3_family_id"] for row in by_split["UNTOUCHED_TEST"]}
+    test_families = {
+        row["near_cdr3_family_id"]
+        for row in by_split["RETROSPECTIVE_GROUPED_CHALLENGE"]
+    }
     if open_families & test_families:
         raise SplitFreezeError("near_cdr3_family_overlap_across_split")
     if test_families != FROZEN_HOLDOUT_FAMILIES:
         raise SplitFreezeError("frozen_holdout_family_set_mismatch")
-    holdout = by_split["UNTOUCHED_TEST"]
+    holdout = by_split["RETROSPECTIVE_GROUPED_CHALLENGE"]
     for field, expected in EXPECTED_HOLDOUT_DISTRIBUTIONS.items():
         actual = distribution(holdout, field)
         if actual != expected:
@@ -223,7 +228,7 @@ def build_audit(source_path: Path, manifest_path: Path, rows: list[dict[str, str
     }
     return {
         "schema_version": SCHEMA_VERSION,
-        "status": "PASS_FROZEN_BEFORE_NEW_DOCKING_LABEL_AGGREGATION",
+        "status": "PASS_RETROSPECTIVE_GROUPED_CHALLENGE_SPLIT",
         "frozen_at": FROZEN_AT,
         "source": {
             "path": str(source_path),
@@ -248,8 +253,10 @@ def build_audit(source_path: Path, manifest_path: Path, rows: list[dict[str, str
             "frozen_holdout_family_count": len(FROZEN_HOLDOUT_FAMILIES),
             "frozen_holdout_families": sorted(FROZEN_HOLDOUT_FAMILIES),
             "limitation": (
-                "All 128 candidates come from one source run and three scaffold IDs; this split "
-                "tests unseen near-CDR3 families, not unseen generator or unseen scaffold."
+                "The split code did not read result-level labels, but the remote campaign already had "
+                "partial results before this artifact was timestamped. This is a retrospective grouped "
+                "challenge, not a provably untouched formal test. All 128 candidates also come from one "
+                "source run and three scaffold IDs."
             ),
         },
         "split_counts": split_counts,
@@ -260,7 +267,8 @@ def build_audit(source_path: Path, manifest_path: Path, rows: list[dict[str, str
             "exact_sequence_overlap_across_split": 0,
             "near_cdr3_family_overlap_across_split": 0,
             "holdout_distribution_matches_frozen_spec": True,
-            "new_docking_labels_read_during_split": False,
+            "new_docking_labels_read_by_split_code": False,
+            "strict_prospective_time_order_proven": False,
         },
         "manifest": {
             "path": str(manifest_path),
