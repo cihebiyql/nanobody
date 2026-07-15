@@ -1070,6 +1070,32 @@ class V13NativeTop8Tests(unittest.TestCase):
                     allow_external_row_hash=True,
                 )
 
+    def test_reuse_stage_ledger_allows_only_nonrequired_extra_counts(self) -> None:
+        required = {
+            "topoaa": 2,
+            "rigidbody": 40,
+            "seletop": 10,
+            "flexref": 10,
+            "emref": 10,
+        }
+        completion = {"stage_output_counts": {**required, "final": 10}}
+        MOD.validate_reuse_stage_count_ledger(
+            completion, MOD.canonical_json(required), "LEGACY_001"
+        )
+
+        changed = {"stage_output_counts": {**required, "emref": 9, "final": 10}}
+        with self.assertRaisesRegex(MOD.ContractError, "stage-count ledger drift"):
+            MOD.validate_reuse_stage_count_ledger(
+                changed, MOD.canonical_json(required), "LEGACY_001"
+            )
+
+        incomplete = dict(required)
+        incomplete.pop("flexref")
+        with self.assertRaisesRegex(MOD.ContractError, "stage-count ledger drift"):
+            MOD.validate_reuse_stage_count_ledger(
+                completion, MOD.canonical_json(incomplete), "LEGACY_001"
+            )
+
     def test_pending_builder_cannot_self_qualify_and_pointer_failure_rolls_back(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             fixture = NativeFixture(Path(temporary))

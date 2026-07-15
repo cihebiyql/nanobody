@@ -882,6 +882,30 @@ def validate_completion_stage_gate(
             raise ContractError(f"New-run stage requirements drift for {row['run_id']}")
 
 
+def validate_reuse_stage_count_ledger(
+    completion: Mapping[str, Any], ledger_json: str, run_id: str
+) -> None:
+    required_stages = ("topoaa", "rigidbody", "seletop", "flexref", "emref")
+    try:
+        expected = json.loads(ledger_json)
+    except json.JSONDecodeError as error:
+        raise ContractError(
+            f"Reuse stage-count ledger is invalid JSON for {run_id}"
+        ) from error
+    observed = completion.get("stage_output_counts")
+    if (
+        not isinstance(expected, dict)
+        or set(expected) != set(required_stages)
+        or any(type(expected[stage]) is not int for stage in required_stages)
+        or not isinstance(observed, dict)
+        or any(type(observed.get(stage)) is not int for stage in required_stages)
+    ):
+        raise ContractError(f"Reuse completion stage-count ledger drift for {run_id}")
+    observed_required = {stage: observed[stage] for stage in required_stages}
+    if observed_required != expected:
+        raise ContractError(f"Reuse completion stage-count ledger drift for {run_id}")
+
+
 def validate_exact_reuse_provenance(
     row: Mapping[str, str],
     config: BuildConfig,
@@ -1070,9 +1094,11 @@ def validate_row_provenance(
         )
     validate_completion_stage_gate(completion, io_count, row)
     if reuse_ledger is not None:
-        expected_counts = reuse_ledger.get("source_stage_output_counts_json", "")
-        if canonical_json(completion.get("stage_output_counts")) != expected_counts:
-            raise ContractError(f"Reuse completion stage-count ledger drift for {row['run_id']}")
+        validate_reuse_stage_count_ledger(
+            completion,
+            reuse_ledger.get("source_stage_output_counts_json", ""),
+            row["run_id"],
+        )
 
     run_manifest = bind_local_file(
         row,
