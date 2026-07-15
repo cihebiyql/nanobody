@@ -1,9 +1,9 @@
 # PVRIG V3-P2 Docking Gold V1.3 执行状态
 
-**更新时间：** 2026-07-15  
-**自动流程终态：** `COMPLETE_DEVELOPMENT_FAIL_STOPPED`  
-**Docking 执行：** `30/30 PASS`  
-**Development release：** `FAIL_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD_NOT_FROZEN`  
+**更新时间：** 2026-07-15
+**自动流程终态：** `COMPLETE_DEVELOPMENT_FAIL_STOPPED`
+**Docking 执行：** `30/30 PASS`
+**Development release：** `FAIL_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD_NOT_FROZEN`
 **必须保持的训练状态：** `P2_TRAINING_BLOCKED`
 
 ## 1. 结论
@@ -21,7 +21,7 @@ Node23 controller = 0
 
 Selector/recovery、两次独立 native processor build、processor qualification、两次独立 calibration build 和 development release validation 都已技术闭包。
 
-最终停止原因不是 docking 命令失败，而是预注册的 `bootstrap` modal-stability gate 未通过：11 个 positive anchors 中只有 6 个的 modal tier probability 达到 `>=0.70`。因此当前不得进入 development smoke、Formal Gold、Docking Gold label、training-label release 或 P2 training。
+最终停止原因不是 docking 命令失败，而是预注册的 `bootstrap` modal-stability gate 未通过：11 个 positive anchors 中只有 6 个的 modal tier probability 达到 `>=0.70`，低于所需的 9 个。因此当前不得进入 development smoke、Formal Gold、Docking Gold label、training-label release 或 P2 training。
 
 > 本文中的“Docking Gold V1.3”是协议/工作流名称，不表示本轮已发布 Docking Gold。
 
@@ -210,7 +210,7 @@ G1=3, G2=3, G3=4, G4=1, G5=0
 | --- | ---: | --- |
 | 5-family LOFO macro G1-G3 recall | `0.9333333333333333` | PASS |
 | Bootstrap receptor consistency `>=0.70` | `11/11` | PASS |
-| Bootstrap modal tier probability `>=0.70` | `6/11` | **FAIL** |
+| Bootstrap modal tier probability `>=0.70` | `6/11`（要求 `>=9/11`） | **FAIL** |
 
 未达到 modal probability `0.70` 的 5 个 anchors：
 
