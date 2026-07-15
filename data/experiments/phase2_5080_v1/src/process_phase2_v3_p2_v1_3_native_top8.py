@@ -230,6 +230,7 @@ SELECTOR_REQUIRED_FIELDS = {
     "formal_eligible",
     "training_label_release_eligible",
     "docking_gold_release_eligible",
+    "p2_training_ready",
     "selection_row_sha256",
 }
 
@@ -1379,6 +1380,7 @@ def verify_selector(
             "formal_eligible",
             "training_label_release_eligible",
             "docking_gold_release_eligible",
+            "p2_training_ready",
         ):
             if parse_bool(row.get(field_name), field_name):
                 raise ContractError(f"Selector unexpectedly sets {field_name}=true")

@@ -212,6 +212,7 @@ CSV_FIELDS = (
     "remote_file_hash_chain", "local_file_hash_chain", "selector_implementation_relpath",
     "selector_implementation_sha256", "selector_helper_relpath", "selector_helper_sha256",
     "formal_eligible", "training_label_release_eligible", "docking_gold_release_eligible",
+    "p2_training_ready",
     "claim_boundary", "selection_row_sha256",
 )
 
@@ -1860,6 +1861,7 @@ def build(
                     "formal_eligible": "false",
                     "training_label_release_eligible": "false",
                     "docking_gold_release_eligible": "false",
+                    "p2_training_ready": "false",
                     "claim_boundary": CLAIM_BOUNDARY,
                     "selection_row_sha256": "",
                 }
