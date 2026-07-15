@@ -922,64 +922,39 @@ class AutorunTest(unittest.TestCase):
             autorun.validate_retired_source_result(execute(), contract)["status"],
             "PASS_RETIRED_SOURCE_ZERO_CONTROLLERS",
         )
-        fake = proc / "12345"
-        fake.mkdir()
-        argv = list(contract.argv)
-        (fake / "cmdline").write_bytes(
-            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
-        )
-        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
-            autorun.validate_retired_source_result(execute(), contract)
 
-        shutil.rmtree(default_root)
-        python_u = proc / "12349"
-        python_u.mkdir()
-        argv = list(contract.argv)
-        argv.insert(1, "-u")
-        (python_u / "cmdline").write_bytes(
-            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
-        )
-        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
-            autorun.validate_retired_source_result(execute(), contract)
-
-        shutil.rmtree(fake)
-        absolute = proc / "12346"
-        absolute.mkdir()
-        argv = list(contract.argv)
-        argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
-        (absolute / "cmdline").write_bytes(
-            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
-        )
-        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
-            autorun.validate_retired_source_result(execute(), contract)
-
-        shutil.rmtree(absolute)
-        root_equals = proc / "12347"
-        root_equals.mkdir()
-        argv = list(contract.argv)
-        argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
-        root_index = argv.index("--root")
+        normal = list(contract.argv)
+        absolute = list(contract.argv)
+        absolute[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
+        root_equals = list(absolute)
+        root_index = root_equals.index("--root")
         root_alias = (
             Path(autorun.REMOTE_ROOT) / ".." / Path(autorun.REMOTE_ROOT).name
         ).as_posix()
-        argv[root_index : root_index + 2] = [f"--root={root_alias}"]
-        (root_equals / "cmdline").write_bytes(
-            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
-        )
-        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
-            autorun.validate_retired_source_result(execute(), contract)
+        root_equals[root_index : root_index + 2] = [f"--root={root_alias}"]
+        minimal = absolute[:2]
+        python_u = list(contract.argv)
+        python_u.insert(1, "-u")
 
-        shutil.rmtree(root_equals)
-        default_root = proc / "12348"
-        default_root.mkdir()
-        argv = list(contract.argv)
-        argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
-        argv = argv[:2]
-        (default_root / "cmdline").write_bytes(
-            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
-        )
-        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
-            autorun.validate_retired_source_result(execute(), contract)
+        for offset, (variant, argv) in enumerate(
+            (
+                ("normal", normal),
+                ("absolute", absolute),
+                ("root_equals_alias", root_equals),
+                ("minimal_default", minimal),
+                ("python_u", python_u),
+            ),
+            start=12345,
+        ):
+            with self.subTest(variant=variant):
+                fake = proc / str(offset)
+                fake.mkdir()
+                (fake / "cmdline").write_bytes(
+                    b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+                )
+                with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
+                    autorun.validate_retired_source_result(execute(), contract)
+                shutil.rmtree(fake)
 
     def test_migration_receipt_binds_exact_node23_remaining_run_controller(self) -> None:
         receipt = self.root / "migration.json"
