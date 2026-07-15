@@ -126,7 +126,7 @@ class FixturePublisher:
                     },
                     "selector": {
                         "sha256": autorun.sha256_file(
-                            self.layout.src / autorun.SELECTOR_NAME
+                            autorun.SCRIPT_DIR / autorun.SELECTOR_NAME
                         )
                     },
                     "output_csv": {
@@ -286,7 +286,32 @@ def snapshot(
         "observed_hostname": observed_hostname,
         "observed_boot_id": observed_boot_id,
         "host_identity_valid": True,
+        "matching_controller_count": 1 if alive else 0,
+        "matching_controller_pids": [controller_pid] if alive else [],
+        "frozen_completion_hashes_valid": True,
+        "observed_frozen_completion_sha256": dict(
+            autorun.FROZEN_PRE_MIGRATION_COMPLETIONS
+        ),
+        "handoff_phase_hashes_valid": True,
+        "observed_handoff_phase_sha256": dict(
+            autorun.FROZEN_MIGRATION_PHASE_ARTIFACTS
+        ),
         "failures": list(failures),
+    }
+    return autorun.CommandResult(0, json.dumps(payload) + "\n", "")
+
+
+def retired_source_snapshot(*, count: int = 0) -> autorun.CommandResult:
+    payload = {
+        "status": (
+            "PASS_RETIRED_SOURCE_ZERO_CONTROLLERS"
+            if count == 0
+            else "FAIL_RETIRED_SOURCE_GUARD"
+        ),
+        "observed_hostname": "node1",
+        "observed_boot_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "matching_controller_count": count,
+        "matching_controller_pids": list(range(9000, 9000 + count)),
     }
     return autorun.CommandResult(0, json.dumps(payload) + "\n", "")
 
@@ -307,6 +332,34 @@ def migration_run_ids() -> list[str]:
 
 
 def write_migration_receipt(path: Path) -> dict[str, object]:
+    evidence = path.parent / "evidence"
+    evidence.mkdir(exist_ok=True)
+    preregistration = evidence / "preregistration.json"
+    write_json(
+        preregistration,
+        {
+            "schema_version": "pvrig_v1_3_controller_migration_preregistration_v1",
+            "status": "PREREGISTERED_NODE1_TO_NODE23_SINGLE_WRITER_HANDOFF",
+        },
+    )
+    predecessor = evidence / "predecessor.json"
+    write_json(
+        predecessor,
+        {
+            "schema_version": "pvrig_v1_3_production_autorun_state_v1",
+            "status": autorun.WAITING,
+            "protocol_id": autorun.PROTOCOL_ID,
+            "remote_root": autorun.REMOTE_ROOT,
+            **boundaries(),
+            "stages": {},
+            "remote_snapshot": {
+                "completion_count": 4,
+                "pass_count": 4,
+                "failure_count": 0,
+                "invalid_count": 0,
+            },
+        },
+    )
     run_ids = migration_run_ids()
     pid = 765432
     argv = [
@@ -333,6 +386,20 @@ def write_migration_receipt(path: Path) -> dict[str, object]:
         "remote_root": autorun.REMOTE_ROOT,
         "migration_generation": 2,
         **boundaries(),
+        "claim_boundary": (
+            "execution migration only; no binding, affinity, experimental blocking, "
+            "Formal Gold, or training-label claim"
+        ),
+        "migration_preregistration": {
+            "path": preregistration.relative_to(path.parent).as_posix(),
+            "sha256": autorun.sha256_file(preregistration),
+        },
+        "predecessor_autorun_state": {
+            "path": predecessor.relative_to(path.parent).as_posix(),
+            "sha256": autorun.sha256_file(predecessor),
+            "schema_version": "pvrig_v1_3_production_autorun_state_v1",
+            "status": autorun.WAITING,
+        },
         "single_writer_handoff": {
             "old_controller_stopped": True,
             "old_children_zero_after_sigstop": True,
@@ -374,6 +441,47 @@ def write_migration_receipt(path: Path) -> dict[str, object]:
             "argv_bytes_sha256": autorun.sha256_bytes(argv_bytes),
             "cwd": autorun.REMOTE_ROOT,
             "executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+        },
+        "source_controller": {
+            "host": "node1",
+            "boot_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+            "pid": autorun.FROZEN_CONTROLLER_PID,
+            "pid_file_sha256": autorun.FROZEN_CONTROLLER_PID_SHA256,
+            "start_ticks": autorun.FROZEN_CONTROLLER_START_TICKS,
+            "argv": list(autorun.legacy_controller_contract("node1").argv),
+            "cwd": autorun.REMOTE_ROOT,
+            "executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+            "retired": True,
+        },
+        "source_probe": {
+            "host": "node1",
+            "boot_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+            "active_controller_count": 0,
+        },
+        "target_probe": {
+            "host": "node23",
+            "boot_id": "12345678-1234-1234-1234-123456789abc",
+            "active_controller_count": 1,
+        },
+        "shared_handoff_phase_artifacts": {
+            "phase_old_frozen.json": {
+                "sha256": autorun.FROZEN_MIGRATION_PHASE_ARTIFACTS[
+                    "phase_old_frozen.json"
+                ],
+                "status": "OLD_CONTROLLER_FROZEN_ZERO_CHILDREN",
+            },
+            "phase_old_retired.json": {
+                "sha256": autorun.FROZEN_MIGRATION_PHASE_ARTIFACTS[
+                    "phase_old_retired.json"
+                ],
+                "status": "OLD_CONTROLLER_RETIRED_NO_ROLLBACK",
+            },
+            "phase_new_active.json": {
+                "sha256": autorun.FROZEN_MIGRATION_PHASE_ARTIFACTS[
+                    "phase_new_active.json"
+                ],
+                "status": "NEW_NODE23_CONTROLLER_ACTIVE_FILTERED_26",
+            },
         },
     }
     write_json(path, payload)
@@ -675,10 +783,111 @@ class AutorunTest(unittest.TestCase):
                     "remote_host_or_boot_identity_mismatch", observed["failures"]
                 )
 
+    def test_remote_probe_rejects_second_unregistered_controller(self) -> None:
+        remote, proc = create_remote_probe_fixture(self.root / "probe-duplicate")
+        source = proc / str(autorun.FROZEN_CONTROLLER_PID)
+        duplicate = proc / "4059963"
+        shutil.copytree(source, duplicate, symlinks=True)
+        observed = execute_remote_probe(remote, proc)
+        self.assertEqual(observed["status"], "FAILURE")
+        self.assertEqual(observed["matching_controller_count"], 2)
+        self.assertIn("4059963", ",".join(observed["failures"]))
+
+    def test_remote_probe_recomputes_frozen_completion_hashes(self) -> None:
+        remote, proc = create_remote_probe_fixture(self.root / "probe-completion")
+        with (remote / "manifests/new_run_manifest.csv").open(
+            newline="", encoding="utf-8-sig"
+        ) as handle:
+            row = next(csv.DictReader(handle))
+        completion = remote / row["completion_relpath"]
+        completion.parent.mkdir(parents=True)
+        write_json(
+            completion,
+            {
+                "protocol_id": autorun.PROTOCOL_ID,
+                "run_id": row["run_id"],
+                "config_sha256": row["config_sha256"],
+                "status": autorun.REMOTE_PASS_STATUS,
+                "exit_code": 0,
+            },
+        )
+        expected = {
+            completion.relative_to(remote).as_posix(): autorun.sha256_file(completion)
+        }
+        base = autorun.legacy_controller_contract(os.uname().nodename)
+        argv = list(base.argv)
+        argv[argv.index("--root") + 1] = remote.resolve().as_posix()
+        contract = replace(base, argv=tuple(argv), source="migration-test")
+        with mock.patch.object(
+            autorun, "FROZEN_PRE_MIGRATION_COMPLETIONS", expected
+        ):
+            valid = execute_remote_probe(remote, proc, contract)
+            self.assertEqual(valid["status"], "WAITING")
+            self.assertTrue(valid["frozen_completion_hashes_valid"])
+            rewritten = json.loads(completion.read_text(encoding="utf-8"))
+            rewritten["rewritten_without_semantic_change"] = True
+            write_json(completion, rewritten)
+            invalid = execute_remote_probe(remote, proc, contract)
+        self.assertEqual(invalid["status"], "FAILURE")
+        self.assertIn(
+            "frozen_completion_receipt_hash_mismatch", invalid["failures"]
+        )
+
+    def test_retired_source_guard_rejects_restarted_controller(self) -> None:
+        proc = self.root / "retired-proc"
+        proc.mkdir()
+        contract = replace(
+            autorun.legacy_controller_contract(os.uname().nodename),
+            retired_host=os.uname().nodename,
+            retired_boot_id=Path(
+                "/proc/sys/kernel/random/boot_id"
+            ).read_text(encoding="ascii").strip(),
+        )
+
+        def execute() -> autorun.CommandResult:
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    autorun.retired_source_probe_script(contract),
+                    str(proc),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            return autorun.CommandResult(
+                completed.returncode, completed.stdout, completed.stderr
+            )
+
+        self.assertEqual(
+            autorun.validate_retired_source_result(execute(), contract)["status"],
+            "PASS_RETIRED_SOURCE_ZERO_CONTROLLERS",
+        )
+        fake = proc / "12345"
+        fake.mkdir()
+        argv = list(contract.argv)
+        (fake / "cmdline").write_bytes(
+            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+        )
+        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
+            autorun.validate_retired_source_result(execute(), contract)
+
     def test_migration_receipt_binds_exact_node23_remaining_run_controller(self) -> None:
         receipt = self.root / "migration.json"
-        write_migration_receipt(receipt)
-        contract = autorun.load_controller_contract(receipt, "node23")
+        payload = write_migration_receipt(receipt)
+        with mock.patch.object(
+            autorun,
+            "FROZEN_NODE23_MIGRATION_RECEIPT_SHA256",
+            autorun.sha256_file(receipt),
+        ), mock.patch.object(
+            autorun,
+            "FROZEN_NODE23_MIGRATION_PREREGISTRATION_SHA256",
+            payload["migration_preregistration"]["sha256"],
+        ):
+            contract = autorun.load_controller_contract(
+                receipt, "node23", self.root
+            )
         self.assertEqual(contract.host, "node23")
         self.assertEqual(contract.argv.count("--run-id"), 26)
         self.assertEqual(
@@ -701,6 +910,16 @@ class AutorunTest(unittest.TestCase):
             "unfiltered": lambda payload: payload["target_controller"].update(
                 argv=payload["target_controller"]["argv"][:12]
             ),
+            "missing_preregistration": lambda payload: payload.pop(
+                "migration_preregistration"
+            ),
+            "missing_predecessor": lambda payload: payload.pop(
+                "predecessor_autorun_state"
+            ),
+            "missing_source_probe": lambda payload: payload.pop("source_probe"),
+            "missing_phase_artifacts": lambda payload: payload.pop(
+                "shared_handoff_phase_artifacts"
+            ),
         }
         for name, mutation in mutations.items():
             with self.subTest(name=name):
@@ -708,8 +927,24 @@ class AutorunTest(unittest.TestCase):
                 payload = write_migration_receipt(receipt)
                 mutation(payload)
                 write_json(receipt, payload)
-                with self.assertRaises(autorun.AutorunError):
-                    autorun.load_controller_contract(receipt, "node23")
+                with mock.patch.object(
+                    autorun,
+                    "FROZEN_NODE23_MIGRATION_RECEIPT_SHA256",
+                    autorun.sha256_file(receipt),
+                ), mock.patch.object(
+                    autorun,
+                    "FROZEN_NODE23_MIGRATION_PREREGISTRATION_SHA256",
+                    (
+                        payload.get("migration_preregistration", {}).get("sha256")
+                        or autorun.sha256_file(
+                            self.root / "evidence/preregistration.json"
+                        )
+                    ),
+                ):
+                    with self.assertRaises(autorun.AutorunError):
+                        autorun.load_controller_contract(
+                            receipt, "node23", self.root
+                        )
 
     def test_migration_receipt_hash_is_part_of_state_resume_contract(self) -> None:
         receipt = self.root / "migration-state.json"
@@ -718,6 +953,7 @@ class AutorunTest(unittest.TestCase):
         runner = FakeRunner(
             self.layout,
             [
+                retired_source_snapshot(),
                 snapshot(
                     "WAITING",
                     completion=4,
@@ -730,11 +966,22 @@ class AutorunTest(unittest.TestCase):
                 )
             ],
         )
-        self.assertEqual(autorun.Autorun(config, runner=runner).run(), autorun.WAITING)
-        payload["operator_note"] = "byte drift"
-        write_json(receipt, payload)
-        with self.assertRaisesRegex(autorun.AutorunError, "state contract mismatch"):
-            autorun.Autorun(config, runner=runner)
+        receipt_sha = autorun.sha256_file(receipt)
+        prereg_sha = payload["migration_preregistration"]["sha256"]
+        with mock.patch.object(
+            autorun, "FROZEN_NODE23_MIGRATION_RECEIPT_SHA256", receipt_sha
+        ), mock.patch.object(
+            autorun,
+            "FROZEN_NODE23_MIGRATION_PREREGISTRATION_SHA256",
+            prereg_sha,
+        ):
+            self.assertEqual(
+                autorun.Autorun(config, runner=runner).run(), autorun.WAITING
+            )
+            payload["operator_note"] = "byte drift"
+            write_json(receipt, payload)
+            with self.assertRaisesRegex(autorun.AutorunError, "receipt SHA256"):
+                autorun.Autorun(config, runner=runner)
 
     def test_remote_probe_rejects_manifest_hash_duplicates_and_unsafe_paths(self) -> None:
         def rewrite(remote: Path, mutation) -> None:
@@ -1014,6 +1261,27 @@ class AutorunTest(unittest.TestCase):
         (release / "internal-link").symlink_to(autorun.SELECTOR_CSV)
         with self.assertRaisesRegex(autorun.AutorunError, "internal symlinks"):
             autorun.release_inventory(self.layout.selector, autorun.SELECTOR_AUDIT)
+
+    def test_selector_validator_rejects_p2_boundary_and_semantic_drift(self) -> None:
+        for field, value in (
+            ("p2_training_ready", True),
+            ("selection_backfill", True),
+            ("remote_local_hash_chain_equal", False),
+        ):
+            with self.subTest(field=field):
+                root = self.root / f"selector-{field}"
+                layout = autorun.Layout(root)
+                layout.src.mkdir(parents=True)
+                (layout.src / autorun.SELECTOR_NAME).write_text(
+                    "# selector fixture\n", encoding="utf-8"
+                )
+                FixturePublisher(layout).selector()
+                audit_path = layout.selector / "current" / autorun.SELECTOR_AUDIT
+                audit = json.loads(audit_path.read_text(encoding="utf-8"))
+                audit[field] = value
+                write_json(audit_path, audit)
+                with self.assertRaises(autorun.AutorunError):
+                    autorun.validate_selector(layout.selector / "current")
 
     def test_development_gate_fail_is_valid_terminal_stop(self) -> None:
         runner = FakeRunner(
