@@ -453,6 +453,7 @@ data/experiments/phase2_5080_v1/audits/phase2_v3_preregistration.json
 data/experiments/phase2_5080_v1/audits/phase2_v3_test_spec.json
 data/experiments/phase2_5080_v1/audits/phase2_v4_c_preregistration.json
 data/experiments/phase2_5080_v1/audits/phase2_v4_c_test_spec.json
+data/experiments/phase2_5080_v1/audits/phase2_v4_d_preregistration.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_balanced_boost_plan_20260713.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_recovery_plan_20260713.json
 data/experiments/phase2_5080_v1/audits/pvrig_formal_generation_run_task_sha256_20260713.tsv
@@ -621,6 +622,7 @@ data/experiments/phase2_5080_v1/src/fuse_pvrig_v3_structure_evidence.py
 data/experiments/phase2_5080_v1/src/make_rfantibody_hlt_framework.py
 data/experiments/phase2_5080_v1/src/monitor_phase2_v3_p1_after_teacher.sh
 data/experiments/phase2_5080_v1/src/monitor_phase2_v4_c_dual128_remote.sh
+data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_after_v4_c_remote.sh
 data/experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher500_docking.sh
 data/experiments/phase2_5080_v1/src/monitor_pvrig_formal_teacher_pipeline.sh
 data/experiments/phase2_5080_v1/src/phase2_v2_5_contracts.py

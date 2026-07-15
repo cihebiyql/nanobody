@@ -1,0 +1,244 @@
+{
+  "schema_version": "phase2_v4_d_fullqc290_preregistration_v1",
+  "status": "FROZEN_BEFORE_NEW_INDEPENDENT_DUAL_DOCKING_LABELS",
+  "frozen_at": "2026-07-15T18:52:06+08:00",
+  "objective": "Train and prospectively test a fixed-PVRIG sequence-to-independent-dual-docking continuous geometry surrogate on the same design domain as the 7087-candidate competition library.",
+  "claim_boundary": "V4-D predicts computational 8X6B/9E6Y docking geometry and uncertainty only. It is not a PVRIG binding probability, affinity or Kd predictor, competition result, experimental blocker label, Docking Gold release, or final submission authority.",
+  "version_boundaries": {
+    "v1_3": {
+      "status_must_remain": "FAIL_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD_NOT_FROZEN",
+      "p2_training_ready_must_remain": false,
+      "forbidden_actions": [
+        "retrospective threshold repair",
+        "anchor deletion after seeing results",
+        "sensitivity-grid cherry-picking",
+        "using V1.3 G1-G5 as V3-P2 training truth"
+      ]
+    },
+    "v3_p2_biological_model": {
+      "status": "BLOCKED_PENDING_NEW_BIOLOGICAL_FAMILIES",
+      "minimum_future_requirements": [
+        "at least 8 independent blocker families",
+        "at least 2 biological anchors per family",
+        "at least 3 families unseen by the previous development method",
+        "prospectively frozen family-level experimental holdout",
+        "binding and blocking evidence stored separately from docking geometry"
+      ]
+    },
+    "v4_c_dual128": {
+      "role": "open development and protocol-transfer evidence",
+      "known_limitation": "zero of 7087 candidates passed the frozen dual128 sequence-support gate",
+      "may_not_authorize_broad_7087_exploitation": true
+    },
+    "v4_d_fullqc290": {
+      "role": "prospective computational geometry surrogate in the competition design domain",
+      "biological_claim_allowed": false
+    }
+  },
+  "frozen_inputs": {
+    "full_qc_complete290_source": {
+      "path": "experiments/phase2_5080_v1/runs/pvrig_teacher_formal_v1/teacher500_full_qc_node23_accel_v1/teacher500_full_qc_complete290_lineage.csv",
+      "sha256": "316a1732f2f123faf12f5a6eb0e4444fe1ce0cb5e34cf3b4f40641867acb5895",
+      "candidate_count": 290,
+      "selection_time_policy": "Full-QC hard-pass and complete AbNatiV before any V4-D independent dual-docking result exists"
+    },
+    "split_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+      "counts": {
+        "OPEN_TRAIN": 226,
+        "OPEN_DEVELOPMENT": 32,
+        "PROSPECTIVE_COMPUTATIONAL_TEST": 32
+      },
+      "group_unit": "parent_framework_cluster",
+      "parent_cluster_counts": {
+        "OPEN_TRAIN": 20,
+        "OPEN_DEVELOPMENT": 3,
+        "PROSPECTIVE_COMPUTATIONAL_TEST": 3
+      },
+      "parent_cluster_overlap": 0
+    },
+    "split_audit": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_audit.json",
+      "sha256": "e0fa1b2558e8dd1f6c934f709822706beb26ae69e4859fad3bdc4d5abaa3df37",
+      "dual128_candidate_id_overlap": 0,
+      "dual128_sequence_overlap": 0
+    },
+    "generic_prior_dual128_evidence": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_c/dual128_generic_prior.csv",
+      "sha256": "82c2b20cc14fa5bfd7d090dc1690abd96ee5d02b8d96ac6e9f755e879e84a09f",
+      "policy": "weak generic binding prior baseline only; not a blocker or affinity label"
+    }
+  },
+  "remote_campaign": {
+    "remote_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "protocol_id": "pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "protocol_spec_sha256": "89331894ee74274b82fddae4ecabc413351a6b68721f2a096cc0fca6415c78e8",
+    "protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+    "protocol_core_lock_file_sha256": "767117dc2c506cfdfc83fce8e12931514d268941348d69a9abbda5a6500bdd24",
+    "protocol_lock_sha256": "f9db66af53499ce258b42ee312e732c03fec8ec9fe5eff731c1975c6e03d2fbf",
+    "protocol_lock_file_sha256": "11a392c4f0ae1b9eea1c563caf409798532eb6a73f3dc6b6cb5a4e8539ff9ab3",
+    "job_manifest_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "candidate_manifest_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "candidate_monomer_manifest_sha256": "ebc07ccb7ba36dee84714fbf27911e82b560d1cc184a8d45e054d8577f1d70f0",
+    "evaluator_stability_gate_sha256": "1370e47f5826528ec8e39cf1ca9e2407e8da3583e5926b2fa5ad726e78df62f4",
+    "hotspot_source_sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+    "hotspot_normalized_sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44",
+    "prelaunch_protocol_validation_sha256": "8c842736350182d8765214f34885bf53ca0ae51d49f72b14ebdc735cce2e1954",
+    "jobs": {
+      "candidates": 1740,
+      "protocol_regression_controls": 282,
+      "total": 2022,
+      "matrix": "337 entities x 2 receptors x 3 seeds"
+    },
+    "controls_policy": "The 47 controls are repeated protocol-regression measurements only. They are never candidate training rows and never counted as new biological anchors.",
+    "resource_policy": "After the existing V4-C campaign reaches terminal and its evaluator is freshly aggregated, run on node23 with at most 12 concurrent HADDOCK jobs x 4 cores, targeting no more than 75 percent of 64 logical CPUs. Use node-local ext4 scratch and shared NFS only for atomic publication."
+  },
+  "docking_protocol": {
+    "receptors": [
+      "8X6B",
+      "9E6Y"
+    ],
+    "independent_docking_per_receptor": true,
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "top_models_per_job": 8,
+    "atom_policy": "standard-amino-acid ATOM records only",
+    "hetatm_zero_gate": true,
+    "hotspot_partition": {
+      "full": 23,
+      "air_anchor": 12,
+      "scoring_holdout": 11
+    },
+    "native_cross_matrix_required": true,
+    "minimum_successful_seeds_per_candidate_receptor": 2,
+    "minimum_complete_native_cross_model_pairs_per_successful_job": 4,
+    "missing_seed_policy": "never impute a failed seed as success; report missing-seed fraction and use only observed successful seeds"
+  },
+  "continuous_teacher_definition": {
+    "pose_quality_gates": [
+      "finite HADDOCK score",
+      "finite AIR energy",
+      "native receptor overlay RMSD at most 1.0 A",
+      "complete native and cross reference pair"
+    ],
+    "base_native_pose_utility": "0.15*clip(full_hotspot/23,0,1)+0.25*clip(holdout_hotspot/11,0,1)+0.25*soft(total_occlusion,500)+0.20*soft(CDR3_occlusion,100)+0.15*soft(CDR3_fraction,0.15)",
+    "soft_function": "soft(x,t)=x/(x+t)",
+    "pvrig_clash_reliability": "1/(1+VHH_PVRIG_clash_residue_pairs/5)",
+    "native_pose_utility": "base_native_pose_utility*pvrig_clash_reliability",
+    "pvrl2_virtual_clash_policy": "report separately and do not penalize because PVRL2 overlap is part of the obstruction endpoint",
+    "pose_rank_weight": "normalized 1/log2(rank+1) within each job",
+    "job_score_raw": "rank-weighted mean native_pose_utility",
+    "model_count_reliability": "0.5+0.5*min(complete_model_count/8,1)",
+    "agreement_reliability": "0.5+0.25*native_cross_support_agreement+0.25*model_pair_consensus",
+    "job_score": "job_score_raw*model_count_reliability*agreement_reliability",
+    "receptor_score": "median job_score over successful seeds",
+    "candidate_targets": [
+      "R_8X6B",
+      "R_9E6Y",
+      "R_dual_mean",
+      "R_dual_min",
+      "R_dual_gap",
+      "seed_standard_deviation_by_receptor",
+      "missing_seed_fraction",
+      "native_cross_support_agreement",
+      "model_pair_consensus",
+      "continuous hotspot, occlusion, CDR contribution, clash, and pose-support summaries"
+    ],
+    "primary_model_target": "R_dual_min",
+    "legacy_tier_policy": "A/B/C/E and G1-G5 are diagnostic explanation only and never the primary or sole training label",
+    "soft_tier_policy": "Bootstrap tier distributions may be reported as measurement-uncertainty diagnostics but are not biological probabilities and are not the V4-D primary target"
+  },
+  "measurement_uncertainty": {
+    "levels": [
+      "pose-level variability",
+      "seed/receptor measurement variability",
+      "candidate-level continuous computational geometry",
+      "separate experimental binding/blocking truth"
+    ],
+    "bootstrap": {
+      "replicates": 10000,
+      "seed": 20260715,
+      "unit": "resample successful seed-level job scores within receptor, then recompute receptor medians and candidate dual summaries",
+      "minimum_observed_seeds": 2
+    }
+  },
+  "teacher_release_gate": {
+    "all_jobs_terminal_required": true,
+    "fresh_aggregate_required": true,
+    "evaluator_status_required": "PASS",
+    "evaluator_unlockable_required": true,
+    "all_evaluator_gates_pass_required": true,
+    "evidence_mode_required": "production_pose_backed",
+    "job_result_pose_protocol_candidate_monomer_split_hash_binding_required": true,
+    "open_release": "Build labels only for OPEN_TRAIN and OPEN_DEVELOPMENT after physical candidate-ID filtering before opening raw job_result.json files.",
+    "test_release": "Do not open or compute PROSPECTIVE_COMPUTATIONAL_TEST labels until model configuration, feature schema, checkpoint hashes, open-development summary, and frozen test predictions are hash-bound to a one-shot unseal receipt."
+  },
+  "model_development_contract": {
+    "development_rows": 258,
+    "development_parent_clusters": 23,
+    "architecture_selection_uses": "OPEN_TRAIN for fitting and OPEN_DEVELOPMENT for all architecture, feature, hyperparameter, ensemble, and uncertainty choices",
+    "required_baselines": [
+      "constant",
+      "parent/scaffold-only",
+      "design-metadata shortcut",
+      "CDR3-only ridge",
+      "full-sequence handcrafted ridge",
+      "frozen generic-binding-prior only"
+    ],
+    "candidate_models": [
+      "frozen sequence embeddings plus ridge",
+      "frozen sequence embeddings plus two-layer ordinal/regression MLP",
+      "optional frozen residue-contact features only if the extractor and feature schema are frozen before test unseal"
+    ],
+    "language_model_policy": "frozen during V4-D",
+    "single_primary_development_metric": "Spearman correlation with R_dual_min",
+    "minimum_open_delta_over_strongest_shortcut": 0.1,
+    "secondary_metrics": [
+      "NDCG on R_dual_min",
+      "top-quartile recall at 25 percent docking budget",
+      "MAE",
+      "uncertainty selective risk"
+    ],
+    "uncertainty_gate": "Removing the highest-uncertainty 25 percent must reduce development MAE by at least 10 percent, and highest-uncertainty-quartile MAE must be at least 1.25 times lowest-quartile MAE."
+  },
+  "prospective_test_contract": {
+    "rows": 32,
+    "parent_clusters": [
+      "C0299",
+      "C0311",
+      "C0474"
+    ],
+    "status": "SEALED_COMPUTATIONAL_ENDPOINT_NOT_BIOLOGICAL_FORMAL_TEST",
+    "one_shot": true,
+    "primary_metric": "Spearman correlation with R_dual_min",
+    "primary_comparator": "strongest frozen shortcut baseline selected without test labels",
+    "minimum_overall_delta": 0.05,
+    "cluster_consistency": "At least 2 of 3 held-out parent clusters must have non-negative model-minus-comparator Spearman delta.",
+    "failure_rule": "A failed or equivocal test closes V4-D. Test results may not trigger threshold, architecture, feature, or split changes under the same version.",
+    "required_unseal_bindings": [
+      "preregistration hash",
+      "split manifest and audit hashes",
+      "teacher builder and feature schema hashes",
+      "model config and checkpoint hashes",
+      "open-development results hash",
+      "frozen 32-row prediction hash",
+      "one-shot evaluator code hash"
+    ]
+  },
+  "deployment_contract": {
+    "support_audit_required_before_7087_scoring": true,
+    "unsupported_candidates": "may enter uncertainty/diversity exploration only and may not enter surrogate exploitation",
+    "after_prospective_computational_test_pass": {
+      "maximum_in_support_surrogate_exploitation": 0.5,
+      "uncertainty_or_model_disagreement": 0.2,
+      "qc_generic_prior_diversity_and_real_docking": 0.3
+    },
+    "final_submission_authority": "fresh real docking, Full QC/developability, weak generic binding prior, manual pose review, and portfolio diversity",
+    "competition_deadline": "2026-07-20T18:00:00+08:00",
+    "deadline_fallback": "Use v3_full only as a weak prior together with Full QC, uncertainty, diversity, and real docking. V4-D research continues without blocking Top50 or Top10."
+  }
+}
