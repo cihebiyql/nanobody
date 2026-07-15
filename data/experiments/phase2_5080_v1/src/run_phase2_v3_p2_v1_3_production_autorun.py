@@ -1130,6 +1130,43 @@ handoff_phase_hashes_valid = (
 
 matching_controller_pids = []
 root_text = root.resolve().as_posix()
+
+def targets_root(argv, proc, expected_root):
+    saw_root_option = False
+    for index, argument in enumerate(argv[2:], start=2):
+        raw_root = None
+        if argument == "--root":
+            saw_root_option = True
+            if index + 1 >= len(argv):
+                return True
+            raw_root = argv[index + 1]
+        elif argument.startswith("--root="):
+            saw_root_option = True
+            raw_root = argument.split("=", 1)[1]
+        if raw_root is None:
+            continue
+        if not raw_root:
+            return True
+        try:
+            candidate = pathlib.Path(raw_root)
+            if not candidate.is_absolute():
+                candidate = pathlib.Path(os.readlink(proc / "cwd")) / candidate
+            candidate_root = candidate.resolve(strict=False).as_posix()
+        except (OSError, RuntimeError):
+            return True
+        if candidate_root == expected_root:
+            return True
+    if saw_root_option:
+        return False
+    try:
+        script_path = pathlib.Path(argv[1])
+        if not script_path.is_absolute():
+            script_path = pathlib.Path(os.readlink(proc / "cwd")) / script_path
+        default_root = script_path.resolve(strict=False).parents[1].as_posix()
+    except (IndexError, OSError, RuntimeError):
+        return True
+    return default_root == expected_root
+
 for proc in proc_root.iterdir():
     if not proc.name.isdigit():
         continue
@@ -1140,8 +1177,7 @@ for proc in proc_root.iterdir():
             len(argv) >= 4
             and pathlib.PurePosixPath(argv[1]).name
             == "run_v1_3_completion15.py"
-            and "--root" in argv
-            and argv[argv.index("--root") + 1] == root_text
+            and targets_root(argv, proc, root_text)
         ):
             matching_controller_pids.append(int(proc.name))
     except (OSError, UnicodeDecodeError, ValueError):
@@ -1386,6 +1422,44 @@ try:
 except OSError:
     observed_boot_id = ""
 matching = []
+
+def targets_root(argv, proc, expected_root):
+    saw_root_option = False
+    for index, argument in enumerate(argv[2:], start=2):
+        raw_root = None
+        if argument == "--root":
+            saw_root_option = True
+            if index + 1 >= len(argv):
+                return True
+            raw_root = argv[index + 1]
+        elif argument.startswith("--root="):
+            saw_root_option = True
+            raw_root = argument.split("=", 1)[1]
+        if raw_root is None:
+            continue
+        if not raw_root:
+            return True
+        try:
+            candidate = pathlib.Path(raw_root)
+            if not candidate.is_absolute():
+                candidate = pathlib.Path(os.readlink(proc / "cwd")) / candidate
+            candidate_root = candidate.resolve(strict=False).as_posix()
+        except (OSError, RuntimeError):
+            return True
+        if candidate_root == expected_root:
+            return True
+    if saw_root_option:
+        return False
+    try:
+        script_path = pathlib.Path(argv[1])
+        if not script_path.is_absolute():
+            script_path = pathlib.Path(os.readlink(proc / "cwd")) / script_path
+        default_root = script_path.resolve(strict=False).parents[1].as_posix()
+    except (IndexError, OSError, RuntimeError):
+        return True
+    return default_root == expected_root
+
+remote_root = pathlib.Path(remote_root).resolve(strict=False).as_posix()
 for proc in proc_root.iterdir():
     if not proc.name.isdigit():
         continue
@@ -1396,8 +1470,7 @@ for proc in proc_root.iterdir():
             len(argv) >= 4
             and pathlib.PurePosixPath(argv[1]).name
             == "run_v1_3_completion15.py"
-            and "--root" in argv
-            and argv[argv.index("--root") + 1] == remote_root
+            and targets_root(argv, proc, remote_root)
         ):
             matching.append(int(proc.name))
     except (OSError, UnicodeDecodeError, ValueError):

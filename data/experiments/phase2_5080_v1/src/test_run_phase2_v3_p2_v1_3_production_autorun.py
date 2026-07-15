@@ -814,6 +814,37 @@ class AutorunTest(unittest.TestCase):
         self.assertEqual(observed["matching_controller_count"], 2)
         self.assertIn("4059963", ",".join(observed["failures"]))
 
+    def test_remote_probe_rejects_root_equivalents_and_default_duplicate(self) -> None:
+        for variant in ("absolute_alias", "relative", "default"):
+            with self.subTest(variant=variant):
+                remote, proc = create_remote_probe_fixture(
+                    self.root / f"probe-root-{variant}"
+                )
+                source = proc / str(autorun.FROZEN_CONTROLLER_PID)
+                duplicate = proc / "4059963"
+                shutil.copytree(source, duplicate, symlinks=True)
+                argv = [
+                    value.decode("utf-8")
+                    for value in (duplicate / "cmdline").read_bytes().split(b"\0")
+                    if value
+                ]
+                root_index = argv.index("--root")
+                if variant == "default":
+                    del argv[root_index : root_index + 2]
+                elif variant == "absolute_alias":
+                    root_value = (remote / ".." / remote.name).as_posix()
+                    argv[root_index : root_index + 2] = [f"--root={root_value}"]
+                else:
+                    root_value = "."
+                    argv[root_index : root_index + 2] = [f"--root={root_value}"]
+                (duplicate / "cmdline").write_bytes(
+                    b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+                )
+                observed = execute_remote_probe(remote, proc)
+                self.assertEqual(observed["status"], "FAILURE")
+                self.assertEqual(observed["matching_controller_count"], 2)
+                self.assertIn("4059963", ",".join(observed["failures"]))
+
     def test_remote_probe_recomputes_frozen_completion_hashes(self) -> None:
         remote, proc = create_remote_probe_fixture(self.root / "probe-completion")
         with (remote / "manifests/new_run_manifest.csv").open(
@@ -897,8 +928,38 @@ class AutorunTest(unittest.TestCase):
         shutil.rmtree(fake)
         absolute = proc / "12346"
         absolute.mkdir()
+        argv = list(contract.argv)
         argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
         (absolute / "cmdline").write_bytes(
+            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+        )
+        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
+            autorun.validate_retired_source_result(execute(), contract)
+
+        shutil.rmtree(absolute)
+        root_equals = proc / "12347"
+        root_equals.mkdir()
+        argv = list(contract.argv)
+        argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
+        root_index = argv.index("--root")
+        root_alias = (
+            Path(autorun.REMOTE_ROOT) / ".." / Path(autorun.REMOTE_ROOT).name
+        ).as_posix()
+        argv[root_index : root_index + 2] = [f"--root={root_alias}"]
+        (root_equals / "cmdline").write_bytes(
+            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+        )
+        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
+            autorun.validate_retired_source_result(execute(), contract)
+
+        shutil.rmtree(root_equals)
+        default_root = proc / "12348"
+        default_root.mkdir()
+        argv = list(contract.argv)
+        argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
+        root_index = argv.index("--root")
+        del argv[root_index : root_index + 2]
+        (default_root / "cmdline").write_bytes(
             b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
         )
         with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
