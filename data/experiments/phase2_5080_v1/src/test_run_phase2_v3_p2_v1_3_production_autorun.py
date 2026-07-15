@@ -815,7 +815,9 @@ class AutorunTest(unittest.TestCase):
         self.assertIn("4059963", ",".join(observed["failures"]))
 
     def test_remote_probe_rejects_root_equivalents_and_default_duplicate(self) -> None:
-        for variant in ("absolute_alias", "relative", "default"):
+        for variant in (
+            "absolute_alias", "relative", "default", "minimal", "python_u"
+        ):
             with self.subTest(variant=variant):
                 remote, proc = create_remote_probe_fixture(
                     self.root / f"probe-root-{variant}"
@@ -828,13 +830,17 @@ class AutorunTest(unittest.TestCase):
                     for value in (duplicate / "cmdline").read_bytes().split(b"\0")
                     if value
                 ]
+                if variant == "python_u":
+                    argv.insert(1, "-u")
                 root_index = argv.index("--root")
-                if variant == "default":
+                if variant == "minimal":
+                    argv = argv[:2]
+                elif variant == "default":
                     del argv[root_index : root_index + 2]
                 elif variant == "absolute_alias":
                     root_value = (remote / ".." / remote.name).as_posix()
                     argv[root_index : root_index + 2] = [f"--root={root_value}"]
-                else:
+                elif variant == "relative":
                     root_value = "."
                     argv[root_index : root_index + 2] = [f"--root={root_value}"]
                 (duplicate / "cmdline").write_bytes(
@@ -925,6 +931,17 @@ class AutorunTest(unittest.TestCase):
         with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
             autorun.validate_retired_source_result(execute(), contract)
 
+        shutil.rmtree(default_root)
+        python_u = proc / "12349"
+        python_u.mkdir()
+        argv = list(contract.argv)
+        argv.insert(1, "-u")
+        (python_u / "cmdline").write_bytes(
+            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+        )
+        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
+            autorun.validate_retired_source_result(execute(), contract)
+
         shutil.rmtree(fake)
         absolute = proc / "12346"
         absolute.mkdir()
@@ -957,8 +974,7 @@ class AutorunTest(unittest.TestCase):
         default_root.mkdir()
         argv = list(contract.argv)
         argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
-        root_index = argv.index("--root")
-        del argv[root_index : root_index + 2]
+        argv = argv[:2]
         (default_root / "cmdline").write_bytes(
             b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
         )

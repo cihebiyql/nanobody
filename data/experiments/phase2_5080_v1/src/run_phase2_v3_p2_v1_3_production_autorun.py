@@ -1131,9 +1131,11 @@ handoff_phase_hashes_valid = (
 matching_controller_pids = []
 root_text = root.resolve().as_posix()
 
-def targets_root(argv, proc, expected_root):
+def targets_root(argv, proc, expected_root, script_index):
     saw_root_option = False
-    for index, argument in enumerate(argv[2:], start=2):
+    for index, argument in enumerate(
+        argv[script_index + 1:], start=script_index + 1
+    ):
         raw_root = None
         if argument == "--root":
             saw_root_option = True
@@ -1159,7 +1161,7 @@ def targets_root(argv, proc, expected_root):
     if saw_root_option:
         return False
     try:
-        script_path = pathlib.Path(argv[1])
+        script_path = pathlib.Path(argv[script_index])
         if not script_path.is_absolute():
             script_path = pathlib.Path(os.readlink(proc / "cwd")) / script_path
         default_root = script_path.resolve(strict=False).parents[1].as_posix()
@@ -1173,11 +1175,13 @@ for proc in proc_root.iterdir():
     try:
         argv_bytes = (proc / "cmdline").read_bytes()
         argv = [part.decode("utf-8") for part in argv_bytes.split(b"\0") if part]
-        if (
-            len(argv) >= 4
-            and pathlib.PurePosixPath(argv[1]).name
-            == "run_v1_3_completion15.py"
-            and targets_root(argv, proc, root_text)
+        script_indexes = [
+            index for index, value in enumerate(argv[1:], start=1)
+            if pathlib.PurePosixPath(value).name == "run_v1_3_completion15.py"
+        ]
+        if script_indexes and any(
+            targets_root(argv, proc, root_text, index)
+            for index in script_indexes
         ):
             matching_controller_pids.append(int(proc.name))
     except (OSError, UnicodeDecodeError, ValueError):
@@ -1423,9 +1427,11 @@ except OSError:
     observed_boot_id = ""
 matching = []
 
-def targets_root(argv, proc, expected_root):
+def targets_root(argv, proc, expected_root, script_index):
     saw_root_option = False
-    for index, argument in enumerate(argv[2:], start=2):
+    for index, argument in enumerate(
+        argv[script_index + 1:], start=script_index + 1
+    ):
         raw_root = None
         if argument == "--root":
             saw_root_option = True
@@ -1451,7 +1457,7 @@ def targets_root(argv, proc, expected_root):
     if saw_root_option:
         return False
     try:
-        script_path = pathlib.Path(argv[1])
+        script_path = pathlib.Path(argv[script_index])
         if not script_path.is_absolute():
             script_path = pathlib.Path(os.readlink(proc / "cwd")) / script_path
         default_root = script_path.resolve(strict=False).parents[1].as_posix()
@@ -1466,11 +1472,13 @@ for proc in proc_root.iterdir():
     try:
         raw = (proc / "cmdline").read_bytes()
         argv = [part.decode("utf-8") for part in raw.split(b"\0") if part]
-        if (
-            len(argv) >= 4
-            and pathlib.PurePosixPath(argv[1]).name
-            == "run_v1_3_completion15.py"
-            and targets_root(argv, proc, remote_root)
+        script_indexes = [
+            index for index, value in enumerate(argv[1:], start=1)
+            if pathlib.PurePosixPath(value).name == "run_v1_3_completion15.py"
+        ]
+        if script_indexes and any(
+            targets_root(argv, proc, remote_root, index)
+            for index in script_indexes
         ):
             matching.append(int(proc.name))
     except (OSError, UnicodeDecodeError, ValueError):
