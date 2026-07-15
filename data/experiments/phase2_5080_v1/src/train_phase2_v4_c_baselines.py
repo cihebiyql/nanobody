@@ -344,9 +344,11 @@ def main(argv: list[str] | None = None) -> int:
     rng = np.random.default_rng(20260715)
     shuffled = y.copy()
     rng.shuffle(shuffled)
-    alpha, shuffled_prediction, shuffled_score = select_alpha(
-        rows, shuffled, "full_sequence", folds
+    alpha = float(results["full_sequence"]["alpha"])
+    shuffled_prediction = cross_validated_predictions(
+        rows, shuffled, "full_sequence", alpha, folds
     )
+    shuffled_score = metrics(y, shuffled_prediction)
     results["label_shuffle_null"] = {"alpha": alpha, "metrics": shuffled_score}
     for index, value in enumerate(shuffled_prediction):
         prediction_rows[index]["prediction_label_shuffle_null"] = round(float(value), 9)
