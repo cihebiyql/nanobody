@@ -1,8 +1,8 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-15 06:50 Asia/Shanghai`
-- 当前阶段：`FULL_QUEUE_NODE23_LOCAL_SCRATCH_VERIFIED_RUNNING_4_WAY`
+- 更新时间：`2026-07-15 07:59 Asia/Shanghai`
+- 当前阶段：`FULL_QUEUE_NODE23_LOCAL_SCRATCH_VERIFIED_RUNNING_8_WAY`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
 - node23 协议验证：`PASS`
@@ -15,8 +15,8 @@
 ## 冻结标识
 
 - `protocol_core_sha256`: `e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8`
-- `protocol_lock_sha256`: `74b4cd7c7567f3ee68b7123a69fab021641cbdb8d96d12401375285cf91755f3`
-- `PROTOCOL_LOCK.json` file SHA256: `ef803b1b242cbb55e2f787ed06c62939ef7fba1a8e734661bd950f2ec065e45f`
+- `protocol_lock_sha256`: `3bc9fc2860e21a7ef55abb3dce7a8cdd01a5b85cbf479b344fd6626c3fac18cd`
+- `PROTOCOL_LOCK.json` file SHA256: `cac62f8034054691589b97d408a314e6cee23f6a35b8e9f9231235892e37801a`
 - `docking_jobs.tsv` SHA256: `e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e`
 - `candidates_128.tsv` SHA256: `5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78`
 - `candidate_monomers_manifest.tsv` SHA256: `db29dcb9047c7e0514a359077f380d53fedd0127c879a939ab8ebad812c5c0df`
@@ -29,7 +29,7 @@
 - [x] 冻结128候选、47控制和全部175个单体 PDB；
 - [x] 生成 `175 x 2 x 3 = 1050` 唯一独立对接任务；
 - [x] 生成4任务 smoke 清单：HR-151与rank-1候选，各自8X6B/9E6Y、seed 917；
-- [x] 42/42 本地回归测试通过；
+- [x] 43/43 本地回归测试通过；
 - [x] 本地与 node1 `validate_protocol.py` 均为 `PASS`；
 - [x] 部署文件与本地 `PROTOCOL_LOCK.json` 文件 hash 一致；
 - [x] node1 后台 `smoke -> verify -> full` 编排器已启动。
@@ -43,18 +43,19 @@
 - [x] 迁移保留38个成功任务，node1旧PID已归档，共享控制锁已由node23接管。
 - [x] 识别出 node23 直接在共享 NFS 上运行 CNS 的目录操作瓶颈，并改为本地 scratch 计算后原子回写；
 - [x] 同任务本地 scratch 对照在4分47秒完成，首个正式4任务 scratch 批次4/4成功并自动补位。
+- [x] node23 并发从4路提升到8路，8个任务各使用4核，目标占用32/64逻辑CPU；
 
 ## 当前执行现场
 
-- 当前控制器主机：`node23`；全量 controller PID：`3340245`；
+- 当前控制器主机：`node23`；全量 controller PID：`3398551`；
 - node1 编排器 PID `4072777` 和 controller PID `4074688` 已停止，不存在双控制器；
 - smoke 结果：`4 SUCCESS / 0 FAIL`，selected models 数分别为 `10 / 10 / 10 / 9`；
 - smoke 已同时验证 HR-151 和 rank-1 候选的 8X6B、9E6Y 独立 HADDOCK run，以及每个 pose 的 native/cross 双参考评分；
-- `06:50` 全量快照：`54 SUCCESS / 4 RUNNING / 992 PENDING`；已有 `17/350` 个实体-构象达到至少2个成功 seed；
-- node23 迁移前 load1 约 `4.2`；本地 scratch 模式当前并发上限为4，运行根目录为 `/tmp/pvrig_v3_haddock`；
-- 当前38个成功任务中控制任务36个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
+- `07:59` 全量快照：`106 SUCCESS / 8 RUNNING / 936 PENDING`；已有 `34/350` 个实体-构象达到至少2个成功 seed；
+- node23 本地 scratch 模式当前并发上限为8，运行根目录为 `/tmp/pvrig_v3_haddock`；
+- 当前106个成功任务中控制任务104个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
 - 迁移证据：`status/controller_migration_node1_to_node23.json`；旧PID归档在 `status/migration_archive/`；
-- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有12个 scratch 正式任务完成，现有54个结果均保留。
+- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有64个 scratch 正式任务完成，现有106个结果均保留。
 
 ## node23 本地 scratch 修复
 
@@ -71,11 +72,14 @@
 
 启动器默认使用 `/tmp/pvrig_v3_haddock`，启动前检查目录可写并拒绝 NFS 文件系统；非法或带路径分隔符的 job ID 会在任何锁、归档或删除操作前被拒绝。scratch 清理失败只记录警告，不会把已经完整发布的 `SUCCESS` 回滚为 `FAILED`。
 
+8路模式下每个 HADDOCK job 固定4核，合计目标为32/64逻辑CPU。控制器继续按1-minute load自适应：`<40: 8路`、`40-48: 6路`、`48-56: 4路`、`56-62: 2路`、`>=62: 暂停补位`。实测8路稳定阶段 load1约32.6，整机CPU忙约50.4%、idle约49.6%、I/O wait为0。
+
 当前生产启动命令为：
 
 ```bash
 REMOTE_HOST=node23 \
 REMOTE_LOCAL_SCRATCH_ROOT=/tmp/pvrig_v3_haddock \
+REMOTE_MAX_PARALLEL=8 \
 scripts/launch_node1.sh full
 ```
 
