@@ -1,9 +1,9 @@
 {
-  "schema_version": "phase2_v4_c_preregistration_v1",
-  "status": "FROZEN_SPLIT_AND_METHOD_PENDING_DUAL128_TERMINAL_EVALUATOR_PASS",
-  "frozen_at": "2026-07-15T17:25:37+08:00",
-  "objective": "Build a fixed-PVRIG sequence-to-computational-dual-docking surrogate that allocates expensive docking budget across a larger candidate pool.",
-  "claim_boundary": "V4-C predicts computational dual-conformation docking geometry and uncertainty only. It is not a PVRIG binding probability, affinity/Kd predictor, competition assay result, experimental blocker label, or Docking Gold release.",
+  "schema_version": "phase2_v4_c_development_preregistration_v2",
+  "status": "FROZEN_DEVELOPMENT_ONLY_NOT_FORMAL",
+  "frozen_at": "2026-07-15T18:10:00+08:00",
+  "objective": "Develop a fixed-PVRIG sequence-to-computational-dual-docking surrogate for optional docking-budget allocation without upgrading computational geometry to biological truth.",
+  "claim_boundary": "V4-C predicts computational dual-conformation docking geometry and uncertainty only. It is not a PVRIG binding probability, affinity/Kd predictor, competition assay result, experimental blocker label, Docking Gold release, or formal biological model.",
   "version_boundaries": {
     "v1_3": {
       "status_must_remain": "FAIL_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD_NOT_FROZEN",
@@ -12,18 +12,18 @@
       "forbidden_use": "training labels, Docking Gold, or retrospective threshold repair"
     },
     "v3_p2_scientific": {
-      "status": "BLOCKED_PENDING_NEW_BIOLOGICAL_FAMILIES_AND_FORMAL_METHOD",
+      "status": "BLOCKED_PENDING_NEW_BIOLOGICAL_FAMILIES_AND_PROSPECTIVE_FORMAL_METHOD",
       "minimum_future_requirements": [
         "at least 8 independent blocker families",
         "at least 2 anchors per family",
         "at least 3 families unseen by the previous development method",
-        "frozen untouched family-level formal holdout",
+        "a new prospectively frozen family-level formal holdout",
         "experimental binding and blocking evidence kept separate from docking geometry"
       ]
     },
     "v4_c": {
-      "scope": "competition computational frontscreen research lane",
-      "may_proceed_before_v3_p2": true,
+      "scope": "competition computational development lane",
+      "current_release_is_formal": false,
       "may_not_inherit_v3_p2_or_docking_gold_claims": true
     }
   },
@@ -36,14 +36,14 @@
     },
     "dual128_split_manifest": {
       "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_c/dual128_split_manifest.tsv",
-      "sha256": "53198a1c16de239ba6f8d32dc29cc3add6569a5ef793b6327f347090cbc35c5e",
+      "sha256": "4660260cdf1f863281b12200aeee4b5d58b251ebd3774befae2eace9ca2465fe",
       "open_development": 96,
-      "untouched_test": 32,
+      "retrospective_grouped_challenge": 32,
       "group_unit": "near_cdr3_family_id"
     },
     "dual128_split_audit": {
       "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_c/dual128_split_audit.json",
-      "sha256": "17ff1c7f90219b20d320f60f7ecc77b984f9adc4bfc4b14ddcfbddfe229a7873"
+      "sha256": "5e8be077825a263c97a40d3949daff63bbaaf7917cee23814828e82527585657"
     },
     "remote_job_manifest": {
       "remote_path": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/manifests/docking_jobs.tsv",
@@ -59,9 +59,24 @@
       "training_policy": "measurement calibration and evaluator stability only; never counted as independent candidate or biological family"
     },
     "remote_protocol": {
+      "protocol_spec_sha256": "0f4e8d100c42362aa244bc575532f87ed5f3a4d891a76df0b943952721bc14f7",
       "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
       "protocol_lock_sha256": "6ea729edc9b070bba7271bea3c64da0fffad46921ea8899548eb9b1ad8a120a7",
       "evaluator_stability_gate_sha256": "1370e47f5826528ec8e39cf1ca9e2407e8da3583e5926b2fa5ad726e78df62f4"
+    },
+    "hotspot_provenance": {
+      "source_hotspot_csv": {
+        "remote_path": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/inputs/source/PVRIG_hotspot_set_v1.csv",
+        "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+      },
+      "normalized_hotspot_tsv": {
+        "remote_path": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/inputs/normalized/interface_hotspots_uniprot.tsv",
+        "sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44"
+      },
+      "full_count": 23,
+      "air_anchor_count": 12,
+      "holdout_count": 11,
+      "fit_to_current_results": false
     },
     "candidate_pool_7087": {
       "path": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1_candidates/scored_candidates_v1.csv",
@@ -74,7 +89,7 @@
       "path": "experiments/phase2_5080_v1/data_splits/pvrig_teacher_formal_v1/teacher500/pvrig_teacher500_teacher_manifest_v1.csv",
       "sha256": "7ac150eb759f8ad51b0877cdbe651ede0818d5ed29ccc72fe1c37867093bbfcd",
       "count": 500,
-      "policy": "lower-fidelity open-development replay only; never a formal V4-C test set"
+      "policy": "lower-fidelity same-domain transfer diagnostic only; never a V4-C formal test"
     },
     "full_qc_complete290": {
       "path": "experiments/phase2_5080_v1/runs/pvrig_teacher_formal_v1/teacher500_full_qc_node23_accel_v1/teacher500_full_qc_complete290_lineage.csv",
@@ -83,7 +98,9 @@
     }
   },
   "split_contract": {
-    "selection_time": "before reading new campaign result-level docking labels",
+    "split_code_result_labels_used": false,
+    "strict_prospective_time_order_proven": false,
+    "classification": "retrospective_grouped_challenge_not_untouched_formal_test",
     "selection_fields": [
       "phase derived from arm_id",
       "scaffold_id",
@@ -91,35 +108,48 @@
       "h3_regime",
       "near_cdr3_family_id as the indivisible group"
     ],
-    "new_docking_label_fields_used": [],
-    "open_development_policy": "five-fold near-CDR3-family grouped cross-validation; all model and weight selection uses open rows only",
-    "untouched_test_policy": "one evaluator-only unseal after target formula, features, baselines, seeds, metrics, and thresholds are frozen",
-    "known_limitation": "The 128 candidates come from one generator run and only three scaffold IDs. The untouched split tests unseen near-CDR3 families, not unseen generator or unseen scaffold."
+    "open_development_policy": "nested near-CDR3-family grouped cross-validation; all architecture and weight selection uses open rows only",
+    "challenge_policy": "descriptive one-shot challenge after the development configuration is frozen; challenge results may not trigger further changes in this version",
+    "future_formal_policy": "Any formal promotion requires a new version and a new prospectively frozen panel that has no labels at split-freeze time.",
+    "known_limitations": [
+      "one generator run",
+      "three scaffold IDs",
+      "shared backbone groups and arms across split",
+      "near full-sequence neighbors may remain across split"
+    ]
   },
   "teacher_release_gate": {
+    "release_scope": "OPEN_DEVELOPMENT_ONLY",
     "all_jobs_terminal_required": true,
     "fresh_aggregate_required": true,
     "evaluator_status_required": "PASS",
+    "evaluator_unlockable_required": true,
+    "all_evaluator_gates_pass_required": true,
     "evidence_mode_required": "production_pose_backed",
     "minimum_successful_seeds_per_candidate_conformation": 2,
     "minimum_complete_models_per_successful_job": 4,
-    "job_manifest_hash_match_required": true,
-    "protocol_lock_hash_match_required": true,
+    "job_manifest_result_pose_protocol_candidate_split_hash_binding_required": true,
+    "raw_result_policy": "Open only the result JSON files for the 96 preselected OPEN_DEVELOPMENT candidate IDs; do not compute challenge labels in the open release path.",
     "failed_job_policy": "A candidate-conformation remains eligible only when at least two other seeds pass all evidence gates; missing seed increases uncertainty and is never imputed as success."
   },
   "continuous_teacher_definition": {
-    "pose_rank": "sort complete native/cross model pairs by ascending HADDOCK score within each job",
+    "pose_rank": "sort complete native/cross model pairs by finite ascending HADDOCK score within each job",
     "pose_rank_weight": "1/log2(rank+1), normalized within each job",
+    "pose_quality_gates": [
+      "finite HADDOCK score",
+      "finite AIR energy",
+      "native receptor overlay RMSD <= 1.0 A",
+      "complete native/cross pair"
+    ],
     "soft_scale": "soft(x,t)=x/(x+t)",
-    "native_pose_utility": {
-      "full_hotspot_fraction_weight": 0.15,
-      "holdout_hotspot_fraction_weight": 0.25,
-      "soft_total_occlusion_at_500_weight": 0.25,
-      "soft_cdr3_occlusion_at_100_weight": 0.2,
-      "soft_cdr3_fraction_at_0_15_weight": 0.15,
-      "formula": "0.15*clip(full_hotspot/23,0,1)+0.25*clip(holdout_hotspot/11,0,1)+0.25*soft(total_occlusion,500)+0.20*soft(cdr3_occlusion,100)+0.15*soft(cdr3_fraction,0.15)"
-    },
-    "job_score": "rank-weighted mean native_pose_utility",
+    "base_native_pose_utility": "0.15*clip(full_hotspot/23,0,1)+0.25*clip(holdout_hotspot/11,0,1)+0.25*soft(total_occlusion,500)+0.20*soft(cdr3_occlusion,100)+0.15*soft(cdr3_fraction,0.15)",
+    "pvrig_clash_reliability": "1/(1+vhh_pvrig_clash_residue_pair_count/5)",
+    "native_pose_utility": "base_native_pose_utility*pvrig_clash_reliability",
+    "pvrl2_clash_policy": "Report separately but do not penalize because the virtual PVRL2 overlap is part of the obstruction geometry endpoint.",
+    "job_score_raw": "rank-weighted mean native_pose_utility",
+    "model_count_reliability": "0.5+0.5*min(complete_model_count/8,1)",
+    "agreement_reliability": "0.5+0.25*native_cross_support_agreement+0.25*model_pair_consensus",
+    "job_score": "job_score_raw*model_count_reliability*agreement_reliability",
     "receptor_score": "median job_score over successful seeds for that docking conformation",
     "candidate_targets": [
       "R_8X6B",
@@ -128,57 +158,82 @@
       "R_dual_min",
       "R_dual_gap",
       "seed_standard_deviation_by_receptor",
+      "missing_seed_fraction",
       "native_cross_support_agreement",
-      "full/anchor/holdout hotspot continuous summaries",
-      "total/CDR3 occlusion continuous summaries",
-      "supporting seed fraction and successful seed count"
+      "model_pair_consensus",
+      "full/anchor/holdout hotspot summaries",
+      "total/CDR3 occlusion summaries",
+      "PVRIG/PVRL2 separated clash summaries"
     ],
     "primary_ranking_target": "R_dual_min",
-    "secondary_targets": [
-      "R_dual_mean",
-      "negative R_dual_gap",
-      "per-receptor raw continuous channels",
-      "seed uncertainty"
-    ],
-    "tier_policy": "Legacy A/B/C/E and derived G distributions are diagnostic soft explanation only and never the sole or primary training target."
+    "tier_policy": "Legacy A/B/C/E and derived G distributions are diagnostic explanation only and never the sole or primary training target."
   },
-  "model_sequence": {
-    "stage_0": [
-      "constant baseline",
-      "scaffold-only shortcut baseline",
-      "CDR3-only sequence baseline",
-      "full-sequence handcrafted ridge baseline",
-      "frozen v3_full generic-prior-only baseline",
-      "frozen V2.3 contact-statistics baseline"
+  "implemented_baseline_contract": {
+    "models": [
+      "constant",
+      "scaffold_only",
+      "metadata_shortcut",
+      "cdr3_only",
+      "full_sequence_handcrafted_ridge",
+      "generic_binding_prior_only_after_frozen_scores_are_available"
     ],
-    "stage_1": "frozen sequence embeddings plus a small multi-output ridge or two-layer MLP",
-    "stage_2_condition": "A more complex cross-attention adapter is permitted only after stage_1 beats all shortcut baselines on grouped open validation and the untouched test.",
-    "language_model_policy": "frozen",
-    "random_seeds": [83, 89, 97],
-    "main_model_forbidden_inputs": [
-      "known-positive sequence similarity",
-      "experimental blocker family label",
-      "new docking result fields at inference",
-      "candidate-specific thresholds",
-      "hard G1-G5 as the only target"
-    ],
-    "diagnostic_shortcut_features": [
-      "scaffold_id",
-      "source phase",
-      "selection_bucket",
-      "generator metadata"
-    ],
-    "generic_binding_prior_policy": "Keep generic binding prior as a separately reported evidence axis and ablation. It may enter the final allocation ranker only after the geometry-only model is evaluated."
-  },
-  "deployment_policy": {
-    "requires_formal_gate_pass": true,
-    "candidate_pool": 7087,
-    "allocation": {
-      "surrogate_exploitation": 0.7,
-      "uncertainty_or_model_disagreement": 0.15,
-      "parent_patch_method_cdr3_diversity": 0.15
+    "excluded_from_v1_gate": {
+      "frozen_v2_3_contact_statistics": "not implemented in the V4-C v1 baseline runner; research-only until a separately frozen feature extractor exists"
     },
-    "out_of_domain_policy": "Because the high-fidelity teacher has only three scaffolds and zero exact overlap with the 7087 pool, report embedding or sequence-distance uncertainty and cap model exploitation when candidates are outside the open-development support.",
+    "cross_validation": "nested five-fold near-CDR3-family grouped cross-validation",
+    "ridge_alpha_grid": [0.01, 0.1, 1.0, 10.0, 100.0],
+    "group_null": {
+      "replicates": 100,
+      "seed": 20260715,
+      "unit": "near-CDR3-family mean permutation with within-family residuals preserved"
+    },
+    "strongest_baseline_includes_metadata_shortcut": true,
+    "language_model_policy": "frozen",
+    "architecture_change_policy": "All architecture decisions use open development only. Once the retrospective challenge is read, this version is closed; any further architecture requires a new version and new challenge/formal panel."
+  },
+  "development_decision": {
+    "single_primary_metric": "Spearman correlation with R_dual_min",
+    "strongest_baseline": "maximum nested-grouped-CV Spearman over constant, scaffold-only, metadata-shortcut, CDR3-only, full-sequence ridge, and generic-prior-only when available",
+    "minimum_open_delta_over_strongest_shortcut": 0.1,
+    "tie_breakers_in_order": [
+      "NDCG over R_dual_min",
+      "top-quartile recall at 25 percent budget",
+      "lower MAE"
+    ],
+    "challenge_role": "descriptive robustness check only; not a formal promotion gate"
+  },
+  "ood_and_transfer_contract": {
+    "sequence_support_features": {
+      "full_sequence": "SHA256-hashed 3-mer frequency vector, width 256, cosine distance",
+      "cdr3": "normalized Levenshtein distance"
+    },
+    "threshold_fit": "95th percentile of leave-one-near-CDR3-family-out nearest-neighbor distance among OPEN_DEVELOPMENT rows, separately for full sequence and CDR3",
+    "in_support_rule": "both distances are at or below their frozen open-development thresholds",
+    "minimum_7087_in_support_fraction_for_broad_use": 0.6,
+    "teacher500_transfer_gate": {
+      "minimum_grouped_spearman": 0.25,
+      "minimum_spearman_delta_over_strongest_teacher500_shortcut": 0.05
+    },
+    "uncertainty_gate": {
+      "definition": "three-model prediction standard deviation plus nearest-support distance",
+      "selective_risk_requirement": "removing the highest-uncertainty 25 percent must reduce open nested-CV MAE by at least 10 percent",
+      "error_separation_requirement": "highest-uncertainty quartile MAE must be at least 1.25 times lowest-uncertainty quartile MAE"
+    }
+  },
+  "competition_allocation_policy": {
+    "decision_deadline": "2026-07-20T18:00:00+08:00",
+    "before_new_prospective_formal_pass": {
+      "maximum_surrogate_exploitation": 0.3,
+      "surrogate_candidates_must_be_in_support": true,
+      "uncertainty_or_disagreement": 0.2,
+      "qc_binding_prior_real_docking_and_diversity": 0.5
+    },
+    "after_future_prospective_formal_pass": {
+      "surrogate_exploitation": 0.6,
+      "uncertainty_or_disagreement": 0.2,
+      "parent_patch_method_cdr3_diversity": 0.2
+    },
+    "deadline_fallback": "v3_full weak prior plus Full QC plus diversity plus real docking; V4-C research may continue but cannot block Top50",
     "final_submission_authority": "fresh real docking plus QC, developability, binding prior, manual pose review, and portfolio diversity"
   },
   "frozen_failed_evidence": {

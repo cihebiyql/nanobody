@@ -1,54 +1,54 @@
 {
-  "schema_version": "phase2_v4_c_test_spec_v1",
-  "status": "FROZEN_WITH_PREREGISTRATION",
-  "frozen_at": "2026-07-15T17:25:37+08:00",
+  "schema_version": "phase2_v4_c_development_challenge_spec_v2",
+  "status": "FROZEN_DEVELOPMENT_CHALLENGE_NOT_FORMAL",
+  "frozen_at": "2026-07-15T18:10:00+08:00",
   "primary_target": "R_dual_min",
   "development_protocol": {
     "rows": 96,
     "group_unit": "near_cdr3_family_id",
-    "folds": 5,
-    "hyperparameter_selection": "grouped cross-validation on OPEN_DEVELOPMENT only",
-    "untouched_labels_visible_to_trainer": false
+    "outer_folds": 5,
+    "inner_folds": 4,
+    "hyperparameter_selection": "inner grouped cross-validation",
+    "reported_open_estimate": "outer nested grouped cross-validation",
+    "challenge_labels_visible_to_trainer": false
   },
   "baselines": [
     "constant",
     "scaffold_only",
+    "metadata_shortcut",
     "cdr3_only",
     "full_sequence_handcrafted_ridge",
-    "generic_binding_prior_only_if_available",
-    "frozen_v2_3_contact_statistics_if_available",
-    "label_shuffle_null"
+    "generic_binding_prior_only_when_frozen_scores_are_available"
   ],
-  "formal_test": {
-    "rows": 32,
-    "group_unit": "near_cdr3_family_id",
-    "unseal_count": 1,
-    "primary_metrics": [
-      "Spearman(R_dual_min)",
-      "NDCG over R_dual_min",
-      "Recall of true top quartile at 25 percent docking budget"
-    ],
-    "secondary_metrics": [
-      "MAE for R_8X6B and R_9E6Y",
-      "Spearman(R_dual_mean)",
-      "Spearman(-R_dual_gap)",
-      "uncertainty-error correlation",
-      "top-k overlap across seeds"
+  "excluded_baseline": {
+    "frozen_v2_3_contact_statistics": "No frozen V4-C feature extractor is implemented; excluded from v1 rather than treated as optional."
+  },
+  "single_primary_decision": {
+    "metric": "Spearman(R_dual_min)",
+    "direction": "higher_is_better",
+    "strongest_baseline_selection": "maximum nested grouped CV Spearman including metadata_shortcut",
+    "minimum_delta": 0.1,
+    "tie_breakers": [
+      "NDCG(R_dual_min)",
+      "top-quartile recall at 25 percent budget",
+      "negative MAE"
     ]
   },
-  "promotion_gates": {
-    "ensemble_exceeds_strongest_baseline": true,
-    "individual_seeds_exceed_strongest_baseline_minimum": 2,
-    "near_cdr3_family_bootstrap_delta_ci_lower_bound_gt": 0.0,
-    "paired_group_permutation_p_lt": 0.05,
-    "label_shuffle_must_fail": true,
-    "scaffold_only_must_not_match_full_model": true,
-    "cdr3_only_must_not_match_full_model": true,
-    "test_exact_sequence_overlap": 0,
-    "test_near_cdr3_family_overlap": 0
+  "retrospective_challenge": {
+    "rows": 32,
+    "group_unit": "near_cdr3_family_id",
+    "status": "descriptive_not_formal",
+    "reason": "The campaign already had partial result files before the split artifact was timestamped, so strict prospective untouched status cannot be proven.",
+    "reuse_policy": "Read once after the development configuration is frozen. Do not change the current version based on the result."
   },
-  "fixed_target_note": "V4-C is explicitly fixed-target. Target permutation or antigen ablation is not a meaningful promotion gate for this sequence-only competition surrogate; those gates remain mandatory for any future model claiming target conditioning across antigens.",
-  "feasibility_rule": "No recall or enrichment threshold may be changed after test unseal. Before unseal, report the exact attainable grid implied by 32 rows and a top-quartile endpoint.",
-  "failure_action": "Do not deploy the learned geometry surrogate. Retain v3_full only as a weak generic prior and use QC, uncertainty, diversity, and real docking for allocation.",
-  "claim_boundary": "Computational dual-docking geometry frontscreen only; not experimental binding, affinity, competition, or blocking."
+  "group_null": {
+    "replicates": 100,
+    "seed": 20260715,
+    "permutation_unit": "near-CDR3-family mean with within-family residual preserved",
+    "failure_rule": "A claimed model signal is unsupported if its open nested-CV Spearman is at or below the null 95th percentile."
+  },
+  "future_formal_requirement": "A deployable formal claim requires a new version, a new prospectively frozen panel, a frozen prediction file, model/config/checkpoint hashes, a one-shot evaluator receipt, family bootstrap, and paired group permutation before any label read.",
+  "fixed_target_note": "V4-C is explicitly fixed-target. Target permutation or antigen ablation is not a meaningful gate for this sequence-only computational surrogate; those gates remain mandatory for any future cross-antigen target-conditioned claim.",
+  "failure_action": "Retain v3_full only as a weak generic prior and use QC, uncertainty, diversity, and real docking for allocation.",
+  "claim_boundary": "Development-only computational dual-docking geometry frontscreen; not formal experimental binding, affinity, competition, or blocking."
 }
