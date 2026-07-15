@@ -489,6 +489,29 @@ def select_open_split(rows: list[dict[str, str]]) -> list[dict[str, str]]:
     return selected
 
 
+def merge_generic_prior(
+    rows: list[dict[str, Any]], prior_path: Path | None
+) -> list[dict[str, Any]]:
+    if prior_path is None:
+        return rows
+    with prior_path.open(newline="", encoding="utf-8-sig") as handle:
+        prior_rows = list(csv.DictReader(handle))
+    by_id = {row["candidate_id"]: row for row in prior_rows}
+    if len(by_id) != len(prior_rows):
+        raise TeacherBuildError("duplicate_candidate_in_generic_prior")
+    for row in rows:
+        prior = by_id.get(str(row["candidate_id"]))
+        if prior is None:
+            raise TeacherBuildError(f"generic_prior_candidate_missing:{row['candidate_id']}")
+        row["generic_binding_prior"] = as_float(
+            prior.get("generic_binding_prior"), field="generic_binding_prior"
+        )
+        row["generic_binding_model_uncertainty"] = as_float(
+            prior.get("model_uncertainty"), field="model_uncertainty"
+        )
+    return rows
+
+
 def main(argv: list[str] | None = None) -> int:
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
@@ -502,6 +525,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pose-scores", type=Path, required=True)
     parser.add_argument("--results-root", type=Path, required=True)
     parser.add_argument("--evaluator", type=Path, required=True)
+    parser.add_argument("--generic-prior", type=Path)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args(argv)
 
@@ -542,6 +566,7 @@ def main(argv: list[str] | None = None) -> int:
         selected_results,
         raw_pose_rows,
     )
+    selected = merge_generic_prior(selected, args.generic_prior)
     write_tsv(args.out, selected)
     audit_path = args.out.with_suffix(args.out.suffix + ".audit.json")
     write_json(
@@ -561,6 +586,9 @@ def main(argv: list[str] | None = None) -> int:
                 "selected_raw_result_root": str(args.results_root),
                 "selected_successful_job_count": len(successful_job_ids),
                 "selected_raw_result_sha256_chain": raw_evidence_hash_chain,
+                "generic_prior_sha256": (
+                    sha256_file(args.generic_prior) if args.generic_prior is not None else None
+                ),
             },
             "output": {"path": str(args.out), "sha256": sha256_file(args.out)},
             "primary_target": "R_dual_min",

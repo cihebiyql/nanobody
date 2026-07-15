@@ -483,7 +483,7 @@ def main(argv: list[str] | None = None) -> int:
         summary_path,
         {
             "schema_version": SCHEMA_VERSION,
-            "status": "DEVELOPMENT_ONLY_FORMAL_TEST_NOT_UNSEALED",
+            "status": "DEVELOPMENT_ONLY_RETROSPECTIVE_CHALLENGE_NOT_READ",
             "teacher": {"path": str(args.teacher), "sha256": sha256_file(args.teacher), "rows": len(rows)},
             "target": args.target,
             "group_unit": "near_cdr3_family_id",
@@ -492,7 +492,7 @@ def main(argv: list[str] | None = None) -> int:
             "alphas": list(ALPHAS),
             "models": results,
             "strongest_non_shortcut_open_baseline": strongest,
-            "formal_test_unsealed": False,
+            "retrospective_challenge_read": False,
             "deployment_eligible": False,
             "predictions": {"path": str(prediction_path), "sha256": sha256_file(prediction_path)},
             "claim_boundary": CLAIM_BOUNDARY,
