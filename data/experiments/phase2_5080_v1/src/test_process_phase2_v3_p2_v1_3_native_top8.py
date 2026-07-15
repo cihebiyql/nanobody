@@ -96,6 +96,7 @@ class NativeFixture:
         self.poses_per_run = poses_per_run
         self.positive_manifest = root / "inputs/positives.csv"
         self.mutant_manifest = root / "inputs/mutants.csv"
+        self.teacher_manifest = root / "inputs/teacher.csv"
         self.preregistration = root / "inputs/preregistration.json"
         self.selector_impl = root / "tools/selector.py"
         self.selector_helper = root / "tools/helper.py"
@@ -166,6 +167,25 @@ class NativeFixture:
                 "cdr3_range",
             ],
             [],
+        )
+        write_csv(
+            self.teacher_manifest,
+            [
+                "schema_version",
+                "candidate_id",
+                "family",
+                "sequence_sha256",
+                "calibration_role",
+            ],
+            [
+                {
+                    "schema_version": "pvrig_teacher_v1_calibration_replay",
+                    "candidate_id": "case_01",
+                    "family": "F1",
+                    "sequence_sha256": MOD.sha256_bytes(b"sequence"),
+                    "calibration_role": "known_positive_calibration_only",
+                }
+            ],
         )
 
     def _write_preregistration(self) -> None:
@@ -344,7 +364,7 @@ class NativeFixture:
             self.identity_amendment,
         )
         amendment = MOD.selector_contract.load_identity_normalization_amendment()
-        with self.positive_manifest.open(newline="", encoding="utf-8") as handle:
+        with self.teacher_manifest.open(newline="", encoding="utf-8") as handle:
             teacher_row = next(csv.DictReader(handle))
         teacher_row_hash = MOD.sha256_json(teacher_row)
         sequence_hash = MOD.sha256_bytes(b"sequence")
@@ -489,9 +509,10 @@ class NativeFixture:
                 "receptor_id": receptor,
                 "execution_mode": MOD.NEW_SOURCE_MODE,
                 "sequence_sha256": sequence_hash,
-                "teacher_manifest_relpath": self.positive_manifest.relative_to(self.root).as_posix(),
-                "teacher_manifest_sha256": MOD.sha256_file(self.positive_manifest),
+                "teacher_manifest_relpath": self.teacher_manifest.relative_to(self.root).as_posix(),
+                "teacher_manifest_sha256": MOD.sha256_file(self.teacher_manifest),
                 "teacher_manifest_row_sha256": teacher_row_hash,
+                "calibration_role": "known_positive_calibration_only",
                 "cdr1_range": "1-1",
                 "cdr2_range": "2-2",
                 "cdr3_range": "3-3",
@@ -576,12 +597,13 @@ class NativeFixture:
                         "candidate_id": "case_01",
                         "family": "F1",
                         "anchor_class": "known_positive",
+                        "calibration_role": "known_positive_calibration_only",
                         "sequence_sha256": sequence_hash,
-                        "teacher_manifest_relpath": self.positive_manifest.relative_to(
+                        "teacher_manifest_relpath": self.teacher_manifest.relative_to(
                             self.root
                         ).as_posix(),
                         "teacher_manifest_sha256": MOD.sha256_file(
-                            self.positive_manifest
+                            self.teacher_manifest
                         ),
                         "teacher_manifest_row_sha256": teacher_row_hash,
                         "generation_receptor": receptor,
@@ -1095,6 +1117,46 @@ class V13NativeTop8Tests(unittest.TestCase):
             MOD.validate_reuse_stage_count_ledger(
                 completion, MOD.canonical_json(incomplete), "LEGACY_001"
             )
+
+    def test_teacher_manifest_is_independently_file_and_row_hash_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest = Path(temporary) / "teacher.csv"
+            row = {
+                "candidate_id": "case_01",
+                "family": "F1",
+                "sequence_sha256": "a" * 64,
+            }
+            write_csv(manifest, list(row), [row])
+            file_hash = MOD.sha256_file(manifest)
+            row_hash = MOD.sha256_json(row)
+            observed = MOD.load_bound_external_csv_row(
+                manifest,
+                file_hash,
+                row_hash,
+                "candidate_id",
+                "case_01",
+                {},
+            )
+            self.assertEqual(observed, row)
+
+            with self.assertRaisesRegex(MOD.ContractError, "row binding mismatch"):
+                MOD.load_bound_external_csv_row(
+                    manifest,
+                    file_hash,
+                    "0" * 64,
+                    "candidate_id",
+                    "case_01",
+                    {},
+                )
+            with self.assertRaisesRegex(MOD.ContractError, "file hash mismatch"):
+                MOD.load_bound_external_csv_row(
+                    manifest,
+                    "0" * 64,
+                    row_hash,
+                    "candidate_id",
+                    "case_01",
+                    {},
+                )
 
     def test_pending_builder_cannot_self_qualify_and_pointer_failure_rolls_back(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

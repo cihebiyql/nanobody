@@ -133,6 +133,7 @@ SELECTOR_REQUIRED_FIELDS = {
     "candidate_id",
     "family",
     "anchor_class",
+    "calibration_role",
     "sequence_sha256",
     "teacher_manifest_relpath",
     "teacher_manifest_sha256",
@@ -758,6 +759,39 @@ def load_bound_csv_row(
     return item
 
 
+def load_bound_external_csv_row(
+    path: Path,
+    expected_file_sha256: str,
+    expected_row_sha256: str,
+    id_field: str,
+    item_id: str,
+    cache: dict[
+        tuple[str, str], tuple[str, dict[str, tuple[str, dict[str, str]]]]
+    ],
+) -> dict[str, str]:
+    key = (str(path.resolve()), id_field)
+    if key not in cache:
+        fields, rows = read_csv_strict(path)
+        if id_field not in fields:
+            raise ContractError(f"External manifest lacks {id_field}: {path}")
+        by_id: dict[str, tuple[str, dict[str, str]]] = {}
+        for row_number, item in enumerate(rows, start=2):
+            observed_id = item.get(id_field, "")
+            if not observed_id or observed_id in by_id:
+                raise ContractError(
+                    f"Missing/duplicate {id_field} in {path}:{row_number}"
+                )
+            by_id[observed_id] = (sha256_json(item), item)
+        cache[key] = (sha256_file(path), by_id)
+    observed_file_hash, by_id = cache[key]
+    if observed_file_hash != expected_file_sha256:
+        raise ContractError(f"External manifest file hash mismatch: {path}")
+    observed = by_id.get(item_id)
+    if observed is None or observed[0] != expected_row_sha256:
+        raise ContractError(f"External manifest row binding mismatch for {item_id}: {path}")
+    return observed[1]
+
+
 def validate_config_provenance(path: Path, row: Mapping[str, str]) -> None:
     try:
         text, values = selector_contract.parse_config_assignments(path)
@@ -1136,17 +1170,6 @@ def validate_row_provenance(
     if run_mismatches:
         raise ContractError(f"Run manifest mismatch for {row['run_id']}: {run_mismatches}")
 
-    teacher_path = resolve_workspace_path(
-        row["teacher_manifest_relpath"], config.workspace_root
-    )
-    if (
-        teacher_path != case.source_manifest
-        or row["teacher_manifest_sha256"] != case.source_manifest_sha256
-        or row["teacher_manifest_row_sha256"] != case.source_manifest_row_sha256
-    ):
-        raise ContractError(f"Teacher manifest provenance mismatch for {candidate_id}")
-    file_bindings[str(teacher_path)] = sha256_file(teacher_path)
-
     monomer_identity = selector_contract.atom_heavy_identity_signature(
         assets["monomer"].read_bytes(), "A", assets["monomer"]
     )
@@ -1399,6 +1422,9 @@ def verify_selector(
     manifest_cache: dict[
         tuple[str, str, bool], tuple[str, dict[str, dict[str, str]]]
     ] = {}
+    external_row_cache: dict[
+        tuple[str, str], tuple[str, dict[str, tuple[str, dict[str, str]]]]
+    ] = {}
     try:
         identity_amendment = selector_contract.load_identity_normalization_amendment()
     except selector_contract.RecoveryError as error:
@@ -1570,6 +1596,31 @@ def verify_selector(
         teacher_manifest_hash = sha256_file(teacher_manifest)
         if teacher_manifest_hash != row.get("teacher_manifest_sha256"):
             raise ContractError(f"Teacher manifest hash mismatch for {key}")
+        teacher_row = load_bound_external_csv_row(
+            teacher_manifest,
+            row["teacher_manifest_sha256"],
+            row["teacher_manifest_row_sha256"],
+            "candidate_id",
+            candidate_id,
+            external_row_cache,
+        )
+        teacher_expected = {
+            "schema_version": "pvrig_teacher_v1_calibration_replay",
+            "candidate_id": candidate_id,
+            "family": case.family,
+            "sequence_sha256": row["sequence_sha256"],
+            "calibration_role": row["calibration_role"],
+        }
+        teacher_mismatches = {
+            field: (teacher_row.get(field), wanted)
+            for field, wanted in teacher_expected.items()
+            if teacher_row.get(field) != wanted
+        }
+        if teacher_mismatches:
+            raise ContractError(
+                f"Teacher manifest provenance mismatch for {candidate_id}: "
+                f"{teacher_mismatches}"
+            )
         for field_name in ("teacher_manifest_row_sha256", "run_manifest_row_sha256"):
             if not re.fullmatch(r"[0-9a-f]{64}", row.get(field_name, "")):
                 raise ContractError(f"Invalid {field_name} for {key}")
