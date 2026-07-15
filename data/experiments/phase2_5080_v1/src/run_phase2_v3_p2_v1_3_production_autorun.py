@@ -60,6 +60,23 @@ FROZEN_HADDOCK_SHA256 = (
 FROZEN_NODE23_REMAINING_RUN_IDS_SHA256 = (
     "f08afaebbc9236894a82e4f07cf8a33aa408a44e0dd353a57dc5f1a598ebdce2"
 )
+FROZEN_NODE23_MIGRATION_PREREGISTRATION_SHA256 = (
+    "e079b00e992afae5f4a73dd570963e076045455e7913f8c8804ff1d2bd0f67b6"
+)
+FROZEN_NODE23_MIGRATION_RECEIPT_SHA256 = (
+    "cdc62f40bee7f6038d80be20e7589caa02e19fd6830525044be097753caa625c"
+)
+FROZEN_MIGRATION_PHASE_ARTIFACTS = {
+    "phase_old_frozen.json": (
+        "5fb7c16e4fb1840ad470646789de03914732aa6458e6dcdce8581756088431cf"
+    ),
+    "phase_old_retired.json": (
+        "e0c80b75952a3631611ff6124dd297e5ed0b4551cde03ec209ba142c6f8bc477"
+    ),
+    "phase_new_active.json": (
+        "7b9f1cf7cc2c0693e9885827f54a1bc141c32b9766869c78cf497a66d28f78f5"
+    ),
+}
 FROZEN_PRE_MIGRATION_COMPLETIONS = {
     "runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json": (
         "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72"
@@ -244,6 +261,9 @@ class ControllerContract:
     argv: tuple[str, ...]
     source: str
     source_sha256: str = ""
+    retired_host: str = ""
+    retired_boot_id: str = ""
+    phase_artifact_sha256: tuple[tuple[str, str], ...] = ()
 
     def state_binding(self) -> dict[str, Any]:
         return {
@@ -257,6 +277,9 @@ class ControllerContract:
             ),
             "source": self.source,
             "source_sha256": self.source_sha256,
+            "retired_host": self.retired_host,
+            "retired_boot_id": self.retired_boot_id,
+            "phase_artifact_sha256": dict(self.phase_artifact_sha256),
         }
 
 
@@ -279,6 +302,12 @@ class RemoteSnapshot:
     observed_hostname: str = ""
     observed_boot_id: str = ""
     host_identity_valid: bool = False
+    matching_controller_count: int = 0
+    matching_controller_pids: tuple[int, ...] = ()
+    frozen_completion_hashes_valid: bool = False
+    observed_frozen_completion_sha256: tuple[tuple[str, str], ...] = ()
+    handoff_phase_hashes_valid: bool = False
+    observed_handoff_phase_sha256: tuple[tuple[str, str], ...] = ()
     failures: tuple[str, ...] = ()
 
     @classmethod
@@ -303,6 +332,12 @@ class RemoteSnapshot:
             "observed_hostname",
             "observed_boot_id",
             "host_identity_valid",
+            "matching_controller_count",
+            "matching_controller_pids",
+            "frozen_completion_hashes_valid",
+            "observed_frozen_completion_sha256",
+            "handoff_phase_hashes_valid",
+            "observed_handoff_phase_sha256",
         }
         if not required.issubset(payload):
             raise AutorunError("Remote snapshot lacks required fields")
@@ -332,6 +367,32 @@ class RemoteSnapshot:
             observed_hostname=str(payload["observed_hostname"]),
             observed_boot_id=str(payload["observed_boot_id"]),
             host_identity_valid=payload["host_identity_valid"] is True,
+            matching_controller_count=int(payload["matching_controller_count"]),
+            matching_controller_pids=tuple(
+                int(value) for value in payload["matching_controller_pids"]
+            ),
+            frozen_completion_hashes_valid=(
+                payload["frozen_completion_hashes_valid"] is True
+            ),
+            observed_frozen_completion_sha256=tuple(
+                sorted(
+                    (str(key), str(value))
+                    for key, value in payload[
+                        "observed_frozen_completion_sha256"
+                    ].items()
+                )
+            ),
+            handoff_phase_hashes_valid=(
+                payload["handoff_phase_hashes_valid"] is True
+            ),
+            observed_handoff_phase_sha256=tuple(
+                sorted(
+                    (str(key), str(value))
+                    for key, value in payload[
+                        "observed_handoff_phase_sha256"
+                    ].items()
+                )
+            ),
             failures=tuple(str(value) for value in payload.get("failures", [])),
         )
         # Explicit remote failures are terminal evidence even when the frozen
@@ -351,6 +412,18 @@ class RemoteSnapshot:
             )
         ):
             raise AutorunError("Remote host/boot identity mismatch")
+        if (
+            not snapshot.frozen_completion_hashes_valid
+            or dict(snapshot.observed_frozen_completion_sha256)
+            != FROZEN_PRE_MIGRATION_COMPLETIONS
+        ):
+            raise AutorunError("Remote frozen completion receipt hash mismatch")
+        expected_phases = dict(contract.phase_artifact_sha256)
+        if expected_phases and (
+            not snapshot.handoff_phase_hashes_valid
+            or dict(snapshot.observed_handoff_phase_sha256) != expected_phases
+        ):
+            raise AutorunError("Remote migration handoff phase hash mismatch")
         if snapshot.status == "READY":
             if (
                 snapshot.completion_count != EXPECTED_REMOTE_RUNS
@@ -358,6 +431,11 @@ class RemoteSnapshot:
                 or snapshot.failure_count
                 or snapshot.missing_count
                 or snapshot.invalid_count
+                or snapshot.matching_controller_count > 1
+                or (
+                    snapshot.matching_controller_count == 1
+                    and snapshot.matching_controller_pids != (contract.pid,)
+                )
             ):
                 raise AutorunError("Remote READY snapshot lacks exact 30/30 closure")
         elif snapshot.status == "WAITING":
@@ -367,6 +445,8 @@ class RemoteSnapshot:
                 or not snapshot.controller_identity_valid
                 or snapshot.controller_pid != contract.pid
                 or snapshot.controller_start_ticks != contract.start_ticks
+                or snapshot.matching_controller_count != 1
+                or snapshot.matching_controller_pids != (contract.pid,)
                 or snapshot.failure_count
                 or snapshot.invalid_count
             ):
@@ -394,6 +474,16 @@ class RemoteSnapshot:
             "observed_hostname": self.observed_hostname,
             "observed_boot_id": self.observed_boot_id,
             "host_identity_valid": self.host_identity_valid,
+            "matching_controller_count": self.matching_controller_count,
+            "matching_controller_pids": list(self.matching_controller_pids),
+            "frozen_completion_hashes_valid": self.frozen_completion_hashes_valid,
+            "observed_frozen_completion_sha256": dict(
+                self.observed_frozen_completion_sha256
+            ),
+            "handoff_phase_hashes_valid": self.handoff_phase_hashes_valid,
+            "observed_handoff_phase_sha256": dict(
+                self.observed_handoff_phase_sha256
+            ),
             "failures": list(self.failures),
         }
 
@@ -480,8 +570,21 @@ def _require_sha256(value: Any, label: str) -> str:
     return text
 
 
-def load_controller_contract(path: Path, configured_host: str) -> ControllerContract:
+def _contained_evidence_path(root: Path, relative: Any, label: str) -> Path:
+    candidate = (root.resolve() / str(relative)).resolve(strict=True)
+    try:
+        candidate.relative_to(root.resolve())
+    except ValueError as error:
+        raise AutorunError(f"Migration receipt {label} escapes evidence root") from error
+    return candidate
+
+
+def load_controller_contract(
+    path: Path, configured_host: str, evidence_root: Path = DATA_ROOT
+) -> ControllerContract:
     receipt_path = path.resolve(strict=True)
+    if sha256_file(receipt_path) != FROZEN_NODE23_MIGRATION_RECEIPT_SHA256:
+        raise AutorunError("Controller migration receipt SHA256 mismatch")
     receipt = read_json(receipt_path)
     if (
         receipt.get("schema_version") != MIGRATION_RECEIPT_SCHEMA
@@ -492,6 +595,51 @@ def load_controller_contract(path: Path, configured_host: str) -> ControllerCont
     ):
         raise AutorunError("Controller migration receipt contract mismatch")
     require_false(receipt, FALSE_BOUNDARIES)
+    if receipt.get("claim_boundary") != (
+        "execution migration only; no binding, affinity, experimental blocking, "
+        "Formal Gold, or training-label claim"
+    ):
+        raise AutorunError("Migration receipt claim boundary mismatch")
+
+    prereg = receipt.get("migration_preregistration", {})
+    if (
+        not isinstance(prereg, dict)
+        or prereg.get("sha256")
+        != FROZEN_NODE23_MIGRATION_PREREGISTRATION_SHA256
+    ):
+        raise AutorunError("Migration preregistration binding mismatch")
+    prereg_path = _contained_evidence_path(
+        evidence_root, prereg.get("path"), "preregistration"
+    )
+    if sha256_file(prereg_path) != FROZEN_NODE23_MIGRATION_PREREGISTRATION_SHA256:
+        raise AutorunError("Migration preregistration artifact drifted")
+
+    predecessor = receipt.get("predecessor_autorun_state", {})
+    if not isinstance(predecessor, dict):
+        raise AutorunError("Migration predecessor state binding is missing")
+    predecessor_path = _contained_evidence_path(
+        evidence_root, predecessor.get("path"), "predecessor state"
+    )
+    if sha256_file(predecessor_path) != predecessor.get("sha256"):
+        raise AutorunError("Migration predecessor state hash mismatch")
+    predecessor_state = read_json(predecessor_path)
+    predecessor_snapshot = predecessor_state.get("remote_snapshot", {})
+    if (
+        predecessor.get("schema_version")
+        != "pvrig_v1_3_production_autorun_state_v1"
+        or predecessor.get("status") != WAITING
+        or predecessor_state.get("schema_version")
+        != "pvrig_v1_3_production_autorun_state_v1"
+        or predecessor_state.get("status") != WAITING
+        or predecessor_state.get("stages") != {}
+        or not isinstance(predecessor_snapshot, dict)
+        or predecessor_snapshot.get("completion_count") != 4
+        or predecessor_snapshot.get("pass_count") != 4
+        or predecessor_snapshot.get("failure_count") != 0
+        or predecessor_snapshot.get("invalid_count") != 0
+    ):
+        raise AutorunError("Migration predecessor state is not the frozen 4/30 wait")
+    require_false(predecessor_state, FALSE_BOUNDARIES)
 
     single_writer = receipt.get("single_writer_handoff", {})
     if not isinstance(single_writer, dict) or any(
@@ -505,6 +653,46 @@ def load_controller_contract(path: Path, configured_host: str) -> ControllerCont
         }.items()
     ):
         raise AutorunError("Migration receipt lacks a closed single-writer handoff")
+
+    source = receipt.get("source_controller", {})
+    source_probe = receipt.get("source_probe", {})
+    if not isinstance(source, dict) or not isinstance(source_probe, dict):
+        raise AutorunError("Migration source-controller evidence is missing")
+    legacy = legacy_controller_contract("node1")
+    if (
+        source.get("host") != "node1"
+        or source.get("pid") != legacy.pid
+        or source.get("pid_file_sha256") != legacy.pid_file_sha256
+        or source.get("start_ticks") != legacy.start_ticks
+        or source.get("argv") != list(legacy.argv)
+        or source.get("cwd") != REMOTE_ROOT
+        or source.get("executable")
+        != "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11"
+        or source.get("retired") is not True
+        or source_probe.get("host") != "node1"
+        or source_probe.get("active_controller_count") != 0
+        or source_probe.get("boot_id") != source.get("boot_id")
+    ):
+        raise AutorunError("Migration source-controller retirement evidence mismatch")
+
+    observed_phases = receipt.get("shared_handoff_phase_artifacts", {})
+    expected_phase_status = {
+        "phase_old_frozen.json": "OLD_CONTROLLER_FROZEN_ZERO_CHILDREN",
+        "phase_old_retired.json": "OLD_CONTROLLER_RETIRED_NO_ROLLBACK",
+        "phase_new_active.json": "NEW_NODE23_CONTROLLER_ACTIVE_FILTERED_26",
+    }
+    if not isinstance(observed_phases, dict) or set(observed_phases) != set(
+        FROZEN_MIGRATION_PHASE_ARTIFACTS
+    ):
+        raise AutorunError("Migration shared phase-artifact ledger mismatch")
+    for name, expected_sha in FROZEN_MIGRATION_PHASE_ARTIFACTS.items():
+        item = observed_phases.get(name, {})
+        if (
+            not isinstance(item, dict)
+            or item.get("sha256") != expected_sha
+            or item.get("status") != expected_phase_status[name]
+        ):
+            raise AutorunError("Migration shared phase-artifact binding mismatch")
 
     frozen = receipt.get("frozen_contract", {})
     if not isinstance(frozen, dict) or (
@@ -551,6 +739,14 @@ def load_controller_contract(path: Path, configured_host: str) -> ControllerCont
         raise AutorunError("Configured SSH host differs from migration receipt")
     if target.get("host") != "node23":
         raise AutorunError("V1.3 generation-2 controller is not bound to node23")
+    target_probe = receipt.get("target_probe", {})
+    if (
+        not isinstance(target_probe, dict)
+        or target_probe.get("host") != target.get("host")
+        or target_probe.get("boot_id") != target.get("boot_id")
+        or target_probe.get("active_controller_count") != 1
+    ):
+        raise AutorunError("Migration target-controller probe evidence mismatch")
     python = str(target.get("python", ""))
     haddock = str(target.get("haddock_bin", ""))
     expected_argv = [
@@ -610,13 +806,18 @@ def load_controller_contract(path: Path, configured_host: str) -> ControllerCont
         argv=tuple(expected_argv),
         source=receipt_path.as_posix(),
         source_sha256=sha256_file(receipt_path),
+        retired_host="node1",
+        retired_boot_id=str(source["boot_id"]),
+        phase_artifact_sha256=tuple(sorted(FROZEN_MIGRATION_PHASE_ARTIFACTS.items())),
     )
 
 
 def controller_contract(config: Config) -> ControllerContract:
     if config.controller_receipt is None:
         return legacy_controller_contract(config.host)
-    return load_controller_contract(config.controller_receipt, config.host)
+    return load_controller_contract(
+        config.controller_receipt, config.host, config.layout.data_root
+    )
 
 
 def csv_rows(path: Path) -> int:
