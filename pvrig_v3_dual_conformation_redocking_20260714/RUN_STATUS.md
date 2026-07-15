@@ -1,7 +1,7 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-15 08:07 Asia/Shanghai`
+- 更新时间：`2026-07-15 08:10 Asia/Shanghai`
 - 当前阶段：`FULL_QUEUE_NODE23_LOCAL_SCRATCH_VERIFIED_RUNNING_8_WAY`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
@@ -51,11 +51,11 @@
 - node1 编排器 PID `4072777` 和 controller PID `4074688` 已停止，不存在双控制器；
 - smoke 结果：`4 SUCCESS / 0 FAIL`，selected models 数分别为 `10 / 10 / 10 / 9`；
 - smoke 已同时验证 HR-151 和 rank-1 候选的 8X6B、9E6Y 独立 HADDOCK run，以及每个 pose 的 native/cross 双参考评分；
-- `08:07` 全量快照：`114 SUCCESS / 8 RUNNING / 928 PENDING`；已有 `37/350` 个实体-构象达到至少2个成功 seed；
+- `08:10` 全量快照：`120 SUCCESS / 8 RUNNING / 922 PENDING`；已有 `39/350` 个实体-构象达到至少2个成功 seed；
 - node23 本地 scratch 模式当前并发上限为8，运行根目录为 `/tmp/pvrig_v3_haddock`；
-- 当前114个成功任务中控制任务112个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
+- 当前120个成功任务中控制任务118个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
 - 迁移证据：`status/controller_migration_node1_to_node23.json`；旧PID归档在 `status/migration_archive/`；
-- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有72个 scratch 正式任务完成，现有114个结果均保留。
+- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有78个 scratch 正式任务完成，现有120个结果均保留。
 
 ## node23 本地 scratch 修复
 
@@ -72,7 +72,7 @@
 
 启动器默认使用 `/tmp/pvrig_v3_haddock`，启动前检查目录可写并拒绝 NFS 文件系统；非法或带路径分隔符的 job ID 会在任何锁、归档或删除操作前被拒绝。scratch 清理失败只记录警告，不会把已经完整发布的 `SUCCESS` 回滚为 `FAILED`。
 
-8路模式下每个 HADDOCK job 固定4核，合计目标为32/64逻辑CPU。控制器继续按1-minute load自适应：`<48: 8路`、`48-56: 6路`、`56-62: 4路`、`>=62: 暂停补位`。`08:07` 实测维持8路时 load1约41.7；由于同机其他用户也在运行高CPU任务，整机CPU忙约75.6%、idle约24.4%，其中 PVRIG 的 nice CPU约37.2%，I/O wait为0。
+8路模式下每个 HADDOCK job 固定4核，合计目标为32/64逻辑CPU。控制器继续按1-minute load自适应：`<48: 8路`、`48-56: 6路`、`56-62: 4路`、`>=62: 暂停补位`。`08:07` 实测维持8路时 load1约41.7；由于同机其他用户也在运行高CPU任务，整机CPU忙约75.6%、idle约24.4%，其中 PVRIG 的 nice CPU约37.2%，I/O wait为0。随后在 load1 `46.56` 时仍保持8路，并在一批任务完成后的60秒轮询中自动补回8路。
 
 当前生产启动命令为：
 
