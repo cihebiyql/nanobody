@@ -634,7 +634,7 @@ def validate_selector_publication(
         frozen_case = frozen_cases.get(case_id)
         frozen_run = frozen_runs.get((case_id, receptor))
         if (
-            row["schema_version"] != "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v1"
+            row["schema_version"] != "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v3"
             or row["protocol_id"] != "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
             or row["source_protocol"] != "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1"
             or row["source_stage"] != "4_emref"
@@ -657,7 +657,7 @@ def validate_selector_publication(
                 parse_bool(row[field], field)
                 for field in (
                     "formal_eligible", "training_label_release_eligible",
-                    "docking_gold_release_eligible",
+                    "docking_gold_release_eligible", "p2_training_ready",
                 )
             )
         ):
@@ -677,7 +677,7 @@ def validate_selector_publication(
         raise CalibrationError("Selector rows do not bind one immutable publication release")
     audit = json.loads(selector_audit.read_text(encoding="utf-8"))
     expected_audit = {
-        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
+        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v3",
         "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
         "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
         "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",
@@ -688,6 +688,7 @@ def validate_selector_publication(
         "formal_eligible": False,
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
+        "p2_training_ready": False,
     }
     for field, value in expected_audit.items():
         if audit.get(field) != value:

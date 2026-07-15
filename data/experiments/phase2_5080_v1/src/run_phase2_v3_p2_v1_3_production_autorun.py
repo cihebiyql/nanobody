@@ -834,7 +834,7 @@ def require_false(payload: Mapping[str, Any], fields: Sequence[str]) -> None:
 def validate_selector(release: Path) -> dict[str, Any]:
     audit = read_json(release / SELECTOR_AUDIT)
     if audit.get("schema_version") != (
-        "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2"
+        "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v3"
     ):
         raise AutorunError("Selector audit schema mismatch")
     if audit.get("status") != "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED":
@@ -1138,7 +1138,8 @@ for proc in proc_root.iterdir():
         argv = [part.decode("utf-8") for part in argv_bytes.split(b"\0") if part]
         if (
             len(argv) >= 4
-            and argv[1] == "scripts/run_v1_3_completion15.py"
+            and pathlib.PurePosixPath(argv[1]).name
+            == "run_v1_3_completion15.py"
             and "--root" in argv
             and argv[argv.index("--root") + 1] == root_text
         ):
@@ -1393,7 +1394,8 @@ for proc in proc_root.iterdir():
         argv = [part.decode("utf-8") for part in raw.split(b"\0") if part]
         if (
             len(argv) >= 4
-            and argv[1] == "scripts/run_v1_3_completion15.py"
+            and pathlib.PurePosixPath(argv[1]).name
+            == "run_v1_3_completion15.py"
             and "--root" in argv
             and argv[argv.index("--root") + 1] == remote_root
         ):

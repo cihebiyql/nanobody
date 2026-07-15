@@ -1707,7 +1707,7 @@ def build(
                 materialized_final = release_dir / materialized_rel
                 ledger = descriptor.reuse
                 output: dict[str, Any] = {
-                    "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v2",
+                    "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v3",
                     "protocol_id": PROTOCOL_ID,
                     "source_protocol_id": descriptor.source_protocol_id,
                     "source_protocol": SOURCE_PROTOCOL,
@@ -1980,7 +1980,7 @@ def build(
                 "remote_local_hash_chain_equal": remote["file_hash_chain"] == local["file_hash_chain"],
             }
         audit: dict[str, Any] = {
-            "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
+            "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v3",
             "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
             "protocol_id": PROTOCOL_ID,
             "source_protocol": SOURCE_PROTOCOL,
