@@ -32,11 +32,13 @@ def load_limit(load1: float, max_parallel: int = 4, cpu_count: int = 64) -> int:
     if load1 >= cpu_count - 2:
         return 0
     if load1 >= cpu_count * 0.875:
+        if max_parallel > 4:
+            return max(1, (max_parallel + 1) // 2)
         return max(1, (max_parallel + 3) // 4)
     if load1 >= cpu_count * 0.75:
+        if max_parallel > 4:
+            return max(1, (max_parallel * 3 + 3) // 4)
         return max(1, (max_parallel + 1) // 2)
-    if max_parallel > 4 and load1 >= cpu_count * 0.625:
-        return max(1, (max_parallel * 3 + 3) // 4)
     return max_parallel
 
 

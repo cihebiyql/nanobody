@@ -1,0 +1,226 @@
+{
+  "claim_boundary": "execution migration only; no binding, affinity, experimental blocking, Formal Gold, or training-label claim",
+  "created_at_utc": "2026-07-15T00:01:16.800844+00:00",
+  "docking_gold_release_eligible": false,
+  "formal_eligible": false,
+  "frozen_contract": {
+    "controller_script_sha256": "9a0251de5b169c562f8a37e509771ba8bc92ea304704dae0fa0b4ed0366dad3b",
+    "haddock_sha256": "58ee77335c4665cdea4b1ffdcc8722963db9244184b96d23548daee22bdbd44a",
+    "load_poll_seconds": 30,
+    "manifest_sha256": "1a51d482c5d755eeb587d0bbdfab7303327190bd6d54e1ad4ecfd74636fe5151",
+    "max_load1": 50,
+    "max_workers": 5,
+    "python_sha256": "377159f8604e0fbfe362218df369a651be2123158a25296f6ace4b5c58c6c62a"
+  },
+  "migration_generation": 2,
+  "migration_preregistration": {
+    "path": "experiments/phase2_5080_v1/audits/phase2_v3_p2_v1_3_node23_migration_preregistration.json",
+    "sha256": "e079b00e992afae5f4a73dd570963e076045455e7913f8c8804ff1d2bd0f67b6"
+  },
+  "p2_training_ready": false,
+  "post_handoff_completion_ledger": {
+    "count": 4,
+    "files": {
+      "runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json": "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72",
+      "runs/V13CAL_012__9E6Y__main/V13CAL_012__9E6Y__main.complete.json": "e1bc029a09054a6776c650d1bc5eac939c6f0ac25936f1916c8ba5ab7ccf692c",
+      "runs/V13CAL_047__8X6B__main/V13CAL_047__8X6B__main.complete.json": "84b8b2adc033f93d131f167abd8a61da73edb0ff5428be188ef771f93d23e139",
+      "runs/V13CAL_047__9E6Y__main/V13CAL_047__9E6Y__main.complete.json": "e6437d5eec96a86c3031131c26ec824e1bd67d9b766ff9e5e2880f3b67d93532"
+    }
+  },
+  "pre_handoff_completion_ledger": {
+    "count": 4,
+    "files": {
+      "runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json": "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72",
+      "runs/V13CAL_012__9E6Y__main/V13CAL_012__9E6Y__main.complete.json": "e1bc029a09054a6776c650d1bc5eac939c6f0ac25936f1916c8ba5ab7ccf692c",
+      "runs/V13CAL_047__8X6B__main/V13CAL_047__8X6B__main.complete.json": "84b8b2adc033f93d131f167abd8a61da73edb0ff5428be188ef771f93d23e139",
+      "runs/V13CAL_047__9E6Y__main/V13CAL_047__9E6Y__main.complete.json": "e6437d5eec96a86c3031131c26ec824e1bd67d9b766ff9e5e2880f3b67d93532"
+    }
+  },
+  "predecessor_autorun_state": {
+    "path": "experiments/phase2_5080_v1/logs/pvrig_v1_3_production_autorun_state.json",
+    "schema_version": "pvrig_v1_3_production_autorun_state_v1",
+    "sha256": "8fa2e0dddf573523c5248a1ff58565cc35cf5cb005ed74e5e20ae2ec4730231c",
+    "status": "WAITING_REMOTE_COMPLETION15"
+  },
+  "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
+  "remaining_run_ledger": {
+    "count": 26,
+    "run_ids": [
+      "V13CAL_013__8X6B__main",
+      "V13CAL_013__9E6Y__main",
+      "V13CAL_018__8X6B__main",
+      "V13CAL_018__9E6Y__main",
+      "V13CAL_021__8X6B__main",
+      "V13CAL_021__9E6Y__main",
+      "V13CAL_023__8X6B__main",
+      "V13CAL_023__9E6Y__main",
+      "V13CAL_028__8X6B__main",
+      "V13CAL_028__9E6Y__main",
+      "V13CAL_033__8X6B__main",
+      "V13CAL_033__9E6Y__main",
+      "V13CAL_034__8X6B__main",
+      "V13CAL_034__9E6Y__main",
+      "V13CAL_035__8X6B__main",
+      "V13CAL_035__9E6Y__main",
+      "V13CAL_038__8X6B__main",
+      "V13CAL_038__9E6Y__main",
+      "V13CAL_041__8X6B__main",
+      "V13CAL_041__9E6Y__main",
+      "V13CAL_042__8X6B__main",
+      "V13CAL_042__9E6Y__main",
+      "V13CAL_043__8X6B__main",
+      "V13CAL_043__9E6Y__main",
+      "V13CAL_045__8X6B__main",
+      "V13CAL_045__9E6Y__main"
+    ],
+    "run_ids_sha256": "f08afaebbc9236894a82e4f07cf8a33aa408a44e0dd353a57dc5f1a598ebdce2"
+  },
+  "remote_root": "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+  "schema_version": "pvrig_v1_3_controller_migration_receipt_v1",
+  "shared_handoff_phase_artifacts": {
+    "phase_new_active.json": {
+      "sha256": "7b9f1cf7cc2c0693e9885827f54a1bc141c32b9766869c78cf497a66d28f78f5",
+      "status": "NEW_NODE23_CONTROLLER_ACTIVE_FILTERED_26"
+    },
+    "phase_old_frozen.json": {
+      "sha256": "5fb7c16e4fb1840ad470646789de03914732aa6458e6dcdce8581756088431cf",
+      "status": "OLD_CONTROLLER_FROZEN_ZERO_CHILDREN"
+    },
+    "phase_old_retired.json": {
+      "sha256": "e0c80b75952a3631611ff6124dd297e5ed0b4551cde03ec209ba142c6f8bc477",
+      "status": "OLD_CONTROLLER_RETIRED_NO_ROLLBACK"
+    }
+  },
+  "single_writer_handoff": {
+    "combined_active_controller_count": 1,
+    "new_started_at_utc": "2026-07-14T23:59:33.582321+00:00",
+    "no_controller_overlap": true,
+    "old_children_zero_after_sigstop": true,
+    "old_controller_stopped": true,
+    "old_descendants_zero_after_sigstop": true,
+    "old_retired_at_utc": "2026-07-14T23:58:37.408551+00:00",
+    "source_active_controller_count": 0,
+    "target_active_controller_count": 1
+  },
+  "source_controller": {
+    "argv": [
+      "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+      "scripts/run_v1_3_completion15.py",
+      "--root",
+      "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+      "--haddock-bin",
+      "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3",
+      "--max-workers",
+      "5",
+      "--max-load1",
+      "50",
+      "--load-poll-seconds",
+      "30"
+    ],
+    "argv_bytes_sha256": "df3ea5a15a5a5f530f819c2be2b3a2da0d9b982996e300e5a97dcc7cd5228e8b",
+    "boot_id": "01cb34f7-2916-44dd-bfd5-4190fce2735b",
+    "cwd": "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+    "executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+    "host": "node1",
+    "pid": 4059962,
+    "pid_file_sha256": "d6bdae94ecac6baab46e1f1d83b360b529bc3a92facc106403378df7465b2028",
+    "retired": true,
+    "start_ticks": 664578751
+  },
+  "source_probe": {
+    "active_controller_count": 0,
+    "boot_id": "01cb34f7-2916-44dd-bfd5-4190fce2735b",
+    "host": "node1"
+  },
+  "status": "PASS_NODE1_TO_NODE23_SINGLE_WRITER_HANDOFF",
+  "target_controller": {
+    "argv": [
+      "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+      "scripts/run_v1_3_completion15.py",
+      "--root",
+      "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+      "--haddock-bin",
+      "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3",
+      "--max-workers",
+      "5",
+      "--max-load1",
+      "50",
+      "--load-poll-seconds",
+      "30",
+      "--run-id",
+      "V13CAL_013__8X6B__main",
+      "--run-id",
+      "V13CAL_013__9E6Y__main",
+      "--run-id",
+      "V13CAL_018__8X6B__main",
+      "--run-id",
+      "V13CAL_018__9E6Y__main",
+      "--run-id",
+      "V13CAL_021__8X6B__main",
+      "--run-id",
+      "V13CAL_021__9E6Y__main",
+      "--run-id",
+      "V13CAL_023__8X6B__main",
+      "--run-id",
+      "V13CAL_023__9E6Y__main",
+      "--run-id",
+      "V13CAL_028__8X6B__main",
+      "--run-id",
+      "V13CAL_028__9E6Y__main",
+      "--run-id",
+      "V13CAL_033__8X6B__main",
+      "--run-id",
+      "V13CAL_033__9E6Y__main",
+      "--run-id",
+      "V13CAL_034__8X6B__main",
+      "--run-id",
+      "V13CAL_034__9E6Y__main",
+      "--run-id",
+      "V13CAL_035__8X6B__main",
+      "--run-id",
+      "V13CAL_035__9E6Y__main",
+      "--run-id",
+      "V13CAL_038__8X6B__main",
+      "--run-id",
+      "V13CAL_038__9E6Y__main",
+      "--run-id",
+      "V13CAL_041__8X6B__main",
+      "--run-id",
+      "V13CAL_041__9E6Y__main",
+      "--run-id",
+      "V13CAL_042__8X6B__main",
+      "--run-id",
+      "V13CAL_042__9E6Y__main",
+      "--run-id",
+      "V13CAL_043__8X6B__main",
+      "--run-id",
+      "V13CAL_043__9E6Y__main",
+      "--run-id",
+      "V13CAL_045__8X6B__main",
+      "--run-id",
+      "V13CAL_045__9E6Y__main"
+    ],
+    "argv_bytes_sha256": "3d471732b01acb993509f5c790fb1fe2218ee2d95cc43d9b44a0a6412d9a5adc",
+    "boot_id": "4bbf6b72-96a2-43ab-ba82-5a429446595c",
+    "children": [],
+    "cwd": "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714",
+    "executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+    "haddock_bin": "/data/qlyu/anaconda3/envs/haddock3/bin/haddock3",
+    "host": "node23",
+    "pid": 3399578,
+    "pid_file_sha256": "ad438c98bb0116f790dc6d3f3b25835c0552abbd3accda97f8dc8cbaf4e2fbdd",
+    "python": "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+    "start_ticks": 1856734331
+  },
+  "target_probe": {
+    "active_controller_count": 1,
+    "boot_id": "4bbf6b72-96a2-43ab-ba82-5a429446595c",
+    "host": "node23"
+  },
+  "target_runtime_snapshot": {
+    "active_children_at_receipt": 0,
+    "child_pids": [],
+    "load1": 53.0
+  },
+  "training_label_release_eligible": false
+}

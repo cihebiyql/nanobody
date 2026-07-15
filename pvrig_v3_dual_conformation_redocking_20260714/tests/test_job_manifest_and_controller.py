@@ -163,10 +163,9 @@ class JobManifestControllerTests(unittest.TestCase):
         self.assertEqual(load_limit(48), 2)
         self.assertEqual(load_limit(47.99), 4)
         self.assertEqual(load_limit(62, max_parallel=8), 0)
-        self.assertEqual(load_limit(56, max_parallel=8), 2)
-        self.assertEqual(load_limit(48, max_parallel=8), 4)
-        self.assertEqual(load_limit(40, max_parallel=8), 6)
-        self.assertEqual(load_limit(39.99, max_parallel=8), 8)
+        self.assertEqual(load_limit(56, max_parallel=8), 4)
+        self.assertEqual(load_limit(48, max_parallel=8), 6)
+        self.assertEqual(load_limit(47.99, max_parallel=8), 8)
 
     def test_controller_dry_run_exposes_eight_slots_on_low_load(self) -> None:
         self.assertEqual(self.run_script("build_docking_jobs.py").returncode, 0)
