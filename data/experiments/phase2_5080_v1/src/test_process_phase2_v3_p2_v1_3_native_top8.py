@@ -1030,6 +1030,46 @@ class V13NativeTop8Tests(unittest.TestCase):
                 MOD.build_package(config)
             self.assertFalse((config.outdir / "current").exists())
 
+    def test_legacy_manifest_accepts_only_explicit_external_row_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest = Path(temporary) / "legacy_run_manifest.csv"
+            row = {"run_id": "LEGACY_001", "value": "frozen"}
+            write_csv(manifest, list(row), [row])
+            file_hash = MOD.sha256_file(manifest)
+            row_hash = MOD.row_sha256(row, "run_manifest_row_sha256")
+
+            with self.assertRaisesRegex(MOD.ContractError, "lacks run/hash fields"):
+                MOD.load_bound_csv_row(
+                    manifest,
+                    file_hash,
+                    row_hash,
+                    "run_manifest_row_sha256",
+                    row["run_id"],
+                    {},
+                )
+
+            observed = MOD.load_bound_csv_row(
+                manifest,
+                file_hash,
+                row_hash,
+                "run_manifest_row_sha256",
+                row["run_id"],
+                {},
+                allow_external_row_hash=True,
+            )
+            self.assertEqual(observed["run_manifest_row_sha256"], row_hash)
+
+            with self.assertRaisesRegex(MOD.ContractError, "row binding mismatch"):
+                MOD.load_bound_csv_row(
+                    manifest,
+                    file_hash,
+                    "0" * 64,
+                    "run_manifest_row_sha256",
+                    row["run_id"],
+                    {},
+                    allow_external_row_hash=True,
+                )
+
     def test_pending_builder_cannot_self_qualify_and_pointer_failure_rolls_back(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             fixture = NativeFixture(Path(temporary))

@@ -724,18 +724,26 @@ def load_bound_csv_row(
     expected_row_sha256: str,
     hash_field: str,
     run_id: str,
-    cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
+    cache: dict[tuple[str, str, bool], tuple[str, dict[str, dict[str, str]]]],
+    *,
+    allow_external_row_hash: bool = False,
 ) -> dict[str, str]:
-    key = (str(path.resolve()), hash_field)
+    key = (str(path.resolve()), hash_field, allow_external_row_hash)
     if key not in cache:
         fields, rows = read_csv_strict(path)
-        if hash_field not in fields or "run_id" not in fields:
+        hash_is_embedded = hash_field in fields
+        if "run_id" not in fields or (
+            not hash_is_embedded and not allow_external_row_hash
+        ):
             raise ContractError(f"Manifest lacks run/hash fields: {path}")
         by_run: dict[str, dict[str, str]] = {}
         for row_number, item in enumerate(rows, start=2):
             observed_row_hash = row_sha256(item, hash_field)
-            if item.get(hash_field) != observed_row_hash:
+            if hash_is_embedded and item.get(hash_field) != observed_row_hash:
                 raise ContractError(f"Manifest row hash mismatch at {path}:{row_number}")
+            if not hash_is_embedded:
+                item = dict(item)
+                item[hash_field] = observed_row_hash
             item_run = item.get("run_id", "")
             if not item_run or item_run in by_run:
                 raise ContractError(f"Missing/duplicate run_id in {path}:{row_number}")
@@ -878,7 +886,9 @@ def validate_exact_reuse_provenance(
     row: Mapping[str, str],
     config: BuildConfig,
     file_bindings: dict[str, str],
-    manifest_cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
+    manifest_cache: dict[
+        tuple[str, str, bool], tuple[str, dict[str, dict[str, str]]]
+    ],
 ) -> Mapping[str, str]:
     reuse_path = bind_local_file(
         row,
@@ -955,7 +965,9 @@ def validate_row_provenance(
     case: core.CaseMetadata,
     config: BuildConfig,
     file_bindings: dict[str, str],
-    manifest_cache: dict[tuple[str, str], tuple[str, dict[str, dict[str, str]]]],
+    manifest_cache: dict[
+        tuple[str, str, bool], tuple[str, dict[str, dict[str, str]]]
+    ],
     identity_amendment: Mapping[str, Any],
 ) -> None:
     candidate_id = row["candidate_id"]
@@ -995,6 +1007,7 @@ def validate_row_provenance(
             "run_manifest_row_sha256",
             row["source_run_id"],
             manifest_cache,
+            allow_external_row_hash=True,
         )
         if (
             old_row.get("receptor_id") != receptor
@@ -1358,7 +1371,7 @@ def verify_selector(
     execution_release_hashes: set[str] = set()
     run_manifest_hashes: set[str] = set()
     manifest_cache: dict[
-        tuple[str, str], tuple[str, dict[str, dict[str, str]]]
+        tuple[str, str, bool], tuple[str, dict[str, dict[str, str]]]
     ] = {}
     try:
         identity_amendment = selector_contract.load_identity_normalization_amendment()
