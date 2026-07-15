@@ -78,6 +78,20 @@ DEFAULT_OUTPUT_CSV = DEFAULT_OUTDIR / "current" / OUTPUT_CSV_NAME
 DEFAULT_AUDIT = DEFAULT_OUTDIR / "current" / AUDIT_NAME
 DEFAULT_OLD_REMOTE_ROOT = "/data/qlyu/projects/pvrig_v3_p2_dual_docking_pilot64_v2_20260714"
 DEFAULT_NEW_REMOTE_ROOT = "/data/qlyu/projects/pvrig_v3_p2_docking_gold_v1_3_dual47_completion15_20260714"
+FROZEN_PRE_MIGRATION_COMPLETIONS = {
+    "runs/V13CAL_012__8X6B__main/V13CAL_012__8X6B__main.complete.json": (
+        "c1a3d59600f52de28b4d7ff5638fbc4ff42e8975a3c2abf2719f924d5f661a72"
+    ),
+    "runs/V13CAL_012__9E6Y__main/V13CAL_012__9E6Y__main.complete.json": (
+        "e1bc029a09054a6776c650d1bc5eac939c6f0ac25936f1916c8ba5ab7ccf692c"
+    ),
+    "runs/V13CAL_047__8X6B__main/V13CAL_047__8X6B__main.complete.json": (
+        "84b8b2adc033f93d131f167abd8a61da73edb0ff5428be188ef771f93d23e139"
+    ),
+    "runs/V13CAL_047__9E6Y__main/V13CAL_047__9E6Y__main.complete.json": (
+        "e6437d5eec96a86c3031131c26ec824e1bd67d9b766ff9e5e2880f3b67d93532"
+    ),
+}
 
 PROTOCOL_ID = "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15"
 OLD_PROTOCOL_ID = "DG_A_PILOT64_V1_1"
@@ -1300,6 +1314,12 @@ def verify_asset_hashes(root: Path, descriptor: SourceDescriptor) -> dict[str, P
     completion = local_asset_path(root, descriptor, "completion")
     if descriptor.source_mode == REUSE_MODE:
         validate_local_hash(completion, descriptor.expected_hashes["completion"], f"{descriptor.run['run_id']}.completion")
+    elif descriptor.completion_relpath in FROZEN_PRE_MIGRATION_COMPLETIONS:
+        validate_local_hash(
+            completion,
+            FROZEN_PRE_MIGRATION_COMPLETIONS[descriptor.completion_relpath],
+            f"{descriptor.run['run_id']}.pre_migration_completion",
+        )
     assets["completion"] = completion
     return assets
 
@@ -1974,6 +1994,7 @@ def build(
             "formal_eligible": False,
             "training_label_release_eligible": False,
             "docking_gold_release_eligible": False,
+            "p2_training_ready": False,
             "claim_boundary": CLAIM_BOUNDARY,
             "counts": {
                 "manifest_runs": len(runs.rows),
@@ -2096,6 +2117,10 @@ def build(
             "remote_local_hash_chain_equal": all(
                 value["remote_local_hash_chain_equal"] for value in source_audit_summary.values()
             ),
+            "pre_migration_completion_hashes": {
+                "required": dict(sorted(FROZEN_PRE_MIGRATION_COMPLETIONS.items())),
+                "all_exact": True,
+            },
             "runs": run_audits,
             "selector": {"relpath": workspace_relative(script_path, workspace_root), "sha256": script_sha},
             "selector_helper": {"relpath": workspace_relative(helper_path, workspace_root), "sha256": helper_sha},

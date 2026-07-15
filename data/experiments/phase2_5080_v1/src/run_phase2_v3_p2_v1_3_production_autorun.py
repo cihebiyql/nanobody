@@ -412,7 +412,7 @@ class RemoteSnapshot:
             )
         ):
             raise AutorunError("Remote host/boot identity mismatch")
-        if (
+        if contract.source != "legacy_node1_constants" and (
             not snapshot.frozen_completion_hashes_valid
             or dict(snapshot.observed_frozen_completion_sha256)
             != FROZEN_PRE_MIGRATION_COMPLETIONS
@@ -839,7 +839,15 @@ def validate_selector(release: Path) -> dict[str, Any]:
         raise AutorunError("Selector audit schema mismatch")
     if audit.get("status") != "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED":
         raise AutorunError("Selector audit status mismatch")
-    require_false(audit, FALSE_BOUNDARIES[:3])
+    require_false(audit, FALSE_BOUNDARIES)
+    if (
+        audit.get("protocol_id") != PROTOCOL_ID
+        or audit.get("selection_backfill") is not False
+        or audit.get("docking_launched") is not False
+        or audit.get("scoring_performed") is not False
+        or audit.get("remote_local_hash_chain_equal") is not True
+    ):
+        raise AutorunError("Selector execution semantics mismatch")
     counts = audit.get("counts", {})
     if not isinstance(counts, dict) or (
         counts.get("manifest_runs") != 94
@@ -848,12 +856,73 @@ def validate_selector(release: Path) -> dict[str, Any]:
         or counts.get("cases") != 47
     ):
         raise AutorunError("Selector 47/94/752 closure failed")
+    if (
+        audit.get("run_counts_by_receptor") != {"8X6B": 47, "9E6Y": 47}
+        or audit.get("pose_counts_by_receptor")
+        != {"8X6B": 376, "9E6Y": 376}
+        or audit.get("run_counts_by_source_mode")
+        != {"REUSE_OLD_PILOT64_MAIN": 64, "NEW_DUAL_DOCKING_COMPLETION": 30}
+        or audit.get("pose_counts_by_source_mode")
+        != {"REUSE_OLD_PILOT64_MAIN": 512, "NEW_DUAL_DOCKING_COMPLETION": 240}
+    ):
+        raise AutorunError("Selector receptor/source-mode closure failed")
+    execution = audit.get("inputs", {}).get("execution_release_manifest", {})
+    if (
+        not isinstance(execution, dict)
+        or execution.get("sha256")
+        != "4a0f1a63ef3dc16220beb9d821db71e500d4e512195e7f19a3e112d1d7a2db21"
+    ):
+        raise AutorunError("Selector frozen execution-release binding failed")
+    source_inventories = audit.get("source_inventories", {})
+    if (
+        not isinstance(source_inventories, dict)
+        or set(source_inventories)
+        != {"REUSE_OLD_PILOT64_MAIN", "NEW_DUAL_DOCKING_COMPLETION"}
+        or any(
+            not isinstance(value, dict)
+            or value.get("remote_local_hash_chain_equal") is not True
+            or value.get("remote_file_hash_chain")
+            != value.get("local_file_hash_chain")
+            for value in source_inventories.values()
+        )
+    ):
+        raise AutorunError("Selector remote/local inventory closure failed")
+    identity = audit.get("identity_gate_summary", {})
+    if not isinstance(identity, dict) or (
+        identity.get("pose_count") != 752
+        or identity.get("vhh_normalized_atom_identity_exact_count") != 752
+        or identity.get("pvrig_raw_atom_identity_exact_count") != 752
+        or identity.get("monomer_vhh_heavy_hetatm_identity_count_total") != 0
+        or identity.get("receptor_pvrig_heavy_hetatm_identity_count_total") != 0
+        or identity.get("pose_vhh_heavy_hetatm_identity_count_total") != 0
+        or identity.get("pose_pvrig_heavy_hetatm_identity_count_total") != 0
+        or identity.get("heavy_hetatm_zero_gate_pass_count") != 752
+        or identity.get("coordinate_or_score_modified") is not False
+    ):
+        raise AutorunError("Selector coordinate/identity gate closure failed")
+    migration_hashes = audit.get("pre_migration_completion_hashes", {})
+    if (
+        not isinstance(migration_hashes, dict)
+        or migration_hashes.get("all_exact") is not True
+        or migration_hashes.get("required")
+        != dict(sorted(FROZEN_PRE_MIGRATION_COMPLETIONS.items()))
+    ):
+        raise AutorunError("Selector pre-migration completion binding failed")
+    selector_impl = audit.get("selector", {})
+    expected_selector_sha = sha256_file(SCRIPT_DIR / SELECTOR_NAME)
+    if (
+        not isinstance(selector_impl, dict)
+        or selector_impl.get("sha256") != expected_selector_sha
+    ):
+        raise AutorunError("Selector implementation binding failed")
     selector = release / SELECTOR_CSV
     if csv_rows(selector) != 752:
         raise AutorunError("Selector CSV does not contain 752 poses")
     binding = audit.get("output_csv", {})
     if not isinstance(binding, dict) or binding.get("sha256") != sha256_file(selector):
         raise AutorunError("Selector CSV hash binding failed")
+    if binding.get("rows") != 752:
+        raise AutorunError("Selector output row declaration mismatch")
     return {"status": audit["status"], "rows": 752}
 
 
@@ -1021,6 +1090,8 @@ expected_haddock = "__HADDOCK_BIN__"
 expected_hostname = __EXPECTED_HOSTNAME__
 expected_boot_id = __EXPECTED_BOOT_ID__
 expected_argv = __EXPECTED_ARGV__
+expected_frozen_completion_sha256 = __EXPECTED_FROZEN_COMPLETIONS__
+expected_handoff_phase_sha256 = __EXPECTED_HANDOFF_PHASES__
 observed_hostname = socket.gethostname()
 try:
     observed_boot_id = pathlib.Path("/proc/sys/kernel/random/boot_id").read_text(
@@ -1032,6 +1103,50 @@ host_identity_valid = (
     observed_hostname == expected_hostname
     and (not expected_boot_id or observed_boot_id == expected_boot_id)
 )
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+observed_frozen_completion_sha256 = {}
+for relative in expected_frozen_completion_sha256:
+    path = root / relative
+    observed_frozen_completion_sha256[relative] = (
+        file_sha256(path) if path.is_file() else ""
+    )
+frozen_completion_hashes_valid = (
+    observed_frozen_completion_sha256 == expected_frozen_completion_sha256
+)
+phase_root = root / "migration_handoff_generation2.lock"
+observed_handoff_phase_sha256 = {}
+for name in expected_handoff_phase_sha256:
+    path = phase_root / name
+    observed_handoff_phase_sha256[name] = file_sha256(path) if path.is_file() else ""
+handoff_phase_hashes_valid = (
+    observed_handoff_phase_sha256 == expected_handoff_phase_sha256
+)
+
+matching_controller_pids = []
+root_text = root.resolve().as_posix()
+for proc in proc_root.iterdir():
+    if not proc.name.isdigit():
+        continue
+    try:
+        argv_bytes = (proc / "cmdline").read_bytes()
+        argv = [part.decode("utf-8") for part in argv_bytes.split(b"\0") if part]
+        if (
+            len(argv) >= 4
+            and argv[1] == "scripts/run_v1_3_completion15.py"
+            and "--root" in argv
+            and argv[argv.index("--root") + 1] == root_text
+        ):
+            matching_controller_pids.append(int(proc.name))
+    except (OSError, UnicodeDecodeError, ValueError):
+        pass
+matching_controller_pids.sort()
+matching_controller_count = len(matching_controller_pids)
 
 def emit(status, manifest_count=0, completion_count=0, pass_count=0,
          failure_count=0, missing_count=30, invalid_count=0,
@@ -1050,6 +1165,12 @@ def emit(status, manifest_count=0, completion_count=0, pass_count=0,
         "observed_hostname":observed_hostname,
         "observed_boot_id":observed_boot_id,
         "host_identity_valid":host_identity_valid,
+        "matching_controller_count":matching_controller_count,
+        "matching_controller_pids":matching_controller_pids,
+        "frozen_completion_hashes_valid":frozen_completion_hashes_valid,
+        "observed_frozen_completion_sha256":observed_frozen_completion_sha256,
+        "handoff_phase_hashes_valid":handoff_phase_hashes_valid,
+        "observed_handoff_phase_sha256":observed_handoff_phase_sha256,
         "failures":list(failures)}, sort_keys=True))
 
 manifest = root / "manifests/new_run_manifest.csv"
@@ -1114,6 +1235,14 @@ found_paths = {
 failures = []
 if not host_identity_valid:
     failures.append("remote_host_or_boot_identity_mismatch")
+if not frozen_completion_hashes_valid:
+    failures.append("frozen_completion_receipt_hash_mismatch")
+if not handoff_phase_hashes_valid:
+    failures.append("migration_handoff_phase_hash_mismatch")
+if matching_controller_count > 1:
+    failures.append("multiple_matching_controllers:" + ",".join(
+        str(value) for value in matching_controller_pids
+    ))
 unexpected = found_paths - expected_paths
 if unexpected:
     failures.append("unexpected_completion_files:" + ",".join(sorted(unexpected)))
@@ -1147,9 +1276,13 @@ controller_start_ticks = None
 controller_pid_file_valid = False
 controller_identity_valid = False
 controller_argv_sha256 = ""
-ready = (host_identity_valid and completion_count == 30 and pass_count == 30 and missing_count == 0
+ready = (host_identity_valid and frozen_completion_hashes_valid
+         and handoff_phase_hashes_valid and matching_controller_count <= 1
+         and completion_count == 30 and pass_count == 30 and missing_count == 0
          and not unexpected and not invalid_count and not failure_count)
-if not ready and not unexpected and not invalid_count and not failure_count:
+if (not ready and host_identity_valid and frozen_completion_hashes_valid
+        and handoff_phase_hashes_valid and matching_controller_count == 1
+        and not unexpected and not invalid_count and not failure_count):
     pid_file = root / "controller_full.pid"
     try:
         pid_bytes = pid_file.read_bytes()
@@ -1185,7 +1318,9 @@ if not ready and not unexpected and not invalid_count and not failure_count:
         except Exception as error:
             failures.append("controller_proc_missing_or_dead:" + str(error))
 
-if not host_identity_valid or unexpected or invalid_count or failure_count:
+if (not host_identity_valid or not frozen_completion_hashes_valid
+        or not handoff_phase_hashes_valid or matching_controller_count > 1
+        or unexpected or invalid_count or failure_count):
     status = "FAILURE"
 elif ready:
     status = "READY"
@@ -1212,6 +1347,18 @@ emit(status, manifest_count=30, completion_count=completion_count,
         .replace("__EXPECTED_HOSTNAME__", json.dumps(contract.host))
         .replace("__EXPECTED_BOOT_ID__", json.dumps(contract.boot_id))
         .replace("__EXPECTED_ARGV__", json.dumps(list(contract.argv)))
+        .replace(
+            "__EXPECTED_FROZEN_COMPLETIONS__",
+            json.dumps(
+                FROZEN_PRE_MIGRATION_COMPLETIONS
+                if contract.source != "legacy_node1_constants"
+                else {}
+            ),
+        )
+        .replace(
+            "__EXPECTED_HANDOFF_PHASES__",
+            json.dumps(dict(contract.phase_artifact_sha256)),
+        )
     )
 
 
@@ -1222,6 +1369,88 @@ def remote_command(
         shlex.quote(remote_probe_script(contract)), shlex.quote(REMOTE_ROOT)
     )
     return (config.ssh_executable, config.host, command)
+
+
+def retired_source_probe_script(contract: ControllerContract) -> str:
+    script = r'''import json, os, pathlib, socket, sys
+proc_root = pathlib.Path(sys.argv[1]) if len(sys.argv) == 2 else pathlib.Path("/proc")
+expected_hostname = __EXPECTED_HOSTNAME__
+expected_boot_id = __EXPECTED_BOOT_ID__
+remote_root = __REMOTE_ROOT__
+observed_hostname = socket.gethostname()
+try:
+    observed_boot_id = pathlib.Path("/proc/sys/kernel/random/boot_id").read_text(
+        encoding="ascii"
+    ).strip()
+except OSError:
+    observed_boot_id = ""
+matching = []
+for proc in proc_root.iterdir():
+    if not proc.name.isdigit():
+        continue
+    try:
+        raw = (proc / "cmdline").read_bytes()
+        argv = [part.decode("utf-8") for part in raw.split(b"\0") if part]
+        if (
+            len(argv) >= 4
+            and argv[1] == "scripts/run_v1_3_completion15.py"
+            and "--root" in argv
+            and argv[argv.index("--root") + 1] == remote_root
+        ):
+            matching.append(int(proc.name))
+    except (OSError, UnicodeDecodeError, ValueError):
+        pass
+matching.sort()
+valid = (
+    observed_hostname == expected_hostname
+    and observed_boot_id == expected_boot_id
+    and not matching
+)
+print(json.dumps({
+    "status": "PASS_RETIRED_SOURCE_ZERO_CONTROLLERS" if valid else "FAIL_RETIRED_SOURCE_GUARD",
+    "observed_hostname": observed_hostname,
+    "observed_boot_id": observed_boot_id,
+    "matching_controller_count": len(matching),
+    "matching_controller_pids": matching,
+}, sort_keys=True))'''
+    return (
+        script.replace("__EXPECTED_HOSTNAME__", json.dumps(contract.retired_host))
+        .replace("__EXPECTED_BOOT_ID__", json.dumps(contract.retired_boot_id))
+        .replace("__REMOTE_ROOT__", json.dumps(REMOTE_ROOT))
+    )
+
+
+def retired_source_command(
+    config: Config, contract: ControllerContract
+) -> tuple[str, ...]:
+    command = "python3 -c {}".format(
+        shlex.quote(retired_source_probe_script(contract))
+    )
+    return (config.ssh_executable, contract.retired_host, command)
+
+
+def validate_retired_source_result(
+    result: CommandResult, contract: ControllerContract
+) -> dict[str, Any]:
+    if result.returncode != 0:
+        raise AutorunError(
+            f"Retired-source probe exited {result.returncode}: {result.stderr.strip()}"
+        )
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
+    try:
+        payload = json.loads(lines[-1])
+    except (IndexError, json.JSONDecodeError) as error:
+        raise AutorunError("Retired-source probe returned invalid JSON") from error
+    if (
+        not isinstance(payload, dict)
+        or payload.get("status") != "PASS_RETIRED_SOURCE_ZERO_CONTROLLERS"
+        or payload.get("observed_hostname") != contract.retired_host
+        or payload.get("observed_boot_id") != contract.retired_boot_id
+        or payload.get("matching_controller_count") != 0
+        or payload.get("matching_controller_pids") != []
+    ):
+        raise AutorunError("Retired source no longer has zero matching controllers")
+    return payload
 
 
 def parse_remote_result(
@@ -1467,6 +1696,26 @@ class Autorun:
             os.fsync(handle.fileno())
 
     def _probe(self) -> RemoteSnapshot:
+        if self.controller_contract.retired_host:
+            source_command = retired_source_command(
+                self.config, self.controller_contract
+            )
+            source_result = self.runner(
+                source_command, self.config.layout.data_root
+            )
+            self._log(
+                "retired_source_probe_command",
+                command=list(source_command),
+                returncode=source_result.returncode,
+                stdout_sha256=sha256_bytes(source_result.stdout.encode("utf-8")),
+                stderr_sha256=sha256_bytes(source_result.stderr.encode("utf-8")),
+            )
+            source_snapshot = validate_retired_source_result(
+                source_result, self.controller_contract
+            )
+            self.state["retired_source_snapshot"] = source_snapshot
+            self._save()
+            self._log("retired_source_snapshot", snapshot=source_snapshot)
         command = remote_command(self.config, self.controller_contract)
         result = self.runner(command, self.config.layout.data_root)
         self._log(

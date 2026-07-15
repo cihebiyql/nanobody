@@ -67,14 +67,72 @@ class FixturePublisher:
                         "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2"
                     ),
                     "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
-                    **boundaries(include_p2=False),
+                    **boundaries(),
+                    "protocol_id": autorun.PROTOCOL_ID,
+                    "selection_backfill": False,
+                    "docking_launched": False,
+                    "scoring_performed": False,
+                    "remote_local_hash_chain_equal": True,
                     "counts": {
                         "manifest_runs": 94,
                         "selected_runs": 94,
                         "selected_poses": 752,
                         "cases": 47,
                     },
-                    "output_csv": {"sha256": autorun.sha256_file(table)},
+                    "run_counts_by_receptor": {"8X6B": 47, "9E6Y": 47},
+                    "pose_counts_by_receptor": {"8X6B": 376, "9E6Y": 376},
+                    "run_counts_by_source_mode": {
+                        "REUSE_OLD_PILOT64_MAIN": 64,
+                        "NEW_DUAL_DOCKING_COMPLETION": 30,
+                    },
+                    "pose_counts_by_source_mode": {
+                        "REUSE_OLD_PILOT64_MAIN": 512,
+                        "NEW_DUAL_DOCKING_COMPLETION": 240,
+                    },
+                    "inputs": {
+                        "execution_release_manifest": {
+                            "sha256": (
+                                "4a0f1a63ef3dc16220beb9d821db71e500d4e512195e7f19a3e112d1d7a2db21"
+                            )
+                        }
+                    },
+                    "source_inventories": {
+                        name: {
+                            "remote_local_hash_chain_equal": True,
+                            "remote_file_hash_chain": "a" * 64,
+                            "local_file_hash_chain": "a" * 64,
+                        }
+                        for name in (
+                            "REUSE_OLD_PILOT64_MAIN",
+                            "NEW_DUAL_DOCKING_COMPLETION",
+                        )
+                    },
+                    "identity_gate_summary": {
+                        "pose_count": 752,
+                        "vhh_normalized_atom_identity_exact_count": 752,
+                        "pvrig_raw_atom_identity_exact_count": 752,
+                        "monomer_vhh_heavy_hetatm_identity_count_total": 0,
+                        "receptor_pvrig_heavy_hetatm_identity_count_total": 0,
+                        "pose_vhh_heavy_hetatm_identity_count_total": 0,
+                        "pose_pvrig_heavy_hetatm_identity_count_total": 0,
+                        "heavy_hetatm_zero_gate_pass_count": 752,
+                        "coordinate_or_score_modified": False,
+                    },
+                    "pre_migration_completion_hashes": {
+                        "required": dict(
+                            sorted(autorun.FROZEN_PRE_MIGRATION_COMPLETIONS.items())
+                        ),
+                        "all_exact": True,
+                    },
+                    "selector": {
+                        "sha256": autorun.sha256_file(
+                            self.layout.src / autorun.SELECTOR_NAME
+                        )
+                    },
+                    "output_csv": {
+                        "sha256": autorun.sha256_file(table),
+                        "rows": 752,
+                    },
                 },
             )
 
