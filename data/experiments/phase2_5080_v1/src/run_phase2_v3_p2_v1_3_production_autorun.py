@@ -431,11 +431,8 @@ class RemoteSnapshot:
                 or snapshot.failure_count
                 or snapshot.missing_count
                 or snapshot.invalid_count
-                or snapshot.matching_controller_count > 1
-                or (
-                    snapshot.matching_controller_count == 1
-                    and snapshot.matching_controller_pids != (contract.pid,)
-                )
+                or snapshot.matching_controller_count != 0
+                or snapshot.matching_controller_pids
             ):
                 raise AutorunError("Remote READY snapshot lacks exact 30/30 closure")
         elif snapshot.status == "WAITING":
@@ -1280,7 +1277,7 @@ controller_pid_file_valid = False
 controller_identity_valid = False
 controller_argv_sha256 = ""
 ready = (host_identity_valid and frozen_completion_hashes_valid
-         and handoff_phase_hashes_valid and matching_controller_count <= 1
+         and handoff_phase_hashes_valid and matching_controller_count == 0
          and completion_count == 30 and pass_count == 30 and missing_count == 0
          and not unexpected and not invalid_count and not failure_count)
 if (not ready and host_identity_valid and frozen_completion_hashes_valid

@@ -513,9 +513,12 @@ class Fixture:
             "sync_runner": self.runner,
         }
         arguments.update(overrides)
+        frozen_paths = sorted(
+            self.remote_new.glob("runs/*/*.complete.json")
+        )[:4]
         frozen_completions = {
-            relative: MOD.sha256_file(self.remote_new / relative)
-            for relative in MOD.FROZEN_PRE_MIGRATION_COMPLETIONS
+            path.relative_to(self.remote_new).as_posix(): MOD.sha256_file(path)
+            for path in frozen_paths
         }
         with mock.patch.object(
             MOD, "FROZEN_EXECUTION_RELEASE_SHA256", self.execution_release_sha256
