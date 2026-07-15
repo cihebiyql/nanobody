@@ -513,8 +513,14 @@ class Fixture:
             "sync_runner": self.runner,
         }
         arguments.update(overrides)
+        frozen_completions = {
+            relative: MOD.sha256_file(self.remote_new / relative)
+            for relative in MOD.FROZEN_PRE_MIGRATION_COMPLETIONS
+        }
         with mock.patch.object(
             MOD, "FROZEN_EXECUTION_RELEASE_SHA256", self.execution_release_sha256
+        ), mock.patch.object(
+            MOD, "FROZEN_PRE_MIGRATION_COMPLETIONS", frozen_completions
         ):
             return MOD.build(**arguments)
 

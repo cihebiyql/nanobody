@@ -92,7 +92,7 @@ FROZEN_PRE_MIGRATION_COMPLETIONS = {
     ),
 }
 
-STATE_SCHEMA = "pvrig_v1_3_production_autorun_state_v2"
+STATE_SCHEMA = "pvrig_v1_3_production_autorun_state_v3"
 MIGRATION_RECEIPT_SCHEMA = "pvrig_v1_3_controller_migration_receipt_v1"
 MIGRATION_RECEIPT_STATUS = "PASS_NODE1_TO_NODE23_SINGLE_WRITER_HANDOFF"
 FINAL_PASS = "COMPLETE_DEVELOPMENT_PASS_SMOKE_ELIGIBLE_FORMAL_BLOCKED"
@@ -220,11 +220,11 @@ class Layout:
 
     @property
     def default_state(self) -> Path:
-        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_state_v2.json"
+        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_state_v3.json"
 
     @property
     def default_log(self) -> Path:
-        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_v2.jsonl"
+        return self.exp_dir / "logs/pvrig_v1_3_production_autorun_v3.jsonl"
 
 
 @dataclass(frozen=True)
@@ -571,7 +571,10 @@ def _require_sha256(value: Any, label: str) -> str:
 
 
 def _contained_evidence_path(root: Path, relative: Any, label: str) -> Path:
-    candidate = (root.resolve() / str(relative)).resolve(strict=True)
+    try:
+        candidate = (root.resolve() / str(relative)).resolve(strict=True)
+    except OSError as error:
+        raise AutorunError(f"Migration receipt {label} is missing") from error
     try:
         candidate.relative_to(root.resolve())
     except ValueError as error:
