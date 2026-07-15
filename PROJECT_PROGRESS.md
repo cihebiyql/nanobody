@@ -2,9 +2,15 @@
 
 This is the continuously maintained progress document for the PVRIG mechanism, scaffold, and model work. Update it whenever Phase I evidence, model gates, or candidate-ranking artifacts change.
 
-## Current Competition Objective - 2026-07-12
+## Current Competition Objective - 2026-07-15
 
-**Status: `PIPELINE_READY_CANDIDATE_PORTFOLIO_NOT_READY`.**
+**Status:**
+
+```text
+TARGET_CONDITIONED_DESIGN_POOL_READY
+TEACHER500_DOCKING_READY
+FINAL_SUBMISSION_PORTFOLIO_NOT_FROZEN
+```
 
 The current critical path is the 2026-07-26 18:00 first-round competition
 submission, not another generic-model iteration. The project must produce 50
@@ -12,26 +18,32 @@ ranked, traceable VHH designs, with the strongest evidence concentrated in a
 diverse Top10. Known positives, patent sequences, and their mutant controls
 remain calibration/leakage controls and are never submission candidates.
 
-The existing V2.4 model Top50 has now been run through the production cascade:
-50/50 pass positive-CDR novelty, 29/50 pass full sequence QC, 21/50 hard-fail,
-4/29 have imported docking evidence, and 2/29 receive the computational
-`FINAL_POSITIVE_HIGH` label. These 50 are unmodified public ZYMScott sequences,
-so this result validates the screening workflow but does not create a compliant
-submission portfolio.
+The original missing design pool has now been built: Parent40 RFantibody and
+ProteinMPNN production generated 8,640 raw designs, 8,248 exact-unique
+sequences, and 7,087 fast-gate-eligible candidates. Teacher500 is complete for
+500 candidates and 4,394 valid poses across all 40 parent clusters. However,
+all 500 rows remain explicitly marked
+`false_teacher_data_only_pending_separate_full_qc`, and none has independent
+candidate-specific 9E6Y native docking. V3-P1 failed its target-dependence
+formal gate, while Docking Gold V1.3 completed technically but failed the
+bootstrap modal-stability gate. These outputs are computational prioritization
+evidence, not released Gold labels or experimental blocker truth.
 
 Authoritative competition audit and machine-readable state:
 
 - `node1/PVRIG_COMPETITION_ASSET_AND_GOAL_AUDIT_20260712.md`
+- `data/experiments/phase2_5080_v1/reports/PVRIG_COMPETITION_TRAINING_TEST_RETROSPECTIVE_AND_NEXT_STEPS_ZH.md`
 - `node1/competition_qc/pvrig_competition_asset_inventory_20260712.csv`
 - `node1/competition_qc/pvrig_competition_readiness_20260712.json`
 - `node1/competition_qc/pvrig_top50_audit_20260712/`
 
-Immediate priorities are: generate a target-conditioned multi-family VHH
-library with RFantibody and the clean scaffold set; obtain at least 100-300
-designed hard-pass sequences; structure/dock the bounded shortlist; freeze a
-50-sequence portfolio and multi-family Top10; then produce the official template,
-one-page proposal, and reproducible source release. Current computational labels
-remain ranking evidence, not experimental binding or blocking truth.
+Immediate priorities are now: run separate full QC on all Teacher500 rows;
+select a diverse 100-150-candidate portfolio shortlist; add independent 9E6Y
+native docking for the top 60-80 and dual-receptor replicate review for the
+Top20; freeze a 50-sequence portfolio and multi-family Top10; then complete the
+official template, one-page proposal, and reproducible source release. Further
+V3-P2 training or Docking Gold method development must not block the competition
+submission.
 
 ## Latest Phase 2 Model Update - 2026-07-11 (V2.5)
 
