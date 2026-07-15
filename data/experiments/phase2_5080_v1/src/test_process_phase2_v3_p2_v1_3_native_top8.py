@@ -687,6 +687,7 @@ class NativeFixture:
                         "formal_eligible": "false",
                         "training_label_release_eligible": "false",
                         "docking_gold_release_eligible": "false",
+                        "p2_training_ready": "false",
                         "selection_row_sha256": "",
                     }
                 )
@@ -710,6 +711,7 @@ class NativeFixture:
                 "formal_eligible": False,
                 "training_label_release_eligible": False,
                 "docking_gold_release_eligible": False,
+                "p2_training_ready": False,
                 "remote_local_hash_chain_equal": True,
                 "source_protocol": MOD.POSE_SOURCE_PROTOCOL,
                 "k": self.poses_per_run,
@@ -944,6 +946,7 @@ class V13NativeTop8Tests(unittest.TestCase):
             self.assertFalse(first_audit["formal_eligible"])
             self.assertFalse(first_audit["training_label_release_eligible"])
             self.assertFalse(first_audit["docking_gold_release_eligible"])
+            self.assertFalse(first_audit["p2_training_ready"])
             self.assertFalse(first_audit["development_release_state"]["validated"])
             self.assertEqual(
                 first_audit["reference_inventory_observed"]["9E6Y"]
@@ -999,6 +1002,33 @@ class V13NativeTop8Tests(unittest.TestCase):
         regions["CDR2"]["occluding_residue_pair_count"] = 1
         with self.assertRaises(MOD.ContractError):
             MOD.validate_nullable_region_min_distances({"regions": regions}, "invalid")
+
+    def test_selector_p2_training_boundary_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = NativeFixture(Path(temporary))
+            with fixture.selector_csv.open(newline="", encoding="utf-8") as handle:
+                reader = csv.DictReader(handle)
+                fields = list(reader.fieldnames or [])
+                rows = list(reader)
+            rows[0]["p2_training_ready"] = "true"
+            rows[0]["selection_row_sha256"] = MOD.row_sha256(
+                rows[0], "selection_row_sha256"
+            )
+            write_csv(fixture.selector_csv, fields, rows)
+
+            audit = json.loads(fixture.selector_audit.read_text(encoding="utf-8"))
+            audit["output_csv"]["sha256"] = MOD.sha256_file(fixture.selector_csv)
+            audit["output_csv"]["selection_row_hash_chain"] = MOD.sha256_bytes(
+                "\n".join(row["selection_row_sha256"] for row in rows).encode(
+                    "ascii"
+                )
+            )
+            MOD.write_json(fixture.selector_audit, audit)
+
+            config = fixture.config(fixture.root / "p2_boundary_output")
+            with self.assertRaisesRegex(MOD.ContractError, "p2_training_ready"):
+                MOD.build_package(config)
+            self.assertFalse((config.outdir / "current").exists())
 
     def test_pending_builder_cannot_self_qualify_and_pointer_failure_rolls_back(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

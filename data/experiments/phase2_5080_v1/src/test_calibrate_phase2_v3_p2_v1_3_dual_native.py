@@ -152,7 +152,7 @@ class V13SyntheticFixture:
                 run = self.frozen_runs[(case_id, receptor)]
                 for rank in range(1, 9):
                     row = {
-                        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v1",
+                        "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v3",
                         "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
                         "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",
                         "source_stage": "4_emref",
@@ -173,6 +173,7 @@ class V13SyntheticFixture:
                         "formal_eligible": "false",
                         "training_label_release_eligible": "false",
                         "docking_gold_release_eligible": "false",
+                        "p2_training_ready": "false",
                     }
                     row["selection_row_sha256"] = calibration.row_sha256(
                         row, "selection_row_sha256"
@@ -184,7 +185,7 @@ class V13SyntheticFixture:
         calibration.write_json(
             self.selector_audit,
             {
-                "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
+                "schema_version": "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v3",
                 "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
                 "protocol_id": "DG_A_PVRIG_V1_3_DUAL47_COMPLETION15",
                 "source_protocol": "HADDOCK3_4_EMREF_IO_SCORE_ORDER_V1",
@@ -195,6 +196,7 @@ class V13SyntheticFixture:
                 "formal_eligible": False,
                 "training_label_release_eligible": False,
                 "docking_gold_release_eligible": False,
+                "p2_training_ready": False,
                 "counts": {
                     "manifest_runs": 94,
                     "selected_runs": 94,
@@ -687,6 +689,39 @@ class TestV13NativeDualCalibration(unittest.TestCase):
             "PASS_V1_3_DUAL_RECEPTOR_DEVELOPMENT_METHOD",
             json.dumps(audit, sort_keys=True),
         )
+
+    def test_selector_p2_training_boundary_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            selector_csv = root / "selector.csv"
+            selector_audit = root / "selector_audit.json"
+            shutil.copyfile(self.fixture.selector_csv, selector_csv)
+            shutil.copyfile(self.fixture.selector_audit, selector_audit)
+
+            fields, rows = calibration.read_csv_strict(selector_csv)
+            rows[0]["p2_training_ready"] = "true"
+            rows[0]["selection_row_sha256"] = calibration.row_sha256(
+                rows[0], "selection_row_sha256"
+            )
+            self.fixture._write_rows(selector_csv, fields, rows)
+
+            audit = json.loads(selector_audit.read_text(encoding="utf-8"))
+            audit["output_csv"]["sha256"] = calibration.sha256_file(selector_csv)
+            audit["output_csv"]["selection_row_hash_chain"] = (
+                calibration.newline_hash_chain(rows, "selection_row_sha256")
+            )
+            calibration.write_json(selector_audit, audit)
+
+            with self.assertRaisesRegex(
+                calibration.CalibrationError, "Selector native identity mismatch"
+            ):
+                calibration.validate_selector_publication(
+                    selector_csv,
+                    selector_audit,
+                    self.fixture.frozen_cases,
+                    self.fixture.frozen_runs,
+                    self.fixture.protocols,
+                )
 
     def test_full_B2000_two_builds_are_byte_deterministic(self) -> None:
         outdir_a = self.root / "determinism" / "build_a"

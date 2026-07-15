@@ -605,7 +605,7 @@ class V13Dual47RecoveryTests(unittest.TestCase):
             self.assertEqual(first[0]["pvrig_raw_atom_identity_exact"], "true")
             self.assertEqual(
                 first[0]["schema_version"],
-                "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v2",
+                "phase2_v3_p2_v1_3_dual47_emref_top8_selection_v3",
             )
             self.assertEqual(
                 first[0]["identity_normalization_amendment_sha256"],
@@ -649,7 +649,7 @@ class V13Dual47RecoveryTests(unittest.TestCase):
             )
             self.assertEqual(
                 audit["schema_version"],
-                "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2",
+                "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v3",
             )
             self.assertEqual(
                 audit["inputs"]["atom_hetatm_identity_amendment_v2"]["sha256"],

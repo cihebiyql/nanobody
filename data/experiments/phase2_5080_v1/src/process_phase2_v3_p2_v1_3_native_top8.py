@@ -1215,6 +1215,7 @@ def verify_selector_audit(
         "formal_eligible": False,
         "training_label_release_eligible": False,
         "docking_gold_release_eligible": False,
+        "p2_training_ready": False,
         "remote_local_hash_chain_equal": True,
         "source_protocol": POSE_SOURCE_PROTOCOL,
         "k": config.contract.poses_per_run,

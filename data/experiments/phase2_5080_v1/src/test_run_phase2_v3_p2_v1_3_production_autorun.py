@@ -64,7 +64,7 @@ class FixturePublisher:
                 release / autorun.SELECTOR_AUDIT,
                 {
                     "schema_version": (
-                        "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v2"
+                        "phase2_v3_p2_v1_3_dual47_emref_top8_recovery_audit_v3"
                     ),
                     "status": "PASS_V1_3_DUAL47_EMREF_TOP8_RECOVERED",
                     **boundaries(),
@@ -793,6 +793,27 @@ class AutorunTest(unittest.TestCase):
         self.assertEqual(observed["matching_controller_count"], 2)
         self.assertIn("4059963", ",".join(observed["failures"]))
 
+    def test_remote_probe_rejects_absolute_path_duplicate_controller(self) -> None:
+        remote, proc = create_remote_probe_fixture(
+            self.root / "probe-absolute-duplicate"
+        )
+        source = proc / str(autorun.FROZEN_CONTROLLER_PID)
+        duplicate = proc / "4059963"
+        shutil.copytree(source, duplicate, symlinks=True)
+        argv = [
+            value.decode("utf-8")
+            for value in (duplicate / "cmdline").read_bytes().split(b"\0")
+            if value
+        ]
+        argv[1] = (remote / "scripts/run_v1_3_completion15.py").as_posix()
+        (duplicate / "cmdline").write_bytes(
+            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+        )
+        observed = execute_remote_probe(remote, proc)
+        self.assertEqual(observed["status"], "FAILURE")
+        self.assertEqual(observed["matching_controller_count"], 2)
+        self.assertIn("4059963", ",".join(observed["failures"]))
+
     def test_remote_probe_recomputes_frozen_completion_hashes(self) -> None:
         remote, proc = create_remote_probe_fixture(self.root / "probe-completion")
         with (remote / "manifests/new_run_manifest.csv").open(
@@ -868,6 +889,16 @@ class AutorunTest(unittest.TestCase):
         fake.mkdir()
         argv = list(contract.argv)
         (fake / "cmdline").write_bytes(
+            b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
+        )
+        with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):
+            autorun.validate_retired_source_result(execute(), contract)
+
+        shutil.rmtree(fake)
+        absolute = proc / "12346"
+        absolute.mkdir()
+        argv[1] = f"{autorun.REMOTE_ROOT}/scripts/run_v1_3_completion15.py"
+        (absolute / "cmdline").write_bytes(
             b"\0".join(value.encode("utf-8") for value in argv) + b"\0"
         )
         with self.assertRaisesRegex(autorun.AutorunError, "zero matching"):

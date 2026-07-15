@@ -604,7 +604,8 @@ SELECTOR_REQUIRED_FIELDS = {
     "receptor_sha256", "run_manifest_sha256", "run_manifest_row_sha256",
     "execution_release_manifest_sha256", "publication_release_id",
     "formal_eligible", "training_label_release_eligible",
-    "docking_gold_release_eligible", "selection_row_sha256",
+    "docking_gold_release_eligible", "p2_training_ready",
+    "selection_row_sha256",
 }
 
 
