@@ -1,7 +1,7 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-15 07:59 Asia/Shanghai`
+- 更新时间：`2026-07-15 08:07 Asia/Shanghai`
 - 当前阶段：`FULL_QUEUE_NODE23_LOCAL_SCRATCH_VERIFIED_RUNNING_8_WAY`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
@@ -15,8 +15,8 @@
 ## 冻结标识
 
 - `protocol_core_sha256`: `e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8`
-- `protocol_lock_sha256`: `3bc9fc2860e21a7ef55abb3dce7a8cdd01a5b85cbf479b344fd6626c3fac18cd`
-- `PROTOCOL_LOCK.json` file SHA256: `cac62f8034054691589b97d408a314e6cee23f6a35b8e9f9231235892e37801a`
+- `protocol_lock_sha256`: `6ea729edc9b070bba7271bea3c64da0fffad46921ea8899548eb9b1ad8a120a7`
+- `PROTOCOL_LOCK.json` file SHA256: `1f0e8d17d7a10faa78e3d71f5469bb340f53ad169946042db1235a0c553f1926`
 - `docking_jobs.tsv` SHA256: `e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e`
 - `candidates_128.tsv` SHA256: `5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78`
 - `candidate_monomers_manifest.tsv` SHA256: `db29dcb9047c7e0514a359077f380d53fedd0127c879a939ab8ebad812c5c0df`
@@ -47,15 +47,15 @@
 
 ## 当前执行现场
 
-- 当前控制器主机：`node23`；全量 controller PID：`3398551`；
+- 当前控制器主机：`node23`；全量 controller PID：`3410701`；
 - node1 编排器 PID `4072777` 和 controller PID `4074688` 已停止，不存在双控制器；
 - smoke 结果：`4 SUCCESS / 0 FAIL`，selected models 数分别为 `10 / 10 / 10 / 9`；
 - smoke 已同时验证 HR-151 和 rank-1 候选的 8X6B、9E6Y 独立 HADDOCK run，以及每个 pose 的 native/cross 双参考评分；
-- `07:59` 全量快照：`106 SUCCESS / 8 RUNNING / 936 PENDING`；已有 `34/350` 个实体-构象达到至少2个成功 seed；
+- `08:07` 全量快照：`114 SUCCESS / 8 RUNNING / 928 PENDING`；已有 `37/350` 个实体-构象达到至少2个成功 seed；
 - node23 本地 scratch 模式当前并发上限为8，运行根目录为 `/tmp/pvrig_v3_haddock`；
-- 当前106个成功任务中控制任务104个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
+- 当前114个成功任务中控制任务112个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
 - 迁移证据：`status/controller_migration_node1_to_node23.json`；旧PID归档在 `status/migration_archive/`；
-- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有64个 scratch 正式任务完成，现有106个结果均保留。
+- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有72个 scratch 正式任务完成，现有114个结果均保留。
 
 ## node23 本地 scratch 修复
 
@@ -72,7 +72,7 @@
 
 启动器默认使用 `/tmp/pvrig_v3_haddock`，启动前检查目录可写并拒绝 NFS 文件系统；非法或带路径分隔符的 job ID 会在任何锁、归档或删除操作前被拒绝。scratch 清理失败只记录警告，不会把已经完整发布的 `SUCCESS` 回滚为 `FAILED`。
 
-8路模式下每个 HADDOCK job 固定4核，合计目标为32/64逻辑CPU。控制器继续按1-minute load自适应：`<40: 8路`、`40-48: 6路`、`48-56: 4路`、`56-62: 2路`、`>=62: 暂停补位`。实测8路稳定阶段 load1约32.6，整机CPU忙约50.4%、idle约49.6%、I/O wait为0。
+8路模式下每个 HADDOCK job 固定4核，合计目标为32/64逻辑CPU。控制器继续按1-minute load自适应：`<48: 8路`、`48-56: 6路`、`56-62: 4路`、`>=62: 暂停补位`。`08:07` 实测维持8路时 load1约41.7；由于同机其他用户也在运行高CPU任务，整机CPU忙约75.6%、idle约24.4%，其中 PVRIG 的 nice CPU约37.2%，I/O wait为0。
 
 当前生产启动命令为：
 

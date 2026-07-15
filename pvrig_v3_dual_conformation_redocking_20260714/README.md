@@ -141,9 +141,9 @@ REMOTE_MAX_PARALLEL=8 \
 scripts/launch_node1.sh full
 ```
 
-`run_job.py` 会在本地完成 HADDOCK，将完整 run 复制到共享 `runs/` 下的隐藏临时目录，再用原子 rename 发布；评分和 `job_result.json` 仍使用共享路径。成功后本地目录自动清理，失败任务会在重试前归档到共享 `failed_attempts/`。启动器默认使用 `/tmp/pvrig_v3_haddock`，并在启动前验证目录可写且不是 NFS。当前已有64个正式 scratch 任务成功并自动进入下一批。
+`run_job.py` 会在本地完成 HADDOCK，将完整 run 复制到共享 `runs/` 下的隐藏临时目录，再用原子 rename 发布；评分和 `job_result.json` 仍使用共享路径。成功后本地目录自动清理，失败任务会在重试前归档到共享 `failed_attempts/`。启动器默认使用 `/tmp/pvrig_v3_haddock`，并在启动前验证目录可写且不是 NFS。当前已有72个正式 scratch 任务成功并自动进入下一批。
 
-控制器默认最多8路，每个 HADDOCK3 任务4核、`nice -n 15`，即目标占用32/64逻辑CPU。按节点1-minute load自适应：`>=62: 0`、`56-62: 2`、`48-56: 4`、`40-48: 6`、`<40: 8`。实测8路时 load1约32.6、整机CPU忙约50.4%、I/O wait为0。HADDOCK3 是 CPU 工作负载，空闲 GPU 不会直接加速它。
+控制器默认最多8路，每个 HADDOCK3 任务4核、`nice -n 15`，即目标占用32/64逻辑CPU。按节点1-minute load自适应：`>=62: 0`、`56-62: 4`、`48-56: 6`、`<48: 8`。`08:07` 实测维持8路时 load1约41.7，整机CPU忙约75.6%、I/O wait为0；其中同机其他用户也占用了较多CPU。HADDOCK3 是 CPU 工作负载，空闲 GPU 不会直接加速它。
 
 固定 smoke 集合包含 HR-151 阳性控制和旧几何排名第1候选，各自在 8X6B/9E6Y 上以 seed 917 独立运行，共4个任务。smoke 只验证配置、两个受体分支、候选/控制 monomer、selected-model 发现和2x2后处理能否闭合；它不用于判断评价器稳定。
 
