@@ -79,8 +79,8 @@
       "conformation",
       "seed"
     ],
-    "raw_result_policy": "Construct the exact control allowlist from each docking_jobs.tsv before opening results/<job_id>/job_result.json. Any candidate result path is forbidden.",
-    "semantic_protocol_check": "Canonical protocol semantics, receptor/restraint residue content, ATOM-only policy, HETATM zero gate, top-8 policy, seeds, and scoring implementation must match after excluding campaign IDs, paths, hashes, and publication metadata."
+    "raw_result_policy": "Construct the exact control allowlist from each docking_jobs.tsv before opening results/<job_id>/job_result.json. Open every campaign path through held openat directory FDs with O_DIRECTORY/O_NOFOLLOW and post-read inode-link rechecks. Any candidate result path is forbidden.",
+    "semantic_protocol_check": "Canonical protocol-spec semantics, receptor bytes, raw per-control cfg/restraint manifest hashes, protocol-hash-to-core-lock binding, exact protocol-core annotation position/value, cross-campaign canonical cfg/restraint equality, ATOM-only policy, HETATM zero gate, top-8 policy, seeds, and scoring implementation must all pass."
   },
   "decision_policy": {
     "current_v4_d_effect": "None. Legacy128 is never added to the frozen V4-D teacher, model selection, or prospective test.",
@@ -88,6 +88,21 @@
     "future_use_if_fail": "Keep legacy128 as an independent descriptive OOD campaign only.",
     "future_use_if_pass": "A new version may test legacy128 as low-weight OOD auxiliary data, but must report primary-only and primary-plus-legacy ablations.",
     "pass": "PASS_SHARED_CONTINUOUS_SCALE_FOR_FUTURE_AUXILIARY_ABLATION_ONLY"
+  },
+  "deployment_trust_root_contract": {
+    "builder_environment_binding": "PVRIG_V4_D_CONTROL_BRIDGE_TRUST_ROOT_SHA256",
+    "canonical_path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/SHA256SUMS",
+    "claim_boundary": "The reviewed production launcher is the external trust anchor; SHA256SUMS is not self-authenticating.",
+    "launcher_hardcodes_sha256sum_digest": true,
+    "launcher_path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/run_production_bridge.sh",
+    "production_builder_validation_required": true,
+    "required_bindings": [
+      "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.json",
+      "experiments/phase2_5080_v1/audits/phase2_v4_d_cross_campaign_control_bridge_preregistration.json",
+      "experiments/phase2_5080_v1/src/build_phase2_v4_d_cross_campaign_control_bridge.py",
+      "experiments/phase2_5080_v1/src/test_build_phase2_v4_d_cross_campaign_control_bridge.py",
+      "experiments/phase2_5080_v1/src/prepare_phase2_v4_d_open_teacher.py"
+    ]
   },
   "frozen_at": "2026-07-16T19:04:51+08:00",
   "hard_gates": {
@@ -120,7 +135,7 @@
     }
   },
   "implementation_freeze_contract": {
-    "canonical_path": "audits/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.json",
+    "canonical_path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.json",
     "production_validation_required": true,
     "required_bindings": [
       "preregistration",
@@ -129,8 +144,8 @@
       "teacher_utility"
     ],
     "schema_version": "phase2_v4_d_cross_campaign_control_bridge_implementation_freeze_v1",
-    "self_hash_policy": "The freeze JSON does not contain its own SHA256. Its SHA256 is recorded in the adjacent external record and must also be copied into the deployment trust-root SHA256SUMS before production execution.",
-    "sha256_record_path": "audits/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.sha256"
+    "self_hash_policy": "The freeze JSON does not contain its own SHA256. Its adjacent record must match, and the freeze JSON SHA256 must also be bound by the launcher-authenticated deployment SHA256SUMS before production execution.",
+    "sha256_record_path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.sha256"
   },
   "information_available_at_freeze": {
     "candidate_or_unpaired_values_used_for_threshold_selection": false,
@@ -143,6 +158,7 @@
   },
   "objective": "Determine whether the legacy V4-C dual128 campaign and the V4-D fullqc290 campaign share a sufficiently concordant continuous docking-geometry scale for future low-weight auxiliary training.",
   "publication_contract": {
+    "deployment_trust_root_required": true,
     "implementation_hash_timing": "Freeze the production builder and tests before first paired score extraction.",
     "output_set_policy": "exactly the four required regular files; no extras and no symlinks",
     "receipt_publication_order": "last, after exact output-set and SHA256 verification",
@@ -151,7 +167,8 @@
       "cross_campaign_control_bridge_entities_47.tsv",
       "cross_campaign_control_bridge_audit.json",
       "cross_campaign_control_bridge_receipt.json"
-    ]
+    ],
+    "semantic_closure_required": true
   },
   "report_only_metric_definitions": {
     "bland_altman_right_minus_left": "Mean primary_v4_d minus legacy_v4_c difference and mean plus or minus 1.96 times the sample standard deviation.",
@@ -173,22 +190,58 @@
     "A/B/C/E agreement",
     "outlier identities"
   ],
-  "revised_at": "2026-07-16T19:54:31+08:00",
+  "revised_at": "2026-07-16T20:47:26+08:00",
   "revision": {
     "campaign_inputs_changed": false,
     "changes": [
-      "Bind preregistration, builder, tests, and teacher utility in a pre-extraction implementation-freeze artifact.",
-      "Require lstat plus O_NOFOLLOW regular-file reads and reject symlinked control results or output files.",
-      "Require final byte revalidation of inputs, outputs, and receipt plus an exact four-file output set.",
-      "Use Python standard-library statistics only for Node23 portability.",
-      "Define Pearson, RMSE, OLS slope/intercept, and Bland-Altman outputs as report-only metrics."
+      "Open every campaign file through a held openat directory-FD chain rooted at / with O_DIRECTORY and O_NOFOLLOW, then recheck each directory entry and the final file inode after reading.",
+      "Move the implementation freeze, adjacent SHA256 record, deployment SHA256SUMS, and production launcher into the repository-visible top-level reports deployment bundle.",
+      "Use repository-data-root-relative trust bindings so a clean deployment contains every production dependency.",
+      "Give test fixtures a distinct schema, status, and verified status, and forbid canonical production campaign or output roots in test mode."
     ],
     "paired_control_values_opened_before_revision": false,
-    "reason": "Freeze the reviewed implementation and close file-safety, TOCTOU, exact-output-set, portability, and preregistered report-only metric gaps before any paired control values are extracted.",
+    "reason": "Close parent-directory replacement TOCTOU, clean-checkout deployment reproducibility, and test-fixture identity ambiguity before any paired control values are extracted.",
     "scientific_gates_changed": false,
     "timing": "Before paired control extraction or production bridge execution."
   },
   "revision_history": [
+    {
+      "revised_at": "2026-07-16T20:24:55+08:00",
+      "revision": {
+        "campaign_inputs_changed": false,
+        "changes": [
+          "For every allowlisted control job, safely read runs/<job_id>/haddock3.cfg and runs/<job_id>/data/air.tbl and bind their raw SHA256 to manifest cfg_hash/restraint_hash.",
+          "Bind manifest protocol_hash and protocol_core_sha256 to each campaign PROTOCOL_CORE_LOCK.json.",
+          "Remove only the single exact protocol_core annotation line and require matched cross-campaign cfg/restraint bytes to be identical.",
+          "Bind freeze, preregistration, builder, tests, and teacher utility in a deployment SHA256SUMS whose digest is hardcoded by the production launcher and supplied to production builder verification."
+        ],
+        "paired_control_values_opened_before_revision": false,
+        "reason": "Close raw control cfg/restraint/protocol semantics and anchor the implementation freeze through a launcher-authenticated deployment SHA256SUMS before any paired control values are extracted.",
+        "scientific_gates_changed": false,
+        "timing": "Before paired control extraction or production bridge execution."
+      },
+      "schema_version": "phase2_v4_d_cross_campaign_control_bridge_preregistration_v4_pre_extraction_semantic_and_deployment_trust_closure",
+      "supersedes_preregistration_sha256": "e9f151a713e5aaeb691cfe10de8f88015cb62d171e3f1e88f413be07b073b97e"
+    },
+    {
+      "revised_at": "2026-07-16T19:54:31+08:00",
+      "revision": {
+        "campaign_inputs_changed": false,
+        "changes": [
+          "Bind preregistration, builder, tests, and teacher utility in a pre-extraction implementation-freeze artifact.",
+          "Require lstat plus O_NOFOLLOW regular-file reads and reject symlinked control results or output files.",
+          "Require final byte revalidation of inputs, outputs, and receipt plus an exact four-file output set.",
+          "Use Python standard-library statistics only for Node23 portability.",
+          "Define Pearson, RMSE, OLS slope/intercept, and Bland-Altman outputs as report-only metrics."
+        ],
+        "paired_control_values_opened_before_revision": false,
+        "reason": "Freeze the reviewed implementation and close file-safety, TOCTOU, exact-output-set, portability, and preregistered report-only metric gaps before any paired control values are extracted.",
+        "scientific_gates_changed": false,
+        "timing": "Before paired control extraction or production bridge execution."
+      },
+      "schema_version": "phase2_v4_d_cross_campaign_control_bridge_preregistration_v3_pre_extraction_implementation_freeze",
+      "supersedes_preregistration_sha256": "0788d7d9fa98c1f39264cda9968aa49cf9515fb0f48ab57eaab7c2f840d7b163"
+    },
     {
       "revised_at": "2026-07-16T19:12:54+08:00",
       "revision": {
@@ -202,7 +255,7 @@
       "supersedes_preregistration_sha256": "e8fca6b1fda455bd8642dc91300c82acb6f73d862cd67dafeeaa2c9fdb576fdf"
     }
   ],
-  "schema_version": "phase2_v4_d_cross_campaign_control_bridge_preregistration_v3_pre_extraction_implementation_freeze",
+  "schema_version": "phase2_v4_d_cross_campaign_control_bridge_preregistration_v5_pre_extraction_openat_and_repository_trust_closure",
   "status": "FROZEN_BEFORE_PAIRED_CONTROL_SCORE_EXTRACTION",
-  "supersedes_preregistration_sha256": "0788d7d9fa98c1f39264cda9968aa49cf9515fb0f48ab57eaab7c2f840d7b163"
+  "supersedes_preregistration_sha256": "1f4c39f276871f79b168e99388ef9c8bf198852428994093eec899a7bf36bef3"
 }

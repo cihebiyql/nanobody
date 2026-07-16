@@ -1,0 +1,36 @@
+{
+  "created_at": "2026-07-16T13:57:25.950787+00:00",
+  "docking_or_experimental_label_paths_opened": 0,
+  "payload_sha256": "1dde10a82245c9944a07494fdbdfb546c5c64ab7f0cbd0dd38acac5b5a3b9488",
+  "production_calculation_started": false,
+  "production_support_table_published": false,
+  "reason": [
+    "v1 freeze accepted sentinel-only externally supplied test logs",
+    "v1 null resume closure did not bind all sequence/model/mask/provenance identities"
+  ],
+  "required_successor": "phase2_v4_d_sequence_support_v3_implementation_freeze_v2",
+  "runtime_evidence": {
+    "files": [
+      "production.log",
+      "production.pid",
+      "start.json"
+    ],
+    "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_72dc6adc1e34",
+    "production_log_size_bytes": 0,
+    "real_support_or_null_artifacts": [],
+    "recorded_pid": "3061917",
+    "recorded_pid_alive": false
+  },
+  "schema_version": "phase2_v4_d_sequence_support_v3_preproduction_supersession_v1",
+  "status": "SUPERSEDED_PREPRODUCTION_NO_REAL_CALCULATION_AUTHORIZED",
+  "superseded_freeze": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_sequence_support_v3_implementation_freeze.json",
+    "sha256": "571bd23c5eb09bd251ab79dadedbde5fde06d0ce94fb9ad2b1f1dd30afe0db3d",
+    "size_bytes": 5284
+  },
+  "superseded_freeze_receipt": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_sequence_support_v3_implementation_freeze.receipt.json",
+    "sha256": "331059fbebee087ee5267883dae13497957a23fc316ac07424f9c61d492720ef",
+    "size_bytes": 889
+  }
+}

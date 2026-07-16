@@ -1,0 +1,29 @@
+{
+  "bound_files": {
+    "experiments/phase2_5080_v1/audits/phase2_v4_d_cross_campaign_control_bridge_preregistration.json": "ddc1b7f8694b2d489dad009031b2594ab80036bb1e95ba30c2e13efbfe902683",
+    "experiments/phase2_5080_v1/src/build_phase2_v4_d_cross_campaign_control_bridge.py": "a12b945d5bcae88317935dc4255b060e90efedff37517f88984c43c32be31187",
+    "experiments/phase2_5080_v1/src/prepare_phase2_v4_d_open_teacher.py": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+    "experiments/phase2_5080_v1/src/test_build_phase2_v4_d_cross_campaign_control_bridge.py": "456f1b57cd150f3248b1fc7fdeb143d3a61c4d3948c03579e51dbb4348acf96f"
+  },
+  "claim_boundary": "Deployment integrity record only; no production bridge execution or paired control extraction.",
+  "generated_at": "2026-07-16T20:55:22+08:00",
+  "implementation_freeze": {
+    "path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.json",
+    "record_path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.sha256",
+    "record_sha256": "937ed8d92585ee500d9ba67cce6904a56b850dac2511b4396565dd0f0e0f2052",
+    "sha256": "267a64f356d6c417bf6e03730844f68af9da764298d78d44e237f51f9f95f5ca"
+  },
+  "launcher": {
+    "hardcoded_trust_root_sha256": "54d6bdc263c0ee40538d2d229fbc0df8462d8921d4365f282b8acfbb873ef5d6",
+    "path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/run_production_bridge.sh",
+    "sha256": "2423405ea0cb74f53b70edc8888d858fafedbb62179c7693bb0341a8e68ec4fa"
+  },
+  "paired_control_values_extracted": false,
+  "production_executed": false,
+  "schema_version": "pvrig_v4_d_cross_campaign_control_bridge_deployment_record_v1",
+  "status": "FROZEN_BEFORE_PRODUCTION_BRIDGE_EXECUTION",
+  "trust_root": {
+    "path": "reports/pvrig_v4_d_cross_campaign_control_bridge_deployment_v1/SHA256SUMS",
+    "sha256": "54d6bdc263c0ee40538d2d229fbc0df8462d8921d4365f282b8acfbb873ef5d6"
+  }
+}

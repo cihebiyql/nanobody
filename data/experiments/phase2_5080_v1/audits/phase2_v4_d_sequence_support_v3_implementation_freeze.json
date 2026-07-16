@@ -1,0 +1,106 @@
+{
+  "claim_boundary": "Support V3 estimates whether a sequence is represented by the V4-D OPEN_TRAIN design domain. It is not model correctness, docking geometry, binding, affinity, competition, Docking Gold, or experimental blocking evidence.",
+  "dependencies": {
+    "checkpoint_seed43": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97",
+      "size_bytes": 26608839
+    },
+    "checkpoint_seed53": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b",
+      "size_bytes": 26616455
+    },
+    "checkpoint_seed67": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9",
+      "size_bytes": 26613959
+    },
+    "contact_extractor": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/extract_pvrig_v2_3_residue_contact_features.py",
+      "sha256": "adbe462302df37239434e8a580ab50ae99cf2fc2107bed19a7e31512c44115c6",
+      "size_bytes": 65323
+    },
+    "esm2_cache_builder": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/prepare_esm2_embeddings_v2_3.py",
+      "sha256": "c4ce0dcce22c8e2d2952e83f4ea0305a27afce3be946ac9e99210c92eece4bb5",
+      "size_bytes": 20245
+    },
+    "esm2_model": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/datasets/10_github_repos/NanoBind/models/esm2_t6_8M_UR50D",
+      "sha256": "cbf069e9aea56e93cf87a8ee7e0bbdf5d9ae04e6004d0af006b9670b079dd410"
+    },
+    "hotspots": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "size_bytes": 5558
+    },
+    "materializer": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/materialize_phase2_v4_d_sequence_support_v3.py",
+      "sha256": "e2f8be4d152a2aa5f22b68e54562592563c4428c366a9e6335e925e2fab015d2",
+      "size_bytes": 70683
+    },
+    "materializer_tests": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/test_materialize_phase2_v4_d_sequence_support_v3.py",
+      "sha256": "9aabe70d54df5470845b751b8169240b8efb899b963383d6d3b7b93508558d58",
+      "size_bytes": 14394
+    },
+    "support_core": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/build_phase2_v4_d_sequence_support_v3.py",
+      "sha256": "9fa938a9b52ee696bf319b9bbb8f4768244dc0630642f325e8d20d200d9c7101",
+      "size_bytes": 27957
+    },
+    "target_fasta": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/model_data/pvrig_target_ectodomain_proxy_v1.fasta",
+      "sha256": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50",
+      "size_bytes": 260
+    }
+  },
+  "frozen_at": "2026-07-16T13:42:13.034094+00:00",
+  "frozen_input_counts": {
+    "candidate_count": 7087,
+    "cdr_mask_count": 7087,
+    "contact_feature_count": 7087,
+    "esm2_vhh_cache_count": 7087,
+    "open_train_count": 226,
+    "open_train_parent_count": 20,
+    "split_count": 290,
+    "stable_contact_feature_count": 12
+  },
+  "frozen_input_sha256": {
+    "candidate_pool": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b",
+    "cdr_masks": "6176bb245cbefa24961a017a4964d3453e47e7901a7abcd72a2eedebefb1f791",
+    "contact_feature_release_receipt": "b12c0ff0ce6760db7169ec3616dddaf05786e5ca795354f639ef2bf87c370e2b",
+    "contact_feature_schema": "22d11cdccb0af6ecb26eb3bdcbae6c35dc5bc57543d662cf9da94155ee746cc0",
+    "esm2_residue_cache_manifest": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+    "v4_d_split_manifest": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+  },
+  "label_access": {
+    "docking_or_experimental_label_paths_opened": 0,
+    "v4_f_label_paths_opened": 0
+  },
+  "payload_sha256": "436c715ab83ce0403892015dad9d16c8c01edaa330760797486b3bf872dffb1a",
+  "preregistration": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_sequence_support_v3_preregistration.json",
+    "sha256": "72dc6adc1e3404c65304d489b303f6d7ba6a08d3edd626518dbcfc74c34c186a",
+    "size_bytes": 8334
+  },
+  "production_rules": {
+    "channel_splice_rows": 1000,
+    "null_recompute_sequences": 3000,
+    "publish_only_if_all_gates_pass": true,
+    "required_output_set": [
+      "candidate7087_sequence_support_v3.audit.json",
+      "candidate7087_sequence_support_v3.csv",
+      "candidate7087_sequence_support_v3.receipt.json"
+    ],
+    "runtime_filesystem": "WSL ext4 only"
+  },
+  "schema_version": "phase2_v4_d_sequence_support_v3_implementation_freeze_v1",
+  "status": "PASS_FROZEN_BEFORE_FIRST_PRODUCTION_MATERIALIZATION",
+  "test_log": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_sequence_support_v3_production_tests.log",
+    "sha256": "2268bb9421b07678debbaf9e0549460097ea8fe2583f92edeb7047aace23eb7a",
+    "size_bytes": 3098
+  }
+}

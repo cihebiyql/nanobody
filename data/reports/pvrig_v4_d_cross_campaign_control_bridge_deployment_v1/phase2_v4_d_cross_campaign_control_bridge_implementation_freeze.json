@@ -1,0 +1,39 @@
+{
+  "bindings": {
+    "builder": {
+      "path": "experiments/phase2_5080_v1/src/build_phase2_v4_d_cross_campaign_control_bridge.py",
+      "sha256": "a12b945d5bcae88317935dc4255b060e90efedff37517f88984c43c32be31187"
+    },
+    "preregistration": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_cross_campaign_control_bridge_preregistration.json",
+      "sha256": "ddc1b7f8694b2d489dad009031b2594ab80036bb1e95ba30c2e13efbfe902683"
+    },
+    "teacher_utility": {
+      "path": "experiments/phase2_5080_v1/src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+    },
+    "tests": {
+      "path": "experiments/phase2_5080_v1/src/test_build_phase2_v4_d_cross_campaign_control_bridge.py",
+      "sha256": "456f1b57cd150f3248b1fc7fdeb143d3a61c4d3948c03579e51dbb4348acf96f"
+    }
+  },
+  "claim_boundary": "Implementation freeze only; no paired control score extraction or production bridge result is contained here.",
+  "frozen_at": "2026-07-16T20:55:22+08:00",
+  "paired_control_values_extracted_before_freeze": false,
+  "preregistration_sha256": "ddc1b7f8694b2d489dad009031b2594ab80036bb1e95ba30c2e13efbfe902683",
+  "production_validation": {
+    "adjacent_sha256_record_required": true,
+    "all_binding_paths_and_current_bytes_must_match": true,
+    "canonical_freeze_path_required": true,
+    "control_cfg_restraint_semantics": "raw manifest hashes plus protocol-lock binding plus exact annotation removal and cross-campaign canonical equality",
+    "deployment_trust_root": "launcher-authenticated repository-visible SHA256SUMS binds freeze, preregistration, builder, tests, and teacher utility",
+    "openat_parent_chain": "held directory FDs from filesystem root with O_DIRECTORY/O_NOFOLLOW plus post-read inode-link rechecks",
+    "output_publication": "exact four regular files, receipt last, final snapshot revalidation",
+    "statistics_runtime": "Python standard library only",
+    "test_identity_isolation": "distinct schema/status/verified-status and canonical production roots forbidden in test mode"
+  },
+  "production_validation_required": true,
+  "schema_version": "phase2_v4_d_cross_campaign_control_bridge_implementation_freeze_v1",
+  "self_hash_policy": "The freeze JSON cannot contain its own digest. The adjacent .sha256 file records its SHA256 and the launcher-authenticated deployment SHA256SUMS binds that digest.",
+  "status": "FROZEN_BEFORE_PAIRED_CONTROL_SCORE_EXTRACTION"
+}

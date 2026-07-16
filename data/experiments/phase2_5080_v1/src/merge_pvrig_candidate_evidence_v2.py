@@ -35,7 +35,7 @@ CLAIM_BOUNDARY = (
 # a v1 fact or turning a structure/QC check into a biological claim.
 V2_FIELDS = (
     "v4d_teacher_merge_status", "v4d_teacher_model_split",
-    "tnp_merge_status", "tnp_psh", "tnp_ppc", "tnp_pnc",
+    "tnp_merge_status", "tnp_supervision_state", "tnp_psh", "tnp_ppc", "tnp_pnc",
     "igfold_merge_status", "igfold_coverage", "igfold_path", "igfold_status",
     "nbb2_merge_status", "nbb2_crosscheck_status",
     "igfold_nbb2_common_framework_ca_count", "igfold_nbb2_framework_ca_rmsd",
@@ -194,6 +194,22 @@ def merge_tnp(rows: list[dict[str, str]], evidence: dict[str, dict[str, str]]) -
         if source is None:
             row["tnp_merge_status"] = "PENDING_TNP_SUMMARY_INPUT" if not evidence else "PENDING_TNP_ROW_NOT_SUPPLIED"
             continue
+        supervision_state = first_value(source, ("tnp_supervision_state",))
+        row["tnp_supervision_state"] = supervision_state
+        if supervision_state in {"TNP_NUMBERING_HARD_FAIL_NA", "UPSTREAM_L2_HARD_FAIL_NA"}:
+            numeric = [first_value(source, names) for names in (
+                ("PSH", "psh", "tnp_psh", "tnp_PSH"),
+                ("PPC", "ppc", "tnp_ppc", "tnp_PPC"),
+                ("PNC", "pnc", "tnp_pnc", "tnp_PNC"),
+            )]
+            flag_fields = ("tnp_L_flag", "tnp_L3_flag", "tnp_C_flag", "tnp_PSH_flag", "tnp_PPC_flag", "tnp_PNC_flag")
+            if any(numeric) or any(source.get(field, "") for field in flag_fields):
+                raise MergeError(f"tnp_summary:numeric_or_flag_imputation_for_na:{row['candidate_id']}")
+            row["tnp_flags"] = ""
+            row["tnp_psh"] = row["tnp_ppc"] = row["tnp_pnc"] = ""
+            row["tnp_status"] = supervision_state
+            row["tnp_merge_status"] = "MERGED_TNP_EXPLICIT_NA_NO_IMPUTATION"
+            continue
         flags = first_value(source, ("tnp_flags", "TNP_flags", "flags"))
         if not flags:
             flag_fields = ("tnp_L_flag", "tnp_L3_flag", "tnp_C_flag", "tnp_PSH_flag", "tnp_PPC_flag", "tnp_PNC_flag")
@@ -205,6 +221,13 @@ def merge_tnp(rows: list[dict[str, str]], evidence: dict[str, dict[str, str]]) -
         row["tnp_psh"] = first_value(source, ("PSH", "psh", "tnp_psh", "tnp_PSH"))
         row["tnp_ppc"] = first_value(source, ("PPC", "ppc", "tnp_ppc", "tnp_PPC"))
         row["tnp_pnc"] = first_value(source, ("PNC", "pnc", "tnp_pnc", "tnp_PNC"))
+        if supervision_state == "VALID_TNP":
+            try:
+                parsed = [float(row["tnp_psh"]), float(row["tnp_ppc"]), float(row["tnp_pnc"])]
+            except ValueError as exc:
+                raise MergeError(f"tnp_summary:valid_numeric_missing:{row['candidate_id']}") from exc
+            if not all(math.isfinite(value) for value in parsed):
+                raise MergeError(f"tnp_summary:valid_numeric_nonfinite:{row['candidate_id']}")
         row["tnp_status"] = first_value(source, ("tnp_status", "L3_developability", "final_verdict", "status")) or "AVAILABLE_TNP_QC"
         row["tnp_merge_status"] = "MERGED_TNP_QC_ONLY"
 
@@ -314,7 +337,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "sequence_hash_verified_count": len(rows),
         "cohort_counts": dict(Counter(row["source_cohort"] for row in rows)),
         "v4d": {"open_teacher_rows": sum(row["v4d_teacher_merge_status"] == "MERGED_OPEN_TEACHER_258" for row in rows), "sealed_test_rows": sum(row["v4d_teacher_merge_status"] == SEALED_STATUS for row in rows), "split_counts": dict(Counter(row["v4d_teacher_model_split"] for row in rows if row["v4d_teacher_model_split"]))},
-        "deep_qc": {"tnp_merged_rows": sum(row["tnp_merge_status"] == "MERGED_TNP_QC_ONLY" for row in rows), "igfold_merged_rows": sum(row["igfold_merge_status"] == "MERGED_IGFOLD_STRUCTURE_QC_ONLY" for row in rows), "nbb2_merged_rows": sum(row["nbb2_merge_status"] == "MERGED_NBB2_STRUCTURE_CROSSCHECK_ONLY" for row in rows)},
+        "deep_qc": {
+            "tnp_merged_rows": sum(row["tnp_merge_status"] in {"MERGED_TNP_QC_ONLY", "MERGED_TNP_EXPLICIT_NA_NO_IMPUTATION"} for row in rows),
+            "igfold_merged_rows": sum(row["igfold_merge_status"] == "MERGED_IGFOLD_STRUCTURE_QC_ONLY" for row in rows),
+            "nbb2_merged_rows": sum(row["nbb2_merge_status"] == "MERGED_NBB2_STRUCTURE_CROSSCHECK_ONLY" for row in rows),
+        },
+        "deep_qc_tnp_states": {
+            "valid_tnp_rows": sum(row["tnp_supervision_state"] == "VALID_TNP" for row in rows),
+            "explicit_na_rows": sum(row["tnp_supervision_state"] in {"TNP_NUMBERING_HARD_FAIL_NA", "UPSTREAM_L2_HARD_FAIL_NA"} for row in rows),
+        },
         "sources": {name: {"path": str(path), "sha256": sha256_file(path)} for name, path in source_paths.items()},
         "outputs": {"master": {"path": str(master_path), "sha256": sha256_file(master_path)}, "schema": {"path": str(schema_path), "sha256": sha256_file(schema_path)}},
         "claim_boundary": CLAIM_BOUNDARY,

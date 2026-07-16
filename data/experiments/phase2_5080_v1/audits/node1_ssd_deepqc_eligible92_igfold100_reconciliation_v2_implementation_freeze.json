@@ -1,0 +1,13 @@
+{
+  "adapter_sha256": "d9a2bb77645454f350f5ba662b8d975e8e964f1fd86787370d24c0c75fcb700e",
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "formal_recovery_preserved_sha256": "fe6ed34167848d11856bcb0ce8dc1192ebdee5852b87f3f158dc7161947fc9b1",
+  "frozen_at": "2026-07-16T13:33:00Z",
+  "null_payload_regression": "The real {candidate_id: null} layout is distinguished from a schema-valid TNP payload and only the preregistered seven-candidate set may rerun.",
+  "preregistration_sha256": "13e4881debc742764ab4fb02c0bd4ec5441b461d25b3a1162abaf3343ca28d68",
+  "schema_version": "pvrig_node1_ssd_deepqc_eligible92_igfold100_reconciliation_implementation_freeze_v2",
+  "status": "PASS_FROZEN_IMPLEMENTATION_6_TESTS",
+  "test_command": "python3 experiments/phase2_5080_v1/src/test_reconcile_node1_ssd_deepqc_eligible92_igfold100_v2.py -v",
+  "test_count": 6,
+  "tests_sha256": "b0c0c66c120251d347f4dcbacb591f54a51e0824010b2124eb9ef69272d2914a"
+}

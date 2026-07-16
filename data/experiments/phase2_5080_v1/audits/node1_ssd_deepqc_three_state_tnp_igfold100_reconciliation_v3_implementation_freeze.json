@@ -1,0 +1,21 @@
+{
+  "adapter_sha256": "1774006a3eef98c688233448769758ccb374902729236f28807ba5d63d9cead7",
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "formal_recovery_preserved_sha256": "fe6ed34167848d11856bcb0ce8dc1192ebdee5852b87f3f158dc7161947fc9b1",
+  "frozen_at": "2026-07-16T13:45:00Z",
+  "integration_test_sha256": "4f2c5a2b4754884c33dcdb781922650023612a40c9b30e5d144c11a8ec435fb2",
+  "merge_implementation_sha256": "c605dde53ec72670f212f6a92719f4d580cac0dbc142d0c2b0ed62b9d7f0581e",
+  "monitor_implementation_sha256": "9f538b797ce84afde52e58f7cd22576eb02c5355bf8962f768cee263fe1e7db7",
+  "preregistration_sha256": "edac3cab4e0cf963b4e6d988c0d6d6389cadf0447a9729acdecce7881dd70a50",
+  "schema_version": "pvrig_node1_ssd_deepqc_three_state_tnp_igfold100_reconciliation_implementation_freeze_v3",
+  "status": "PASS_FROZEN_IMPLEMENTATION_12_TESTS",
+  "test_count": 12,
+  "tests_sha256": "180552705ddc85a9506f64acdac2702628d85ebc798a2f25d021b02181a6fa68",
+  "tnp_partition": {
+    "TNP_NUMBERING_HARD_FAIL_NA": 7,
+    "UPSTREAM_L2_HARD_FAIL_NA": 8,
+    "VALID_TNP": 85,
+    "numeric_imputation_for_na": false
+  },
+  "validator_sha256": "96115acddde3d6bde7f801b285e1a738b5299296a3d746ad7948f540b816cf3c"
+}

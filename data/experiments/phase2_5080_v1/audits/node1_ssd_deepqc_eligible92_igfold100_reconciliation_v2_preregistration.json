@@ -1,0 +1,47 @@
+{
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "created_at": "2026-07-16T13:28:30Z",
+  "expected_candidate_count": 100,
+  "expected_hard_fail_before_tnp_count": 8,
+  "expected_hard_fail_ids": [
+    "RFV1__PLDNANO_VHH_00863__A_CENTER__H1H3__B10__M02",
+    "RFV1__PLDNANO_VHH_00863__A_CENTER__H3__B01__M02",
+    "RFV1__PLDNANO_VHH_00863__C_CROSS__H1H3__B02__M02",
+    "RFV1__PLDNANO_VHH_00863__C_CROSS__H3__B05__M00",
+    "RFV1__PLDNANO_VHH_00895__A_CENTER__H3__B01__M01",
+    "RFV1__PLDNANO_VHH_00895__A_CENTER__H3__B07__M01",
+    "RFV1__PLDNANO_VHH_00895__B_LOWER__H1H3__B02__M02",
+    "RFV1__PLDNANO_VHH_00895__B_LOWER__H3__B11__M00"
+  ],
+  "expected_input_fasta_sha256": "57245f7ed52d633209d67a59dbc809118bbb06042f54b68dcf29cb3e35182eb0",
+  "expected_initial_tnp_json_file_count": 92,
+  "expected_initial_valid_tnp_payload_count": 85,
+  "expected_tnp_eligible_count": 92,
+  "expected_tnp_null_rerun_count": 7,
+  "expected_tnp_null_rerun_ids": [
+    "RFV1__PLDNANO_VHH_00197__A_CENTER__H1H3__B02__M01",
+    "RFV1__PLDNANO_VHH_00327__C_CROSS__H3__B09__M02",
+    "RFV1__PLDNANO_VHH_00376__A_CENTER__H3__B07__M00",
+    "RFV1__PLDNANO_VHH_00376__C_CROSS__H1H3__B07__M00",
+    "RFV1__PLDNANO_VHH_00698__A_CENTER__H1H3__B05__M02",
+    "RFV1__PLDNANO_VHH_00874__B_LOWER__H3__B05__M00",
+    "RFV1__PLDNANO_VHH_00882__A_CENTER__H1H3__B08__M01"
+  ],
+  "expected_tnp_null_rerun_id_set_sha256": "f50b1c7ec4f11e6c5f04beb5ae2ce4069fc8e024200efb1c496a3b816dfde606",
+  "expected_valid_tnp_payload_count_after_rerun": 92,
+  "expected_vhh_monomer_pdb_count": 100,
+  "formal_recovery_policy": {
+    "frozen_64_36_contract_status": "PRESERVED_NOT_REWRITTEN_NOT_CLAIMED",
+    "resume_script_sha256": "fe6ed34167848d11856bcb0ce8dc1192ebdee5852b87f3f158dc7161947fc9b1"
+  },
+  "igfold_policy": {
+    "completed_pdbs": "validate and byte-freeze when ID, sequence FASTA, command exit, and CA coverage pass",
+    "missing_pdbs": "run direct IgFold prediction with one model on GPUs 0-3, then apply the same validation",
+    "minimum_ca_fraction": 0.9,
+    "models_per_candidate": 1
+  },
+  "nfs_policy": "The frozen old NFS process identity guard must pass before reruns, before publication, and immediately before terminal receipts. No SIGCONT and no NFS sync-back are allowed.",
+  "publication_policy": "Fail unless all seven null payloads become non-null schema-valid TNP results; capture each payload once, publish an immutable content-addressed delivery, link the publication receipt last, then create canonical recovery and path-switch receipts with O_EXCL.",
+  "schema_version": "pvrig_node1_ssd_deepqc_eligible92_igfold100_reconciliation_preregistration_v2",
+  "status": "FROZEN_AFTER_V1_NULL_PAYLOAD_DIAGNOSIS_BEFORE_RERUN"
+}

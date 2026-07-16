@@ -1,0 +1,12 @@
+{
+  "adapter_sha256": "a26904b9f9f97af9593871776b49a492a47ae5082a66e4444a2217f35502de06",
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "formal_recovery_preserved_sha256": "fe6ed34167848d11856bcb0ce8dc1192ebdee5852b87f3f158dc7161947fc9b1",
+  "frozen_at": "2026-07-16T13:24:30Z",
+  "preregistration_sha256": "4e7b59df488a89e077a3d66adfd770ba882c4d274b207fb9a41d9cebf478533d",
+  "schema_version": "pvrig_node1_ssd_deepqc_eligible92_igfold100_reconciliation_implementation_freeze_v1",
+  "status": "PASS_FROZEN_IMPLEMENTATION_5_TESTS",
+  "test_command": "python3 experiments/phase2_5080_v1/src/test_reconcile_node1_ssd_deepqc_eligible92_igfold100_v1.py -v",
+  "test_count": 5,
+  "tests_sha256": "071166b9edbadc6c1e02fd59d8857429a46432ddcb844a240de6b8ad077381f1"
+}

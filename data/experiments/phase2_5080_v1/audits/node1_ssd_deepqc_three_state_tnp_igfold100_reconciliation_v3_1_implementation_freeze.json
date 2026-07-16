@@ -1,0 +1,30 @@
+{
+  "adapter_sha256": "cda5eb9896931e81c75814c8a0efcd7480f380141dcfc816da561da9a4000d68",
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "frozen_at": "2026-07-16T13:53:30Z",
+  "integration_test_sha256": "db593a5fdf0cae8bff65a1c95f7a1487ff341eb11effe31e4fca0c0aab6bd2c8",
+  "merge_implementation_sha256": "1d874b69606cf4fe8f25f76d040c4ce383d47b56e466ff283fdcbed4926bc309",
+  "merge_regression_test_sha256": "1dc93c7e06550e98a8ea6635b8d96182d54e6a937fef6ee066fd4e1ffc9365",
+  "monitor_implementation_sha256": "e92fd2350aaa944244de63bef7ab73f743cad435c07560c990cbdb27c40c0e11",
+  "postprocess_integration_test_sha256": "3dfa789c0612e6d50e32832b623ff8eb4423bf281f9916fe6fa85af8a7b8e833",
+  "preregistration_sha256": "edac3cab4e0cf963b4e6d988c0d6d6389cadf0447a9729acdecce7881dd70a50",
+  "schema_version": "pvrig_node1_ssd_deepqc_three_state_tnp_igfold100_reconciliation_implementation_freeze_v3_1",
+  "status": "PASS_SUPERSEDING_V3_1_FROZEN_IMPLEMENTATION_16_TESTS",
+  "supersedes": {
+    "v3_adapter_sha256": "1774006a3eef98c688233448769758ccb374902729236f28807ba5d63d9cead7",
+    "v3_status": "FAIL_CLOSED_BEFORE_PUBLICATION",
+    "fixes": [
+      "prepend the SSD boltz runtime bin so IgFold renumbering resolves hmmscan without NFS",
+      "preserve the legacy deep_qc audit dictionary while exposing three-state counts in a sibling field"
+    ]
+  },
+  "test_count": 16,
+  "tests_sha256": "bc54c9addf984e22c5e1192a60267df7713693263dc68f5240405a642b3935e6",
+  "tnp_partition": {
+    "TNP_NUMBERING_HARD_FAIL_NA": 7,
+    "UPSTREAM_L2_HARD_FAIL_NA": 8,
+    "VALID_TNP": 85,
+    "numeric_imputation_for_na": false
+  },
+  "validator_sha256": "96115acddde3d6bde7f801b285e1a738b5299296a3d746ad7948f540b816cf3c"
+}

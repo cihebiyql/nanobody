@@ -8,7 +8,7 @@ POLL_SECONDS=${POLL_SECONDS:-300}
 MAX_WAIT_SECONDS=${MAX_WAIT_SECONDS:-172800}
 
 V4D_REMOTE=/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716
-DEEPQC_REMOTE=/data/qlyu/projects/pvrig_pre_shortlist100_deepqc_v1_20260716
+DEEPQC_REMOTE=/data1/qlyu/pvrig_migration_20260716/deepqc_reconciliation_eligible92_igfold100_v3_1
 CROSSCHECK_REMOTE=/data/qlyu/projects/pvrig_pre_shortlist100_structure_crosscheck_v1_20260716
 POSE_REMOTE=/data/qlyu/projects/pvrig_top20_pose_review_postprocess_v1_20260716
 
@@ -90,25 +90,9 @@ def verify_sums(path):
         require(target.is_file() and sha(target)==digest, f"internal checksum mismatch: {rel}")
 
 if kind == "deepqc":
-    receipt=load(root/"reports/deepqc_delivery_receipt_v1.json")
-    require(receipt.get("status")=="PASS_DEEPQC100_DELIVERY_READY", "bad DeepQC receipt status")
-    require(receipt.get("candidate_count")==100 and receipt.get("tnp_row_count")==100 and receipt.get("igfold_row_count")==100 and receipt.get("igfold_pdb_count")==100, "bad DeepQC receipt counts")
-    manifest=root/"reports/delivery_file_manifest.tsv"
-    require(sha(manifest)==receipt.get("delivery_manifest_sha256"), "DeepQC manifest hash mismatch")
-    with manifest.open(newline="", encoding="utf-8-sig") as handle:
-        rows=list(csv.DictReader(handle, delimiter="\t"))
-    require(len(rows)==111, f"unexpected DeepQC delivery manifest rows: {len(rows)}")
-    for row in rows:
-        target=safe_path(row["path"])
-        require(target.is_file(), f"DeepQC file missing: {row['path']}")
-        require(target.stat().st_size==int(row["bytes"]) and sha(target)==row["sha256"], f"DeepQC file mismatch: {row['path']}")
-    expected={
-        "run_deepqc_sha256": exp/"prepared/pvrig_pre_shortlist100_deepqc_v1/run_deepqc.sh",
-        "deepqc_config_sha256": exp/"prepared/pvrig_pre_shortlist100_deepqc_v1/deepqc_config.json",
-        "input_audit_sha256": exp/"prepared/pvrig_pre_shortlist100_deepqc_v1/input_audit.json",
-        "input_fasta_sha256": exp/"prepared/pvrig_pre_shortlist100_deepqc_v1/inputs/pre_shortlist100.fasta",
-    }
-    for field, path in expected.items(): require(sha(path)==receipt.get(field), f"DeepQC pinned source mismatch: {field}")
+    sys.path.insert(0, str(exp/"src"))
+    from validate_pvrig_deepqc_three_state_delivery import validate_delivery
+    validate_delivery(root, exp)
 elif kind == "crosscheck":
     verify_sums(root/"outputs/SHA256SUMS")
     receipt=load(root/"outputs/structure_crosscheck_receipt.json")
@@ -290,8 +274,8 @@ while true; do
         ! -s "$STATUS_DIR/deepqc_merged.json" ]]; then
     write_status SYNCING_DEEPQC "fetching hash-bound Node1 DeepQC and structure crosscheck deliveries"
     fetch_archive deepqc node1 \
-      "$DEEPQC_REMOTE/reports/deepqc_delivery_v1.tar.gz" \
-      "$DEEPQC_REMOTE/reports/deepqc_delivery_v1.tar.gz.sha256" \
+      "$DEEPQC_REMOTE/legacy_package/deepqc_delivery_v1.tar.gz" \
+      "$DEEPQC_REMOTE/legacy_package/deepqc_delivery_v1.tar.gz.sha256" \
       "$DEEPQC_LOCAL"
     fetch_archive crosscheck node1 \
       "$CROSSCHECK_REMOTE/outputs/igfold_nbb2_crosscheck_delivery_v1.tar.gz" \

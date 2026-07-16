@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-07-16T13:42:13.046123+00:00",
+  "docking_or_experimental_label_paths_opened": 0,
+  "implementation_freeze": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_sequence_support_v3_implementation_freeze.json",
+    "sha256": "571bd23c5eb09bd251ab79dadedbde5fde06d0ce94fb9ad2b1f1dd30afe0db3d",
+    "size_bytes": 5284
+  },
+  "materializer_sha256": "e2f8be4d152a2aa5f22b68e54562592563c4428c366a9e6335e925e2fab015d2",
+  "materializer_tests_sha256": "9aabe70d54df5470845b751b8169240b8efb899b963383d6d3b7b93508558d58",
+  "payload_sha256": "436c715ab83ce0403892015dad9d16c8c01edaa330760797486b3bf872dffb1a",
+  "preregistration_sha256": "72dc6adc1e3404c65304d489b303f6d7ba6a08d3edd626518dbcfc74c34c186a",
+  "schema_version": "phase2_v4_d_sequence_support_v3_implementation_freeze_receipt_v1",
+  "status": "PASS_COMPLETE_HASH_CLOSURE"
+}

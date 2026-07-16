@@ -1,0 +1,57 @@
+{
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "created_at": "2026-07-16T13:36:30Z",
+  "expected_candidate_count": 100,
+  "expected_input_fasta_sha256": "57245f7ed52d633209d67a59dbc809118bbb06042f54b68dcf29cb3e35182eb0",
+  "expected_tnp_partition": {
+    "TNP_NUMBERING_HARD_FAIL_NA": {
+      "count": 7,
+      "ids": [
+        "RFV1__PLDNANO_VHH_00197__A_CENTER__H1H3__B02__M01",
+        "RFV1__PLDNANO_VHH_00327__C_CROSS__H3__B09__M02",
+        "RFV1__PLDNANO_VHH_00376__A_CENTER__H3__B07__M00",
+        "RFV1__PLDNANO_VHH_00376__C_CROSS__H1H3__B07__M00",
+        "RFV1__PLDNANO_VHH_00698__A_CENTER__H1H3__B05__M02",
+        "RFV1__PLDNANO_VHH_00874__B_LOWER__H3__B05__M00",
+        "RFV1__PLDNANO_VHH_00882__A_CENTER__H1H3__B08__M01"
+      ],
+      "required_evidence": "original null JSON plus V2 frozen-command rc=1 log containing TNP could not number and no numeric imputation"
+    },
+    "UPSTREAM_L2_HARD_FAIL_NA": {
+      "count": 8,
+      "ids": [
+        "RFV1__PLDNANO_VHH_00863__A_CENTER__H1H3__B10__M02",
+        "RFV1__PLDNANO_VHH_00863__A_CENTER__H3__B01__M02",
+        "RFV1__PLDNANO_VHH_00863__C_CROSS__H1H3__B02__M02",
+        "RFV1__PLDNANO_VHH_00863__C_CROSS__H3__B05__M00",
+        "RFV1__PLDNANO_VHH_00895__A_CENTER__H3__B01__M01",
+        "RFV1__PLDNANO_VHH_00895__A_CENTER__H3__B07__M01",
+        "RFV1__PLDNANO_VHH_00895__B_LOWER__H1H3__B02__M02",
+        "RFV1__PLDNANO_VHH_00895__B_LOWER__H3__B11__M00"
+      ],
+      "required_evidence": "L1 PASS, L2 FAIL, no TNP JSON and no numeric imputation"
+    },
+    "VALID_TNP": {
+      "count": 85,
+      "required_evidence": "non-null ID-bound schema-valid TNP payload with numeric PSH/PPC/PNC"
+    }
+  },
+  "expected_vhh_monomer_pdb_count": 100,
+  "formal_recovery_policy": {
+    "frozen_64_36_contract_status": "PRESERVED_NOT_REWRITTEN_NOT_CLAIMED",
+    "resume_script_sha256": "fe6ed34167848d11856bcb0ce8dc1192ebdee5852b87f3f158dc7161947fc9b1",
+    "v1_adapter_status": "FAIL_CLOSED_NULL_PAYLOAD_NOT_SCHEMA_VALID",
+    "v2_adapter_status": "FAIL_CLOSED_ALL_SEVEN_FROZEN_RERUNS_REPRODUCED_TNP_NUMBERING_FAILURE"
+  },
+  "igfold_policy": {
+    "completed_pdbs": "validate and byte-freeze when ID, sequence FASTA, command exit, and CA coverage pass",
+    "missing_pdbs": "run direct IgFold prediction with one model on GPUs 0-3, then apply the same validation",
+    "minimum_ca_fraction": 0.9,
+    "models_per_candidate": 1
+  },
+  "na_policy": "For both NA states all TNP flag and numeric columns remain empty strings; the categorical tnp_supervision_state carries the evidence. The string NA and numeric sentinels are forbidden.",
+  "nfs_policy": "The frozen old NFS process identity guard must pass before structure supplementation, publication, and terminal receipts. No SIGCONT and no NFS sync-back are allowed.",
+  "publication_policy": "Build and verify the honest 100-row compatibility delivery, then capture each payload once into an immutable content-addressed /data1 delivery; link SSD_DELIVERY_PUBLICATION.json last, write the canonical recovery receipt with O_EXCL, and finally write the path-switch receipt with O_EXCL.",
+  "schema_version": "pvrig_node1_ssd_deepqc_three_state_tnp_igfold100_reconciliation_preregistration_v3",
+  "status": "FROZEN_AFTER_V2_REPRODUCED_NUMBERING_FAILURE_BEFORE_PUBLICATION"
+}

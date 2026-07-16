@@ -200,7 +200,10 @@ class BridgeFixture:
                 "ligand_chain": "L",
                 "vhh_chain": "A",
                 "numbering": "fixture",
+                "cfg_hash": "0" * 64,
+                "restraint_hash": "1" * 64,
                 "protocol_core_sha256": core,
+                "protocol_hash": core,
             }
         )
         candidate_result = (
@@ -235,8 +238,34 @@ class BridgeFixture:
                         "ligand_chain": "L",
                         "vhh_chain": "A",
                         "numbering": "fixture",
-                        "protocol_core_sha256": core,
                     }
+                    run_root = campaign_root / MOD.RUNS_RELATIVE_PATH / job_id
+                    cfg_path = run_root / MOD.HADDOCK_CONFIG_RELATIVE_PATH
+                    restraint_path = run_root / MOD.AIR_RESTRAINT_RELATIVE_PATH
+                    cfg_path.parent.mkdir(parents=True, exist_ok=True)
+                    restraint_path.parent.mkdir(parents=True, exist_ok=True)
+                    cfg_path.write_bytes(
+                        (
+                            f"run_key={entity_id}:{conformation}:{seed}\n"
+                            f"# protocol_core_sha256={core}\n"
+                            "sampling=fixture\n"
+                        ).encode("ascii")
+                    )
+                    restraint_path.write_bytes(
+                        (
+                            f"! protocol_core_sha256={core}\n"
+                            f"assign (segid T and resid {entity_index + 1}) "
+                            f"(segid A and resid {seed_index + 1}) 2.0 2.0 0.0\n"
+                        ).encode("ascii")
+                    )
+                    job.update(
+                        cfg_hash=hashlib.sha256(cfg_path.read_bytes()).hexdigest(),
+                        restraint_hash=hashlib.sha256(
+                            restraint_path.read_bytes()
+                        ).hexdigest(),
+                        protocol_core_sha256=core,
+                        protocol_hash=core,
+                    )
                     rows.append(job)
                     result = (
                         campaign_root
@@ -355,6 +384,8 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
             receipt = json.loads(
                 (fixture.out_dir / MOD.OUTPUT_FILENAMES[-1]).read_text()
             )
+            self.assertEqual(receipt["schema_version"], MOD.TEST_SCHEMA_VERSION)
+            self.assertEqual(receipt["status"], MOD.TEST_STATUS)
             self.assertEqual(receipt["execution_mode"], "test_fixture")
             self.assertEqual(receipt["candidate_result_paths_opened"], 0)
             self.assertEqual(
@@ -378,7 +409,7 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
                 result = fixture.build()
             self.assertEqual(
                 result["status"],
-                "PASS_V4_D_CROSS_CAMPAIGN_CONTROL_BRIDGE_RECEIPT_VERIFIED",
+                MOD.TEST_VERIFIED_STATUS,
             )
             self.assertEqual(published, list(MOD.OUTPUT_FILENAMES))
             job_rows, _ = MOD.read_output_tsv(fixture.out_dir / MOD.OUTPUT_FILENAMES[0])
@@ -387,8 +418,21 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
             )
             self.assertEqual(len(job_rows), fixture.expected_jobs)
             self.assertEqual(len(aggregate_rows), len(fixture.control_ids))
+            self.assertNotEqual(MOD.TEST_SCHEMA_VERSION, MOD.SCHEMA_VERSION)
+            self.assertNotEqual(MOD.TEST_STATUS, MOD.STATUS)
+            self.assertTrue(
+                all(row["schema_version"] == MOD.TEST_SCHEMA_VERSION for row in job_rows)
+            )
+            self.assertTrue(
+                all(
+                    row["schema_version"] == MOD.TEST_SCHEMA_VERSION
+                    for row in aggregate_rows
+                )
+            )
             self.assertTrue(all(float(row["delta_job_utility"]) > 0 for row in job_rows))
             audit = json.loads((fixture.out_dir / MOD.OUTPUT_FILENAMES[2]).read_text())
+            self.assertEqual(audit["schema_version"], MOD.TEST_SCHEMA_VERSION)
+            self.assertEqual(audit["status"], MOD.TEST_STATUS)
             self.assertEqual(audit["candidate_result_paths_opened"], 0)
             self.assertEqual(
                 audit["campaigns"]["left"][
@@ -404,6 +448,40 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
             first_hash = MOD.snapshot_file(receipt_path, "receipt").sha256
             self.assertEqual(fixture.build()["status"], result["status"])
             self.assertEqual(MOD.snapshot_file(receipt_path, "receipt").sha256, first_hash)
+
+    def test_cfg_restraint_protocol_positive_closure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = BridgeFixture(Path(directory))
+            fixture.build()
+            rows, _ = MOD.read_output_tsv(
+                fixture.out_dir / MOD.OUTPUT_FILENAMES[0]
+            )
+            self.assertTrue(
+                all(row["left_cfg_sha256"] != row["right_cfg_sha256"] for row in rows)
+            )
+            self.assertTrue(all(row["canonical_cfg_sha256"] for row in rows))
+            self.assertTrue(
+                all(
+                    row["left_restraint_sha256"]
+                    != row["right_restraint_sha256"]
+                    for row in rows
+                )
+            )
+            audit = json.loads(
+                (fixture.out_dir / MOD.OUTPUT_FILENAMES[2]).read_text()
+            )
+            closure = audit["semantic_closure"]
+            self.assertEqual(closure["paired_control_jobs"], fixture.expected_jobs)
+            self.assertEqual(
+                closure["raw_cfg_hashes_verified"], fixture.expected_jobs * 2
+            )
+            self.assertEqual(
+                closure["raw_restraint_hashes_verified"], fixture.expected_jobs * 2
+            )
+            self.assertEqual(
+                closure["protocol_hash_lock_bindings_verified"],
+                fixture.expected_jobs * 2,
+            )
 
     def test_rejects_cross_campaign_sequence_mismatch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -465,6 +543,93 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
             with self.assertRaisesRegex(MOD.BridgeError, "protocol_core_sha256"):
                 fixture.build()
 
+    def test_rejects_raw_cfg_restraint_and_protocol_hash_mismatch(self) -> None:
+        for attack in ("cfg", "restraint", "protocol_hash"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
+                fixture = BridgeFixture(Path(directory))
+                control = next(
+                    row for row in fixture.right_rows if row["entity_type"] == "control"
+                )
+                if attack == "protocol_hash":
+                    control["protocol_hash"] = "0" * 64
+                    expected = "manifest_protocol_hash_lock_mismatch"
+                else:
+                    relative = (
+                        MOD.HADDOCK_CONFIG_RELATIVE_PATH
+                        if attack == "cfg"
+                        else MOD.AIR_RESTRAINT_RELATIVE_PATH
+                    )
+                    path = (
+                        fixture.right_root
+                        / MOD.RUNS_RELATIVE_PATH
+                        / str(control["job_id"])
+                        / relative
+                    )
+                    path.write_bytes(path.read_bytes() + b"tamper\n")
+                    expected = f"manifest_{attack}_hash_mismatch"
+                write_tsv(
+                    fixture.right_root / MOD.MANIFEST_RELATIVE_PATH,
+                    fixture.right_rows,
+                )
+                with self.assertRaisesRegex(MOD.BridgeError, expected):
+                    fixture.build()
+
+    def test_rejects_cross_campaign_canonical_cfg_or_restraint_mismatch(self) -> None:
+        for attack in ("cfg", "restraint"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
+                fixture = BridgeFixture(Path(directory))
+                control = next(
+                    row for row in fixture.right_rows if row["entity_type"] == "control"
+                )
+                relative = (
+                    MOD.HADDOCK_CONFIG_RELATIVE_PATH
+                    if attack == "cfg"
+                    else MOD.AIR_RESTRAINT_RELATIVE_PATH
+                )
+                path = (
+                    fixture.right_root
+                    / MOD.RUNS_RELATIVE_PATH
+                    / str(control["job_id"])
+                    / relative
+                )
+                path.write_bytes(path.read_bytes() + b"semantic-change\n")
+                control[f"{attack}_hash"] = hashlib.sha256(path.read_bytes()).hexdigest()
+                write_tsv(
+                    fixture.right_root / MOD.MANIFEST_RELATIVE_PATH,
+                    fixture.right_rows,
+                )
+                with self.assertRaisesRegex(
+                    MOD.BridgeError, f"cross_campaign_canonical_{attack}_mismatch"
+                ):
+                    fixture.build()
+
+    def test_rejects_cfg_and_restraint_symlinks(self) -> None:
+        for attack in ("cfg", "restraint"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
+                fixture = BridgeFixture(Path(directory))
+                control = next(
+                    row for row in fixture.right_rows if row["entity_type"] == "control"
+                )
+                relative = (
+                    MOD.HADDOCK_CONFIG_RELATIVE_PATH
+                    if attack == "cfg"
+                    else MOD.AIR_RESTRAINT_RELATIVE_PATH
+                )
+                path = (
+                    fixture.right_root
+                    / MOD.RUNS_RELATIVE_PATH
+                    / str(control["job_id"])
+                    / relative
+                )
+                target = fixture.root / f"{attack}-target"
+                target.write_bytes(path.read_bytes())
+                path.unlink()
+                os.symlink(target, path)
+                with self.assertRaisesRegex(
+                    MOD.BridgeError, "not_regular_file_or_symlink_forbidden"
+                ):
+                    fixture.build()
+
     def test_rejects_control_result_symlink_before_target_is_opened(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             fixture = BridgeFixture(Path(directory))
@@ -490,6 +655,82 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
                 MOD.BridgeError, "not_regular_file_or_symlink_forbidden"
             ):
                 fixture.build()
+
+    def test_openat_rejects_parent_directory_symlink_and_swap_toctou(self) -> None:
+        for attack in ("preexisting_symlink", "swap_during_read"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
+                fixture = BridgeFixture(Path(directory))
+                control = next(
+                    row for row in fixture.right_rows if row["entity_type"] == "control"
+                )
+                result = (
+                    fixture.right_root
+                    / MOD.RESULTS_RELATIVE_PATH
+                    / str(control["job_id"])
+                    / "job_result.json"
+                )
+                job_directory = result.parent
+                moved_directory = job_directory.with_name(job_directory.name + "-real")
+                if attack == "preexisting_symlink":
+                    job_directory.rename(moved_directory)
+                    os.symlink(moved_directory, job_directory, target_is_directory=True)
+                    expected = "directory_symlink_or_non_directory_forbidden"
+                    context = mock.patch.object(MOD.os, "read", wraps=MOD.os.read)
+                else:
+                    real_read = MOD.os.read
+                    swapped = False
+
+                    def swap_parent_after_first_target_read(
+                        descriptor: int, size: int
+                    ) -> bytes:
+                        nonlocal swapped
+                        block = real_read(descriptor, size)
+                        try:
+                            opened_path = Path(os.readlink(f"/proc/self/fd/{descriptor}"))
+                        except OSError:
+                            opened_path = Path()
+                        if not swapped and opened_path == result and block:
+                            job_directory.rename(moved_directory)
+                            os.symlink(
+                                moved_directory, job_directory, target_is_directory=True
+                            )
+                            swapped = True
+                        return block
+
+                    expected = "directory_entry_replaced_during_read"
+                    context = mock.patch.object(
+                        MOD.os, "read", side_effect=swap_parent_after_first_target_read
+                    )
+                with context, self.assertRaisesRegex(MOD.BridgeError, expected):
+                    fixture.build()
+
+    def test_test_mode_rejects_all_canonical_production_roots(self) -> None:
+        _snapshot, preregistration = MOD.load_preregistration(production=True)
+        with tempfile.TemporaryDirectory() as directory:
+            temporary = Path(directory)
+            production_left = Path(
+                preregistration["campaigns"]["legacy_v4_c"]["root"]
+            )
+            production_right = Path(
+                preregistration["campaigns"]["primary_v4_d"]["root"]
+            )
+            cases = (
+                (production_left, temporary / "right", temporary / "out", "left"),
+                (temporary / "left", production_right, temporary / "out", "right"),
+                (
+                    temporary / "left",
+                    temporary / "right",
+                    MOD.CANONICAL_PRODUCTION_OUTPUT_ROOT,
+                    "output",
+                ),
+            )
+            for left, right, output, label in cases:
+                with self.subTest(label=label), self.assertRaisesRegex(
+                    MOD.BridgeError, "test_mode_production_.*_root_forbidden"
+                ):
+                    MOD.reject_production_paths_in_test_mode(
+                        left, right, output, preregistration
+                    )
 
     def test_rejects_tampered_implementation_freeze_binding(self) -> None:
         snapshot, preregistration = MOD.load_preregistration(production=True)
@@ -554,8 +795,112 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
                 with self.assertRaisesRegex(MOD.BridgeError, expected):
                     fixture.verify()
 
+    def test_deployment_trust_root_and_launcher_contract(self) -> None:
+        preregistration_snapshot, preregistration = MOD.load_preregistration(
+            production=True
+        )
+        self.assertEqual(
+            preregistration_snapshot.sha256, MOD.EXPECTED_PREREGISTRATION_SHA256
+        )
+        trust_root_sha256 = hashlib.sha256(
+            MOD.DEFAULT_DEPLOYMENT_TRUST_ROOT.read_bytes()
+        ).hexdigest()
+        with mock.patch.dict(
+            os.environ,
+            {MOD.DEPLOYMENT_TRUST_ROOT_ENV: trust_root_sha256},
+            clear=False,
+        ):
+            trust_root = MOD.load_deployment_trust_root(
+                preregistration, production=True
+            )
+        self.assertEqual(trust_root.manifest.sha256, trust_root_sha256)
+        self.assertEqual(len(trust_root.bindings), len(MOD.DEPLOYMENT_TRUST_ROOT_BINDINGS))
+
+        launcher = MOD.DEFAULT_DEPLOYMENT_TRUST_ROOT.parent / "run_production_bridge.sh"
+        launcher_text = launcher.read_text(encoding="utf-8")
+        self.assertIn(
+            f"readonly EXPECTED_TRUST_ROOT_SHA256={trust_root_sha256}",
+            launcher_text,
+        )
+        syntax = subprocess.run(
+            ["bash", "-n", str(launcher)], capture_output=True, text=True
+        )
+        self.assertEqual(syntax.returncode, 0, syntax.stderr)
+        environment = dict(os.environ)
+        environment[MOD.DEPLOYMENT_TRUST_ROOT_ENV] = "0" * 64
+        smoke = subprocess.run(
+            ["bash", str(launcher), "--verify-trust-root-only"],
+            capture_output=True,
+            text=True,
+            env=environment,
+        )
+        self.assertEqual(smoke.returncode, 0, smoke.stderr)
+        self.assertIn(
+            "PASS_V4_D_CONTROL_BRIDGE_DEPLOYMENT_TRUST_ROOT_VERIFIED",
+            smoke.stdout,
+        )
+
+    def test_deployment_trust_root_rejects_missing_wrong_or_tampered_digest(self) -> None:
+        _snapshot, preregistration = MOD.load_preregistration(production=True)
+        with mock.patch.dict(os.environ, {}, clear=True), self.assertRaisesRegex(
+            MOD.BridgeError, "sha256_missing_or_invalid:deployment_trust_root_environment"
+        ):
+            MOD.load_deployment_trust_root(preregistration, production=True)
+        with mock.patch.dict(
+            os.environ,
+            {MOD.DEPLOYMENT_TRUST_ROOT_ENV: "0" * 64},
+            clear=True,
+        ), self.assertRaisesRegex(
+            MOD.BridgeError, "deployment_trust_root_environment_hash_mismatch"
+        ):
+            MOD.load_deployment_trust_root(preregistration, production=True)
+        with tempfile.TemporaryDirectory() as directory:
+            tampered = Path(directory) / "SHA256SUMS"
+            lines = MOD.DEFAULT_DEPLOYMENT_TRUST_ROOT.read_text().splitlines()
+            lines[0] = f"{'0' * 64}  {MOD.DEPLOYMENT_TRUST_ROOT_BINDINGS[0]}"
+            tampered.write_text("\n".join(lines) + "\n", encoding="ascii")
+            with self.assertRaisesRegex(
+                MOD.BridgeError, "deployment_trust_root_binding_hash_mismatch"
+            ):
+                MOD.load_deployment_trust_root(
+                    preregistration,
+                    production=False,
+                    trust_root_path=tampered,
+                )
+
+    def test_semantic_closure_audit_and_receipt_replay(self) -> None:
+        for attack in ("audit", "receipt"):
+            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
+                fixture = BridgeFixture(Path(directory))
+                fixture.build()
+                audit_path = fixture.out_dir / MOD.OUTPUT_FILENAMES[2]
+                receipt_path = fixture.out_dir / MOD.OUTPUT_FILENAMES[3]
+                receipt = json.loads(receipt_path.read_text())
+                if attack == "audit":
+                    audit = json.loads(audit_path.read_text())
+                    audit["semantic_closure"]["canonical_cfg_pairs_equal"] -= 1
+                    write_json(audit_path, audit)
+                    receipt["outputs"]["audit"]["sha256"] = hashlib.sha256(
+                        audit_path.read_bytes()
+                    ).hexdigest()
+                    write_json(receipt_path, receipt)
+                    expected = "audit_semantic_closure_replay_mismatch"
+                else:
+                    receipt["semantic_closure_sha256"] = "0" * 64
+                    write_json(receipt_path, receipt)
+                    expected = "receipt_semantic_closure_hash_invalid"
+                with self.assertRaisesRegex(MOD.BridgeError, expected):
+                    fixture.verify()
+
     def test_final_snapshot_recheck_detects_input_output_set_and_receipt_toctou(self) -> None:
-        for attack in ("input", "output", "output_set", "receipt"):
+        for attack in (
+            "input",
+            "cfg",
+            "restraint",
+            "output",
+            "output_set",
+            "receipt",
+        ):
             with self.subTest(attack=attack), tempfile.TemporaryDirectory() as directory:
                 fixture = BridgeFixture(Path(directory))
                 fixture.build()
@@ -570,6 +915,23 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
                         / MOD.RESULTS_RELATIVE_PATH
                         / str(control["job_id"])
                         / "job_result.json"
+                    )
+                elif attack in {"cfg", "restraint"}:
+                    control = next(
+                        row
+                        for row in fixture.right_rows
+                        if row["entity_type"] == "control"
+                    )
+                    relative = (
+                        MOD.HADDOCK_CONFIG_RELATIVE_PATH
+                        if attack == "cfg"
+                        else MOD.AIR_RESTRAINT_RELATIVE_PATH
+                    )
+                    target = (
+                        fixture.right_root
+                        / MOD.RUNS_RELATIVE_PATH
+                        / str(control["job_id"])
+                        / relative
                     )
                 elif attack == "output":
                     target = fixture.out_dir / MOD.OUTPUT_FILENAMES[0]
@@ -589,6 +951,8 @@ class CrossCampaignControlBridgeTests(unittest.TestCase):
 
                 expected = {
                     "input": "snapshot_changed_since_capture",
+                    "cfg": "snapshot_changed_since_capture",
+                    "restraint": "snapshot_changed_since_capture",
                     "output": "snapshot_changed_since_capture",
                     "output_set": "unexpected_output_files",
                     "receipt": "receipt_changed_during_verification",
