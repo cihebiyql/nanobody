@@ -2,19 +2,21 @@
 
 This is the continuously maintained progress document for the PVRIG mechanism, scaffold, and model work. Update it whenever Phase I evidence, model gates, or candidate-ranking artifacts change.
 
-## Current Operational Update - 2026-07-16 13:20
+## Current Operational Update - 2026-07-16 14:59
 
 Teacher500 competition Full QC remains frozen: 500 inputs produced 327 fast hard-passes, 302 full-QC hard-passes, and a primary pool of 290 candidates with complete AbNatiV evidence. The independent Node1 replicate has a normalized parity receipt: all decision fields and `cascade_full_rank` match exactly; 220 AbNatiV values differ only within `1.5832e-7`, while chunk-local rank/deferred-cluster labels remain excluded from downstream decisions.
 
 The fixed Dual128 campaign is terminal: 1049/1050 jobs succeeded, all 350 entity-conformations have at least two successful seeds, the corrected decimal-threshold evaluator passes, and five candidates satisfy the strict dual-receptor robust-A definition. P2/P3/P4 phase enrichment does not pass, so phase-conditioned next-generation design remains locked.
 
-V4-D FullQC290 is actively running on Node23 under the frozen 2022-job contract. The 2026-07-16 13:18 snapshot is `202 SUCCESS / 12 RUNNING / 1808 PENDING / 0 FAILED`; controller PID `265751` and orchestrator are alive. The Node23 postprocess watcher is `WAITING_V4D` and will release only `OPEN_TRAIN=226 + OPEN_DEVELOPMENT=32`; the 32-row prospective computational test remains sealed and unavailable to ranking or tuning.
+V4-D FullQC290 is actively running on Node23 under the frozen 2022-job contract. The 2026-07-16 14:59 snapshot is `390 SUCCESS / 12 RUNNING / 1620 PENDING / 0 FAILED`; controller PID `265751` and orchestrator are alive. The Node23 postprocess watcher is `WAITING_V4D` and will release only `OPEN_TRAIN=226 + OPEN_DEVELOPMENT=32`; the 32-row prospective computational test remains sealed and unavailable to ranking or tuning.
 
 Top100 TNP/IgFold Deep-QC is active on Node1. TNP and IgFold single-sequence smoke checks passed, and the runner is in `FULL_TNP` with eight chunks using four CPU cores each. The Deep-QC delivery watcher and the hash-frozen IgFold-vs-NBB2 structure watcher are both `WAITING_DEEPQC`; TNP/IgFold outputs are annotations and do not enter the open258 primary geometry rank.
 
-The postprocess implementation is now review-clean at HIGH/MEDIUM severity. Final local verification is `42 PASS + 1 optional remote test skipped`, with Python compile and shell syntax checks passing. A hash-fixed, sanitized real V4-D schema fixture is executed by default; the current Top20 packager also passed a fresh real Node23 raw-job/PDB smoke. The raw open-job parser passed a fresh production-aggregator row-closure smoke.
+The postprocess implementation is now review-clean at HIGH/MEDIUM severity. Final local verification is `60 PASS + 1 optional remote test skipped`, with Python compile and shell syntax checks passing. A hash-fixed, sanitized real V4-D schema fixture is executed by default; the current Top20 packager also passed a fresh real Node23 raw-job/PDB smoke. The raw open-job parser passed a fresh production-aggregator row-closure smoke.
 
 The local controller is live in tmux session `pvrig-v4d-deepqc-postprocess`. It will verify remote delivery receipts and internal hashes, perform partial Deep-QC merge when available, then final open258 geometry merge, Top50 ranking, and the real Top20 `20 x 6 x 3 = 360` pose review bundle. The current evidence master v2 remains a 418-row pending schema: geometry and Deep-QC fields stay empty until their corresponding terminal gates pass.
+
+A second controller is live in tmux session `pvrig-submission-release`. The final computational release builder is now implemented and adversarially reviewed: it binds the actual Top50 to its geometry audit, verifies all 360 Top20 pose files and their candidate/conformation/seed/model identity, rejects cross-candidate substitution and duplicate targets, requires 20 explicit computational pose verdicts plus a diverse accepted Top10, freezes Top50/Top10 evidence and dossiers, and proves byte-identical clean replay. Its current state is `WAITING_UPSTREAM`; upstream receipts, review context, existing release contents, build timeout, and replay timeout are all fail-closed, and it cannot emit a READY release before the Top20 bundle and current-context pose verdicts exist.
 
 The next critical gate is no longer implementation. It is remote completion: Node1 Deep-QC terminal delivery and Node23 V4-D terminal evaluator PASS. Until then, the project remains `PIPELINE_READY / FINAL_SUBMISSION_PORTFOLIO_NOT_FROZEN`.
 

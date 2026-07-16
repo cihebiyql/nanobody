@@ -1,0 +1,697 @@
+{
+  "amp_enabled": true,
+  "batch_size": 32,
+  "blocker_examples": {
+    "invalid_cache_identity": [],
+    "invalid_or_nonexact_cdr_masks": [],
+    "missing_cache_sequences": [],
+    "missing_cache_shards": [],
+    "missing_cdr_masks": [],
+    "production_hash_lock_mismatches": {}
+  },
+  "blockers": {
+    "invalid_cache_identity": 0,
+    "invalid_or_nonexact_cdr_masks": 0,
+    "missing_cache_sequences": 0,
+    "missing_cache_shards": 0,
+    "missing_cdr_masks": 0
+  },
+  "cache_coverage_count": 7088,
+  "cache_manifest_row_count": 7088,
+  "cache_required_sequence_count": 7088,
+  "candidate_count": 7087,
+  "candidate_fields": [
+    "candidate_id",
+    "sequence_sha256",
+    "vhh_seq",
+    "cdr1",
+    "cdr2",
+    "cdr3",
+    "cdr1_span_0based",
+    "cdr2_span_0based",
+    "cdr3_span_0based",
+    "parent_framework_cluster",
+    "design_method",
+    "design_mode",
+    "target_patch_id"
+  ],
+  "candidate_unique_sequence_count": 7087,
+  "cdr_mask_coverage_count": 7087,
+  "cdr_mask_row_count": 7087,
+  "cdr_mask_status_counts": {
+    "exact_annotation": 7087
+  },
+  "checkpoints": [
+    {
+      "architecture": {
+        "contact_dim": 96,
+        "cross_layers": 1,
+        "d_model": 160,
+        "dropout": 0.1,
+        "esm_dim": 320,
+        "heads": 4,
+        "layers": 2,
+        "max_antigen_len": 768,
+        "max_vhh_len": 180
+      },
+      "best_score": 1.2820179689373377,
+      "epoch": 3,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "seed": 43,
+      "sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97"
+    },
+    {
+      "architecture": {
+        "contact_dim": 96,
+        "cross_layers": 1,
+        "d_model": 160,
+        "dropout": 0.1,
+        "esm_dim": 320,
+        "heads": 4,
+        "layers": 2,
+        "max_antigen_len": 768,
+        "max_vhh_len": 180
+      },
+      "best_score": 1.2570174343474017,
+      "epoch": 6,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "seed": 53,
+      "sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b"
+    },
+    {
+      "architecture": {
+        "contact_dim": 96,
+        "cross_layers": 1,
+        "d_model": 160,
+        "dropout": 0.1,
+        "esm_dim": 320,
+        "heads": 4,
+        "layers": 2,
+        "max_antigen_len": 768,
+        "max_vhh_len": 180
+      },
+      "best_score": 1.2766023297762914,
+      "epoch": 5,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "seed": 67,
+      "sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9"
+    }
+  ],
+  "completed_at": "2026-07-16T07:14:32.026703+00:00",
+  "device": "cuda",
+  "feature_names": [
+    "pair_ranking_logit_weak",
+    "pair_ranking_sigmoid_weak",
+    "paratope_mean",
+    "paratope_cdr_mean",
+    "paratope_cdr3_mean",
+    "paratope_cdr3_max",
+    "paratope_cdr_mass_fraction",
+    "contact_global_mean",
+    "contact_global_top20_mean",
+    "contact_hotspot_weighted_mean",
+    "contact_hotspot_top20_mean",
+    "contact_hotspot_fraction",
+    "contact_cdr_hotspot_weighted_mean",
+    "contact_cdr_hotspot_mass_length_confounded_diagnostic",
+    "contact_cdr3_hotspot_weighted_mean",
+    "contact_cdr3_hotspot_top20_mean",
+    "contact_cdr3_hotspot_mass_length_confounded_diagnostic",
+    "contact_noninterface_mean",
+    "contact_interface_specificity",
+    "epitope_hotspot_weighted_mean",
+    "epitope_noninterface_mean",
+    "epitope_interface_specificity"
+  ],
+  "feature_policy": {
+    "default_trainer_must_exclude": [
+      "contact_cdr_hotspot_mass_length_confounded_diagnostic",
+      "contact_cdr3_hotspot_mass_length_confounded_diagnostic"
+    ],
+    "default_trainer_must_exclude_columns": [
+      "seed43_contact_cdr_hotspot_mass_length_confounded_diagnostic",
+      "seed53_contact_cdr_hotspot_mass_length_confounded_diagnostic",
+      "seed67_contact_cdr_hotspot_mass_length_confounded_diagnostic",
+      "contact_cdr_hotspot_mass_length_confounded_diagnostic_seed_mean",
+      "contact_cdr_hotspot_mass_length_confounded_diagnostic_seed_std",
+      "seed43_contact_cdr3_hotspot_mass_length_confounded_diagnostic",
+      "seed53_contact_cdr3_hotspot_mass_length_confounded_diagnostic",
+      "seed67_contact_cdr3_hotspot_mass_length_confounded_diagnostic",
+      "contact_cdr3_hotspot_mass_length_confounded_diagnostic_seed_mean",
+      "contact_cdr3_hotspot_mass_length_confounded_diagnostic_seed_std"
+    ],
+    "diagnostic_only_length_confounded_features": [
+      "contact_cdr_hotspot_mass_length_confounded_diagnostic",
+      "contact_cdr3_hotspot_mass_length_confounded_diagnostic"
+    ],
+    "length_only_baseline_fields": [
+      "sequence_length",
+      "cdr1_length",
+      "cdr2_length",
+      "cdr3_length"
+    ],
+    "required_shortcut_baselines": [
+      "sequence_and_cdr_length_only",
+      "parent_framework_cluster_only",
+      "design_metadata_only"
+    ],
+    "stable_default_trainer_columns": [
+      "pair_ranking_logit_weak_seed_mean",
+      "pair_ranking_logit_weak_seed_std",
+      "pair_ranking_sigmoid_weak_seed_mean",
+      "pair_ranking_sigmoid_weak_seed_std",
+      "paratope_mean_seed_mean",
+      "paratope_mean_seed_std",
+      "paratope_cdr_mean_seed_mean",
+      "paratope_cdr_mean_seed_std",
+      "paratope_cdr3_mean_seed_mean",
+      "paratope_cdr3_mean_seed_std",
+      "paratope_cdr3_max_seed_mean",
+      "paratope_cdr3_max_seed_std",
+      "paratope_cdr_mass_fraction_seed_mean",
+      "paratope_cdr_mass_fraction_seed_std",
+      "contact_global_mean_seed_mean",
+      "contact_global_mean_seed_std",
+      "contact_global_top20_mean_seed_mean",
+      "contact_global_top20_mean_seed_std",
+      "contact_hotspot_weighted_mean_seed_mean",
+      "contact_hotspot_weighted_mean_seed_std",
+      "contact_hotspot_top20_mean_seed_mean",
+      "contact_hotspot_top20_mean_seed_std",
+      "contact_hotspot_fraction_seed_mean",
+      "contact_hotspot_fraction_seed_std",
+      "contact_cdr_hotspot_weighted_mean_seed_mean",
+      "contact_cdr_hotspot_weighted_mean_seed_std",
+      "contact_cdr3_hotspot_weighted_mean_seed_mean",
+      "contact_cdr3_hotspot_weighted_mean_seed_std",
+      "contact_cdr3_hotspot_top20_mean_seed_mean",
+      "contact_cdr3_hotspot_top20_mean_seed_std",
+      "contact_noninterface_mean_seed_mean",
+      "contact_noninterface_mean_seed_std",
+      "contact_interface_specificity_seed_mean",
+      "contact_interface_specificity_seed_std",
+      "epitope_hotspot_weighted_mean_seed_mean",
+      "epitope_hotspot_weighted_mean_seed_std",
+      "epitope_noninterface_mean_seed_mean",
+      "epitope_noninterface_mean_seed_std",
+      "epitope_interface_specificity_seed_mean",
+      "epitope_interface_specificity_seed_std"
+    ],
+    "stable_default_trainer_features": [
+      "pair_ranking_logit_weak",
+      "pair_ranking_sigmoid_weak",
+      "paratope_mean",
+      "paratope_cdr_mean",
+      "paratope_cdr3_mean",
+      "paratope_cdr3_max",
+      "paratope_cdr_mass_fraction",
+      "contact_global_mean",
+      "contact_global_top20_mean",
+      "contact_hotspot_weighted_mean",
+      "contact_hotspot_top20_mean",
+      "contact_hotspot_fraction",
+      "contact_cdr_hotspot_weighted_mean",
+      "contact_cdr3_hotspot_weighted_mean",
+      "contact_cdr3_hotspot_top20_mean",
+      "contact_noninterface_mean",
+      "contact_interface_specificity",
+      "epitope_hotspot_weighted_mean",
+      "epitope_noninterface_mean",
+      "epitope_interface_specificity"
+    ]
+  },
+  "feature_schema_sha256": "a73cb3c17bd3501816da2c4200564709574eace683749ac9bd270fb47a80bf5e",
+  "feature_schema_version": "pvrig_candidate_v2_3_label_free_residue_contact_features_v3",
+  "generated_at": "2026-07-16T07:10:57.734373+00:00",
+  "hotspot_count": 23,
+  "hotspots": [
+    {
+      "aa": "S",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_26",
+      "target_index_0based": 32,
+      "uniprot_position": 71,
+      "weight": 1.0
+    },
+    {
+      "aa": "L",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_27",
+      "target_index_0based": 33,
+      "uniprot_position": 72,
+      "weight": 1.0
+    },
+    {
+      "aa": "T",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_29",
+      "target_index_0based": 35,
+      "uniprot_position": 74,
+      "weight": 1.0
+    },
+    {
+      "aa": "N",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_36",
+      "target_index_0based": 42,
+      "uniprot_position": 81,
+      "weight": 1.0
+    },
+    {
+      "aa": "G",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_37",
+      "target_index_0based": 43,
+      "uniprot_position": 82,
+      "weight": 1.0
+    },
+    {
+      "aa": "A",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_38",
+      "target_index_0based": 44,
+      "uniprot_position": 83,
+      "weight": 1.0
+    },
+    {
+      "aa": "T",
+      "hotspot_class": "secondary_hotspot",
+      "hotspot_id": "secondary_hotspot_42",
+      "target_index_0based": 48,
+      "uniprot_position": 87,
+      "weight": 0.7
+    },
+    {
+      "aa": "V",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_45",
+      "target_index_0based": 51,
+      "uniprot_position": 90,
+      "weight": 1.0
+    },
+    {
+      "aa": "H",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_47",
+      "target_index_0based": 53,
+      "uniprot_position": 92,
+      "weight": 1.0
+    },
+    {
+      "aa": "R",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_50",
+      "target_index_0based": 56,
+      "uniprot_position": 95,
+      "weight": 1.0
+    },
+    {
+      "aa": "G",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_51",
+      "target_index_0based": 57,
+      "uniprot_position": 96,
+      "weight": 1.0
+    },
+    {
+      "aa": "I",
+      "hotspot_class": "secondary_hotspot",
+      "hotspot_id": "secondary_hotspot_52",
+      "target_index_0based": 58,
+      "uniprot_position": 97,
+      "weight": 0.7
+    },
+    {
+      "aa": "R",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_53",
+      "target_index_0based": 59,
+      "uniprot_position": 98,
+      "weight": 1.0
+    },
+    {
+      "aa": "W",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_55",
+      "target_index_0based": 61,
+      "uniprot_position": 100,
+      "weight": 1.0
+    },
+    {
+      "aa": "K",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_86",
+      "target_index_0based": 96,
+      "uniprot_position": 135,
+      "weight": 1.0
+    },
+    {
+      "aa": "A",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_88",
+      "target_index_0based": 98,
+      "uniprot_position": 137,
+      "weight": 1.0
+    },
+    {
+      "aa": "S",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_89",
+      "target_index_0based": 99,
+      "uniprot_position": 138,
+      "weight": 1.0
+    },
+    {
+      "aa": "F",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_90",
+      "target_index_0based": 100,
+      "uniprot_position": 139,
+      "weight": 1.0
+    },
+    {
+      "aa": "P",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_91",
+      "target_index_0based": 101,
+      "uniprot_position": 140,
+      "weight": 1.0
+    },
+    {
+      "aa": "E",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_92",
+      "target_index_0based": 102,
+      "uniprot_position": 141,
+      "weight": 1.0
+    },
+    {
+      "aa": "G",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_93",
+      "target_index_0based": 103,
+      "uniprot_position": 142,
+      "weight": 1.0
+    },
+    {
+      "aa": "S",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_94",
+      "target_index_0based": 104,
+      "uniprot_position": 143,
+      "weight": 1.0
+    },
+    {
+      "aa": "W",
+      "hotspot_class": "core_hotspot",
+      "hotspot_id": "core_hotspot_95",
+      "target_index_0based": 105,
+      "uniprot_position": 144,
+      "weight": 1.0
+    }
+  ],
+  "input_closure_sha256": "6b16d482f874483d2c922953ab62f054e98de68ca3b13d1100078a484d678dba",
+  "input_hashes": {
+    "cache_manifest": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+    "candidates": "3099d49f150ef21a97822fc4e0d2cc2c9bc3580654a4de2e46f1768ea3e6e222",
+    "cdr_masks": "5b6b8c2749ea25335a232d1c61dcf56b4fba8c046892493775e047a4bc34c29f",
+    "hotspots": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+    "target_fasta": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50"
+  },
+  "input_snapshot_after": {
+    "cache_manifest": {
+      "mtime_ns": 1784181693500212300,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/manifest.csv",
+      "sha256": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+      "size_bytes": 2027293
+    },
+    "cache_shard:shard_00000.pt": {
+      "mtime_ns": 1784181687282321400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00000.pt",
+      "sha256": "133278924f974422851575c39d3c7850cbca50effec42a5061e7d4f69b1e3d81",
+      "size_bytes": 77198639
+    },
+    "cache_shard:shard_00001.pt": {
+      "mtime_ns": 1784181688354093200,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00001.pt",
+      "sha256": "8a7c7591374395e4cd4bec1d58a229e47b98ad3a87b451f87c3b20f77411f6cd",
+      "size_bytes": 78848559
+    },
+    "cache_shard:shard_00002.pt": {
+      "mtime_ns": 1784181689442726800,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00002.pt",
+      "sha256": "d18f3fe02f32a826e6e9e60f426a1207c7355934ce28b8789b73e67b401d959e",
+      "size_bytes": 80021679
+    },
+    "cache_shard:shard_00003.pt": {
+      "mtime_ns": 1784181690406717100,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00003.pt",
+      "sha256": "f72a08c9181d5067277efddbfead8485c6d2db5a69af324478aa043426ed1f8a",
+      "size_bytes": 81081519
+    },
+    "cache_shard:shard_00004.pt": {
+      "mtime_ns": 1784181691461351200,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00004.pt",
+      "sha256": "ac7ee49f98f117a687bfc9129063ba55f7fe816d44d9cdd59bd1f63ec0f15abf",
+      "size_bytes": 81777199
+    },
+    "cache_shard:shard_00005.pt": {
+      "mtime_ns": 1784181692530677000,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00005.pt",
+      "sha256": "a62ecb278a134e9a6fbf16661e27b7b1a8c5454c450e0f5c50dff32d9d3afbcd",
+      "size_bytes": 82840879
+    },
+    "cache_shard:shard_00006.pt": {
+      "mtime_ns": 1784181693448402400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00006.pt",
+      "sha256": "9755a246e3947686a3541528a48734ac79ee22274397361b6ed3b9b73bf8c17b",
+      "size_bytes": 77513271
+    },
+    "candidates": {
+      "mtime_ns": 1784181631837260400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/candidate7087_v23_inputs.csv",
+      "sha256": "3099d49f150ef21a97822fc4e0d2cc2c9bc3580654a4de2e46f1768ea3e6e222",
+      "size_bytes": 2441158
+    },
+    "cdr_masks": {
+      "mtime_ns": 1784181645477188000,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/vhh_cdr_type_masks_v23_candidate7087.csv",
+      "sha256": "5b6b8c2749ea25335a232d1c61dcf56b4fba8c046892493775e047a4bc34c29f",
+      "size_bytes": 4310847
+    },
+    "checkpoint_seed43": {
+      "mtime_ns": 1783669258899864700,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97",
+      "size_bytes": 26608839
+    },
+    "checkpoint_seed53": {
+      "mtime_ns": 1783669259461944700,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b",
+      "size_bytes": 26616455
+    },
+    "checkpoint_seed67": {
+      "mtime_ns": 1783669259987143400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9",
+      "size_bytes": 26613959
+    },
+    "hotspots": {
+      "mtime_ns": 1783328440275656200,
+      "path": "/mnt/d/work/抗体/data/structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "size_bytes": 5558
+    },
+    "target_fasta": {
+      "mtime_ns": 1783651493155693500,
+      "path": "/mnt/d/work/抗体/data/model_data/pvrig_target_ectodomain_proxy_v1.fasta",
+      "sha256": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50",
+      "size_bytes": 260
+    }
+  },
+  "input_snapshot_before": {
+    "cache_manifest": {
+      "mtime_ns": 1784181693500212300,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/manifest.csv",
+      "sha256": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+      "size_bytes": 2027293
+    },
+    "cache_shard:shard_00000.pt": {
+      "mtime_ns": 1784181687282321400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00000.pt",
+      "sha256": "133278924f974422851575c39d3c7850cbca50effec42a5061e7d4f69b1e3d81",
+      "size_bytes": 77198639
+    },
+    "cache_shard:shard_00001.pt": {
+      "mtime_ns": 1784181688354093200,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00001.pt",
+      "sha256": "8a7c7591374395e4cd4bec1d58a229e47b98ad3a87b451f87c3b20f77411f6cd",
+      "size_bytes": 78848559
+    },
+    "cache_shard:shard_00002.pt": {
+      "mtime_ns": 1784181689442726800,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00002.pt",
+      "sha256": "d18f3fe02f32a826e6e9e60f426a1207c7355934ce28b8789b73e67b401d959e",
+      "size_bytes": 80021679
+    },
+    "cache_shard:shard_00003.pt": {
+      "mtime_ns": 1784181690406717100,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00003.pt",
+      "sha256": "f72a08c9181d5067277efddbfead8485c6d2db5a69af324478aa043426ed1f8a",
+      "size_bytes": 81081519
+    },
+    "cache_shard:shard_00004.pt": {
+      "mtime_ns": 1784181691461351200,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00004.pt",
+      "sha256": "ac7ee49f98f117a687bfc9129063ba55f7fe816d44d9cdd59bd1f63ec0f15abf",
+      "size_bytes": 81777199
+    },
+    "cache_shard:shard_00005.pt": {
+      "mtime_ns": 1784181692530677000,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00005.pt",
+      "sha256": "a62ecb278a134e9a6fbf16661e27b7b1a8c5454c450e0f5c50dff32d9d3afbcd",
+      "size_bytes": 82840879
+    },
+    "cache_shard:shard_00006.pt": {
+      "mtime_ns": 1784181693448402400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00006.pt",
+      "sha256": "9755a246e3947686a3541528a48734ac79ee22274397361b6ed3b9b73bf8c17b",
+      "size_bytes": 77513271
+    },
+    "candidates": {
+      "mtime_ns": 1784181631837260400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/candidate7087_v23_inputs.csv",
+      "sha256": "3099d49f150ef21a97822fc4e0d2cc2c9bc3580654a4de2e46f1768ea3e6e222",
+      "size_bytes": 2441158
+    },
+    "cdr_masks": {
+      "mtime_ns": 1784181645477188000,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/vhh_cdr_type_masks_v23_candidate7087.csv",
+      "sha256": "5b6b8c2749ea25335a232d1c61dcf56b4fba8c046892493775e047a4bc34c29f",
+      "size_bytes": 4310847
+    },
+    "checkpoint_seed43": {
+      "mtime_ns": 1783669258899864700,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97",
+      "size_bytes": 26608839
+    },
+    "checkpoint_seed53": {
+      "mtime_ns": 1783669259461944700,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b",
+      "size_bytes": 26616455
+    },
+    "checkpoint_seed67": {
+      "mtime_ns": 1783669259987143400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9",
+      "size_bytes": 26613959
+    },
+    "hotspots": {
+      "mtime_ns": 1783328440275656200,
+      "path": "/mnt/d/work/抗体/data/structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "size_bytes": 5558
+    },
+    "target_fasta": {
+      "mtime_ns": 1783651493155693500,
+      "path": "/mnt/d/work/抗体/data/model_data/pvrig_target_ectodomain_proxy_v1.fasta",
+      "sha256": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50",
+      "size_bytes": 260
+    }
+  },
+  "input_snapshot_content_closure_sha256": "aa0c636972f8997f8d3c228a54829ee389df96280c515c38badd62110fe00897",
+  "input_snapshot_unchanged": true,
+  "label_free_contract": {
+    "accepted_inputs": [
+      "candidate_sequences_and_generation_provenance",
+      "exact_cdr_masks",
+      "frozen_esm2_residue_cache",
+      "frozen_v2_3_checkpoints",
+      "fixed_pvrig_target_fasta",
+      "fixed_pvrig_hotspot_table"
+    ],
+    "claim_boundary": "generic V2.3 sequence-to-fixed-PVRIG residue/contact AI prior only; not docking geometry, binding, affinity, competition, or functional blocking truth",
+    "docking_label_inputs_read": 0,
+    "production_hash_locks_enforced": true,
+    "test_only_unfrozen_hash_override": false,
+    "v4d_job_state_read": 0,
+    "v4d_raw_results_read": 0
+  },
+  "output": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.csv",
+  "output_column_count": 125,
+  "output_row_count": 7087,
+  "output_sha256": "f48de64d253a76bc9cff19ab1348c1655be7306828289b28f9a04e5b95471e7d",
+  "production_hash_lock": {
+    "enforced": true,
+    "expected_checkpoints_by_seed": {
+      "43": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97",
+      "53": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b",
+      "67": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9"
+    },
+    "expected_inputs": {
+      "cache_manifest": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+      "candidates": "3099d49f150ef21a97822fc4e0d2cc2c9bc3580654a4de2e46f1768ea3e6e222",
+      "cdr_masks": "5b6b8c2749ea25335a232d1c61dcf56b4fba8c046892493775e047a4bc34c29f",
+      "hotspots": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "target_fasta": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50"
+    },
+    "mismatches": {}
+  },
+  "quarantine": [
+    {
+      "destination": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/quarantine/pvrig_candidate_v2_3_residue_contact_features_v1__pvrig_candidate_v2_3_label_free_residue_contact_features_v1__1d2f958cdd1c",
+      "moved": [
+        {
+          "quarantined": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/quarantine/pvrig_candidate_v2_3_residue_contact_features_v1__pvrig_candidate_v2_3_label_free_residue_contact_features_v1__1d2f958cdd1c/pvrig_candidate_v2_3_residue_contact_features_v1.csv",
+          "source": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v1.csv"
+        },
+        {
+          "quarantined": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/quarantine/pvrig_candidate_v2_3_residue_contact_features_v1__pvrig_candidate_v2_3_label_free_residue_contact_features_v1__1d2f958cdd1c/pvrig_candidate_v2_3_residue_contact_features_v1.audit.json",
+          "source": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v1.audit.json"
+        }
+      ],
+      "status": "QUARANTINED_SUPERSEDED_RELEASE",
+      "superseded_schema": "pvrig_candidate_v2_3_label_free_residue_contact_features_v1"
+    },
+    {
+      "destination": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/quarantine/pvrig_candidate_v2_3_residue_contact_features_v2__pvrig_candidate_v2_3_label_free_residue_contact_features_v1__da3af7d0818e",
+      "moved": [
+        {
+          "quarantined": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/quarantine/pvrig_candidate_v2_3_residue_contact_features_v2__pvrig_candidate_v2_3_label_free_residue_contact_features_v1__da3af7d0818e/pvrig_candidate_v2_3_residue_contact_features_v2.csv",
+          "source": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v2.csv"
+        },
+        {
+          "quarantined": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/quarantine/pvrig_candidate_v2_3_residue_contact_features_v2__pvrig_candidate_v2_3_label_free_residue_contact_features_v1__da3af7d0818e/pvrig_candidate_v2_3_residue_contact_features_v2.audit.json",
+          "source": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v2.audit.json"
+        }
+      ],
+      "status": "QUARANTINED_SUPERSEDED_RELEASE",
+      "superseded_schema": "pvrig_candidate_v2_3_label_free_residue_contact_features_v1"
+    }
+  ],
+  "receipt": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.receipt.json",
+  "referenced_cache_shard_sha256": {
+    "shard_00000.pt": "133278924f974422851575c39d3c7850cbca50effec42a5061e7d4f69b1e3d81",
+    "shard_00001.pt": "8a7c7591374395e4cd4bec1d58a229e47b98ad3a87b451f87c3b20f77411f6cd",
+    "shard_00002.pt": "d18f3fe02f32a826e6e9e60f426a1207c7355934ce28b8789b73e67b401d959e",
+    "shard_00003.pt": "f72a08c9181d5067277efddbfead8485c6d2db5a69af324478aa043426ed1f8a",
+    "shard_00004.pt": "ac7ee49f98f117a687bfc9129063ba55f7fe816d44d9cdd59bd1f63ec0f15abf",
+    "shard_00005.pt": "a62ecb278a134e9a6fbf16661e27b7b1a8c5454c450e0f5c50dff32d9d3afbcd",
+    "shard_00006.pt": "9755a246e3947686a3541528a48734ac79ee22274397361b6ed3b9b73bf8c17b"
+  },
+  "release_closure_sha256": "fab547c080162979e4557542f39bb1f1081abb9447ff4e40aa2ef88368902d49",
+  "schema_version": "pvrig_candidate_v2_3_label_free_residue_contact_feature_audit_v3",
+  "script_sha256": "adbe462302df37239434e8a580ab50ae99cf2fc2107bed19a7e31512c44115c6",
+  "seed_aggregation": "arithmetic_mean_and_population_standard_deviation_ddof0",
+  "status": "PASS",
+  "supersedes": [
+    "pvrig_candidate_v2_3_label_free_residue_contact_features_v1",
+    "pvrig_candidate_v2_3_label_free_residue_contact_features_v2"
+  ],
+  "target_length": 133,
+  "target_sequence_sha256": "b3d2735abe671004474d0196f9d010bbdf22ea2cec9ccb6d71b28f9bdb328075",
+  "verification": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.verification.json"
+}

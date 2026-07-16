@@ -1,6 +1,6 @@
 # PVRIG VHH 计算主线全局状态与下一步
 
-**更新时间：** 2026-07-16 13:20 CST  
+**更新时间：** 2026-07-16 14:59 CST  
 **第一轮截止：** 2026-07-26 18:00  
 **本文范围：** 计算筛选、Docking、候选组合和提交释放；不把实验闭环作为当前关键路径。
 
@@ -95,7 +95,7 @@ V4-D 已在任何新双构象标签出现前冻结：
     47 protocol-regression controls
     2022 total jobs = 337 entities x 2 receptors x 3 seeds
 
-V4-D 已在零结果状态下完成 Decimal 修订和重冻结：core/candidate/split/monomer/job manifest 哈希均未改变，runtime `34/34` 测试通过，4-job smoke `4/4 PASS`。2026-07-16 11:26 全量控制器在 node23 启动；13:18 的实测快照为 `202 SUCCESS / 12 RUNNING / 1808 PENDING / 0 FAILED`。Node23 open-teacher watcher 为 `WAITING_V4D`，只有 fresh evaluator PASS 后才释放 open258；test32 保持 sealed。
+V4-D 已在零结果状态下完成 Decimal 修订和重冻结：core/candidate/split/monomer/job manifest 哈希均未改变，runtime `34/34` 测试通过，4-job smoke `4/4 PASS`。2026-07-16 11:26 全量控制器在 node23 启动；14:59 的实测快照为 `390 SUCCESS / 12 RUNNING / 1620 PENDING / 0 FAILED`。Node23 open-teacher watcher 为 `WAITING_V4D`，只有 fresh evaluator PASS 后才释放 open258；test32 保持 sealed。
 
 新 evaluator gate 为 `pvrig_v4_d_evaluator_stability_v3_decimal_thresholds`。修订、前后归档和哈希证据见 `data/experiments/phase2_5080_v1/reports/PVRIG_V4_D_DECIMAL_PROTOCOL_CORRECTION_20260716_ZH.md`。
 
@@ -127,7 +127,9 @@ V4-D 已在零结果状态下完成 Decimal 修订和重冻结：core/candidate/
 - Node1 IgFold-vs-NBB2 watcher：`WAITING_DEEPQC`；
 - 本地 tmux 总控：`pvrig-v4d-deepqc-postprocess`，状态 `RUNNING`。
 
-总控将先验证 archive/receipt/manifest/SHA256，再执行 partial Deep-QC merge、final open258 geometry merge、Top50 排名和真实 Top20 `20 x 6 x 3 = 360` pose bundle。第二轮代码审查已关闭全部 HIGH/MEDIUM；组合验证为 `42 PASS + 1 optional remote skipped`，真实 raw/aggregate closure smoke 与真实 Node23 pose parser smoke 均通过。
+总控将先验证 archive/receipt/manifest/SHA256，再执行 partial Deep-QC merge、final open258 geometry merge、Top50 排名和真实 Top20 `20 x 6 x 3 = 360` pose bundle。第二轮代码审查已关闭全部 HIGH/MEDIUM；组合验证为 `60 PASS + 1 optional remote skipped`，真实 raw/aggregate closure smoke 与真实 Node23 pose parser smoke 均通过。
+
+最终计算发布链也已提前实现：`prepare_pvrig_submission_release.py` 对真实 Top50、Top20 360 poses、20 条计算姿势 verdict 和多家族 Top10 做 identity/hash/diversity 闭环，并生成 Top50/Top10 evidence、lineage、dossier、SHA256 和 byte-identical clean replay。独立对抗审查已确认 builder 与 watcher 均无剩余 HIGH/MEDIUM；watcher 还绑定 upstream receipt 和 current review context，并限制 build/replay 执行时间。第二个 tmux watcher `pvrig-submission-release` 当前为 `WAITING_UPSTREAM`，上游完成后自动生成复核模板；只有计算姿势 verdict 填写完整后才允许构建 release。
 
 ## 3. 全局执行顺序
 
@@ -179,7 +181,7 @@ Node1 pvrig_v4c_generic_prior_20260715 因 embedding config 与 frozen checkpoin
 
 ## P1 - 启动 V4-D FullQC290 双构象 Docking
 
-执行状态：`RUNNING`。4-job smoke 已通过，全量 2022-job 控制器已启动；13:18 快照为 `202 SUCCESS / 12 RUNNING / 1808 PENDING / 0 FAILED`。
+执行状态：`RUNNING`。4-job smoke 已通过，全量 2022-job 控制器已启动；14:59 快照为 `390 SUCCESS / 12 RUNNING / 1620 PENDING / 0 FAILED`。
 
 P0 通过后，在 node23 使用本地 scratch 执行：
 

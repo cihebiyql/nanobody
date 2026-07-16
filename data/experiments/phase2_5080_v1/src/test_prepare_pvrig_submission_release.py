@@ -206,6 +206,9 @@ def build_fixture(root: Path) -> dict[str, Path]:
             "successful_job_count": 120,
             "manifest_pose_count": 360,
             "input_sha256": {"shortlist": hashlib.sha256(shortlist.read_bytes()).hexdigest()},
+            "output_sha256": {
+                "manifest": hashlib.sha256(pose_manifest.read_bytes()).hexdigest()
+            },
         },
     )
     return {
@@ -371,6 +374,58 @@ class SubmissionReleaseTests(unittest.TestCase):
             rows[0]["model"] = "../../escape.pdb.gz"
             write_table(inputs["pose_manifest"], rows)
             with self.assertRaisesRegex(MOD.ReleaseError, "Unsafe pose model"):
+                MOD.run(args_for(inputs, root / "release"))
+
+    def test_cross_candidate_pose_substitution_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            inputs = build_fixture(root / "inputs")
+            _fields, rows, _ = MOD.read_table(inputs["pose_manifest"])
+            source = next(
+                row for row in rows
+                if row["candidate_id"] == "CAND_002"
+                and row["conformation"] == "8x6b"
+                and row["seed"] == "917"
+                and row["model"] == "cluster_1_model_1.pdb.gz"
+            )
+            target = next(
+                row for row in rows
+                if row["candidate_id"] == "CAND_001"
+                and row["conformation"] == "8x6b"
+                and row["seed"] == "917"
+                and row["model"] == "cluster_1_model_1.pdb.gz"
+            )
+            for field in ("bundle_relpath", "source_sha256", "target_sha256"):
+                target[field] = source[field]
+            write_table(inputs["pose_manifest"], rows)
+            with self.assertRaisesRegex(MOD.ReleaseError, "not identity-bound"):
+                MOD.run(args_for(inputs, root / "release"))
+
+    def test_non_top10_duplicate_model_and_target_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            inputs = build_fixture(root / "inputs")
+            _fields, rows, _ = MOD.read_table(inputs["pose_manifest"])
+            job_rows = [
+                row for row in rows
+                if row["candidate_id"] == "CAND_011"
+                and row["conformation"] == "8x6b"
+                and row["seed"] == "917"
+            ]
+            for field in ("model", "bundle_relpath", "source_sha256", "target_sha256"):
+                job_rows[1][field] = job_rows[0][field]
+            write_table(inputs["pose_manifest"], rows)
+            with self.assertRaisesRegex(MOD.ReleaseError, "Duplicate pose model identity"):
+                MOD.run(args_for(inputs, root / "release"))
+
+    def test_pose_manifest_must_match_pose_audit_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            inputs = build_fixture(root / "inputs")
+            _fields, rows, _ = MOD.read_table(inputs["pose_manifest"])
+            rows[0]["HADDOCK_score"] = "-999"
+            write_table(inputs["pose_manifest"], rows)
+            with self.assertRaisesRegex(MOD.ReleaseError, "not hash-bound"):
                 MOD.run(args_for(inputs, root / "release"))
 
     def test_sequence_hash_and_known_positive_fail_closed(self) -> None:

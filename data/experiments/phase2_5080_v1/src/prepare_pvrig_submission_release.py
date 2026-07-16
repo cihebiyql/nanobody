@@ -405,6 +405,10 @@ def validate_pose_bundle(
         raise ReleaseError(f"Pose manifest must contain exactly 360 rows, found {len(rows)}")
     top20 = {row["candidate_id"]: row for row in shortlist[:20]}
     by_candidate: dict[str, list[dict[str, str]]] = defaultdict(list)
+    pose_identities: set[tuple[str, str, str, str]] = set()
+    bundle_paths: set[Path] = set()
+    job_bindings: dict[tuple[str, str, str], tuple[str, str]] = {}
+    job_ids: dict[str, tuple[str, str, str]] = {}
     for row in rows:
         candidate = required(row, "candidate_id")
         if candidate not in top20:
@@ -415,10 +419,25 @@ def validate_pose_bundle(
         seed = required(row, "seed")
         if conformation not in CONFORMATIONS or seed not in SEEDS:
             raise ReleaseError(f"Unsupported pose conformation/seed for {candidate}")
-        safe_component(required(row, "model"), "pose model")
-        safe_component(required(row, "job_id"), "job_id")
-        if not HEX64.fullmatch(required(row, "job_hash").lower()):
+        model = safe_component(required(row, "model"), "pose model")
+        job_id = safe_component(required(row, "job_id"), "job_id")
+        job_hash = required(row, "job_hash").lower()
+        if not HEX64.fullmatch(job_hash):
             raise ReleaseError(f"Invalid pose job hash for {candidate}")
+        if candidate not in job_id or conformation not in job_id.lower() or seed not in job_id:
+            raise ReleaseError(f"Pose job_id is not identity-bound to its row: {job_id}")
+        identity = (candidate, conformation, seed, model)
+        if identity in pose_identities:
+            raise ReleaseError(f"Duplicate pose model identity: {identity}")
+        pose_identities.add(identity)
+        job_key = (candidate, conformation, seed)
+        binding = (job_id, job_hash)
+        if job_key in job_bindings and job_bindings[job_key] != binding:
+            raise ReleaseError(f"Conflicting pose job binding for {job_key}")
+        job_bindings[job_key] = binding
+        if job_id in job_ids and job_ids[job_id] != job_key:
+            raise ReleaseError(f"Pose job_id reused across candidate jobs: {job_id}")
+        job_ids[job_id] = job_key
         number(required(row, "HADDOCK_score"), "HADDOCK_score")
         for field in ("geometry_8x6b_summary", "geometry_9e6y_summary"):
             try:
@@ -434,6 +453,15 @@ def validate_pose_bundle(
         relpath = Path(required(row, "bundle_relpath"))
         if relpath.is_absolute() or ".." in relpath.parts:
             raise ReleaseError(f"Unsafe pose bundle path for {candidate}: {relpath}")
+        canonical = Path(candidate) / conformation / seed / model
+        frozen_canonical = Path("top20_pose_sources") / canonical
+        if relpath not in {canonical, frozen_canonical}:
+            raise ReleaseError(
+                f"Pose path is not identity-bound to candidate/conformation/seed/model: {relpath}"
+            )
+        if relpath in bundle_paths:
+            raise ReleaseError(f"Duplicate pose bundle path: {relpath}")
+        bundle_paths.add(relpath)
         by_candidate[candidate].append(row)
     if set(by_candidate) != set(top20):
         raise ReleaseError("Pose manifest candidate set does not close against Top20")
@@ -456,6 +484,8 @@ def validate_pose_bundle(
         raise ReleaseError("Pose-review audit counts do not close")
     if audit.get("input_sha256", {}).get("shortlist") != sha256_file(shortlist_path):
         raise ReleaseError("Pose-review audit is not bound to this Top50 shortlist")
+    if audit.get("output_sha256", {}).get("manifest") != sha256_file(manifest_path):
+        raise ReleaseError("Pose-review audit is not hash-bound to this pose manifest")
     return fields, rows
 
 
@@ -498,6 +528,12 @@ def freeze_inputs_and_pose_sources(
         normalized.append(item)
     frozen_manifest = frozen / "pose_review_manifest.tsv"
     write_table(frozen_manifest, normalized, pose_fields, "\t")
+    normalized_audit = load_json(args.pose_audit)
+    normalized_audit["output_sha256"] = {"manifest": sha256_file(frozen_manifest)}
+    normalized_audit["release_normalization"] = (
+        "bundle_relpath normalized to frozen top20_pose_sources; pose content hashes unchanged"
+    )
+    write_json(frozen / "pose_review_audit.json", normalized_audit)
     return frozen_manifest, normalized
 
 

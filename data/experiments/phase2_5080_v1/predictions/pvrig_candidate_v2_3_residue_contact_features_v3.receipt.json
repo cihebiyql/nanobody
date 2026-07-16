@@ -1,0 +1,111 @@
+{
+  "audit": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.audit.json",
+  "audit_sha256": "eb63f16aacef2ed3d7ed0a755bfc3c49a590e09248b28643b94dc7e2c4e27e29",
+  "claim_boundary": "generic V2.3 sequence-to-fixed-PVRIG residue/contact AI prior only; not docking geometry, binding, affinity, competition, or functional blocking truth",
+  "created_at": "2026-07-16T07:14:32.031133+00:00",
+  "feature_schema_version": "pvrig_candidate_v2_3_label_free_residue_contact_features_v3",
+  "input_snapshot": {
+    "cache_manifest": {
+      "mtime_ns": 1784181693500212300,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/manifest.csv",
+      "sha256": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+      "size_bytes": 2027293
+    },
+    "cache_shard:shard_00000.pt": {
+      "mtime_ns": 1784181687282321400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00000.pt",
+      "sha256": "133278924f974422851575c39d3c7850cbca50effec42a5061e7d4f69b1e3d81",
+      "size_bytes": 77198639
+    },
+    "cache_shard:shard_00001.pt": {
+      "mtime_ns": 1784181688354093200,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00001.pt",
+      "sha256": "8a7c7591374395e4cd4bec1d58a229e47b98ad3a87b451f87c3b20f77411f6cd",
+      "size_bytes": 78848559
+    },
+    "cache_shard:shard_00002.pt": {
+      "mtime_ns": 1784181689442726800,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00002.pt",
+      "sha256": "d18f3fe02f32a826e6e9e60f426a1207c7355934ce28b8789b73e67b401d959e",
+      "size_bytes": 80021679
+    },
+    "cache_shard:shard_00003.pt": {
+      "mtime_ns": 1784181690406717100,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00003.pt",
+      "sha256": "f72a08c9181d5067277efddbfead8485c6d2db5a69af324478aa043426ed1f8a",
+      "size_bytes": 81081519
+    },
+    "cache_shard:shard_00004.pt": {
+      "mtime_ns": 1784181691461351200,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00004.pt",
+      "sha256": "ac7ee49f98f117a687bfc9129063ba55f7fe816d44d9cdd59bd1f63ec0f15abf",
+      "size_bytes": 81777199
+    },
+    "cache_shard:shard_00005.pt": {
+      "mtime_ns": 1784181692530677000,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00005.pt",
+      "sha256": "a62ecb278a134e9a6fbf16661e27b7b1a8c5454c450e0f5c50dff32d9d3afbcd",
+      "size_bytes": 82840879
+    },
+    "cache_shard:shard_00006.pt": {
+      "mtime_ns": 1784181693448402400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/shard_00006.pt",
+      "sha256": "9755a246e3947686a3541528a48734ac79ee22274397361b6ed3b9b73bf8c17b",
+      "size_bytes": 77513271
+    },
+    "candidates": {
+      "mtime_ns": 1784181631837260400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/candidate7087_v23_inputs.csv",
+      "sha256": "3099d49f150ef21a97822fc4e0d2cc2c9bc3580654a4de2e46f1768ea3e6e222",
+      "size_bytes": 2441158
+    },
+    "cdr_masks": {
+      "mtime_ns": 1784181645477188000,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/vhh_cdr_type_masks_v23_candidate7087.csv",
+      "sha256": "5b6b8c2749ea25335a232d1c61dcf56b4fba8c046892493775e047a4bc34c29f",
+      "size_bytes": 4310847
+    },
+    "checkpoint_seed43": {
+      "mtime_ns": 1783669258899864700,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed43_best_checkpoint.pt",
+      "sha256": "27d2c3c9c89a0e4fd3d725cc64e433933aa1717ae19e7246b599ef8931db7c97",
+      "size_bytes": 26608839
+    },
+    "checkpoint_seed53": {
+      "mtime_ns": 1783669259461944700,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed53_best_checkpoint.pt",
+      "sha256": "2876155dffdedf0d4bee41daddd25a1c9e67aeba1101950fe508e2fd4df3260b",
+      "size_bytes": 26616455
+    },
+    "checkpoint_seed67": {
+      "mtime_ns": 1783669259987143400,
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/checkpoints/phase2_v2_3_strict_seed67_best_checkpoint.pt",
+      "sha256": "f717a68056b2569d5a5d4b59fd49e08ee659b33f7dacc23e21cc737b3030cfe9",
+      "size_bytes": 26613959
+    },
+    "hotspots": {
+      "mtime_ns": 1783328440275656200,
+      "path": "/mnt/d/work/抗体/data/structures/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "size_bytes": 5558
+    },
+    "target_fasta": {
+      "mtime_ns": 1783651493155693500,
+      "path": "/mnt/d/work/抗体/data/model_data/pvrig_target_ectodomain_proxy_v1.fasta",
+      "sha256": "4113f40833627aaede888e5ee9e9e1a99bdceced4f856fa08e02bc666da15c50",
+      "size_bytes": 260
+    }
+  },
+  "input_snapshot_content_closure_sha256": "aa0c636972f8997f8d3c228a54829ee389df96280c515c38badd62110fe00897",
+  "output": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.csv",
+  "output_row_count": 7087,
+  "output_sha256": "f48de64d253a76bc9cff19ab1348c1655be7306828289b28f9a04e5b95471e7d",
+  "schema_version": "pvrig_candidate_v2_3_label_free_residue_contact_release_receipt_v1",
+  "script": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/extract_pvrig_v2_3_residue_contact_features.py",
+  "script_sha256": "adbe462302df37239434e8a580ab50ae99cf2fc2107bed19a7e31512c44115c6",
+  "status": "PASS",
+  "supersedes": [
+    "pvrig_candidate_v2_3_label_free_residue_contact_features_v1",
+    "pvrig_candidate_v2_3_label_free_residue_contact_features_v2"
+  ]
+}

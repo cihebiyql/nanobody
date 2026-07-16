@@ -556,6 +556,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "sha256sums": "SHA256SUMS",
             "archive": "pose_review_bundle.tar.gz",
         },
+        "output_sha256": {"manifest": sha256_file(manifest_path)},
     }
     audit_path = args.outdir / "pose_review_audit.json"
     audit_path.write_text(

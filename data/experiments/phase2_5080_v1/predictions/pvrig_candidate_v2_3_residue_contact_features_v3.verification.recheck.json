@@ -1,0 +1,13 @@
+{
+  "audit_sha256": "eb63f16aacef2ed3d7ed0a755bfc3c49a590e09248b28643b94dc7e2c4e27e29",
+  "claim_boundary": "generic V2.3 sequence-to-fixed-PVRIG residue/contact AI prior only; not docking geometry, binding, affinity, competition, or functional blocking truth",
+  "feature_schema_version": "pvrig_candidate_v2_3_label_free_residue_contact_features_v3",
+  "input_snapshot_content_closure_sha256": "aa0c636972f8997f8d3c228a54829ee389df96280c515c38badd62110fe00897",
+  "output_sha256": "f48de64d253a76bc9cff19ab1348c1655be7306828289b28f9a04e5b95471e7d",
+  "receipt": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.receipt.json",
+  "receipt_sha256": "b12c0ff0ce6760db7169ec3616dddaf05786e5ca795354f639ef2bf87c370e2b",
+  "row_count": 7087,
+  "schema_version": "pvrig_candidate_v2_3_label_free_residue_contact_release_verification_v1",
+  "status": "PASS",
+  "verified_at": "2026-07-16T07:15:30.678896+00:00"
+}

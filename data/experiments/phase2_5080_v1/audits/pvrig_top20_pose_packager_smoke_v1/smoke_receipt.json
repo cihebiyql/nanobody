@@ -3,9 +3,9 @@
   "claim_boundary": "Production-schema pose parser smoke only; not binding, affinity, ranking, or experimental blocking evidence.",
   "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
   "model_split": "OPEN_TRAIN",
-  "packager_sha256": "30825b03ea70cdb902cb9741f82249dbfd28cbc885a25d15ec5a750927ccf294",
+  "packager_sha256": "66a2b7b502abe370eadd66f93eec09676888b07d1bef54609fe74809dd8081d8",
   "raw_job_result_sha256": "07d028f5a55855164319d0910ecc23823a81adca1f8ac3b789b52958f159eed5",
-  "schema_version": "pvrig_top20_pose_packager_production_smoke_v2",
+  "schema_version": "pvrig_top20_pose_packager_production_smoke_v3",
   "selected_model_count": 9,
   "status": "PASS_REAL_V4D_JOB_TOP3_COMPACT_POSE_PARSE",
   "top3": [

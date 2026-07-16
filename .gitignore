@@ -18,3 +18,5 @@ data/experiments/phase2_5080_v1/*
 !data/experiments/phase2_5080_v1/src/
 data/experiments/phase2_5080_v1/src/*
 !data/experiments/phase2_5080_v1/src/test_prepare_pvrig_submission_release.py
+!data/experiments/phase2_5080_v1/src/monitor_pvrig_submission_release.sh
+!data/experiments/phase2_5080_v1/src/test_monitor_pvrig_submission_release.py

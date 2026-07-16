@@ -292,6 +292,10 @@ class PoseReviewBundleTests(unittest.TestCase):
                     self.assertNotIn('[["ignored"', row[field])
             self.assertEqual(audit["successful_job_count"], 6)
             self.assertEqual(
+                audit["output_sha256"]["manifest"],
+                hashlib.sha256((outdir / "pose_review_manifest.tsv").read_bytes()).hexdigest(),
+            )
+            self.assertEqual(
                 audit["input_sha256"]["packager"],
                 hashlib.sha256(MODULE_PATH.read_bytes()).hexdigest(),
             )
