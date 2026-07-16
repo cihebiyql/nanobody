@@ -1,9 +1,54 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-EXP_DIR=${PVRIG_EXP_DIR:-/mnt/d/work/抗体/data/experiments/phase2_5080_v1}
-PYTHON=${PYTHON:-python3}
-FREEZER=${V4F_PREDICTION_FREEZER:-$EXP_DIR/src/freeze_phase2_v4_f_surrogate_predictions.py}
+CANONICAL_EXP_DIR=/mnt/d/work/抗体/data/experiments/phase2_5080_v1
+CANONICAL_PYTHON=$CANONICAL_EXP_DIR/.venv-phase2-5080/bin/python
+CANONICAL_FREEZER=$CANONICAL_EXP_DIR/src/freeze_phase2_v4_f_surrogate_predictions.py
+EXP_DIR=${PVRIG_EXP_DIR:-$CANONICAL_EXP_DIR}
+TEST_ONLY_UNFROZEN=${V4F_TEST_ONLY_ALLOW_UNFROZEN_INPUTS:-0}
+
+resolve_executable() {
+  local candidate=$1 resolved
+  if [[ "$candidate" == */* ]]; then
+    resolved=$(realpath -e -- "$candidate" 2>/dev/null) || return 1
+  else
+    candidate=$(command -v -- "$candidate" 2>/dev/null) || return 1
+    resolved=$(realpath -e -- "$candidate" 2>/dev/null) || return 1
+  fi
+  printf '%s\n' "$resolved"
+}
+
+if [[ "$TEST_ONLY_UNFROZEN" == 1 ]]; then
+  [[ "$(realpath -m -- "$EXP_DIR")" != "$(realpath -m -- "$CANONICAL_EXP_DIR")" ]] || {
+    echo "test-only unfrozen inputs are forbidden for the production root" >&2
+    exit 2
+  }
+  PYTHON=${PYTHON:-python3}
+  FREEZER=${V4F_PREDICTION_FREEZER:-$EXP_DIR/src/freeze_phase2_v4_f_surrogate_predictions.py}
+else
+  [[ "$(realpath -e -- "$EXP_DIR" 2>/dev/null || true)" == "$(realpath -e -- "$CANONICAL_EXP_DIR")" ]] || {
+    echo "production prediction watcher requires canonical PVRIG_EXP_DIR=$CANONICAL_EXP_DIR" >&2
+    exit 2
+  }
+  [[ -x "$CANONICAL_PYTHON" && -f "$CANONICAL_FREEZER" ]] || {
+    echo "canonical production Python or V4-F freezer is missing" >&2
+    exit 2
+  }
+  if [[ -v PYTHON ]]; then
+    [[ "$(resolve_executable "$PYTHON" 2>/dev/null || true)" == "$(resolve_executable "$CANONICAL_PYTHON")" ]] || {
+      echo "production PYTHON override is forbidden; canonical interpreter is required" >&2
+      exit 2
+    }
+  fi
+  if [[ -v V4F_PREDICTION_FREEZER ]]; then
+    [[ "$(realpath -e -- "$V4F_PREDICTION_FREEZER" 2>/dev/null || true)" == "$(realpath -e -- "$CANONICAL_FREEZER")" ]] || {
+      echo "production V4F_PREDICTION_FREEZER override is forbidden; canonical freezer is required" >&2
+      exit 2
+    }
+  fi
+  PYTHON=$CANONICAL_PYTHON
+  FREEZER=$CANONICAL_FREEZER
+fi
 POLL_SECONDS=${POLL_SECONDS:-300}
 MAX_WAIT_SECONDS=${MAX_WAIT_SECONDS:-604800}
 FREEZE_TIMEOUT_SECONDS=${FREEZE_TIMEOUT_SECONDS:-7200}
@@ -25,7 +70,6 @@ CONTACT_SCHEMA=${V4D_CONTACT_SCHEMA:-$EXP_DIR/prepared/pvrig_v4_d/frozen_contact
 OUT_DIR=${V4F_PREDICTION_OUT:-$EXP_DIR/predictions/pvrig_v4_f_surrogate_predictions_v1}
 STATUS_DIR=${V4F_PREDICTION_STATUS_DIR:-$EXP_DIR/status/pvrig_v4_f_prediction_freeze_v1}
 LOG_DIR=${V4F_PREDICTION_LOG_DIR:-$EXP_DIR/logs/pvrig_v4_f_prediction_freeze_v1}
-TEST_ONLY_UNFROZEN=${V4F_TEST_ONLY_ALLOW_UNFROZEN_INPUTS:-0}
 EXPECTED_COUNT=${V4F_EXPECTED_COUNT:-96}
 
 mkdir -p "$STATUS_DIR" "$LOG_DIR" "$(dirname "$OUT_DIR")"
@@ -36,8 +80,8 @@ mv "$STATUS_DIR/controller.pid.tmp" "$STATUS_DIR/controller.pid"
 STARTED_AT=$(date +%s)
 
 write_status() {
-  local state=$1 reason=$2
-  STATE_VALUE=$state REASON_VALUE=$reason STATUS_PATH=$STATUS_DIR/status.json PID_VALUE=$$ "$PYTHON" - <<'PY'
+  local state=$1 reason=$2 receipt_sha=${3:-}
+  STATE_VALUE=$state REASON_VALUE=$reason RECEIPT_SHA_VALUE=$receipt_sha STATUS_PATH=$STATUS_DIR/status.json PID_VALUE=$$ "$PYTHON" - <<'PY'
 import json, os, tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -51,6 +95,8 @@ payload={
  "v4_f_labels_read":False,
  "v4_f_label_paths_accepted":0,
 }
+if os.environ.get("RECEIPT_SHA_VALUE"):
+ payload["prediction_receipt_sha256"]=os.environ["RECEIPT_SHA_VALUE"]
 with tempfile.NamedTemporaryFile("w",encoding="utf-8",dir=path.parent,delete=False) as handle:
  json.dump(payload,handle,indent=2,sort_keys=True); handle.write("\n"); temporary=Path(handle.name)
 temporary.replace(path)
@@ -74,18 +120,31 @@ freezer_common=(
   --manifest-audit "$MANIFEST_AUDIT"
   --manifest-receipt "$MANIFEST_RECEIPT"
   --expected-count "$EXPECTED_COUNT"
+  --base-out "$BASE_OUT"
+  --embedding-out "$EMBEDDING_OUT"
+  --contact-out "$CONTACT_OUT"
+  --embedding-manifest "$EMBEDDING_MANIFEST"
+  --embedding-summary "$EMBEDDING_SUMMARY"
+  --embedding-sequence-manifest "$EMBEDDING_SEQUENCE_MANIFEST"
+  --contact-receipt "$CONTACT_RECEIPT"
+  --contact-schema "$CONTACT_SCHEMA"
 )
 if [[ "$TEST_ONLY_UNFROZEN" == 1 ]]; then
-  [[ "$EXP_DIR" != "/mnt/d/work/抗体/data/experiments/phase2_5080_v1" ]] || {
-    echo "test-only unfrozen inputs are forbidden for the production root" >&2
-    exit 2
-  }
   freezer_common+=(--test-only-allow-unfrozen-inputs)
 fi
 
 verify_existing() {
-  local receipt=$OUT_DIR/v4_f_96_frozen_surrogate_predictions.receipt.json
-  [[ -s "$receipt" ]] || return 4
+  local receipt=$OUT_DIR/v4_f_96_frozen_surrogate_predictions.receipt.json receipt_mode
+  if [[ ! -e "$receipt" && ! -L "$receipt" ]]; then
+    return 4
+  fi
+  receipt_mode=$(stat -c '%a' -- "$receipt" 2>/dev/null || true)
+  if [[ -L "$receipt" || ! -f "$receipt" || ! -s "$receipt" || -z "$receipt_mode" ]] \
+    || (( (8#$receipt_mode & 0444) == 0 )) \
+    || ! head -c 1 -- "$receipt" >/dev/null 2>&1; then
+    echo "existing prediction receipt is corrupt: expected a non-empty readable regular file: $receipt" >&2
+    return 2
+  fi
   "$PYTHON" "$FREEZER" verify-receipt "${freezer_common[@]}" --receipt "$receipt"
 }
 
@@ -94,14 +153,6 @@ run_freezer() {
   temporary=$(mktemp "$LOG_DIR/.prediction-freeze.XXXXXX")
   if timeout --preserve-status "$FREEZE_TIMEOUT_SECONDS" \
     "$PYTHON" "$FREEZER" freeze "${freezer_common[@]}" \
-      --base-out "$BASE_OUT" \
-      --embedding-out "$EMBEDDING_OUT" \
-      --contact-out "$CONTACT_OUT" \
-      --embedding-manifest "$EMBEDDING_MANIFEST" \
-      --embedding-summary "$EMBEDDING_SUMMARY" \
-      --embedding-sequence-manifest "$EMBEDDING_SEQUENCE_MANIFEST" \
-      --contact-receipt "$CONTACT_RECEIPT" \
-      --contact-schema "$CONTACT_SCHEMA" \
       --out-dir "$OUT_DIR" >"$temporary" 2>&1; then
     mv "$temporary" "$LOG_DIR/prediction_freeze.log"
     return 0
@@ -116,10 +167,21 @@ run_freezer() {
 write_status WAITING_V4_D_SURROGATES "waiting for all V4-D artifact receipts; V4-F labels remain sealed"
 while true; do
   if verify_existing >"$STATUS_DIR/verification.tmp" 2>&1; then
+    receipt_sha=$("$PYTHON" -c 'import json,sys; print(json.load(open(sys.argv[1]))["receipt_sha256"])' "$STATUS_DIR/verification.tmp")
     mv "$STATUS_DIR/verification.tmp" "$STATUS_DIR/verification.json"
-    write_status COMPLETE_V4_F_96_PREDICTIONS_FROZEN "prediction receipt verified; V4-F Docking launch gate may open"
+    write_status COMPLETE_V4_F_96_PREDICTIONS_FROZEN "prediction receipt verified; V4-F Docking launch gate may open" "$receipt_sha"
     exit 0
   else
+    verify_rc=$?
+    if [[ $verify_rc -eq 2 ]]; then
+      mv "$STATUS_DIR/verification.tmp" "$STATUS_DIR/verification.invalid.json"
+      write_status BLOCKED_INVALID_PREDICTION_RECEIPT "existing prediction receipt failed verification"
+      exit 2
+    elif [[ $verify_rc -ne 4 ]]; then
+      mv "$STATUS_DIR/verification.tmp" "$STATUS_DIR/verification.invalid.json"
+      write_status FAILED_PREDICTION_RECEIPT_VERIFIER "prediction receipt verifier rc=$verify_rc"
+      exit "$verify_rc"
+    fi
     rm -f "$STATUS_DIR/verification.tmp"
   fi
   state=$(surrogate_state)
@@ -127,12 +189,19 @@ while true; do
     write_status RUNNING_V4_F_PREDICTION_FREEZE "all V4-D artifact receipts complete; generating 96 unlabeled predictions"
     run_freezer
     if verify_existing >"$STATUS_DIR/verification.tmp" 2>&1; then
+      receipt_sha=$("$PYTHON" -c 'import json,sys; print(json.load(open(sys.argv[1]))["receipt_sha256"])' "$STATUS_DIR/verification.tmp")
       mv "$STATUS_DIR/verification.tmp" "$STATUS_DIR/verification.json"
-      write_status COMPLETE_V4_F_96_PREDICTIONS_FROZEN "prediction receipt verified; V4-F Docking launch gate may open"
+      write_status COMPLETE_V4_F_96_PREDICTIONS_FROZEN "prediction receipt verified; V4-F Docking launch gate may open" "$receipt_sha"
       exit 0
     fi
-    write_status FAILED_PREDICTION_RECEIPT "freezer returned success but receipt verification failed"
-    exit 2
+    verify_rc=$?
+    mv "$STATUS_DIR/verification.tmp" "$STATUS_DIR/verification.invalid.json"
+    if [[ $verify_rc -eq 2 ]]; then
+      write_status BLOCKED_INVALID_PREDICTION_RECEIPT "freezer returned success but receipt verification failed"
+      exit 2
+    fi
+    write_status FAILED_PREDICTION_RECEIPT "freezer returned success but verifier rc=$verify_rc"
+    exit "$verify_rc"
   elif [[ "$state" == FAILED* || "$state" == BLOCKED* ]]; then
     write_status BLOCKED_V4_D_SURROGATES "upstream surrogate state=$state"
     exit 2

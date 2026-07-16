@@ -61,6 +61,7 @@ class ContactFusionSurrogateTest(unittest.TestCase):
         self.teacher_audit = self.root / "teacher.tsv.audit.json"
         self.embedding_manifest = self.root / "embeddings/manifest.csv"
         self.embedding_summary = self.root / "embeddings/summary.json"
+        self.embedding_sequence_manifest = self.root / "embeddings/sequence_manifest.csv"
         self.contact_features = self.root / "contact_features.csv"
         self.contact_audit = self.root / "contact_features.audit.json"
         self.contact_receipt = self.root / "contact_features.receipt.json"
@@ -271,12 +272,19 @@ class ContactFusionSurrogateTest(unittest.TestCase):
             matrix[index] = torch.tensor(
                 [signal, signal**2, index / len(hashes), index % 2, index % 3, 1.0]
             )
-        config_sha = "synthetic-config"
+        config = {
+            "backend": "synthetic",
+            "esm2_dim": dimension,
+            "pooling": "mean",
+        }
+        config_sha = MOD.frozen_embedding.sha256_json(config)
         shard = self.embedding_manifest.parent / "shard_00000.pt"
         torch.save(
             {
                 "schema_version": "synthetic",
-                "config_sha256": config_sha,
+                "config_sha256": MOD.frozen_embedding.sha256_json(
+                    {"config": config, "sequence_sha256": hashes}
+                ),
                 "sequence_sha256": hashes,
                 "esm2": matrix,
             },
@@ -295,13 +303,31 @@ class ContactFusionSurrogateTest(unittest.TestCase):
             for index, digest in enumerate(hashes)
         ]
         write_csv(self.embedding_manifest, rows)
+        write_csv(
+            self.embedding_sequence_manifest,
+            [
+                {
+                    "sequence_sha256": digest,
+                    "sequence": self.manifest_rows[index]["sequence"],
+                    "sequence_length": len(str(self.manifest_rows[index]["sequence"])),
+                    "roles": "vhh",
+                }
+                for index, digest in enumerate(hashes)
+            ],
+        )
         self.embedding_summary.write_text(
             json.dumps(
                 {
                     "schema_version": "phase2_v3_embedding_summary_v1",
                     "embedding_manifest_sha256": MOD.sha256_file(self.embedding_manifest),
+                    "sequence_manifest": str(self.embedding_sequence_manifest.resolve()),
+                    "sequence_manifest_sha256": MOD.sha256_file(
+                        self.embedding_sequence_manifest
+                    ),
                     "sequence_count": len(rows),
+                    "config": config,
                     "config_sha256": config_sha,
+                    "shard_sha256": {shard.name: MOD.sha256_file(shard)},
                 }
             )
             + "\n",
@@ -333,6 +359,9 @@ class ContactFusionSurrogateTest(unittest.TestCase):
             (self.out_dir / "contact_fusion_open_development_summary.json").read_text()
         )
         config = json.loads((self.out_dir / "contact_fusion_open_model_config.json").read_text())
+        artifact = json.loads(
+            (self.out_dir / "contact_fusion_open_model_artifact.json").read_text()
+        )
         receipt = json.loads(
             (self.out_dir / "contact_fusion_frozen_artifact_sha256_receipt.json").read_text()
         )
@@ -354,6 +383,34 @@ class ContactFusionSurrogateTest(unittest.TestCase):
         self.assertEqual(receipt["status"], "PASS_FROZEN_OPEN_CONTACT_FUSION_ARTIFACT_HASH_CLOSURE")
         self.assertFalse(receipt["prospective_test_labels_read"])
         self.assertEqual(receipt["diagnostic_or_docking_alias_columns_used"], [])
+        identity_fields = (
+            "embedding_bank_identity_sha256",
+            "contact_release_receipt_sha256",
+            "contact_schema_sha256",
+            "stable_contact_columns_sha256",
+            "stage_inputs_closure_sha256",
+        )
+        for field in identity_fields:
+            self.assertEqual(artifact[field], receipt[field])
+            self.assertEqual(
+                artifact[field], summary["artifact_identity_contract"][field]
+            )
+        self.assertEqual(
+            receipt["stage_inputs_closure_sha256"],
+            MOD.sha256_json(receipt["inputs"]),
+        )
+        self.assertEqual(
+            receipt["contact_release_receipt_sha256"],
+            MOD.sha256_file(self.contact_receipt),
+        )
+        self.assertEqual(
+            receipt["contact_schema_sha256"], MOD.sha256_file(self.contact_schema)
+        )
+        self.assertEqual(
+            receipt["stable_contact_columns_sha256"],
+            MOD.base.sha256_strings(receipt["stable_contact_columns"]),
+        )
+        self.assertIn(str(self.embedding_sequence_manifest.resolve()), receipt["inputs"])
         for path, digest in receipt["outputs"].items():
             self.assertEqual(MOD.sha256_file(Path(path)), digest)
         predictions = MOD.base.read_tsv(
@@ -447,8 +504,37 @@ class ContactFusionSurrogateTest(unittest.TestCase):
         summary = json.loads(self.embedding_summary.read_text())
         summary["embedding_manifest_sha256"] = MOD.sha256_file(self.embedding_manifest)
         self.embedding_summary.write_text(json.dumps(summary) + "\n", encoding="utf-8")
-        with self.assertRaisesRegex(MOD.ContactFusionError, "embedding_shard_index_identity_mismatch"):
+        with self.assertRaisesRegex(MOD.ContactFusionError, "embedding_manifest_shard_index_mismatch"):
             self.run_fixture_pipeline()
+
+    def test_real_production_embedding_release_accepts_per_shard_config_hash(self) -> None:
+        rows, _fields = MOD.read_csv(MOD.DEFAULT_EMBEDDING_MANIFEST)
+        digest = rows[0]["sequence_sha256"].strip().lower()
+        store = MOD.MeanEmbeddingStore(
+            MOD.DEFAULT_EMBEDDING_MANIFEST,
+            MOD.DEFAULT_EMBEDDING_SUMMARY,
+            {digest},
+            enforce_production_hash=True,
+        )
+        vector = store.get(digest)
+        self.assertEqual(vector.shape, (store.dimension,))
+        self.assertTrue(np.all(np.isfinite(vector)))
+        shard_path = store.referenced_shards[0]
+        payload = torch.load(shard_path, map_location="cpu", weights_only=True)
+        self.assertNotEqual(payload["config_sha256"], store.config_sha256)
+        self.assertEqual(
+            payload["config_sha256"],
+            store._shard_payload_config_sha256[shard_path],
+        )
+        bank = MOD.frozen_embedding.load_embedding_bank(
+            MOD.DEFAULT_EMBEDDING_MANIFEST,
+            MOD.DEFAULT_EMBEDDING_SUMMARY,
+            store.sequence_manifest_path,
+            enforce_production_hashes=True,
+        )
+        self.assertEqual(
+            store.identity_sha256, bank.provenance["identity_sha256"]
+        )
 
 
 if __name__ == "__main__":

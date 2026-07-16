@@ -677,11 +677,13 @@ data/experiments/phase2_5080_v1/src/freeze_phase2_v4_g_active_learning_panel.py
 data/experiments/phase2_5080_v1/src/freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/fuse_phase2_v2_4_p3.py
 data/experiments/phase2_5080_v1/src/fuse_pvrig_v3_structure_evidence.py
+data/experiments/phase2_5080_v1/src/launch_node1_ssd_deepqc.sh
 data/experiments/phase2_5080_v1/src/make_rfantibody_hlt_framework.py
 data/experiments/phase2_5080_v1/src/merge_pvrig_candidate_evidence_v2.py
 data/experiments/phase2_5080_v1/src/monitor_phase2_v3_p1_after_teacher.sh
 data/experiments/phase2_5080_v1/src/monitor_phase2_v4_c_dual128_remote.sh
 data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_after_v4_c_remote.sh
+data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_deployment_scoring.sh
 data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_readonly.py
 data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_surrogate_training.sh
 data/experiments/phase2_5080_v1/src/monitor_phase2_v4_f_prediction_freeze.sh
@@ -722,6 +724,7 @@ data/experiments/phase2_5080_v1/src/process_pvrig_formal_teacher500.py
 data/experiments/phase2_5080_v1/src/process_pvrig_teacher_pilot96.py
 data/experiments/phase2_5080_v1/src/recover_phase2_v3_p2_v1_2_pilot64_emref_top8.py
 data/experiments/phase2_5080_v1/src/recover_phase2_v3_p2_v1_3_dual47_emref_top8.py
+data/experiments/phase2_5080_v1/src/resume_node1_ssd_deepqc.py
 data/experiments/phase2_5080_v1/src/run_external_priors_v1.py
 data/experiments/phase2_5080_v1/src/run_phase2_v3_p1_formal_pipeline.sh
 data/experiments/phase2_5080_v1/src/run_phase2_v3_p2_v1_3_production_autorun.py
@@ -729,6 +732,7 @@ data/experiments/phase2_5080_v1/src/run_phase2_v4_f_docking_with_prediction_gate
 data/experiments/phase2_5080_v1/src/run_pvrig_formal_teacher500_finalize.sh
 data/experiments/phase2_5080_v1/src/run_pvrig_formal_teacher500_postprocess.sh
 data/experiments/phase2_5080_v1/src/score_p3_late_fusion.py
+data/experiments/phase2_5080_v1/src/score_phase2_v4_d_deployment.py
 data/experiments/phase2_5080_v1/src/score_pvrig_candidates_v2_3.py
 data/experiments/phase2_5080_v1/src/score_pvrig_candidates_v2_4.py
 data/experiments/phase2_5080_v1/src/score_pvrig_candidates_v3.py
@@ -804,6 +808,7 @@ data/experiments/phase2_5080_v1/src/test_freeze_phase2_v4_g_active_learning_pane
 data/experiments/phase2_5080_v1/src/test_freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/test_make_rfantibody_hlt_framework.py
 data/experiments/phase2_5080_v1/src/test_merge_pvrig_candidate_evidence_v2.py
+data/experiments/phase2_5080_v1/src/test_monitor_phase2_v4_d_deployment_scoring.py
 data/experiments/phase2_5080_v1/src/test_monitor_phase2_v4_d_readonly.py
 data/experiments/phase2_5080_v1/src/test_monitor_phase2_v4_d_surrogate_training.py
 data/experiments/phase2_5080_v1/src/test_monitor_pvrig_submission_release.py
@@ -847,6 +852,7 @@ data/experiments/phase2_5080_v1/src/test_recover_phase2_v3_p2_v1_2_pilot64_emref
 data/experiments/phase2_5080_v1/src/test_recover_phase2_v3_p2_v1_3_dual47_emref_top8.py
 data/experiments/phase2_5080_v1/src/test_run_phase2_v3_p2_v1_3_production_autorun.py
 data/experiments/phase2_5080_v1/src/test_score_p3_late_fusion.py
+data/experiments/phase2_5080_v1/src/test_score_phase2_v4_d_deployment.py
 data/experiments/phase2_5080_v1/src/test_score_pvrig_candidates_v2_3.py
 data/experiments/phase2_5080_v1/src/test_score_pvrig_candidates_v2_4.py
 data/experiments/phase2_5080_v1/src/test_select_phase2_v3_p2_dual_docking_pilot.py

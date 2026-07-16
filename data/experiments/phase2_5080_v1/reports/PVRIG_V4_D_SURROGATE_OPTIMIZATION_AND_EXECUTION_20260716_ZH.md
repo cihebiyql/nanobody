@@ -1,6 +1,6 @@
 # PVRIG V4-D Surrogate 优化与执行路线
 
-**更新时间：** 2026-07-16 15:15 CST  
+**更新时间：** 2026-07-16 17:05 CST
 **主目标：** 用便宜的 VHH 序列模型逼近独立 8X6B/9E6Y Docking 的连续阻断几何结果，用于大库前筛。  
 **证据边界：** 模型输出只是 computational docking-geometry surrogate，不是 PVRIG 结合概率、Kd、PVRL2 competition 或实验阻断真值。
 
@@ -28,39 +28,63 @@
 
 ### 2.1 Node23 V4-D
 
-2026-07-16 15:10 CST 快照：
+2026-07-16 17:05 CST 快照：
 
 ```text
 2022 total jobs
-417 SUCCESS
-9 RUNNING
-1596 not-yet-created/pending states
-0 FAILED
+616 SUCCESS
+12 RUNNING
+1393 PENDING
+1 FAILED_MAX_ATTEMPTS
 ```
 
 分层情况：
 
 ```text
 controls: 282/282 SUCCESS
-OPEN_TRAIN: 135 SUCCESS + 9 RUNNING
-OPEN_DEVELOPMENT: 0 touched
+OPEN_TRAIN: 298 SUCCESS + 12 RUNNING + 1045 PENDING + 1 FAILED_MAX_ATTEMPTS
+OPEN_DEVELOPMENT: 36 SUCCESS + 156 PENDING
 PROSPECTIVE_COMPUTATIONAL_TEST: 0 touched
 ```
 
 Controller PID 265751 存活，HADDOCK/CNS 正在运行。当前不修改 controller、scratch、并发数或 job order。
+最近 60 分钟完成 106 个 SUCCESS job；按当前速率粗略估计剩余时间约 13–14 小时。这只是运行时间估计，不是完成承诺。
+
+唯一失败为：
+
+```text
+RFV1__PLDNANO_VHH_00322__A_CENTER__H3__B02__M00
+8X6B seed 3253: FAILED_MAX_ATTEMPTS
+```
+
+该候选在 8X6B 上已有 seed 917/1931 成功，在 9E6Y 上三个 seed 均成功，因此仍满足每个 candidate-receptor 至少 2 个成功 seed 的预注册最低要求，不应单独阻断 teacher 发布。
 
 由于远程 job priority 在后段会将 open 与 test32 交错，test32 保守降级为 computational challenge；真正未触达的正式 prospective holdout 是 V4-F 96。
 
 ### 2.2 Node1 Deep-QC 和 V4-F
 
 ```text
-Top100 Deep-QC: FULL_TNP
-8 TNP chunks x 4 requested cores
+Top100 Deep-QC: 受控暂停并迁移到 Node1 本地 SSD
+NFS source: /data/qlyu/projects/pvrig_pre_shortlist100_deepqc_v1_20260716
+SSD target: /data1/qlyu/projects/pvrig_pre_shortlist100_deepqc_v1_20260716
 V4-F Full-QC watcher: WAITING_UPSTREAM
 V4-F panel: 96 candidates / 4 completely unseen parent clusters
 ```
 
+Node1 上的 `run_deepqc.sh`、8 个 `vhh_screen.py` 和 8 个 TNP 子进程当前均为 `T` 状态。这不是未知卡死，而是由受控 SSD 迁移流程主动暂停；证据在：
+
+```text
+/data1/qlyu/pvrig_migration_20260716/MIGRATION_CONTROL.json
+status = PAUSED_AND_MIGRATING_TO_SSD
+full_run_resume_allowed = false
+valid_completed_tnp_json_on_target = 65
+```
+
+只能在 runtime closure 复制、路径重定位、source-target parity 和 SSD smoke 全部通过后，由受控恢复脚本继续。禁止手工对这些 PID 发送 `SIGCONT`，也不得在 NFS 原目录中启动第二份 Full-QC。
+
 V4-F 将对全部 96 条运行 Full-QC；之后对所有 hard-pass 候选运行独立双受体 Docking，不按模型分数二次挑选，失败后不从 panel 外补位。
+
+当前 V4-F 独立安全复审结论为 `BLOCK`，不得开启正式预测冻结或 Docking gate。第一轮四个已知 High 的修复和定向测试已完成，但 reviewer 又发现三个 High：production shell gate 可用任意 `PYTHON`/freezer override 绕过 verifier；verifier 在 PASS 前未重验 receipt/prediction/audit 当前输出；receipt 可绑定到“磁盘上已替换的新源码”而非实际运行的已加载代码。另有一个 Medium：watcher 将已存在的零字节/不可读 receipt 错分为 missing。当前修复任务已启动；watcher 继续停止，不发布生产预测，不读取 V4-F Docking label。
 
 ## 3. 已经完成的模型资产
 
@@ -130,6 +154,37 @@ contact_interface_specificity
 prepared/pvrig_v4_d/frozen_contact_feature_schema_v2.json
 SHA256: 22d11cdccb0af6ecb26eb3bdcbae6c35dc5bc57543d662cf9da94155ee746cc0
 ```
+
+### 3.5 Contact/fusion 与部署闭环验证
+
+2026-07-16 17:05 CST 前的最新验证：
+
+```text
+contact/fusion trainer full tests: 9/9 PASS
+deployment scorer tests: 10/10 PASS
+deployment watcher tests: 3/3 PASS
+deployment total: 13/13 PASS
+```
+
+生产 deployment scorer 已重新执行并通过 `--verify-only`，当前正确 fail-closed：
+
+```text
+status: WAITING_FROZEN_MODEL_ARTIFACTS
+published score rows: 0
+candidate7087_deployment_scores.tsv: absent
+verify status: PASS_WAITING_RELEASE_HASH_CLOSURE
+```
+
+模型评分治理分组已冻结为：
+
+```text
+DEPLOYMENT_SCORING_ALLOWED: 6350
+MODEL_DEVELOPMENT_OR_CHALLENGE_EXCLUDED_NO_SCORE: 290
+PROSPECTIVE_V4_F_SEPARATE_FREEZER_NO_SCORE: 96
+UNTOUCHED_RESERVE_NO_SCORE: 351
+```
+
+三类 no-score 行在进入 base/embedding/contact feature replay 前已被物理移除，不是仅在输出表中屏蔽分数。
 
 ## 4. 下一步的模型比较
 
@@ -265,14 +320,86 @@ RFantibody / fixed-pose ProteinMPNN / AntiFold
 
 ## 10. 当前正在执行的工作
 
-1. V4-D 2022 jobs 继续运行，不干扰远程 controller；
-2. Node1 Deep-QC 继续运行，V4-F watcher 等待自动启动；
+1. V4-D 2022 jobs 继续运行；17:05 快照为 616 SUCCESS / 12 RUNNING / 1393 PENDING / 1 FAILED_MAX_ATTEMPTS，不干扰远程 controller；
+2. Node1 Deep-QC 已受控暂停并迁移到 `/data1` 本地 SSD，当前禁止手工 `SIGCONT`；V4-F watcher 继续等待上游；
 3. residue/contact V3 已完成并验证；
 4. contact schema V2 已冻结；
-5. contact/fusion trainer 已完成，定向测试 8/8 PASS，正式输入预检 PASS；
-6. open258 teacher-ready 训练 watcher 已完成并在 tmux `pvrig-v4d-surrogate-training` 中运行，当前为 `WAITING_OPEN_TEACHER`；teacher receipt 到达后将自动运行基础、embedding 和 contact/fusion 模型。
+5. contact/fusion trainer 完整测试 9/9 PASS，deployment scorer + watcher 13/13 PASS；
+6. open258 teacher-ready 训练 watcher 已完成并正在运行，当前为 `WAITING_OPEN_TEACHER`；teacher receipt 到达后将自动运行基础、embedding 和 contact/fusion 模型；
+7. deployment scorer 当前为 `WAITING_FROZEN_MODEL_ARTIFACTS`，已确认不会提前发布任何 7087 分数；
+8. V4-F 第一轮对抗测试 16/16、联合回归测试 83/83 和真实 96 条 label-free preflight 均 PASS，但独立 reviewer 结论仍为 BLOCK；新发现的 3 High + 1 Medium 正在修复，期间不开启正式预测冻结或标签 unseal。
 
-## 11. 停止条件
+## 11. 可立即推进的工作
+
+### 11.1 收口 V4-D teacher 与三路 surrogate
+
+1. 继续只读监控 Node23，不调整当前 12 x 4 cores 的控制器；
+2. 终局后要求 evaluator 新鲜聚合且所有 stability gates 为 PASS；
+3. 验证 open258 teacher、audit 和 release receipt 的行数、split 和 hash closure；
+4. 让已运行 watcher 自动完成 base、embedding、contact/fusion 训练，随后逐个执行 artifact replay 和 receipt 验证。
+
+### 11.2 完成 Node1 SSD 迁移和受控恢复
+
+当前已有的受控迁移资产为：
+
+```text
+/data1/qlyu/pvrig_migration_20260716/MIGRATION_CONTROL.json
+/data1/qlyu/pvrig_migration_20260716/migrate_to_ssd.sh
+/data1/qlyu/pvrig_migration_20260716/migrate_runtime_closure.sh
+/data1/qlyu/pvrig_migration_20260716/finalize_and_smoke_ssd.sh
+```
+
+17:05 快照中，还没有发现已发布的 remainder-only resume 脚本、最终 delivery 回同步脚本或 100-row merge receipt，因此迁移仍不能标记完成。收口必须同时满足：
+
+1. 不对旧 NFS 进程树就地发送 `SIGCONT`；旧进程只作暂停现场和可追溯证据；
+2. 新建并审计 remainder-only 续跑脚本：仅复用已通过 JSON 解析、candidate identity 和 SHA256 验证的 TNP 结果，只对缺失/无效条目重跑，并输出 reused/rerun 清单与 receipt；
+3. 完整 IgFold 阶段在 SSD 运行并使用 4 张 GPU；单条 `--gpu 0` smoke 只是运行时验证，不代表完整结构预测已启动；
+4. 最终 delivery 要么通过原子回同步发布到现有 watcher 路径 `/data/qlyu/projects/pvrig_pre_shortlist100_deepqc_v1_20260716`，要么在恢复前显式更新并哈希绑定所有轮询路径；
+5. source-target parity、TNP smoke、IgFold smoke、100-row merge 和最终 delivery receipt 全部 PASS 后，才能将 Node1 Deep-QC 标记为完成。
+
+### 11.3 修复 V4-F 安全门禁
+
+1. 锁定 production shell gate 的 canonical Python 和 freezer verifier，明确禁止任意环境变量替换信任根；
+2. verifier 在返回 PASS 前重新校验 receipt、prediction 和 audit 的当前哈希，并增加最后一次检查时篡改输出的对抗测试；
+3. 将 freezer 自身和直接依赖的实际执行代码绑定到不可变/内容寻址快照，阻断 import 后原子替换源码的 provenance 冒充；
+4. watcher 只将不存在的 receipt 视为 WAITING；已存在但为零字节、非普通文件或不可读的 receipt 必须进入 `BLOCKED_INVALID_PREDICTION_RECEIPT`；
+5. 修复后重跑对抗测试和联合回归，再交给新 reviewer；只有 reviewer `PASS` 且 V4-D 三路正式 artifact 到位后，才能重启 watcher。
+
+### 11.4 新建 support contract，不修改已失败的旧门槛
+
+当前 support V2 只有 2643/6861 deployment candidates 为 `IN_DOMAIN`，且 CDR3 shuffle 与 unseen-parent chimera null gates 失败。可立即设计一个新的、独立预注册的 support 版本，但不能：
+
+- 回改 V2 的 0.60 coverage 或 null 门槛；
+- 把 `NEAR_DOMAIN` 临时改名为 exploitation-supported；
+- 在看到 V4-D/V4-F label 后选择最好看的 support 参数。
+
+新版本应优先评估 parent-conditioned 的 frozen embedding/contact 距离、nested unseen-parent 校准和更有区分度的 null controls，然后在不读取 Docking label 的前提下冻结。
+
+### 11.5 准备后续扩充，但不污染保留集
+
+- V4-G unseen96 可作为 acquisition-only 面板继续准备 Full-QC；
+- seen-parent 200 条必须按 V4-D open gate PASS/FAIL 分支使用预注册配额；
+- `C0019` 和 `C0072` 两个 reserve parent 继续 no-score、no-Full-QC、no-Docking，直到新 prospective protocol 和 prediction receipt 冻结。
+
+### 11.6 将旧 dual128 作为跨 campaign 辅助证据
+
+已对以下历史双受体 Docking 运行做只读审计：
+
+```text
+/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714
+```
+
+该运行含 128 条候选、47 条 controls 和 1050 个独立 job，终局为 1049 SUCCESS / 1 FAILED_MAX_ATTEMPTS，evaluator PASS。它与 V4-D 290 在 candidate ID、完整序列、sequence SHA256、CDR1/2/3 和 parent/framework 上均为零交叉；Docking/scoring 的物理参数和 restraint 内容实质相同。
+
+但旧 128 全部来自同一 h-NbBCII10 framework family 的三个变体，并且是根据旧 Docking/RF2/geometry bucket 事先挑出的强选择偏差面板。因此：
+
+1. 不加入当前已冻结的 V4-D 主 teacher，不用于当前模型选择或 prospective 测试；
+2. 可在新版 V4-D.1/V4-E 中作为 OOD、低权重辅助 teacher，但必须报告 `V4-D primary only` 与 `primary + legacy128` ablation；
+3. 合并前先用两个 campaign 重复的 47 controls，按 `entity_id + receptor + seed` 生成 282-row 跨 campaign bridge，且必须在看 candidate 结果前冻结连续量 concordance 判据；
+4. 使用与 V4-D 相同的 builder 从原始 pose 重算 `R_8X6B/R_9E6Y/R_dual_min`，不将旧 G1-G5、`robust_A` 或 P2/P3/P4 富集当作主标签；
+5. 它只是 computational docking-geometry evidence，不是 PVRIG binding 或实验阻断真值。
+
+## 12. 停止条件
 
 V4-D 当前版本在任一情况下应停止扩展：
 

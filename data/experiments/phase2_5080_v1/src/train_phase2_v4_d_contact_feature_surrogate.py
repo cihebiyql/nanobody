@@ -26,6 +26,7 @@ import numpy as np
 import torch
 
 import extract_pvrig_v2_3_residue_contact_features as contact_v3
+import train_phase2_v4_d_frozen_embedding_surrogate as frozen_embedding
 import train_phase2_v4_d_surrogate as base
 
 
@@ -374,6 +375,13 @@ class MeanEmbeddingStore:
             raise ContactFusionError("embedding_summary_manifest_hash_mismatch")
         if enforce_production_hash and manifest_hash != EXPECTED_EMBEDDING_MANIFEST_SHA256:
             raise ContactFusionError("embedding_manifest_production_hash_mismatch")
+        config = summary.get("config")
+        if not isinstance(config, Mapping):
+            raise ContactFusionError("embedding_summary_config_missing")
+        self.config = dict(config)
+        self.config_sha256 = frozen_embedding.sha256_json(self.config)
+        if summary.get("config_sha256") != self.config_sha256:
+            raise ContactFusionError("embedding_summary_config_hash_mismatch")
         rows, fieldnames = read_csv(manifest_path)
         required_fields = {
             "sequence_sha256", "sequence_length", "shard_path", "shard_index",
@@ -389,6 +397,8 @@ class MeanEmbeddingStore:
             digest = row["sequence_sha256"].strip().lower()
             if digest in self.rows:
                 raise ContactFusionError(f"duplicate_embedding_sequence:{digest}")
+            if row["config_sha256"] != self.config_sha256:
+                raise ContactFusionError(f"embedding_manifest_config_hash_mismatch:{digest}")
             self.rows[digest] = row
         missing_hashes = sorted(required_hashes - set(self.rows))
         if missing_hashes:
@@ -401,14 +411,64 @@ class MeanEmbeddingStore:
         self.dimension = dimensions.pop()
         self.manifest_path = manifest_path
         self.summary_path = summary_path
-        self.config_sha256 = str(summary.get("config_sha256") or "")
         self._shards: dict[Path, dict[str, Any]] = {}
+        rows_by_shard: dict[Path, list[dict[str, str]]] = {}
+        for row in rows:
+            rows_by_shard.setdefault(self._resolve_shard(row), []).append(row)
+        self._shard_sequence_hashes: dict[Path, list[str]] = {}
+        self._shard_payload_config_sha256: dict[Path, str] = {}
+        for path, shard_rows in rows_by_shard.items():
+            indices = [int(row["shard_index"]) for row in shard_rows]
+            if indices != list(range(len(shard_rows))):
+                raise ContactFusionError(f"embedding_manifest_shard_index_mismatch:{path}")
+            hashes = [row["sequence_sha256"].strip().lower() for row in shard_rows]
+            self._shard_sequence_hashes[path] = hashes
+            self._shard_payload_config_sha256[path] = frozen_embedding.sha256_json(
+                {"config": self.config, "sequence_sha256": hashes}
+            )
         self.referenced_shards = sorted(
             {self._resolve_shard(self.rows[digest]) for digest in required_hashes},
             key=str,
         )
         if any(not path.is_file() for path in self.referenced_shards):
             raise ContactFusionError("embedding_referenced_shard_missing")
+        all_shards = sorted(self._shard_sequence_hashes, key=str)
+        if any(not path.is_file() for path in all_shards):
+            raise ContactFusionError("embedding_bank_shard_missing")
+        summary_shards = frozen_embedding._expected_shard_hashes(
+            summary, enforce_production_hash
+        )
+        if {path.name for path in all_shards} != set(summary_shards):
+            raise ContactFusionError("embedding_summary_shard_set_mismatch")
+        self.all_shard_sha256 = {
+            str(path): sha256_file(path) for path in all_shards
+        }
+        if any(
+            self.all_shard_sha256[str(path)] != summary_shards[path.name]
+            for path in all_shards
+        ):
+            raise ContactFusionError("embedding_summary_shard_hash_mismatch")
+        raw_sequence_manifest = Path(str(summary.get("sequence_manifest") or ""))
+        self.sequence_manifest_path = (
+            raw_sequence_manifest.resolve()
+            if raw_sequence_manifest.is_absolute()
+            else (summary_path.parent / raw_sequence_manifest).resolve()
+        )
+        if not self.sequence_manifest_path.is_file():
+            raise ContactFusionError("embedding_sequence_manifest_missing")
+        self.sequence_manifest_sha256 = sha256_file(self.sequence_manifest_path)
+        if summary.get("sequence_manifest_sha256") != self.sequence_manifest_sha256:
+            raise ContactFusionError("embedding_summary_sequence_manifest_hash_mismatch")
+        self.identity_payload = {
+            "embedding_manifest_sha256": manifest_hash,
+            "embedding_summary_sha256": sha256_file(summary_path),
+            "sequence_manifest_sha256": self.sequence_manifest_sha256,
+            "config_sha256": self.config_sha256,
+            "shard_sha256": {
+                path.name: self.all_shard_sha256[str(path)] for path in all_shards
+            },
+        }
+        self.identity_sha256 = frozen_embedding.sha256_json(self.identity_payload)
 
     def _resolve_shard(self, row: Mapping[str, str]) -> Path:
         path = Path(row["shard_path"])
@@ -416,17 +476,21 @@ class MeanEmbeddingStore:
 
     def _load_shard(self, path: Path) -> dict[str, Any]:
         if path not in self._shards:
-            payload = torch.load(path, map_location="cpu", weights_only=False)
+            payload = torch.load(path, map_location="cpu", weights_only=True)
             if not isinstance(payload, dict):
                 raise ContactFusionError(f"embedding_shard_not_mapping:{path}")
-            if payload.get("config_sha256") != self.config_sha256:
+            if payload.get("config_sha256") != self._shard_payload_config_sha256[path]:
                 raise ContactFusionError(f"embedding_shard_config_hash_mismatch:{path}")
             sequence_hashes = payload.get("sequence_sha256")
             embeddings = payload.get("esm2")
             if not isinstance(sequence_hashes, list) or not isinstance(embeddings, torch.Tensor):
                 raise ContactFusionError(f"embedding_shard_payload_invalid:{path}")
+            if sequence_hashes != self._shard_sequence_hashes[path]:
+                raise ContactFusionError(f"embedding_shard_sequence_order_mismatch:{path}")
             if embeddings.ndim != 2 or embeddings.shape[0] != len(sequence_hashes):
                 raise ContactFusionError(f"embedding_shard_shape_mismatch:{path}")
+            if embeddings.shape[1] != self.dimension:
+                raise ContactFusionError(f"embedding_shard_dimension_mismatch:{path}")
             self._shards[path] = payload
         return self._shards[path]
 
@@ -452,9 +516,19 @@ class MeanEmbeddingStore:
             "manifest_sha256": sha256_file(self.manifest_path),
             "summary_path": str(self.summary_path.resolve()),
             "summary_sha256": sha256_file(self.summary_path),
+            "sequence_manifest_path": str(self.sequence_manifest_path),
+            "sequence_manifest_sha256": self.sequence_manifest_sha256,
             "embedding_dimension": self.dimension,
+            "embedding_config_sha256": self.config_sha256,
+            "embedding_bank_identity_sha256": self.identity_sha256,
+            "embedding_bank_identity_payload": self.identity_payload,
+            "embedding_bank_shard_sha256": self.all_shard_sha256,
             "referenced_shard_sha256": {
                 str(path): sha256_file(path) for path in self.referenced_shards
+            },
+            "referenced_shard_payload_config_sha256": {
+                str(path): self._shard_payload_config_sha256[path]
+                for path in self.referenced_shards
             },
         }
 
@@ -900,6 +974,36 @@ def run_pipeline(
             summary_path = staging / OUTPUT_FILENAMES[3]
             receipt_path = staging / OUTPUT_FILENAMES[4]
             embedding_audit = embedding_store.audit()
+            stable_columns_sha256 = base.sha256_strings(stable_columns)
+            contact_schema_sha256 = contact_metadata["frozen_schema"]["schema_sha256"]
+            contact_release_receipt_sha256 = contact_metadata["receipt_sha256"]
+            stage_input_hashes = {
+                str(teacher_path.resolve()): sha256_file(teacher_path),
+                str(teacher_audit_path.resolve()): sha256_file(teacher_audit_path),
+                str(split_manifest_path.resolve()): sha256_file(split_manifest_path),
+                str(contact_receipt_path.resolve()): contact_release_receipt_sha256,
+                str(Path(contact_metadata["audit_path"]).resolve()): contact_metadata[
+                    "audit_sha256"
+                ],
+                str(Path(contact_metadata["feature_path"]).resolve()): contact_metadata[
+                    "feature_sha256"
+                ],
+                str(contact_schema_path.resolve()): contact_schema_sha256,
+                str(contact_schema_path.resolve().with_suffix(".receipt.json")): sha256_file(
+                    contact_schema_path.resolve().with_suffix(".receipt.json")
+                ),
+                str(embedding_manifest_path.resolve()): sha256_file(embedding_manifest_path),
+                str(embedding_summary_path.resolve()): sha256_file(embedding_summary_path),
+                str(embedding_store.sequence_manifest_path): embedding_store.sequence_manifest_sha256,
+                str(Path(__file__).resolve()): sha256_file(Path(__file__)),
+                str(Path(base.__file__).resolve()): sha256_file(Path(base.__file__)),
+                str(Path(frozen_embedding.__file__).resolve()): sha256_file(
+                    Path(frozen_embedding.__file__)
+                ),
+                **embedding_audit["embedding_bank_shard_sha256"],
+            }
+            stage_input_hashes = dict(sorted(stage_input_hashes.items()))
+            stage_inputs_closure_sha256 = sha256_json(stage_input_hashes)
             config = {
                 "schema_version": SCHEMA_VERSION,
                 "status": "FROZEN_OPEN_CONFIGURATION_BEFORE_PROSPECTIVE_TEST_UNSEAL",
@@ -937,6 +1041,14 @@ def run_pipeline(
                     "contact_release": contact_metadata,
                     "embedding_release": embedding_audit,
                 },
+                "stage_input_hashes": stage_input_hashes,
+                "stage_inputs_closure_sha256": stage_inputs_closure_sha256,
+                "artifact_identity_contract": {
+                    "embedding_bank_identity_sha256": embedding_store.identity_sha256,
+                    "contact_release_receipt_sha256": contact_release_receipt_sha256,
+                    "contact_schema_sha256": contact_schema_sha256,
+                    "stable_contact_columns_sha256": stable_columns_sha256,
+                },
                 "runtime_provenance": {
                     "python_version": sys.version,
                     "numpy_version": np.__version__,
@@ -960,6 +1072,11 @@ def run_pipeline(
                 "fit_row_count": len(train_rows),
                 "development_row_count_used_for_selection_only": len(development_rows),
                 "prospective_test_labels_read": False,
+                "embedding_bank_identity_sha256": embedding_store.identity_sha256,
+                "contact_release_receipt_sha256": contact_release_receipt_sha256,
+                "contact_schema_sha256": contact_schema_sha256,
+                "stable_contact_columns_sha256": stable_columns_sha256,
+                "stage_inputs_closure_sha256": stage_inputs_closure_sha256,
                 "claim_boundary": CLAIM_BOUNDARY,
             }
             base.write_json(model_path, artifact)
@@ -1039,6 +1156,13 @@ def run_pipeline(
                     "open_performance_gates_vs_cdr_length_only"
                 ],
                 "selected_model_uncertainty_contract": selected_risk,
+                "artifact_identity_contract": {
+                    "embedding_bank_identity_sha256": embedding_store.identity_sha256,
+                    "contact_release_receipt_sha256": contact_release_receipt_sha256,
+                    "contact_schema_sha256": contact_schema_sha256,
+                    "stable_contact_columns_sha256": stable_columns_sha256,
+                    "stage_inputs_closure_sha256": stage_inputs_closure_sha256,
+                },
                 "parent_macro_contract": trained["models"][selected][
                     "parent_macro_ensemble_metrics"
                 ],
@@ -1051,27 +1175,18 @@ def run_pipeline(
                 "status": "PASS_FROZEN_OPEN_CONTACT_FUSION_ARTIFACT_HASH_CLOSURE",
                 "prospective_test_labels_read": False,
                 "stable_contact_columns": list(stable_columns),
+                "stable_contact_columns_sha256": stable_columns_sha256,
+                "embedding_bank_identity_sha256": embedding_store.identity_sha256,
+                "contact_release_receipt_sha256": contact_release_receipt_sha256,
+                "contact_schema_sha256": contact_schema_sha256,
+                "stage_inputs_closure_sha256": stage_inputs_closure_sha256,
                 "diagnostic_or_docking_alias_columns_used": [],
                 "publication": {
                     "policy": "stage_all_outputs_then_atomic_file_replace_with_receipt_last",
                     "stale_receipt_removed_before_replacement": stale_receipt,
                     "receipt_published_last": True,
                 },
-                "inputs": {
-                    str(teacher_path.resolve()): sha256_file(teacher_path),
-                    str(teacher_audit_path.resolve()): sha256_file(teacher_audit_path),
-                    str(split_manifest_path.resolve()): sha256_file(split_manifest_path),
-                    str(contact_receipt_path.resolve()): sha256_file(contact_receipt_path),
-                    str(contact_schema_path.resolve()): sha256_file(contact_schema_path),
-                    str(contact_schema_path.resolve().with_suffix(".receipt.json")): sha256_file(
-                        contact_schema_path.resolve().with_suffix(".receipt.json")
-                    ),
-                    str(embedding_manifest_path.resolve()): sha256_file(embedding_manifest_path),
-                    str(embedding_summary_path.resolve()): sha256_file(embedding_summary_path),
-                    str(Path(__file__).resolve()): sha256_file(Path(__file__)),
-                    str(Path(base.__file__).resolve()): sha256_file(Path(base.__file__)),
-                    **embedding_audit["referenced_shard_sha256"],
-                },
+                "inputs": stage_input_hashes,
                 "outputs": {
                     str(final_paths[OUTPUT_FILENAMES[0]]): sha256_file(config_path),
                     str(final_paths[OUTPUT_FILENAMES[1]]): sha256_file(model_path),
