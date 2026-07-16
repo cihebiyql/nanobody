@@ -7,3 +7,14 @@
 !.gitattributes
 !README.md
 !PROJECT_PROGRESS.md
+
+# Keep the lightweight submission-release contract test visible to Git/CI.
+!data/
+data/*
+!data/experiments/
+data/experiments/*
+!data/experiments/phase2_5080_v1/
+data/experiments/phase2_5080_v1/*
+!data/experiments/phase2_5080_v1/src/
+data/experiments/phase2_5080_v1/src/*
+!data/experiments/phase2_5080_v1/src/test_prepare_pvrig_submission_release.py

@@ -29,6 +29,13 @@ CLAIM_BOUNDARY = (
     "Competition computational-priority release only; not binding probability, "
     "affinity/Kd, competition, blockade, or experimental blocking evidence."
 )
+RANKING_CLAIM_BOUNDARY = (
+    "Computational dual-conformation geometry priority and pose-review routing only; "
+    "not binder probability, affinity/Kd, competition, or experimental blocking."
+)
+GENERIC_PRIOR_CLAIM_BOUNDARY = (
+    "relative_generic_binding_prior_for_teacher_sampling_not_pvrig_binding_or_blocking_truth"
+)
 OPEN_SPLITS = {"OPEN_TRAIN", "OPEN_DEVELOPMENT"}
 OPEN_GEOMETRY_STATUSES = {
     "OPEN_USABLE",
@@ -55,10 +62,12 @@ HEX64 = re.compile(r"^[0-9a-f]{64}$")
 SHORTLIST_REQUIRED = {
     "candidate_id", "rank", "sequence", "sequence_sha256", "source_cohort",
     "parent_id", "scaffold_id", "target_patch_id", "design_mode", "cdr1",
-    "cdr2", "cdr3", "cdr3_length", "full_qc_status",
+    "cdr2", "cdr3", "cdr3_length", "fast_hard_fail", "full_qc_status",
     "official_validator_pass", "max_positive_cdr_identity", "exact_positive_id",
     "leakage_status", "developability_score", "expression_purity_risk_score",
-    "abnativ_vhh_score", "generic_binding_prior", "generic_prior_claim_boundary",
+    "anarci_status", "imgt_chain_type", "abnativ_status", "abnativ_vhh_score",
+    "generic_binding_prior", "generic_prior_claim_boundary", "monomer_status",
+    "monomer_sha256", "monomer_sequence_match",
     "geometry_status", "r_8x6b", "r_9e6y", "r_dual_min", "r_dual_gap",
     "geometry_uncertainty", "successful_seeds_8x6b", "successful_seeds_9e6y",
     "full_sequence_cluster", "cdr3_cluster", "angle_family",
@@ -224,13 +233,37 @@ def validate_shortlist(path: Path, audit_path: Path) -> tuple[list[str], list[di
             raise ReleaseError(f"Open geometry is incomplete for {candidate}")
         if not required(row, "full_qc_status").upper().startswith("COMPLETE_HARD_PASS"):
             raise ReleaseError(f"Full-QC hard gate failed for {candidate}")
+        if is_true(required(row, "fast_hard_fail")):
+            raise ReleaseError(f"Fast hard-fail candidate in Top50: {candidate}")
         if not is_true(required(row, "official_validator_pass")):
             raise ReleaseError(f"Official validator gate failed for {candidate}")
+        if not is_true(required(row, "anarci_status")):
+            raise ReleaseError(f"ANARCI gate failed for {candidate}")
+        if required(row, "imgt_chain_type").upper() != "H":
+            raise ReleaseError(f"Unexpected IMGT chain type for {candidate}")
+        if required(row, "abnativ_status").upper() != "SCORED":
+            raise ReleaseError(f"AbNatiV score is incomplete for {candidate}")
+        if required(row, "monomer_status").upper() != "FROZEN_NBB2_SEQUENCE_VERIFIED":
+            raise ReleaseError(f"Frozen NBB2 monomer is incomplete for {candidate}")
+        if not is_true(required(row, "monomer_sequence_match")):
+            raise ReleaseError(f"NBB2 monomer sequence mismatch for {candidate}")
+        if not HEX64.fullmatch(required(row, "monomer_sha256").lower()):
+            raise ReleaseError(f"Invalid NBB2 monomer hash for {candidate}")
         leakage = required(row, "leakage_status").upper()
         if leakage in {"KNOWN_POSITIVE", "LEAKAGE", "FAIL"}:
             raise ReleaseError(f"Known-positive/leakage candidate in Top50: {candidate}")
         if row.get("exact_positive_id", "").strip():
             raise ReleaseError(f"Exact positive identity present for {candidate}")
+        for field in (
+            "parent_id", "target_patch_id", "design_mode", "backbone_index",
+            "mpnn_index", "cdr1", "cdr2", "cdr3", "full_sequence_cluster",
+            "cdr3_cluster",
+        ):
+            required(row, field)
+        if required(row, "generic_prior_claim_boundary") != GENERIC_PRIOR_CLAIM_BOUNDARY:
+            raise ReleaseError(f"Generic-prior claim boundary drift for {candidate}")
+        if required(row, "ranking_claim_boundary") != RANKING_CLAIM_BOUNDARY:
+            raise ReleaseError(f"Geometry-ranking claim boundary drift for {candidate}")
         if number(required(row, "max_positive_cdr_identity"), "max_positive_cdr_identity") >= 0.80:
             raise ReleaseError(f"Positive CDR identity >= 0.80 for {candidate}")
         for field in (
@@ -258,12 +291,28 @@ def validate_shortlist(path: Path, audit_path: Path) -> tuple[list[str], list[di
         raise ReleaseError("Geometry shortlist audit counts do not close")
     if audit.get("eligible_open_rows") != 258:
         raise ReleaseError("Geometry shortlist audit does not contain open258")
+    if audit.get("output_sha256", {}).get("shortlist50") != sha256_file(path):
+        raise ReleaseError("Geometry shortlist audit is not hash-bound to this Top50")
     if audit.get("shortlist_parent_max", 99) > 3:
         raise ReleaseError("Geometry shortlist parent cap was not enforced")
     if audit.get("shortlist_parent_patch_mode_max", 99) > 2:
         raise ReleaseError("Geometry shortlist parent/patch/mode cap was not enforced")
     if audit.get("shortlist_cdr3_cluster_max", 99) > 2:
         raise ReleaseError("Geometry shortlist CDR3 cap was not enforced")
+    actual_parent_max = max(Counter(row["parent_id"] for row in rows).values())
+    actual_combo_max = max(
+        Counter(
+            (row["parent_id"], row["target_patch_id"], row["design_mode"])
+            for row in rows
+        ).values()
+    )
+    actual_cdr3_max = max(Counter(row["cdr3_cluster"] for row in rows).values())
+    if actual_parent_max > 3 or actual_parent_max != audit.get("shortlist_parent_max"):
+        raise ReleaseError("Actual Top50 parent cap does not match the audit")
+    if actual_combo_max > 2 or actual_combo_max != audit.get("shortlist_parent_patch_mode_max"):
+        raise ReleaseError("Actual Top50 parent/patch/mode cap does not match the audit")
+    if actual_cdr3_max > 2 or actual_cdr3_max != audit.get("shortlist_cdr3_cluster_max"):
+        raise ReleaseError("Actual Top50 CDR3 cap does not match the audit")
     return fields, rows
 
 
@@ -366,6 +415,10 @@ def validate_pose_bundle(
         seed = required(row, "seed")
         if conformation not in CONFORMATIONS or seed not in SEEDS:
             raise ReleaseError(f"Unsupported pose conformation/seed for {candidate}")
+        safe_component(required(row, "model"), "pose model")
+        safe_component(required(row, "job_id"), "job_id")
+        if not HEX64.fullmatch(required(row, "job_hash").lower()):
+            raise ReleaseError(f"Invalid pose job hash for {candidate}")
         number(required(row, "HADDOCK_score"), "HADDOCK_score")
         for field in ("geometry_8x6b_summary", "geometry_9e6y_summary"):
             try:
@@ -411,12 +464,11 @@ def frozen_copy(source: Path, destination: Path) -> None:
     destination.write_bytes(source.read_bytes())
 
 
-def freeze_inputs_and_top10_poses(
+def freeze_inputs_and_pose_sources(
     outdir: Path,
     args: argparse.Namespace,
     pose_fields: list[str],
     pose_rows: list[dict[str, str]],
-    top10_ids: set[str],
 ) -> tuple[Path, list[dict[str, str]]]:
     frozen = outdir / "frozen_inputs"
     frozen.mkdir(parents=True)
@@ -430,20 +482,19 @@ def freeze_inputs_and_top10_poses(
     pose_root = args.pose_manifest.resolve().parent
     for row in pose_rows:
         item = dict(row)
-        if row["candidate_id"] in top10_ids:
-            source = (pose_root / row["bundle_relpath"]).resolve()
-            try:
-                source.relative_to(pose_root)
-            except ValueError as exc:
-                raise ReleaseError(f"Top10 pose escapes pose bundle: {source}") from exc
-            if not source.is_file() or source.stat().st_size == 0:
-                raise ReleaseError(f"Missing Top10 pose source: {source}")
-            if sha256_file(source) != row["target_sha256"]:
-                raise ReleaseError(f"Top10 pose hash mismatch: {source}")
-            relpath = Path("top10_pose_sources") / row["candidate_id"] / row["conformation"] / row["seed"] / row["model"]
-            target = frozen / relpath
-            frozen_copy(source, target)
-            item["bundle_relpath"] = relpath.as_posix()
+        source = (pose_root / row["bundle_relpath"]).resolve()
+        try:
+            source.relative_to(pose_root)
+        except ValueError as exc:
+            raise ReleaseError(f"Top20 pose escapes pose bundle: {source}") from exc
+        if not source.is_file() or source.stat().st_size == 0:
+            raise ReleaseError(f"Missing Top20 pose source: {source}")
+        if sha256_file(source) != row["target_sha256"]:
+            raise ReleaseError(f"Top20 pose hash mismatch: {source}")
+        relpath = Path("top20_pose_sources") / row["candidate_id"] / row["conformation"] / row["seed"] / row["model"]
+        target = frozen / relpath
+        frozen_copy(source, target)
+        item["bundle_relpath"] = relpath.as_posix()
         normalized.append(item)
     frozen_manifest = frozen / "pose_review_manifest.tsv"
     write_table(frozen_manifest, normalized, pose_fields, "\t")
@@ -458,6 +509,15 @@ def write_fasta(path: Path, rows: list[dict[str, str]]) -> None:
                 f"computational_priority_score={row['geometry_rank_score']}\n"
             )
             handle.write(row["sequence"].upper() + "\n")
+
+
+def write_top10_fasta(path: Path, rows: list[dict[str, str]]) -> None:
+    with path.open("w", encoding="ascii") as handle:
+        for row in rows:
+            handle.write(
+                f">{row['candidate_id']} portfolio_rank={row['portfolio_rank']} "
+                f"top50_rank={row['rank']}\n{row['sequence'].upper()}\n"
+            )
 
 
 def build_dossiers(
@@ -545,6 +605,7 @@ ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 PYTHON=${PYTHON:-python3}
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
+(cd "$ROOT" && sha256sum -c SHA256SUMS)
 "$PYTHON" "$ROOT/tools/prepare_pvrig_submission_release.py" \
   --shortlist "$ROOT/frozen_inputs/shortlist50.tsv" \
   --shortlist-audit "$ROOT/frozen_inputs/geometry_shortlist_audit.json" \
@@ -645,8 +706,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     top10_ids = {row["candidate_id"] for row in top10}
 
     args.outdir.mkdir(parents=True, exist_ok=True)
-    frozen_manifest, normalized_poses = freeze_inputs_and_top10_poses(
-        args.outdir, args, pose_fields, pose_rows, top10_ids
+    frozen_manifest, normalized_poses = freeze_inputs_and_pose_sources(
+        args.outdir, args, pose_fields, pose_rows
     )
     frozen = args.outdir / "frozen_inputs"
     frozen_hashes = {
@@ -678,6 +739,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "pose_review_notes", "top10_selection_reason", "ranking_claim_boundary",
     ]
     write_table(args.outdir / "submission_top10.csv", top10, top10_fields, ",")
+    write_top10_fasta(args.outdir / "submission_top10.fasta", top10)
     build_dossiers(args.outdir, top10, normalized_poses)
     write_provenance(args.outdir, frozen_hashes)
 
@@ -709,6 +771,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "top10_count": len(top10),
         "top20_pose_candidate_count": len(top20_ids),
         "top20_pose_manifest_count": len(pose_rows),
+        "frozen_top20_pose_count": len(normalized_poses),
         "top10_copied_pose_count": sum(
             row["candidate_id"] in top10_ids for row in normalized_poses
         ),

@@ -636,6 +636,7 @@ data/experiments/phase2_5080_v1/src/build_phase2_v3_p2_dual_docking_pilot_packag
 data/experiments/phase2_5080_v1/src/build_phase2_v3_p2_v1_2_calibration.py
 data/experiments/phase2_5080_v1/src/build_phase2_v3_p2_v1_3_dual47_completion15_package.py
 data/experiments/phase2_5080_v1/src/build_phase2_v4_c_sequence_support.py
+data/experiments/phase2_5080_v1/src/build_phase2_v4_d_sequence_support.py
 data/experiments/phase2_5080_v1/src/build_pvrig_candidate_evidence_master.py
 data/experiments/phase2_5080_v1/src/build_pvrig_formal_parent40_structure_package.py
 data/experiments/phase2_5080_v1/src/build_pvrig_formal_rfantibody_package.py
@@ -755,6 +756,7 @@ data/experiments/phase2_5080_v1/src/test_build_phase2_v3_p2_dual_docking_pilot_p
 data/experiments/phase2_5080_v1/src/test_build_phase2_v3_p2_v1_2_calibration.py
 data/experiments/phase2_5080_v1/src/test_build_phase2_v3_p2_v1_3_dual47_completion15_package.py
 data/experiments/phase2_5080_v1/src/test_build_phase2_v4_c_sequence_support.py
+data/experiments/phase2_5080_v1/src/test_build_phase2_v4_d_sequence_support.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_candidate_evidence_master.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_formal_parent40_structure_package.py
 data/experiments/phase2_5080_v1/src/test_build_pvrig_formal_rfantibody_package.py
@@ -780,6 +782,7 @@ data/experiments/phase2_5080_v1/src/test_freeze_phase2_v4_d_fullqc290_split.py
 data/experiments/phase2_5080_v1/src/test_freeze_pvrig_v2_5_assay_preregistration.py
 data/experiments/phase2_5080_v1/src/test_make_rfantibody_hlt_framework.py
 data/experiments/phase2_5080_v1/src/test_merge_pvrig_candidate_evidence_v2.py
+data/experiments/phase2_5080_v1/src/test_monitor_phase2_v4_d_readonly.py
 data/experiments/phase2_5080_v1/src/test_package_pvrig_top20_pose_review.py
 data/experiments/phase2_5080_v1/src/test_phase2_v2_4_pose_fusion.py
 data/experiments/phase2_5080_v1/src/test_phase2_v2_5_generic.py
@@ -805,6 +808,7 @@ data/experiments/phase2_5080_v1/src/test_prepare_phase2_v4_d_open_teacher.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_formal_teacher500_model_inputs.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_model_screening_summary.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_rfantibody_v1.py
+data/experiments/phase2_5080_v1/src/test_prepare_pvrig_submission_release.py
 data/experiments/phase2_5080_v1/src/test_prepare_pvrig_teacher_pilot96_model_inputs.py
 data/experiments/phase2_5080_v1/src/test_process_haddock3_calibration_run.py
 data/experiments/phase2_5080_v1/src/test_process_phase2_v3_p2_dual_docking_pilot.py
@@ -838,6 +842,7 @@ data/experiments/phase2_5080_v1/src/test_train_phase2_v3_g2_generic.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v3_p1_formal.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v3_p1_pilot_smoke.py
 data/experiments/phase2_5080_v1/src/test_train_phase2_v4_c_baselines.py
+data/experiments/phase2_5080_v1/src/test_train_phase2_v4_d_surrogate.py
 data/experiments/phase2_5080_v1/src/test_validate_clustered_splits_v2.py
 data/experiments/phase2_5080_v1/src/test_validate_esm2_cache_v2_3.py
 data/experiments/phase2_5080_v1/src/test_validate_p3_structure_fusion.py
@@ -859,6 +864,7 @@ data/experiments/phase2_5080_v1/src/train_phase2_v3_g2_generic.py
 data/experiments/phase2_5080_v1/src/train_phase2_v3_p1_formal.py
 data/experiments/phase2_5080_v1/src/train_phase2_v3_p1_pilot_smoke.py
 data/experiments/phase2_5080_v1/src/train_phase2_v4_c_baselines.py
+data/experiments/phase2_5080_v1/src/train_phase2_v4_d_surrogate.py
 data/experiments/phase2_5080_v1/src/validate_clustered_splits_v2.py
 data/experiments/phase2_5080_v1/src/validate_esm2_cache_v2_3.py
 data/experiments/phase2_5080_v1/src/validate_p3_structure_fusion.py

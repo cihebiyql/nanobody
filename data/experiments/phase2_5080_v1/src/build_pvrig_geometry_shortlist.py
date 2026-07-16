@@ -375,6 +375,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "sealed_fullqc_excluded_count": sealed_fullqc_count, "exclusions": dict(sorted(exclusions.items())),
         "shortlist_count": len(shortlist), "pose_review_candidate_count": args.pose_review_size,
         "pose_review_manifest_rows": len(pose_rows), "outputs": {key: str(value.resolve()) for key, value in outputs.items()},
+        "output_sha256": {
+            "ranked_open258": sha256_file(outputs["ranked_open258"]),
+            "shortlist50": sha256_file(outputs["shortlist50"]),
+            "shortlist50_fasta": sha256_file(outputs["shortlist50_fasta"]),
+            "top20_pose_review_manifest": sha256_file(outputs["top20_pose_review_manifest"]),
+        },
         "shortlist_parent_max": max(Counter(row["parent_id"] for row in shortlist).values()),
         "shortlist_parent_patch_mode_max": max(Counter((row["parent_id"], row["target_patch_id"], row["design_mode"]) for row in shortlist).values()),
         "shortlist_cdr3_cluster_max": max(Counter(row["cdr3_cluster"] for row in shortlist).values()),
