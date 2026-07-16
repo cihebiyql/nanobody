@@ -1,0 +1,36 @@
+{
+  "bindings": {
+    "builder": {
+      "path": "src/build_phase2_v4_d_cross_campaign_control_bridge.py",
+      "sha256": "f256087b6f7ed56899d738533813077576bb489acb31b3dc5987fdd13f9f9fc2"
+    },
+    "preregistration": {
+      "path": "audits/phase2_v4_d_cross_campaign_control_bridge_preregistration.json",
+      "sha256": "e9f151a713e5aaeb691cfe10de8f88015cb62d171e3f1e88f413be07b073b97e"
+    },
+    "teacher_utility": {
+      "path": "src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+    },
+    "tests": {
+      "path": "src/test_build_phase2_v4_d_cross_campaign_control_bridge.py",
+      "sha256": "549d83bd658c8ccf4472d2752705634dbb408182a0c688ed1ac2f0bf78051e89"
+    }
+  },
+  "claim_boundary": "Implementation freeze only; no paired control score extraction or production bridge result is contained here.",
+  "frozen_at": "2026-07-16T19:54:53+08:00",
+  "paired_control_values_extracted_before_freeze": false,
+  "preregistration_sha256": "e9f151a713e5aaeb691cfe10de8f88015cb62d171e3f1e88f413be07b073b97e",
+  "production_validation": {
+    "adjacent_sha256_record_required": true,
+    "all_binding_paths_and_current_bytes_must_match": true,
+    "canonical_freeze_path_required": true,
+    "control_result_reads": "lstat plus O_NOFOLLOW plus regular-file and stable-open checks",
+    "output_publication": "exact four regular files, receipt last, final snapshot revalidation",
+    "statistics_runtime": "Python standard library only"
+  },
+  "production_validation_required": true,
+  "schema_version": "phase2_v4_d_cross_campaign_control_bridge_implementation_freeze_v1",
+  "self_hash_policy": "The freeze JSON cannot contain its own digest. The adjacent .sha256 file records its SHA256 and is the value to copy into an external deployment SHA256SUMS trust root.",
+  "status": "FROZEN_BEFORE_PAIRED_CONTROL_SCORE_EXTRACTION"
+}

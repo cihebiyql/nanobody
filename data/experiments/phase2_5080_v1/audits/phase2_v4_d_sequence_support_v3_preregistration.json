@@ -1,0 +1,149 @@
+{
+  "schema_version": "phase2_v4_d_sequence_support_v3_preregistration_v1",
+  "status": "FROZEN_LABEL_FREE_BEFORE_SUPPORT_V3_PRODUCTION_CALCULATION",
+  "frozen_at": "2026-07-16T19:08:52+08:00",
+  "objective": "Define an order-sensitive, parent-conditioned, label-free support/OOD contract for deploying a fixed-PVRIG computational docking-geometry surrogate on the 7087-candidate design pool.",
+  "claim_boundary": "Support V3 estimates whether a sequence is represented by the V4-D OPEN_TRAIN design domain. It is not model correctness, docking geometry, binding, affinity, competition, Docking Gold, or experimental blocking evidence.",
+  "version_boundary": {
+    "support_v2_status_must_remain": "FAIL",
+    "support_v2_observed_in_domain": 2643,
+    "support_v2_observed_deployment_denominator": 6861,
+    "support_v2_observed_coverage": 0.38522081329252295,
+    "forbidden_actions": [
+      "lower the V2 coverage or null-control gates",
+      "rename V2 NEAR_DOMAIN as exploitation-supported",
+      "overwrite the V2 implementation, audit, table, or receipt",
+      "use V4-D, V4-F, V4-G, candidate docking, or experimental labels to select Support V3 features or thresholds"
+    ]
+  },
+  "frozen_inputs": {
+    "candidate_pool": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1_candidates/scored_candidates_v1.csv",
+      "rows": 7087,
+      "sha256": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b"
+    },
+    "v4_d_split_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "rows": 290,
+      "open_train_rows": 226,
+      "open_train_parent_clusters": 20,
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "esm2_residue_cache_manifest": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/esm2_8m_residue_cache_v1/manifest.csv",
+      "sha256": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+      "model": "ESM2 t6 8M UR50D",
+      "model_weights_sha256": "cbf069e9aea56e93cf87a8ee7e0bbdf5d9ae04e6004d0af006b9670b079dd410"
+    },
+    "cdr_masks": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d/residue_features/vhh_cdr_type_masks_v23_candidate7087_v2.csv",
+      "sha256": "6176bb245cbefa24961a017a4964d3453e47e7901a7abcd72a2eedebefb1f791"
+    },
+    "contact_feature_release_receipt": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_candidate_v2_3_residue_contact_features_v3.receipt.json",
+      "sha256": "b12c0ff0ce6760db7169ec3616dddaf05786e5ca795354f639ef2bf87c370e2b"
+    },
+    "contact_feature_schema": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d/frozen_contact_feature_schema_v2.json",
+      "sha256": "22d11cdccb0af6ecb26eb3bdcbae6c35dc5bc57543d662cf9da94155ee746cc0",
+      "receipt_sha256": "93bd2427ae0f1205a0055d8913d8d1c0473b97c316b9120632a2d2bdebf16203",
+      "selected_feature_count": 12
+    }
+  },
+  "reference_contract": {
+    "reference_split": "OPEN_TRAIN only",
+    "reference_rows": 226,
+    "reference_parent_clusters": 20,
+    "excluded_from_calibration": [
+      "OPEN_DEVELOPMENT",
+      "PROSPECTIVE_COMPUTATIONAL_TEST",
+      "V4-F prospective holdout",
+      "V4-G acquisition panels",
+      "legacy128 candidates",
+      "all docking and experimental labels"
+    ],
+    "exact_reference_rows_are_output_as": "TRAIN_REFERENCE and excluded from deployment coverage"
+  },
+  "representation": {
+    "full_sequence_esm2": "L2-normalized concatenation of residue-embedding mean and standard deviation over the full VHH sequence.",
+    "cdr_esm2": "L2-normalized concatenation of residue-embedding mean and standard deviation separately for IMGT CDR1, CDR2, and CDR3.",
+    "cdr_order": "Per-CDR normalized Levenshtein distance plus exact canonical 2-mer and 3-mer cosine distances; no hashing is allowed.",
+    "contact": "The 12 frozen cross-seed-stable contact features, robustly centered and scaled using OPEN_TRAIN medians and IQRs only.",
+    "distance_policy": "Cosine distance for normalized embedding and k-mer channels, normalized Euclidean distance for robust-scaled contact features, and normalized Levenshtein for edit channels.",
+    "same_neighbor_policy": "A candidate is supported only when one reference sequence from the declared parent cluster satisfies every required channel threshold. Different channels may not borrow different nearest neighbors.",
+    "forbidden_features": [
+      "parent identity as a predictive score",
+      "candidate docking values",
+      "V4-D or V4-F labels",
+      "known-positive sequence similarity",
+      "length-confounded contact mass diagnostics"
+    ]
+  },
+  "calibration": {
+    "threshold_quantile": 0.95,
+    "quantile_method": "linear",
+    "row_exclusion": "leave the query row and exact sequence SHA256 out of its neighbor set",
+    "parent_balance": "Each parent contributes equal total weight when channel thresholds are estimated.",
+    "nested_validation": {
+      "folds": 5,
+      "seed": 20260716,
+      "unit": "within-parent deterministic candidate hash fold",
+      "minimum_parent_rows": 6,
+      "policy": "For each fold, thresholds use only the other rows within each parent; the validation rows are never used to set their fold thresholds."
+    }
+  },
+  "domain_labels": {
+    "TRAIN_REFERENCE": "Exact OPEN_TRAIN reference row; excluded from deployment coverage.",
+    "IN_DOMAIN": "Declared parent is in OPEN_TRAIN and one same-parent reference satisfies all required channel thresholds.",
+    "NEAR_DOMAIN": "No IN_DOMAIN match, but a cross-parent reference satisfies all global diagnostic thresholds; not exploitation-supported.",
+    "OUT_OF_DOMAIN": "Neither IN_DOMAIN nor NEAR_DOMAIN diagnostic support."
+  },
+  "null_controls": {
+    "replicates_each": 1000,
+    "seed": 20260716,
+    "cdr_composition_shuffle": "Independently composition-preserving shuffle CDR1, CDR2, and CDR3 within a source sequence; keep its framework and declared parent; exclude the exact source row but retain other same-parent references; recompute ESM2 and contact features.",
+    "cross_parent_cdr_graft": "Insert all three CDRs from parent B into a framework from parent A, declare parent A, exclude the exact source rows, retain other references, and recompute ESM2 and contact features.",
+    "channel_splice": "Combine full-sequence, CDR/order, and contact channels from different source rows while retaining a single declared parent; the same-neighbor rule must reject unsupported feature mosaics.",
+    "unseen_parent_chimera": "Construct from two source parents that are both excluded from the reference for that replicate; evaluate only NEAR_DOMAIN leakage because IN_DOMAIN is impossible by contract.",
+    "null_generation_label_access": false
+  },
+  "hard_gates": {
+    "nested_validation": {
+      "in_domain_fraction_minimum": 0.8,
+      "every_parent_fraction_minimum": 0.6
+    },
+    "deployment_coverage": {
+      "denominator": 6861,
+      "in_domain_count_minimum": 4117,
+      "in_domain_fraction_minimum": 0.6
+    },
+    "cdr_composition_shuffle": {
+      "in_domain_fraction_maximum": 0.05
+    },
+    "cross_parent_cdr_graft": {
+      "in_domain_fraction_maximum": 0.1
+    },
+    "channel_splice": {
+      "in_domain_fraction_maximum": 0.05
+    },
+    "unseen_parent_chimera": {
+      "near_domain_fraction_maximum": 0.1
+    }
+  },
+  "decision_policy": {
+    "all_gates_required": true,
+    "pass": "PASS_LABEL_FREE_SUPPORT_FOR_V4_D_SURROGATE_EXPLOITATION_WITHIN_IN_DOMAIN_ONLY",
+    "fail": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY",
+    "failure_response": "Do not relax gates or relabel NEAR_DOMAIN. Open a new version or add independent parent-cluster teacher coverage.",
+    "model_gate_independence": "Support PASS cannot rescue a failed surrogate model gate, and model PASS cannot rescue a failed support gate."
+  },
+  "publication_contract": {
+    "production_builder_and_tests_hash_frozen_before_run": true,
+    "required_outputs": [
+      "candidate7087_sequence_support_v3.csv",
+      "candidate7087_sequence_support_v3.audit.json",
+      "candidate7087_sequence_support_v3.receipt.json"
+    ],
+    "receipt_publication_order": "last, after exact output-set, input closure, null-control artifacts, and SHA256 verification"
+  }
+}

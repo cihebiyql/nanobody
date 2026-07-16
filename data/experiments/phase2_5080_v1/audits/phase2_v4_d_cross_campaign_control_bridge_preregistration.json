@@ -1,0 +1,208 @@
+{
+  "bootstrap": {
+    "interval": "two-sided percentile 95 percent",
+    "replicates": 10000,
+    "seed": 20260716,
+    "unit": "entity_id cluster; all six receptor/seed rows for a sampled control move together"
+  },
+  "campaigns": {
+    "legacy_v4_c": {
+      "control_manifest_sha256": "aae6aa56a31ef0fc459a532c69666e448438b3bea89fd8f7e9221af6ecc441fd",
+      "docking_jobs_sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
+      "protocol_core_lock_file_sha256": "e56c9b9f409d5e773058caea157852bf0042e8adc104ddce99e7deae4e8cb5d2",
+      "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+      "protocol_spec_sha256": "0f4e8d100c42362aa244bc575532f87ed5f3a4d891a76df0b943952721bc14f7",
+      "root": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714",
+      "score_pose_sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9"
+    },
+    "primary_v4_d": {
+      "control_manifest_sha256": "aae6aa56a31ef0fc459a532c69666e448438b3bea89fd8f7e9221af6ecc441fd",
+      "docking_jobs_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+      "protocol_core_lock_file_sha256": "767117dc2c506cfdfc83fce8e12931514d268941348d69a9abbda5a6500bdd24",
+      "protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+      "protocol_spec_sha256": "89331894ee74274b82fddae4ecabc413351a6b68721f2a096cc0fca6415c78e8",
+      "root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+      "score_pose_sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9"
+    }
+  },
+  "claim_boundary": "This is a protocol-regression bridge over repeated computational controls. It is not candidate evidence, binding, affinity, competition, Docking Gold, or experimental blocking truth, and it cannot alter the frozen V4-D teacher or prospective test.",
+  "continuous_score_contract": {
+    "classification_policy": "A/B/C/E and G tiers are diagnostic only and never a bridge hard gate.",
+    "definition_source": "prepare_phase2_v4_d_open_teacher.py native_pose_utility plus rank-weighted job_summary",
+    "missing_policy": "No imputation. Any missing, failed, non-pose-backed, or fewer-than-four-complete-model control job fails identity/completeness closure.",
+    "range": [
+      0.0,
+      1.0
+    ],
+    "score_name": "V4-D job_utility"
+  },
+  "data_access_contract": {
+    "aggregate_file_policy": "Do not read campaign-wide job_results.tsv or pose_scores.tsv because they contain candidate values.",
+    "allowed_manifest_rows": "entity_type == control only",
+    "campaign_specific_fields_bound_not_equal": [
+      "job_id",
+      "job_hash",
+      "cfg_hash",
+      "restraint_hash",
+      "protocol_core_sha256",
+      "protocol_hash"
+    ],
+    "expected_entities": 47,
+    "expected_paired_jobs": 282,
+    "expected_receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "expected_seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "identity_fields_required_equal": [
+      "entity_id",
+      "control_class",
+      "expected_behavior",
+      "conformation",
+      "seed",
+      "sequence_sha256",
+      "cdr1_range",
+      "cdr2_range",
+      "cdr3_range",
+      "cdr_residues",
+      "receptor_chain",
+      "ligand_chain",
+      "vhh_chain",
+      "numbering"
+    ],
+    "pair_key": [
+      "entity_id",
+      "conformation",
+      "seed"
+    ],
+    "raw_result_policy": "Construct the exact control allowlist from each docking_jobs.tsv before opening results/<job_id>/job_result.json. Any candidate result path is forbidden.",
+    "semantic_protocol_check": "Canonical protocol semantics, receptor/restraint residue content, ATOM-only policy, HETATM zero gate, top-8 policy, seeds, and scoring implementation must match after excluding campaign IDs, paths, hashes, and publication metadata."
+  },
+  "decision_policy": {
+    "current_v4_d_effect": "None. Legacy128 is never added to the frozen V4-D teacher, model selection, or prospective test.",
+    "fail": "FAIL_NO_LEGACY128_TRAINING_MERGE",
+    "future_use_if_fail": "Keep legacy128 as an independent descriptive OOD campaign only.",
+    "future_use_if_pass": "A new version may test legacy128 as low-weight OOD auxiliary data, but must report primary-only and primary-plus-legacy ablations.",
+    "pass": "PASS_SHARED_CONTINUOUS_SCALE_FOR_FUTURE_AUXILIARY_ABLATION_ONLY"
+  },
+  "frozen_at": "2026-07-16T19:04:51+08:00",
+  "hard_gates": {
+    "absolute_error": {
+      "median_maximum": 0.05,
+      "p90_maximum": 0.15
+    },
+    "identity": {
+      "duplicate_keys_maximum": 0,
+      "identity_mismatches_maximum": 0,
+      "missing_keys_maximum": 0,
+      "paired_jobs_exact": 282,
+      "semantic_protocol_mismatches_maximum": 0,
+      "unexpected_candidate_paths_maximum": 0
+    },
+    "overall_lin_concordance_correlation": {
+      "bootstrap_95ci_lower_minimum": 0.5,
+      "point_minimum": 0.6
+    },
+    "overall_spearman": {
+      "bootstrap_95ci_lower_minimum": 0.6,
+      "point_minimum": 0.7
+    },
+    "per_receptor_spearman": {
+      "bootstrap_95ci_lower_minimum": 0.45,
+      "point_minimum": 0.6
+    },
+    "signed_bias": {
+      "absolute_median_maximum": 0.03
+    }
+  },
+  "implementation_freeze_contract": {
+    "canonical_path": "audits/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.json",
+    "production_validation_required": true,
+    "required_bindings": [
+      "preregistration",
+      "builder",
+      "tests",
+      "teacher_utility"
+    ],
+    "schema_version": "phase2_v4_d_cross_campaign_control_bridge_implementation_freeze_v1",
+    "self_hash_policy": "The freeze JSON does not contain its own SHA256. Its SHA256 is recorded in the adjacent external record and must also be copied into the deployment trust-root SHA256SUMS before production execution.",
+    "sha256_record_path": "audits/phase2_v4_d_cross_campaign_control_bridge_implementation_freeze.sha256"
+  },
+  "information_available_at_freeze": {
+    "candidate_or_unpaired_values_used_for_threshold_selection": false,
+    "incidental_candidate_schema_inspection": "One V4-D candidate raw job_result.json was opened to inspect the evidence schema. It was not a control, was not paired across campaigns, and its values were not used to choose bridge thresholds.",
+    "incidental_unpaired_control_schema_inspection": "The header and first two legacy control rows of campaign-wide job_results.tsv were displayed while inspecting column layout. No corresponding V4-D control values were opened and no paired statistic was computed.",
+    "known_completion_only": "Both campaigns report 282/282 control jobs successful.",
+    "known_identity_only": "Both campaigns use the same frozen 47-control input file and the same score_pose.py bytes.",
+    "paired_control_values_extracted": false,
+    "threshold_selection_policy": "Thresholds were fixed from the 0-1 job-utility scale and the intended protocol-transfer use before paired control extraction."
+  },
+  "objective": "Determine whether the legacy V4-C dual128 campaign and the V4-D fullqc290 campaign share a sufficiently concordant continuous docking-geometry scale for future low-weight auxiliary training.",
+  "publication_contract": {
+    "implementation_hash_timing": "Freeze the production builder and tests before first paired score extraction.",
+    "output_set_policy": "exactly the four required regular files; no extras and no symlinks",
+    "receipt_publication_order": "last, after exact output-set and SHA256 verification",
+    "required_outputs": [
+      "cross_campaign_control_bridge_282.tsv",
+      "cross_campaign_control_bridge_entities_47.tsv",
+      "cross_campaign_control_bridge_audit.json",
+      "cross_campaign_control_bridge_receipt.json"
+    ]
+  },
+  "report_only_metric_definitions": {
+    "bland_altman_right_minus_left": "Mean primary_v4_d minus legacy_v4_c difference and mean plus or minus 1.96 times the sample standard deviation.",
+    "gate_effect": "None. These values are descriptive and cannot change PASS or FAIL.",
+    "linear_regression_right_on_left": "Ordinary least-squares primary_v4_d job utility as response and legacy_v4_c job utility as predictor; report slope and intercept.",
+    "overall_pearson": "Pearson correlation over all 282 paired job utilities.",
+    "rmse": "Square root of the mean squared primary_v4_d minus legacy_v4_c job-utility difference over all 282 pairs."
+  },
+  "report_only_metrics": [
+    "Pearson correlation",
+    "Kendall correlation",
+    "RMSE",
+    "linear slope and intercept",
+    "Bland-Altman limits",
+    "per-seed summaries",
+    "per-control-family summaries",
+    "per-control-class summaries",
+    "hotspot, occlusion, CDR3, clash, HADDOCK, and AIR channels",
+    "A/B/C/E agreement",
+    "outlier identities"
+  ],
+  "revised_at": "2026-07-16T19:54:31+08:00",
+  "revision": {
+    "campaign_inputs_changed": false,
+    "changes": [
+      "Bind preregistration, builder, tests, and teacher utility in a pre-extraction implementation-freeze artifact.",
+      "Require lstat plus O_NOFOLLOW regular-file reads and reject symlinked control results or output files.",
+      "Require final byte revalidation of inputs, outputs, and receipt plus an exact four-file output set.",
+      "Use Python standard-library statistics only for Node23 portability.",
+      "Define Pearson, RMSE, OLS slope/intercept, and Bland-Altman outputs as report-only metrics."
+    ],
+    "paired_control_values_opened_before_revision": false,
+    "reason": "Freeze the reviewed implementation and close file-safety, TOCTOU, exact-output-set, portability, and preregistered report-only metric gaps before any paired control values are extracted.",
+    "scientific_gates_changed": false,
+    "timing": "Before paired control extraction or production bridge execution."
+  },
+  "revision_history": [
+    {
+      "revised_at": "2026-07-16T19:12:54+08:00",
+      "revision": {
+        "campaign_inputs_changed": false,
+        "paired_control_values_opened_before_revision": false,
+        "reason": "Correct the disclosure of incidental schema inspection performed before threshold freeze.",
+        "scientific_gates_changed": false,
+        "timing": "Before paired control extraction, production bridge execution, or implementation freeze."
+      },
+      "schema_version": "phase2_v4_d_cross_campaign_control_bridge_preregistration_v2_pre_extraction_disclosure_correction",
+      "supersedes_preregistration_sha256": "e8fca6b1fda455bd8642dc91300c82acb6f73d862cd67dafeeaa2c9fdb576fdf"
+    }
+  ],
+  "schema_version": "phase2_v4_d_cross_campaign_control_bridge_preregistration_v3_pre_extraction_implementation_freeze",
+  "status": "FROZEN_BEFORE_PAIRED_CONTROL_SCORE_EXTRACTION",
+  "supersedes_preregistration_sha256": "0788d7d9fa98c1f39264cda9968aa49cf9515fb0f48ab57eaab7c2f840d7b163"
+}

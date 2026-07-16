@@ -1,0 +1,34 @@
+{
+  "candidate_count": 7087,
+  "cdr_mask_count": 7087,
+  "claim_boundary": "Support V3 estimates whether a sequence is represented by the V4-D OPEN_TRAIN design domain. It is not model correctness, docking geometry, binding, affinity, competition, Docking Gold, or experimental blocking evidence.",
+  "consumed_candidate_fields": [
+    "candidate_id",
+    "cdr1_after",
+    "cdr2_after",
+    "cdr3_after",
+    "parent_framework_cluster",
+    "sequence_sha256",
+    "vhh_sequence"
+  ],
+  "contact_feature_count": 7087,
+  "docking_or_experimental_label_paths_opened": 0,
+  "esm2_vhh_cache_count": 7087,
+  "implementation_status": "SYNTHETIC_VALIDATED_SKELETON",
+  "input_sha256": {
+    "candidate_pool": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b",
+    "cdr_masks": "6176bb245cbefa24961a017a4964d3453e47e7901a7abcd72a2eedebefb1f791",
+    "contact_feature_release_receipt": "b12c0ff0ce6760db7169ec3616dddaf05786e5ca795354f639ef2bf87c370e2b",
+    "contact_feature_schema": "22d11cdccb0af6ecb26eb3bdcbae6c35dc5bc57543d662cf9da94155ee746cc0",
+    "esm2_residue_cache_manifest": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+    "v4_d_split_manifest": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+  },
+  "open_train_count": 226,
+  "open_train_parent_count": 20,
+  "preregistration_sha256": "72dc6adc1e3404c65304d489b303f6d7ba6a08d3edd626518dbcfc74c34c186a",
+  "production_support_table_published": false,
+  "remaining_gap": "real ESM2/contact materialization and four null recomputations are not implemented",
+  "split_count": 290,
+  "stable_contact_feature_count": 12,
+  "status": "PASS_FROZEN_LABEL_FREE_INPUT_CLOSURE"
+}
