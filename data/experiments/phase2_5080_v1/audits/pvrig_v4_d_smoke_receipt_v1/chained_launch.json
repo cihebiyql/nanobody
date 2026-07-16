@@ -1,0 +1,13 @@
+{
+  "new_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+  "reason": "V4-D smoke-then-full started with pid=261601",
+  "status": "LAUNCHED",
+  "updated_at": "2026-07-16T03:17:36.159811+00:00",
+  "upstream_evaluator_path": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/EVALUATOR_STABLE.json",
+  "upstream_evaluator_sha256": "31684c8f293bf0118251ead9b4e1da5f17d5b2dc8c2f10233c1fa76c1cbf4267",
+  "upstream_root": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714",
+  "v4d_evaluator_gate_id": "pvrig_v4_d_evaluator_stability_v3_decimal_thresholds",
+  "v4d_evaluator_gate_sha256": "fb01cdaa5939f2846b16e4e02a09903417cd6cea04d42350c4ed57f9ae7eb774",
+  "v4d_preregistration_sha256": "b7a1e4fed9b4e625f505c0afbeee1a95ceedfa9986ae83f369f497d2e4f71222",
+  "v4d_protocol_lock_file_sha256": "56ef539cb54a1aba8e665ec5d62b3653088e2289e371d8fa5bbadbc725c1d574"
+}

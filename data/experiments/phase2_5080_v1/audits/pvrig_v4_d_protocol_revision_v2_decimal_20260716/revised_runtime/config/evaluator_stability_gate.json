@@ -1,0 +1,54 @@
+{
+  "completion": {
+    "minimum_pose_models_per_successful_job": 4,
+    "minimum_successful_seeds_per_entity_conformation": 2
+  },
+  "control_calibration": {
+    "maximum_destructive_robust_strict_a_entity_fraction": 0.5,
+    "minimum_positive_robust_supported_entity_fraction": 0.5
+  },
+  "endpoint": {
+    "blocker_supported_classes": [
+      "A",
+      "B"
+    ],
+    "pair_labels": [
+      "STRICT_A",
+      "SUPPORTED_AB",
+      "OTHER"
+    ],
+    "strict_class": "A"
+  },
+  "gate_id": "pvrig_v4_d_evaluator_stability_v3_decimal_thresholds",
+  "interpretation": {
+    "does_not_establish": [
+      "binding_affinity",
+      "experimental_blocking",
+      "P2_P3_P4_enrichment"
+    ],
+    "scope": "operational_and_geometry_evaluator_stability"
+  },
+  "numeric_comparison": {
+    "boundary_policy": "inclusive_greater_than_or_equal",
+    "correction_reason": "avoid binary-float inflation such as 100.0 * 1.1 becoming 110.00000000000001",
+    "scaled_threshold_arithmetic": "decimal_string_product",
+    "supersedes": "pvrig_v3_evaluator_stability_v2"
+  },
+  "reproducibility": {
+    "maximum_control_native_cross_support_disagreement_fraction": 0.3,
+    "minimum_control_entity_conformation_seed_consensus_fraction": 0.7,
+    "minimum_model_native_cross_support_agreement_fraction": 0.7,
+    "minimum_model_pair_consensus_fraction": 0.5,
+    "minimum_robust_control_job_fraction": 0.7
+  },
+  "schema_version": 2,
+  "threshold_sensitivity": {
+    "cohort": "candidate",
+    "maximum_absolute_strict_a_rate_delta_from_scale_1": 0.2,
+    "scales": [
+      0.9,
+      1.0,
+      1.1
+    ]
+  }
+}

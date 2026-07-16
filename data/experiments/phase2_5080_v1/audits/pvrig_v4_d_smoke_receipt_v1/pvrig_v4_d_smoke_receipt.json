@@ -1,0 +1,36 @@
+{
+  "artifacts": {
+    "SMOKE_VALIDATION.json": {
+      "bytes": 1511,
+      "sha256": "344e8c1ff8bb2b217594f423d2b6e9b43df21ddabed731501884a0a1aad746dc"
+    },
+    "chained_launch.json": {
+      "bytes": 921,
+      "sha256": "8c64992958034bd24a28767596687eee1bb4759bdeba29b1dacce77ba324e626"
+    },
+    "orchestrator.json": {
+      "bytes": 98,
+      "sha256": "1c2a73840fd7b905018b9c816fe787cb4e8d3e744bd689098e81db6c6c66c481"
+    },
+    "smoke_then_full_launch_tail.log": {
+      "bytes": 19847,
+      "sha256": "ab962787d41763b427c2d088d6ed058c56a7f7df17c3b599042fa537389eb78d"
+    }
+  },
+  "captured_at": "2026-07-16T12:01:45+08:00",
+  "claim_boundary": "Smoke validates runtime, hash binding and pose artifact completeness only; not binding, affinity, Kd, or experimental blocking.",
+  "evaluator_gate_id": "pvrig_v4_d_evaluator_stability_v3_decimal_thresholds",
+  "preregistration_sha256": "b7a1e4fed9b4e625f505c0afbeee1a95ceedfa9986ae83f369f497d2e4f71222",
+  "protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+  "protocol_lock_sha256": "a24eaf37730bc569067d64cdc1a43a763b70878d13d50e804bf3000ce43f5e84",
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+  "schema_version": "pvrig_v4_d_smoke_receipt_v1",
+  "smoke_job_count": 4,
+  "smoke_selected_model_counts": [
+    10,
+    10,
+    9,
+    10
+  ],
+  "status": "PASS_SMOKE_FULL_CONTROLLER_STARTED"
+}

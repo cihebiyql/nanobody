@@ -1,0 +1,834 @@
+#!/usr/bin/env python3
+"""Build V4-D open-split continuous teacher rows from selected raw results only."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import math
+import statistics
+from collections import defaultdict
+from pathlib import Path
+from typing import Any, Iterable, Mapping
+
+
+SCHEMA_VERSION = "phase2_v4_d_open_continuous_teacher_v1"
+EXPECTED_JOB_MANIFEST_SHA256 = "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737"
+EXPECTED_SPLIT_MANIFEST_SHA256 = "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+EXPECTED_CANDIDATES_SHA256 = EXPECTED_SPLIT_MANIFEST_SHA256
+EXPECTED_PROTOCOL_CORE_SHA256 = "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7"
+EXPECTED_PROTOCOL_LOCK_SHA256 = "a24eaf37730bc569067d64cdc1a43a763b70878d13d50e804bf3000ce43f5e84"
+EXPECTED_STABILITY_SPEC_SHA256 = "fb01cdaa5939f2846b16e4e02a09903417cd6cea04d42350c4ed57f9ae7eb774"
+EXPECTED_TOTAL_JOBS = 2022
+OPEN_SPLIT_COUNTS = {"OPEN_TRAIN": 226, "OPEN_DEVELOPMENT": 32}
+SEALED_SPLIT = "PROSPECTIVE_COMPUTATIONAL_TEST"
+SEALED_ROW_COUNT = 32
+CANDIDATE_FIELDS = (
+    "candidate_id", "sequence_sha256", "sequence", "parent_id",
+    "parent_framework_cluster", "original_formal_split", "model_split",
+    "design_method", "design_mode", "target_patch_id", "cdr1", "cdr2",
+    "cdr3", "cdr3_length", "new_dual_docking_label_policy", "claim_boundary",
+)
+CONFORMATIONS = ("8x6b", "9e6y")
+SUCCESS_STATES = {"SUCCESS", "PASS", "PASSED", "COMPLETE", "COMPLETED", "DONE"}
+CLAIM_BOUNDARY = (
+    "Fixed-PVRIG sequence-to-computational-dual-docking continuous teacher only; "
+    "not binding, affinity, competition, experimental blocking, or Docking Gold."
+)
+
+
+class TeacherBuildError(RuntimeError):
+    pass
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def read_tsv(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        return list(csv.DictReader(handle, delimiter="\t"))
+
+
+def read_tsv_for_job_ids(
+    path: Path, selected_job_ids: set[str]
+) -> tuple[list[dict[str, str]], dict[str, int]]:
+    """Stream an evaluator-bound aggregate and retain only preselected open jobs."""
+    retained: list[dict[str, str]] = []
+    total_rows = 0
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        if "job_id" not in (reader.fieldnames or []):
+            raise TeacherBuildError(f"aggregate_job_id_missing:{path}")
+        for row in reader:
+            total_rows += 1
+            if row["job_id"] in selected_job_ids:
+                retained.append(row)
+    return retained, {
+        "total_rows_streamed": total_rows,
+        "selected_open_rows_retained": len(retained),
+        "nonselected_rows_retained": 0,
+    }
+
+
+def write_tsv(path: Path, rows: list[dict[str, Any]]) -> None:
+    if not rows:
+        raise TeacherBuildError("refusing_to_write_empty_teacher")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fields = list(rows[0])
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, delimiter="\t")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def write_json(path: Path, payload: Mapping[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+def as_float(value: Any, *, field: str) -> float:
+    try:
+        output = float(value)
+    except (TypeError, ValueError) as exc:
+        raise TeacherBuildError(f"invalid_float:{field}:{value!r}") from exc
+    if not math.isfinite(output):
+        raise TeacherBuildError(f"non_finite_float:{field}:{value!r}")
+    return output
+
+
+def soft_scale(value: float, threshold: float) -> float:
+    if value < 0.0 or threshold <= 0.0:
+        raise TeacherBuildError("soft_scale_requires_nonnegative_value_and_positive_threshold")
+    return value / (value + threshold)
+
+
+def native_pose_utility(row: Mapping[str, Any]) -> float:
+    as_float(row.get("haddock_score"), field="haddock_score")
+    as_float(row.get("air_energy"), field="air_energy")
+    overlay_rmsd = as_float(row.get("overlay_rmsd_a"), field="overlay_rmsd_a")
+    if overlay_rmsd > 1.0:
+        raise TeacherBuildError(f"native_overlay_rmsd_above_1A:{overlay_rmsd}")
+    full_hotspot = as_float(row.get("hotspot_overlap"), field="hotspot_overlap")
+    holdout_hotspot = as_float(row.get("holdout_overlap"), field="holdout_overlap")
+    total_occlusion = as_float(row.get("total_occlusion"), field="total_occlusion")
+    cdr3_occlusion = as_float(row.get("cdr3_occlusion"), field="cdr3_occlusion")
+    cdr3_fraction = as_float(row.get("cdr3_fraction"), field="cdr3_fraction")
+    base_score = (
+        0.15 * min(max(full_hotspot / 23.0, 0.0), 1.0)
+        + 0.25 * min(max(holdout_hotspot / 11.0, 0.0), 1.0)
+        + 0.25 * soft_scale(total_occlusion, 500.0)
+        + 0.20 * soft_scale(cdr3_occlusion, 100.0)
+        + 0.15 * soft_scale(cdr3_fraction, 0.15)
+    )
+    pvrig_clashes = as_float(
+        row.get("vhh_pvrig_clash_residue_pairs"),
+        field="vhh_pvrig_clash_residue_pairs",
+    )
+    clash_reliability = 1.0 / (1.0 + pvrig_clashes / 5.0)
+    score = base_score * clash_reliability
+    if not 0.0 <= score <= 1.0:
+        raise TeacherBuildError(f"pose_utility_out_of_bounds:{score}")
+    return score
+
+
+def rank_weights(count: int) -> list[float]:
+    if count < 1:
+        raise TeacherBuildError("rank_weights_requires_positive_count")
+    raw = [1.0 / math.log2(rank + 1.0) for rank in range(1, count + 1)]
+    total = sum(raw)
+    return [value / total for value in raw]
+
+
+def mean(values: Iterable[float]) -> float:
+    values = list(values)
+    if not values:
+        raise TeacherBuildError("mean_requires_values")
+    return sum(values) / len(values)
+
+
+def nested_metric(payload: Mapping[str, Any], *path: str) -> Any:
+    value: Any = payload
+    for key in path:
+        if not isinstance(value, Mapping) or key not in value:
+            raise TeacherBuildError(f"raw_pose_metric_missing:{'.'.join(path)}")
+        value = value[key]
+    return value
+
+
+def raw_pose_rows_for_jobs(
+    results_root: Path, selected_jobs: list[dict[str, str]]
+) -> tuple[list[dict[str, str]], list[dict[str, str]], list[dict[str, str]], str]:
+    """Open only preselected open-split results; aggregate files are never parsed."""
+    output: list[dict[str, str]] = []
+    raw_results: list[dict[str, str]] = []
+    evidence_bindings: list[tuple[str, str]] = []
+    for job in selected_jobs:
+        job_id = job["job_id"]
+        path = results_root / job_id / "job_result.json"
+        if not path.is_file():
+            raise TeacherBuildError(f"selected_open_job_result_missing:{job_id}")
+        raw = path.read_bytes()
+        evidence_bindings.append((job_id, hashlib.sha256(raw).hexdigest()))
+        evidence = json.loads(raw)
+        if evidence.get("job_id") != job_id or evidence.get("job_hash") != job.get("job_hash"):
+            raise TeacherBuildError(f"raw_job_identity_or_hash_mismatch:{job_id}")
+        if evidence.get("protocol_core_sha256") != EXPECTED_PROTOCOL_CORE_SHA256:
+            raise TeacherBuildError(f"raw_job_protocol_core_mismatch:{job_id}")
+        identity = {
+            "entity_type": job.get("entity_type"),
+            "entity_id": job.get("entity_id"),
+            "dock_conformation": job.get("conformation"),
+            "seed": job.get("seed"),
+        }
+        for field, expected in identity.items():
+            if str(evidence.get(field, "")).lower() != str(expected).lower():
+                raise TeacherBuildError(f"raw_job_{field}_mismatch:{job_id}")
+        state_value = evidence.get("state")
+        if not isinstance(state_value, str) or not state_value:
+            raise TeacherBuildError(f"raw_job_state_missing:{job_id}")
+        state = state_value.upper()
+        raw_results.append(
+            {
+                "job_id": job_id,
+                "job_hash": str(evidence.get("job_hash", "")),
+                "state": state,
+                "pose_backed_2x2": str(bool(evidence.get("pose_scores"))),
+                "selected_model_count": str(evidence.get("selected_model_count", "")),
+            }
+        )
+        if state not in SUCCESS_STATES:
+            continue
+        for pose in evidence.get("pose_scores", []):
+            model = Path(str(pose.get("pose", ""))).name
+            if not model:
+                raise TeacherBuildError(f"raw_pose_model_missing:{job_id}")
+            haddock = pose.get("haddock_io") or {}
+            for score in pose.get("scores", []):
+                reference = str(score.get("reference_id", "")).lower()
+                if reference not in CONFORMATIONS:
+                    raise TeacherBuildError(f"raw_pose_reference_invalid:{job_id}:{reference}")
+                clashes = nested_metric(score, "clashes_2p5a")
+                output.append(
+                    {
+                        "job_id": job_id,
+                        "model": model,
+                        "scoring_reference": reference,
+                        "haddock_score": str(haddock.get("score", "")),
+                        "air_energy": str(haddock.get("unw_energies.air", "")),
+                        "hotspot_overlap": str(nested_metric(score, "hotspot_overlap", "full", "count")),
+                        "anchor_overlap": str(nested_metric(score, "hotspot_overlap", "anchor", "count")),
+                        "holdout_overlap": str(nested_metric(score, "hotspot_overlap", "holdout", "count")),
+                        "total_occlusion": str(nested_metric(score, "vhh_pvrl2_occlusion", "residue_pair_count")),
+                        "cdr3_occlusion": str(
+                            nested_metric(
+                                score,
+                                "vhh_pvrl2_occlusion",
+                                "by_vhh_region_pair_count",
+                                "cdr3",
+                            )
+                        ),
+                        "cdr3_fraction": str(nested_metric(score, "vhh_pvrl2_occlusion", "cdr3_fraction")),
+                        "vhh_pvrig_clash_residue_pairs": str(
+                            nested_metric(clashes, "vhh_pvrig", "residue_pair_count")
+                        ),
+                        "vhh_pvrl2_clash_residue_pairs": str(
+                            nested_metric(clashes, "vhh_pvrl2", "residue_pair_count")
+                        ),
+                        "overlay_rmsd_a": str(nested_metric(score, "overlay", "t_ca_rmsd_a")),
+                        "clash_atom_pairs": str(nested_metric(clashes, "atom_pair_count")),
+                        "clash_residue_pairs": str(nested_metric(clashes, "residue_pair_count")),
+                    }
+                )
+    bindings = [
+        {"job_id": job_id, "sha256": digest}
+        for job_id, digest in sorted(evidence_bindings)
+    ]
+    binding_payload = json.dumps(bindings, separators=(",", ":"), sort_keys=True)
+    return output, raw_results, bindings, hashlib.sha256(binding_payload.encode("utf-8")).hexdigest()
+
+
+def classify_geometry(row: Mapping[str, Any]) -> str:
+    """Reproduce the frozen V4-D A/B/C/E diagnostic from raw pose metrics."""
+    hotspot = as_float(row.get("hotspot_overlap"), field="hotspot_overlap")
+    total = as_float(row.get("total_occlusion"), field="total_occlusion")
+    cdr3 = as_float(row.get("cdr3_occlusion"), field="cdr3_occlusion")
+    fraction = as_float(row.get("cdr3_fraction"), field="cdr3_fraction")
+    if hotspot >= 14.0 and total >= 500.0 and cdr3 >= 100.0 and fraction >= 0.15:
+        return "A"
+    if hotspot >= 14.0 and total < 50.0:
+        return "C"
+    if hotspot >= 10.0 and total >= 100.0 and cdr3 >= 20.0 and fraction >= 0.10:
+        return "B"
+    return "E"
+
+
+def is_strict_a(row: Mapping[str, Any]) -> bool:
+    return classify_geometry(row) == "A"
+
+
+def pair_label(native_class: str, cross_class: str) -> str:
+    if native_class == "A" and cross_class == "A":
+        return "STRICT_A"
+    if native_class in {"A", "B"} and cross_class in {"A", "B"}:
+        return "SUPPORTED_AB"
+    return "OTHER"
+
+
+def numbers_equal(left: Any, right: Any, tolerance: float = 1e-9) -> bool:
+    try:
+        return math.isclose(float(left), float(right), rel_tol=0.0, abs_tol=tolerance)
+    except (TypeError, ValueError):
+        return False
+
+
+def verify_raw_aggregate_closure(
+    selected_jobs: list[dict[str, str]],
+    raw_results: list[dict[str, str]],
+    raw_pose_rows: list[dict[str, str]],
+    aggregate_results: list[dict[str, str]],
+    aggregate_pose_rows: list[dict[str, str]],
+    raw_bindings: list[dict[str, str]],
+) -> dict[str, Any]:
+    """Prove the raw open-job inputs agree with evaluator-bound aggregate rows."""
+    jobs = {row["job_id"]: row for row in selected_jobs}
+    raw_by_job = {row["job_id"]: row for row in raw_results}
+    aggregate_by_job = {row["job_id"]: row for row in aggregate_results}
+    if set(raw_by_job) != set(jobs) or set(aggregate_by_job) != set(jobs):
+        raise TeacherBuildError("open_job_result_aggregate_set_mismatch")
+    raw_poses = {
+        (row["job_id"], row["model"], row["scoring_reference"]): row
+        for row in raw_pose_rows
+    }
+    aggregate_poses = {
+        (row["job_id"], row["model"], row["scoring_reference"]): row
+        for row in aggregate_pose_rows
+    }
+    if len(raw_poses) != len(raw_pose_rows) or len(aggregate_poses) != len(aggregate_pose_rows):
+        raise TeacherBuildError("duplicate_open_pose_aggregate_key")
+    if set(raw_poses) != set(aggregate_poses):
+        raise TeacherBuildError("open_pose_raw_aggregate_set_mismatch")
+
+    pose_fields = (
+        "haddock_score", "air_energy", "hotspot_overlap", "anchor_overlap",
+        "holdout_overlap", "total_occlusion", "cdr3_occlusion", "cdr3_fraction",
+        "clash_atom_pairs", "clash_residue_pairs", "overlay_rmsd_a",
+    )
+    for key, raw in raw_poses.items():
+        aggregate = aggregate_poses[key]
+        for field in pose_fields:
+            if not numbers_equal(raw[field], aggregate.get(field)):
+                raise TeacherBuildError(
+                    f"open_pose_raw_aggregate_metric_mismatch:{':'.join(key)}:{field}"
+                )
+        raw_class = classify_geometry(raw)
+        if aggregate.get("geometry_class") != raw_class:
+            raise TeacherBuildError(
+                f"open_pose_raw_aggregate_class_mismatch:{':'.join(key)}"
+            )
+
+    poses_by_job: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in raw_pose_rows:
+        poses_by_job[row["job_id"]].append(row)
+    result_metric_fields = (
+        "model_pair_consensus_fraction",
+        "model_native_cross_support_agreement_fraction",
+        "model_strict_a_fraction",
+    )
+    for job_id, job in jobs.items():
+        raw = raw_by_job[job_id]
+        aggregate = aggregate_by_job[job_id]
+        if aggregate.get("job_hash") != job.get("job_hash"):
+            raise TeacherBuildError(f"open_job_aggregate_hash_mismatch:{job_id}")
+        if aggregate.get("state", "").upper() != raw.get("state", "").upper():
+            raise TeacherBuildError(f"open_job_aggregate_state_mismatch:{job_id}")
+        if aggregate.get("selected_model_count", "") != raw.get("selected_model_count", ""):
+            raise TeacherBuildError(f"open_job_aggregate_model_count_mismatch:{job_id}")
+        if aggregate.get("pose_backed_2x2", "").lower() != "true":
+            raise TeacherBuildError(f"open_job_aggregate_not_pose_backed:{job_id}")
+        summary = job_summary(job_id, job["conformation"], poses_by_job[job_id])
+        expected = {
+            "model_pair_consensus_fraction": summary["model_pair_consensus_fraction"],
+            "model_native_cross_support_agreement_fraction": summary["native_cross_support_agreement"],
+            "model_strict_a_fraction": summary["model_strict_a_fraction"],
+        }
+        for field in result_metric_fields:
+            if not numbers_equal(expected[field], aggregate.get(field), tolerance=5e-7):
+                raise TeacherBuildError(
+                    f"open_job_raw_aggregate_robustness_mismatch:{job_id}:{field}"
+                )
+
+    canonical = json.dumps(
+        {
+            "raw_bindings": raw_bindings,
+            "aggregate_results": sorted(aggregate_results, key=lambda row: row["job_id"]),
+            "aggregate_pose_rows": sorted(
+                aggregate_pose_rows,
+                key=lambda row: (row["job_id"], row["model"], row["scoring_reference"]),
+            ),
+        },
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    return {
+        "status": "PASS_RAW_OPEN_RESULTS_MATCH_EVALUATOR_BOUND_AGGREGATES",
+        "job_count": len(jobs),
+        "pose_row_count": len(raw_pose_rows),
+        "closure_sha256": hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
+    }
+
+
+def job_summary(
+    job_id: str,
+    dock_conformation: str,
+    pose_rows: list[dict[str, str]],
+) -> dict[str, Any]:
+    by_model: dict[str, dict[str, dict[str, str]]] = defaultdict(dict)
+    for row in pose_rows:
+        reference = row["scoring_reference"].lower()
+        if reference in by_model[row["model"]]:
+            raise TeacherBuildError(
+                f"duplicate_model_reference:{job_id}:{row['model']}:{reference}"
+            )
+        by_model[row["model"]][reference] = row
+    complete = [
+        refs for refs in by_model.values() if set(refs) == set(CONFORMATIONS)
+    ]
+    if len(complete) < 4:
+        raise TeacherBuildError(f"job_has_fewer_than_4_complete_models:{job_id}:{len(complete)}")
+
+    def score_key(refs: Mapping[str, Mapping[str, str]]) -> tuple[float, str]:
+        native = refs[dock_conformation]
+        score = as_float(native.get("haddock_score"), field="haddock_score")
+        return score, native.get("model", "")
+
+    complete.sort(key=score_key)
+    weights = rank_weights(len(complete))
+    metric_fields = (
+        "hotspot_overlap",
+        "anchor_overlap",
+        "holdout_overlap",
+        "total_occlusion",
+        "cdr3_occlusion",
+        "cdr3_fraction",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs",
+        "overlay_rmsd_a",
+    )
+    other_conformation = "9e6y" if dock_conformation == "8x6b" else "8x6b"
+    native_classes = [classify_geometry(refs[dock_conformation]) for refs in complete]
+    cross_classes = [classify_geometry(refs[other_conformation]) for refs in complete]
+    labels = [pair_label(native, cross) for native, cross in zip(native_classes, cross_classes)]
+    agreement = mean(
+        (native in {"A", "B"}) == (cross in {"A", "B"})
+        for native, cross in zip(native_classes, cross_classes)
+    )
+    consensus = max(labels.count(label) for label in set(labels)) / len(labels)
+    strict_a_fraction = labels.count("STRICT_A") / len(labels)
+    raw_utility = sum(
+        weight * native_pose_utility(refs[dock_conformation])
+        for weight, refs in zip(weights, complete)
+    )
+    model_count_reliability = 0.5 + 0.5 * min(len(complete) / 8.0, 1.0)
+    agreement_reliability = 0.5 + 0.25 * agreement + 0.25 * consensus
+    summary: dict[str, Any] = {
+        "job_id": job_id,
+        "dock_conformation": dock_conformation,
+        "complete_model_count": len(complete),
+        "job_utility_raw": raw_utility,
+        "job_utility": raw_utility * model_count_reliability * agreement_reliability,
+        "model_count_reliability": model_count_reliability,
+        "agreement_reliability": agreement_reliability,
+        "native_cross_support_agreement": agreement,
+        "model_pair_consensus_fraction": consensus,
+        "model_strict_a_fraction": strict_a_fraction,
+    }
+    for field in metric_fields:
+        summary[field] = sum(
+            weight * as_float(refs[dock_conformation].get(field), field=field)
+            for weight, refs in zip(weights, complete)
+        )
+    return summary
+
+
+def build_candidate_teacher(
+    split_row: Mapping[str, str],
+    job_summaries: list[dict[str, Any]],
+) -> dict[str, Any]:
+    by_conformation: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in job_summaries:
+        by_conformation[row["dock_conformation"]].append(row)
+    if set(by_conformation) != set(CONFORMATIONS):
+        raise TeacherBuildError(f"candidate_missing_conformation:{split_row['candidate_id']}")
+    for conformation in CONFORMATIONS:
+        if len(by_conformation[conformation]) < 2:
+            raise TeacherBuildError(
+                f"candidate_has_fewer_than_2_successful_seeds:{split_row['candidate_id']}:{conformation}"
+            )
+
+    receptor_scores = {
+        conformation: statistics.median(
+            row["job_utility"] for row in by_conformation[conformation]
+        )
+        for conformation in CONFORMATIONS
+    }
+    receptor_sd = {
+        conformation: statistics.pstdev(
+            row["job_utility"] for row in by_conformation[conformation]
+        )
+        for conformation in CONFORMATIONS
+    }
+    r8 = receptor_scores["8x6b"]
+    r9 = receptor_scores["9e6y"]
+    result: dict[str, Any] = {
+        "schema_version": SCHEMA_VERSION,
+        **{field: split_row[field] for field in CANDIDATE_FIELDS},
+        "R_8X6B": round(r8, 9),
+        "R_9E6Y": round(r9, 9),
+        "R_dual_mean": round((r8 + r9) / 2.0, 9),
+        "R_dual_min": round(min(r8, r9), 9),
+        "R_dual_gap": round(abs(r8 - r9), 9),
+        "seed_sd_8X6B": round(receptor_sd["8x6b"], 9),
+        "seed_sd_9E6Y": round(receptor_sd["9e6y"], 9),
+        "successful_seed_count_8X6B": len(by_conformation["8x6b"]),
+        "successful_seed_count_9E6Y": len(by_conformation["9e6y"]),
+        "native_cross_support_agreement_mean": round(
+            mean(row["native_cross_support_agreement"] for row in job_summaries), 9
+        ),
+        "model_pair_consensus_fraction_mean": round(
+            mean(row["model_pair_consensus_fraction"] for row in job_summaries), 9
+        ),
+        "model_strict_a_fraction_mean": round(
+            mean(row["model_strict_a_fraction"] for row in job_summaries), 9
+        ),
+        "model_count_reliability_mean": round(
+            mean(row["model_count_reliability"] for row in job_summaries), 9
+        ),
+        "agreement_reliability_mean": round(
+            mean(row["agreement_reliability"] for row in job_summaries), 9
+        ),
+    }
+    for conformation in CONFORMATIONS:
+        suffix = "8X6B" if conformation == "8x6b" else "9E6Y"
+        for field in (
+            "hotspot_overlap",
+            "anchor_overlap",
+            "holdout_overlap",
+            "total_occlusion",
+            "cdr3_occlusion",
+            "cdr3_fraction",
+            "vhh_pvrig_clash_residue_pairs",
+            "vhh_pvrl2_clash_residue_pairs",
+            "overlay_rmsd_a",
+        ):
+            result[f"{field}_median_{suffix}"] = round(
+                statistics.median(row[field] for row in by_conformation[conformation]), 9
+            )
+    missing_seed_fraction = sum(
+        3 - len(by_conformation[conformation]) for conformation in CONFORMATIONS
+    ) / 6.0
+    result["missing_seed_fraction"] = round(missing_seed_fraction, 9)
+    result["teacher_uncertainty"] = round(
+        max(receptor_sd.values()) + abs(r8 - r9) + 0.1 * missing_seed_fraction,
+        9,
+    )
+    return result
+
+
+def validate_evaluator(
+    evaluator: Mapping[str, Any],
+    *,
+    job_results_sha256: str | None = None,
+    pose_scores_sha256: str | None = None,
+) -> None:
+    failures: list[str] = []
+    if evaluator.get("status") != "PASS":
+        failures.append(f"evaluator_status_{evaluator.get('status', 'MISSING')}")
+    if evaluator.get("evidence_mode") != "production_pose_backed":
+        failures.append("evaluator_not_production_pose_backed")
+    if evaluator.get("unlockable") is not True:
+        failures.append("evaluator_unlockable_not_true")
+    if int(evaluator.get("job_count", 0) or 0) != EXPECTED_TOTAL_JOBS:
+        failures.append("evaluator_job_count_not_2022")
+    if evaluator.get("job_manifest_sha256") != EXPECTED_JOB_MANIFEST_SHA256:
+        failures.append("evaluator_job_manifest_sha256_mismatch")
+    if evaluator.get("protocol_lock_sha256") != EXPECTED_PROTOCOL_LOCK_SHA256:
+        failures.append("evaluator_protocol_lock_sha256_mismatch")
+    if evaluator.get("protocol_core_sha256") != EXPECTED_PROTOCOL_CORE_SHA256:
+        failures.append("evaluator_protocol_core_sha256_mismatch")
+    if evaluator.get("candidates_sha256") != EXPECTED_CANDIDATES_SHA256:
+        failures.append("evaluator_candidates_sha256_mismatch")
+    if evaluator.get("stability_gate_spec_sha256") != EXPECTED_STABILITY_SPEC_SHA256:
+        failures.append("evaluator_stability_spec_sha256_mismatch")
+    if not evaluator.get("job_set_hash"):
+        failures.append("evaluator_job_set_hash_missing")
+    gates = evaluator.get("gates", {})
+    if not isinstance(gates, Mapping) or not gates:
+        failures.append("evaluator_gates_missing")
+        gates = {}
+    failed_gates = sorted(
+        name for name, payload in gates.items()
+        if not isinstance(payload, Mapping) or payload.get("status") != "PASS"
+    )
+    if failed_gates:
+        failures.append("evaluator_nonpass_gates:" + ";".join(failed_gates))
+    terminal = gates.get("all_jobs_terminal", {}).get("status")
+    if terminal != "PASS":
+        failures.append(f"all_jobs_terminal_gate_{terminal or 'MISSING'}")
+    if job_results_sha256 is not None and evaluator.get("job_results_sha256") != job_results_sha256:
+        failures.append("job_results_file_not_bound_to_evaluator")
+    if pose_scores_sha256 is not None and evaluator.get("pose_scores_sha256") != pose_scores_sha256:
+        failures.append("pose_scores_file_not_bound_to_evaluator")
+    if failures:
+        raise TeacherBuildError("teacher_release_gate_failed:" + ",".join(failures))
+
+
+def build_teacher_rows(
+    split_rows: list[dict[str, str]],
+    job_manifest: list[dict[str, str]],
+    job_results: list[dict[str, str]],
+    pose_rows: list[dict[str, str]],
+) -> list[dict[str, Any]]:
+    if len({row["candidate_id"] for row in split_rows}) != len(split_rows):
+        raise TeacherBuildError("duplicate_candidate_in_selected_split")
+    if len({row["job_id"] for row in job_manifest}) != len(job_manifest):
+        raise TeacherBuildError("duplicate_job_id_in_selected_manifest")
+    if len({row["job_id"] for row in job_results}) != len(job_results):
+        raise TeacherBuildError("duplicate_job_id_in_selected_results")
+    jobs_by_id = {row["job_id"]: row for row in job_manifest}
+    results_by_id = {row["job_id"]: row for row in job_results}
+    expected_jobs = len(split_rows) * 6
+    if len(jobs_by_id) != expected_jobs or set(results_by_id) != set(jobs_by_id):
+        raise TeacherBuildError(
+            f"selected_job_result_closure_failed:expected={expected_jobs}:"
+            f"jobs={len(jobs_by_id)}:results={len(results_by_id)}"
+        )
+    for job_id, result in results_by_id.items():
+        manifest = jobs_by_id.get(job_id)
+        if manifest is None or result.get("job_hash") != manifest.get("job_hash"):
+            raise TeacherBuildError(f"job_hash_closure_failed:{job_id}")
+
+    poses_by_job: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in pose_rows:
+        poses_by_job[row["job_id"]].append(row)
+    summaries_by_candidate: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for job_id, manifest in jobs_by_id.items():
+        if manifest.get("entity_type") != "candidate":
+            raise TeacherBuildError(f"non_candidate_job_in_selected_manifest:{job_id}")
+        result = results_by_id[job_id]
+        if str(result.get("state", "")).upper() not in SUCCESS_STATES:
+            continue
+        if str(result.get("pose_backed_2x2", "")).lower() != "true":
+            continue
+        summaries_by_candidate[manifest["entity_id"]].append(
+            job_summary(job_id, manifest["conformation"], poses_by_job[job_id])
+        )
+
+    output = [
+        build_candidate_teacher(split_row, summaries_by_candidate[split_row["candidate_id"]])
+        for split_row in split_rows
+    ]
+    output.sort(key=lambda row: row["candidate_id"])
+    return output
+
+
+def select_open_split(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Validate the full V4-D split before admitting only its two open partitions."""
+    if len(rows) != sum(OPEN_SPLIT_COUNTS.values()) + SEALED_ROW_COUNT:
+        raise TeacherBuildError(f"expected_290_split_rows_got_{len(rows)}")
+    if len({row.get("candidate_id") for row in rows}) != len(rows):
+        raise TeacherBuildError("duplicate_candidate_in_split")
+    missing_fields = sorted({field for row in rows for field in CANDIDATE_FIELDS if field not in row})
+    if missing_fields:
+        raise TeacherBuildError("split_fields_missing:" + ",".join(missing_fields))
+    counts: dict[str, int] = defaultdict(int)
+    for row in rows:
+        counts[row["model_split"]] += 1
+    expected_counts = {**OPEN_SPLIT_COUNTS, SEALED_SPLIT: SEALED_ROW_COUNT}
+    if dict(counts) != expected_counts:
+        raise TeacherBuildError(f"split_counts_mismatch:{dict(sorted(counts.items()))}")
+    selected = [row for row in rows if row["model_split"] in OPEN_SPLIT_COUNTS]
+    if len(selected) != 258:
+        raise TeacherBuildError(f"expected_258_open_rows_got_{len(selected)}")
+    return selected
+
+
+def select_open_candidate_jobs(
+    job_manifest: list[dict[str, str]], allowed_entities: set[str]
+) -> list[dict[str, str]]:
+    """Physically filter manifest IDs before any raw result is opened."""
+    selected = [
+        row for row in job_manifest
+        if row.get("entity_type") == "candidate" and row.get("entity_id") in allowed_entities
+    ]
+    expected_jobs = len(allowed_entities) * len(CONFORMATIONS) * 3
+    if len(selected) != expected_jobs:
+        raise TeacherBuildError(f"expected_{expected_jobs}_open_candidate_jobs_got_{len(selected)}")
+    if {row.get("entity_id") for row in selected} != allowed_entities:
+        raise TeacherBuildError("open_candidate_job_manifest_closure_failed")
+    return selected
+
+
+def merge_generic_prior(
+    rows: list[dict[str, Any]], prior_path: Path | None
+) -> list[dict[str, Any]]:
+    if prior_path is None:
+        return rows
+    with prior_path.open(newline="", encoding="utf-8-sig") as handle:
+        prior_rows = list(csv.DictReader(handle))
+    by_id = {row["candidate_id"]: row for row in prior_rows}
+    if len(by_id) != len(prior_rows):
+        raise TeacherBuildError("duplicate_candidate_in_generic_prior")
+    for row in rows:
+        prior = by_id.get(str(row["candidate_id"]))
+        if prior is None:
+            raise TeacherBuildError(f"generic_prior_candidate_missing:{row['candidate_id']}")
+        row["generic_binding_prior"] = as_float(
+            prior.get("generic_binding_prior"), field="generic_binding_prior"
+        )
+        row["generic_binding_model_uncertainty"] = as_float(
+            prior.get("model_uncertainty"), field="model_uncertainty"
+        )
+    return rows
+
+
+def main(argv: list[str] | None = None) -> int:
+    root = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--split-manifest",
+        type=Path,
+        default=root / "data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+    )
+    parser.add_argument("--job-manifest", type=Path, required=True)
+    parser.add_argument("--job-results", type=Path, required=True)
+    parser.add_argument("--pose-scores", type=Path, required=True)
+    parser.add_argument("--results-root", type=Path, required=True)
+    parser.add_argument("--evaluator", type=Path, required=True)
+    parser.add_argument("--generic-prior", type=Path)
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args(argv)
+
+    if sha256_file(args.split_manifest) != EXPECTED_SPLIT_MANIFEST_SHA256:
+        raise TeacherBuildError("split_manifest_file_sha256_mismatch")
+    split_rows = select_open_split(read_tsv(args.split_manifest))
+    allowed_entities = {row["candidate_id"] for row in split_rows}
+    job_results_sha256 = sha256_file(args.job_results)
+    pose_scores_sha256 = sha256_file(args.pose_scores)
+    evaluator = json.loads(args.evaluator.read_text(encoding="utf-8"))
+    validate_evaluator(
+        evaluator,
+        job_results_sha256=job_results_sha256,
+        pose_scores_sha256=pose_scores_sha256,
+    )
+    if sha256_file(args.job_manifest) != EXPECTED_JOB_MANIFEST_SHA256:
+        raise TeacherBuildError("job_manifest_file_sha256_mismatch")
+    selected_jobs = select_open_candidate_jobs(read_tsv(args.job_manifest), allowed_entities)
+    raw_pose_rows, selected_results, raw_evidence_bindings, raw_evidence_hash_chain = (
+        raw_pose_rows_for_jobs(args.results_root, selected_jobs)
+    )
+    selected_job_ids = {row["job_id"] for row in selected_jobs}
+    aggregate_open_results, aggregate_result_scan = read_tsv_for_job_ids(
+        args.job_results, selected_job_ids
+    )
+    aggregate_open_poses, aggregate_pose_scan = read_tsv_for_job_ids(
+        args.pose_scores, selected_job_ids
+    )
+    aggregate_closure = verify_raw_aggregate_closure(
+        selected_jobs,
+        selected_results,
+        raw_pose_rows,
+        aggregate_open_results,
+        aggregate_open_poses,
+        raw_evidence_bindings,
+    )
+    selected = build_teacher_rows(
+        split_rows,
+        selected_jobs,
+        selected_results,
+        raw_pose_rows,
+    )
+    selected = merge_generic_prior(selected, args.generic_prior)
+    write_tsv(args.out, selected)
+    audit_path = args.out.with_suffix(args.out.suffix + ".audit.json")
+    write_json(
+        audit_path,
+        {
+            "schema_version": SCHEMA_VERSION,
+            "status": "PASS_V4_D_OPEN_CONTINUOUS_TEACHER_RELEASE",
+            "release": "open_train_and_open_development_only",
+            "row_count": len(selected),
+            "split_counts": {
+                "OPEN_TRAIN": OPEN_SPLIT_COUNTS["OPEN_TRAIN"],
+                "OPEN_DEVELOPMENT": OPEN_SPLIT_COUNTS["OPEN_DEVELOPMENT"],
+                SEALED_SPLIT: SEALED_ROW_COUNT,
+            },
+            "sealed_data_boundary": {
+                "model_split": SEALED_SPLIT,
+                "row_count": SEALED_ROW_COUNT,
+                "raw_job_results_opened": 0,
+                "candidate_level_aggregate_rows_retained_or_released": 0,
+                "evaluator_bound_full_aggregate_streamed_for_open_row_closure": True,
+                "sealed_metrics_used_for_teacher_or_ranking": False,
+                "note": (
+                    "Full aggregate files are byte-hashed and streamed by the release gate; "
+                    "only preselected open job IDs are retained, compared, or released."
+                ),
+            },
+            "inputs": {
+                "split_manifest_sha256": sha256_file(args.split_manifest),
+                "job_manifest_sha256": sha256_file(args.job_manifest),
+                "job_results_sha256": job_results_sha256,
+                "job_results_sha256_for_evaluator_binding_only": job_results_sha256,
+                "pose_scores_sha256_for_evaluator_binding_only": pose_scores_sha256,
+                "evaluator_sha256": sha256_file(args.evaluator),
+                "selected_raw_result_root": str(args.results_root),
+                "selected_open_job_count": len(selected_jobs),
+                "selected_successful_job_count": sum(
+                    row["state"] in SUCCESS_STATES for row in selected_results
+                ),
+                "selected_raw_result_hash_bindings": raw_evidence_bindings,
+                "selected_raw_result_sha256_chain": raw_evidence_hash_chain,
+                "aggregate_open_result_scan": aggregate_result_scan,
+                "aggregate_open_pose_scan": aggregate_pose_scan,
+                "raw_aggregate_closure": aggregate_closure,
+                "generic_prior_sha256": (
+                    sha256_file(args.generic_prior) if args.generic_prior is not None else None
+                ),
+            },
+            "output": {"path": str(args.out), "sha256": sha256_file(args.out)},
+            "primary_target": "R_dual_min",
+            "raw_derived_diagnostics": {
+                "model_strict_a_fraction": "fraction of complete models satisfying native strict-A geometry",
+                "model_pair_consensus_fraction": "fraction of complete models strict-A on both native and cross references",
+                "model_native_cross_support_agreement_fraction": "fraction of complete models with matching native/cross strict-A status",
+            },
+            "claim_boundary": CLAIM_BOUNDARY,
+        },
+    )
+    print(
+        json.dumps(
+            {
+                "status": "PASS",
+                "release": "open_train_and_open_development_only",
+                "row_count": len(selected),
+                "out": str(args.out),
+                "audit": str(audit_path),
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

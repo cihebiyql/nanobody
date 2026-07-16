@@ -1,0 +1,126 @@
+{
+  "claim_boundary": "Cross-node computational QC reproducibility only; not experimental binding, affinity, expression, purity, or blocking evidence.",
+  "fast": {
+    "abnativ_score_presence_equal": true,
+    "candidate_id_and_order_equal": true,
+    "decision_fields_exact": true,
+    "difference_examples": {
+      "intra_team_cluster_id": {
+        "candidate_id": "RFV1__PLDNANO_VHH_00895__A_CENTER__H1H3__B02__M02",
+        "node1": "DEFERRED_00000091",
+        "node23": "DEFERRED_00000016"
+      },
+      "rank": {
+        "candidate_id": "RFV1__PLDNANO_VHH_00895__C_CROSS__H1H3__B07__M02",
+        "node1": "2",
+        "node23": "1"
+      }
+    },
+    "header_equal": true,
+    "ignored_operational_difference_counts": {
+      "intra_team_cluster_id": 375,
+      "rank": 493
+    },
+    "maximum_absolute_float_delta": {},
+    "node1": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/teacher500_full_qc_node1_node23_parity_v1/node1_fast_merged.tsv",
+      "rows": 500,
+      "sha256": "c83096f7f876f78ab2ecb748576c90ba24959019f9a7dd564dabb099986e5039"
+    },
+    "node23": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_teacher_formal_v1/teacher500_full_qc_node23_accel_v1/cascade/fast_merged.tsv",
+      "rows": 500,
+      "sha256": "b4d4064abebd7b9aac18a9f3dea4bc86d242f616546a79f59bfb4b8231510007"
+    },
+    "non_normalized_difference_counts": {},
+    "not_applicable_decision_fields": [
+      "cascade_full_rank"
+    ],
+    "reasons": [],
+    "status": "PASS",
+    "tolerated_numeric_difference_counts": {}
+  },
+  "full": {
+    "abnativ_score_presence_equal": true,
+    "candidate_id_and_order_equal": true,
+    "decision_fields_exact": true,
+    "difference_examples": {
+      "AbNatiV_VHH_score": {
+        "candidate_id": "RFV1__PLDNANO_VHH_00895__C_CROSS__H1H3__B04__M01",
+        "node1": "0.7429652858529942",
+        "node23": "0.7429652635407656"
+      },
+      "intra_team_cluster_id": {
+        "candidate_id": "RFV1__PLDNANO_VHH_00692__A_CENTER__H3__B02__M00",
+        "node1": "DEFERRED_00000026",
+        "node23": "DEFERRED_00000001"
+      },
+      "rank": {
+        "candidate_id": "RFV1__PLDNANO_VHH_00692__A_CENTER__H3__B02__M00",
+        "node1": "19",
+        "node23": "1"
+      }
+    },
+    "header_equal": true,
+    "ignored_operational_difference_counts": {
+      "intra_team_cluster_id": 227,
+      "rank": 277
+    },
+    "maximum_absolute_float_delta": {
+      "AbNatiV_VHH_score": 1.583195473608967e-07
+    },
+    "node1": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/teacher500_full_qc_node1_node23_parity_v1/node1_full_merged.tsv",
+      "rows": 327,
+      "sha256": "cc48f418ce99e9ff775c80efb64b6282694fb2f7b7b1c4083b79b65f3774d31b"
+    },
+    "node23": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_teacher_formal_v1/teacher500_full_qc_node23_accel_v1/cascade/full_merged.tsv",
+      "rows": 327,
+      "sha256": "f6d166505680ac50fe47ce47f2f91c9fbe807bcbe7b28f78116551bcb0404c3e"
+    },
+    "non_normalized_difference_counts": {},
+    "not_applicable_decision_fields": [],
+    "reasons": [],
+    "status": "PASS",
+    "tolerated_numeric_difference_counts": {
+      "AbNatiV_VHH_score": 220
+    }
+  },
+  "full_qc_counts": {
+    "full_hard_fail": 25,
+    "full_hard_pass": 302,
+    "full_hard_pass_abnativ_unscorable": 12,
+    "full_hard_pass_with_complete_abnativ": 290,
+    "full_rows": 327
+  },
+  "node1_remote_provenance": "/data/qlyu/projects/pvrig_competition_teacher500_full_qc_v1_scaled_20260715/cascade",
+  "normalization_policy": {
+    "decision_fields_require_exact_match": [
+      "candidate_id",
+      "sequence",
+      "official_validator_pass",
+      "ANARCI_status",
+      "IMGT_CDR1",
+      "IMGT_CDR2",
+      "IMGT_CDR3",
+      "hard_fail",
+      "recommendation",
+      "developability_score",
+      "expression_purity_risk_score",
+      "final_score",
+      "cascade_full_rank"
+    ],
+    "float_tolerances": {
+      "AbNatiV_VHH_score": 1e-06
+    },
+    "ignored_field_reason": "chunk-local rank and deferred cluster labels depend on chunk execution order; cascade_full_rank, cluster size, decisions and scores remain compared",
+    "ignored_operational_fields": [
+      "intra_team_cluster_id",
+      "rank"
+    ]
+  },
+  "reasons": [],
+  "schema_version": "teacher500_full_qc_node1_node23_normalized_parity_v1",
+  "status": "PASS_NORMALIZED_DECISION_PARITY"
+}

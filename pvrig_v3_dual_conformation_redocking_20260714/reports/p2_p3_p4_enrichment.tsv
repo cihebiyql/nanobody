@@ -1,1 +1,4 @@
 phase	target_total_candidates	target_evaluable_n	target_robust_A_n	target_robust_A_rate	target_wilson95_low	target_wilson95_high	comparator_phases	comparator_total_candidates	comparator_evaluable_n	comparator_robust_A_n	comparator_robust_A_rate	comparator_wilson95_low	comparator_wilson95_high	target_coverage	comparator_coverage	risk_difference	risk_ratio	fisher_exact_p_greater	holm_adjusted_p	eligible
+P2	21	21	1	0.0476190476	0.0084559878	0.2266936007	P1,P5,P6	60	60	1	0.0166666667	0.0029481598	0.0885512973	1.0	1.0	0.030952381	2.8571428571	0.4537037037	0.9074074074	false
+P3	24	24	0	0.0	0.0	0.1379762047	P1,P5,P6	60	60	1	0.0166666667	0.0029481598	0.0885512973	1.0	1.0	-0.0166666667	0.0	1.0	1.0	false
+P4	23	23	3	0.1304347826	0.0453765909	0.3212748227	P1,P5,P6	60	60	1	0.0166666667	0.0029481598	0.0885512973	1.0	1.0	0.1137681159	7.8260869565	0.062643528	0.1879305841	false

@@ -1,0 +1,88 @@
+{
+  "core_lock_sha256": "767117dc2c506cfdfc83fce8e12931514d268941348d69a9abbda5a6500bdd24",
+  "files": [
+    {
+      "bytes": 1597,
+      "path": "config/evaluator_stability_gate.json",
+      "sha256": "fb01cdaa5939f2846b16e4e02a09903417cd6cea04d42350c4ed57f9ae7eb774"
+    },
+    {
+      "bytes": 2532167,
+      "path": "manifests/docking_jobs.tsv",
+      "sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737"
+    },
+    {
+      "bytes": 900,
+      "path": "manifests/smoke_jobs.tsv",
+      "sha256": "2d61f832bdfdebdbbf227f35ef290f1a8790c706808bc402cd767f02a3d5a581"
+    },
+    {
+      "bytes": 40588,
+      "path": "scripts/aggregate_results.py",
+      "sha256": "b339c278c7146b5b1a6d1b0f106e06786ad6cfc6440998f3bbd7b272c7b18e4b"
+    },
+    {
+      "bytes": 16322,
+      "path": "scripts/build_docking_jobs.py",
+      "sha256": "41b1e7755f0b435930dbf87bd0d11dd542c6567cc2e1e9a82526df2b7d6328f7"
+    },
+    {
+      "bytes": 6885,
+      "path": "scripts/freeze_protocol.py",
+      "sha256": "b5db446bd0e2137428ee6895da82f3195e57ab5ad713f11e7bd5a07fc6a5d44b"
+    },
+    {
+      "bytes": 5212,
+      "path": "scripts/orchestrate_smoke_then_full.py",
+      "sha256": "3ad2f49f49d652ba98282c0909a5dee0dddeb116018a91d337521a4dd4d74d76"
+    },
+    {
+      "bytes": 9152,
+      "path": "scripts/run_controller.py",
+      "sha256": "682aa8eb41d517c648b27194886c44d1a4a1096a63ce574cc65ff909e31546af"
+    },
+    {
+      "bytes": 17002,
+      "path": "scripts/run_job.py",
+      "sha256": "9957e6dc80db2345737576d65606601064725c09b654518b1df76427e48a3d0a"
+    },
+    {
+      "bytes": 3241,
+      "path": "scripts/status.py",
+      "sha256": "3911523d71a06167ff3b9d780abf183cc0295c73f27cb32cda855f5771e1231c"
+    },
+    {
+      "bytes": 14975,
+      "path": "scripts/validate_protocol.py",
+      "sha256": "7ee25088f327d9fec51d3bbf2ef7ca29e186a587b3793dcdc7228ee8243387a9"
+    },
+    {
+      "bytes": 18829,
+      "path": "tests/test_job_manifest_and_controller.py",
+      "sha256": "a3b41a97e84cfea6b531265904ddf594c338e462647020f5ecd9992e88b2e0e2"
+    },
+    {
+      "bytes": 1438,
+      "path": "tests/test_protocol_freeze.py",
+      "sha256": "3a382bdd8bbde38d43964396fb11272726684dce50439115d76007886f3bbb1c"
+    },
+    {
+      "bytes": 7883,
+      "path": "tests/test_references_scoring.py",
+      "sha256": "f095942f3c3fedc8b5e7b998334b743cfac89212f0558feec3f0859288aaee4a"
+    },
+    {
+      "bytes": 22358,
+      "path": "tests/test_stability_gate.py",
+      "sha256": "1e9913f607e1f99f4b9601b368c697897f1381fdfdaedbc2531a566a3073f0d6"
+    }
+  ],
+  "job_count": 2022,
+  "job_manifest_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+  "next_generation_gate": "reports/EVALUATOR_STABLE.json must match this protocol lock and have status PASS; model release remains governed by the local V4-D preregistration",
+  "protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+  "protocol_id": "pvrig_v4_d_fullqc290_dual_redocking_20260715",
+  "protocol_lock_sha256": "a24eaf37730bc569067d64cdc1a43a763b70878d13d50e804bf3000ce43f5e84",
+  "schema_version": 1,
+  "status": "LOCKED"
+}

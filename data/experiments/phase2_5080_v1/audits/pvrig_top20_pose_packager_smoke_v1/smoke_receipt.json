@@ -1,0 +1,100 @@
+{
+  "candidate_id": "RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00",
+  "claim_boundary": "Production-schema pose parser smoke only; not binding, affinity, ranking, or experimental blocking evidence.",
+  "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+  "model_split": "OPEN_TRAIN",
+  "packager_sha256": "30825b03ea70cdb902cb9741f82249dbfd28cbc885a25d15ec5a750927ccf294",
+  "raw_job_result_sha256": "07d028f5a55855164319d0910ecc23823a81adca1f8ac3b789b52958f159eed5",
+  "schema_version": "pvrig_top20_pose_packager_production_smoke_v2",
+  "selected_model_count": 9,
+  "status": "PASS_REAL_V4D_JOB_TOP3_COMPACT_POSE_PARSE",
+  "top3": [
+    {
+      "geometry_8x6b_keys": [
+        "cdr3_fraction",
+        "cdr3_occlusion",
+        "hotspot_anchor_count",
+        "hotspot_full_count",
+        "hotspot_holdout_count",
+        "overlay_rmsd_a",
+        "reference_id",
+        "total_occlusion",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs"
+      ],
+      "geometry_9e6y_keys": [
+        "cdr3_fraction",
+        "cdr3_occlusion",
+        "hotspot_anchor_count",
+        "hotspot_full_count",
+        "hotspot_holdout_count",
+        "overlay_rmsd_a",
+        "reference_id",
+        "total_occlusion",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs"
+      ],
+      "haddock_score": -61.16539999999999,
+      "model": "cluster_1_model_1.pdb.gz",
+      "source_sha256": "4976da8180215da024dc032883faf64fd336594e9d00316d7d4ec1c51ab8f572"
+    },
+    {
+      "geometry_8x6b_keys": [
+        "cdr3_fraction",
+        "cdr3_occlusion",
+        "hotspot_anchor_count",
+        "hotspot_full_count",
+        "hotspot_holdout_count",
+        "overlay_rmsd_a",
+        "reference_id",
+        "total_occlusion",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs"
+      ],
+      "geometry_9e6y_keys": [
+        "cdr3_fraction",
+        "cdr3_occlusion",
+        "hotspot_anchor_count",
+        "hotspot_full_count",
+        "hotspot_holdout_count",
+        "overlay_rmsd_a",
+        "reference_id",
+        "total_occlusion",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs"
+      ],
+      "haddock_score": -58.401360000000004,
+      "model": "cluster_2_model_1.pdb.gz",
+      "source_sha256": "93e236cddc34937c2478a6c96ddee90a0be012c63d78ed2f17f26a99d191c35c"
+    },
+    {
+      "geometry_8x6b_keys": [
+        "cdr3_fraction",
+        "cdr3_occlusion",
+        "hotspot_anchor_count",
+        "hotspot_full_count",
+        "hotspot_holdout_count",
+        "overlay_rmsd_a",
+        "reference_id",
+        "total_occlusion",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs"
+      ],
+      "geometry_9e6y_keys": [
+        "cdr3_fraction",
+        "cdr3_occlusion",
+        "hotspot_anchor_count",
+        "hotspot_full_count",
+        "hotspot_holdout_count",
+        "overlay_rmsd_a",
+        "reference_id",
+        "total_occlusion",
+        "vhh_pvrig_clash_residue_pairs",
+        "vhh_pvrl2_clash_residue_pairs"
+      ],
+      "haddock_score": -55.3976,
+      "model": "cluster_3_model_1.pdb.gz",
+      "source_sha256": "3238aea117513c88ce9dad9f214ec1f62ab193ba09eb20673e85d23c43867655"
+    }
+  ]
+}

@@ -1,0 +1,1136 @@
+{
+  "fixture_schema_version": "pvrig_v4d_real_job_schema_fixture_v1",
+  "job_result": {
+    "control_class": "",
+    "dock_conformation": "8x6b",
+    "entity_id": "RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00",
+    "entity_type": "candidate",
+    "expected_behavior": "CANDIDATE_UNKNOWN",
+    "job_hash": "f5b97f2a06ad124d1c420b3e3e4a06acb0f97bb0ae1cacea1f6515eb7b60a624",
+    "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+    "pose_scores": [
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_1_model_1.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -61.16539999999999,
+          "unw_energies.air": 217.54
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_1_model_1.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1151,
+              "residue_pair_count": 172,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1151,
+                "residue_pair_count": 172
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 17
+              },
+              "holdout": {
+                "count": 8
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.460147
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 101
+              },
+              "cdr3_fraction": 0.21174,
+              "residue_pair_count": 477
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1041,
+              "residue_pair_count": 157,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1041,
+                "residue_pair_count": 157
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 17
+              },
+              "holdout": {
+                "count": 8
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.044736
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 101
+              },
+              "cdr3_fraction": 0.225951,
+              "residue_pair_count": 447
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_2_model_1.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -58.401360000000004,
+          "unw_energies.air": 222.969
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_2_model_1.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 954,
+              "residue_pair_count": 153,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 954,
+                "residue_pair_count": 153
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 6
+              },
+              "full": {
+                "count": 13
+              },
+              "holdout": {
+                "count": 7
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.435556
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 116
+              },
+              "cdr3_fraction": 0.283619,
+              "residue_pair_count": 409
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 964,
+              "residue_pair_count": 154,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 964,
+                "residue_pair_count": 154
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 6
+              },
+              "full": {
+                "count": 13
+              },
+              "holdout": {
+                "count": 7
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.025094
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 114
+              },
+              "cdr3_fraction": 0.281481,
+              "residue_pair_count": 405
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_2_model_2.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -43.35634,
+          "unw_energies.air": 330.878
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_2_model_2.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 835,
+              "residue_pair_count": 135,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 835,
+                "residue_pair_count": 135
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 6
+              },
+              "full": {
+                "count": 12
+              },
+              "holdout": {
+                "count": 6
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.499152
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 120
+              },
+              "cdr3_fraction": 0.327869,
+              "residue_pair_count": 366
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 815,
+              "residue_pair_count": 140,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 815,
+                "residue_pair_count": 140
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 6
+              },
+              "full": {
+                "count": 12
+              },
+              "holdout": {
+                "count": 6
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.073323
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 117
+              },
+              "cdr3_fraction": 0.317935,
+              "residue_pair_count": 368
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_3_model_1.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -55.3976,
+          "unw_energies.air": 217.577
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_3_model_1.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1801,
+              "residue_pair_count": 266,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1801,
+                "residue_pair_count": 266
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 9
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.444752
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 105
+              },
+              "cdr3_fraction": 0.149573,
+              "residue_pair_count": 702
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1656,
+              "residue_pair_count": 258,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1656,
+                "residue_pair_count": 258
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 9
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.039196
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 101
+              },
+              "cdr3_fraction": 0.15303,
+              "residue_pair_count": 660
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_3_model_2.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -49.257169999999995,
+          "unw_energies.air": 232.982
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_3_model_2.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1706,
+              "residue_pair_count": 261,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1706,
+                "residue_pair_count": 261
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 10
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 8
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.436492
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 107
+              },
+              "cdr3_fraction": 0.15899,
+              "residue_pair_count": 673
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1565,
+              "residue_pair_count": 258,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1565,
+                "residue_pair_count": 258
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 10
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 8
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.05138
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 104
+              },
+              "cdr3_fraction": 0.167472,
+              "residue_pair_count": 621
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_4_model_1.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -52.11571999999998,
+          "unw_energies.air": 260.955
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_4_model_1.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1488,
+              "residue_pair_count": 236,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1488,
+                "residue_pair_count": 236
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 9
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.444474
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 88
+              },
+              "cdr3_fraction": 0.139021,
+              "residue_pair_count": 633
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1430,
+              "residue_pair_count": 244,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1430,
+                "residue_pair_count": 244
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 9
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.047264
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 88
+              },
+              "cdr3_fraction": 0.139241,
+              "residue_pair_count": 632
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_5_model_1.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -40.212999999999994,
+          "unw_energies.air": 287.128
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_5_model_1.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1878,
+              "residue_pair_count": 285,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1878,
+                "residue_pair_count": 285
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 9
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.533145
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 27
+              },
+              "cdr3_fraction": 0.034527,
+              "residue_pair_count": 782
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1888,
+              "residue_pair_count": 288,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1888,
+                "residue_pair_count": 288
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 9
+              },
+              "full": {
+                "count": 18
+              },
+              "holdout": {
+                "count": 9
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.098966
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 24
+              },
+              "cdr3_fraction": 0.030848,
+              "residue_pair_count": 778
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_5_model_2.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -28.671850000000006,
+          "unw_energies.air": 306.429
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_5_model_2.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1696,
+              "residue_pair_count": 282,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1696,
+                "residue_pair_count": 282
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 6
+              },
+              "full": {
+                "count": 13
+              },
+              "holdout": {
+                "count": 7
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.612685
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 23
+              },
+              "cdr3_fraction": 0.03244,
+              "residue_pair_count": 709
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 1650,
+              "residue_pair_count": 277,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 1650,
+                "residue_pair_count": 277
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 6
+              },
+              "full": {
+                "count": 13
+              },
+              "holdout": {
+                "count": 7
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.175892
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 21
+              },
+              "cdr3_fraction": 0.030435,
+              "residue_pair_count": 690
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      },
+      {
+        "atom_filter": "standard_amino_acid_ATOM_only",
+        "cdr_ranges": {
+          "cdr1": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "cdr2": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "cdr3": [
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108
+          ]
+        },
+        "haddock_io": {
+          "matched_model": "cluster_6_model_1.pdb",
+          "path": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/io.json",
+          "score": -20.041130000000003,
+          "unw_energies.air": 244.878
+        },
+        "pose": "__PROJECT_ROOT__/runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_6_model_1.pdb.gz",
+        "schema_version": 1,
+        "scores": [
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 478,
+              "residue_pair_count": 83,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 478,
+                "residue_pair_count": 83
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 5
+              },
+              "full": {
+                "count": 10
+              },
+              "holdout": {
+                "count": 5
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 0.401233
+            },
+            "reference_id": "8x6b",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 113
+              },
+              "cdr3_fraction": 0.504464,
+              "residue_pair_count": 224
+            }
+          },
+          {
+            "clashes_2p5a": {
+              "atom_pair_count": 444,
+              "residue_pair_count": 80,
+              "vhh_pvrig": {
+                "atom_pair_count": 0,
+                "residue_pair_count": 0
+              },
+              "vhh_pvrl2": {
+                "atom_pair_count": 444,
+                "residue_pair_count": 80
+              }
+            },
+            "hotspot_overlap": {
+              "anchor": {
+                "count": 5
+              },
+              "full": {
+                "count": 10
+              },
+              "holdout": {
+                "count": 5
+              }
+            },
+            "overlay": {
+              "t_ca_rmsd_a": 1.00723
+            },
+            "reference_id": "9e6y",
+            "vhh_pvrl2_occlusion": {
+              "by_vhh_region_pair_count": {
+                "cdr3": 111
+              },
+              "cdr3_fraction": 0.523585,
+              "residue_pair_count": 212
+            }
+          }
+        ],
+        "vhh_chain": "A"
+      }
+    ],
+    "protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+    "schema_version": 1,
+    "seed": 917,
+    "selected_model_count": 9,
+    "selected_models": [
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_1_model_1.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_2_model_1.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_2_model_2.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_3_model_1.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_3_model_2.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_4_model_1.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_5_model_1.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_5_model_2.pdb.gz",
+      "runs/__JOB_ID__/haddock_run/6_seletopclusts/cluster_6_model_1.pdb.gz"
+    ],
+    "state": "SUCCESS"
+  },
+  "provenance": {
+    "sanitization": "Retains all parser-required production keys and all nine selected-model scalar summaries; removes atom/residue pair lists and replaces absolute paths with placeholders.",
+    "source_host": "node23",
+    "source_job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+    "source_job_result_sha256": "07d028f5a55855164319d0910ecc23823a81adca1f8ac3b789b52958f159eed5",
+    "source_project": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "source_state": "SUCCESS"
+  }
+}

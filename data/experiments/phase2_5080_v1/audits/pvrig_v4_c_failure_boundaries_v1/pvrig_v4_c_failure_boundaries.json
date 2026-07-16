@@ -1,0 +1,66 @@
+{
+  "artifacts": {
+    "compatibility_audit": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_c/node1_generic_prior_evidence/embedding_manifest_v3_checkpoint_compatible.audit.json",
+      "sha256": "0edab2fb7548c5aeda5dda1444b0e9405ae2c57232ee297232ffa14e72225dd1"
+    },
+    "compatible_manifest": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_c/node1_generic_prior_evidence/embedding_manifest_v3_checkpoint_compatible.csv",
+      "sha256": "06b16d5725fd14c2c99b13b7dc63a261bd2ac93d697fbbf484041d96ba8079d3"
+    },
+    "enrichment": {
+      "path": "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/P2_P3_P4_ENRICHMENT.json",
+      "sha256": "420896c3660b51dee8990602146de20f39f19ce4706d8d5f00aebcd777181418"
+    },
+    "evaluator": {
+      "path": "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/EVALUATOR_STABLE.json",
+      "sha256": "31684c8f293bf0118251ead9b4e1da5f17d5b2dc8c2f10233c1fa76c1cbf4267"
+    },
+    "generic_prior": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_c/dual128_generic_prior.csv",
+      "sha256": "82c2b20cc14fa5bfd7d090dc1690abd96ee5d02b8d96ac6e9f755e879e84a09f"
+    },
+    "initial_failure_log": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/pvrig_v4_c_failure_boundaries_v1/node1_generic_prior_initial_failure.log",
+      "sha256": "58b3de652c4d06835052cb106d68d22d6ed94741d4e54de52f7eefec7f2aee22"
+    },
+    "scoring_audit": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_c/node1_generic_prior_evidence/scored_candidates_audit_v1.json",
+      "sha256": "4cb662c50b6a043a1d4ecf97cced5efb3cc24381b0182fd8cd2ff7ad06c34ab5"
+    },
+    "support_audit": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_c/candidate7087_sequence_support.csv.audit.json",
+      "sha256": "141cee8a489fb547fc839d8429b04cf126fdb804b087209027f5db0e72f6aaa2"
+    }
+  },
+  "claim_boundary": "Records engineering recovery and negative scientific boundaries; does not establish PVRIG binding, affinity, Kd, competition, or experimental blocking.",
+  "created_at": "2026-07-16T11:33:04+08:00",
+  "generic_prior_runtime": {
+    "compatible_manifest_sha256": "06b16d5725fd14c2c99b13b7dc63a261bd2ac93d697fbbf484041d96ba8079d3",
+    "generic_prior_sha256": "82c2b20cc14fa5bfd7d090dc1690abd96ee5d02b8d96ac6e9f755e879e84a09f",
+    "initial_error": "Candidate embedding config differs from frozen mean-pooled checkpoint",
+    "initial_failure_log_sha256": "58b3de652c4d06835052cb106d68d22d6ed94741d4e54de52f7eefec7f2aee22",
+    "initial_status": "FAIL_CLOSED_EMBEDDING_CONFIG_HASH_MISMATCH",
+    "recovery_policy": "rebind manifest only after exact target embedding equality; checkpoints and model weights unchanged",
+    "recovery_status": "PASS_REBOUND_AFTER_EXACT_TARGET_EMBEDDING_MATCH",
+    "remote_root": "/data/qlyu/projects/pvrig_v4c_generic_prior_20260715",
+    "scored_rows": 128,
+    "scoring_status": "PASS_PVRIG_FORMAL_CANDIDATES_SCORED",
+    "target_embedding_validation": {
+      "max_abs_delta_vs_frozen_bank": 0.0,
+      "mean_abs_delta_vs_frozen_bank": 0.0,
+      "target_sha256": "b3d2735abe671004474d0196f9d010bbdf22ea2cec9ccb6d71b28f9bdb328075"
+    }
+  },
+  "schema_version": "pvrig_v4_c_failure_boundaries_v1",
+  "scientific_boundaries": {
+    "broad_use_coverage_gate_passed": false,
+    "candidate7087_sequence_support_count": 0,
+    "candidate7087_sequence_support_fraction": 0.0,
+    "dual128_enrichment_status": "FAIL",
+    "dual128_evaluator_status_after_decimal_correction": "PASS",
+    "eligible_generation_phases": [],
+    "policy": "Dual128 and its recovered generic prior are development/weak-prior evidence only; they cannot authorize broad 7087 exploitation or phase-conditioned generation."
+  },
+  "status": "PASS_FAILURE_BOUNDARIES_RECORDED"
+}

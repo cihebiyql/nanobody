@@ -1,0 +1,28 @@
+{
+  "binder_summary": null,
+  "claim_boundary": "Competition sequence/full-QC evidence; not experimental binding, affinity, or blocking truth.",
+  "fast_hard_pass": 327,
+  "fast_rows": 500,
+  "full_hard_fail": 25,
+  "full_hard_pass": 302,
+  "full_qc_limit": 0,
+  "full_rows": 327,
+  "full_run_tnp": false,
+  "input_count": 500,
+  "output_sha256": {
+    "cascade_manifest.json": "01f7a950491beddab9f5d571df6a93fc106f96ea34e637e79c2a66fce5742f57",
+    "cascade_state.json": "f965e55ffb615d1ee0472769d9ad7b8301472fd4f034d8cd1f9375bb882371f5",
+    "fast_merged.tsv": "c83096f7f876f78ab2ecb748576c90ba24959019f9a7dd564dabb099986e5039",
+    "full_merged.tsv": "cc48f418ce99e9ff775c80efb64b6282694fb2f7b7b1c4083b79b65f3774d31b"
+  },
+  "resource_policy": {
+    "chunk_jobs": 5,
+    "cpu_affinity": "0-31",
+    "full_chunk_jobs": 5,
+    "maximum_requested_cpu_workers": 30,
+    "node1_cpu_cap": 32,
+    "workers_per_chunk": 6
+  },
+  "schema_version": "pvrig_competition_teacher500_full_qc_summary_v2",
+  "status": "PASS_TEACHER500_FULL_QC_COMPLETE"
+}

@@ -1,0 +1,41 @@
+{
+  "candidate_id": "RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00",
+  "claim_boundary": "Production-schema parser smoke only; not a candidate ranking, binding, affinity, or experimental blocking claim.",
+  "job_count": 1,
+  "job_summary": {
+    "agreement_reliability": 0.9166666666666666,
+    "anchor_overlap": 7.889392708171403,
+    "cdr3_fraction": 0.20619129899423816,
+    "cdr3_occlusion": 93.78260611784636,
+    "complete_model_count": 9,
+    "dock_conformation": "8x6b",
+    "holdout_overlap": 7.694936943374184,
+    "hotspot_overlap": 15.584329651545588,
+    "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+    "job_utility": 0.5278769373311336,
+    "job_utility_raw": 0.5758657498157822,
+    "model_count_reliability": 1.0,
+    "model_pair_consensus_fraction": 0.6666666666666666,
+    "model_strict_a_fraction": 0.1111111111111111,
+    "native_cross_support_agreement": 1.0,
+    "overlay_rmsd_a": 0.4670804530127857,
+    "total_occlusion": 540.8760728663974,
+    "vhh_pvrig_clash_residue_pairs": 0.0,
+    "vhh_pvrl2_clash_residue_pairs": 202.41536461281513
+  },
+  "model_split": "OPEN_TRAIN",
+  "pose_row_count": 18,
+  "raw_binding": {
+    "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+    "sha256": "07d028f5a55855164319d0910ecc23823a81adca1f8ac3b789b52958f159eed5"
+  },
+  "raw_binding_chain_sha256": "4401cc9947d24946d8bb4f4b6f205f0e4187ce0838200e8b7a097fd1066407e2",
+  "raw_result": {
+    "job_hash": "f5b97f2a06ad124d1c420b3e3e4a06acb0f97bb0ae1cacea1f6515eb7b60a624",
+    "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+    "pose_backed_2x2": "True",
+    "state": "SUCCESS"
+  },
+  "schema_version": "pvrig_v4_d_open_teacher_builder_production_smoke_v1",
+  "status": "PASS_OPEN_TRAIN_RAW_JOB_PARSE_AND_SUMMARY"
+}

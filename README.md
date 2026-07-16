@@ -178,6 +178,9 @@ PVRIG-PVRL2 机制和结构界面的轻量可视化入口。包含一个 Python 
 - 启动周期自动同步：`scripts/lightweight_sync_daemon.sh start`
 - 查看/停止自动同步：`scripts/lightweight_sync_daemon.sh status`, `scripts/lightweight_sync_daemon.sh stop`
 - 自动同步默认每 120 秒执行一次，可用 `NANOBODY_SYNC_INTERVAL` 调整；日志和状态写入本地 `.omx/`，不上传运行日志。
+- 安装固定时刻同步：`scripts/configure_lightweight_sync_cron.sh install`，每天 `10/12/14/16/18/20/22:00` 执行。
+- 查看/移除固定时刻同步：`scripts/configure_lightweight_sync_cron.sh status`, `scripts/configure_lightweight_sync_cron.sh remove`。
+- 固定时刻计划和 120 秒守护进程二选一；安装 cron 计划时会主动停止 tmux 守护进程。
 - 默认单文件阈值：5 MiB，可用 `NANOBODY_SYNC_MAX_BYTES` 覆盖。
 - Git 默认忽略新文件；同步脚本只强制加入 manifest 选中的轻量文件。
 - 手动和自动同步共用 `.git/lightweight-sync.lock`，避免并发提交/推送冲突。

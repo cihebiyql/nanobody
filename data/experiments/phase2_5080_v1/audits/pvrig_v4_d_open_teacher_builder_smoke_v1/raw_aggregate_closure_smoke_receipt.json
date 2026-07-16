@@ -1,0 +1,18 @@
+{
+  "candidate_id": "RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00",
+  "claim_boundary": "Parser and provenance closure smoke only; not binding, affinity, ranking, or blocking evidence.",
+  "closure": {
+    "closure_sha256": "568c8f312b179258ab9d38c7902ab699486e07cf94c8a294d5d47140ea23542a",
+    "job_count": 1,
+    "pose_row_count": 18,
+    "status": "PASS_RAW_OPEN_RESULTS_MATCH_EVALUATOR_BOUND_AGGREGATES"
+  },
+  "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00_8x6b_s917_f5b97f2a06ad",
+  "model_split": "OPEN_TRAIN",
+  "production_aggregate_script_sha256": "b339c278c7146b5b1a6d1b0f106e06786ad6cfc6440998f3bbd7b272c7b18e4b",
+  "raw_hash_chain": "4401cc9947d24946d8bb4f4b6f205f0e4187ce0838200e8b7a097fd1066407e2",
+  "raw_job_result_sha256": "07d028f5a55855164319d0910ecc23823a81adca1f8ac3b789b52958f159eed5",
+  "schema_version": "pvrig_v4_d_open_teacher_raw_aggregate_closure_smoke_v2",
+  "status": "PASS_PRODUCTION_RAW_AGGREGATE_CLOSURE_SMOKE",
+  "teacher_builder_sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+}

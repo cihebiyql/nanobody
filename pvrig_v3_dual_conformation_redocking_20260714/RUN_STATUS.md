@@ -1,13 +1,13 @@
 # V3 运行状态
 
 - 项目：`pvrig_v3_dual_conformation_redocking_20260714`
-- 更新时间：`2026-07-15 08:10 Asia/Shanghai`
-- 当前阶段：`FULL_QUEUE_NODE23_LOCAL_SCRATCH_VERIFIED_RUNNING_8_WAY`
+- 更新时间：`2026-07-15 21:29 Asia/Shanghai`
+- 当前阶段：`FULL_QUEUE_COMPLETE_EVALUATOR_PASS_ENRICHMENT_FAIL`
 - 本地协议验证：`PASS`
 - node1 协议验证：`PASS`
 - node23 协议验证：`PASS`
-- 评价器稳定性：`NOT_READY`
-- P2/P3/P4 固定面板富集：`NOT_READY`
+- 评价器稳定性：`PASS`
+- P2/P3/P4 固定面板富集：`FAIL_NO_RELIABLE_PHASE`
 - 下一批 P2/P3/P4 生成：`LOCKED`
 - 本地目录：`/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714`
 - node1/node23 共享目录：`/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714`
@@ -15,8 +15,8 @@
 ## 冻结标识
 
 - `protocol_core_sha256`: `e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8`
-- `protocol_lock_sha256`: `6ea729edc9b070bba7271bea3c64da0fffad46921ea8899548eb9b1ad8a120a7`
-- `PROTOCOL_LOCK.json` file SHA256: `1f0e8d17d7a10faa78e3d71f5469bb340f53ad169946042db1235a0c553f1926`
+- `protocol_lock_sha256`: `4a6abac9612f69e3fd2f6df58ac192b6b8b852209c1afaf9e9f5dec33efb414e`
+- `PROTOCOL_LOCK.json` file SHA256: `6c3598eefd109481a236fd38859d0aa4f47a6b5ba2df1db21fab54c8187530d1`
 - `docking_jobs.tsv` SHA256: `e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e`
 - `candidates_128.tsv` SHA256: `5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78`
 - `candidate_monomers_manifest.tsv` SHA256: `db29dcb9047c7e0514a359077f380d53fedd0127c879a939ab8ebad812c5c0df`
@@ -29,7 +29,7 @@
 - [x] 冻结128候选、47控制和全部175个单体 PDB；
 - [x] 生成 `175 x 2 x 3 = 1050` 唯一独立对接任务；
 - [x] 生成4任务 smoke 清单：HR-151与rank-1候选，各自8X6B/9E6Y、seed 917；
-- [x] 43/43 本地回归测试通过；
+- [x] 44/44 本地回归测试通过；
 - [x] 本地与 node1 `validate_protocol.py` 均为 `PASS`；
 - [x] 部署文件与本地 `PROTOCOL_LOCK.json` 文件 hash 一致；
 - [x] node1 后台 `smoke -> verify -> full` 编排器已启动。
@@ -44,6 +44,10 @@
 - [x] 识别出 node23 直接在共享 NFS 上运行 CNS 的目录操作瓶颈，并改为本地 scratch 计算后原子回写；
 - [x] 同任务本地 scratch 对照在4分47秒完成，首个正式4任务 scratch 批次4/4成功并自动补位。
 - [x] node23 并发从4路提升到8路，8个任务各使用4核，目标占用32/64逻辑CPU；
+- [x] 1,050 个任务终局为 `1049 SUCCESS / 1 FAILED_MAX_ATTEMPTS`，350/350 个实体-构象均达到至少2个成功 seed；
+- [x] 归档旧浮点后处锁和 FAIL 报告，使用十进制阈值缩放修正 `100 x 1.1` 边界错判；
+- [x] 评价器 `pvrig_v3_evaluator_stability_v3_decimal_thresholds` 所有门禁通过；
+- [x] 完成 P2/P3/P4 固定面板富集分析，无 phase 达到预先锁定的可靠富集标准；
 
 ## 当前执行现场
 
@@ -51,11 +55,11 @@
 - node1 编排器 PID `4072777` 和 controller PID `4074688` 已停止，不存在双控制器；
 - smoke 结果：`4 SUCCESS / 0 FAIL`，selected models 数分别为 `10 / 10 / 10 / 9`；
 - smoke 已同时验证 HR-151 和 rank-1 候选的 8X6B、9E6Y 独立 HADDOCK run，以及每个 pose 的 native/cross 双参考评分；
-- `08:10` 全量快照：`120 SUCCESS / 8 RUNNING / 922 PENDING`；已有 `39/350` 个实体-构象达到至少2个成功 seed；
+- 全量终局：`1049 SUCCESS / 1 FAILED_MAX_ATTEMPTS`；`350/350` 个实体-构象达到至少2个成功 seed；
 - node23 本地 scratch 模式当前并发上限为8，运行根目录为 `/tmp/pvrig_v3_haddock`；
-- 当前120个成功任务中控制任务118个、候选任务2个；所有终局门禁仍保持 `NOT_READY`；
+- 控制任务 `282/282` 成功，候选任务 `767/768` 成功；评价器 `PASS`，富集门禁 `FAIL`；
 - 迁移证据：`status/controller_migration_node1_to_node23.json`；旧PID归档在 `status/migration_archive/`；
-- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；随后已有78个 scratch 正式任务完成，现有120个结果均保留。
+- node23 已验证协议 `PASS`。迁移后的首批4个 NFS 任务虽然约26分钟才完成，但最终全部成功；后续本地 scratch 生产任务已全部终止并保留结果。
 
 ## node23 本地 scratch 修复
 
@@ -93,9 +97,9 @@ REMOTE_HOST=node23 scripts/launch_node1.sh status
 
 - [x] 4/4 node1 smoke任务通过；
 - [x] 自动进入1050任务全量队列；
-- [ ] 每个实体、每个构象至少2/3 seeds成功；
-- [ ] 47控制的漂移和阈值敏感性报告完成；
-- [ ] `reports/EVALUATOR_STABLE.json` 变为 `status=PASS`。
+- [x] 每个实体、每个构象至少2/3 seeds成功；
+- [x] 47控制的漂移和阈值敏感性报告完成；
+- [x] `reports/EVALUATOR_STABLE.json` 变为 `status=PASS`。
 - [ ] `reports/P2_P3_P4_ENRICHMENT.json` 至少支持一个可靠 phase 并变为 `status=PASS`。
 
-在最后两项同时完成前，`scripts/guard_next_generation.py` 始终非零退出，不能根据 P2/P3/P4 富集结果生成下一批序列。当前实测阻断原因是 `evaluator_status_not_pass:NOT_READY`。
+当前 `scripts/guard_next_generation.py` 仍非零退出，不能根据 P2/P3/P4 富集结果生成下一批序列。当前实测阻断原因是 `enrichment_status_not_pass:FAIL`。
