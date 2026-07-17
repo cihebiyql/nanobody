@@ -1,0 +1,68 @@
+{
+  "schema_version": "pvrig_v5_tb_development_preregistration_v1",
+  "created_date": "2026-07-17",
+  "status": "FROZEN_BEFORE_FIRST_V5_TB_RESULT",
+  "claim_boundary": "OPEN_TRAIN-only development approximation of independent dual-receptor computational docking geometry; not Docking Gold, binding probability, affinity, competition, experimental blocking, or final submission authority.",
+  "primary_target": "R_dual_min",
+  "auxiliary_targets": [
+    "R_8X6B",
+    "R_9E6Y",
+    "R_dual_gap"
+  ],
+  "scope": {
+    "model_split": "OPEN_TRAIN",
+    "expected_rows": 226,
+    "expected_parent_clusters": 20,
+    "sealed_splits_forbidden": [
+      "OPEN_DEVELOPMENT",
+      "V4_F_TEST32",
+      "PROSPECTIVE_FORMAL"
+    ]
+  },
+  "validation": {
+    "outer_folds": 5,
+    "inner_folds": 5,
+    "group": "parent_framework_cluster",
+    "fold_assignment": "deterministic_size_balanced_group_bins",
+    "bootstrap_replicates": 5000,
+    "bootstrap_seed": 20260717
+  },
+  "ridge_alphas": [
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0
+  ],
+  "convex_weights": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "pairwise_minimum_absolute_delta": 0.02,
+  "models": [
+    "B0_train_mean",
+    "B1_structure_direct",
+    "B2_dual_receptor_min",
+    "B3_structure_plus_physchem",
+    "B4_direct_dual_convex",
+    "B5_top20_ridge_classifier",
+    "B6_within_parent_pairwise_ridge"
+  ],
+  "selection_order": [
+    "spearman",
+    "ndcg",
+    "top20_percent_recall",
+    "negative_mae",
+    "stronger_regularization"
+  ],
+  "success_gates": {
+    "global_spearman_delta_vs_B1": ">0",
+    "parent_centered_spearman_delta_vs_B1": ">=0",
+    "top20_recall_delta_vs_B1": ">=0",
+    "formal_pass_claimed": false
+  }
+}
