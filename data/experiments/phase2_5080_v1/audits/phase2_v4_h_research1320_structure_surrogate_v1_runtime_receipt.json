@@ -1,0 +1,56 @@
+{
+  "all_predictions_finite": true,
+  "claim_boundary": "Research-only sequence-to-monomer-structure surrogate estimate of independent dual-receptor computational docking geometry R_dual_min; not Docking Gold, binding probability, affinity, competition, experimental blocking, formal validation, or final submission authority.",
+  "formal_or_prospective_authority": false,
+  "implementation_freeze_sha256": "c7abc9c719c4bcc37623c0698a144073dd7b46167b939c5f4533b8c20b47649b",
+  "output_hashes": {
+    "v4h_research1320_structure_surrogate_ranking_v1.audit.json": "65c53f2b7457c181fb278902dca1db29bec77c8660603e5e85d854a2b702757b",
+    "v4h_research1320_structure_surrogate_ranking_v1.receipt.json": "4df5b88a4cab101e4f3be9a4eddc02870fa6f6a6e4859df3b88b41cc211d1bdb",
+    "v4h_research1320_structure_surrogate_ranking_v1.tsv": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+  },
+  "parent_concentration_warning": "Raw top100 are all parent C0283; use parent/patch/mode portfolio constraints and within-parent evaluation rather than raw top-N submission or acquisition.",
+  "prediction_summary": {
+    "max": 0.6165041406495679,
+    "median": 0.5572611492989255,
+    "min": 0.49300145267061524,
+    "q05": 0.5110030788556348,
+    "q10": 0.517481635663384,
+    "q25": 0.5316195010142406,
+    "q75": 0.5718022944783914,
+    "q90": 0.5822484677759193,
+    "q95": 0.5996853135803655
+  },
+  "production_log_sha256": "22eb0635af9f16e13f50c00a503b0257140c9dd93c494f4ee84992111fd2f95b",
+  "rank_is_exact_1_to_1320": true,
+  "row_count": 1320,
+  "schema_version": "phase2_v4_h_research1320_structure_surrogate_v1_runtime_receipt",
+  "sealed_boundary": {
+    "V4_F_test32_rows_accessed": 0,
+    "V4_H_docking_result_files_opened": 0,
+    "V4_H_geometry_labels_accessed": 0,
+    "V4_H_pose_files_opened": 0,
+    "V4_H_status_files_opened": 0,
+    "formal_or_prospective_authority": false
+  },
+  "status": "VALIDATED_COMPLETE_RESEARCH1320_STRUCTURE_SURROGATE_RANKING_LABELS_UNTOUCHED",
+  "top100_mode_counts": {
+    "H1H3": 49,
+    "H3": 51
+  },
+  "top100_parent_counts": {
+    "C0283": 100
+  },
+  "top100_patch_counts": {
+    "A_CENTER": 32,
+    "B_LOWER": 35,
+    "C_CROSS": 33
+  },
+  "top20_parent_counts": {
+    "C0283": 20
+  },
+  "top50_parent_counts": {
+    "C0283": 50
+  },
+  "unique_candidate_ids": 1320,
+  "validated_at_utc": "2026-07-17T10:02:35.279861+00:00"
+}

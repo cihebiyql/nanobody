@@ -1,0 +1,76 @@
+{
+  "claim_boundary": "Label-free comparison of frozen OPEN_TRAIN sequence and monomer-structure surrogates for computational docking geometry R_dual_min; no V4-H docking result, pose, geometry label, binding, affinity, or experimental blocking truth.",
+  "frozen_analysis": {
+    "balanced_portfolio": {
+      "design_modes": 2,
+      "parents": 11,
+      "patches": 3,
+      "roles": [
+        "CONSENSUS_HIGH",
+        "MAX_MODEL_DISAGREEMENT"
+      ],
+      "rows_per_stratum": 2,
+      "total_rows": 132
+    },
+    "parent_concentration": true,
+    "parent_summary": true,
+    "prediction_association": [
+      "pearson",
+      "spearman"
+    ],
+    "rank_disagreement_tails_per_direction": 50,
+    "top_n": [
+      20,
+      50,
+      100
+    ]
+  },
+  "frozen_at_utc": "2026-07-17T11:08:05.880419+00:00",
+  "pinned_inputs": {
+    "comparison_script": {
+      "path": "experiments/phase2_5080_v1/src/compare_phase2_v4_h_research1320_sequence_structure_surrogates_v1.py",
+      "sha256": "419e0ee7db894efc22755a3d1c289379c0c2b286de75bb7379a778f8054ca2c4"
+    },
+    "sequence_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_sequence_surrogate_v1/v4h_research1320_sequence_surrogate_ranking_v1.tsv",
+      "sha256": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc"
+    },
+    "sequence_scorer_freeze": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_surrogate_v1_implementation_freeze.json",
+      "sha256": "87c0a664fd58fc1881df41aedeb58273122e439cdea15214acef30610f322675"
+    },
+    "structure_evaluation_prereg": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_structure_surrogate_evaluation_v1_preregistration.json",
+      "sha256": "22c2b05de5630550f6fb56b6c4070876db7b89de48e3cc6fd5268bd9b312792e"
+    },
+    "structure_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+      "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+    },
+    "tests": {
+      "path": "experiments/phase2_5080_v1/src/test_compare_phase2_v4_h_research1320_sequence_structure_surrogates_v1.py",
+      "sha256": "acd283787a368b038a9f485603a9fdc52399023d3b5c5ead9b37ce2da04661fc"
+    }
+  },
+  "schema_version": "phase2_v4_h_research1320_sequence_structure_comparison_v1_implementation_freeze",
+  "sealed_boundary": {
+    "V4_F_test32_rows_accessed": 0,
+    "V4_H_docking_result_files_opened": 0,
+    "V4_H_geometry_labels_accessed": 0,
+    "V4_H_pose_files_opened": 0,
+    "V4_H_status_files_opened": 0,
+    "formal_or_prospective_authority": false
+  },
+  "status": "FROZEN_BEFORE_FIRST_REAL_LABEL_FREE_COMPARISON",
+  "verification": {
+    "normal_tests": {
+      "count": 3,
+      "status": "PASS"
+    },
+    "py_compile": "PASS",
+    "python_O_tests": {
+      "count": 3,
+      "status": "PASS"
+    }
+  }
+}

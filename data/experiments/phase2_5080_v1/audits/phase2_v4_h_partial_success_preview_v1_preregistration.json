@@ -1,0 +1,48 @@
+{
+  "authority_effect": "After preview geometry is read, the operator is no longer label-blind for V4-H; previously frozen terminal evaluator code remains immutable but terminal results are research confirmation, not untouched prospective evidence.",
+  "candidate_target_rule": "PARTIAL_ANALYZABLE only if at least one successful job exists for both 8X6B and 9E6Y; R_dual_min=min(current per-receptor successful-seed medians); no imputation.",
+  "claim_boundary": "Partial active-campaign development preview only; not terminal teacher, Docking Gold, binding, affinity, competition, experimental blocking, formal validation, or final submission authority.",
+  "frozen_at_utc": "2026-07-17T11:31:19.761224+00:00",
+  "frozen_metrics": [
+    "M1/M2 global Spearman",
+    "Pearson",
+    "MAE",
+    "NDCG",
+    "top20 percent recall",
+    "per-parent Spearman",
+    "macro parent mean/median",
+    "parent-centered Spearman",
+    "coverage by parent/patch/mode",
+    "M2-minus-M1 paired parent bootstrap"
+  ],
+  "interpretation_limits": [
+    "active campaign not terminal",
+    "success/order selection bias",
+    "mostly single-seed evidence",
+    "technical incomplete rows excluded",
+    "no model/threshold/feature changes from preview",
+    "terminal evaluation remains required"
+  ],
+  "pinned_prepreview_artifacts": {
+    "sequence_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_sequence_surrogate_v1/v4h_research1320_sequence_surrogate_ranking_v1.tsv",
+      "sha256": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc"
+    },
+    "snapshot_builder": {
+      "path": "experiments/phase2_5080_v1/src/build_phase2_v4_h_partial_success_snapshot_v1.py",
+      "sha256": "8d6a053490b7a058bdca6981ed66fad7685e94e614e0454bf56ed16ccdfc786a"
+    },
+    "snapshot_tests": {
+      "path": "experiments/phase2_5080_v1/src/test_build_phase2_v4_h_partial_success_snapshot_v1.py",
+      "sha256": "10f1e468ae7272744853a988de0cce5542e924502df2f4f2d902f7f5662f9775"
+    },
+    "structure_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+      "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+    }
+  },
+  "schema_version": "phase2_v4_h_partial_success_preview_v1_preregistration",
+  "snapshot_rule": "Capture job IDs whose status is SUCCESS at snapshot start; bind status and job_result SHA256; ignore later completions.",
+  "status": "FROZEN_BEFORE_FIRST_PARTIAL_V4_H_GEOMETRY_VALUE_ACCESS",
+  "user_authorization": "User explicitly requested pulling already successful jobs and testing the full pipeline."
+}

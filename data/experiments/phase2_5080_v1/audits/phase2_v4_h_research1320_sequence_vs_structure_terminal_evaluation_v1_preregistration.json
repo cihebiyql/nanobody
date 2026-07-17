@@ -1,0 +1,107 @@
+{
+  "claim_boundary": "Research-only comparison against computational docking geometry R_dual_min; not Docking Gold, binding probability, affinity, competition, experimental blocking, formal prospective validation, or final submission authority.",
+  "frozen_at_utc": "2026-07-17T11:15:57.060649+00:00",
+  "interpretation": {
+    "M1_and_M2_similar": "prefer cheaper sequence lane unless structure adds uncertainty or portfolio value",
+    "M2_global_and_within_parent_better": "structure adds useful frontscreen signal before real docking",
+    "formal_pass_claim_permitted": false,
+    "global_good_within_parent_poor": "use only for scaffold-level triage, not within-parent selection",
+    "parent_portfolio_constraints_required": true,
+    "raw_top_n_submission_forbidden": true
+  },
+  "metrics": {
+    "C0283_diagnostic": [
+      "teacher_count",
+      "teacher_mean",
+      "teacher_median",
+      "teacher_q10",
+      "teacher_q90",
+      "versus_other_parents"
+    ],
+    "balanced132": [
+      "CONSENSUS_HIGH metrics",
+      "disagreement metrics",
+      "coverage census"
+    ],
+    "bootstrap_seed": 20260717,
+    "paired_parent_group_bootstrap_replicates": 5000,
+    "parent_centered": [
+      "spearman"
+    ],
+    "per_model_global": [
+      "spearman",
+      "pearson",
+      "mae",
+      "ndcg",
+      "top20_percent_recall"
+    ],
+    "per_parent": [
+      "spearman",
+      "macro_mean",
+      "macro_median"
+    ],
+    "primary_model_comparison": "M2 minus M1 Spearman",
+    "stratified": [
+      "target_patch_id Spearman",
+      "design_mode Spearman"
+    ]
+  },
+  "models": {
+    "M1_SEQUENCE_ONLY": "predicted_R_dual_min_sequence_only",
+    "M2_STRUCTURE_ONLY": "predicted_R_dual_min_structure_only"
+  },
+  "objective": "Compare frozen M1 sequence-only and M2 structure-only surrogates against one terminal immutable V4-H continuous-geometry teacher, separating parent-level and within-parent signal.",
+  "pinned_prelabel_artifacts": {
+    "balanced132": {
+      "path": "experiments/phase2_5080_v1/reports/pvrig_v4_h_research1320_sequence_structure_comparison_v1/v4h_research1320_sequence_structure_balanced132_v1.tsv",
+      "sha256": "a700adc22920d28c9dcddfabb5512dd125a047c771a0c47cb2e8315f830ab842"
+    },
+    "comparison_freeze": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_structure_comparison_v1_implementation_freeze.json",
+      "sha256": "ddeaff47fc516860cd3ad9b0f9db3969f9309fe638ea0f4be2748c210248c644"
+    },
+    "original_structure_evaluation_prereg": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_structure_surrogate_evaluation_v1_preregistration.json",
+      "sha256": "22c2b05de5630550f6fb56b6c4070876db7b89de48e3cc6fd5268bd9b312792e"
+    },
+    "sequence_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_sequence_surrogate_v1/v4h_research1320_sequence_surrogate_ranking_v1.tsv",
+      "sha256": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc"
+    },
+    "sequence_scorer_freeze": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_surrogate_v1_implementation_freeze.json",
+      "sha256": "87c0a664fd58fc1881df41aedeb58273122e439cdea15214acef30610f322675"
+    },
+    "structure_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+      "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+    }
+  },
+  "prelabel_disclosure": {
+    "V4_H_geometry_values_seen": false,
+    "aggregate_run_status_counts_seen": true,
+    "models_or_metrics_changed_after_geometry_values": false,
+    "parent_concentration_seen": true,
+    "sequence_structure_prediction_association_seen": true
+  },
+  "schema_version": "phase2_v4_h_research1320_sequence_vs_structure_terminal_evaluation_v1_preregistration",
+  "status": "FROZEN_BEFORE_ANY_V4_H_GEOMETRY_LABEL_VALUE_ACCESS",
+  "teacher_unseal_contract": {
+    "allowed_source": "one terminal immutable V4-H teacher created only after adaptive campaign terminal closure",
+    "analyzable_state": "ANALYZABLE",
+    "canonical_schema": [
+      "candidate_id",
+      "teacher_state",
+      "technical_incomplete_reason",
+      "R_dual_min"
+    ],
+    "partial_teacher_forbidden": true,
+    "required_receptors": [
+      "8X6B",
+      "9E6Y"
+    ],
+    "teacher_sha256_recorded_at_unseal": true,
+    "technical_incomplete_policy": "exclude from numeric metrics, report IDs/counts/reasons, no imputation",
+    "technical_incomplete_state": "TECHNICAL_INCOMPLETE"
+  }
+}

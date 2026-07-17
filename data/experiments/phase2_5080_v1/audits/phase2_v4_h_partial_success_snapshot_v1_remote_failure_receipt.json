@@ -1,0 +1,12 @@
+{
+  "claim_boundary": "Technical partial-preview pipeline failure; no teacher or model result published.",
+  "failed_at_utc": "2026-07-17T11:43:03.520807+00:00",
+  "failure_reason": "At least one status-SUCCESS job failed the unchanged frozen scorer overlay RMSD gate.",
+  "failure_type": "DockingReleaseError",
+  "recovery_rule": "Create separately versioned V1.1 that records SCORING_INVALID with empty score and continues; do not change scorer thresholds.",
+  "remote_log_sha256": "a37dc7bcf31a5e5eecad6ef3286e6e0a5b9fe2d5c48eca27ce613e8d24baa958",
+  "remote_output_created": false,
+  "schema_version": "phase2_v4_h_partial_success_snapshot_v1_remote_failure_receipt",
+  "status": "FAIL_CLOSED_SCORING_INVALID_JOB_NOT_PARTIAL_TEACHER",
+  "v1_outputs_published": false
+}

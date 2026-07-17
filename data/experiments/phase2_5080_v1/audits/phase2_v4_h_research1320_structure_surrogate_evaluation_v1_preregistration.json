@@ -1,0 +1,76 @@
+{
+  "schema_version": "phase2_v4_h_research1320_structure_surrogate_evaluation_v1_preregistration",
+  "status": "FROZEN_AFTER_LABEL_FREE_RANKING_BEFORE_ANY_V4_H_GEOMETRY_LABEL_ACCESS",
+  "frozen_at_utc": "2026-07-17T10:20:00Z",
+  "objective": "Evaluate whether the frozen OPEN_TRAIN structure-only surrogate predicts independently generated V4-H dual-receptor continuous docking geometry, with explicit separation of global parent-level signal and within-parent candidate ranking.",
+  "claim_boundary": "Research-only evaluation of computational docking-geometry approximation. Not Docking Gold, binding probability, affinity, competition, experimental blocking, formal prospective validation, or final submission authority.",
+  "frozen_prediction": {
+    "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+    "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a",
+    "rows": 1320,
+    "model": "M2_STRUCTURE_ONLY",
+    "target_name": "predicted_R_dual_min_structure_only"
+  },
+  "frozen_inputs": {
+    "candidate_manifest_sha256": "f02cfeaac9775442bb1748c7bb63413a1077b5df11f9cd7214e983d0e51c0551",
+    "structure_feature_table_sha256": "c778c420792c095073d0cbf2e60e754ff5c1273e8c032eb06104223db8e365a5",
+    "scoring_config_sha256": "1d6419bae5e9ee4c365f1efb4f36a828bbd7f84dfebbf89f529ce62e745d334f",
+    "scoring_fits_sha256": "15cd307b6b79cdec50cdd4b2266b5a129c9690607bffc3795248030e3da76d3a"
+  },
+  "teacher_unseal_contract": {
+    "allowed_label_source": "one terminal immutable V4-H continuous-geometry teacher built after the adaptive docking campaign reaches a terminal state",
+    "primary_target": "R_dual_min",
+    "required_key": "candidate_id",
+    "required_receptors": [
+      "8X6B",
+      "9E6Y"
+    ],
+    "partial_status_or_result_consumption_before_unseal": false,
+    "technical_incomplete_policy": "exclude from numeric metrics, report IDs/counts/reasons separately, and do not impute",
+    "teacher_hash_must_be_recorded_at_unseal": true
+  },
+  "primary_evaluation": {
+    "metric": "Spearman",
+    "scope": "all analyzable V4-H candidates",
+    "paired_parent_group_bootstrap_replicates": 5000,
+    "bootstrap_seed": 20260717
+  },
+  "required_secondary_evaluations": [
+    "Pearson",
+    "MAE",
+    "NDCG",
+    "top20_percent_recall",
+    "per-parent Spearman for each parent with sufficient analyzable rows",
+    "macro mean and median per-parent Spearman",
+    "parent-centered Spearman after subtracting within-parent means from prediction and target",
+    "patch-stratified Spearman",
+    "design-mode-stratified Spearman",
+    "C0283 target distribution versus the other ten parents",
+    "technical-incomplete candidate census"
+  ],
+  "research_interpretation_rules": {
+    "global_good_within_parent_poor": "surrogate may rank parent/scaffold geometry but is not accepted for within-parent sequence selection",
+    "global_and_within_parent_good": "surrogate may be used as a research frontscreen before real docking, with portfolio constraints",
+    "global_and_within_parent_poor": "do not deploy the surrogate for candidate screening",
+    "raw_top_n_submission_forbidden": true,
+    "parent_portfolio_constraints_required": true,
+    "formal_pass_claim_permitted": false
+  },
+  "pre_label_observation_disclosure": {
+    "prediction_distribution_seen": true,
+    "top100_parent_concentration_seen": true,
+    "top100_parent_concentration": {
+      "C0283": 100
+    },
+    "V4_H_geometry_values_seen": false,
+    "model_or_feature_changes_after_V4_H_geometry_values": false
+  },
+  "sealed_boundaries": {
+    "V4_H_docking_result_files_opened_for_model_selection": 0,
+    "V4_H_pose_files_opened_for_model_selection": 0,
+    "V4_H_geometry_label_values_accessed": 0,
+    "V4_F_test32_rows_accessed": 0,
+    "legacy128_merged": false,
+    "experimental_blocker_claimed": false
+  }
+}

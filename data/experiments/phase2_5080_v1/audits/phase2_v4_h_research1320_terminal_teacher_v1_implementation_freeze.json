@@ -1,0 +1,66 @@
+{
+  "canonical_teacher_fields": [
+    "candidate_id",
+    "teacher_state",
+    "technical_incomplete_reason",
+    "R_dual_min"
+  ],
+  "claim_boundary": "Terminal immutable V4-H computational dual-receptor docking-geometry teacher for research-only surrogate evaluation; not Docking Gold, binding, affinity, competition, experimental blocking, or formal prospective validation.",
+  "frozen_at_utc": "2026-07-17T11:20:29.362582+00:00",
+  "numeric_imputation_permitted": false,
+  "pinned_artifacts": {
+    "candidate_manifest": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_research_pool_v1/outputs/research_ready1320.tsv",
+      "sha256": "f02cfeaac9775442bb1748c7bb63413a1077b5df11f9cd7214e983d0e51c0551"
+    },
+    "evaluation_prereg": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_vs_structure_terminal_evaluation_v1_preregistration.json",
+      "sha256": "2bfd76ef451a8576077fe92ba5ef6fc82d053eeb46d79c35080ab762e3b080c8"
+    },
+    "evaluator_freeze": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_vs_structure_terminal_evaluator_v1_implementation_freeze.json",
+      "sha256": "7c7b15171f2922e7f2de4edb6868930ae6525968b91e4947b55368a22dea2759"
+    },
+    "materializer": {
+      "path": "experiments/phase2_5080_v1/src/materialize_phase2_v4_h_research1320_terminal_teacher_v1.py",
+      "sha256": "ea1b7ebd2cabaa33740e791177b077bb2e94c4f9467fa08dffe9760a81ae0d55"
+    },
+    "tests": {
+      "path": "experiments/phase2_5080_v1/src/test_materialize_phase2_v4_h_research1320_terminal_teacher_v1.py",
+      "sha256": "981a4f38aed870cd0dea1afc322745a2499a1c96a7ebcc31836797616018b75c"
+    }
+  },
+  "prelabel_state": {
+    "V4_H_geometry_label_values_accessed": 0,
+    "V4_H_partial_teacher_opened": 0,
+    "formal_pass_claim_permitted": false
+  },
+  "runtime_bindings_required": [
+    "final_adaptive_seed_ranking_sha256",
+    "ADAPTIVE_DOCKING_RECEIPT_sha256"
+  ],
+  "schema_version": "phase2_v4_h_research1320_terminal_teacher_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_REMOTE_ADAPTIVE_TERMINAL",
+  "terminal_gates": [
+    "adaptive receipt terminal status",
+    "stage smoke/stage1/stage2/stage3 terminal count closure",
+    "receipt-ranking hash equality",
+    "1320 candidate key closure",
+    "R_dual_min=min(median_8X6B,median_9E6Y)",
+    "technical incomplete has empty R_dual_min and explicit reason"
+  ],
+  "verification": {
+    "normal_tests": {
+      "count": 3,
+      "status": "PASS"
+    },
+    "py_compile": "PASS",
+    "python_O_tests": {
+      "count": 3,
+      "status": "PASS"
+    },
+    "synthetic_nonterminal_rejection": "PASS",
+    "synthetic_target_consistency_gate": "PASS",
+    "synthetic_terminal_materialization": "PASS"
+  }
+}

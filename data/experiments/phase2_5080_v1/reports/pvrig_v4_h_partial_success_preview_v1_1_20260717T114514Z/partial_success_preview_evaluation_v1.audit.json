@@ -1,0 +1,154 @@
+{
+  "analyzable_rows": 937,
+  "campaign_terminal": false,
+  "candidate_rows": 1320,
+  "claim_boundary": "Partial active-campaign development preview only; not terminal teacher, Docking Gold, binding, affinity, competition, experimental blocking, formal validation, or final submission authority.",
+  "coverage": {
+    "design_mode": {
+      "H1H3": {
+        "analyzable": 461,
+        "fraction": 0.6984848484848485,
+        "planned": 660
+      },
+      "H3": {
+        "analyzable": 476,
+        "fraction": 0.7212121212121212,
+        "planned": 660
+      }
+    },
+    "parent_framework_cluster": {
+      "C0078": {
+        "analyzable": 118,
+        "fraction": 0.9833333333333333,
+        "planned": 120
+      },
+      "C0086": {
+        "analyzable": 116,
+        "fraction": 0.9666666666666667,
+        "planned": 120
+      },
+      "C0145": {
+        "analyzable": 117,
+        "fraction": 0.975,
+        "planned": 120
+      },
+      "C0148": {
+        "analyzable": 115,
+        "fraction": 0.9583333333333334,
+        "planned": 120
+      },
+      "C0162": {
+        "analyzable": 112,
+        "fraction": 0.9333333333333333,
+        "planned": 120
+      },
+      "C0176": {
+        "analyzable": 0,
+        "fraction": 0.0,
+        "planned": 120
+      },
+      "C0283": {
+        "analyzable": 29,
+        "fraction": 0.24166666666666667,
+        "planned": 120
+      },
+      "C0348": {
+        "analyzable": 38,
+        "fraction": 0.31666666666666665,
+        "planned": 120
+      },
+      "C0360": {
+        "analyzable": 77,
+        "fraction": 0.6416666666666667,
+        "planned": 120
+      },
+      "C0409": {
+        "analyzable": 96,
+        "fraction": 0.8,
+        "planned": 120
+      },
+      "C0417": {
+        "analyzable": 119,
+        "fraction": 0.9916666666666667,
+        "planned": 120
+      }
+    },
+    "target_patch_id": {
+      "A_CENTER": {
+        "analyzable": 312,
+        "fraction": 0.7090909090909091,
+        "planned": 440
+      },
+      "B_LOWER": {
+        "analyzable": 306,
+        "fraction": 0.6954545454545454,
+        "planned": 440
+      },
+      "C_CROSS": {
+        "analyzable": 319,
+        "fraction": 0.725,
+        "planned": 440
+      }
+    }
+  },
+  "global_metrics": {
+    "M1_SEQUENCE_ONLY": {
+      "mae": 0.03444324608012486,
+      "ndcg": 0.9840276371273506,
+      "pearson": 0.4947366237789492,
+      "spearman": 0.5240009914423334,
+      "top20_percent_recall": 0.39893617021276595
+    },
+    "M2_STRUCTURE_ONLY": {
+      "mae": 0.03364781745492316,
+      "ndcg": 0.9844259249699032,
+      "pearson": 0.5309515131023707,
+      "spearman": 0.5666828552068841,
+      "top20_percent_recall": 0.4574468085106383
+    }
+  },
+  "incomplete_reasons": {
+    "MISSING_VALID_SCORE_8X6B": 25,
+    "MISSING_VALID_SCORE_8X6B+9E6Y": 356,
+    "MISSING_VALID_SCORE_9E6Y": 2
+  },
+  "input_hashes": {
+    "metric_module": "a23cde3b21b37916e80bcab8ca5da0e18685388c3a414bb76673dd10b8b775e2",
+    "preregistration": "153a86688528a7431e0224b53f12e0f212d73846c386f66e609df1043b760f4d",
+    "sequence": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc",
+    "snapshot_receipt": "25aea48edbc35af0c2f99d1d83441493ddb2184d33fdd9f48653f722d6c894f7",
+    "structure": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a",
+    "teacher": "d11b3ce15a4a53f9d426cfb2451716fb26b7b2bf1f886b584153a9985082ae1e"
+  },
+  "model_or_threshold_changes_authorized": false,
+  "outputs": {
+    "per_parent": {
+      "path": "partial_preview_per_parent_v1.tsv",
+      "sha256": "233cc24d8079a16a4380282957e4ef05926921523b73c82b566bba2d79280454"
+    }
+  },
+  "paired_parent_group_bootstrap": {
+    "ci95_high": 0.09730304007699234,
+    "ci95_low": 0.014190175253301528,
+    "fraction_delta_gt_0": 0.9994,
+    "median_delta_spearman_M2_minus_M1": 0.04138001321976184,
+    "replicates": 5000,
+    "seed": 20260717
+  },
+  "parent_centered": {
+    "M1_SEQUENCE_ONLY_spearman": 0.13885114285725958,
+    "M2_STRUCTURE_ONLY_spearman": 0.19774686969529198
+  },
+  "partial_incomplete_rows": 383,
+  "per_parent_macro": {
+    "M1_mean": 0.11566334297212003,
+    "M1_median": 0.115054999447,
+    "M2_mean": 0.19950204964569998,
+    "M2_median": 0.1848206072375,
+    "parent_count": 10
+  },
+  "schema_version": "phase2_v4_h_partial_success_preview_evaluation_v1",
+  "selection_bias_warning": "Active job-order/success snapshot; coverage is not a random sample and most evidence is single-seed.",
+  "status": "COMPLETE_PARTIAL_SUCCESS_PREVIEW_EVALUATION_NOT_TERMINAL",
+  "terminal_evaluation_still_required": true
+}

@@ -1,0 +1,83 @@
+{
+  "balanced_portfolio": {
+    "per_parent_patch_mode_stratum": 2,
+    "roles": {
+      "CONSENSUS_HIGH": 66,
+      "SEQUENCE_FAVORED_DISAGREEMENT": 36,
+      "STRUCTURE_FAVORED_DISAGREEMENT": 30
+    },
+    "row_count": 132,
+    "selection_intent": "diagnostic coverage and future label-free portfolio review, not efficacy ranking"
+  },
+  "claim_boundary": "Label-free comparison of frozen OPEN_TRAIN sequence and monomer-structure surrogates for computational docking geometry R_dual_min; no V4-H docking result, pose, geometry label, binding, affinity, or experimental blocking truth.",
+  "design_mode_count": 2,
+  "input_hashes": {
+    "sequence_ranking": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc",
+    "structure_ranking": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+  },
+  "outputs": {
+    "balanced_portfolio": {
+      "path": "v4h_research1320_sequence_structure_balanced132_v1.tsv",
+      "sha256": "a700adc22920d28c9dcddfabb5512dd125a047c771a0c47cb2e8315f830ab842"
+    },
+    "disagreement_tails": {
+      "path": "v4h_research1320_sequence_structure_disagreement_tails_v1.tsv",
+      "sha256": "1c9a63f1e47e3eb8a61786245f53eff7f0549f8162df35bf25fb9c7b130643f6"
+    },
+    "parent_summary": {
+      "path": "v4h_research1320_sequence_structure_parent_summary_v1.tsv",
+      "sha256": "d1276797bac60dd561f5adbc77d320438e4bacd7a30198b8fa34939694e6e673"
+    }
+  },
+  "parent_count": 11,
+  "patch_count": 3,
+  "prediction_pearson": 0.8404131385173305,
+  "prediction_spearman": 0.7747058874783351,
+  "row_count": 1320,
+  "schema_version": "phase2_v4_h_research1320_sequence_structure_comparison_v1",
+  "sealed_boundary": {
+    "V4_F_test32_rows_accessed": 0,
+    "V4_H_docking_result_files_opened": 0,
+    "V4_H_geometry_labels_accessed": 0,
+    "V4_H_pose_files_opened": 0,
+    "V4_H_status_files_opened": 0,
+    "formal_or_prospective_authority": false
+  },
+  "status": "COMPLETE_LABEL_FREE_V4_H_SEQUENCE_STRUCTURE_SURROGATE_COMPARISON",
+  "top_overlap": {
+    "100": {
+      "jaccard": 0.639344262295082,
+      "overlap_count": 78,
+      "overlap_fraction_of_each_topN": 0.78,
+      "sequence_parent_counts": {
+        "C0283": 90,
+        "C0360": 10
+      },
+      "structure_parent_counts": {
+        "C0283": 100
+      }
+    },
+    "20": {
+      "jaccard": 0.17647058823529413,
+      "overlap_count": 6,
+      "overlap_fraction_of_each_topN": 0.3,
+      "sequence_parent_counts": {
+        "C0283": 20
+      },
+      "structure_parent_counts": {
+        "C0283": 20
+      }
+    },
+    "50": {
+      "jaccard": 0.42857142857142855,
+      "overlap_count": 30,
+      "overlap_fraction_of_each_topN": 0.6,
+      "sequence_parent_counts": {
+        "C0283": 50
+      },
+      "structure_parent_counts": {
+        "C0283": 50
+      }
+    }
+  }
+}

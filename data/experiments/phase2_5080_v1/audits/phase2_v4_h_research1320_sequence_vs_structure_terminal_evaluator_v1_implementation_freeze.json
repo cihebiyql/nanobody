@@ -1,0 +1,72 @@
+{
+  "claim_boundary": "Research-only evaluation against terminal computational docking geometry R_dual_min; not Docking Gold, binding probability, affinity, competition, experimental blocking, formal prospective validation, or final submission authority.",
+  "frozen_at_utc": "2026-07-17T11:18:26.218028+00:00",
+  "metrics": [
+    "global Spearman/Pearson/MAE/NDCG/Top20 recall for M1/M2",
+    "paired parent-group bootstrap M2-M1",
+    "per-parent Spearman macro mean/median",
+    "parent-centered Spearman",
+    "patch/mode Spearman",
+    "C0283 target distribution",
+    "balanced132 role metrics",
+    "technical incomplete census"
+  ],
+  "pinned_artifacts": {
+    "balanced132": {
+      "path": "experiments/phase2_5080_v1/reports/pvrig_v4_h_research1320_sequence_structure_comparison_v1/v4h_research1320_sequence_structure_balanced132_v1.tsv",
+      "sha256": "a700adc22920d28c9dcddfabb5512dd125a047c771a0c47cb2e8315f830ab842"
+    },
+    "evaluator": {
+      "path": "experiments/phase2_5080_v1/src/evaluate_phase2_v4_h_research1320_sequence_vs_structure_terminal_v1.py",
+      "sha256": "a23cde3b21b37916e80bcab8ca5da0e18685388c3a414bb76673dd10b8b775e2"
+    },
+    "preregistration": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_vs_structure_terminal_evaluation_v1_preregistration.json",
+      "sha256": "2bfd76ef451a8576077fe92ba5ef6fc82d053eeb46d79c35080ab762e3b080c8"
+    },
+    "sequence_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_sequence_surrogate_v1/v4h_research1320_sequence_surrogate_ranking_v1.tsv",
+      "sha256": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc"
+    },
+    "structure_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+      "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+    },
+    "tests": {
+      "path": "experiments/phase2_5080_v1/src/test_evaluate_phase2_v4_h_research1320_sequence_vs_structure_terminal_v1.py",
+      "sha256": "7c173101da59d6d160ad676ed9c89098e23f960ebaa0bbed1ba44ebf749361c2"
+    }
+  },
+  "prelabel_state": {
+    "V4_H_geometry_label_values_accessed": 0,
+    "V4_H_partial_teacher_opened": 0,
+    "aggregate_status_counts_seen": true,
+    "formal_pass_claim_permitted": false
+  },
+  "schema_version": "phase2_v4_h_research1320_sequence_vs_structure_terminal_evaluator_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_TERMINAL_TEACHER_UNSEAL",
+  "terminal_teacher_runtime_bindings": [
+    "teacher_sha256",
+    "terminal_receipt_sha256"
+  ],
+  "terminal_teacher_schema": [
+    "candidate_id",
+    "teacher_state",
+    "technical_incomplete_reason",
+    "R_dual_min"
+  ],
+  "verification": {
+    "normal_tests": {
+      "count": 3,
+      "status": "PASS"
+    },
+    "py_compile": "PASS",
+    "python_O_tests": {
+      "count": 3,
+      "status": "PASS"
+    },
+    "synthetic_no_imputation_gate": "PASS",
+    "synthetic_nonterminal_rejection": "PASS",
+    "synthetic_terminal_unseal": "PASS"
+  }
+}

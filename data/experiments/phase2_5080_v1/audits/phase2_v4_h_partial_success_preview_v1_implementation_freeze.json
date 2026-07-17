@@ -1,0 +1,52 @@
+{
+  "authority_effect": "Partial preview intentionally ends operator label blindness for V4-H. No model, threshold, feature, or terminal evaluator changes are authorized from this preview.",
+  "claim_boundary": "Partial active-campaign development preview only; not terminal teacher, Docking Gold, binding, affinity, competition, experimental blocking, formal validation, or final submission authority.",
+  "frozen_at_utc": "2026-07-17T11:41:46.685940+00:00",
+  "pinned_artifacts": {
+    "preregistration": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_partial_success_preview_v1_preregistration.json",
+      "sha256": "153a86688528a7431e0224b53f12e0f212d73846c386f66e609df1043b760f4d"
+    },
+    "preview_evaluator": {
+      "path": "experiments/phase2_5080_v1/src/evaluate_phase2_v4_h_partial_success_preview_v1.py",
+      "sha256": "ac0a9eace9065a28c72ab280f5770f3a7aee488ffdc94d7052d5d0a416caa6ba"
+    },
+    "preview_evaluator_tests": {
+      "path": "experiments/phase2_5080_v1/src/test_evaluate_phase2_v4_h_partial_success_preview_v1.py",
+      "sha256": "8c68049c2fa487634940e7eb32322311b16817c3eac9ac25f0dde5bdf3fe1c6d"
+    },
+    "sequence_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_sequence_surrogate_v1/v4h_research1320_sequence_surrogate_ranking_v1.tsv",
+      "sha256": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc"
+    },
+    "snapshot_builder": {
+      "path": "experiments/phase2_5080_v1/src/build_phase2_v4_h_partial_success_snapshot_v1.py",
+      "sha256": "8d6a053490b7a058bdca6981ed66fad7685e94e614e0454bf56ed16ccdfc786a"
+    },
+    "snapshot_tests": {
+      "path": "experiments/phase2_5080_v1/src/test_build_phase2_v4_h_partial_success_snapshot_v1.py",
+      "sha256": "10f1e468ae7272744853a988de0cce5542e924502df2f4f2d902f7f5662f9775"
+    },
+    "structure_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+      "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+    },
+    "terminal_metric_module": {
+      "path": "experiments/phase2_5080_v1/src/evaluate_phase2_v4_h_research1320_sequence_vs_structure_terminal_v1.py",
+      "sha256": "a23cde3b21b37916e80bcab8ca5da0e18685388c3a414bb76673dd10b8b775e2"
+    }
+  },
+  "runtime_bindings": [
+    "remote snapshot teacher SHA256",
+    "remote snapshot receipt SHA256"
+  ],
+  "schema_version": "phase2_v4_h_partial_success_preview_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_PARTIAL_GEOMETRY_OUTPUT_PULL",
+  "verification": {
+    "preview_evaluator_normal_tests": 3,
+    "preview_evaluator_python_O_tests": 3,
+    "py_compile": "PASS",
+    "snapshot_builder_normal_tests": 3,
+    "snapshot_builder_python_O_tests": 3
+  }
+}

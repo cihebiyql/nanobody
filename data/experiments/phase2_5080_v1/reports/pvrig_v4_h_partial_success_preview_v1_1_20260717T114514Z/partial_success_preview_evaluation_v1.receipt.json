@@ -1,0 +1,36 @@
+{
+  "analyzable_rows": 937,
+  "audit_sha256": "8e77e24e228cfa7fc4040b42a70414dba7fb8d0be18bc45527d3c465d186a65f",
+  "bootstrap": {
+    "ci95_high": 0.09730304007699234,
+    "ci95_low": 0.014190175253301528,
+    "fraction_delta_gt_0": 0.9994,
+    "median_delta_spearman_M2_minus_M1": 0.04138001321976184,
+    "replicates": 5000,
+    "seed": 20260717
+  },
+  "campaign_terminal": false,
+  "global_metrics": {
+    "M1_SEQUENCE_ONLY": {
+      "mae": 0.03444324608012486,
+      "ndcg": 0.9840276371273506,
+      "pearson": 0.4947366237789492,
+      "spearman": 0.5240009914423334,
+      "top20_percent_recall": 0.39893617021276595
+    },
+    "M2_STRUCTURE_ONLY": {
+      "mae": 0.03364781745492316,
+      "ndcg": 0.9844259249699032,
+      "pearson": 0.5309515131023707,
+      "spearman": 0.5666828552068841,
+      "top20_percent_recall": 0.4574468085106383
+    }
+  },
+  "parent_centered": {
+    "M1_SEQUENCE_ONLY_spearman": 0.13885114285725958,
+    "M2_STRUCTURE_ONLY_spearman": 0.19774686969529198
+  },
+  "partial_incomplete_rows": 383,
+  "status": "COMPLETE_PARTIAL_SUCCESS_PREVIEW_EVALUATION_NOT_TERMINAL",
+  "terminal_evaluation_still_required": true
+}

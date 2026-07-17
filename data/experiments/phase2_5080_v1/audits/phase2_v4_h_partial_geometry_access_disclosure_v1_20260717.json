@@ -1,0 +1,51 @@
+{
+  "artifacts": {
+    "M1_sequence_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_sequence_surrogate_v1/v4h_research1320_sequence_surrogate_ranking_v1.tsv",
+      "sha256": "a87d37d9edf130b2eb82e301746d52abee4a56fd7babf5bde4b5b0eefcc92fbc"
+    },
+    "M2_structure_ranking": {
+      "path": "experiments/phase2_5080_v1/predictions/pvrig_v4_h_research1320_structure_surrogate_v1/v4h_research1320_structure_surrogate_ranking_v1.tsv",
+      "sha256": "f864c675db2c9ec449e52a7debacdd283ff5d404f40b6abfbd9cb0ef3e6b9d5a"
+    },
+    "partial_evaluation_audit": {
+      "path": "experiments/phase2_5080_v1/reports/pvrig_v4_h_partial_success_preview_v1_1_20260717T114514Z/partial_success_preview_evaluation_v1.audit.json",
+      "sha256": "8e77e24e228cfa7fc4040b42a70414dba7fb8d0be18bc45527d3c465d186a65f"
+    },
+    "partial_snapshot_receipt": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_partial_success_snapshot_v1_1_20260717T114514Z/partial_success_snapshot_v1_1.receipt.json",
+      "sha256": "25aea48edbc35af0c2f99d1d83441493ddb2184d33fdd9f48653f722d6c894f7"
+    },
+    "partial_teacher": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_partial_success_snapshot_v1_1_20260717T114514Z/partial_candidate_teacher_snapshot_v1_1.tsv",
+      "sha256": "d11b3ce15a4a53f9d426cfb2451716fb26b7b2bf1f886b584153a9985082ae1e"
+    },
+    "terminal_evaluator_freeze": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_sequence_vs_structure_terminal_evaluator_v1_implementation_freeze.json",
+      "sha256": "7c7b15171f2922e7f2de4edb6868930ae6525968b91e4947b55368a22dea2759"
+    },
+    "terminal_teacher_adapter_freeze": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_h_research1320_terminal_teacher_v1_implementation_freeze.json",
+      "sha256": "bdf63f163d51408bd510331da5a26b3fbf2e3c17d324da3b6a0357f887bdfa43"
+    }
+  },
+  "authority_effect": "The operator is no longer V4-H geometry-label-blind. The already frozen terminal evaluator and teacher adapter remain byte-identical, but final terminal results are research confirmation rather than untouched prospective evidence.",
+  "claim_boundary": "Partial active-campaign development preview only; not terminal teacher, Docking Gold, binding, affinity, competition, experimental blocking, formal validation, or final submission authority.",
+  "forbidden_reactions": [
+    "do not change M1/M2 fits",
+    "do not change structure features",
+    "do not change scorer thresholds",
+    "do not exclude difficult parents based on preview",
+    "do not call preview terminal teacher or Docking Gold"
+  ],
+  "recorded_at_utc": "2026-07-17T11:55:12.526017+00:00",
+  "schema_version": "phase2_v4_h_partial_geometry_access_disclosure_v1",
+  "snapshot_counts": {
+    "partial_analyzable_candidates": 937,
+    "partial_incomplete_candidates": 383,
+    "score_invalid_jobs": 22,
+    "score_valid_jobs": 1901,
+    "successful_jobs_captured": 1923
+  },
+  "status": "DISCLOSED_PARTIAL_V4_H_GEOMETRY_ACCESS_BY_EXPLICIT_USER_REQUEST"
+}
