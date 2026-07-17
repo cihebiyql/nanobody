@@ -1,0 +1,27 @@
+{
+  "claim_boundary": "Administrative local-mirror reconciliation only; does not add Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold evidence.",
+  "governance": {
+    "current_remote_run_may_continue": true,
+    "future_action": "Do not rerun the frozen test against canonical paths; a new version must isolate builder outputs in a temporary directory before any new freeze.",
+    "prelaunch_review_wording": "Historical zero-work evidence and runtime integrity passed; independent final review completed after scientific launch."
+  },
+  "incident": {
+    "detected_local_drift_sha256": "fdf9da80083a885189f84985216df09dd36a286a637772109af0aacb2c97cc1b",
+    "node1_runtime_modified": false,
+    "remote_frozen_package_modified": false,
+    "root_cause": "Post-freeze test invocation called the package builder, which regenerated the canonical local preregistration timestamp.",
+    "scientific_effect": "none",
+    "threshold_or_candidate_change": false
+  },
+  "recorded_at_utc": "2026-07-16T19:34:28.007440+00:00",
+  "restoration": {
+    "byte_identical": true,
+    "destination": "audits/phase2_v4_h_qc96_h0_h3_v1_preregistration.json",
+    "destination_mode": "0444",
+    "freeze_expected_sha256": "fc7aa149eedcf11a23484b152dc6431672cdf8a0787396958004c2ffa88a612d",
+    "restored_sha256": "fc7aa149eedcf11a23484b152dc6431672cdf8a0787396958004c2ffa88a612d",
+    "source": "prepared/pvrig_v4_h_qc96_h0_h3_v1/PREREGISTRATION.json"
+  },
+  "schema_version": "phase2_v4_h_qc96_h0_h3_local_prereg_mirror_reconciliation_v1",
+  "status": "PASS_LOCAL_MIRROR_RESTORED_TO_FROZEN_BYTES"
+}

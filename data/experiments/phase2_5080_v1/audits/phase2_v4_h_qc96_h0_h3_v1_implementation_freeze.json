@@ -1,0 +1,65 @@
+{
+  "claim_boundary": "V4-H-QC96 is a label-free QC-qualified prospective computational holdout protocol; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "command_timeouts_seconds": {
+    "helper": 600,
+    "nanobodybuilder2": 3600,
+    "proteinmpnn": 7200,
+    "rfdiffusion": 21600
+  },
+  "frozen_at_utc": "2026-07-16T19:27:12.695756+00:00",
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "model_scores_or_predictions": 0,
+    "v4_d_test32": 0,
+    "v4_f_labels": 0
+  },
+  "package_hashes": {
+    "H0_BUILD_AUDIT.json": "68f2c52dad997590ae8951e677c7bf6318fa39922c27df1379db559508d25ed7",
+    "PREREGISTRATION.json": "fc7aa149eedcf11a23484b152dc6431672cdf8a0787396958004c2ffa88a612d",
+    "TEST_RESULTS.log": "08dc97e7c238277f2e827ded14ee61e254a83485d8aa75d3769c8b8a7b870308",
+    "config/generation_config.json": "4ae7e1a4536dd09e842dd0cc8a678b4f080d04b63b42151fbeb4c5e7feb971c6",
+    "inputs/pvrig_8x6b_chainT.pdb": "a3451fb6a2e2659971826e7ce4a7e774378dc377ea5eee4dd70a148c7dbc2d17",
+    "manifests/excluded_candidate_sequence_sha256.tsv": "abe7e9c17f024c708913c50ec156636a06332e60e36b548f3d4622c373776208",
+    "manifests/generation_tasks.tsv": "c454a8cf692546fa67f6987bbc5f9f80a2f1c26a681ec2faea0ea247d57e8cb9",
+    "manifests/parent12_anarci_imgt_v1_H.csv": "b8d80653e52f9c8008328f77df5a519a698c5094c105f59f3faa29dcd20e76ca",
+    "manifests/parent12_queue.tsv": "5ec6a594897001e3832c7f1823d54f6d8112f1a82a997436cfce89672662940d",
+    "scripts/make_rfantibody_hlt_framework.py": "af802926f53ab5ef07ac2923d1f7fcf8225da6a2d945f93a0642764e57feed99",
+    "scripts/monitor_resources.sh": "98acf096043633ea7bcbb77bdb5de1489b02ca7bc0255f36110113d41aa083cf",
+    "scripts/normalize_pdb_chain.py": "80a78cac5c226558a452487da53a97f05fd52dff38937793241699b50e19d6c8",
+    "scripts/pdb_geometry_qc.py": "bcef3c28719fa02eb029960c8b791f6d5596fd7d11ae116d4d725951079a05d0",
+    "scripts/run_h0_h4_pipeline.sh": "e4e83fc5223df9a1ac53d63fcbd25fa4a783716218474d6cebaa4b48bb5777e4",
+    "scripts/run_phase2_v4_h_qc96_generation_node1.py": "40fc8f135058fe77a6c268f3f8dfd422ad7eee2d5649bbcbcd3901ba6c1aa10a",
+    "scripts/run_phase2_v4_h_qc96_qc_node1.py": "f77af186ee548e68712b0e17efb634478add89582c825cadfe5f5cb0d4c67b89",
+    "scripts/validate_pdb_sequence.py": "57798383caea22223a89756f0064c6c149439a27b0043fd820605623de400796"
+  },
+  "parent_queue_sha256": "5ec6a594897001e3832c7f1823d54f6d8112f1a82a997436cfce89672662940d",
+  "preregistration_sha256": "fc7aa149eedcf11a23484b152dc6431672cdf8a0787396958004c2ffa88a612d",
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "resource_policy": {
+    "cpu_sets": [
+      "0-7",
+      "8-15",
+      "16-23",
+      "24-31"
+    ],
+    "gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "minimum_free_disk_bytes": 107374182400,
+    "minimum_node_cpu_count": 32
+  },
+  "schema_version": "phase2_v4_h_qc96_h0_h3_implementation_freeze_v1",
+  "source_hashes": {
+    "build_phase2_v4_h_qc96_h0_h3_package.py": "4e5586cc6da65b1155ec0b3a294a0269938ee3de0091456c895dd35534101737",
+    "run_phase2_v4_h_qc96_generation_node1.py": "40fc8f135058fe77a6c268f3f8dfd422ad7eee2d5649bbcbcd3901ba6c1aa10a",
+    "run_phase2_v4_h_qc96_qc_node1.py": "f77af186ee548e68712b0e17efb634478add89582c825cadfe5f5cb0d4c67b89",
+    "test_phase2_v4_h_qc96_h0_h3_package.py": "111b9185ea31ab1afa6339dc75f9597e110ae13bfe35af97e68b627ae3210a2a"
+  },
+  "status": "FROZEN_BEFORE_ANY_REAL_GENERATION",
+  "test_count": 20,
+  "test_log_sha256": "08dc97e7c238277f2e827ded14ee61e254a83485d8aa75d3769c8b8a7b870308"
+}

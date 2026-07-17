@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "gate_id": "p2_p3_p4_frozen_panel_internal_enrichment_v1",
+  "description": "Pre-registered internal enrichment gate for P2/P3/P4 candidates after EVALUATOR_STABLE PASS.",
+  "inference_scope": "frozen_panel_internal_enrichment_not_external_validation",
+  "inputs": {
+    "candidates": "inputs/candidates_128.tsv",
+    "job_results": "reports/job_results.tsv",
+    "pose_scores": "reports/pose_scores.tsv",
+    "evaluator": "reports/EVALUATOR_STABLE.json",
+    "protocol_core_lock": "PROTOCOL_CORE_LOCK.json",
+    "protocol_lock": "PROTOCOL_LOCK.json",
+    "job_manifest": "manifests/docking_jobs.tsv"
+  },
+  "outputs": {
+    "json": "reports/P2_P3_P4_ENRICHMENT.json",
+    "tsv": "reports/p2_p3_p4_enrichment.tsv"
+  },
+  "phases": {
+    "targets": ["P2", "P3", "P4"],
+    "comparator_pool": ["P1", "P5", "P6"]
+  },
+  "panel_contract": {
+    "expected_candidate_count": 128,
+    "expected_phase_counts": {
+      "P1": 22,
+      "P2": 21,
+      "P3": 24,
+      "P4": 23,
+      "P5": 23,
+      "P6": 15
+    }
+  },
+  "robust_a_definition": {
+    "minimum_successful_seeds_per_conformation": 2,
+    "minimum_supporting_a_a_seeds_per_conformation": 2,
+    "minimum_pose_models_per_supporting_seed": 4,
+    "model_pair_consensus_fraction_min": 0.75,
+    "model_strict_a_fraction_min": 0.5
+  },
+  "thresholds": {
+    "minimum_phase_n": 15,
+    "minimum_comparator_n": 30,
+    "minimum_coverage_fraction": 0.9,
+    "minimum_target_robust_a_rate": 0.2,
+    "minimum_risk_difference": 0.1,
+    "minimum_risk_ratio": 1.5,
+    "maximum_holm_adjusted_p": 0.1
+  },
+  "statistics": {
+    "confidence_level": 0.95,
+    "fisher_exact_alternative": "greater",
+    "multiple_testing_correction": "Holm over P2/P3/P4"
+  }
+}

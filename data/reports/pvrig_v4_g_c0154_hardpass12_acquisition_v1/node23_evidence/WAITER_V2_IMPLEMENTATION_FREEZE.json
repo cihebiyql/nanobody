@@ -1,0 +1,12 @@
+{
+  "acquisition_protocol_lock_sha256": "7096c1b0970ae7010d247c84322428d7cdce69aa9203e23296e2d33b5b5beda8",
+  "created_at_utc": "2026-07-16T16:46:13.235225+00:00",
+  "open_teacher_release_verifier_sha256": "f4ff29e2ba1cadd6c120ba982fe253471d9f06738e60f257bfc892202d6b755a",
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_waiter_v2_implementation_freeze",
+  "status": "FROZEN_BEFORE_V2_WAITER_START",
+  "test32_boundary": "hash-and-metadata verification only; teacher TSV rows are never parsed by the waiter verifier",
+  "waiter_trust_anchor_v2_sha256": "7144e6a6adc0fa72e13c9a4f6edb4bde3913281bdea64e70cd18e2e58d9a4e3b",
+  "waiter_upgrade_receipt_sha256": "3dbfb6855d328f4a103f78f738751b664a56d3d8b24be2a1fa53a539e5af60cd",
+  "waiter_v2_sha256": "c7f7d2c62d23e62a5d93af6b89139c94b576e7c95a16b560e3e12fd90cf148a3",
+  "waiter_v2_test_sha256": "c7b5d0ea89149261c33500beca637732ca5c83d70830f135d4f0542c24279c26"
+}

@@ -1,0 +1,80 @@
+{
+  "claim_boundary": "acquisition_only_computational_monomer_and_independent_dual_receptor_docking_evidence;not_binding_affinity_competition_experimental_blocking_or_docking_gold",
+  "docking_acquisition": {
+    "candidate_count": 12,
+    "expected_jobs": 72,
+    "flexref_tolerance": 10,
+    "launch_gate": "only after source V4-D controller is terminal and node23 load1 allows",
+    "ncores_per_job": 4,
+    "npart": 2,
+    "post_docking_use": "labels remain sealed from acquisition selector; downstream evaluator is separate",
+    "randremoval": true,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "rigidbody_tolerance": 5,
+    "sampling": 40,
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "seletop_select": 10,
+    "seletopclusts_top_models": 4,
+    "source_protocol_core_lock_file_sha256": "767117dc2c506cfdfc83fce8e12931514d268941348d69a9abbda5a6500bdd24",
+    "source_protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+    "source_protocol_id": "pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "source_protocol_lock_file_sha256": "56ef539cb54a1aba8e665ec5d62b3653088e2289e371d8fa5bbadbc725c1d574",
+    "source_protocol_lock_sha256": "a24eaf37730bc569067d64cdc1a43a763b70878d13d50e804bf3000ce43f5e84"
+  },
+  "frozen_at_utc": "2026-07-16T16:24:36.634383+00:00",
+  "frozen_inputs": {
+    "full_merged_path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716/outputs/full_merged.tsv",
+    "full_merged_sha256": "f6b0ca1d3de522f6cc3269d498bcd89cd40e73576b81d16291bd81f49b7d6962",
+    "hardpass12_fasta_sha256": "18a940163635bb52077bee0916f4afa910386ccd6e3b526eef9b2083bf1ecfc1",
+    "hardpass12_manifest_sha256": "bd7da905bfc6e1131b711817be92cedbaaedcb87d38975e3ff50d055a597a43e",
+    "preparation_script_sha256": "46a812f6adaf93c424b5b6c47fccfa570c6e734ddc7bc62ce27e9c78400f3072",
+    "recovery_receipt_path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716/status/recovery.complete.json",
+    "recovery_receipt_sha256": "7b2786274045a45d7b487fa7b9cc4e14d7a2e6215e2cb6286d950e2b9632f356",
+    "unseen96_acquisition_manifest_sha256": "e814103ee90831e33b3f04a7e8a477e68695d61401d96732b7e95829b1bd306f"
+  },
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_acquisition_preregistration_v1",
+  "selection": {
+    "candidate_count": 12,
+    "candidate_ids": [
+      "RFV1__PLDNANO_VHH_00220__A_CENTER__H1H3__B02__M01",
+      "RFV1__PLDNANO_VHH_00220__A_CENTER__H1H3__B03__M00",
+      "RFV1__PLDNANO_VHH_00220__A_CENTER__H3__B08__M01",
+      "RFV1__PLDNANO_VHH_00220__A_CENTER__H3__B08__M02",
+      "RFV1__PLDNANO_VHH_00220__B_LOWER__H1H3__B06__M00",
+      "RFV1__PLDNANO_VHH_00220__B_LOWER__H1H3__B07__M01",
+      "RFV1__PLDNANO_VHH_00220__B_LOWER__H3__B01__M01",
+      "RFV1__PLDNANO_VHH_00220__B_LOWER__H3__B04__M01",
+      "RFV1__PLDNANO_VHH_00220__C_CROSS__H1H3__B04__M00",
+      "RFV1__PLDNANO_VHH_00220__C_CROSS__H1H3__B08__M01",
+      "RFV1__PLDNANO_VHH_00220__C_CROSS__H3__B00__M00",
+      "RFV1__PLDNANO_VHH_00220__C_CROSS__H3__B04__M00"
+    ],
+    "docking_or_geometry_access_at_selection": "PROHIBITED_AND_NOT_USED",
+    "model_score_access": "PROHIBITED_AND_NOT_USED",
+    "parent_framework_cluster": "C0154",
+    "parent_id": "PLDNANO_VHH_00220",
+    "replacement_policy": "NO_REPLACEMENT",
+    "rule": "select every and only full_merged.tsv row where hard_fail is False"
+  },
+  "status": "FROZEN_BEFORE_STRUCTURE_OR_DOCKING_ACQUISITION",
+  "structure_acquisition": {
+    "crosscheck_only": "IgFold one model; cannot replace candidates or select docking inputs",
+    "gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "max_parallel": 4,
+    "node1_ssd_only": true,
+    "primary": "NanoBodyBuilder2 normalized to chain A; used for docking",
+    "threads_per_nbb2": 8
+  }
+}

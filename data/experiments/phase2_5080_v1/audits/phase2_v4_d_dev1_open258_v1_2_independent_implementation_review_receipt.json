@@ -1,0 +1,232 @@
+{
+  "claim_boundary": "Implementation review for a post-hoc development-only sequence-to-independent-dual-docking continuous computational geometry teacher. Not a V4-D pass, formal test, Docking Gold, binding, affinity, competition, experimental blocking, final submission authority, or teacher-release receipt.",
+  "decision": {
+    "blocking_findings": [],
+    "final_submission_authority": false,
+    "formal_v4_f_unlock_eligible": false,
+    "implementation_bytes_approved_for_separate_launch_freeze": true,
+    "independent_implementation_review_status": "PASS",
+    "recommended_next_action": "Create a separate launch-authorized freeze binding this exact receipt and exact V2 candidate-freeze bytes, then permit one fail-closed Node23 runtime attempt.",
+    "remote_execution_authorized": false,
+    "teacher_materialization_authorized_by_this_receipt": false,
+    "teacher_release_approved": false
+  },
+  "immutable_failure_lineage": {
+    "formal_v4_d_status": "FAIL",
+    "formal_v4_d_unlockable": false,
+    "old_failure_statuses_reinterpreted": false,
+    "old_release_absence_evidence_source": "Immutable local V1 and V1.1 failure receipts; this reviewer performed no remote reinspection.",
+    "source_failed_gate": "candidate_threshold_sensitivity",
+    "v1_1_status": "FAILED_CLOSED_NATIVE_OVERLAY_RMSD_ABOVE_1A",
+    "v1_status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB"
+  },
+  "independent_verification": {
+    "bash_n": {
+      "command": "bash -n <node23_launcher>",
+      "status": "PASS"
+    },
+    "candidate_freeze_all_file_bindings_recomputed": "PASS",
+    "canonical_invalid_projection": {
+      "row_count": 99,
+      "sha256": "941d5010190c6576ee0961681227d5b9b1ce9a719cc63ae5c25a45b0f8de9c1f",
+      "status": "PASS"
+    },
+    "normal_unittest": {
+      "command": "python3 -m unittest -v experiments/phase2_5080_v1/src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "count": 24,
+      "status": "PASS"
+    },
+    "optimized_unittest": {
+      "command": "python3 -O -m unittest -v experiments/phase2_5080_v1/src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "count": 24,
+      "status": "PASS"
+    },
+    "production_raw_files_opened": 0,
+    "production_shaped_synthetic_replay": {
+      "affected_candidates": 83,
+      "affected_jobs": 98,
+      "complete_pairs_after": 14391,
+      "complete_pairs_before": 14490,
+      "deterministic": true,
+      "finite_descriptive_json": true,
+      "invalid_pairs": 99,
+      "status": "PASS",
+      "teacher_shape_rows": 258
+    },
+    "py_compile": {
+      "command": "python3 -m py_compile <builder> <tests>",
+      "status": "PASS"
+    },
+    "real_production_raw_replay_performed": false,
+    "ssh_or_remote_access_performed": false
+  },
+  "mandatory_implementation_review": {
+    "all_emitted_numeric_teacher_targets_have_an_explicit_finite_gate": "PASS",
+    "atomic_sibling_staging_fsync_publish_and_cleanup_are_enforced": "PASS",
+    "canonical_99_pair_identity_is_recomputed_from_raw_not_trusted_from_clarification_flags": "PASS",
+    "exact_open_258_candidate_by_two_conformation_by_three_seed_grid_precedes_raw": "PASS",
+    "filter_precedes_classification_sorting_rank_weights_utility_and_aggregation": "PASS",
+    "full_290_split_validation_and_open_only_selection_precede_raw_path_construction": "PASS",
+    "generic_prior_is_bound_and_parsed_before_raw_path_construction": "PASS",
+    "governance_code_and_label_free_prior_hashes_are_verified_before_raw_path_construction": "PASS",
+    "invalid_pair_count_is_not_exposed_as_a_teacher_feature": "PASS",
+    "launcher_requires_a_future_separate_authorized_freeze_and_exact_frozen_input_bytes": "PASS",
+    "minimum_four_retained_pairs_and_two_successful_seeds_per_candidate_conformation_are_enforced": "PASS",
+    "model_count_reliability_is_recomputed_from_filtered_pair_count": "PASS",
+    "native_overlay_rmsd_strictly_greater_than_1A_drops_both_reference_rows": "PASS",
+    "nonfinite_wrong_native_missing_duplicate_and_partial_pair_inputs_fail_closed": "PASS",
+    "post_preregistration_root_cause_artifact_is_not_a_builder_input": "PASS",
+    "raw_result_sha256_chain_is_exactly_frozen": "PASS_CODE_AND_NEGATIVE_TEST_PRODUCTION_VALUE_PENDING",
+    "raw_success_files_use_dirfd_o_nofollow_and_immutable_snapshot_checks": "PASS",
+    "required_descriptive_sensitivity_outputs_are_materialized_in_audit": "PASS",
+    "retained_pairs_are_resorted_by_native_haddock_score_then_model_and_rank_weights_renormalized": "PASS",
+    "root_cause_language_is_separate_corroboration_and_not_universal_for_all_99_pairs": "PASS",
+    "sealed_test32_result_paths_are_not_constructed_listed_or_globbed": "PASS_STATIC_AND_INSTRUMENTED_UNIT_TEST",
+    "single_terminal_fallback_only_and_second_nonsuccess_is_rejected": "PASS",
+    "two_reference_cardinality_is_independently_enforced_for_every_model": "PASS",
+    "v1_and_v1_1_bytes_statuses_and_failure_receipts_remain_immutable": "PASS"
+  },
+  "production_runtime_gates_remaining": {
+    "affected_candidate_count": 83,
+    "affected_job_count": 98,
+    "all_numeric_targets_finite": true,
+    "complete_pair_count_after_filter": 14391,
+    "complete_pair_count_before_filter": 14490,
+    "failure_behavior": "Any mismatch must remain a terminal V1.2 fail-closed runtime with no release; thresholds, identities, formulas, and predecessor statuses may not be changed.",
+    "invalid_pair_count": 99,
+    "minimum_retained_complete_pairs_per_success_job": 4,
+    "minimum_successful_seeds_per_candidate_conformation": 2,
+    "raw_result_sha256_chain": "202d06e1ee689167427abdebcb85705e20ee867aacda31bef5211a35d44d9301",
+    "raw_success_job_count": 1547,
+    "release_audit_archive_and_checksum_closure_required": true,
+    "single_authorized_launch_required": true,
+    "split_counts": {
+      "OPEN_DEVELOPMENT": 32,
+      "OPEN_TRAIN": 226
+    },
+    "teacher_rows": 258
+  },
+  "review_access_accounting": {
+    "local_only": true,
+    "production_raw_files_opened": 0,
+    "remote_access_count": 0,
+    "remote_files_modified": 0,
+    "remote_files_opened": 0,
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0,
+    "workspace_files_modified_by_reviewer_other_than_this_receipt": 0
+  },
+  "review_scope": "Independent local-only review of exact V1.2 implementation-freeze V2 bytes, governance, launcher, and tests before any launch-authorized freeze. The reviewer did not modify implementation files.",
+  "reviewed_at_utc": "2026-07-17T01:55:39.062560+00:00",
+  "reviewed_bindings": {
+    "audits/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json",
+      "sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7",
+      "size_bytes": 8809
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+      "size_bytes": 2895
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_candidate_freeze_v1_supersession_receipt.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_candidate_freeze_v1_supersession_receipt.json",
+      "sha256": "47d5c7329a8767475be6025e1479ae60f155acb9513ba01b0c4332b64f85d981",
+      "size_bytes": 1047
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json",
+      "sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039",
+      "size_bytes": 6584
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate_v1_superseded_preproduction.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate_v1_superseded_preproduction.json",
+      "sha256": "479f2ab1a07de69d8da5e46f0f449d7f6f11c973932ec1fc25839737f4eb0b6c",
+      "size_bytes": 6153
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json",
+      "sha256": "1fb8f1bdfdf8f8869cc1c80a477a1e1f4f74246c555925be4fa1c1ebc380b918",
+      "size_bytes": 1495
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+      "sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1",
+      "size_bytes": 7535
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log",
+      "sha256": "0e943ac88732b2e7a0e476359a10ed5747e3fb24e042487761f965d99a1450af",
+      "size_bytes": 8540
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_2_preregistration_independent_review_receipt_v2.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_preregistration_independent_review_receipt_v2.json",
+      "sha256": "ca653df18e8cdf5d5b5451e128ffc87fcbd2ccdb8b5a39f53deb0330acd796c8",
+      "size_bytes": 13539
+    },
+    "audits/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720",
+      "size_bytes": 2000
+    },
+    "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json": {
+      "path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+      "size_bytes": 117386
+    },
+    "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json": {
+      "path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json",
+      "sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f",
+      "size_bytes": 5652
+    },
+    "src/prepare_phase2_v4_d_dev1_open258.py": {
+      "path": "src/prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276",
+      "size_bytes": 27225
+    },
+    "src/prepare_phase2_v4_d_dev1_open258_v1_1.py": {
+      "path": "src/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+      "size_bytes": 23777
+    },
+    "src/prepare_phase2_v4_d_dev1_open258_v1_2.py": {
+      "path": "src/prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "872bee4bf27b894244f14b31f43b03f877a1cff89a084f6272c0cbccd026ba9b",
+      "size_bytes": 53780
+    },
+    "src/prepare_phase2_v4_d_open_teacher.py": {
+      "path": "src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+      "size_bytes": 37344
+    },
+    "src/run_phase2_v4_d_dev1_open258_v1_2_node23.sh": {
+      "path": "src/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+      "sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae",
+      "size_bytes": 7138
+    },
+    "src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py": {
+      "path": "src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "dbf9e4c732cdd13f158d316805b4a89a0bdf774b2c31af5217528bfa5a08cbc1",
+      "size_bytes": 32439
+    }
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_independent_implementation_review_receipt_v1",
+  "sealed_boundary": {
+    "candidate_rows": 32,
+    "model_split": "PROSPECTIVE_COMPUTATIONAL_TEST",
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0
+  },
+  "status": "PASS_INDEPENDENT_IMPLEMENTATION_REVIEW_AWAITING_SEPARATE_LAUNCH_AUTHORIZED_FREEZE",
+  "supersession_review": {
+    "replacement_candidate_sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039",
+    "superseded_candidate_sha256": "479f2ab1a07de69d8da5e46f0f449d7f6f11c973932ec1fc25839737f4eb0b6c",
+    "superseded_candidate_was_launch_authorized": false,
+    "supersession_receipt_sha256": "47d5c7329a8767475be6025e1479ae60f155acb9513ba01b0c4332b64f85d981",
+    "supersession_status": "PASS_PREPRODUCTION_SUPERSESSION_CLOSED"
+  }
+}

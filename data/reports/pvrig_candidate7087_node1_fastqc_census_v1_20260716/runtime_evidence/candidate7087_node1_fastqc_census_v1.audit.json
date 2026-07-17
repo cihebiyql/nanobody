@@ -1,0 +1,31 @@
+{
+  "candidate_count": 7087,
+  "claim_boundary": "This census is sequence/developability QC only. It is not docking geometry, binding, affinity, competition, experimental blocking, model correctness, or a teacher label.",
+  "fast_hard_fail_count": 2509,
+  "fast_hard_pass_count": 4578,
+  "insufficient_parent_count": 11,
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "model_score": 0,
+    "v4_d_geometry": 0,
+    "v4_f_labels": 0
+  },
+  "outputs": {
+    "candidate7087_node1_fastqc_census_v1.tsv": "33c657fa26b3348d46fb22ebea453398b81d8fd762765668a1ca6c5dd3e16855",
+    "fast_chunk_status.tsv": "7d25595d258cc2c821995c12e8f7b2055efc6b6c1e2e39ee54e5630e8fc54d87",
+    "parent40_node1_fastqc_capacity_v1.tsv": "b7d77acfc447bf61c4470818a92505bee9c8f405c2c8538c80a1bec953f9d71d"
+  },
+  "parent_count": 40,
+  "preregistration_sha256": "0112cd909702d85f760ebef92b7bc1ab5db83705c5c8546e45cdfe21b08c175b",
+  "ready_parent_count": 29,
+  "resource_policy": {
+    "chunk_jobs": 16,
+    "gpu_count": 0,
+    "maximum_cpu_workers": 32,
+    "workers_per_chunk": 2
+  },
+  "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+  "schema_version": "candidate7087_node1_fastqc_census_audit_v1",
+  "status": "PASS_7087_FAST_QC_CENSUS_AUDIT"
+}

@@ -1,0 +1,41 @@
+{
+  "abnativ_nonempty": 720,
+  "audited_at_utc": "2026-07-16T17:26:00.104812+00:00",
+  "claim_boundary": "Independent verification of sequence/developability Full-QC execution only; no Docking, binding, affinity, competition, blocking, or biological teacher claim.",
+  "fast_hard_pass": 720,
+  "fast_rows": 720,
+  "full_chunk_count": 16,
+  "full_commands_forbidden_nfs_prefix": 0,
+  "full_commands_large_scale_fast": 0,
+  "full_commands_skip_tnp": 16,
+  "full_hard_pass": 720,
+  "full_rows": 720,
+  "full_stage_timing_seconds": {
+    "official_validator_max": 21.551,
+    "official_validator_median": 21.34,
+    "official_validator_min": 21.232,
+    "vhh_screen_max": 14.561,
+    "vhh_screen_median": 14.2555,
+    "vhh_screen_min": 12.986
+  },
+  "gpu_requested": 0,
+  "input_rows": 720,
+  "numbering_json_files": 16,
+  "official_validator_pass": 720,
+  "output_sha256": {
+    "fast_merged.tsv": "e2294a8dfb8034294f5a01f51dfea54b7374d1f30484ea5bbae0821d0a07f5d7",
+    "full_merged.tsv": "c35ffb8848172c2aa86885360dc963498f241023259271ec5c6638fa1200fa90",
+    "full_qc_terminal_summary.json": "4b2cdd48b2b459b19bc3514e5ebad11be6e43045d30d502b7e76773905c7792d"
+  },
+  "reason_summary_counts": {
+    "developability_warn": 403,
+    "hydrophobic_run": 164,
+    "not_vhh_like": 70,
+    "not_vhh_like;hydrophobic_run": 38,
+    "novelty_borderline": 37,
+    "score_review": 8
+  },
+  "sapiens_rows": 720,
+  "schema_version": "phase2_support_v4_a_acquisition720_full_qc_independent_terminal_audit_v1",
+  "status": "PASS_INDEPENDENT_720_FULL_QC_TERMINAL_CLOSURE"
+}

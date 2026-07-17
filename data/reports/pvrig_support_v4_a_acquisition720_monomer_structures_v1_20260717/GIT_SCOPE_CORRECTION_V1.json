@@ -1,0 +1,24 @@
+{
+  "claim_boundary": "Git publication scope only; no sequence QC, structure, docking, binding, affinity, competition, blocking, or biological result is changed.",
+  "manifest": {
+    "git_allowlisted": false,
+    "local_file_deleted": false,
+    "path": "reports/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/node1_evidence/inputs/support_v4a720_structure_manifest.tsv",
+    "rows": 720,
+    "sha256": "aad4d7aebf8cf7724c59b7b186ab8183d5e50016048dd16f0a0637d57dfc2961",
+    "size_bytes": 404179,
+    "unique_candidate_ids": 720,
+    "unique_sequences": 720
+  },
+  "reason": "The frozen local structure manifest contains full VHH sequences for all 720 candidates. It is necessary for local/remote reproducibility but is not necessary in the lightweight Git mirror.",
+  "replacement_reproducibility_evidence": {
+    "manifest_hash_remains_bound": true,
+    "preregistration_path": "node1_evidence/PREREGISTRATION.json",
+    "startup_receipt_path": "node1_evidence/audit/STARTUP_RUNTIME_RECEIPT.json"
+  },
+  "schema_version": "pvrig_support_v4a720_monomer_git_scope_correction_v1",
+  "scientific_outputs_unchanged": true,
+  "severity": "MEDIUM_PREPUBLICATION_SCOPE_CORRECTION",
+  "status": "PASS_RAW_720_SEQUENCE_MANIFEST_REMOVED_FROM_GIT_ALLOWLIST",
+  "supersedes_readme_suggestion": "The README allowlist suggestion for node1_evidence/inputs/support_v4a720_structure_manifest.tsv is withdrawn. The original README bytes and startup SHA256SUMS are preserved."
+}

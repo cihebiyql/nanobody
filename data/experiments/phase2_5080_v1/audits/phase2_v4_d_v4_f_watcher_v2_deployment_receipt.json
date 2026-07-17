@@ -1,0 +1,94 @@
+{
+  "claim_boundary": "Watchers are deployed and waiting only. No teacher-derived training, V4-F prediction, binding claim, docking label, or experimental label is present in this receipt.",
+  "created_at": "2026-07-16T17:40:52.660902+00:00",
+  "label_access": {
+    "prospective_test_label_paths_accepted": 0,
+    "prospective_test_labels_read": false,
+    "v4_f_label_paths_accepted": 0,
+    "v4_f_labels_read": false
+  },
+  "schema_version": "phase2_v4_d_v4_f_watcher_v2_deployment_receipt_v1",
+  "status": "PASS_V2_WATCHERS_RUNNING_FAIL_CLOSED_WAITING",
+  "surrogate": {
+    "implementation_freeze_receipt": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_surrogate_training_v2_implementation_freeze.receipt.json",
+      "sha256": "cebc57c7554eb4893fdfc457f015643d62036665631491bd8ff52dbcceda674f",
+      "size_bytes": 910
+    },
+    "launcher_receipt": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/status/pvrig_v4_d_surrogate_training_v2/launcher_receipt.json",
+      "sha256": "2365e21d41ba0b1e1396ecaa3db29b58820485deb4ed82727e320c702f12fd50",
+      "size_bytes": 953
+    },
+    "process": {
+      "alive": true,
+      "cmdline": "bash /mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_surrogate_training_v2.sh",
+      "pid": 3743587,
+      "start_time_ticks": 40762019
+    },
+    "status": {
+      "claim_boundary": "Fixed-PVRIG sequence-to-independent-dual-docking computational geometry surrogate training only; not binding, affinity, competition, Docking Gold, or experimental blocking truth.",
+      "controller_pid": 3743587,
+      "prospective_test_label_paths_accepted": 0,
+      "prospective_test_labels_read": false,
+      "reason": "missing:release_receipt,teacher,teacher_audit",
+      "schema_version": "phase2_v4_d_surrogate_training_watcher_v2",
+      "status": "WAITING_OPEN_TEACHER",
+      "updated_at": "2026-07-16T17:40:29.870238+00:00"
+    },
+    "status_file": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/status/pvrig_v4_d_surrogate_training_v2/status.json",
+      "sha256": "dedcc6d732bbc001705182a3613f46177271191f7854b3963c72e5bb1132f9bd",
+      "size_bytes": 535
+    },
+    "tmux_session": "pvrig-v4d-surrogate-training-v2",
+    "trust_anchor_sha256": "9d5aff568b9473a56c6111fae6221266eabe09f92be7752c76bbc596ef2d74cf"
+  },
+  "v4f": {
+    "implementation_freeze_receipt": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_f_prediction_freeze_v2_implementation_freeze.receipt.json",
+      "sha256": "927df70b089e703a7b0ab1851f741849cd1912f2251036b781164e4c85b1a16b",
+      "size_bytes": 952
+    },
+    "launcher_receipt": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/status/pvrig_v4_f_prediction_freeze_v2/launcher_receipt.json",
+      "sha256": "9a0890c87d2d783cffbeda920065896eefd20217fda5bb32f7d1f28ed3eb23a9",
+      "size_bytes": 1030
+    },
+    "process": {
+      "alive": true,
+      "cmdline": "bash /mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_f_prediction_freeze_v2.sh",
+      "pid": 3743592,
+      "start_time_ticks": 40762019
+    },
+    "status": {
+      "controller_pid": 3743592,
+      "reason": "upstream surrogate state=WAITING_OPEN_TEACHER; V4-F labels remain sealed",
+      "schema_version": "phase2_v4_f_prediction_freeze_watcher_v2",
+      "status": "WAITING_V4_D_SURROGATES",
+      "updated_at": "2026-07-16T17:40:28.553005+00:00",
+      "v4_f_label_paths_accepted": 0,
+      "v4_f_labels_read": false
+    },
+    "status_file": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/status/pvrig_v4_f_prediction_freeze_v2/status.json",
+      "sha256": "c56930236207c4ad09a3d0baf0cd1afba66b02e66d30c1d16a2fe118f7125d98",
+      "size_bytes": 338
+    },
+    "tmux_session": "pvrig-v4f-prediction-freeze-v2",
+    "trust_anchor_sha256": "3d6be9ddb2d0dcb8703779053aa30fcbac5a9b12191095ec0fafe1e00c527e84"
+  },
+  "verification": {
+    "embedding_shard_00001_sha256": "3b08d1b685904bfad4855b377541b3c9477a3082e7b017a53b7b5ca2396732f1",
+    "embedding_shard_count": 7,
+    "expected_production_output_paths": [
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_sequence_surrogate_v1",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_frozen_embedding_surrogate_v1",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_contact_fusion_surrogate_v1",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/predictions/pvrig_v4_f_surrogate_predictions_v1"
+    ],
+    "joint_regression_status": "OK",
+    "joint_regression_tests": 86,
+    "production_output_paths_created": []
+  }
+}

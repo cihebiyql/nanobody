@@ -1,0 +1,79 @@
+{
+  "candidate_closure": {
+    "count": 720,
+    "id_sequence_sha256_pairs_sha256": "5446e26fcd3b7dcc52509348f30813800a26d1e9f7fd07f996e413753e61f2c0",
+    "parent_count": 20,
+    "unique_ids": 720
+  },
+  "claim_boundary": "label_free_computational_monomer_structure_and_cross_method_uncertainty_only;not_docking_geometry_binding_affinity_competition_experimental_blocking_blocker_probability_or_docking_gold",
+  "files": {
+    "derived_fasta": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/inputs/support_v4a720_structure_manifest.fasta",
+      "sha256": "70ade7e84dead477e011fa18e20e92f5595376db0f57ed2521a2c19459b6e48f",
+      "size": 124449
+    },
+    "derived_manifest": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/inputs/support_v4a720_structure_manifest.tsv",
+      "sha256": "aad4d7aebf8cf7724c59b7b186ab8183d5e50016048dd16f0a0637d57dfc2961",
+      "size": 404179
+    },
+    "launcher": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/scripts/launch_node1_support_v4a720_structures.sh",
+      "sha256": "b49abda0c48fc461bc46611dff0dccc4bef476c160650fdfd7957c15d0fb33eb",
+      "size": 2747
+    },
+    "preregistration": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/PREREGISTRATION.json",
+      "sha256": "9af5a9913addf2472e57c75fb1228eb8e9c77213f2d89c819d710581b1c233f6",
+      "size": 4597
+    },
+    "runner": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/scripts/prepare_and_run_support_v4a720_structures.py",
+      "sha256": "3fe3be1da1591afca05c1e80d38911422645aaec421f7ce0ce803e7271e86c47",
+      "size": 34697
+    },
+    "test_log": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/audit/prelaunch_tests.log",
+      "sha256": "2c4be35deedbfeffbe5fa9e084b042ff0324860c7e008332c4c0e1c3ee26cb2e",
+      "size": 595
+    },
+    "tests": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/tests/test_prepare_and_run_support_v4a720_structures.py",
+      "sha256": "b904577dc3227c654418fea9877c04bca5e283026ecf01faf01ae93196378bb6",
+      "size": 3363
+    },
+    "zero_work_preflight": {
+      "path": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_monomer_structures_v1_20260717/status/zero_work_preflight.json",
+      "sha256": "5db00c35708216ce0e97e8582e07355798f455e9b2c23b529504236f039840bf",
+      "size": 1243
+    }
+  },
+  "frozen_at_utc": "2026-07-16T17:34:36.312183+00:00",
+  "protocol": {
+    "igfold": "all_720_crosscheck_fixed_before_results",
+    "imputation": "NONE",
+    "label_or_score_access": {
+      "docking": 0,
+      "experimental": 0,
+      "geometry": 0,
+      "model": 0
+    },
+    "nbb2": "all_720_primary_refined_then_one_explicit_unrefined_fallback_attempt",
+    "replacement": "NONE"
+  },
+  "resources": {
+    "gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "gpu_workers": 4,
+    "max_cpu_threads": 32,
+    "node": "node1",
+    "ssd_only": true,
+    "threads_per_worker": 8
+  },
+  "schema_version": "pvrig_support_v4a720_monomer_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_FIRST_MONOMER_COMPUTE"
+}

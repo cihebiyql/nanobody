@@ -1,0 +1,39 @@
+{
+  "adversarial_checks": {
+    "frozen_formula_helper_equivalence_and_hash": "PASS",
+    "no_full_table_dictreader_and_test32_zero": "PASS",
+    "same_tick_toctou_single_immutable_snapshot": "PASS",
+    "second_nonsuccess_fallback_rejected": "PASS",
+    "success_other_state_metric_pose_fallback_rejected": "PASS",
+    "unexpected_raw_and_sealed_identity_rejected": "PASS",
+    "v1_failure_receipt_binding": "PASS",
+    "versioned_root_release_archive": "PASS",
+    "whole_file_header_offset_row_size_binding": "PASS"
+  },
+  "claim_boundary": "Independent implementation review of a post-hoc DEV-only computational geometry recovery builder. Not binding, affinity, experimental blocking, formal V4-F unlock, or Docking Gold.",
+  "final_submission_authority": false,
+  "formal_v4_f_unlock_eligible": false,
+  "implementation_freeze_candidate_sha256": "9994f44fd459118f62c54e29f47d47b48474fa148aad4207803a3d0f5de092d6",
+  "recorded_at_utc": "2026-07-17T00:40:24.117381+00:00",
+  "remote_execution_authorized": false,
+  "review_access": {
+    "real_raw_job_results": 0,
+    "ssh": 0,
+    "test32_metric_values": 0,
+    "test32_raw_job_files": 0
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_1_independent_review_receipt_v1",
+  "status": "PASS_INDEPENDENT_REVIEW_0_BLOCKERS",
+  "tests": {
+    "bash_n": "PASS",
+    "normal": {
+      "failed": 0,
+      "passed": 17
+    },
+    "py_compile": "PASS",
+    "python_optimize_1": {
+      "failed": 0,
+      "passed": 17
+    }
+  }
+}

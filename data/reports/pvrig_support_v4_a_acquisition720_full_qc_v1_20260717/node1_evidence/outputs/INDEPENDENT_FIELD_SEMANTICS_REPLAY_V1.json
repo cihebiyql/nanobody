@@ -1,0 +1,68 @@
+{
+  "abnativ_nonempty": {
+    "AbNatiV_VHH_score": 720
+  },
+  "anarci_counts": {
+    "True": 720
+  },
+  "claim_boundary": "Independent row/schema semantics verification only; not docking, binding, affinity, competition, or experimental blocking evidence.",
+  "downstream_rule": "Treat TNP as unavailable because terminal tnp_run=false; treat binding/competition/structure/blocker placeholders as NOT_RUN regardless of nonempty constant values.",
+  "hard_fail_counts": {
+    "False": 720
+  },
+  "id_sets_equal": true,
+  "placeholder_value_counts": {
+    "PVRL2_competition_score": {
+      "50.00": 720
+    },
+    "TNP_flags": {
+      "/////": 720
+    },
+    "binding_score": {
+      "50.00": 720
+    },
+    "blocker_class": {
+      "NOT_RUN": 720
+    },
+    "structure_score": {
+      "60.00": 720
+    }
+  },
+  "recommendation_counts": {
+    "REVIEW_DEVELOPABILITY": 675,
+    "REVIEW_NOVELTY_MARGIN": 37,
+    "REVIEW_RISK": 8
+  },
+  "root": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_full_qc_v1_20260717",
+  "row_counts": {
+    "fast": 720,
+    "full": 720,
+    "manifest": 720,
+    "shortlist": 720
+  },
+  "sapiens_nonempty": {},
+  "sha256": {
+    "fast": "e2294a8dfb8034294f5a01f51dfea54b7374d1f30484ea5bbae0821d0a07f5d7",
+    "full": "c35ffb8848172c2aa86885360dc963498f241023259271ec5c6638fa1200fa90",
+    "manifest": "73454cbf8194d3faa5cad354a5b2f31f433e317d5222a6cd59906775fb56bfca",
+    "shortlist": "e2294a8dfb8034294f5a01f51dfea54b7374d1f30484ea5bbae0821d0a07f5d7"
+  },
+  "single_domain_suitability_counts": {
+    "borderline": 223,
+    "good": 389,
+    "poor": 108
+  },
+  "status": "PASS_INDEPENDENT_REMOTE_FIELD_SEMANTICS_REPLAY",
+  "tnp_fields_nonempty": {
+    "TNP_flags": 720
+  },
+  "unique_id_counts": {
+    "fast": 720,
+    "full": 720,
+    "manifest": 720,
+    "shortlist": 720
+  },
+  "validator_counts": {
+    "PASS": 720
+  }
+}

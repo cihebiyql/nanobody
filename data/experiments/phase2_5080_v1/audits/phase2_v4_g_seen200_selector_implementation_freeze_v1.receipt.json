@@ -1,0 +1,26 @@
+{
+  "bound_artifacts": {
+    "calibration_exclusions": "cba42df8ad9fab0399eb8a7d8608397fdf85aeea6619e2993e46d12d31dbd7d4",
+    "parent_preregistration": "1ba6ecb0e5541516649c9d3c8dc30c82f411f3c5296e0e04681486bd9441bf55",
+    "selector": "6491cecfba82ba73925e195c5d30c737442f5a74244167e60b4b14dccdbfd818",
+    "test_log": "0b2dba032eaee24f90c055288aa89000db6aa9fbee820ecbf2da0b173868bd7c",
+    "tests": "ab5f55ef18ed43eeb22b4b28c366e4b3c8c73cb7bab891f101719dbdcaa09182"
+  },
+  "claim_boundary": "Implementation and deterministic acquisition policy freeze only; no seen200 production selection, docking label opening, model-result interpretation, binding, affinity, competition, Docking Gold, or experimental blocking claim.",
+  "implementation_freeze": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_g_seen200_selector_implementation_freeze_v1.json",
+    "sha256": "fae4e1e2371dac1bac6cc4ea48a0615c3672b9f7261c48b968a2cafc231cf2dc"
+  },
+  "label_access": {
+    "experimental_labels_opened": 0,
+    "v4d_open_model_results_opened": 0,
+    "v4d_prospective_test_labels_opened": 0,
+    "v4f_labels_opened": 0
+  },
+  "label_access_scope": "The zero counters apply to the production seen200 selector and implementation-freeze builder. The identity-only exclusion artifact was materialized separately from an already-open calibration registry using only sample_id and sequence fields; no calibration label value is accepted by or supplied to the selector.",
+  "production_outputs_created": 0,
+  "production_selection_executed": false,
+  "receipt_payload_sha256": "f922878bf7a5c14ae2e6754f9b374b1ce1c7f0edac21df118f4619a6c77b24fd",
+  "schema_version": "phase2_v4_g_seen200_selector_implementation_freeze_receipt_v1",
+  "status": "PASS_IMPLEMENTATION_FREEZE_HASH_CLOSURE_NO_SELECTION"
+}

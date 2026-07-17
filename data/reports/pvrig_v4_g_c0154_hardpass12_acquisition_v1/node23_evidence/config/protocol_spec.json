@@ -1,0 +1,122 @@
+{
+  "candidate_panel": {
+    "expected_count": 12,
+    "monomer_source_policy": "12_Node1_NanoBodyBuilder2_PDBs_hash_bound_to_structure_receipt",
+    "panel_id": "v4_g_c0154_exact_fullqc_hardpass12",
+    "parent_framework_cluster": "C0154",
+    "replacement_policy": "NO_REPLACEMENT",
+    "selection_algorithm": "every_and_only_hard_fail_false_from_exact_recovery"
+  },
+  "controls": {
+    "expected_count": 0,
+    "panel_id": "none_acquisition_only"
+  },
+  "docking": {
+    "engine": "HADDOCK3",
+    "expected_candidate_jobs": 72,
+    "expected_control_jobs": 0,
+    "expected_smoke_jobs": 0,
+    "expected_total_jobs": 72,
+    "flexref_tolerance": 10,
+    "module_seed_fields": [
+      "topoaa.iniseed",
+      "rigidbody.iniseed",
+      "flexref.iniseed",
+      "emref.iniseed"
+    ],
+    "ncores": 4,
+    "npart": 2,
+    "randremoval": true,
+    "rigidbody_tolerance": 5,
+    "sampling": 40,
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "seletop_select": 10,
+    "seletopclusts_top_models": 4,
+    "smoke_candidate_id": "RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B03__M00",
+    "smoke_control_id": "CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151",
+    "smoke_seed": 917,
+    "validated_engine_version": "2025.11.0"
+  },
+  "evidence_boundary": "acquisition_only_independent_8x6b_9e6y_x3seed_computational_geometry;not_binding_affinity_competition_experimental_blocking_or_docking_gold",
+  "interface": {
+    "air_anchor_count": 12,
+    "holdout_count": 11,
+    "soft_hint_rows_excluded": true,
+    "source": "inputs/source/PVRIG_hotspot_set_v1.csv",
+    "split_algorithm": "sort_alignment_col_then_even_index_anchor",
+    "unique_interface_residue_count": 23
+  },
+  "protocol_id": "pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717",
+  "references": {
+    "conformations": {
+      "8x6b": {
+        "normalized_receptor_pdb": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+        "normalized_reference_pdb": "inputs/normalized/8x6b_TL_reference.pdb",
+        "receptor_number_offset": 38,
+        "source_ligand_chain": "A",
+        "source_pdb": "inputs/source/8X6B.pdb",
+        "source_receptor_chain": "B"
+      },
+      "9e6y": {
+        "normalized_receptor_pdb": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+        "normalized_reference_pdb": "inputs/normalized/9e6y_TL_reference.pdb",
+        "receptor_number_offset": 40,
+        "source_ligand_chain": "D",
+        "source_pdb": "inputs/source/9E6Y.pdb",
+        "source_receptor_chain": "A"
+      }
+    },
+    "ligand_chain": "L",
+    "numbering": "UniProt_Q6DKI7",
+    "receptor_chain": "T"
+  },
+  "scheduler": {
+    "control_jobs_first": true,
+    "cpu_nice": 15,
+    "load_policy": [
+      {
+        "load1_min": 62,
+        "parallel_jobs": 0
+      },
+      {
+        "load1_min": 56,
+        "parallel_jobs": 1
+      },
+      {
+        "load1_min": 48,
+        "parallel_jobs": 2
+      },
+      {
+        "load1_min": 0,
+        "parallel_jobs": 4
+      }
+    ],
+    "max_attempts": 2,
+    "max_parallel": 12,
+    "resource_policy": "node23_up_to_12_parallel_jobs_x_4_cores_targeting_at_most_75_percent_of_64_logical_CPUs",
+    "retry_failed": true
+  },
+  "schema_version": 2,
+  "scoring": {
+    "atom_records": "standard_amino_acid_ATOM_only",
+    "clash_cutoff_a": 2.5,
+    "legacy_blocker_like_a_thresholds_are_compatibility_references_only": true,
+    "pvrig_vhh_contact_cutoff_a": 4.5,
+    "pvrl2_occlusion_cutoff_a": 4.5,
+    "score_matrix": "dock_8x6b_to_8x6b_and_9e6y_plus_dock_9e6y_to_9e6y_and_8x6b"
+  },
+  "stability_gate": {
+    "minimum_successful_seeds_per_entity_conformation": 2,
+    "next_generation_requires": "reports/EVALUATOR_STABLE.json:status=PASS",
+    "require_all_47_controls": true,
+    "require_complete_2x2_scoring": true,
+    "require_control_drift_report": true,
+    "require_independent_runs_for_both_conformations": true,
+    "require_threshold_sensitivity_report": true
+  },
+  "status": "ACQUISITION_PREREGISTERED"
+}

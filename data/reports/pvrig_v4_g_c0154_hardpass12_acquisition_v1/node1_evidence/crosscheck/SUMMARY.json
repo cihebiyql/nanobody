@@ -1,0 +1,23 @@
+{
+  "candidate_count": 12,
+  "cdr3_rmsd_A": {
+    "max": 6.095599747429873,
+    "median": 3.401990423793635,
+    "min": 2.688666843992678
+  },
+  "claim_boundary": "descriptive_monomer_crosscheck_only_no_selection_no_replacement_no_binding_or_blocking_claim",
+  "framework_kabsch_rmsd_A": {
+    "max": 0.9787975446771564,
+    "median": 0.7026851053638746,
+    "min": 0.674551871720685
+  },
+  "full_sequence_CA_coverage_count": 12,
+  "nbb2_unrefined_fallback_count": 1,
+  "nbb2_unrefined_fallback_ids": [
+    "RFV1__PLDNANO_VHH_00220__A_CENTER__H1H3__B03__M00"
+  ],
+  "replacement_effect": "NONE",
+  "selection_effect": "NONE",
+  "status": "PASS_DESCRIPTIVE_CROSSCHECK_COMPLETE_NO_SELECTION_EFFECT",
+  "table_sha256": "d26e93aafc55d6f48b802e8f95c001b17b779c47716e3d0e37a28518778bc247"
+}

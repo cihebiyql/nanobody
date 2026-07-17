@@ -1,0 +1,162 @@
+{
+  "chronology": {
+    "canonicalization_clarification_recorded_at_utc": "2026-07-17T01:18:47.388152+00:00",
+    "complete_root_cause_artifact_local_mtime_utc": "2026-07-17T01:16:32.547741500+00:00",
+    "complete_root_cause_artifact_postdates_preregistration": true,
+    "governance_interpretation": "The complete root-cause JSON is post-preregistration corroboration only. The preregistered recovery must stand solely on the pre-freeze open-only diagnostic, the unchanged pre-existing 1.0 A technical-validity threshold, and the frozen rule. Any interim observation mentioned in the preregistration does not retroactively make the later complete artifact a frozen source binding.",
+    "preregistration_frozen_at_utc": "2026-07-17T01:16:28.280240+00:00",
+    "preregistration_local_mtime_utc": "2026-07-17T01:16:28.270213800+00:00"
+  },
+  "claim_boundary": "This receipt reviews preregistration coherence only. It does not approve an implementation, authorize remote execution or release, unseal test32, reinterpret V4-D as PASS, or establish Docking Gold, binding, affinity, competition, or experimental blocking.",
+  "decision": {
+    "blocking_findings": [],
+    "formal_unlock_eligible": false,
+    "implementation_review_required": true,
+    "launch_authorized": false,
+    "preregistration_review": "PASS",
+    "remote_execution_authorized": false,
+    "teacher_materialization_authorized": false
+  },
+  "immutable_failure_lineage": {
+    "new_v1_2_root_required": true,
+    "old_remote_roots_may_be_modified": false,
+    "old_statuses_may_be_reinterpreted": false,
+    "v1_1_remains_failed": true,
+    "v1_remains_failed": true
+  },
+  "independent_count_and_hash_checks": {
+    "affected_candidate_count": 83,
+    "affected_job_count": 98,
+    "affected_jobs_below_four_from_diagnostic": 0,
+    "aggregate_terminal_failure_projection_count": 1,
+    "canonical_projection": {
+      "byte_length": 18593,
+      "fields": [
+        "job_id",
+        "model",
+        "conformation",
+        "seed",
+        "t_ca_rmsd_a"
+      ],
+      "independently_reproduced": true,
+      "matches_preregistration": true,
+      "row_count": 99,
+      "sha256": "941d5010190c6576ee0961681227d5b9b1ce9a719cc63ae5c25a45b0f8de9c1f"
+    },
+    "internal_count_closure": "PASS",
+    "invalid_by_conformation": {
+      "8x6b": 89,
+      "9e6y": 10
+    },
+    "invalid_pair_count": 99,
+    "minimum_retained_pair_count_in_affected_jobs_from_diagnostic": 5,
+    "native_complete_pair_metric_count_before_filter": 14490,
+    "open_candidates": 258,
+    "open_development_candidates": 32,
+    "open_train_candidates": 226,
+    "raw_success_jobs": 1547,
+    "retained_pair_count_after_filter_expected": 14391,
+    "sealed_test_candidates": 32,
+    "unique_invalid_pair_key_count": 99
+  },
+  "mandatory_implementation_order": [
+    "Verify exact preregistration, clarification, diagnostic, run-receipt, source-manifest, evaluator, helper, failure-receipt, and generic-prior hashes before any raw path construction.",
+    "Validate the full 290-row split and counts, then select exactly OPEN_TRAIN 226 plus OPEN_DEVELOPMENT 32 before constructing any results path; sealed test32 paths must never be constructed.",
+    "Select exactly 1548 open jobs with complete candidate by two-conformation by three-seed closure, then partition exactly 1547 raw-success jobs and the one frozen terminal fallback.",
+    "Read raw job results as immutable regular-file snapshots, verify job identity, job hash, protocol binding, and recompute the ordered raw-result SHA chain 202d06e1ee689167427abdebcb85705e20ee867aacda31bef5211a35d44d9301.",
+    "Construct unique per-job per-model two-reference pairs and require exactly one 8X6B and one 9E6Y score before applying the validity rule.",
+    "Read native overlay RMSD from the job-manifest conformation; recompute all values greater than 1.0 and require exactly 99 unique job_id/model keys and canonical SHA256 941d5010190c6576ee0961681227d5b9b1ce9a719cc63ae5c25a45b0f8de9c1f.",
+    "Drop both reference rows for each invalid job_id/model pair before classification, sorting, weighting, utility, or aggregation; do not drop any additional pair.",
+    "Require exactly 14391 retained pairs overall, exactly 98 affected jobs and 83 affected candidates, and at least four retained complete pairs for every successful job; the observed affected-job minimum must remain five.",
+    "Sort retained pairs only by native_haddock_score then model, recompute and renormalize rank weights, and compute model-count reliability from the filtered pair count.",
+    "Apply the unchanged V1 teacher formulas and require at least two successful seeds per candidate per conformation; emit exactly 258 finite teacher rows with split counts 226 and 32 and primary target R_dual_min.",
+    "Use the single terminal fallback only for the frozen failed job, parse zero aggregate metric fields, permit no second fallback, and preserve explicit missing-seed uncertainty.",
+    "Create release artifacts only in the new V1.2 root with exclusive or atomic publication after all gates pass; never modify V1 or V1.1 roots, statuses, receipts, or failed release absence.",
+    "Emit all preregistered descriptive sensitivity reports and the explicit development-only, source-evaluator-FAIL, no-formal-unlock claim boundary."
+  ],
+  "mandatory_test_and_second_review_expectations": [
+    "Positive real-fixture replay must prove exact counts, hashes, filtered pair set, retained ordering, finite 258-row output, and deterministic replay.",
+    "Mutating any invalid pair identity or value, adding/removing an invalid pair, changing threshold comparison, or dropping only one reference must fail closed.",
+    "A valid-pose metric mutation that preserves the invalid list must still fail through the frozen raw-result SHA-chain binding.",
+    "Cross-reference missing/duplicate rows, duplicate model keys, non-finite RMSD, wrong native reference, fewer than four retained complete pairs, or a second terminal failure must fail closed.",
+    "Tests must prove filtering occurs before classification and native-HADDOCK sorting, and that rank weights and model-count reliability are recomputed from retained pairs rather than inherited from pre-filter ranks.",
+    "Symlink, non-regular file, same-tick/TOCTOU mutation, output preexistence, and partial-publication scenarios must fail without publishing a release.",
+    "Instrumented access tests must prove test32 raw path constructions, file opens, metric reads, and label rows are all zero and that the results root is never listed or globbed.",
+    "The builder must not consume the post-preregistration root-cause artifact for filtering, target computation, or release authorization; it may only be carried in a separately marked corroborative report.",
+    "The post-freeze canonicalization clarification must be accepted only by independently reproducing the preregistered canonical SHA; its self-declared no-method-change flags are not sufficient alone.",
+    "The second reviewer must verify V1 and V1.1 failure receipt hashes/statuses and absence of old releases, and must separately approve implementation bytes before any launch freeze is created."
+  ],
+  "review_access_accounting": {
+    "local_only": true,
+    "remote_access_count": 0,
+    "remote_files_modified": 0,
+    "remote_files_opened": 0,
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_files_opened": 0,
+    "test32_raw_paths_constructed": 0,
+    "workspace_files_modified_other_than_this_new_receipt": 0
+  },
+  "review_scope": "Independent read-only review of the frozen V1.2 preregistration, post-freeze canonicalization clarification, open-only overlay diagnostic v2, post-preregistration root-cause diagnostic, and immutable V1/V1.1 failure receipts.",
+  "reviewed_at_utc": "2026-07-17T01:25:53.923749+00:00",
+  "reviewed_bindings": {
+    "canonicalization_clarification": {
+      "authority": "post-freeze serialization clarification only; no threshold or scientific method authority",
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json",
+      "sha256": "1fb8f1bdfdf8f8869cc1c80a477a1e1f4f74246c555925be4fa1c1ebc380b918"
+    },
+    "overlay_diagnostic_v2": {
+      "path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead"
+    },
+    "overlay_diagnostic_v2_run_receipt": {
+      "path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json",
+      "sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f"
+    },
+    "root_cause_diagnostic": {
+      "authority": "corroborative only; complete artifact postdates preregistration and may not authorize or define the V1.2 method",
+      "path": "audits/phase2_v4_d_dev1_open_overlay_root_cause_diagnostic_v1.json",
+      "sha256": "1001280f8a04ff25ce427f861bbf0690dadec1eda51bff424398a15fad1327bd"
+    },
+    "v1_1_builder": {
+      "path": "src/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82"
+    },
+    "v1_1_failure_receipt": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json",
+      "sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7",
+      "status": "FAILED_CLOSED_NATIVE_OVERLAY_RMSD_ABOVE_1A"
+    },
+    "v1_2_preregistration": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+      "sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1"
+    },
+    "v1_failure_receipt": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720",
+      "status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB"
+    },
+    "v1_formula_helper": {
+      "path": "src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+    }
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_preregistration_independent_review_receipt_v1",
+  "scientific_and_technical_assessment": {
+    "limitations_requiring_disclosure": [
+      "Although only 0.683 percent of native pose pairs are invalid, 83 of 258 open candidates are exposed; this is broad at candidate level and requires the frozen descriptive sensitivity reports.",
+      "The invalidity is strongly conformation-asymmetric (89 8X6B versus 10 9E6Y), so distributional shifts in R_8X6B and R_dual_min must be reported.",
+      "The root-cause artifact supports the huge 8X6B class with high confidence but does not explain all 99 pairs, especially the mild 9E6Y rows; the uniform technical gate, not a universal root-cause claim, is the method justification.",
+      "This is a post-hoc development-only teacher recovery and cannot repair the formal V4-D FAIL or support formal test claims."
+    ],
+    "pair_filtering_defensible": true,
+    "reasons": [
+      "The 1.0 A native-receptor overlay criterion is the unchanged pre-existing hard technical-validity gate; it is not a relaxed or candidate-specific threshold.",
+      "The criterion uses native-receptor structural integrity rather than a desired hotspot, occlusion, tier, or target value, reducing direct outcome-based selection.",
+      "Dropping the entire two-reference model pair prevents one-reference cherry-picking and preserves paired 8X6B/9E6Y comparison semantics.",
+      "Filtering before geometry classification, HADDOCK-score sorting, rank-weight normalization, utility calculation, and candidate aggregation prevents invalid pairs from consuming rank mass; weights must then be renormalized over retained pairs.",
+      "The diagnostic indicates sparse pair-level invalidity and retained coverage above the frozen minimum in every affected job."
+    ]
+  },
+  "status": "PASS_PREREGISTRATION_REVIEW_WITH_MANDATORY_IMPLEMENTATION_AND_SECOND_REVIEW_GATES"
+}

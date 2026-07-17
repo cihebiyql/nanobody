@@ -1,0 +1,129 @@
+{
+  "active_full_qc_process_count": 0,
+  "active_full_qc_processes": [],
+  "claim_boundary": "Sequence/developability QC only; no docking, binding, affinity, competition, or blocking labels.",
+  "historical_false_terminal": {
+    "claimed_returncode": 0,
+    "claimed_status": "PASS_V4_G_UNSEEN96_FULL_QC_COMPLETE",
+    "contradictory_full_stage_state": "running",
+    "missing_completion_artifacts": [
+      "cascade/full_chunk_status.tsv",
+      "cascade/full_merged.tsv",
+      "cascade/full_qc_summary.json",
+      "cascade/full_chunks/chunk_000001/complete.json",
+      "cascade/full_chunks/chunk_000002/complete.json"
+    ],
+    "path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_v1_20260716/status/runner.complete.json",
+    "preserved_unchanged_vs_recovery_receipt": true,
+    "sha256": "3c4200f26dd892388b695e4c41ae02e62209b43338134592894f25d8bde2704c"
+  },
+  "host": "node1",
+  "interruption_root_cause_evidence": {
+    "current_boot_started": "2026-07-16 23:12:26",
+    "interpretation": "Node1 shutdown terminated both Sapiens-stage chunks; legacy EXIT-only trap emitted a false PASS before system shutdown.",
+    "last_shutdown_reboot_lines": [
+      "reboot   system boot  6.8.0-90-generic Thu Jul 16 23:12:43 2026   still running",
+      "shutdown system down  6.8.0-90-generic Thu Jul 16 23:08:38 2026 - Thu Jul 16 23:12:43 2026  (00:04)"
+    ],
+    "previous_boot_journal_has_user_session_shutdown_at_230707": true,
+    "source_terminal_finished_at_utc": "2026-07-16T15:07:06.137228+00:00"
+  },
+  "overall_checks": {
+    "all_bound_hashes_replay": true,
+    "exact_24_shortlist_closure": true,
+    "no_active_process_expected_after_terminal_completion": true,
+    "old_false_terminal_preserved": true,
+    "two_complete_chunks": true
+  },
+  "recovery": {
+    "candidate_replacement": false,
+    "chunk_marker_hashes_match_receipt": true,
+    "chunks": {
+      "chunk_000001": {
+        "abnativ_scored_candidates": 4,
+        "complete_marker_sha256": "c1c6b13334554e24d873b8cdf520617775d1df53705058eba19e380f7ad61288",
+        "expected_candidates": 12,
+        "input_candidates": 12,
+        "input_exact_order_matches_frozen_slice": true,
+        "marker_input_hash_replay": true,
+        "marker_portfolio_hash_replay": true,
+        "marker_runtime_hash_matches_receipt": true,
+        "marker_status": "complete",
+        "portfolio_candidates": 12,
+        "portfolio_exact_id_set_matches_frozen_slice": true,
+        "sapiens_exact_id_set_matches_frozen_slice": true,
+        "sapiens_scored_candidates": 12,
+        "screen_exact_id_set_matches_frozen_slice": true,
+        "screen_summary_candidates": 12
+      },
+      "chunk_000002": {
+        "abnativ_scored_candidates": 8,
+        "complete_marker_sha256": "f80fa4dcd748c14b94c11dc2765732015b3372e5cbbd6b9e45d4d18a00ac8908",
+        "expected_candidates": 12,
+        "input_candidates": 12,
+        "input_exact_order_matches_frozen_slice": true,
+        "marker_input_hash_replay": true,
+        "marker_portfolio_hash_replay": true,
+        "marker_runtime_hash_matches_receipt": true,
+        "marker_status": "complete",
+        "portfolio_candidates": 12,
+        "portfolio_exact_id_set_matches_frozen_slice": true,
+        "sapiens_exact_id_set_matches_frozen_slice": true,
+        "sapiens_scored_candidates": 12,
+        "screen_exact_id_set_matches_frozen_slice": true,
+        "screen_summary_candidates": 12
+      }
+    },
+    "component_coverage": {
+      "abnativ_missing": "12/24, all C0154 hard-pass rows; screen_summary records WARN:abnativ_vhh_score_not_available",
+      "abnativ_numeric": "12/24",
+      "official_validator": "24/24",
+      "portfolio_and_full_qc_screen_summary": "24/24",
+      "sapiens_numeric": "24/24"
+    },
+    "fasta_tsv_exact_order_match": true,
+    "frozen_shortlist_count": 24,
+    "frozen_shortlist_ids_sha256": "2ba3556adcec46a3143d48af1f189ecf83083176cbc87d9d37adc0f4453668f5",
+    "frozen_shortlist_unique_count": 24,
+    "full_exact_id_set_matches_frozen_shortlist": true,
+    "full_hard_fail": 12,
+    "full_hard_pass": 12,
+    "full_rows": 24,
+    "full_unique_ids": 24,
+    "hard_fail_reason_counts": {
+      "official_validator_failed": 4,
+      "official_validator_failed;hydrophobic_run": 8
+    },
+    "interpretation_caveat": "All 24 frozen shortlist candidates completed the frozen Full-QC pipeline and are present in the terminal portfolio, but only 12/24 have numeric AbNatiV scores. Treat missing C0154 AbNatiV as NA/WARN, not favorable evidence.",
+    "official_validator_failed_reason_counts": {
+      "missing_n_terminal": 12
+    },
+    "output_hash_replay": {
+      "full_chunk_status.tsv": true,
+      "full_merged.tsv": true,
+      "full_qc_summary.json": true
+    },
+    "output_hash_replay_all_pass": true,
+    "parent_outcomes": {
+      "C0154": {
+        "hard_pass": 12
+      },
+      "C0372": {
+        "hard_fail": 12
+      }
+    },
+    "receipt_path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716/status/recovery.complete.json",
+    "receipt_sha256": "7b2786274045a45d7b487fa7b9cc4e14d7a2e6215e2cb6286d950e2b9632f356",
+    "receipt_status": "PASS_V4_G_UNSEEN96_FULL_QC_RECOVERY_VALIDATED",
+    "root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716",
+    "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+    "selection_policy": "exact frozen 24 Full-QC shortlist IDs; no replacement; no reselection",
+    "summary_sha256": "255dee0b1bd8800cda1f82fd11f556a3c97aade65f8db0fa88280012c5597942",
+    "summary_status": "PASS_V4_G_UNSEEN96_FULL_QC_RECOVERED",
+    "threshold_change": false,
+    "tnp_policy": "deferred; not run"
+  },
+  "schema_version": "pvrig_v4_g_node1_full_qc_readonly_revalidation_v1",
+  "status": "PASS_V4_G_UNSEEN96_FULL_QC_RECOVERY_REVALIDATED_READONLY",
+  "validated_at_utc": "2026-07-17T00:53:44.706083+00:00"
+}

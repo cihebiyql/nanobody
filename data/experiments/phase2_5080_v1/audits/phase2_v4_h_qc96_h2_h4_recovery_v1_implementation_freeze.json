@@ -1,0 +1,72 @@
+{
+  "allowed_change": "formal 22-column projection and separate full-provenance sidecar only",
+  "claim_boundary": "Sequence/developability QC-qualified prospective candidate panel only; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "formal_manifest_contract": {
+    "exact_column_count": 22,
+    "exact_header": "candidate_id\tsequence_sha256\tsequence\tparent_id\tparent_framework_cluster\tparent_queue_rank\ttarget_patch_id\tdesign_mode\tcdr1_after\tcdr2_after\tcdr3_after\tcdr3_length\th4_selection_hash\th4_selection_rank_in_stratum\tselection_stratum\tmodel_split\ttnp_supervision_state\ttnp_score\ttnp_red_flag\ttnp_yellow_flag\tfull_qc_and_docking_policy\tclaim_boundary",
+    "extra_formal_fields_forbidden": true,
+    "missing_core_keys_fail_closed": true,
+    "source_provenance_output": "separate qc96_selected_source_provenance_v1.tsv sidecar",
+    "tnp_state": "NOT_RUN_DEFERRED_NA",
+    "tnp_value_fields_empty": true
+  },
+  "frozen_at_utc": "2026-07-16T23:25:14.896138800+00:00",
+  "frozen_selection": {
+    "algorithm": "byte-equivalent behavior verified against run_phase2_v4_h_qc96_qc_node1.py h4_select",
+    "no_replacement": true,
+    "parents": 4,
+    "per_stratum": 4,
+    "rows": 96,
+    "seed": "V4_H_QC96_H4_HASH_SELECTION_V1",
+    "strata": 24
+  },
+  "implementation_hashes": {
+    "preregistration": "f31fb16568d906204c44d451e2e679140c99ecc0ebf8e8f97ff9a460a3bcd6a3",
+    "recovery_script": "17960e1ea7b01c8354630ffeb7c63738622bc2675365bba368342a9f14b19d22",
+    "test_log": "4aeecd08cca0c73629b73548c3f9de5f101663a582ea3b07417718e0deb53e03",
+    "tests": "38996390d62b6f4c9913eb447ce45ec02b81a596d146f389478de03eaf99307a"
+  },
+  "label_path_access": {
+    "affinity": 0,
+    "binding": 0,
+    "blocking": 0,
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0
+  },
+  "launcher_binding": "launcher is created after this freeze so it can hard-code this freeze hash; package receipt binds launcher plus freeze",
+  "no_candidate_or_sequence_change": true,
+  "no_gate_change": true,
+  "no_qc_rerun": true,
+  "no_selection_change": true,
+  "recovery_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_20260717",
+  "remote_executed": false,
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_implementation_freeze",
+  "source_bindings": {
+    "fast_complete_marker_set_sha256": "ea39c5129e9615dd4f9144bc8d0a1a193e596c7b924be93e5880a55d3486c4da",
+    "fast_merged_sha256": "1e9ddb2f2f2809a2bc4d1e054c3a00e97ba669f40c8b28377bfdf1d80ac2a37b",
+    "full_complete_marker_set_sha256": "3189da34ed5cad0d0a7fec75900b3aac881179db7251c7eed42edfa4a6db9b0a",
+    "full_merged_sha256": "40d5fe960654cc0282bcaba866d745e4b7be6dee9dda85dc9d496f8e4ee5cf34",
+    "h1_candidates_fasta_sha256": "5d5bf7033b8040c817810abec10df212635c76d77a3cdcce3eb413d2f428bc30",
+    "h1_candidates_tsv_sha256": "aa111562b9204aadc9b0bda4f92bc39310e07c8f9eb0d8656dcd9db0f09d4ad7",
+    "h1_receipt_sha256": "5863d6cdae14b08132cec8a3c7fec13c2b4a1096a48e8f86698470dc47dfe341",
+    "preserved_failure_sha256": "78073a919fc0a5a15c22f4299350efc0bb8581d7212924609433c350173f5dc6",
+    "source_implementation_freeze_sha256": "dab2f0dedc845fe3e415bf77bc7ca3281ed14bcaee1caf0bcacd60ca5fcd9209",
+    "source_qc_runner_sha256": "f77af186ee548e68712b0e17efb634478add89582c825cadfe5f5cb0d4c67b89"
+  },
+  "source_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "status": "FROZEN_NOT_REMOTE_EXECUTED",
+  "tests": {
+    "normal": {
+      "count": 15,
+      "status": "OK"
+    },
+    "py_compile": "OK",
+    "pythonoptimize_1": {
+      "count": 15,
+      "status": "OK"
+    }
+  },
+  "timestamp_source": "initial_file_mtime_before_remote_execution"
+}

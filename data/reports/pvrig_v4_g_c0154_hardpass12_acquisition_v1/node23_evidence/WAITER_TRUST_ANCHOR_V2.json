@@ -1,0 +1,34 @@
+{
+  "acquisition_protocol_lock_sha256": "7096c1b0970ae7010d247c84322428d7cdce69aa9203e23296e2d33b5b5beda8",
+  "created_at_utc": "2026-07-16T16:46:13.232536+00:00",
+  "max_load1": 16,
+  "open_teacher_code_bindings": [
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+    },
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/run_after_v4d_complete_v2.sh",
+      "sha256": "636915faa40e3877e1a8b41592d951fa7e3f274dd17ae311705fb04f420ffd3d"
+    },
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/verify_pvrig_v4d_evaluator_release.py",
+      "sha256": "3700f65616bf217814437435516f83a3cea1073751a3457f6a9759362c966f20"
+    }
+  ],
+  "open_teacher_postprocess_status_path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/status/postprocess_status.json",
+  "open_teacher_release_receipt_path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/outputs/open_teacher_postprocess_receipt.json",
+  "open_teacher_release_verifier_sha256": "f4ff29e2ba1cadd6c120ba982fe253471d9f06738e60f257bfc892202d6b755a",
+  "required_open_teacher_status": "COMPLETE",
+  "required_release_status": "PASS_OPEN258_TEACHER_READY_TEST32_SEALED",
+  "required_test32_boundary": {
+    "sealed_metrics_used_for_teacher_or_ranking": false,
+    "sealed_test_raw_job_results_opened": 0
+  },
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_waiter_trust_anchor_v2",
+  "source_v4d_controller_path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/status/controller.json",
+  "status": "TRUST_ANCHOR_V2_FROZEN_BEFORE_WAITER_START",
+  "waiter_upgrade_receipt_sha256": "3dbfb6855d328f4a103f78f738751b664a56d3d8b24be2a1fa53a539e5af60cd",
+  "waiter_v2_sha256": "c7f7d2c62d23e62a5d93af6b89139c94b576e7c95a16b560e3e12fd90cf148a3",
+  "waiter_v2_test_sha256": "c7b5d0ea89149261c33500beca637732ca5c83d70830f135d4f0542c24279c26"
+}

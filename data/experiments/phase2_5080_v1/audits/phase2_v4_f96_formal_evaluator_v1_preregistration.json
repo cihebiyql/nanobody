@@ -1,0 +1,199 @@
+{
+  "claim_boundary": "This evaluation concerns fixed-PVRIG computational independent-dual-receptor Docking geometry only. It is not PVRIG binding probability, affinity or Kd, competition, experimental blocking, Docking Gold, or final submission authority.",
+  "dual_docking_label_contract": {
+    "allowed_seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "analyzable_status": "PASS_COMPLETE_DUAL_DOCKING",
+    "endpoint_bounds": [
+      0.0,
+      1.0
+    ],
+    "endpoint_direction": "higher_is_better",
+    "independent_8X6B_and_9E6Y_docking_required": true,
+    "label_tsv_fields": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_framework_cluster",
+      "model_split",
+      "docking_status",
+      "R_dual_min",
+      "successful_seed_count_8X6B",
+      "successful_seed_ids_8X6B",
+      "successful_seed_count_9E6Y",
+      "successful_seed_ids_9E6Y",
+      "independent_receptor_docking",
+      "technical_failure_reason"
+    ],
+    "minimum_successful_seeds_per_candidate_receptor": 2,
+    "primary_endpoint": "R_dual_min",
+    "receipt_must_bind": [
+      "frozen prediction receipt SHA256",
+      "evaluator preregistration SHA256",
+      "evaluator implementation SHA256",
+      "frozen panel SHA256",
+      "Full-QC eligibility TSV SHA256",
+      "Docking-label TSV SHA256"
+    ],
+    "required_label_receipt_schema": "phase2_v4_f96_dual_docking_label_receipt_v1",
+    "required_label_receipt_status": "PASS_V4_F96_DUAL_DOCKING_LABEL_RELEASE",
+    "technical_failure_policy": "Keep in the Full-QC hard-pass denominator, require blank R_dual_min plus a nonempty reason, never impute, and exclude only from calculable metrics.",
+    "technical_failure_status": "TECHNICAL_FAILURE"
+  },
+  "frozen_at": "2026-07-16T17:55:07.885651+00:00",
+  "frozen_decision_thresholds": {
+    "applicability": "Applied once only after all minimum-denominator gates pass.",
+    "conditional_shortcut_gates_if_shortcut_predictions_present": {
+      "minimum_nonnegative_parent_delta_count": 3,
+      "overall_spearman_delta_over_strongest_shortcut_minimum": 0.05
+    },
+    "fail": "FAIL_V4_F96_COMPUTATIONAL_GEOMETRY_SURROGATE if denominator is sufficient and any applicable mandatory gate fails.",
+    "insufficient": "INSUFFICIENT_TECHNICAL_COVERAGE if any frozen denominator, parent coverage, seed completeness, or bootstrap-validity minimum is not met.",
+    "mandatory_absolute_gates": {
+      "high_vs_low_uncertainty_quartile_mae_ratio_minimum": 1.25,
+      "minimum_nonnegative_parent_spearman_count": 3,
+      "overall_contact_spearman_minimum": 0.3,
+      "parent_cluster_bootstrap_ci95_lower_strictly_greater_than": 0.0,
+      "parent_macro_spearman_minimum": 0.2,
+      "selective_risk_mae_reduction_minimum": 0.1,
+      "top_quartile_recall_at_20pct_budget_minimum": 0.5
+    },
+    "pass": "PASS_V4_F96_COMPUTATIONAL_GEOMETRY_SURROGATE only if all applicable mandatory gates pass.",
+    "secondary_diagnostics_not_standalone_pass_gates": [
+      "NDCG",
+      "MAE",
+      "base-family metrics",
+      "embedding-family metrics"
+    ]
+  },
+  "frozen_panel": {
+    "audit_sha256": "fc24cc2bd203100e29be897e87850a67ddc362b1fa1635d4172ec4335f5083a1",
+    "manifest_path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_f/prospective_holdout96_manifest.tsv",
+    "manifest_sha256": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334",
+    "model_split": "PROSPECTIVE_V4_F_COMPUTATIONAL_HOLDOUT",
+    "parent_framework_clusters": [
+      "C0198",
+      "C0379",
+      "C0401",
+      "C0515"
+    ],
+    "receipt_sha256": "3adc1e3194bdc5846f35b99020c3c996859caf3e3abc2b8e02df6ac75296512f",
+    "replacement_policy": "No replacement or score-based substitution after Full-QC attrition.",
+    "row_count": 96
+  },
+  "frozen_prediction_gate": {
+    "label_paths_accepted_must_equal": 0,
+    "labels_read_must_equal": false,
+    "ordering": "The evaluator must validate and snapshot the frozen prediction receipt, prediction TSV, prediction audit, and panel identity before opening eligibility or Docking-label files.",
+    "prediction_policy": {
+      "confidence_interval": "two-sided parent-cluster bootstrap 95 percent CI",
+      "endpoint_direction": "higher_is_better",
+      "forbidden_after_unseal": [
+        "switch primary model family",
+        "change endpoint or direction",
+        "change metric hierarchy",
+        "tune weights or thresholds on V4-F Docking labels"
+      ],
+      "full_qc_attrition": "report all Full-QC failures; evaluate the primary endpoint only for the frozen policy-defined Docking set without replacement or score-based substitution",
+      "multiplicity_policy": "single preregistered contact-family primary test; base and embedding families are descriptive secondary analyses only",
+      "primary_endpoint": "continuous independent-dual-receptor R_dual_min",
+      "primary_metric": "spearman",
+      "primary_model_family": "contact",
+      "primary_model_selection": "use the contact-stage selected_candidate_model frozen on OPEN_DEVELOPMENT; no post-Docking family switching or ensemble reweighting",
+      "primary_prediction_column": "contact_predicted_geometry_score",
+      "primary_uncertainty_column": "contact_prediction_uncertainty",
+      "resampling_unit": "parent_framework_cluster",
+      "schema_version": "phase2_v4_f_primary_evaluation_policy_v1",
+      "secondary_metrics": [
+        "ndcg",
+        "top_quartile_recall_at_20pct_budget",
+        "mae"
+      ],
+      "tie_break": "candidate_id ascending after exact score and uncertainty ties"
+    },
+    "prediction_policy_sha256": "9f698bdd6170fbda27592be0421559892f389b0b44f28ad6eb060d45357413c1",
+    "primary_model": "contact only; base and embedding are descriptive frozen alternative families and may never replace contact after unseal.",
+    "required_execution_mode": "production",
+    "required_receipt_status": "PASS_V4_F_96_UNLABELED_PREDICTIONS_FROZEN",
+    "required_row_count": 96
+  },
+  "full_qc_denominator": {
+    "all_96_rows_required": true,
+    "candidate_and_sequence_hash_join": "exact one-to-one against the frozen panel and frozen predictions",
+    "definition": "Every one of the frozen 96 candidates with full_qc_hard_pass=true; no replacement. Full-QC hard-fail rows remain in attrition reporting but are not Docking-evaluable.",
+    "eligibility_tsv_fields": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_framework_cluster",
+      "model_split",
+      "full_qc_hard_pass",
+      "full_qc_status",
+      "replacement_used"
+    ],
+    "replacement_used_must_be_false_for_all_rows": true,
+    "required_eligibility_receipt_schema": "phase2_v4_f96_full_qc_eligibility_receipt_v1",
+    "required_eligibility_receipt_status": "PASS_V4_F96_FULL_QC_ELIGIBILITY_FROZEN_NO_REPLACEMENT"
+  },
+  "label_access_at_freeze": {
+    "v4_f96_docking_label_files_opened": 0,
+    "v4_f96_docking_label_paths_accepted": 0,
+    "v4_f96_docking_labels_read": false
+  },
+  "metric_definitions": {
+    "bootstrap": {
+      "interval": "percentile 95%",
+      "invalid_replicates": "omit undefined Spearman replicates and report valid fraction",
+      "replicates": 10000,
+      "seed": 20260717,
+      "unit": "parent_framework_cluster"
+    },
+    "descriptive_alternative_families": [
+      "base",
+      "embedding"
+    ],
+    "mae": "Mean absolute error of contact score versus R_dual_min.",
+    "ndcg": "linear nonnegative R_dual_min gain with log2 discount, evaluated over all analyzable rows.",
+    "parent_macro": "Unweighted mean across defined per-parent metrics; no row-count weighting.",
+    "per_parent": "All metrics repeated within parent_framework_cluster when defined.",
+    "predeclared_shortcut_names": [
+      "constant",
+      "parent_only",
+      "metadata_shortcut",
+      "cdr3_only",
+      "handcrafted_full_sequence",
+      "generic_prior_only",
+      "cdr_length_only"
+    ],
+    "primary_overall": "Spearman rank correlation between contact_predicted_geometry_score and R_dual_min across analyzable Full-QC hard-pass candidates.",
+    "shortcut_policy": "If and only if the frozen prediction table carries a selected model whose name is one of the predeclared shortcut names, compare contact to the strongest such frozen shortcut without selecting or tuning after labels.",
+    "spearman_ties": "average ranks; undefined when either vector is constant",
+    "top_quartile_recall_at_exact_20pct_budget": "Observed top ceil(0.25*N) by R_dual_min; predicted budget top ceil(0.20*N) by contact score; candidate_id ascending resolves exact ties; report the realized integer budget fraction.",
+    "uncertainty_selective_risk": "Remove the ceil(25%*N) highest contact-uncertainty rows and compare retained MAE with overall MAE; also compare highest versus lowest uncertainty quartile MAE."
+  },
+  "minimum_denominator_policy": {
+    "below_any_minimum_status": "INSUFFICIENT_TECHNICAL_COVERAGE",
+    "minimum_analyzable_count": 64,
+    "minimum_analyzable_fraction_of_hard_pass": 0.8,
+    "minimum_analyzable_per_parent_cluster": 8,
+    "minimum_full_qc_hard_pass_count": 64,
+    "minimum_valid_parent_bootstrap_fraction": 0.8,
+    "no_imputation": true,
+    "required_parent_cluster_count": 4
+  },
+  "objective": "One-shot prospective evaluation of the frozen contact-family sequence surrogate against continuous independent 8X6B/9E6Y Docking geometry on the V4-F96 panel.",
+  "one_shot_and_failure_policy": {
+    "after_unseal_forbidden": [
+      "switch model family",
+      "change weights, endpoint, thresholds, denominator, bootstrap seed, budget rounding, or missingness handling",
+      "select an alternate model from V4-F labels",
+      "rerun under the same version after a scientific FAIL"
+    ],
+    "evaluation_count": 1,
+    "formal_fail_closes_version": true,
+    "output_publication": "stage outputs then atomically publish receipt last; refuse nonempty or prior-completed output directories"
+  },
+  "schema_version": "phase2_v4_f96_one_shot_formal_evaluator_preregistration_v1",
+  "status": "FROZEN_BEFORE_V4_F96_DOCKING_LABELS_EXIST_OR_ARE_OPENED"
+}

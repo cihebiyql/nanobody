@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase2_v4_f_holdout96_zero_eligible_terminal_v2_1_implementation_freeze",
+  "status": "FROZEN_BEFORE_TERMINALIZATION",
+  "frozen_at_utc": "2026-07-16T18:39:00Z",
+  "created_after_observation": true,
+  "scientific_policy_change": false,
+  "recovery_semantics": "Terminalize the already-observed exact 96/96 Fast-QC hard failures as COMPLETE_WITH_ZERO_ELIGIBLE; do not manufacture merge_full/full_merged, do not run Full-QC chunks, and do not change gates.",
+  "hashes": {
+    "protocol": "08a5320ff0bea7dc6ac46f6fa4eab8d3ad4a65d7dfc63a494ebe0815970add03",
+    "terminalizer": "f538795d463cd5f138df73d0c18dc547f560d21d983622e99b9c5cd7ff5b2737",
+    "tests": "c56de7c04e02a717dec22785c1f4c6c4359068f43ea51ac62824a846f7197be2",
+    "test_log": "66ce48a79c020dbc0b2aaac7f9c7035c92c43041cf1391afac3bdc48fd0ce38e"
+  },
+  "test_evidence": {
+    "count": 8,
+    "status": "OK",
+    "command": "python3 experiments/phase2_5080_v1/src/test_terminalize_phase2_v4_f_holdout96_zero_eligible_v2_1.py"
+  },
+  "canonical_remote_root": "/data1/qlyu/projects/pvrig_v4_f_holdout96_zero_eligible_terminal_v2_1_20260717",
+  "canonical_receipt": "/data1/qlyu/projects/pvrig_v4_f_holdout96_zero_eligible_terminal_v2_1_20260717/CANONICAL_ELIGIBILITY_RECEIPT.json",
+  "claim_boundary": "Frozen V4-F96 sequence/Fast-QC eligibility attrition only; not Full-QC evidence for any candidate, not Docking, geometry, binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold."
+}

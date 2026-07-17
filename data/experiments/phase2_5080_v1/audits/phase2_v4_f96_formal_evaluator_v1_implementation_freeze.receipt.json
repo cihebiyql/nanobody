@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-07-16T18:16:53.247070+00:00",
+  "evaluator_preregistration_sha256": "05d5727c7568ac9563c75d7ec7b916f172eefd915a728b829d29c25a12079fc3",
+  "evaluator_sha256": "e5594681e122e38834441f6e6aa53602a673a62615abc55a0cec20bb3650ef17",
+  "formal_evaluation_executed": false,
+  "implementation_freeze": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_f96_formal_evaluator_v1_implementation_freeze.json",
+    "sha256": "2f43e8cea0bfbafb7a122a2d78c5850cb4f602598405d783b0432e8d3bbb6cf5",
+    "size_bytes": 3152
+  },
+  "parsed_test_count": 29,
+  "schema_version": "phase2_v4_f96_formal_evaluator_implementation_freeze_receipt_v1",
+  "status": "PASS_COMPLETE_HASH_CLOSURE_BEFORE_V4F96_LABEL_UNSEAL",
+  "test_log_sha256": "ab379d60e90f60070abc597af50446f99d053d7011c2a4114ee58774d2285017",
+  "v4_f96_docking_label_paths_accepted": 0,
+  "v4_f96_docking_labels_read": false
+}

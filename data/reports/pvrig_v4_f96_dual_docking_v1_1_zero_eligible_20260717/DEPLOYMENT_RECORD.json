@@ -1,0 +1,40 @@
+{
+  "canonical_zero_eligibility_receipt": {
+    "hardfail_count": 96,
+    "hardpass_count": 0,
+    "path": "/data1/qlyu/projects/pvrig_v4_f_holdout96_zero_eligible_terminal_v2_1_20260717/CANONICAL_ELIGIBILITY_RECEIPT.json",
+    "sha256": "c0ee3aae278836b91f77a3e33aa78823dd0dc6551b5f93e5458763f38c191aa7"
+  },
+  "claim_boundary": "Frozen V4-F96 sequence/developability attrition only. No Docking geometry label, binding, affinity, competition, experimental blocking, Docking Gold, or final submission claim.",
+  "deployment_bootstrap_pid": 2069185,
+  "deployment_bootstrap_terminal": true,
+  "frozen_hashes": {
+    "implementation_freeze": "863eadf91365bc59f41e3713d432d5e1c8f2e3962fa111d6ff8f46509f7694d1",
+    "node23_waiter": "590d0e0d51a69f9110ef3bfe56bc401c6ac9f1510b4973e54dd44c105346e68a",
+    "package_receipt": "d1946cfe3ca4bee052a6de7cfb3461e8bb22d02b6c08a68e6ab0339d0f9a1c2e",
+    "preregistration": "8457e9d086f530d643335757d492d79cc7b7f9a6acf42fd0d870d609b84cfbd1",
+    "test_log": "d973d7afe27c6681577fa26d8ba5bdf20d18f6e95e9aaed58784c5d67477a9aa"
+  },
+  "node23_remote_root": "/data/qlyu/projects/pvrig_v4_f96_dual_redocking_v1_1_20260717",
+  "schema_version": "phase2_v4_f96_dual_docking_v1_1_zero_eligible_deployment_record_v1",
+  "status": "PASS_REMOTE_TERMINAL_NO_ELIGIBLE_DOCKING",
+  "terminal": {
+    "expected_docking_jobs": 0,
+    "forbidden_artifact_count": 0,
+    "formal_evaluator_run": false,
+    "label_receipt_produced": false,
+    "node23_scientific_work_started": false,
+    "status": "NO_ELIGIBLE_DOCKING"
+  },
+  "v1_supersession": {
+    "bootstrap_pid": 2056197,
+    "docking_jobs_started": 0,
+    "failure": "readonly ROOT status environment collision",
+    "formal_evaluator_run": false,
+    "label_receipt_produced": false,
+    "remote_root": "/data/qlyu/projects/pvrig_v4_f96_dual_redocking_v1_20260717",
+    "scientific_work_started": false,
+    "terminal": true
+  },
+  "verified_at_utc": "2026-07-16T18:47:52.550241+00:00"
+}

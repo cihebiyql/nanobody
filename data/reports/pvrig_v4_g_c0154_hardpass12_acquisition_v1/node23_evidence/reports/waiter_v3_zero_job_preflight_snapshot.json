@@ -1,0 +1,83 @@
+{
+  "complete_protocol_lock_closure": {
+    "candidate_count": 12,
+    "candidate_pdb_count": 12,
+    "job_count": 72,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "status": "PASS_COMPLETE_ACQUISITION_LOCK_CLOSURE",
+    "verified_file_count": 47,
+    "verified_total_bytes": 2589493
+  },
+  "created_at_utc": "2026-07-16T17:12:49.135730+00:00",
+  "docking_result_rows_opened": 0,
+  "external_gate_snapshot": {
+    "closed": false,
+    "counts": {
+      "FAILED_MAX_ATTEMPTS": 1,
+      "PENDING": 517,
+      "RUNNING": 8,
+      "SUCCESS": 1496
+    },
+    "load1": 42.1044921875,
+    "max_load1": 16.0,
+    "no_active": false,
+    "open_teacher_postprocess_status": "WAITING_V4D",
+    "open_teacher_ready_test32_sealed": false,
+    "open_teacher_release_gate": {
+      "reasons": [
+        "missing_or_nonregular:archive",
+        "missing_or_nonregular:archive_sum",
+        "missing_or_nonregular:audit",
+        "missing_or_nonregular:evaluator",
+        "missing_or_nonregular:receipt",
+        "missing_or_nonregular:sums",
+        "missing_or_nonregular:teacher"
+      ],
+      "status": "BLOCKED",
+      "test32_sealed": false
+    },
+    "ready": false,
+    "source_status": "RUNNING",
+    "terminal": false
+  },
+  "nice": 15,
+  "runtime_identity": {
+    "PATH": "/data/qlyu/anaconda3/envs/haddock3/bin:/usr/local/bin:/usr/bin:/bin",
+    "max_load1": 16.0,
+    "open_teacher_root": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716",
+    "package_root": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717",
+    "poll_seconds": 300,
+    "python_resolved": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+    "source_v4d_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715"
+  },
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_waiter_v3_zero_job_preflight_snapshot",
+  "status": "PASS_ZERO_JOB_PREFLIGHT",
+  "teacher_tsv_rows_opened": 0,
+  "v2_waiter_pid_1841547_dead": true,
+  "verified_artifact_sha256": {
+    "WAITER_TRUST_ANCHOR_V2.json": "7144e6a6adc0fa72e13c9a4f6edb4bde3913281bdea64e70cd18e2e58d9a4e3b",
+    "WAITER_TRUST_ANCHOR_V3.json": "5b149b478f5550559822a33223ae1fca81d564927e7e7a6b99770cc5c57f9242",
+    "WAITER_V2_IMPLEMENTATION_FREEZE.json": "b15c5b32a0d5f6a00c3abe26bbbb9ee149b48724e0ec7fa08d717eccba352b99",
+    "WAITER_V3_IMPLEMENTATION_FREEZE.json": "7c7060274af988e758a6ea428dc1b03db72871ceb4e2511eac1dca5f3c1ffcbd",
+    "WAITER_V3_POLICY_FREEZE.json": "0ef462a5d7e1b8d73580b9bfb169bb2bf1cd624cde9e91a12d1751024ad7d7ab",
+    "scripts/verify_open_teacher_release_v1.py": "f4ff29e2ba1cadd6c120ba982fe253471d9f06738e60f257bfc892202d6b755a",
+    "scripts/wait_for_v4d_open_teacher_then_run_v3.py": "8a6d5354c8bb017c3ce90621f3edd1aac5dc674babbca24a4f4a3316f3048e1a",
+    "scripts/waiter_v3_policy.py": "3f4cd75d42ea0ad6ca61d53ed1c799b650e32cc41aac069c21f8bac5caacb7ed",
+    "status/waiter_v2_stopped_for_v3_security_fix.json": "0a1ead8e7849ff90dd768e3462be4fddc55c7bbc583cb07a4c35ed314a48c43b",
+    "tests/test_waiter_v3_security.py": "90d880c7d20f7d338d71a753d3f8b4ddd49047348d8bca2a68cdd9c5c9aadd18"
+  },
+  "zero_acquisition_state": {
+    "controller_exists": false,
+    "results_entries": 0,
+    "runs_entries": 0,
+    "status_job_files": 0
+  }
+}

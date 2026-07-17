@@ -1,0 +1,80 @@
+{
+  "claim_boundary": "Implementation freeze candidate for one DEV-only v1.1 terminal-failure recovery. No SSH, raw access, training, formal V4-F unlock, binding, affinity, experimental blocking, or Docking Gold authority.",
+  "files": {
+    "builder": {
+      "relative_path": "src/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "d55c312140b357e84219c93585320bfb9564f0b74dbc83728165097a6708ad37",
+      "size": 23721
+    },
+    "builder_tests": {
+      "relative_path": "src/test_prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "53fbc38206ee597696bdd86a5a57570e40d2be6ad2a92b6b35f5562b3eaf4fdf",
+      "size": 18606
+    },
+    "fallback_evidence": {
+      "relative_path": "audits/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+      "size": 2895
+    },
+    "node23_launcher": {
+      "relative_path": "src/run_phase2_v4_d_dev1_open258_v1_1_node23.sh",
+      "sha256": "b91213ffe23819464b0189402431f0e1fa502d895ebdd9b6fc140ce72f3b08fc",
+      "size": 3894
+    },
+    "preregistration": {
+      "relative_path": "audits/phase2_v4_d_dev1_open258_v1_1_recovery_preregistration.json",
+      "sha256": "7dcb542bfe87e6b20a85b13184000a56841687d1dcc5216730f3212bc3475fcf",
+      "size": 4055
+    },
+    "tests_log": {
+      "relative_path": "audits/phase2_v4_d_dev1_open258_v1_1_recovery_tests.log",
+      "sha256": "cb541a1af78e2c17f83db7e1b16416d73bd59276f34531c44d47e028d7877fcd",
+      "size": 292
+    },
+    "v1_builder": {
+      "relative_path": "src/prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276",
+      "size": 27225
+    },
+    "v1_failure_receipt": {
+      "relative_path": "audits/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720",
+      "size": 2000
+    },
+    "v1_formula_helper": {
+      "relative_path": "src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+      "size": 37344
+    }
+  },
+  "final_submission_authority": false,
+  "formal_v4_f_unlock_eligible": false,
+  "frozen_at_utc": "2026-07-17T00:31:39.134101+00:00",
+  "remote_execution_authorized": false,
+  "remote_execution_started": false,
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_1_implementation_freeze_candidate_v1",
+  "single_terminal_failure_fallback": {
+    "aggregate_metric_fields_parsed": 0,
+    "aggregate_terminal_rows_parsed": 1,
+    "count": 1,
+    "job_hash": "447e4cf0dc26af68a87636abd06fae3b69ca8a2522742776361084d9a84c512d",
+    "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00322__A_CENTER__H3__B02__M00_8x6b_s3253_447e4cf0dc26",
+    "pose_scores_exact_job_rows": 0,
+    "raw_success_count": 1547,
+    "state": "FAILED_MAX_ATTEMPTS"
+  },
+  "source_evaluator_status": "FAIL",
+  "source_evaluator_unlockable": false,
+  "source_v1_status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB",
+  "status": "CANDIDATE_FREEZE_V1_1_BEFORE_REMOTE_OR_RAW_ACCESS",
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0,
+  "tests": {
+    "bash_n": true,
+    "normal": 16,
+    "py_compile": true,
+    "python_optimize_1": 16
+  }
+}

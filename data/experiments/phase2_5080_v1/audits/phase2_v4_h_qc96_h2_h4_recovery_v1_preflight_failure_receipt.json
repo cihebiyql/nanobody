@@ -1,0 +1,27 @@
+{
+  "actual_frozen_config_seed": "phase2_v4_h_h4_fullqc_hash_selection_v1_20260717",
+  "claim_boundary": "Pre-scientific zero-work configuration failure only; no candidate/QC/selection/Docking/model/experimental result was produced.",
+  "error": "RuntimeError: selection_seed_mismatch",
+  "evidence_hashes": {
+    "remote_preflight_failure_log": "cf2e08705d986d2748e1334f0207738c24e1fa4f209d6196bfd2bcd80dcfaeb1",
+    "v1_implementation_freeze": "78b572a16d148be949ce6385acfadfbe9b62731924bd26c8e848eda4f990dd73",
+    "v1_package_receipt": "011d65239acc5c36a653d41d27cc6f35525c3a3aa6991d120f6fe7e9cc53bb32",
+    "v1_preregistration": "f31fb16568d906204c44d451e2e679140c99ecc0ebf8e8f97ff9a460a3bcd6a3",
+    "v1_recovery_script": "17960e1ea7b01c8354630ffeb7c63738622bc2675365bba368342a9f14b19d22"
+  },
+  "formal_manifest_written": false,
+  "preflight_return_code": 1,
+  "qc_rerun": false,
+  "recorded_at_utc": "2026-07-16T23:33:03.883303+00:00",
+  "recovery_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_20260717",
+  "recovery_root_absent_after_preflight": true,
+  "remote_execution_stage": "ZERO_WORK_PREFLIGHT_ONLY",
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_preflight_failure_receipt",
+  "scientific_outputs_created": 0,
+  "selection_run": false,
+  "source_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "status": "FAIL_V1_PRE_SCIENTIFIC_PREFLIGHT_SELECTION_SEED_MISMATCH_NO_OUTPUT",
+  "timestamp_source": "preflight_failure_log_file_mtime_after_capture",
+  "v1_disposition": "SUPERSEDED_PRE_SCIENTIFIC_NO_OUTPUT_DO_NOT_REUSE_OR_MODIFY",
+  "v1_hard_bound_seed": "V4_H_QC96_H4_HASH_SELECTION_V1"
+}

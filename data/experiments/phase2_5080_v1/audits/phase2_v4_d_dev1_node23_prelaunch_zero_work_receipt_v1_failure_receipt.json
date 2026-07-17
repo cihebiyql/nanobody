@@ -1,0 +1,20 @@
+{
+  "claim_boundary": "Operational precheck false negative before any scientific work; no teacher extraction or raw Docking label read.",
+  "empty_failed_stdout_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "failure_reasons": [
+    "python_runtime_regular incorrectly rejected the canonical Conda python symlink although its resolved target is a regular executable",
+    "active-process pgrep matched the inspection shell command itself"
+  ],
+  "recorded_at_utc": "2026-07-17T00:07:40.307683+00:00",
+  "remote_state_after_failure": {
+    "formal_v4_f_unlock_eligible": false,
+    "logs_files": [],
+    "release_absent": true,
+    "status_files": [],
+    "teacher_extraction_started": false,
+    "test32_raw_job_files_opened": 0
+  },
+  "schema_version": "phase2_v4_d_dev1_node23_prelaunch_zero_work_receipt_v1_failure",
+  "status": "FAILED_PRECHECK_IMPLEMENTATION_NO_SCIENCE_WORK",
+  "superseded_by": "phase2_v4_d_dev1_node23_prelaunch_zero_work_receipt_v1_1.json"
+}

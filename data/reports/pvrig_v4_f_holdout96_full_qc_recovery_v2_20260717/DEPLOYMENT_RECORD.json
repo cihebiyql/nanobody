@@ -1,0 +1,42 @@
+{
+  "candidate_count": 96,
+  "claim_boundary": "Sequence and developability Full-QC evidence only; not Docking, geometry, binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold.",
+  "deployed_at_utc": "2026-07-16T17:59:28.606069+00:00",
+  "hashes": {
+    "implementation_freeze": "062f83b290166471fee54231470967425b5de786d0f61f9597b02f5bcc190805",
+    "manifest": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334",
+    "package_receipt": "c89ba6591c10acb4007a182ec21880b17ec92f661530df8701f6c66677ae1af0",
+    "preregistration": "b9d539f8936992df330e7ad844604d7d81114547e99de82b1a1fcbcbeecbebcb",
+    "runner": "b36e2fc2908eee2cf573db065a1acb16e4b6a17f53dad85c27183ededb444d09",
+    "runtime_manifest": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+    "screen": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a",
+    "upstream_audit": "fc24cc2bd203100e29be897e87850a67ddc362b1fa1635d4172ec4335f5083a1",
+    "upstream_receipt": "3adc1e3194bdc5846f35b99020c3c996859caf3e3abc2b8e02df6ac75296512f",
+    "waiter": "feebca265f263c87e8240c201b19d75070782264b06346caadbddb8f3ac497aa"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0,
+    "v4_f_predictions": 0
+  },
+  "node": "node1",
+  "remote_package_hash_manifest_sha256": "cfa43fd17a32d2128b15108cce95f9a8c6fdfa6a63839b895d7f8ac5ea985e92",
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_f_holdout96_full_qc_recovery_v2_20260717",
+  "resource_policy": {
+    "cpu_affinity": "0-23",
+    "gpu_requested": 0,
+    "maximum_cpu_workers": 24
+  },
+  "schema_version": "phase2_v4_f_holdout96_full_qc_recovery_v2_deployment_record",
+  "scientific_work_started": false,
+  "selection_policy": "all prospectively frozen V4-F96; no model-based selection; no replacement",
+  "start_gate": "wait for Support V4-A720 structures terminal marker, dead processes, and load1 <= 8.0",
+  "status": "DEPLOYED_WAITING_SUPPORT_V4_A720_STRUCTURES",
+  "tnp_policy": "DEFERRED_NO_IMPUTATION_THREE_STATE",
+  "upstream_structure_terminal_records_at_snapshot": 320,
+  "waiter_pid": 523095,
+  "waiter_status_sha256": "3434edc4453223f536d2af655a01f665c6d68822f06ce97ee447e353c7ed0bdf",
+  "zero_work_preflight_sha256": "10069a56beba68b295570924504824e4267342c1072c52445e405bfb5230740e"
+}

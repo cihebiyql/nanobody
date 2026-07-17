@@ -1,0 +1,12 @@
+{
+  "claim_boundary": "Sequence and developability Full-QC evidence only; not Docking, geometry, binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold.",
+  "reason": "terminal marker missing or invalid",
+  "resource_policy": {
+    "cpu_affinity": "0-23",
+    "gpu_requested": 0,
+    "maximum_cpu_workers": 24
+  },
+  "schema_version": "phase2_v4_f_holdout96_full_qc_recovery_v2_waiter_status",
+  "status": "WAITING_SUPPORT_V4_A720_STRUCTURES",
+  "updated_at_utc": "2026-07-16T17:59:03.392267+00:00"
+}

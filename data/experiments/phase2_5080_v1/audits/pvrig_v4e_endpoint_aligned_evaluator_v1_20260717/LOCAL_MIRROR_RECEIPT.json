@@ -1,0 +1,8 @@
+{
+  "active_archive": "v4e_method_audit_delivery_v2.tar.gz",
+  "active_archive_sha256": "9f37d3a5d1f042c100e22907d50bee60319e9f9b005cbd1e7f05a383a3bb9b85",
+  "incomplete_archive": "v4e_method_audit_delivery_v1_INCOMPLETE_DO_NOT_USE.tar.gz",
+  "incomplete_archive_sha256": "ec268ca83175067190748b2e54a5576c0c2cd2c988899da16e8d4cbaa5efce6c",
+  "reason": "v1 local mirror omitted scripts directory and failed SHA256SUMS; v2 includes scripts and passes all checks.",
+  "status": "PASS_LOCAL_MIRROR_V2_VERIFIED"
+}

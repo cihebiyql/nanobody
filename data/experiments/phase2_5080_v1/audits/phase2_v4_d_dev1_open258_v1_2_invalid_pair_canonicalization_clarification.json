@@ -1,0 +1,30 @@
+{
+  "canonical_byte_length": 18593,
+  "canonical_sha256": "941d5010190c6576ee0961681227d5b9b1ce9a719cc63ae5c25a45b0f8de9c1f",
+  "claim_boundary": "Serialization clarification for a post-hoc development-only pose-validity recovery. It does not authorize release, formal validation, binding, affinity, experimental blocking, or Docking Gold.",
+  "diagnostic_path": "experiments/phase2_5080_v1/audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+  "diagnostic_sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+  "matches_preregistered_sha256": true,
+  "method_or_threshold_changed": false,
+  "preregistration_path": "experiments/phase2_5080_v1/audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+  "preregistration_sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1",
+  "projected_fields_with_types": {
+    "conformation": "str",
+    "job_id": "str",
+    "model": "str",
+    "seed": "int",
+    "t_ca_rmsd_a": "float"
+  },
+  "recorded_at_utc": "2026-07-17T01:18:47.388152+00:00",
+  "row_count": 99,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification_v1",
+  "serialization": "json.dumps(rows, sort_keys=True, separators=(',', ':')).encode('utf-8')",
+  "sort_key": [
+    "job_id",
+    "model",
+    "conformation",
+    "seed"
+  ],
+  "source_array": "diagnostic[invalid_native_overlay_rows]",
+  "status": "POST_FREEZE_SERIALIZATION_CLARIFICATION_NO_METHOD_CHANGE"
+}

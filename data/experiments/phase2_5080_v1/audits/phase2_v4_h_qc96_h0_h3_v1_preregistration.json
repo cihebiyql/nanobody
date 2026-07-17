@@ -1,0 +1,172 @@
+{
+  "claim_boundary": "V4-H-QC96 is a label-free QC-qualified prospective computational holdout protocol; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "frozen_at_utc": "2026-07-16T19:26:35.138762+00:00",
+  "frozen_inputs": {
+    "candidate7087.fasta": {
+      "path": "data/reports/pvrig_candidate7087_node1_fastqc_census_v1_20260716/deployment_inputs/candidate7087.fasta",
+      "sha256": "82d89ca0b35f38e87a26b9ccca9ed97ce64255db33250ddb694fe2a072494b88"
+    },
+    "fullqc290_split_manifest.tsv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "known_calibration_sequence_exclusions_v1.tsv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v4_g/known_calibration_sequence_exclusions_v1.tsv",
+      "sha256": "cba42df8ad9fab0399eb8a7d8608397fdf85aeea6619e2993e46d12d31dbd7d4"
+    },
+    "parent12_anarci_imgt_v1_H.csv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v4_h/parent12_anarci_imgt_v1_H.csv",
+      "sha256": "b8d80653e52f9c8008328f77df5a519a698c5094c105f59f3faa29dcd20e76ca"
+    },
+    "prospective_holdout96_manifest.tsv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v4_f/prospective_holdout96_manifest.tsv",
+      "sha256": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334"
+    },
+    "pvrig_8x6b_chainT.pdb": {
+      "path": "node1/rfantibody_pvrig_1000/inputs/pvrig_8x6b_chainT.pdb",
+      "sha256": "a3451fb6a2e2659971826e7ce4a7e774378dc377ea5eee4dd70a148c7dbc2d17"
+    },
+    "pvrig_rfantibody_1000_fr4_complete.fasta": {
+      "path": "data/experiments/phase2_5080_v1/prepared/pvrig_rfantibody_v1/pvrig_rfantibody_1000_fr4_complete.fasta",
+      "sha256": "0776db8d8db3c51a86fa6502a9d5e4a88ad1741aa61b840387f0902a26eada09"
+    },
+    "top_200_vhh_scaffolds_for_design.csv": {
+      "path": "scaffolds/top_200_vhh_scaffolds_for_design.csv",
+      "sha256": "16b478534ba350ef1b101099411f412d5b52bfb1482015ddd21d007c3b5e5861"
+    },
+    "unseen96_acquisition_manifest.tsv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v4_g/unseen96_acquisition_manifest.tsv",
+      "sha256": "e814103ee90831e33b3f04a7e8a477e68695d61401d96732b7e95829b1bd306f"
+    },
+    "untouched_reserve2_parents.tsv": {
+      "path": "data/experiments/phase2_5080_v1/data_splits/pvrig_v4_g/untouched_reserve2_parents.tsv",
+      "sha256": "98c11e8f72d97d60c9e772fa2bb256622f1ed6e1e9fddd9e136a8cd42959bb75"
+    }
+  },
+  "generation_contract": {
+    "backbones_per_task": 12,
+    "cdr2_frozen": true,
+    "cross_stratum_dedup_priority": "parent_queue_rank_then_A/B/C_then_H3/H1H3",
+    "exact_exclusion_sources": [
+      "legacy7087 hash-only FASTA",
+      "RFantibody1000 FASTA",
+      "calibration exact registry",
+      "12 parent sequences"
+    ],
+    "exclusion_hash_count_without_parents": 8177,
+    "feasibility_wording_correction": "1,440 is selected exact-unique H1 panel; raw denominator is 2,592",
+    "framework_fr4_bytes_protected": true,
+    "generator": "existing Node1 RFantibody RFdiffusion + ProteinMPNN only",
+    "h1_selection_seed": "phase2_v4_h_h1_exact_unique_selection_v1_20260717",
+    "minimum_designed_region_edits": 1,
+    "modes": [
+      "H3",
+      "H1H3"
+    ],
+    "parent_count": 12,
+    "patches": {
+      "A_CENTER": {
+        "hotspots_pdb": "T57,T101,T106",
+        "hotspots_uniprot": "R95,F139,W144"
+      },
+      "B_LOWER": {
+        "hotspots_pdb": "T97,T101,T105,T106",
+        "hotspots_uniprot": "K135,F139,S143,W144"
+      },
+      "C_CROSS": {
+        "hotspots_pdb": "T33,T36,T105,T106",
+        "hotspots_uniprot": "S71,T74,S143,W144"
+      }
+    },
+    "raw_records": 2592,
+    "retry": "maximum two same-config pipeline invocations; failed task recomputes full 12x3 new attempt; only complete hash-closed task reusable",
+    "selected_exact_unique_per_stratum": 20,
+    "selected_exact_unique_total": 1440,
+    "sequences_per_backbone": 3,
+    "task_count": 72
+  },
+  "h4_contract": {
+    "candidate_selection": "first four by frozen hash per stratum",
+    "canonical_future_delivery": [
+      "experiments/phase2_5080_v1/data_splits/pvrig_v4_h/qc96_manifest_v1.tsv",
+      "experiments/phase2_5080_v1/data_splits/pvrig_v4_h/qc96_audit_v1.json",
+      "experiments/phase2_5080_v1/data_splits/pvrig_v4_h/qc96_receipt_v1.json"
+    ],
+    "failure": "fewer than four => FAIL no replacement/threshold change",
+    "h4_selection_seed": "phase2_v4_h_h4_fullqc_hash_selection_v1_20260717",
+    "output_shape": "4x6x4=96",
+    "parent_selection": "first four ready by queue",
+    "ready_parent": "Full-QC hard-pass>=24 and each six strata>=4"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "model_scores_or_predictions": 0,
+    "v4_d_test32": 0,
+    "v4_f_labels": 0
+  },
+  "objective": "Generate a new-parent, label-free, QC-qualified prospective V4-H-QC96 panel before any model prediction or Docking label access.",
+  "parent_contract": {
+    "cdr_contract": "H1/H2/H3 raw spans and bytes reconstructed only from frozen ANARCI IMGT; Top-200 CDR strings forbidden",
+    "eligible_parent_count": 67,
+    "exact_queue_clusters": [
+      "C0162",
+      "C0371",
+      "C0283",
+      "C0148",
+      "C0078",
+      "C0145",
+      "C0086",
+      "C0417",
+      "C0176",
+      "C0348",
+      "C0409",
+      "C0360"
+    ],
+    "queue_rows": 12,
+    "selection_order": "score_v1_1_desc_then_SHA256(seed|cluster)_asc_then_cluster; all eligible score tied 0.990",
+    "selection_seed": "phase2_v4_h_qc_qualified_prospective_holdout_20260717",
+    "source_vs_anarci_cdr_mismatch_counts": {
+      "source_cdr1_mismatch": 0,
+      "source_cdr2_mismatch": 1,
+      "source_cdr3_mismatch": 10
+    }
+  },
+  "qc_contract": {
+    "H2": "all1440 blocker_calibrated large-scale-fast",
+    "H3": "all Fast-pass; frozen full_merged hard_fail=false; no cap/no replacement",
+    "gpu_count": 0,
+    "maximum_cpu_workers": 24,
+    "sapiens_policy": "descriptive/review-only, not H4 hard gate",
+    "tnp_policy": "DEFERRED_THREE_STATE_NA_NO_IMPUTATION; numeric/flags blank"
+  },
+  "resource_contract": {
+    "cpu_sets": [
+      "0-7",
+      "8-15",
+      "16-23",
+      "24-31"
+    ],
+    "gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "maximum_cpu_workers": 32,
+    "maximum_gpus": 4,
+    "node": "node1",
+    "storage": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717"
+  },
+  "schema_version": "phase2_v4_h_qc96_h0_h3_preregistration_v1",
+  "status": "FROZEN_BEFORE_ANY_REAL_GENERATION",
+  "version_boundary": {
+    "does_not_modify": [
+      "V4-D",
+      "V4-F",
+      "V4-G"
+    ],
+    "independent_version": "V4-H-QC96",
+    "v4_f_terminal_evidence_preserved": true
+  }
+}

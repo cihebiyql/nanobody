@@ -1,0 +1,102 @@
+{
+  "claim_boundary": "Fixed-PVRIG sequence-to-independent-dual-docking computational geometry development surrogate only; not binding, affinity, competition, experimental blocking, Docking Gold, a formal V4-D pass, or final submission authority.",
+  "created_at": "2026-07-17T07:29:37+08:00",
+  "execution_boundary": {
+    "formal_completion_or_unlock_receipt_created": false,
+    "formal_v4_d_or_v4_f_root_modified": false,
+    "raw_docking_files_opened": 0,
+    "real_dev1_teacher_opened": false,
+    "real_dev1_teacher_rows_read": 0,
+    "real_training_started": false,
+    "v4_d_test32_labels_read": 0,
+    "v4_d_test32_metric_values_read": 0,
+    "v4_d_test32_raw_label_files_opened": 0,
+    "v4_h_qc96_docking_labels_read": false
+  },
+  "files": {
+    "label_free_split_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "preregistration": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_dev1_sequence_surrogate_v1_preregistration.json",
+      "sha256": "10395d03f0f8d9eae7db2fa94fc3b4cccc1570369ee8b09a6650bff062f35113"
+    },
+    "reused_base_module": {
+      "path": "experiments/phase2_5080_v1/src/train_phase2_v4_d_surrogate.py",
+      "sha256": "bbdf2d1d22ef1e375b65d1d680c25fffe6a4d09d170184528dc2c3f0292fa95e"
+    },
+    "test_log": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_dev1_sequence_surrogate_v1_tests.log",
+      "sha256": "717a65748b706edc16da7ee0850d6ceb3c5fd66055e910c6fdfa0f89e218b4b1"
+    },
+    "tests": {
+      "path": "experiments/phase2_5080_v1/src/test_train_phase2_v4_d_dev1_sequence_surrogate.py",
+      "sha256": "093b7dab8aa62e0c6483c68bdb021938d8dbbdb83f3195987677cb08ebe5248f"
+    },
+    "trainer": {
+      "path": "experiments/phase2_5080_v1/src/train_phase2_v4_d_dev1_sequence_surrogate.py",
+      "sha256": "e412bee668f52cbf15c49c9d0c542263202ae9a9fd2e7a332be8a5ac7438b414"
+    }
+  },
+  "freeze_scope": "local_code_tests_preregistration_and_dependency_hashes_only",
+  "frozen_contract": {
+    "fit": {
+      "rows": 226,
+      "split": "OPEN_TRAIN"
+    },
+    "forbidden_teacher_split": "PROSPECTIVE_COMPUTATIONAL_TEST",
+    "future_one_shot_panel": "V4-H_QC96",
+    "group_bootstrap_seeds": [
+      2026071701,
+      2026071702,
+      2026071703,
+      2026071704,
+      2026071705
+    ],
+    "group_unit": "parent_framework_cluster",
+    "model_names": [
+      "constant",
+      "parent_only",
+      "metadata_shortcut",
+      "cdr3_only",
+      "handcrafted_full_sequence",
+      "generic_prior_only",
+      "frozen_feature_ridge"
+    ],
+    "output_and_existing_ancestor_symlinks_allowed": false,
+    "output_namespace": "DEV_ONLY / DEV1",
+    "parent_cluster_overlap_required": 0,
+    "primary_target": "R_dual_min",
+    "selection_only": {
+      "rows": 32,
+      "split": "OPEN_DEVELOPMENT",
+      "used_as_fit_rows": 0
+    },
+    "teacher_formal_v4_f_unlock_eligible_required": false,
+    "teacher_non_authority_required": true,
+    "teacher_rows": 258
+  },
+  "git_head": "d94047e88df3e36eff658b7d4afae292da903d78",
+  "post_hoc_disclosure": {
+    "defined_after_source_v4_d_evaluator_fail": true,
+    "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "source_evaluator_status": "FAIL",
+    "source_evaluator_unlockable": false,
+    "source_failed_gate": "candidate_threshold_sensitivity"
+  },
+  "schema_version": "phase2_v4_d_dev1_sequence_surrogate_implementation_freeze_candidate_v1",
+  "status": "DEV_ONLY_IMPLEMENTATION_FREEZE_CANDIDATE_NOT_REAL_TRAINING_EXECUTED",
+  "verification": {
+    "command": "python3 experiments/phase2_5080_v1/src/test_train_phase2_v4_d_dev1_sequence_surrogate.py",
+    "normal_return_code": 0,
+    "optimized_command": "PYTHONOPTIMIZE=1 python3 experiments/phase2_5080_v1/src/test_train_phase2_v4_d_dev1_sequence_surrogate.py",
+    "optimized_return_code": 0,
+    "py_compile_pass": true,
+    "scoped_git_diff_check_pass": true,
+    "synthetic_fixture_only": true,
+    "terminal_marker": "OK",
+    "test_count_per_mode": 10
+  },
+  "version": "V4-D-DEV1"
+}

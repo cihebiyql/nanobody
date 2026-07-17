@@ -1,0 +1,22 @@
+{
+  "claim_boundary": "Process-lifecycle closure only; no scientific output changed.",
+  "published_at_utc": "2026-07-16T17:28:21.084325+00:00",
+  "runner_complete": {
+    "mtime_ns": 1784222694573229405,
+    "mtime_utc": "2026-07-16T17:24:54.573229+00:00",
+    "sha256": "b8a15ee86fb20975979f274d836e22b3d345e75f08019a170cea83e0cf2a302c",
+    "size": 2287
+  },
+  "runner_pid": 242215,
+  "runner_pid_alive": false,
+  "schema_version": "phase2_support_v4_a_acquisition720_full_qc_terminal_process_closure_v1",
+  "scientific_outputs_unchanged": true,
+  "stale_runner_pid_file_removed": true,
+  "status": "PASS_TERMINAL_PROCESS_CLOSED",
+  "terminal_summary": {
+    "mtime_ns": 1784222694571229399,
+    "mtime_utc": "2026-07-16T17:24:54.571229+00:00",
+    "sha256": "4b2cdd48b2b459b19bc3514e5ebad11be6e43045d30d502b7e76773905c7792d",
+    "size": 2109
+  }
+}

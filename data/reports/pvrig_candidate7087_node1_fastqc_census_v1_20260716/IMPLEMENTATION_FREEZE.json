@@ -1,0 +1,45 @@
+{
+  "claim_boundary": "This census is sequence/developability QC only. It is not docking geometry, binding, affinity, competition, experimental blocking, model correctness, or a teacher label.",
+  "execution": {
+    "chunk_count": 16,
+    "chunk_size": 448,
+    "full_qc_run": false,
+    "gate_policy": "blocker_calibrated large-scale-fast",
+    "node": "node1",
+    "root": "/data1/qlyu/projects/pvrig_candidate7087_node1_fastqc_census_v1_20260716",
+    "storage": "SSD-only /data1",
+    "structure_prediction_run": false,
+    "tnp_run": false
+  },
+  "frozen_at_utc": "2026-07-16T16:13:58.266567+00:00",
+  "implementation_hashes": {
+    "materialize_candidate7087_fastqc_input.py": "4c3f5b8c3077ddd6b2aa55efe85cf24316ab12096f78ddf8cd124418c847d7a4",
+    "run_candidate7087_fastqc_census_node1.py": "f9d85634d957a2df4fc660b6acd175a26d4ab82613eeb65ce30f87fb224f7b3b",
+    "test_candidate7087_fastqc_census.py": "f0978f54e7380398f83913e0e2b0e1a094a3f7a3c85d4caca7c029ca4fb8e64b"
+  },
+  "input_hashes": {
+    "INPUT_AUDIT.json": "9922f10985be9d0b5a1f9b9ff9f751e6a925763b812d25656bc356b810e4d6be",
+    "candidate7087.fasta": "82d89ca0b35f38e87a26b9ccca9ed97ce64255db33250ddb694fe2a072494b88",
+    "candidate7087_lineage.tsv": "2000415243a044131e1e12704d3a1e0f31b5b84d790d14fdeee4af4db5aea777"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "model_score": 0,
+    "v4_d_geometry": 0,
+    "v4_f_labels": 0
+  },
+  "preregistration_sha256": "0112cd909702d85f760ebef92b7bc1ab5db83705c5c8546e45cdfe21b08c175b",
+  "receipt_publication_order": "LAST_AFTER_OUTPUT_SET_ROW_ID_SEQUENCE_PARENT_RUNTIME_CLOSURE",
+  "resource_policy": {
+    "chunk_jobs": 16,
+    "gpu_count": 0,
+    "maximum_cpu_workers": 32,
+    "workers_per_chunk": 2
+  },
+  "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+  "runtime_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716/runtime_closure",
+  "schema_version": "candidate7087_node1_fastqc_census_implementation_freeze_v1",
+  "source_pool_sha256": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b",
+  "status": "FROZEN_BEFORE_CENSUS_EXECUTION"
+}

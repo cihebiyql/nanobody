@@ -1,0 +1,161 @@
+{
+  "alternative_weighting_diagnostics": {
+    "entity_majority_all_models": {
+      "delta_0.9": 0.186207,
+      "delta_1.1": 0.331034,
+      "n": 290,
+      "rate_0.9": 0.693103,
+      "rate_1.0": 0.506897,
+      "rate_1.1": 0.175862
+    },
+    "job_any": {
+      "delta_0.9": 0.06613,
+      "delta_1.1": 0.213916,
+      "n": 1739,
+      "rate_0.9": 0.973548,
+      "rate_1.0": 0.907418,
+      "rate_1.1": 0.693502
+    },
+    "job_majority": {
+      "delta_0.9": 0.190339,
+      "delta_1.1": 0.307073,
+      "n": 1739,
+      "rate_0.9": 0.714779,
+      "rate_1.0": 0.524439,
+      "rate_1.1": 0.217366
+    },
+    "representative_model": {
+      "delta_0.9": 0.154112,
+      "delta_1.1": 0.175963,
+      "n": 1739,
+      "rate_0.9": 0.625647,
+      "rate_1.0": 0.471535,
+      "rate_1.1": 0.295572
+    }
+  },
+  "candidate_model_pairs": 16189,
+  "claim_boundary": "Post-failure descriptive diagnosis only; no threshold change, no evaluator release, no sealed-test model development.",
+  "entities_with_at_least_one_lost_pair": 283,
+  "failed_axis_combinations": {
+    "cdr3_fraction": 96,
+    "cdr3_fraction+cdr3_occlusion": 78,
+    "cdr3_fraction+cdr3_occlusion+hotspot_overlap": 84,
+    "cdr3_fraction+hotspot_overlap": 87,
+    "cdr3_occlusion": 148,
+    "cdr3_occlusion+hotspot_overlap": 104,
+    "cdr3_occlusion+hotspot_overlap+total_occlusion": 51,
+    "cdr3_occlusion+total_occlusion": 152,
+    "hotspot_overlap": 1749,
+    "hotspot_overlap+total_occlusion": 234,
+    "total_occlusion": 783
+  },
+  "failed_axis_pair_counts": {
+    "cdr3_fraction": 345,
+    "cdr3_occlusion": 617,
+    "hotspot_overlap": 2309,
+    "total_occlusion": 1220
+  },
+  "lost_by_dock_conformation": {
+    "8x6b": 1727,
+    "9e6y": 1839
+  },
+  "lost_by_seed": {
+    "1931": 1245,
+    "3253": 1149,
+    "917": 1172
+  },
+  "lost_fraction_of_all_pairs": 0.220273,
+  "lost_strict_pairs_1.0_to_1.1": 3566,
+  "numeric_comparison": "decimal_string_product",
+  "schema_version": "pvrig_v4d_threshold_sensitivity_failure_diagnosis_v2_decimal_exact",
+  "status": "DIAGNOSTIC_ONLY_NOT_EVALUATOR_RELEASE",
+  "strict_rates": {
+    "0.9": 0.618321,
+    "1.0": 0.475817,
+    "1.1": 0.255544
+  },
+  "supersedes_v1_sha256": "fe643acd6c518ecc0340ef181fe8e5f7bb4bba3acfccca5e7d9c3564f45f87dc",
+  "supersession_reason": "V1 ad-hoc diagnostic used binary float multiplication at the 0.15 x 1.1 boundary; V2 exactly mirrors the frozen evaluator Decimal(str(value))*Decimal(str(scale)) policy.",
+  "top_entities_by_lost_pairs": [
+    [
+      "RFV1__PLDNANO_VHH_00384__A_CENTER__H3__B05__M01",
+      28
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00371__A_CENTER__H1H3__B03__M02",
+      27
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00866__C_CROSS__H1H3__B00__M00",
+      27
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00376__C_CROSS__H1H3__B07__M00",
+      26
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00515__C_CROSS__H1H3__B04__M02",
+      26
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00623__C_CROSS__H1H3__B11__M00",
+      26
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00756__B_LOWER__H1H3__B11__M01",
+      26
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00866__C_CROSS__H3__B05__M02",
+      26
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00921__B_LOWER__H1H3__B06__M02",
+      26
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00197__A_CENTER__H1H3__B11__M02",
+      25
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00611__C_CROSS__H3__B04__M02",
+      25
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00866__A_CENTER__H3__B08__M02",
+      25
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00456__B_LOWER__H1H3__B06__M02",
+      24
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00698__B_LOWER__H1H3__B01__M01",
+      24
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00863__A_CENTER__H3__B01__M02",
+      24
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00866__A_CENTER__H1H3__B03__M00",
+      24
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00327__C_CROSS__H1H3__B03__M01",
+      23
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00866__B_LOWER__H3__B03__M01",
+      23
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00921__C_CROSS__H1H3__B06__M01",
+      23
+    ],
+    [
+      "RFV1__PLDNANO_VHH_00327__A_CENTER__H1H3__B02__M00",
+      22
+    ]
+  ]
+}

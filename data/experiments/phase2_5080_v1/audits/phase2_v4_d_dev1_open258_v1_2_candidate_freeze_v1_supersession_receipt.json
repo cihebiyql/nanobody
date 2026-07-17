@@ -1,0 +1,19 @@
+{
+  "formal_v4_f_unlock_eligible": false,
+  "reason": "Builder, tests, and launcher were hardened and reverified after the first candidate freeze. No remote execution, teacher, release, or launch authorization occurred under the superseded bytes.",
+  "recorded_at_utc": "2026-07-17T01:52:45.464415+00:00",
+  "remote_execution_authorized": false,
+  "replacement_candidate": {
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json",
+    "sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039"
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_candidate_freeze_v1_supersession_receipt_v1",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_LAUNCH_AUTHORIZED",
+  "superseded_candidate": {
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate_v1_superseded_preproduction.json",
+    "sha256": "479f2ab1a07de69d8da5e46f0f449d7f6f11c973932ec1fc25839737f4eb0b6c"
+  },
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

@@ -1,0 +1,152 @@
+{
+  "claim_boundary": "Post-hoc development-only recovery of a sequence-to-independent-dual-docking continuous computational geometry teacher. Not a V4-D pass, formal test, Docking Gold, binding, affinity, competition, experimental blocking, or final submission authority.",
+  "frozen_at_utc": "2026-07-17T01:16:28.280240+00:00",
+  "frozen_open_diagnostic": {
+    "affected_job_min_retained_pair_count_if_rule_applied": 5,
+    "affected_jobs_below_four_retained_pairs_if_rule_applied": 0,
+    "affected_open_candidate_count": 83,
+    "affected_success_job_count": 98,
+    "invalid_by_conformation": {
+      "8x6b": 89,
+      "9e6y": 10
+    },
+    "invalid_native_overlay_pair_count": 99,
+    "invalid_pair_fraction": 0.0068322981366459624,
+    "invalid_rmsd_bands": {
+      "gt_10": 82,
+      "gt_100": 13,
+      "gt_1_le_2": 16,
+      "gt_2_le_5": 0,
+      "gt_5": 83,
+      "gt_50": 33
+    },
+    "invalid_rmsd_range_a": [
+      1.020382,
+      162.77925
+    ],
+    "native_pose_pair_count": 14490,
+    "open_candidate_count": 258,
+    "sealed_test32_access": {
+      "label_rows_emitted": 0,
+      "metric_values_read": 0,
+      "raw_dirs_addressed": 0,
+      "raw_files_opened": 0
+    },
+    "success_job_count": 1547
+  },
+  "hard_release_gates": {
+    "aggregate_metric_fields_parsed": 0,
+    "aggregate_terminal_failure_projection_count": 1,
+    "all_numeric_targets_finite": true,
+    "exact_affected_job_count": 98,
+    "exact_invalid_pair_count": 99,
+    "expected_split_counts": {
+      "OPEN_DEVELOPMENT": 32,
+      "OPEN_TRAIN": 226
+    },
+    "expected_teacher_rows": 258,
+    "formal_v4_f_unlock_eligible": false,
+    "independent_implementation_review_required_before_launch": true,
+    "minimum_retained_complete_pairs_per_success_job": 4,
+    "minimum_successful_seeds_per_candidate_conformation": 2,
+    "raw_success_job_result_count": 1547,
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0
+  },
+  "non_authority": {
+    "may_access_v4_d_test32": false,
+    "may_change_v1_or_v1_1_status": false,
+    "may_claim_binding_or_experimental_blocking": false,
+    "may_reinterpret_v4_d_as_pass": false,
+    "may_unlock_v4_f": false,
+    "may_use_existing_formal_h96_adapter": false
+  },
+  "outputs": {
+    "release_directory": "release_v1_2",
+    "release_name": "OPEN_TRAIN_226_PLUS_OPEN_DEVELOPMENT_32_DEV_ONLY_V1_2",
+    "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+    "teacher_audit_status": "RELEASED_DEV_ONLY_V1_2_POSE_VALIDITY_FILTER_TEST32_SEALED",
+    "teacher_basename": "v4d_dev1_open258_continuous_geometry_v1_2.tsv",
+    "teacher_or_release_exists_at_freeze": false
+  },
+  "physical_read_policy": {
+    "aggregate_full_table_metric_parse_forbidden": true,
+    "open_split_selection_before_raw_path_construction": true,
+    "other_open_raw_job_results_required": 1547,
+    "results_root_listing_or_globbing_forbidden": true,
+    "second_terminal_fallback_forbidden": true,
+    "single_terminal_fallback_count": 1,
+    "test32_result_path_construction_forbidden": true
+  },
+  "pose_validity_rule": {
+    "action": "drop the entire two-reference model pair before geometry classification, HADDOCK-score sorting, rank-weight normalization, utility calculation, and candidate aggregation",
+    "candidate_specific_tolerance_forbidden": true,
+    "drop_only_one_reference_forbidden": true,
+    "frozen_invalid_condition": "native_reference.overlay.t_ca_rmsd_a > 1.0",
+    "invalid_pair_count_may_be_surrogate_input": false,
+    "metric_clamping_forbidden": true,
+    "metric_imputation_forbidden": true,
+    "model_count_reliability_uses_filtered_pair_count": true,
+    "native_reference": "job_manifest.conformation",
+    "pair_key": [
+      "job_id",
+      "model"
+    ],
+    "renormalize_rank_weights_after_filter": true,
+    "reorder_retained_pairs_by": [
+      "native_haddock_score",
+      "model"
+    ],
+    "source_pose_repair_or_redocking_in_v1_2_forbidden": true,
+    "threshold_a": 1.0,
+    "threshold_relaxation_forbidden": true
+  },
+  "posthoc_disclosure": {
+    "formal_v4_d_result_remains": "FAIL",
+    "open_only_overlay_diagnostic_seen_before_this_freeze": true,
+    "root_cause_interim_seen_before_this_freeze": "HADDOCK flexref displacement of a disconnected 8X6B T-chain segment across the 51-to-57 missing-residue break; not a Kabsch, truncation, or duplicate-residue mapping artifact.",
+    "test32_raw_or_metric_data_seen": false,
+    "v1_1_exact_error": "native_overlay_rmsd_above_1A:1.934309",
+    "v1_1_status": "FAILED_CLOSED_NATIVE_OVERLAY_RMSD_ABOVE_1A",
+    "v1_status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB"
+  },
+  "required_descriptive_sensitivity_reports": [
+    "invalid pairs by conformation, seed, helper HADDOCK-score rank, parent, patch, mode, and split",
+    "affected-job retained pair-count distribution",
+    "R_dual_min and uncertainty distributions by split, parent, conformation, and invalid-pair exposure",
+    "root-cause evidence for 8X6B disconnected-segment flexref displacement and 9E6Y comparison"
+  ],
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration_v1",
+  "source_bindings": {
+    "generic_prior_sha256": "21b4c6a38056d6777de5b5efbfcd5887b45098c637cab61489072d1e6e7783cd",
+    "invalid_pair_identity_value_list_canonical_sha256": "941d5010190c6576ee0961681227d5b9b1ce9a719cc63ae5c25a45b0f8de9c1f",
+    "job_manifest_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "job_results_sha256": "30c4227e15f6b049a9d9e9241ca34df30d38b247d14081b4ce7d3387fa2f3f25",
+    "overlay_diagnostic_script_v2_sha256": "71b067ae5978d3cc40e50c6112b77e677f36740296ac11d544336efb33ef8e3e",
+    "overlay_diagnostic_v2_run_receipt_sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f",
+    "overlay_diagnostic_v2_sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+    "pose_scores_sha256": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681",
+    "source_evaluator_failed_gate": "candidate_threshold_sensitivity",
+    "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "source_evaluator_status": "FAIL",
+    "split_manifest_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "terminal_fallback_evidence_sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+    "v1_1_builder_sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+    "v1_1_failure_receipt_sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7",
+    "v1_1_implementation_freeze_sha256": "9994f44fd459118f62c54e29f47d47b48474fa148aad4207803a3d0f5de092d6",
+    "v1_1_preregistration_sha256": "e57f08f266f53cc966d7dca34366310742ca4889a3c5173972105bb30734879d",
+    "v1_formula_helper_sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+  },
+  "status": "FROZEN_POSTHOC_V1_2_METHOD_AFTER_OPEN_DIAGNOSTIC_BEFORE_V1_2_IMPLEMENTATION_OR_TEACHER_MATERIALIZATION",
+  "unchanged_teacher_formula": {
+    "candidate_uncertainty_formula_unchanged": true,
+    "generic_prior_is_label_free_feature_only": true,
+    "geometry_classification_unchanged": true,
+    "native_pose_utility_formula_unchanged": true,
+    "primary_target": "R_dual_min = min(R_8X6B, R_9E6Y)",
+    "rank_weight_formula_unchanged": true,
+    "receptor_aggregation": "median across successful seeds"
+  },
+  "version": "V4-D-DEV1-V1.2"
+}

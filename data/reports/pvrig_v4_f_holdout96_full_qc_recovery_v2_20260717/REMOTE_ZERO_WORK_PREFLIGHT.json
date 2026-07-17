@@ -1,0 +1,32 @@
+{
+  "candidate_count": 96,
+  "claim_boundary": "Sequence and developability Full-QC evidence only. This is not Docking, docking geometry, PVRIG binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold.",
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0,
+    "v4_f_predictions": 0
+  },
+  "resource_policy": {
+    "chunk_jobs": 8,
+    "cpu_affinity": "0-23",
+    "fast_chunk_size": 12,
+    "full_chunk_jobs": 8,
+    "full_chunk_size": 12,
+    "gpu_requested": 0,
+    "maximum_requested_cpu_workers": 24,
+    "workers_per_chunk": 3
+  },
+  "runtime": {
+    "observed_hashes": {
+      "python": "33de598423ed1c2a7d65e8057df2b8831a0422ad51ae385c6cf362fd0d518095",
+      "runtime_manifest": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+      "screen": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a"
+    },
+    "runtime_files": 86,
+    "ssd_only": true
+  },
+  "schema_version": "phase2_v4_f_holdout96_full_qc_recovery_v2_preflight",
+  "status": "PASS_ZERO_WORK_PREFLIGHT"
+}

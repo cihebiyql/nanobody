@@ -1,0 +1,35 @@
+{
+  "claim_boundary": "acquisition-only computational geometry; no binding/experimental blocking claim",
+  "frozen_at_utc": "2026-07-16T16:35:47.372914+00:00",
+  "implementation": {
+    "prepare_v4g12_node23_docking.py": "cb9e02a83fdf4b89ddcd42160cc047a3ccacba81288bde6a7c348adf81ff0370"
+  },
+  "launch_gate": "V4-D terminal closure and node23 load1<=16",
+  "node1_inputs": {
+    "candidate_manifest_sha256": "bd7da905bfc6e1131b711817be92cedbaaedcb87d38975e3ff50d055a597a43e",
+    "monomer_manifest_sha256": "1ab840eb0c7705440c2d9e96c67b2be7b0757fafc242d9c72eb2105a3e598ca0",
+    "preregistration_sha256": "4b11ab21d9abcca4092a78c9bdbe9c4d514d871ac143ede8c8e19a473da1da7d",
+    "structure_complete_sha256": "6865a62727edf9c5c124703b1fd57c3d57a23d5c21b6e622af87743c8f7dd978"
+  },
+  "panel": {
+    "candidate_count": 12,
+    "jobs": 72,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "replacement_policy": "NO_REPLACEMENT",
+    "seeds": [
+      917,
+      1931,
+      3253
+    ]
+  },
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_docking_implementation_freeze_v1",
+  "source_v4d": {
+    "protocol_core_sha256": "91d75291ff832c1e94cbc0bf6f1cdd75de6a8bb74611230cdcd1716466f37cb7",
+    "protocol_id": "pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "protocol_lock_sha256": "a24eaf37730bc569067d64cdc1a43a763b70878d13d50e804bf3000ce43f5e84"
+  },
+  "status": "FROZEN_BEFORE_DOCKING_PACKAGE_BUILD_OR_COMPUTE"
+}

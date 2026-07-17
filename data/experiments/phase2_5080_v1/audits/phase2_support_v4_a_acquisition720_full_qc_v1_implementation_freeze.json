@@ -1,0 +1,40 @@
+{
+  "claim_boundary": "This run measures sequence and developability Full-QC only. It is not Docking, docking geometry, PVRIG binding, affinity, competition, experimental blocking, blocker probability, or a biological teacher label.",
+  "execution_policy": "prepare -> fast -> all fast survivors Full-QC; no replacement; TNP deferred",
+  "frozen_at_utc": "2026-07-16T17:23:38.982692+00:00",
+  "implementation_hashes": {
+    "build_phase2_support_v4_a_acquisition720_full_qc_package.py": "e82441770befd5689ab96728f4b1822ab29e0672700dcfaf253760a72120db12",
+    "launch_full_qc_node1.sh": "2ad8045e0b0c4e3f371009fbae485262f11f475992c68731dbaf1017cd869500",
+    "pvrig_support_v4_a_acquisition720_full_qc_launcher.sh.in": "9deb6ce5bdf9f66e1a52ca43980265a7c06cac61cc9ceda0f9f8900a3f898e42",
+    "run_phase2_support_v4_a_acquisition720_full_qc_node1.py": "c90bce986b97953b85536fcac7339c0c6948d97e49f3681e0656aa7b0ecafddc",
+    "test_build_phase2_support_v4_a_acquisition720_full_qc_package.py": "90dc8982a561fa1911db46cb95e9a3a96b533c78d09ec20074232f4f793cdfb8"
+  },
+  "input_hashes": {
+    "support_v4_a_acquisition720.fasta": "0f64f389d58cc3b7b27447386b5eaab2ee093aa7309e5b326315931e9316c5a4",
+    "support_v4_a_acquisition_readiness_audit_v1.json": "19f7465978601b346b98b7cf9fe0385cf5b139db0e1bf1ae09a3dbae5b214f1e",
+    "support_v4_a_acquisition_readiness_receipt_v1.json": "440e675b1a6e39771a830d282e7e575dfe7ce24f7cb91c2966f71f577c655181",
+    "support_v4_a_future_teacher_acquisition_pool_v1.tsv": "73454cbf8194d3faa5cad354a5b2f31f433e317d5222a6cd59906775fb56bfca"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0
+  },
+  "preregistration_sha256": "1d84c5fafc1d1ce3cdd605b6cae697ded207b1806327c28b2d028bce4543658a",
+  "remote_bindings": {
+    "python_sha256": "33de598423ed1c2a7d65e8057df2b8831a0422ad51ae385c6cf362fd0d518095",
+    "remote_root": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_full_qc_v1_20260717",
+    "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+    "screen_source_sha256": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a"
+  },
+  "resource_policy": {
+    "chunk_jobs": 16,
+    "full_chunk_jobs": 16,
+    "gpu_requested": 0,
+    "maximum_requested_cpu_workers": 32,
+    "workers_per_chunk": 2
+  },
+  "schema_version": "phase2_support_v4_a_acquisition720_full_qc_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_REMOTE_FULL_QC_EXECUTION"
+}

@@ -1,0 +1,27 @@
+{
+  "claim_boundary": "Frozen V4-F96 sequence/Fast-QC eligibility attrition only; not Full-QC evidence for any candidate, not Docking, geometry, binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold.",
+  "downstream_docking_eligible_count": 0,
+  "eligible_candidate_ids": [],
+  "full_qc_executed": false,
+  "hardfail_count": 96,
+  "hardpass_count": 0,
+  "hashes": {
+    "eligibility_terminal_summary": "4013cef2ed22ef7bee9b003b268cfce0ab0b2ee01dca3bcc82c4d8627dc485c4",
+    "implementation_freeze": "42fad31d08a9c868e21c528b27543e58fba4d25e275d4c8eee44b21feebcc993",
+    "protocol": "08a5320ff0bea7dc6ac46f6fa4eab8d3ad4a65d7dfc63a494ebe0815970add03",
+    "terminalizer": "f538795d463cd5f138df73d0c18dc547f560d21d983622e99b9c5cd7ff5b2737",
+    "tnp_three_state_unrun_summary": "29c76b12f3472ea8a17e181bcec9a549964e2f7d8b5e28d92f16a7f14587dc4b"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0,
+    "v4_f_predictions": 0
+  },
+  "no_replacement": true,
+  "published_at_utc": "2026-07-16T18:37:22.578309+00:00",
+  "schema_version": "phase2_v4_f_holdout96_canonical_eligibility_receipt_v2_1",
+  "status": "PASS_CANONICAL_ELIGIBILITY_ZERO_HARDPASS",
+  "terminal_state": "COMPLETE_WITH_ZERO_ELIGIBLE"
+}

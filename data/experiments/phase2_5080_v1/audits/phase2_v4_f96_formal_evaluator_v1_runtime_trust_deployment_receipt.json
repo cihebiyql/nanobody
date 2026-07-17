@@ -1,0 +1,16 @@
+{
+  "canonical_launcher": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/launch_phase2_v4_f96_formal_evaluation_v1.sh",
+  "canonical_output": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_f96_formal_evaluation_v1",
+  "created_at": "2026-07-16T18:17:18.740852+00:00",
+  "implementation_freeze_receipt_sha256": "182570215f94b399e9154cbdd1b3138594dce2a4d5baeb30a2595adbdce27a63",
+  "implementation_freeze_sha256": "2f43e8cea0bfbafb7a122a2d78c5850cb4f602598405d783b0432e8d3bbb6cf5",
+  "label_access": {
+    "formal_evaluation_executed": false,
+    "v4_f96_docking_labels_read": false
+  },
+  "launcher_sha256": "a3bbe27e59b19c0e38995fd31e2e33b741aafe8aec36a50ad38313fef90440e8",
+  "runtime_trust_anchor_sha256": "86066e7508c701d03f3c32e17df38be398455e92643c88f761ca96c109041651",
+  "schema_version": "phase2_v4_f96_formal_evaluator_runtime_trust_deployment_receipt_v1",
+  "status": "PASS_V4_F96_FORMAL_RUNTIME_TRUST_DEPLOYED",
+  "trust_builder_sha256": "9cdb727159af3ad1b70c590a33b33a3e24509c3361978c116f369b1c67a1f43d"
+}

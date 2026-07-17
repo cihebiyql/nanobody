@@ -1,0 +1,50 @@
+{
+  "claim_boundary": "Production waiting-state smoke only; no teacher/model/prediction/Docking/experimental label was opened.",
+  "created_at": "2026-07-16T18:06:04.155402+00:00",
+  "expected_production_output_paths": [
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_sequence_surrogate_v1",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_frozen_embedding_surrogate_v1",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_contact_fusion_surrogate_v1",
+    "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/predictions/pvrig_v4_f_surrogate_predictions_v1"
+  ],
+  "label_access": {
+    "prospective_test_label_paths_accepted": 0,
+    "prospective_test_labels_read": false,
+    "v4_f_label_paths_accepted": 0,
+    "v4_f_labels_read": false
+  },
+  "production_output_paths_created": [],
+  "schema_version": "phase2_v4_d_v4_f_watcher_v3_production_wait_smoke_v1",
+  "status": "PASS_V3_FAIL_CLOSED_WAITING_WITH_ALL_LABELS_SEALED",
+  "surrogate_once_return_code": 4,
+  "surrogate_status": {
+    "claim_boundary": "Fixed-PVRIG sequence-to-independent-dual-docking computational geometry surrogate training only; not binding, affinity, competition, Docking Gold, or experimental blocking truth.",
+    "controller_pid": 3842930,
+    "prospective_test_label_paths_accepted": 0,
+    "prospective_test_labels_read": false,
+    "reason": "missing:evaluator,release_receipt,teacher,teacher_audit",
+    "schema_version": "phase2_v4_d_surrogate_training_watcher_v3",
+    "status": "WAITING_OPEN_TEACHER",
+    "updated_at": "2026-07-16T18:03:38.885214+00:00"
+  },
+  "surrogate_status_file": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_d_surrogate_training_v3/status.json",
+    "sha256": "6165a7cec5612013420bf9431bcf2ed5c1500281e2810abee2048e978178f2da",
+    "size": 545
+  },
+  "v4f_once_return_code": 4,
+  "v4f_status": {
+    "controller_pid": 3843164,
+    "reason": "upstream surrogate state=WAITING_OPEN_TEACHER; V4-F labels remain sealed",
+    "schema_version": "phase2_v4_f_prediction_freeze_watcher_v3",
+    "status": "WAITING_V4_D_SURROGATES",
+    "updated_at": "2026-07-16T18:03:40.063827+00:00",
+    "v4_f_label_paths_accepted": 0,
+    "v4_f_labels_read": false
+  },
+  "v4f_status_file": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_f_prediction_freeze_v3/status.json",
+    "sha256": "c916e649930ffc498801c7c2752c888380f44fda8a12eaeb47e133f0e583d51e",
+    "size": 338
+  }
+}

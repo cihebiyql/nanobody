@@ -1,0 +1,110 @@
+{
+  "schema_version": "phase2_v4_h_research_dual_docking_v1_retrospective_governance_audit",
+  "status": "CONTINUE_RESEARCH_COMPUTE_QUARANTINE_FORMAL_AUTHORITY",
+  "audit_snapshot_utc": "2026-07-17T01:09:04.782655+00:00",
+  "runtime": {
+    "host": "node23",
+    "project_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+    "scratch_root": "/tmp/pvrig_v4_h_research_dual_docking_v1_20260717",
+    "orchestrator_pid": 2460094,
+    "orchestrator_alive": true,
+    "started_at_local": "2026-07-17T09:00:53+08:00",
+    "launch_account": "qlyu",
+    "launch_origin": "root-owned local monitor_monomers_and_launch_adaptive_docking.sh via ssh.exe node23",
+    "all_materialized_status_counts": {
+      "RUNNING": 12,
+      "SUCCESS": 4
+    },
+    "stage1_controller_counts": {
+      "PENDING": 2626,
+      "RUNNING": 12,
+      "SUCCESS": 2
+    },
+    "smoke_terminal_success": 4,
+    "release_file_count": 0
+  },
+  "candidate_panel": {
+    "source_exact_unique_count": 1440,
+    "research_ready_count": 1320,
+    "quarantined_c0371_count": 120,
+    "runtime_candidate_count": 1320,
+    "selection": "all RESEARCH_READY candidates; no model prediction or rank reselection",
+    "source_manifest_sha256": "f02cfeaac9775442bb1748c7bb63413a1077b5df11f9cd7214e983d0e51c0551",
+    "parent_cluster_count": 11,
+    "candidates_per_parent_cluster": 120,
+    "patch_counts": {
+      "A_CENTER": 440,
+      "B_LOWER": 440,
+      "C_CROSS": 440
+    },
+    "design_mode_counts": {
+      "H1H3": 660,
+      "H3": 660
+    }
+  },
+  "jobs": {
+    "frozen_template_candidate_jobs": 7920,
+    "frozen_template_control_jobs": 282,
+    "frozen_template_total_jobs": 8202,
+    "adaptive_stage1_candidate_jobs": 2640,
+    "adaptive_stage2_selected_candidate_jobs": 768,
+    "adaptive_stage3_selected_candidate_jobs": 256,
+    "actual_smoke_control_jobs": 2,
+    "planned_unique_executed_jobs": 3666,
+    "full_control_entity_count": 47,
+    "executed_control_entity": "CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151",
+    "job_manifest_sha256": "c9dd94a624dbdccd264c55f723023f5c58102c9a56ab02660ab004b93941804f"
+  },
+  "resources": {
+    "node23_logical_cpu": 64,
+    "haddock_ncores_per_job": 4,
+    "smoke_max_parallel": 4,
+    "adaptive_max_parallel": 12,
+    "maximum_target_logical_cpu": 48,
+    "gpu_used": false,
+    "nice": 15
+  },
+  "hashes": {
+    "local_monitor_script": "df880ef7f858e752c474e719acd29471fcf0e32dd07d3b1df4c1b45e08f998d9",
+    "stage_v4h_research_local_and_remote": "86171da0967e69dc60f14476688227077c6f6b1f199cde763303cda04ba9eb46",
+    "run_adaptive_v4h_local_and_remote": "dca1694fe04ecd9d1763956bad73528e12dc21e9baf1e94d38395cd823b03721",
+    "stage_base_v4f_local_and_remote": "ef0e06f2ed30f575a7ecfe3d7c7bb390b0ecd9e02b1ce3824a82dc35a6aec024",
+    "portable_input_receipt": "3da1bd69bee214e0a6160ee053c5b1af5c956ae036191b2b9af6aa52604df5bd",
+    "protocol_core_lock": "b683733ed2fbbbc4f5fc926d66ea32979a7ae89a429a49618bd8e3aabb028e1f",
+    "protocol_lock": "25c9069745128ab10944673e0156f5808b063b4f49e5079609726c9141a63897"
+  },
+  "evidence_boundary": {
+    "declared_claim": "Research-stage fixed-PVRIG 8X6B/9E6Y docking geometry only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+    "research_only_boundary_present": true,
+    "formal_authority_allowed": false,
+    "v4d_test32_static_path_reference_found": false,
+    "v4d_source_results_copied": false,
+    "v4d_test32_io_instrumentation_present": false
+  },
+  "h96_governance": {
+    "prediction_freeze_found_before_docking": false,
+    "h96_manifest_row_count": 96,
+    "h96_manifest_sha256": "f128f7b2389ea5e9887b931460332ce42898aece0314e7320975c204a692f723",
+    "h96_model_split": "V4_H_QC96_PROSPECTIVE_HOLDOUT",
+    "h96_overlap_with_runtime_candidates": 96,
+    "h96_total": 96,
+    "h96_candidate_observed_running": "V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B02__M00",
+    "prospective_status_after_this_run": "CONSUMED_FOR_DOCKING_LABELS_NOT_UNTOUCHED",
+    "existing_formal_v4h_authority": "QUARANTINED"
+  },
+  "governance_gaps": [
+    "no research docking preregistration found",
+    "no implementation-freeze or independent launch authorization found",
+    "local adapter, runner, report, and runtime evidence are currently gitignored/untracked",
+    "locked inherited metadata still names V4-F96 and PROSPECTIVE_V4_F despite the actual RESEARCH_V4_H 1320 panel",
+    "adaptive runner unit tests cover diversity selection only",
+    "H96 predictions were not frozen before H96 Docking began"
+  ],
+  "recommendation": {
+    "runtime_action": "continue without modification as research-only computation",
+    "formal_action": "quarantine all outputs from existing V4-H formal/prospective claims",
+    "h96_action": "retire H96 as untouched Docking prospective panel; use only as research/development evidence",
+    "next_prospective_action": "freeze model/config/predictions and receipt before opening a new untouched panel",
+    "v4d_test32_action": "remain sealed"
+  }
+}

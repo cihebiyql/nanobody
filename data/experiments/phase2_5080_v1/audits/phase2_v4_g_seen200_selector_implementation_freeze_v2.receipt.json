@@ -1,0 +1,33 @@
+{
+  "bound_artifacts": {
+    "calibration_exclusions": "cba42df8ad9fab0399eb8a7d8608397fdf85aeea6619e2993e46d12d31dbd7d4",
+    "node1_fastqc_census": "33c657fa26b3348d46fb22ebea453398b81d8fd762765668a1ca6c5dd3e16855",
+    "node1_fastqc_census_audit": "360a4a1c657839b379af1f340d25471c1c66ffc6de4d096faf0c6dc98e6cd61f",
+    "node1_fastqc_census_independent_verification": "77f7c188998f3b9d68c7ac46d8e9e3c311d523c41575bcb3c5cfe3226a762e65",
+    "node1_fastqc_census_receipt": "95a805622e9fd19e42e9999e7a421d8f91ac3c594a06a8ab21088ce84fdd3497",
+    "parent_preregistration": "1ba6ecb0e5541516649c9d3c8dc30c82f411f3c5296e0e04681486bd9441bf55",
+    "selector": "3ceae574e077d5044dfcd3be14b87b95daea968f8c623de7054a6adecea1a399",
+    "selector_v2_preregistration": "fd16954a0bc757d805e2e9d0f67f42eb832af444d2b0d353769e126e7f697148",
+    "test_log": "5c93532fe80bbf123ecaff1d535674aef49d278fea11ef494f5cf3f90e9f9d68",
+    "tests": "4b4798df80b6d63e3ded7d45346a40a925288e579a1311dc62b3f5c8b925d26c"
+  },
+  "claim_boundary": "V2 implementation and deterministic acquisition policy freeze only; no seen200 production selection, model-result interpretation, docking label opening, binding, affinity, competition, Docking Gold, experimental blocking, or final-submission claim.",
+  "implementation_freeze": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_g_seen200_selector_implementation_freeze_v2.json",
+    "sha256": "4122651e4b1742e097b5a5b7cc68611f3470ccaa22b4507dbaacef9d3e70ced7"
+  },
+  "label_access": {
+    "docking_labels_opened": 0,
+    "experimental_labels_opened": 0,
+    "v4d_open_model_results_opened": 0,
+    "v4d_prospective_test_labels_opened": 0,
+    "v4f_labels_opened": 0
+  },
+  "production_dependency_note": "current deployment-scoring V1 summary/receipt lack the new V2 accepted-path fields; V2 production selection remains fail-closed until a new scoring release supplies them",
+  "production_outputs_created": 0,
+  "production_selection_executed": false,
+  "receipt_payload_sha256": "46df4a68bcce015b0445e9c79ef4a22f59150a1fe835282caf43e3c7041681bd",
+  "schema_version": "phase2_v4_g_seen200_selector_implementation_freeze_receipt_v2",
+  "status": "PASS_V2_IMPLEMENTATION_FREEZE_HASH_CLOSURE_NO_SELECTION",
+  "supersedes_v1_without_modifying_v1_bytes": true
+}

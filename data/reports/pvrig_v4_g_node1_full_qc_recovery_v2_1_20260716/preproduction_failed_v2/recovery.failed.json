@@ -1,0 +1,7 @@
+{
+  "claim_boundary": "Sequence/developability QC only; no docking, binding, affinity, competition, or blocking labels.",
+  "error": "RuntimeError:forbidden_nfs_runtime_dependency:/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_20260716/runtime_closure/validator_src/ab_data_validator/__pycache__/validation.cpython-311.pyc",
+  "failed_at_utc": "2026-07-16T16:02:51.066833+00:00",
+  "pid": 13860,
+  "status": "FAIL_V4_G_FULL_QC_RECOVERY_V2"
+}

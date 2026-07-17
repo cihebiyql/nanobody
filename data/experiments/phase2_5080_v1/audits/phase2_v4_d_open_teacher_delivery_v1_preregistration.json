@@ -1,0 +1,51 @@
+{
+  "canonical_local_delivery_root": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_teacher_v1/remote_delivery_v1",
+  "claim_boundary": "Read-only transport of an already released computational dual-conformation geometry teacher. This is not binding, affinity, competition, experimental blocking, or Docking Gold evidence.",
+  "expected_archive_members": [
+    "outputs/EVALUATOR_STABLE.json",
+    "outputs/SHA256SUMS",
+    "outputs/open_teacher_postprocess_receipt.json",
+    "outputs/v4d_open_teacher.tsv",
+    "outputs/v4d_open_teacher.tsv.audit.json"
+  ],
+  "expected_builder_sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+  "expected_open_split_counts": {
+    "OPEN_DEVELOPMENT": 32,
+    "OPEN_TRAIN": 226
+  },
+  "expected_open_teacher_rows": 258,
+  "frozen_at_utc": "2026-07-16T18:10:30Z",
+  "immutable_publication": {
+    "content_addressed_path": "by_sha256/<archive_sha256>",
+    "current_pointer": "current",
+    "different_existing_current_must_not_be_overwritten": true,
+    "publication_method": "rename staging into by_sha256 followed by atomic relative symlink creation"
+  },
+  "label_boundaries": {
+    "prospective_test_rows": 32,
+    "prospective_test_raw_job_results_opened": 0,
+    "prospective_test_values_may_be_read": false,
+    "v4_f_labels_may_be_read": false
+  },
+  "remote_contract": {
+    "archive": "outputs/v4d_open_teacher_delivery_v1.tar.gz",
+    "archive_sha256": "outputs/v4d_open_teacher_delivery_v1.tar.gz.sha256",
+    "host": "node23",
+    "postprocess_root": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716",
+    "status_file": "status/postprocess_status.json",
+    "terminal_release_status": "COMPLETE"
+  },
+  "schema_version": "phase2_v4_d_open_teacher_delivery_v1_preregistration",
+  "security_gates": [
+    "production canonical paths are exact and implementation hashes are verified before remote access",
+    "remote status must be COMPLETE and archive plus checksum must be regular non-symlink files",
+    "download is staged and bounded by a frozen maximum byte count",
+    "archive SHA256 must match the remote checksum record",
+    "tar member names must exactly match the frozen allowlist",
+    "all archive members must be regular files; links, devices, duplicate names, traversal and absolute paths are rejected",
+    "outputs/SHA256SUMS must contain exactly the four frozen payload files and every hash must verify",
+    "teacher, audit, receipt and evaluator closure must pass before publication",
+    "publication is content-addressed and an existing different current pointer is never replaced"
+  ],
+  "status": "FROZEN_BEFORE_DELIVERY_IMPLEMENTATION_EXECUTION"
+}

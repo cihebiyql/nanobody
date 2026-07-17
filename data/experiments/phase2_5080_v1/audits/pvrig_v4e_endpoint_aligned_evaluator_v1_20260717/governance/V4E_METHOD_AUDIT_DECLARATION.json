@@ -1,0 +1,39 @@
+{
+  "claim_boundary": "Post-failure evaluator-method research only; not binding, affinity, competition, experimental blocking, or prospective validation.",
+  "created_at": "2026-07-16T23:15:32.664137+00:00",
+  "governance": {
+    "candidate_level_labels_emitted_by_this_audit": false,
+    "current_32_candidate_test_not_valid_for_formal_prospective_claim_after_cohort_level_method_selection": true,
+    "new_independent_test_required_for_future_prospective_claim": true,
+    "original_v4d_evaluator_remains_fail": true,
+    "original_v4d_teacher_release_forbidden": true
+  },
+  "method": {
+    "maximum_absolute_delta": 0.2,
+    "numeric_comparison": "decimal_string_product",
+    "scientific_thresholds_changed": false,
+    "threshold_scales": [
+      0.9,
+      1.0,
+      1.1
+    ],
+    "unit": "one_lowest_haddock_score_model_pair_per_successful_candidate_job"
+  },
+  "observed_before_declaration": {
+    "adhoc_v4d_representative_pair_delta_1p1": 0.175963,
+    "historical_v3_representative_pair_delta_1p1": 0.16558,
+    "original_v4d_model_pair_delta_1p1": 0.220273
+  },
+  "rationale": "The released job endpoint uses the lowest-HADDOCK-score representative model. The original sensitivity gate instead weighted every selected cluster model pair and therefore weighted jobs unequally. This branch audits endpoint alignment without changing scientific thresholds.",
+  "schema_version": "pvrig_v4e_endpoint_aligned_method_declaration_v1",
+  "source_bindings": {
+    "audit_script_sha256": "a0dea4b745b2a1618ca53d7b26675e2f4647f3743a1aaddef64438891efa450a",
+    "v3_evaluator_sha256": "31684c8f293bf0118251ead9b4e1da5f17d5b2dc8c2f10233c1fa76c1cbf4267",
+    "v3_pose_scores_sha256": "cff8fd4914dead65db80dadf500448df64b11304c295ac0c9dbe46adafa12a25",
+    "v4d_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "v4d_failure_diagnosis_v2_sha256": "26cc2a2d7562a8b2509b0e1b384d66541887fbb92c3da5087fcc9ca618077669",
+    "v4d_pose_scores_sha256": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681"
+  },
+  "status": "FROZEN_POST_V4D_FAILURE_BEFORE_ANY_ROW_LEVEL_V4E_TEACHER_RELEASE",
+  "timing": "retrospective method audit after observing the aggregate V4-D sensitivity failure and an ad-hoc endpoint-aligned diagnostic"
+}

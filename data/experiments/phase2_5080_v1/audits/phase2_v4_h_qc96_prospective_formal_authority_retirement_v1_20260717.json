@@ -1,0 +1,206 @@
+{
+  "audit_created_at_utc": "2026-07-17T01:17:46.094667+00:00",
+  "audit_kind": "retrospective_authority_retirement_and_supersession_record",
+  "bound_governance_evidence": {
+    "experiments/phase2_5080_v1/audits/phase2_v4_h_qc96_formal_evaluator_v1_1_prelabel_quantity_clarification.json": {
+      "sha256": "8746c8739f2ca405c345eb0b22b558f9528a11e12bcf7a8ab23c87ceae915704",
+      "size_bytes": 5296
+    },
+    "experiments/phase2_5080_v1/audits/phase2_v4_h_qc96_formal_evaluator_v1_preregistration.json": {
+      "sha256": "0f0f5b546f71400b50d19e0f3f43cdb7b040c0c2765eef025ae43846df47d8d5",
+      "size_bytes": 15514
+    },
+    "experiments/phase2_5080_v1/audits/phase2_v4_h_qc96_formal_evaluator_v1_protocol.md": {
+      "sha256": "144c80dfc9af74bf5fc5b659960dc2a1d36b35433e3e003e665086028d3cc1cd",
+      "size_bytes": 5346
+    },
+    "experiments/phase2_5080_v1/audits/phase2_v4_h_research_dual_docking_v1_retrospective_governance_audit_20260717.json": {
+      "sha256": "1960432625f8cb1c6ca4fdc2e9f267b718689e13f81464bafe02b901859822a7",
+      "size_bytes": 5019
+    },
+    "experiments/phase2_5080_v1/reports/PVRIG_V4_H_QC96_DEV1_PREDICTION_ADAPTER_COMPATIBILITY_AUDIT_20260717_ZH.md": {
+      "sha256": "ace16206654a962cc5d5d10f25b6f8be831d654c9f428e74a9f49faddb8f0320",
+      "size_bytes": 15102
+    },
+    "experiments/phase2_5080_v1/reports/PVRIG_V4_H_RESEARCH_DUAL_DOCKING_RETROSPECTIVE_AUDIT_20260717_ZH.md": {
+      "sha256": "b688d19640d78b4afaab03b29f752af6c6531d50b364e18fd9d0c80b7a636b3d",
+      "size_bytes": 7901
+    }
+  },
+  "bound_h96_delivery": {
+    "content_address_receipt_sha256": "a28a4a419c91c4d4f73b5d9088d114b6fb427cede0d10eb0ba8856a488bb912d",
+    "files": {
+      "audit": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_qc96_holdout_v1/delivery/current/qc96_audit_v1.json",
+        "sha256": "e9504217ee3a70f5bc0923588ab75de41719d0d3502efe2cad3259af535d97ea",
+        "size_bytes": 6290
+      },
+      "local_delivery_receipt": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_qc96_holdout_v1/delivery/current/LOCAL_DELIVERY_RECEIPT.json",
+        "sha256": "e630ca771f92dcd940e3abbe13a6965d1c64c3d65a549454f9c027143b53f55b",
+        "size_bytes": 1948
+      },
+      "manifest": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_qc96_holdout_v1/delivery/current/qc96_manifest_v1.tsv",
+        "sha256": "f128f7b2389ea5e9887b931460332ce42898aece0314e7320975c204a692f723",
+        "size_bytes": 72416
+      },
+      "provenance": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_qc96_holdout_v1/delivery/current/qc96_selected_source_provenance_v1.tsv",
+        "sha256": "e64317b9ff7b68b1dbaf8ece55fb8d051644c36b875e7f3bd28253d50fa65dc4",
+        "size_bytes": 92715
+      },
+      "receipt": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_qc96_holdout_v1/delivery/current/qc96_receipt_v1.json",
+        "sha256": "a28a4a419c91c4d4f73b5d9088d114b6fb427cede0d10eb0ba8856a488bb912d",
+        "size_bytes": 6554
+      },
+      "recovery_complete": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_qc96_holdout_v1/delivery/current/recovery.complete.json",
+        "sha256": "72cf1b0b1a262561f933960688bd3ad852c8763eaf4a02ba2e537a1b517b9da1",
+        "size_bytes": 721
+      }
+    },
+    "manifest_rows": 96,
+    "model_split_values": [
+      "V4_H_QC96_PROSPECTIVE_HOLDOUT"
+    ],
+    "unique_candidate_ids": 96
+  },
+  "decision": {
+    "allowed_use": "explicitly versioned post-hoc development/research analyses of computational 8X6B/9E6Y Docking geometry only",
+    "development_research_use_allowed": true,
+    "forbidden_claims": [
+      "prospective model validation",
+      "formal holdout performance",
+      "binding probability",
+      "affinity or Kd",
+      "competition",
+      "experimental blocking",
+      "Docking Gold"
+    ],
+    "formal_holdout_authority_active": false,
+    "prospective_authority_active": false,
+    "replacement_requirement": "Any future prospective panel must be newly untouched and must have model, configuration, exact predictions, uncertainty, manifest, and receipt frozen before its first Docking job starts.",
+    "supersession_effect": "Original preregistrations, manifests, receipts, and runtime remain immutable evidence of what was planned and run, but they no longer confer prospective/formal authority on QC96.",
+    "untouched_docking_holdout_status_active": false
+  },
+  "evidence_boundary": "Post-hoc development/research computational Docking geometry evidence only; not binding, affinity, competition, experimental blocking, Docking Gold, or prospective/formal validation.",
+  "node23_read_only_consumption_snapshot": {
+    "candidate_manifest": {
+      "rows": 1320,
+      "sha256": "7f2883849934fd286c969afbf38067e5a90a2b682eca62c195c10e0a00a0adf7",
+      "unique_candidate_ids": 1320
+    },
+    "controller_snapshot": {
+      "counts_before": {
+        "PENDING": 2614,
+        "RUNNING": 12,
+        "SUCCESS": 14
+      },
+      "selected_job_count": 2640,
+      "sha256": "f8b2291d20bc2f062f96004d9c72c2825252d0cb9f63043acdaaa2be035f9f3d",
+      "status": "RUNNING"
+    },
+    "docking_jobs_manifest_sha256": "c9dd94a624dbdccd264c55f723023f5c58102c9a56ab02660ab004b93941804f",
+    "h96_candidates_with_started_or_terminal_status": 2,
+    "h96_overlap_with_runtime_candidate_manifest": 96,
+    "h96_overlap_with_stage1_candidate_ids": 96,
+    "h96_stage1_job_rows": 192,
+    "h96_status_counts": {
+      "RUNNING": 2,
+      "SUCCESS": 2
+    },
+    "h96_status_file_count": 4,
+    "host": "node23",
+    "job_result_or_pose_metric_files_opened": 0,
+    "orchestrator_pid": 2460094,
+    "orchestrator_process_line": "2460094 Fri Jul 17 09:00:53 2026 /data/qlyu/anaconda3/envs/haddock3/bin/python /data/qlyu/projects/pvrig_v4_h_research_stage_tools_v1_20260717/run_adaptive_v4h.py --root /data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717 --scorer /data/qlyu/projects/pvrig_v4_h_research_stage_tools_v1_20260717/stage_base_v4f.py --max-parallel 12 --stage2-count 384 --stage3-count 128",
+    "orchestrator_process_observed_alive": true,
+    "orchestrator_started_at_local": "2026-07-17T09:00:53+08:00",
+    "project_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+    "protocol_core_lock_sha256": "b683733ed2fbbbc4f5fc926d66ea32979a7ae89a429a49618bd8e3aabb028e1f",
+    "protocol_lock_sha256": "25c9069745128ab10944673e0156f5808b063b4f49e5079609726c9141a63897",
+    "read_scope": [
+      "inputs/candidate_monomers_manifest.tsv",
+      "manifests/stage1_all_seed917.tsv",
+      "manifests/docking_jobs.tsv",
+      "status/controller.json",
+      "PROTOCOL_CORE_LOCK.json",
+      "PROTOCOL_LOCK.json",
+      "status/jobs/*.json for H96 IDs only"
+    ],
+    "snapshot_at_node23_local": "2026-07-17T09:17:46+08:00",
+    "stage1_manifest": {
+      "rows": 2640,
+      "sha256": "c76de07a2725939e62b4fab9cd9af4a7c72b30398f68bfa18727a223f277c1d0",
+      "unique_candidate_ids": 1320
+    },
+    "status_examples": [
+      {
+        "candidate_id": "V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B02__M00",
+        "completed_at_utc": "2026-07-17T01:11:52.503183+00:00",
+        "conformation": "8X6B",
+        "job_id": "CANDIDATE_V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B02__M00_8x6b_s917_189148a9b637",
+        "status": "SUCCESS",
+        "status_json_sha256": "d270432ae22936d86af6ee14cc362bbca6872c676260bf8c1e36e06c533cef84"
+      },
+      {
+        "candidate_id": "V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B02__M00",
+        "completed_at_utc": "2026-07-17T01:11:53.917962+00:00",
+        "conformation": "9E6Y",
+        "job_id": "CANDIDATE_V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B02__M00_9e6y_s917_cf8c26915748",
+        "status": "SUCCESS",
+        "status_json_sha256": "443bf62fc1813e2dc8e6e3789e1374c888e5f18ad388c4430ce40c6532e84c3c"
+      },
+      {
+        "candidate_id": "V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B03__M01",
+        "completed_at_utc": null,
+        "conformation": "8X6B",
+        "job_id": "CANDIDATE_V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B03__M01_8x6b_s917_af370cde80c9",
+        "status": "RUNNING",
+        "status_json_sha256": "cf767adcce08dd27b00300472a9b4d40328081c9e03158e1f3fe514e58fe23db"
+      },
+      {
+        "candidate_id": "V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B03__M01",
+        "completed_at_utc": null,
+        "conformation": "9E6Y",
+        "job_id": "CANDIDATE_V4H__PLDNANO_VHH_00118__A_CENTER__H1H3__B03__M01_9e6y_s917_c2c89e516734",
+        "status": "RUNNING",
+        "status_json_sha256": "f8b617c49a67a2aad762eebabd92c88b67eae9dcae2cbb8d071be574e5b0ae96"
+      }
+    ]
+  },
+  "runtime_disposition": {
+    "action": "NO_CHANGE_CONTINUE_RESEARCH_RUNTIME",
+    "formal_authority_quarantined": true,
+    "runtime_files_written": 0,
+    "runtime_stopped": false
+  },
+  "schema_version": "phase2_v4_h_qc96_prospective_formal_authority_retirement_v1",
+  "scope": {
+    "active_runtime_modified": false,
+    "docking_labels_created_or_copied": false,
+    "original_files_modified": false,
+    "original_model_split": "V4_H_QC96_PROSPECTIVE_HOLDOUT",
+    "panel": "V4-H QC96",
+    "predictions_created": false,
+    "row_count": 96
+  },
+  "status": "RETIRED_V4_H_QC96_PROSPECTIVE_FORMAL_AUTHORITY_RETAINED_DEVELOPMENT_RESEARCH_ONLY",
+  "temporal_governance_finding": {
+    "compatibility_audit_conclusion": "formal adapter incompatible; only a separately versioned DEV-only prediction freeze was implementable; no prediction artifact was created by that audit",
+    "compatibility_audit_local_mtime": "2026-07-17T08:02:17.297386+08:00",
+    "docking_orchestrator_started_at_local": "2026-07-17T09:00:53+08:00",
+    "finding": "Docking began before any H96 prediction freeze, and all 96 QC96 candidates were already members of the running Docking panel. QC96 is therefore consumed for Docking labels and cannot remain an untouched prospective/formal holdout.",
+    "retrospective_audit_h96_runtime_overlap": "96/96",
+    "retrospective_audit_prediction_freeze_found_before_docking": false
+  },
+  "v4d_test32": {
+    "authority_retired": false,
+    "may_be_repurposed_as_development_data": false,
+    "opened_by_this_audit": false,
+    "paths_or_ids_read_by_this_audit": 0,
+    "status": "SEALED_UNTOUCHED"
+  }
+}

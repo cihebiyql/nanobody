@@ -1,0 +1,11 @@
+{
+  "acquisition_protocol_lock_sha256": "7096c1b0970ae7010d247c84322428d7cdce69aa9203e23296e2d33b5b5beda8",
+  "candidate_count": 12,
+  "claim_boundary": "acquisition_only_independent_8x6b_9e6y_x3seed_computational_geometry;not_binding_affinity_competition_experimental_blocking_or_docking_gold",
+  "controller_dry_run": "PASS_NO_LAUNCH",
+  "job_count": 72,
+  "status": "PASS_V4_G_C0154_HARDPASS12_DOCKING_PACKAGE_PREFLIGHT",
+  "tests": 3,
+  "waiter_sha256": "863618c516d7cd0ed4a21efee32dbdc1d1ed2552cb213838b871f657d71bc431",
+  "waiter_trust_anchor_sha256": "af71b0cc943106ce30cd9ad573bb962c0e1c4009ff952691054e05e3aa30b1fd"
+}

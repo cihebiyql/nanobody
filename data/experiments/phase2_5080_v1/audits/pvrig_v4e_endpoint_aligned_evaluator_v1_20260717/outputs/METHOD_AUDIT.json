@@ -1,0 +1,86 @@
+{
+  "campaigns": [
+    {
+      "absolute_rate_deltas": {
+        "0.9": 0.183833,
+        "1.1": 0.16558
+      },
+      "all_selected_model_pair_count": 6906,
+      "campaign": "historical_v3",
+      "maximum_absolute_delta": 0.2,
+      "pose_scores_path": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/pose_scores.tsv",
+      "pose_scores_sha256": "cff8fd4914dead65db80dadf500448df64b11304c295ac0c9dbe46adafa12a25",
+      "reasons": [],
+      "representative_job_count": 767,
+      "source_evaluator_path": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/EVALUATOR_STABLE.json",
+      "source_evaluator_sha256": "31684c8f293bf0118251ead9b4e1da5f17d5b2dc8c2f10233c1fa76c1cbf4267",
+      "source_evaluator_status": "PASS",
+      "source_evaluator_unlockable": true,
+      "status": "PASS",
+      "strict_a_counts": {
+        "0.9": 397,
+        "1.0": 256,
+        "1.1": 129
+      },
+      "strict_a_rates": {
+        "0.9": 0.517601,
+        "1.0": 0.333768,
+        "1.1": 0.168188
+      }
+    },
+    {
+      "absolute_rate_deltas": {
+        "0.9": 0.154112,
+        "1.1": 0.175963
+      },
+      "all_selected_model_pair_count": 16189,
+      "campaign": "target_v4d",
+      "maximum_absolute_delta": 0.2,
+      "pose_scores_path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/reports/pose_scores.tsv",
+      "pose_scores_sha256": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681",
+      "reasons": [],
+      "representative_job_count": 1739,
+      "source_evaluator_path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/reports/EVALUATOR_STABLE.json",
+      "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+      "source_evaluator_status": "FAIL",
+      "source_evaluator_unlockable": false,
+      "status": "PASS",
+      "strict_a_counts": {
+        "0.9": 1088,
+        "1.0": 820,
+        "1.1": 514
+      },
+      "strict_a_rates": {
+        "0.9": 0.625647,
+        "1.0": 0.471535,
+        "1.1": 0.295572
+      }
+    }
+  ],
+  "claim_boundary": "Evaluator-method audit only; not binding, affinity, competition, experimental blocking, or original V4-D release authority.",
+  "governance": {
+    "candidate_level_labels_emitted": false,
+    "original_v4d_evaluator_modified": false,
+    "original_v4d_evaluator_released": false,
+    "prospective_test_validity_claimed": false,
+    "timing": "post_V4D_failure_retrospective_method_audit"
+  },
+  "method": {
+    "maximum_absolute_delta": 0.2,
+    "numeric_comparison": "decimal_string_product",
+    "scales": [
+      0.9,
+      1.0,
+      1.1
+    ],
+    "thresholds": {
+      "cdr3_fraction": 0.15,
+      "cdr3_occlusion": 100.0,
+      "hotspot_overlap": 14.0,
+      "total_occlusion": 500.0
+    },
+    "unit": "one_lowest_haddock_score_model_pair_per_successful_candidate_job"
+  },
+  "schema_version": "pvrig_v4e_endpoint_aligned_sensitivity_method_audit_v1",
+  "status": "PASS_METHOD_AUDIT"
+}

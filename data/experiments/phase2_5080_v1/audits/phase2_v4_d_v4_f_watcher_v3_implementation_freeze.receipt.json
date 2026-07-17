@@ -1,0 +1,19 @@
+{
+  "claim_boundary": "V3 automates a sequence surrogate for independent dual-receptor computational docking geometry. It is not binding, affinity, competition, blocker probability, Docking Gold, or experimental blocking truth.",
+  "created_at": "2026-07-16T18:08:15.138941+00:00",
+  "implementation_freeze": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_v4_f_watcher_v3_implementation_freeze.json",
+    "sha256": "adaa7ae42eba3734aafff50c8f6be58cf7ea81ed5d64e38cd2fc3f795d9e3500",
+    "size_bytes": 6405
+  },
+  "parsed_test_count": 18,
+  "payload_sha256": "6d1c5f6cf8ac6588c4a83292568cbf3739aaa501e3a56e6568182132c2154faf",
+  "prospective_test_label_paths_accepted": 0,
+  "prospective_test_labels_read": false,
+  "schema_version": "phase2_v4_d_v4_f_watcher_v3_implementation_freeze_receipt_v1",
+  "status": "PASS_COMPLETE_HASH_CLOSURE_BEFORE_OPEN258_TEACHER_TRAINING_OR_V4F_PREDICTION",
+  "surrogate_trust_anchor_sha256": "bddee8dc7a303b7239641bf0e74317ee2af8a7509506564714227b5118a6ef11",
+  "v4_f_label_paths_accepted": 0,
+  "v4_f_labels_read": false,
+  "v4f_trust_anchor_sha256": "31f7f2cc66fcee3dcf665b76fd2a4985be3ce9d64460dd74956d776e4ee9197e"
+}

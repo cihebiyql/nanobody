@@ -1,0 +1,17 @@
+{
+  "acquisition_protocol_lock_sha256": "7096c1b0970ae7010d247c84322428d7cdce69aa9203e23296e2d33b5b5beda8",
+  "claim_boundary": "Implementation freeze only; no docking labels, scores, geometry outcomes, or teacher TSV rows were read.",
+  "created_at_utc": "2026-07-16T17:10:32.305895+00:00",
+  "open_teacher_release_verifier_sha256": "f4ff29e2ba1cadd6c120ba982fe253471d9f06738e60f257bfc892202d6b755a",
+  "policy_freeze_v3_sha256": "0ef462a5d7e1b8d73580b9bfb169bb2bf1cd624cde9e91a12d1751024ad7d7ab",
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_waiter_v3_implementation_freeze",
+  "security_tests_sha256": "90d880c7d20f7d338d71a753d3f8b4ddd49047348d8bca2a68cdd9c5c9aadd18",
+  "status": "FROZEN_BEFORE_V3_LAUNCHER_GENERATION",
+  "trust_anchor_v3_sha256": "5b149b478f5550559822a33223ae1fca81d564927e7e7a6b99770cc5c57f9242",
+  "trust_chain": "The generated launcher embeds this freeze SHA and the waiter SHA. The waiter embeds immutable V2 anchor/freeze and V3 anchor/policy-freeze SHAs.",
+  "v2_implementation_freeze_sha256": "b15c5b32a0d5f6a00c3abe26bbbb9ee149b48724e0ec7fa08d717eccba352b99",
+  "v2_security_stop_receipt_sha256": "0a1ead8e7849ff90dd768e3462be4fddc55c7bbc583cb07a4c35ed314a48c43b",
+  "v2_trust_anchor_sha256": "7144e6a6adc0fa72e13c9a4f6edb4bde3913281bdea64e70cd18e2e58d9a4e3b",
+  "waiter_v3_policy_sha256": "3f4cd75d42ea0ad6ca61d53ed1c799b650e32cc41aac069c21f8bac5caacb7ed",
+  "waiter_v3_sha256": "8a6d5354c8bb017c3ce90621f3edd1aac5dc674babbca24a4f4a3316f3048e1a"
+}

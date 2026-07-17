@@ -1,0 +1,63 @@
+{
+  "claim_boundary": "This run measures sequence and developability Full-QC only. It is not Docking, docking geometry, PVRIG binding, affinity, competition, experimental blocking, blocker probability, or a biological teacher label.",
+  "finished_at_utc": "2026-07-16T17:24:54.573627+00:00",
+  "git_scope": "Only lightweight code, contracts, tests, receipts, aggregate attrition, and audits. No raw sequence manifest/FASTA, full_merged.tsv, PDB, model, or runtime tree.",
+  "implementation_freeze_sha256": "9c56a94d7e0887d526570a16f756008e9d5d752d6061e17b5dcd81c387e16fbd",
+  "independent_terminal_audit_status": "PASS_INDEPENDENT_720_FULL_QC_TERMINAL_CLOSURE",
+  "input_manifest_sha256": "73454cbf8194d3faa5cad354a5b2f31f433e317d5222a6cd59906775fb56bfca",
+  "package_receipt_sha256": "0ab622dd63ae61597c9de5d8ab61b8dc8507fe721a3d188dcd2f562b3c6c144b",
+  "preflight_provenance": {
+    "canonical_status_classification": "POSTRUN_PACKAGE_RUNTIME_REVERIFICATION_NOT_PRELAUNCH_ZERO_WORK",
+    "canonical_status_overwritten_at_utc": "2026-07-16T17:25:31.506351+00:00",
+    "correction_receipt_sha256": "811f3ff9ef11c21c007696a1b4819407428ffc30483a6ae5889793d81e49e233",
+    "prelaunch_log_mtime_utc": "2026-07-16T17:24:10.779086+00:00",
+    "prelaunch_log_sha256": "98d73317211537171f6b7992d3ba33c36925991130e3c9466a6b90b7d6b287bd",
+    "runner_started_at_utc": "2026-07-16T17:24:11.052867+00:00",
+    "status": "PASS_PRELAUNCH_LOG_PROVENANCE_CORRECTED"
+  },
+  "process_closure": {
+    "receipt_sha256": "8c5cee5c427322e1c4e6c6ddca1e3ae768907715fca79fb783ee0ce4affa53f8",
+    "runner_pid": 242215,
+    "runner_pid_alive": false,
+    "stale_pid_file_removed": true
+  },
+  "remote_root": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_full_qc_v1_20260717",
+  "resource_evidence": {
+    "claim": "Configuration and fresh-chunk concurrency verified. Instantaneous 32-core saturation was not measured because the run finished before the 20-second process snapshot.",
+    "full_chunks_completed": 16,
+    "full_stage_timing_seconds": {
+      "official_validator_max": 21.551,
+      "official_validator_median": 21.34,
+      "official_validator_min": 21.232,
+      "vhh_screen_max": 14.561,
+      "vhh_screen_median": 14.2555,
+      "vhh_screen_min": 12.986
+    },
+    "policy": "16 chunk jobs x 2 workers; maximum requested 32 of 64 CPU; GPU requested/used 0",
+    "postwork_load1_snapshot": 11.07,
+    "prelaunch_load1": 0.28
+  },
+  "result": {
+    "fast_hard_fail": 0,
+    "fast_hard_pass": 720,
+    "fast_rows": 720,
+    "full_hard_fail": 0,
+    "full_hard_pass": 720,
+    "full_rows": 720,
+    "input_rows": 720,
+    "no_replacement": true,
+    "tnp_policy": "DEFERRED_NO_IMPUTATION",
+    "tnp_run": false
+  },
+  "runner_sha256": "c90bce986b97953b85536fcac7339c0c6948d97e49f3681e0656aa7b0ecafddc",
+  "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+  "schema_version": "phase2_support_v4_a_acquisition720_full_qc_deployment_record_v1",
+  "screen_source_sha256": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a",
+  "started_at_utc": "2026-07-16T17:24:11.052867+00:00",
+  "status": "PASS_TERMINAL_SEQUENCE_DEVELOPABILITY_FULL_QC",
+  "tests": {
+    "count": 9,
+    "log_sha256": "2eac5e192ec0563dc86e4f431395f5ea7aee743e34887257985ad6828b317630",
+    "status": "OK"
+  }
+}

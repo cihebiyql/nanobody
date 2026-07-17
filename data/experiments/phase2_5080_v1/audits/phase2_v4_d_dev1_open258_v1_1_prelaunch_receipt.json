@@ -1,0 +1,63 @@
+{
+  "active_science_processes": [],
+  "checked_at_utc": "2026-07-17T00:42:34.526899+00:00",
+  "claim_boundary": "V1.1 zero-work prelaunch receipt; no teacher extraction, binding, affinity, experimental blocking, or Docking Gold.",
+  "formal_v4_f_unlock_eligible": false,
+  "freeze_status": "FROZEN_FOR_DEV1_V1_1_REMOTE_EXECUTION",
+  "hash_checks": {
+    "builder": {
+      "expected": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/scripts/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82"
+    },
+    "evidence": {
+      "expected": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/governance/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481"
+    },
+    "freeze": {
+      "expected": "1de47077ed5b5d7fb3e0ec1e7bca82d9ce98a96ae8696d10b9dcd9ff5401aa1e",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/governance/phase2_v4_d_dev1_open258_v1_1_launch_authorized_freeze.json",
+      "sha256": "1de47077ed5b5d7fb3e0ec1e7bca82d9ce98a96ae8696d10b9dcd9ff5401aa1e"
+    },
+    "launcher": {
+      "expected": "836a0f0ffbed49f85706671b6d8dffb03da3f2eee3e29b7a64f69598c89e5fe4",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_1_node23.sh",
+      "sha256": "836a0f0ffbed49f85706671b6d8dffb03da3f2eee3e29b7a64f69598c89e5fe4"
+    },
+    "prereg": {
+      "expected": "e57f08f266f53cc966d7dca34366310742ca4889a3c5173972105bb30734879d",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/governance/phase2_v4_d_dev1_open258_v1_1_recovery_preregistration.json",
+      "sha256": "e57f08f266f53cc966d7dca34366310742ca4889a3c5173972105bb30734879d"
+    },
+    "prior": {
+      "expected": "21b4c6a38056d6777de5b5efbfcd5887b45098c637cab61489072d1e6e7783cd",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/governance/v4d_dev1_fullqc290_label_free_generic_prior_v1.csv",
+      "sha256": "21b4c6a38056d6777de5b5efbfcd5887b45098c637cab61489072d1e6e7783cd"
+    },
+    "v1_failure": {
+      "expected": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717/governance/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720"
+    }
+  },
+  "immutable_v1_status": "FAILED_DEV1_BUILD",
+  "log_files": [],
+  "python_runtime": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+  "python_runtime_executable": true,
+  "release_v1_1_absent": true,
+  "remote_execution_authorized": true,
+  "remote_science_work_started": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_1_prelaunch_receipt_v1",
+  "status": "PASS_V1_1_PRELAUNCH_ZERO_WORK_READY",
+  "status_files": [],
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

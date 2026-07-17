@@ -1,0 +1,19 @@
+{
+  "builder_sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+  "claim_boundary": "Reviewed V1.1 deployment bytes only; no teacher extraction, binding, affinity, experimental blocking, or Docking Gold.",
+  "created_at_utc": "2026-07-17T00:41:48.732773+00:00",
+  "formal_v4_f_unlock_eligible": false,
+  "implementation_freeze_candidate_sha256": "9994f44fd459118f62c54e29f47d47b48474fa148aad4207803a3d0f5de092d6",
+  "independent_review_receipt_sha256": "dee72c7a1ced512bf8297e5f0ab85fb140a896fb214f8be9e28b18d2e43720fb",
+  "launcher_sha256": "836a0f0ffbed49f85706671b6d8dffb03da3f2eee3e29b7a64f69598c89e5fe4",
+  "log_files": [],
+  "package_receipt_sha256": "1242a73f7b593144dc470b7b41b0f0a8a5dc5bd701e24790df28bb019c5e6c68",
+  "release_v1_1_absent": true,
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717",
+  "remote_science_work_started": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_1_node23_deployment_receipt_v1",
+  "status": "PASS_REVIEWED_V1_1_BYTES_DEPLOYED_ZERO_SCIENCE_OUTPUT",
+  "status_files": [],
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

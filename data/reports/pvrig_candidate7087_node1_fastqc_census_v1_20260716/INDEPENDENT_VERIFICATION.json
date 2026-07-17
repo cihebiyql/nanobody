@@ -1,0 +1,77 @@
+{
+  "actual_execution": {
+    "candidate_numbering": "vhh-screen -> vhh-eval -> Python abnumber.Chain, IMGT+Kabat",
+    "candidate_rows": 7087,
+    "cheap_features": [
+      "FR/CDR integrity",
+      "conserved IMGT Cys and FR4",
+      "ProtParam/basic liabilities",
+      "official and local positive CDR novelty"
+    ],
+    "chunk_count": 16,
+    "chunk_walltime_seconds_max": 41.983,
+    "chunk_walltime_seconds_min": 34.408,
+    "deferred_or_skipped": [
+      "official validator deferred",
+      "AbNatiV skipped",
+      "Sapiens skipped",
+      "TNP skipped",
+      "team diversity deferred",
+      "structure prediction not run"
+    ],
+    "explicit_ANARCI_binary": "provided in outer argv but not directly invoked for candidate numbering in this run; existing positive-CDR cache was not rebuilt",
+    "parallel_contract": "16 concurrent chunks x 2 workers = maximum 32 CPU workers; GPU=0",
+    "rows_per_chunk": [
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      448,
+      367
+    ]
+  },
+  "candidate_table_sha256": "33c657fa26b3348d46fb22ebea453398b81d8fd762765668a1ca6c5dd3e16855",
+  "checks": {
+    "candidate_fail_count": true,
+    "candidate_fields_exact": true,
+    "candidate_ids_unique": true,
+    "candidate_pass_count": true,
+    "candidate_rows_7087": true,
+    "chunk_command_contract": true,
+    "chunk_marker_rows_7087": true,
+    "chunk_stage_contract": true,
+    "chunk_table_16": true,
+    "label_path_access_all_zero": true,
+    "lineage_id_sequence_parent_exact": true,
+    "official_validator_deferred_all16": true,
+    "parent_candidate_sum_7087": true,
+    "parent_pass_fail_sum": true,
+    "parent_rows_40": true,
+    "receipt_after_all_chunk_markers": true,
+    "receipt_output_hashes": true,
+    "skip_abnativ_sapiens_tnp_team_diversity_all16": true,
+    "vhh_eval_rows_7087": true
+  },
+  "receipt_sha256": "95a805622e9fd19e42e9999e7a421d8f91ac3c594a06a8ab21088ce84fdd3497",
+  "remote_root": "/data1/qlyu/projects/pvrig_candidate7087_node1_fastqc_census_v1_20260716",
+  "results": {
+    "fast_hard_fail": 2509,
+    "fast_hard_pass": 4578,
+    "insufficient_parents": 11,
+    "ready_parents_at_preregistered_fast_capacity_threshold": 29
+  },
+  "schema_version": "candidate7087_node1_large_scale_fast_census_independent_verification_v1",
+  "status": "PASS_INDEPENDENT_LARGE_SCALE_FAST_CENSUS_VERIFICATION",
+  "terminology": "large-scale-fast sequence/developability capacity census; not Full-QC capacity",
+  "verified_at_utc": "2026-07-17T00:22:30.974849+08:00"
+}

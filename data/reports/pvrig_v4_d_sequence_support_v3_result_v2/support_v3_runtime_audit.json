@@ -1,0 +1,1025 @@
+{
+  "calibration": {
+    "channel_nearest_summaries": {
+      "cross_parent": {
+        "cdr1_edit": {
+          "maximum": 0.75,
+          "mean": 0.4247787610619469,
+          "minimum": 0.125
+        },
+        "cdr2_edit": {
+          "maximum": 0.75,
+          "mean": 0.5050393313667654,
+          "minimum": 0.375
+        },
+        "cdr3_edit": {
+          "maximum": 0.7368421052631579,
+          "mean": 0.5384864128613959,
+          "minimum": 0.26666666666666666
+        },
+        "cdr_2mer_cosine": {
+          "maximum": 0.838835407194924,
+          "mean": 0.7374094640769642,
+          "minimum": 0.5970885179873099
+        },
+        "cdr_3mer_cosine": {
+          "maximum": 0.9574371734620626,
+          "mean": 0.8904426516912243,
+          "minimum": 0.7485525771625151
+        },
+        "cdr_esm_cosine": {
+          "maximum": 0.05510389804840088,
+          "mean": 0.032613879283972545,
+          "minimum": 0.024159491062164307
+        },
+        "contact_euclidean": {
+          "maximum": 0.28666073083877563,
+          "mean": 0.16389301218158375,
+          "minimum": 0.06407228112220764
+        },
+        "full_esm_cosine": {
+          "maximum": 0.010511815547943115,
+          "mean": 0.004733003610003311,
+          "minimum": 0.0030020475387573242
+        }
+      },
+      "same_parent": {
+        "cdr1_edit": {
+          "maximum": 0.875,
+          "mean": 0.20427728613569324,
+          "minimum": 0.0
+        },
+        "cdr2_edit": {
+          "maximum": 0.0,
+          "mean": 0.0,
+          "minimum": 0.0
+        },
+        "cdr3_edit": {
+          "maximum": 0.8421052631578947,
+          "mean": 0.5417288736694746,
+          "minimum": 0.0
+        },
+        "cdr_2mer_cosine": {
+          "maximum": 0.7532931442542757,
+          "mean": 0.4652774708417355,
+          "minimum": 0.06896551724137923
+        },
+        "cdr_3mer_cosine": {
+          "maximum": 0.7909394974982273,
+          "mean": 0.5697359664432302,
+          "minimum": 0.12499999999999989
+        },
+        "cdr_esm_cosine": {
+          "maximum": 0.03810882568359375,
+          "mean": 0.012889919291555354,
+          "minimum": 0.0022237300872802734
+        },
+        "contact_euclidean": {
+          "maximum": 0.7247308492660522,
+          "mean": 0.19724579953250632,
+          "minimum": 0.023645801469683647
+        },
+        "full_esm_cosine": {
+          "maximum": 0.008341073989868164,
+          "mean": 0.0019477674391417377,
+          "minimum": 0.00018769502639770508
+        }
+      }
+    },
+    "global_cross_parent_thresholds": {
+      "cdr1_edit": 0.6583946078431371,
+      "cdr2_edit": 0.75,
+      "cdr3_edit": 0.6390140471773122,
+      "cdr_2mer_cosine": 0.8112071114388335,
+      "cdr_3mer_cosine": 0.9539892268284745,
+      "cdr_esm_cosine": 0.04060807228088362,
+      "contact_euclidean": 0.25480564053242016,
+      "full_esm_cosine": 0.006526658932367954
+    },
+    "parent_count": 20,
+    "quantile": 0.95,
+    "quantile_method": "equal-parent-mass midpoint-CDF linear interpolation",
+    "row_count": 226,
+    "same_parent_thresholds": {
+      "cdr1_edit": 0.6579545454545456,
+      "cdr2_edit": 0.0,
+      "cdr3_edit": 0.7260664265706279,
+      "cdr_2mer_cosine": 0.6613150407328914,
+      "cdr_3mer_cosine": 0.7487005009665562,
+      "cdr_esm_cosine": 0.02307718992233276,
+      "contact_euclidean": 0.3813842322145188,
+      "full_esm_cosine": 0.0032005357742309537
+    }
+  },
+  "claim_boundary": "Support V3 estimates whether a sequence is represented by the V4-D OPEN_TRAIN design domain. It is not model correctness, docking geometry, binding, affinity, competition, Docking Gold, or experimental blocking evidence.",
+  "completed_at": "2026-07-16T14:10:00.499000+00:00",
+  "contact_scaler": {
+    "fit_candidate_ids_sha256": "04cc46a5d84d0c7c80820e76bdfa4fa1458a5f604218af74a71a461ccdcdb640",
+    "fit_policy": "OPEN_TRAIN_only_numpy_quantile_linear",
+    "fit_row_count": 226,
+    "iqr": [
+      0.028327099999999994,
+      0.057416389399999934,
+      0.0643789320999999,
+      0.006958921775000015,
+      0.09763962522500003,
+      0.018359626299999987,
+      0.02159447059999997,
+      0.001962070699999985,
+      0.05342865542499997,
+      0.06668632330000002,
+      0.017531844475000002,
+      0.0044977678795
+    ],
+    "median": [
+      0.31285881000000004,
+      0.7932386497499999,
+      0.83246713875,
+      0.9613658090499999,
+      0.64174035195,
+      0.2826769352,
+      0.29261835145,
+      0.1787552486,
+      0.71283857395,
+      0.7597147956,
+      0.2805760304,
+      0.01159752395
+    ],
+    "q1": [
+      0.296132115,
+      0.7545646429,
+      0.799923787525,
+      0.9574550986,
+      0.5937062403,
+      0.272743244975,
+      0.2800625396,
+      0.1774586327,
+      0.6774227411,
+      0.72611941,
+      0.271178265425,
+      0.0086870139305
+    ],
+    "q3": [
+      0.32445921499999997,
+      0.8119810323,
+      0.8643027196249999,
+      0.964414020375,
+      0.691345865525,
+      0.291102871275,
+      0.30165701019999996,
+      0.1794207034,
+      0.730851396525,
+      0.7928057333,
+      0.2887101099,
+      0.01318478181
+    ]
+  },
+  "deployment": {
+    "denominator": 6861,
+    "label_counts": {
+      "IN_DOMAIN": 1733,
+      "NEAR_DOMAIN": 67,
+      "OUT_OF_DOMAIN": 5061
+    }
+  },
+  "gates": {
+    "all_gates_passed": false,
+    "gates": {
+      "cdr_composition_shuffle": {
+        "kind": "cdr_composition_shuffle",
+        "label_counts": {
+          "OUT_OF_DOMAIN": 1000
+        },
+        "maximum": 0.05,
+        "observed_fraction": 0.0,
+        "passed": true,
+        "row_count": 1000,
+        "target_label": "IN_DOMAIN"
+      },
+      "channel_splice": {
+        "kind": "channel_splice",
+        "label_counts": {
+          "NEAR_DOMAIN": 10,
+          "OUT_OF_DOMAIN": 990
+        },
+        "maximum": 0.05,
+        "observed_fraction": 0.0,
+        "passed": true,
+        "row_count": 1000,
+        "target_label": "IN_DOMAIN"
+      },
+      "cross_parent_cdr_graft": {
+        "kind": "cross_parent_cdr_graft",
+        "label_counts": {
+          "NEAR_DOMAIN": 137,
+          "OUT_OF_DOMAIN": 863
+        },
+        "maximum": 0.1,
+        "observed_fraction": 0.0,
+        "passed": true,
+        "row_count": 1000,
+        "target_label": "IN_DOMAIN"
+      },
+      "deployment_coverage": {
+        "minimum_count": 4117,
+        "minimum_fraction": 0.6,
+        "observed_count": 1733,
+        "observed_fraction": 0.2525870864305495,
+        "passed": false
+      },
+      "nested_validation": {
+        "every_parent_minimum": 0.6,
+        "every_parent_observed_minimum": 0.15384615384615385,
+        "minimum": 0.8,
+        "observed": 0.588495575221239,
+        "passed": false
+      },
+      "unseen_parent_chimera": {
+        "kind": "unseen_parent_chimera",
+        "label_counts": {
+          "NEAR_DOMAIN": 10,
+          "OUT_OF_DOMAIN": 990
+        },
+        "maximum": 0.1,
+        "observed_fraction": 0.01,
+        "passed": true,
+        "row_count": 1000,
+        "target_label": "NEAR_DOMAIN"
+      }
+    },
+    "status": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY"
+  },
+  "implementation_freeze": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_sequence_support_v3_implementation_freeze_v2.json",
+    "sha256": "2d541646bf0af762cdd5bb38f0519acee0dc11dc059f2d09ba79ab86f270882c",
+    "size_bytes": 7500
+  },
+  "input_closure": {
+    "candidate_count": 7087,
+    "cdr_mask_count": 7087,
+    "consumed_candidate_fields": [
+      "candidate_id",
+      "cdr1_after",
+      "cdr2_after",
+      "cdr3_after",
+      "parent_framework_cluster",
+      "sequence_sha256",
+      "vhh_sequence"
+    ],
+    "contact_feature_count": 7087,
+    "docking_or_experimental_label_paths_opened": 0,
+    "esm2_vhh_cache_count": 7087,
+    "input_sha256": {
+      "candidate_pool": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b",
+      "cdr_masks": "6176bb245cbefa24961a017a4964d3453e47e7901a7abcd72a2eedebefb1f791",
+      "contact_feature_release_receipt": "b12c0ff0ce6760db7169ec3616dddaf05786e5ca795354f639ef2bf87c370e2b",
+      "contact_feature_schema": "22d11cdccb0af6ecb26eb3bdcbae6c35dc5bc57543d662cf9da94155ee746cc0",
+      "esm2_residue_cache_manifest": "1300b7f1c32a917e0b95831c54bb483663b1fe59024982412440dfe51444aa40",
+      "v4_d_split_manifest": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "open_train_count": 226,
+    "open_train_parent_count": 20,
+    "split_count": 290,
+    "stable_contact_feature_count": 12,
+    "status": "PASS_FROZEN_LABEL_FREE_INPUT_CLOSURE"
+  },
+  "label_access": {
+    "docking_or_experimental_label_paths_opened": 0,
+    "v4_f_label_paths_opened": 0
+  },
+  "nested_validation": {
+    "fold_count": 5,
+    "folds": [
+      {
+        "calibration_rows": 183,
+        "fold": 0,
+        "thresholds": {
+          "channel_nearest_summaries": {
+            "cross_parent": {
+              "cdr1_edit": {
+                "maximum": 0.75,
+                "mean": 0.4364754098360656,
+                "minimum": 0.125
+              },
+              "cdr2_edit": {
+                "maximum": 0.75,
+                "mean": 0.5024611848382344,
+                "minimum": 0.375
+              },
+              "cdr3_edit": {
+                "maximum": 0.7368421052631579,
+                "mean": 0.5477333964277579,
+                "minimum": 0.26666666666666666
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.8398718461949128,
+                "mean": 0.7389896871517103,
+                "minimum": 0.5970885179873099
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.9574371734620626,
+                "mean": 0.8951511307386121,
+                "minimum": 0.7485525771625151
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.05510389804840088,
+                "mean": 0.03283435757694349,
+                "minimum": 0.024159491062164307
+              },
+              "contact_euclidean": {
+                "maximum": 0.30830949544906616,
+                "mean": 0.16966843242690863,
+                "minimum": 0.06407228112220764
+              },
+              "full_esm_cosine": {
+                "maximum": 0.010511815547943115,
+                "mean": 0.004817171500680225,
+                "minimum": 0.0032953619956970215
+              }
+            },
+            "same_parent": {
+              "cdr1_edit": {
+                "maximum": 0.875,
+                "mean": 0.2333788706739526,
+                "minimum": 0.0
+              },
+              "cdr2_edit": {
+                "maximum": 0.0,
+                "mean": 0.0,
+                "minimum": 0.0
+              },
+              "cdr3_edit": {
+                "maximum": 0.8421052631578947,
+                "mean": 0.573978827640072,
+                "minimum": 0.11764705882352941
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.7532931442542757,
+                "mean": 0.48799865852078533,
+                "minimum": 0.09677419354838701
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.7909394974982273,
+                "mean": 0.5899586578667226,
+                "minimum": 0.14285714285714302
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.03810882568359375,
+                "mean": 0.013999518475245908,
+                "minimum": 0.0022237300872802734
+              },
+              "contact_euclidean": {
+                "maximum": 0.7247308492660522,
+                "mean": 0.20970911390143013,
+                "minimum": 0.0772118791937828
+              },
+              "full_esm_cosine": {
+                "maximum": 0.008341073989868164,
+                "mean": 0.002119882510659473,
+                "minimum": 0.00048100948333740234
+              }
+            }
+          },
+          "global_cross_parent_thresholds": {
+            "cdr1_edit": 0.6686256239600665,
+            "cdr2_edit": 0.75,
+            "cdr3_edit": 0.6438049647789481,
+            "cdr_2mer_cosine": 0.8153101097671424,
+            "cdr_3mer_cosine": 0.954390071850961,
+            "cdr_esm_cosine": 0.0413970915894759,
+            "contact_euclidean": 0.26414262278592004,
+            "full_esm_cosine": 0.0066235010440532874
+          },
+          "parent_count": 20,
+          "quantile": 0.95,
+          "quantile_method": "equal-parent-mass midpoint-CDF linear interpolation",
+          "row_count": 183,
+          "same_parent_thresholds": {
+            "cdr1_edit": 0.7366543476029153,
+            "cdr2_edit": 0.0,
+            "cdr3_edit": 0.7450103311023222,
+            "cdr_2mer_cosine": 0.6791997121184046,
+            "cdr_3mer_cosine": 0.7601815947431779,
+            "cdr_esm_cosine": 0.024945129047740582,
+            "contact_euclidean": 0.3683101047169079,
+            "full_esm_cosine": 0.003457381248474118
+          }
+        },
+        "validation_in_domain_fraction": 0.5348837209302325,
+        "validation_rows": 43
+      },
+      {
+        "calibration_rows": 178,
+        "fold": 1,
+        "thresholds": {
+          "channel_nearest_summaries": {
+            "cross_parent": {
+              "cdr1_edit": {
+                "maximum": 0.75,
+                "mean": 0.425561797752809,
+                "minimum": 0.125
+              },
+              "cdr2_edit": {
+                "maximum": 0.75,
+                "mean": 0.5088171036204747,
+                "minimum": 0.375
+              },
+              "cdr3_edit": {
+                "maximum": 0.7368421052631579,
+                "mean": 0.5453866988472774,
+                "minimum": 0.26666666666666666
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.8430587948564139,
+                "mean": 0.7401181949191367,
+                "minimum": 0.5970885179873099
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.9583333333333334,
+                "mean": 0.892669488937316,
+                "minimum": 0.7550510257216821
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.05510389804840088,
+                "mean": 0.03247971347208773,
+                "minimum": 0.024159491062164307
+              },
+              "contact_euclidean": {
+                "maximum": 0.2976687550544739,
+                "mean": 0.17259319164277462,
+                "minimum": 0.06407228112220764
+              },
+              "full_esm_cosine": {
+                "maximum": 0.009453296661376953,
+                "mean": 0.004809321982137273,
+                "minimum": 0.003252744674682617
+              }
+            },
+            "same_parent": {
+              "cdr1_edit": {
+                "maximum": 0.875,
+                "mean": 0.22565543071161048,
+                "minimum": 0.0
+              },
+              "cdr2_edit": {
+                "maximum": 0.0,
+                "mean": 0.0,
+                "minimum": 0.0
+              },
+              "cdr3_edit": {
+                "maximum": 0.8666666666666667,
+                "mean": 0.5585377967724382,
+                "minimum": 0.0
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.7532931442542757,
+                "mean": 0.4816600046881117,
+                "minimum": 0.06896551724137923
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.7931034482758621,
+                "mean": 0.583819310163558,
+                "minimum": 0.12499999999999989
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.04861128330230713,
+                "mean": 0.013937048362881949,
+                "minimum": 0.0022515058517456055
+              },
+              "contact_euclidean": {
+                "maximum": 0.7247308492660522,
+                "mean": 0.21716898621133204,
+                "minimum": 0.045265063643455505
+              },
+              "full_esm_cosine": {
+                "maximum": 0.009400248527526855,
+                "mean": 0.002106281143895696,
+                "minimum": 0.00018769502639770508
+              }
+            }
+          },
+          "global_cross_parent_thresholds": {
+            "cdr1_edit": 0.657498447526392,
+            "cdr2_edit": 0.75,
+            "cdr3_edit": 0.6524039833361868,
+            "cdr_2mer_cosine": 0.8131955716218054,
+            "cdr_3mer_cosine": 0.9553219381134931,
+            "cdr_esm_cosine": 0.0406419330952214,
+            "contact_euclidean": 0.26962538560231547,
+            "full_esm_cosine": 0.006889442314848229
+          },
+          "parent_count": 20,
+          "quantile": 0.95,
+          "quantile_method": "equal-parent-mass midpoint-CDF linear interpolation",
+          "row_count": 178,
+          "same_parent_thresholds": {
+            "cdr1_edit": 0.7480081362195,
+            "cdr2_edit": 0.0,
+            "cdr3_edit": 0.7734472934472935,
+            "cdr_2mer_cosine": 0.6916104138678016,
+            "cdr_3mer_cosine": 0.7627734111790307,
+            "cdr_esm_cosine": 0.027907967567443827,
+            "contact_euclidean": 0.4509961640133584,
+            "full_esm_cosine": 0.0036915576016461403
+          }
+        },
+        "validation_in_domain_fraction": 0.625,
+        "validation_rows": 48
+      },
+      {
+        "calibration_rows": 180,
+        "fold": 2,
+        "thresholds": {
+          "channel_nearest_summaries": {
+            "cross_parent": {
+              "cdr1_edit": {
+                "maximum": 0.625,
+                "mean": 0.4305555555555556,
+                "minimum": 0.125
+              },
+              "cdr2_edit": {
+                "maximum": 0.75,
+                "mean": 0.5054563492063496,
+                "minimum": 0.375
+              },
+              "cdr3_edit": {
+                "maximum": 0.7,
+                "mean": 0.5540703271043828,
+                "minimum": 0.2857142857142857
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.862801131885993,
+                "mean": 0.7455446832741338,
+                "minimum": 0.6097537286633576
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.9574371734620626,
+                "mean": 0.8994556941483034,
+                "minimum": 0.8139031579203058
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.05281424522399902,
+                "mean": 0.033319929242134096,
+                "minimum": 0.025132834911346436
+              },
+              "contact_euclidean": {
+                "maximum": 0.28666073083877563,
+                "mean": 0.16971582377122507,
+                "minimum": 0.06407228112220764
+              },
+              "full_esm_cosine": {
+                "maximum": 0.010511815547943115,
+                "mean": 0.004831796553399828,
+                "minimum": 0.0030020475387573242
+              }
+            },
+            "same_parent": {
+              "cdr1_edit": {
+                "maximum": 0.75,
+                "mean": 0.21689814814814815,
+                "minimum": 0.0
+              },
+              "cdr2_edit": {
+                "maximum": 0.0,
+                "mean": 0.0,
+                "minimum": 0.0
+              },
+              "cdr3_edit": {
+                "maximum": 0.8823529411764706,
+                "mean": 0.5591758775137257,
+                "minimum": 0.0
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.72,
+                "mean": 0.47615064487060416,
+                "minimum": 0.06896551724137923
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.7909394974982273,
+                "mean": 0.5770560972259353,
+                "minimum": 0.12499999999999989
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.029213249683380127,
+                "mean": 0.013511014646954006,
+                "minimum": 0.0022237300872802734
+              },
+              "contact_euclidean": {
+                "maximum": 0.7247308492660522,
+                "mean": 0.2087749421596527,
+                "minimum": 0.023645801469683647
+              },
+              "full_esm_cosine": {
+                "maximum": 0.005077958106994629,
+                "mean": 0.0020231892665227252,
+                "minimum": 0.00018769502639770508
+              }
+            }
+          },
+          "global_cross_parent_thresholds": {
+            "cdr1_edit": 0.625,
+            "cdr2_edit": 0.75,
+            "cdr3_edit": 0.6453386549424965,
+            "cdr_2mer_cosine": 0.8204409767816538,
+            "cdr_3mer_cosine": 0.955389742575657,
+            "cdr_esm_cosine": 0.040199241854927764,
+            "contact_euclidean": 0.26130836249208766,
+            "full_esm_cosine": 0.006547887132774963
+          },
+          "parent_count": 20,
+          "quantile": 0.95,
+          "quantile_method": "equal-parent-mass midpoint-CDF linear interpolation",
+          "row_count": 180,
+          "same_parent_thresholds": {
+            "cdr1_edit": 0.6595313204146015,
+            "cdr2_edit": 0.0,
+            "cdr3_edit": 0.7441122838695879,
+            "cdr_2mer_cosine": 0.6623935617332554,
+            "cdr_3mer_cosine": 0.7497285607923335,
+            "cdr_esm_cosine": 0.023704815651319038,
+            "contact_euclidean": 0.4175901542462048,
+            "full_esm_cosine": 0.0031877367928832
+          }
+        },
+        "validation_in_domain_fraction": 0.5652173913043478,
+        "validation_rows": 46
+      },
+      {
+        "calibration_rows": 183,
+        "fold": 3,
+        "thresholds": {
+          "channel_nearest_summaries": {
+            "cross_parent": {
+              "cdr1_edit": {
+                "maximum": 0.75,
+                "mean": 0.43101092896174864,
+                "minimum": 0.125
+              },
+              "cdr2_edit": {
+                "maximum": 0.75,
+                "mean": 0.5077955590250677,
+                "minimum": 0.375
+              },
+              "cdr3_edit": {
+                "maximum": 0.7368421052631579,
+                "mean": 0.5471040755718218,
+                "minimum": 0.26666666666666666
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.8642311533395739,
+                "mean": 0.7494343126217817,
+                "minimum": 0.6065044985296282
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.9573985677157695,
+                "mean": 0.8930047598468125,
+                "minimum": 0.7485525771625151
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.05668461322784424,
+                "mean": 0.03309719647214712,
+                "minimum": 0.024915874004364014
+              },
+              "contact_euclidean": {
+                "maximum": 0.32452720403671265,
+                "mean": 0.16842285295327505,
+                "minimum": 0.08657839149236679
+              },
+              "full_esm_cosine": {
+                "maximum": 0.01058340072631836,
+                "mean": 0.0047963769709477655,
+                "minimum": 0.0030020475387573242
+              }
+            },
+            "same_parent": {
+              "cdr1_edit": {
+                "maximum": 0.875,
+                "mean": 0.21880692167577412,
+                "minimum": 0.0
+              },
+              "cdr2_edit": {
+                "maximum": 0.0,
+                "mean": 0.0,
+                "minimum": 0.0
+              },
+              "cdr3_edit": {
+                "maximum": 0.8421052631578947,
+                "mean": 0.5640226418489878,
+                "minimum": 0.0
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.7663716407569757,
+                "mean": 0.4764266948693599,
+                "minimum": 0.06896551724137923
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.7909394974982273,
+                "mean": 0.5724997750670234,
+                "minimum": 0.12499999999999989
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.03810882568359375,
+                "mean": 0.013782636389706305,
+                "minimum": 0.0022237300872802734
+              },
+              "contact_euclidean": {
+                "maximum": 0.581663191318512,
+                "mean": 0.20549035357321546,
+                "minimum": 0.023645801469683647
+              },
+              "full_esm_cosine": {
+                "maximum": 0.008341073989868164,
+                "mean": 0.00207492692874429,
+                "minimum": 0.00018769502639770508
+              }
+            }
+          },
+          "global_cross_parent_thresholds": {
+            "cdr1_edit": 0.6413296141329611,
+            "cdr2_edit": 0.75,
+            "cdr3_edit": 0.6443045084357651,
+            "cdr_2mer_cosine": 0.8260694542944511,
+            "cdr_3mer_cosine": 0.953421700496065,
+            "cdr_esm_cosine": 0.04136301279067992,
+            "contact_euclidean": 0.2546144484889273,
+            "full_esm_cosine": 0.006632882356643673
+          },
+          "parent_count": 20,
+          "quantile": 0.95,
+          "quantile_method": "equal-parent-mass midpoint-CDF linear interpolation",
+          "row_count": 183,
+          "same_parent_thresholds": {
+            "cdr1_edit": 0.709110970996217,
+            "cdr2_edit": 0.0,
+            "cdr3_edit": 0.7713675213675214,
+            "cdr_2mer_cosine": 0.6838316062608274,
+            "cdr_3mer_cosine": 0.7589446185997909,
+            "cdr_esm_cosine": 0.024121799188501703,
+            "contact_euclidean": 0.42038433984009144,
+            "full_esm_cosine": 0.0034716485504411184
+          }
+        },
+        "validation_in_domain_fraction": 0.5348837209302325,
+        "validation_rows": 43
+      },
+      {
+        "calibration_rows": 180,
+        "fold": 4,
+        "thresholds": {
+          "channel_nearest_summaries": {
+            "cross_parent": {
+              "cdr1_edit": {
+                "maximum": 0.75,
+                "mean": 0.4354166666666667,
+                "minimum": 0.125
+              },
+              "cdr2_edit": {
+                "maximum": 0.75,
+                "mean": 0.5007054673721344,
+                "minimum": 0.375
+              },
+              "cdr3_edit": {
+                "maximum": 0.7368421052631579,
+                "mean": 0.5412038341727455,
+                "minimum": 0.26666666666666666
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.838835407194924,
+                "mean": 0.7400841817467709,
+                "minimum": 0.5970885179873099
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.9574371734620626,
+                "mean": 0.8924896776700534,
+                "minimum": 0.7485525771625151
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.05510389804840088,
+                "mean": 0.032911450664202375,
+                "minimum": 0.024159491062164307
+              },
+              "contact_euclidean": {
+                "maximum": 0.28666073083877563,
+                "mean": 0.1719675196127759,
+                "minimum": 0.07686952501535416
+              },
+              "full_esm_cosine": {
+                "maximum": 0.010511815547943115,
+                "mean": 0.0048539121945699055,
+                "minimum": 0.0030020475387573242
+              }
+            },
+            "same_parent": {
+              "cdr1_edit": {
+                "maximum": 0.875,
+                "mean": 0.21712962962962962,
+                "minimum": 0.0
+              },
+              "cdr2_edit": {
+                "maximum": 0.0,
+                "mean": 0.0,
+                "minimum": 0.0
+              },
+              "cdr3_edit": {
+                "maximum": 0.8421052631578947,
+                "mean": 0.5691425038096866,
+                "minimum": 0.0
+              },
+              "cdr_2mer_cosine": {
+                "maximum": 0.7532931442542757,
+                "mean": 0.4782023196443936,
+                "minimum": 0.06896551724137923
+              },
+              "cdr_3mer_cosine": {
+                "maximum": 0.7909394974982273,
+                "mean": 0.5780191741347058,
+                "minimum": 0.12499999999999989
+              },
+              "cdr_esm_cosine": {
+                "maximum": 0.03810882568359375,
+                "mean": 0.013579678535461426,
+                "minimum": 0.0022515058517456055
+              },
+              "contact_euclidean": {
+                "maximum": 0.9992913007736206,
+                "mean": 0.2156735346549087,
+                "minimum": 0.023645801469683647
+              },
+              "full_esm_cosine": {
+                "maximum": 0.008341073989868164,
+                "mean": 0.002059380213419596,
+                "minimum": 0.00018769502639770508
+              }
+            }
+          },
+          "global_cross_parent_thresholds": {
+            "cdr1_edit": 0.6731832222402861,
+            "cdr2_edit": 0.75,
+            "cdr3_edit": 0.6409917995283848,
+            "cdr_2mer_cosine": 0.8204314965184243,
+            "cdr_3mer_cosine": 0.9547512142530596,
+            "cdr_esm_cosine": 0.04096335172653199,
+            "contact_euclidean": 0.2643697536610937,
+            "full_esm_cosine": 0.006511172690948849
+          },
+          "parent_count": 20,
+          "quantile": 0.95,
+          "quantile_method": "equal-parent-mass midpoint-CDF linear interpolation",
+          "row_count": 180,
+          "same_parent_thresholds": {
+            "cdr1_edit": 0.7039122787108485,
+            "cdr2_edit": 0.0,
+            "cdr3_edit": 0.7493551955004881,
+            "cdr_2mer_cosine": 0.6837857679636833,
+            "cdr_3mer_cosine": 0.7691891126189672,
+            "cdr_esm_cosine": 0.0249152561713909,
+            "contact_euclidean": 0.4726514423650408,
+            "full_esm_cosine": 0.0034500389388113285
+          }
+        },
+        "validation_in_domain_fraction": 0.6739130434782609,
+        "validation_rows": 46
+      }
+    ],
+    "in_domain_fraction": 0.588495575221239,
+    "parent_fractions": {
+      "C0009": 0.5384615384615384,
+      "C0116": 0.15384615384615385,
+      "C0139": 0.7142857142857143,
+      "C0219": 0.75,
+      "C0224": 0.23076923076923078,
+      "C0248": 0.9166666666666666,
+      "C0251": 0.8333333333333334,
+      "C0258": 0.8461538461538461,
+      "C0304": 0.5384615384615384,
+      "C0406": 0.38461538461538464,
+      "C0411": 0.6666666666666666,
+      "C0418": 0.46153846153846156,
+      "C0453": 0.6153846153846154,
+      "C0492": 0.5833333333333334,
+      "C0495": 0.5833333333333334,
+      "C0500": 0.3333333333333333,
+      "C0502": 0.38461538461538464,
+      "C0509": 0.8333333333333334,
+      "C0518": 0.75,
+      "C0533": 1.0
+    },
+    "policy": "For each fold, thresholds use only the other rows within each parent; the validation rows are never used to set their fold thresholds.",
+    "row_count": 226,
+    "seed": 20260716
+  },
+  "null_artifacts": {
+    "adapter": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_panel/null_sequences_adapter.csv",
+      "sha256": "9a7a2bec42687ca6a8747d809be1c82458766eebec7cae444bce8296d5c4f24e",
+      "size_bytes": 1005001
+    },
+    "cache_receipt": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_esm2_cache/support_v3_null_cache.receipt.json",
+      "sha256": "74a4ef10ca72cd1bc276547ef67da7ede1b0f527300c55a890070a5f06f8a289",
+      "size_bytes": 3712
+    },
+    "channel_splice_manifest": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_panel/channel_splice_manifest.json",
+      "sha256": "e2ee077f0ed3fbc2a4696e7aea010b7d32ba24ee82f34e6f3aba4d87838d6696",
+      "size_bytes": 875940
+    },
+    "contact_closure_receipt": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_contact_features/support_v3_null_contact_closure.receipt.json",
+      "sha256": "f60cfaef60dd055fb6a6ff4bc07886f95aec0039e02b799b0bf13693f8774758",
+      "size_bytes": 2891
+    },
+    "contact_receipt": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_contact_features/support_v3_null_contact.receipt.json",
+      "sha256": "e752bded10310dd61ed7b6f4bdb9e869bdcc332978da726e3e274021634a06b7",
+      "size_bytes": 5551
+    },
+    "contact_verification": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_contact_features/support_v3_null_contact.verification.json",
+      "sha256": "89b2ce3531c4b42806a89972fa6977ccdd4cfe22b6b92669081b490a5bfb40db",
+      "size_bytes": 965
+    },
+    "masks": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_panel/null_sequences_masks.csv",
+      "sha256": "dd75128f3bfe53424a75ec87bb0540ac6931971980fdd5838abe4e3cd5c4f929",
+      "size_bytes": 1897956
+    },
+    "null_panel_sha256": "7902110874f2475a04c5eed22561ff567469bcaccb8c35570cb9716b43d5e939",
+    "provenance": {
+      "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/null_panel/null_sequences_provenance.json",
+      "sha256": "d900d3fcbe5a00fcb12b37d574f2090bd13aa6d34ec9233c3d2417cba9d5681f",
+      "size_bytes": 1332704
+    }
+  },
+  "null_controls": {
+    "cdr_composition_shuffle": {
+      "kind": "cdr_composition_shuffle",
+      "label_counts": {
+        "OUT_OF_DOMAIN": 1000
+      },
+      "maximum": 0.05,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "channel_splice": {
+      "kind": "channel_splice",
+      "label_counts": {
+        "NEAR_DOMAIN": 10,
+        "OUT_OF_DOMAIN": 990
+      },
+      "maximum": 0.05,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "cross_parent_cdr_graft": {
+      "kind": "cross_parent_cdr_graft",
+      "label_counts": {
+        "NEAR_DOMAIN": 137,
+        "OUT_OF_DOMAIN": 863
+      },
+      "maximum": 0.1,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "unseen_parent_chimera": {
+      "kind": "unseen_parent_chimera",
+      "label_counts": {
+        "NEAR_DOMAIN": 10,
+        "OUT_OF_DOMAIN": 990
+      },
+      "maximum": 0.1,
+      "observed_fraction": 0.01,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "NEAR_DOMAIN"
+    }
+  },
+  "publication_attempted": false,
+  "runtime": {
+    "filesystem": "ext2/ext3",
+    "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34",
+    "python": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/.venv-phase2-5080/bin/python"
+  },
+  "schema_version": "phase2_v4_d_sequence_support_v3_runtime_audit_v1",
+  "selected_contact_features": [
+    "paratope_mean",
+    "paratope_cdr_mean",
+    "paratope_cdr3_mean",
+    "paratope_cdr3_max",
+    "paratope_cdr_mass_fraction",
+    "contact_global_mean",
+    "contact_hotspot_weighted_mean",
+    "contact_hotspot_fraction",
+    "contact_cdr_hotspot_weighted_mean",
+    "contact_cdr3_hotspot_weighted_mean",
+    "contact_noninterface_mean",
+    "contact_interface_specificity"
+  ],
+  "status": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY"
+}

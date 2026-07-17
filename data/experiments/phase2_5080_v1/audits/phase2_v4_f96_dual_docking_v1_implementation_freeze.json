@@ -1,0 +1,53 @@
+{
+  "bound_formal_hashes": {
+    "formal_evaluator": "e5594681e122e38834441f6e6aa53602a673a62615abc55a0cec20bb3650ef17",
+    "formal_freeze": "2f43e8cea0bfbafb7a122a2d78c5850cb4f602598405d783b0432e8d3bbb6cf5",
+    "formal_freeze_receipt": "182570215f94b399e9154cbdd1b3138594dce2a4d5baeb30a2595adbdce27a63",
+    "formal_prereg": "05d5727c7568ac9563c75d7ec7b916f172eefd915a728b829d29c25a12079fc3",
+    "formal_trust": "86066e7508c701d03f3c32e17df38be398455e92643c88f761ca96c109041651",
+    "manifest": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334"
+  },
+  "claim_boundary": "Computational independent-dual-receptor Docking geometry only; not binding, affinity, competition, experimental blocking, Docking Gold, or final submission authority.",
+  "current_expected_hard_pass_count": 0,
+  "frozen_at_utc": "2026-07-16T18:39:42.795622+00:00",
+  "future_nonzero_contract": {
+    "all_hard_pass": true,
+    "fixed_top8": true,
+    "full_qc_exact_gate": true,
+    "minimum_successful_seeds_per_receptor": 2,
+    "no_replacement": true,
+    "prediction_v3_exact_gate": true,
+    "receptors": [
+      "8X6B",
+      "9E6Y"
+    ],
+    "seeds": [
+      917,
+      1931,
+      3253
+    ]
+  },
+  "implementation_hashes": {
+    "build_phase2_v4_f96_dual_docking_package.py": "72738d9e8f1e9df79a1fad764b6b926ae0420cdab12923f8be574dd707048bb8",
+    "deliver_phase2_v4_f96_prediction_v3_gate.py": "52e7ab3c59df330b18176d50652d3747804903b3d931d5b20eeeeaa4ce935c36",
+    "phase2_v4_f96_dual_docking_v1_preregistration.json": "8f65f2d9401370d0dbaf090144991d119781c765c9ab0c7c67fb754fe96e8fda",
+    "prepare_phase2_v4_f96_docking_inputs_node1.py": "31e8ea771ce8ca83ce30a25cdb1b14fe09f0b6fd262868a28f90bf164eceab90",
+    "pvrig_v4_f96_docking_input_node1_waiter.sh.in": "e665db3ba0c9424ed90496804eeb7faecced7eb1ed0d6f16ea71396a760f6045",
+    "pvrig_v4_f96_dual_docking_node23_waiter.sh.in": "7242ab2e9645588524bc090b1f0e5174d50e70d0ddcf989943daf5be1a9287e0",
+    "stage_run_phase2_v4_f96_dual_docking_node23.py": "344e3152d0fb29d5329cd2b0ea234e56400cd60ec46a116bd292ef29e9222192",
+    "test_build_phase2_v4_f96_dual_docking_package.py": "55486bfb22515da0ea76b0c45c2fd19c901e5b15f29998c22478af7bb099e226"
+  },
+  "schema_version": "phase2_v4_f96_dual_docking_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_ANY_V4_F96_DOCKING_LABEL_GENERATION",
+  "zero_eligible_contract": {
+    "canonical_receipt_path": "/data1/qlyu/projects/pvrig_v4_f_holdout96_zero_eligible_terminal_v2_1_20260717/CANONICAL_ELIGIBILITY_RECEIPT.json",
+    "canonical_receipt_sha256": "c0ee3aae278836b91f77a3e33aa78823dd0dc6551b5f93e5458763f38c191aa7",
+    "docking_jobs": 0,
+    "formal_evaluator_run": false,
+    "label_receipt": false,
+    "replacement": false,
+    "status": "NO_ELIGIBLE_DOCKING",
+    "threshold_change": false,
+    "trimming": false
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "candidates_sha256": "5e536f7178cb214102aef684c65fc97b4996d3b83de5b6f506ad2f9bf8e66c78",
+  "completed_pose_backed_jobs": 1049,
+  "evidence_mode": "production_pose_backed",
+  "gates": {
+    "all_jobs_terminal": {
+      "counts": {
+        "FAILED_MAX_ATTEMPTS": 1,
+        "SUCCESS": 1049
+      },
+      "reasons": [],
+      "status": "PASS"
+    },
+    "all_successful_jobs_have_minimum_pose_models": {
+      "deficient_jobs": 0,
+      "minimum_pose_models": 4,
+      "reasons": [],
+      "status": "PASS",
+      "successful_jobs": 1049
+    },
+    "candidate_threshold_sensitivity": {
+      "absolute_rate_deltas": {
+        "0.9": 0.165073,
+        "1.1": 0.199827
+      },
+      "baseline_rate": 0.407617,
+      "cohort": "candidate",
+      "maximum_absolute_delta": 0.2,
+      "reasons": [],
+      "status": "PASS"
+    },
+    "complete_2x2_scoring": {
+      "reasons": [],
+      "status": "PASS",
+      "successful_jobs": 1049
+    },
+    "control_model_robustness": {
+      "minimum_pose_models": 4,
+      "reasons": [],
+      "required_fraction": 0.7,
+      "robust_control_job_fraction": 0.989362,
+      "robust_control_jobs": 279,
+      "status": "PASS",
+      "successful_control_jobs": 282
+    },
+    "control_native_cross_support_agreement": {
+      "disagreement_fraction": 0.010638,
+      "disagreement_jobs": 3,
+      "maximum_fraction": 0.3,
+      "reasons": [],
+      "status": "PASS",
+      "successful_control_jobs": 282
+    },
+    "control_seed_class_reproducibility": {
+      "consensus_entity_conformations": 94,
+      "consensus_fraction": 1.0,
+      "expected_control_entity_conformations": 94,
+      "reasons": [],
+      "required_fraction": 0.7,
+      "status": "PASS"
+    },
+    "controls_47_same_protocol": {
+      "control_entities": 47,
+      "reasons": [],
+      "status": "PASS"
+    },
+    "destructive_control_strict_a_retention": {
+      "destructive_entities": 14,
+      "maximum_fraction": 0.5,
+      "reasons": [],
+      "robust_strict_a_entities": 4,
+      "robust_strict_a_fraction": 0.285714,
+      "status": "PASS"
+    },
+    "manifest_bound_pose_evidence": {
+      "manifest_jobs": 1050,
+      "reasons": [],
+      "result_jobs": 1050,
+      "status": "PASS"
+    },
+    "minimum_completed_seeds_per_entity_conformation": {
+      "checked_entity_conformations": 350,
+      "reasons": [],
+      "status": "PASS"
+    },
+    "positive_control_robust_support": {
+      "positive_entities": 18,
+      "reasons": [],
+      "required_fraction": 0.5,
+      "robust_supported_entities": 18,
+      "robust_supported_fraction": 1.0,
+      "status": "PASS"
+    },
+    "protocol_validation": {
+      "reasons": [],
+      "status": "PASS"
+    },
+    "row_artifacts_present": {
+      "job_count": 1050,
+      "reasons": [],
+      "result_count": 1050,
+      "status": "PASS"
+    }
+  },
+  "job_count": 1050,
+  "job_manifest_sha256": "e159027b23e76b041a02f3034a204379053f9d0780e2f8bdfc599d431c1a425e",
+  "job_results_sha256": "e4aedbd2fdc1d95f485fc1cd7827d8db49a3580263e6a64467fae597cf2161ab",
+  "job_set_hash": "2e7424de5f0b47975c0ce40f00451992335be22522c32f30bed434bae9d0f55d",
+  "numeric_comparison": {
+    "boundary_policy": "inclusive_greater_than_or_equal",
+    "correction_reason": "avoid binary-float inflation such as 100.0 * 1.1 becoming 110.00000000000001",
+    "scaled_threshold_arithmetic": "decimal_string_product",
+    "supersedes": "pvrig_v3_evaluator_stability_v2"
+  },
+  "pose_score_count": 19250,
+  "pose_scores_sha256": "cff8fd4914dead65db80dadf500448df64b11304c295ac0c9dbe46adafa12a25",
+  "protocol_core_lock_file_sha256": "e56c9b9f409d5e773058caea157852bf0042e8adc104ddce99e7deae4e8cb5d2",
+  "protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+  "protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
+  "protocol_lock_file_sha256": "6c3598eefd109481a236fd38859d0aa4f47a6b5ba2df1db21fab54c8187530d1",
+  "protocol_lock_sha256": "4a6abac9612f69e3fd2f6df58ac192b6b8b852209c1afaf9e9f5dec33efb414e",
+  "reports": {
+    "control_drift": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/control_drift.tsv",
+    "job_results": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/job_results.tsv",
+    "pose_scores": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/pose_scores.tsv",
+    "protocol_validation": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/PROTOCOL_VALIDATION.json",
+    "threshold_sensitivity": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/reports/threshold_sensitivity.tsv"
+  },
+  "result_count": 1050,
+  "stability_gate_id": "pvrig_v3_evaluator_stability_v3_decimal_thresholds",
+  "stability_gate_spec": "/data/qlyu/projects/pvrig_v3_dual_conformation_redocking_20260714/config/evaluator_stability_gate.json",
+  "stability_gate_spec_sha256": "bf3aa60c872084be7ed9dccc1f5447b49cd9ea846d950afc74fdbfdffbdad86f",
+  "status": "PASS",
+  "successful_control_entities": 47,
+  "unlockable": true
+}

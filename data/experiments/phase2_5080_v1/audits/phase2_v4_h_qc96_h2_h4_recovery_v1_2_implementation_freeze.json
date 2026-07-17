@@ -1,0 +1,104 @@
+{
+  "actual_frozen_seed_binding": {
+    "read_from_config_and_hard_bound": true,
+    "source_config_sha256": "4ae7e1a4536dd09e842dd0cc8a678b4f080d04b63b42151fbeb4c5e7feb971c6",
+    "value": "phase2_v4_h_h4_fullqc_hash_selection_v1_20260717"
+  },
+  "allowed_change": "V1.2 exact-original-source provenance sidecar projection only",
+  "claim_boundary": "Sequence/developability QC-qualified prospective candidate panel only; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "formal_manifest_contract": {
+    "claim_boundary": "H4 QC-qualified prospective holdout claim",
+    "exact_column_count": 22,
+    "missing_core_key_fail_closed": true,
+    "schema_expansion_forbidden": true
+  },
+  "frozen_at_utc": "2026-07-16T23:45:52.904001+00:00",
+  "frozen_selection": {
+    "no_replacement": true,
+    "parents": 4,
+    "per_stratum": 4,
+    "rows": 96,
+    "seed": "phase2_v4_h_h4_fullqc_hash_selection_v1_20260717",
+    "strata": 24
+  },
+  "implementation_hashes": {
+    "preregistration": "7f9bdb159e2f4ea7ae3b319b920fecff1392bebfcb92a2a0be0cc48b8782d4dc",
+    "real1440_full_run_replay": "403d816a885e015fa108353c8e95254c6b4a9bd2125b77495370ca272da87d3e",
+    "recovery_script": "17db32bcc129668fac924e3253fa9ad76079b14a648eb502e0e5bd5b61264f81",
+    "superseded_v1_1_failure_log": "5b9d80969805d6992bed6d66261d4141638499fb2ed47752c6950731bea4c43a",
+    "superseded_v1_1_failure_receipt": "0f5388ca7ad89b71fc359a5dd1e3ef7ba3d4edb14abeb4e73135af9f02be335d",
+    "superseded_v1_1_partial_audit": "fd50248b5d80b85a57229397a6aa998d97552b712015ca215658b1dd168a983a",
+    "superseded_v1_1_preflight_log": "dd8ebc618a904066a550c7b7da784cb26057757c92da3605344195cc4a294051",
+    "test_log": "69f8809e1d79ca6b11cc444322a56be71df4d511787d74fa63dc66c492d237d0",
+    "tests": "efa073d2a4b933cf63085dc5c8775e6d4da5f5b20b6596885549e91ea045dbbe"
+  },
+  "label_path_access": {
+    "affinity": 0,
+    "binding": 0,
+    "blocking": 0,
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0
+  },
+  "launcher_binding": "launcher created after freeze; package receipt binds launcher plus freeze; default preflight-only, explicit --execute required",
+  "no_candidate_or_sequence_change": true,
+  "no_gate_change": true,
+  "no_qc_rerun": true,
+  "no_selection_algorithm_change": true,
+  "provenance_sidecar_contract": {
+    "claim_boundary": "original H1 design claim",
+    "exact_original_h1_column_count": 33,
+    "selection_metadata_added": false,
+    "source_rows_only": true
+  },
+  "real1440_full_run_gate": {
+    "all_source_fields_exact_replay": true,
+    "five_required_outputs_present": true,
+    "formal_h4_qc_claim_boundary_preserved": true,
+    "formal_header_exact_22": true,
+    "method": "Recovery.run() end to end on exact local mirror of all hash-bound source artifacts and marker sets",
+    "selected_ids_ordered_sha256": "91e86a1ab0aba2dc37dfd2e3b4f30479fa4653690f9b005dd28c94a79f9aadf4",
+    "selected_rows": 96,
+    "selection_metadata_added_to_sidecar": false,
+    "source_claim_boundary_preserved": true,
+    "source_sidecar_header_exact_33": true,
+    "status": "PASS_REAL1440_V1_2_END_TO_END_RUN_PUBLICATION_REPLAY"
+  },
+  "recovery_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_2_20260717",
+  "remote_executed": false,
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_2_implementation_freeze",
+  "source_bindings": {
+    "fast_complete_marker_set_sha256": "ea39c5129e9615dd4f9144bc8d0a1a193e596c7b924be93e5880a55d3486c4da",
+    "fast_merged_sha256": "1e9ddb2f2f2809a2bc4d1e054c3a00e97ba669f40c8b28377bfdf1d80ac2a37b",
+    "full_complete_marker_set_sha256": "3189da34ed5cad0d0a7fec75900b3aac881179db7251c7eed42edfa4a6db9b0a",
+    "full_merged_sha256": "40d5fe960654cc0282bcaba866d745e4b7be6dee9dda85dc9d496f8e4ee5cf34",
+    "h1_candidates_fasta_sha256": "5d5bf7033b8040c817810abec10df212635c76d77a3cdcce3eb413d2f428bc30",
+    "h1_candidates_tsv_sha256": "aa111562b9204aadc9b0bda4f92bc39310e07c8f9eb0d8656dcd9db0f09d4ad7",
+    "h1_receipt_sha256": "5863d6cdae14b08132cec8a3c7fec13c2b4a1096a48e8f86698470dc47dfe341",
+    "preserved_source_qc_failure_sha256": "78073a919fc0a5a15c22f4299350efc0bb8581d7212924609433c350173f5dc6",
+    "source_implementation_freeze_sha256": "dab2f0dedc845fe3e415bf77bc7ca3281ed14bcaee1caf0bcacd60ca5fcd9209",
+    "source_qc_runner_sha256": "f77af186ee548e68712b0e17efb634478add89582c825cadfe5f5cb0d4c67b89"
+  },
+  "source_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "status": "FROZEN_AFTER_REAL1440_END_TO_END_RUN_NOT_REMOTE_EXECUTED",
+  "supersession": {
+    "v1_1_formal_publication_valid": false,
+    "v1_1_status": "PROVENANCE_REPLAY_FAILURE_PARTIAL_ROOT_PRESERVED_PUBLICATION_INVALID",
+    "v1_1_terminal_outputs_absent": true,
+    "v1_and_v1_1_modified_or_deleted": false,
+    "v1_status": "PRE_SCIENTIFIC_SEED_MISMATCH_NO_OUTPUT_PRESERVED"
+  },
+  "tests": {
+    "normal": {
+      "count": 17,
+      "status": "OK"
+    },
+    "py_compile": "OK",
+    "pythonoptimize_1": {
+      "count": 17,
+      "status": "OK"
+    }
+  },
+  "timestamp_source": "initial_file_mtime_before_v1_2_remote_execution"
+}

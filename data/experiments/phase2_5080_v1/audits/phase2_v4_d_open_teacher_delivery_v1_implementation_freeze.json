@@ -1,0 +1,34 @@
+{
+  "claim_boundary": "Read-only transport of a computational dual-conformation geometry teacher; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "frozen_at_utc": "2026-07-16T18:16:05.022411+00:00",
+  "paths": {
+    "delivery_script": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/deliver_phase2_v4_d_open_teacher_from_node23.py",
+    "preregistration": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_open_teacher_delivery_v1_preregistration.json",
+    "test_log": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_open_teacher_delivery_v1_tests.log",
+    "tests": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/test_deliver_phase2_v4_d_open_teacher_from_node23.py"
+  },
+  "production_contract": {
+    "archive_publication": "by_sha256/<archive_sha256> with immutable current symlink",
+    "canonical_delivery_root": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_teacher_v1/remote_delivery_v1",
+    "expected_builder_sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+    "remote_host": "node23",
+    "remote_root": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716",
+    "test32_labels_read": false,
+    "v4f_labels_read": false
+  },
+  "schema_version": "phase2_v4_d_open_teacher_delivery_v1_implementation_freeze",
+  "sha256": {
+    "delivery_script": "cbb4b26f3c628ff08376f98756335420dff4b6ccaf715935ac21a35e7bb8ce94",
+    "preregistration": "6ff017afbdc4269601169157dc741691b06c74e77f845a191d643e1127a1c89d",
+    "test_log": "29e1fc2e67ca46a4e0db09ed54901aa20c9158d81e8700ba9ceca842dfc937cf",
+    "tests": "8fb7bb6f505774fa91209867b66839936a5171b9e67e0ca9a5eec249564b6de6"
+  },
+  "status": "PASS_IMPLEMENTATION_FROZEN",
+  "tests": {
+    "command": "python3 -m unittest -v experiments.phase2_5080_v1.src.test_deliver_phase2_v4_d_open_teacher_from_node23",
+    "log_sha256": "29e1fc2e67ca46a4e0db09ed54901aa20c9158d81e8700ba9ceca842dfc937cf",
+    "return_code": 0,
+    "status": "PASS",
+    "test_count": 14
+  }
+}

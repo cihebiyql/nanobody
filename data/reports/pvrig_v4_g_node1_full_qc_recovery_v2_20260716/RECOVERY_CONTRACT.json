@@ -1,0 +1,65 @@
+{
+  "claim_boundary": "Sequence/developability QC only; no docking, binding, affinity, competition, or blocking labels.",
+  "expected_chunk_size": 12,
+  "expected_full_chunks": 2,
+  "expected_shortlist_count": 24,
+  "expected_shortlist_ids": [
+    "RFV1__PLDNANO_VHH_00554__B_LOWER__H1H3__B06__M00",
+    "RFV1__PLDNANO_VHH_00554__A_CENTER__H1H3__B07__M00",
+    "RFV1__PLDNANO_VHH_00554__B_LOWER__H1H3__B03__M02",
+    "RFV1__PLDNANO_VHH_00554__A_CENTER__H1H3__B10__M02",
+    "RFV1__PLDNANO_VHH_00220__B_LOWER__H3__B01__M01",
+    "RFV1__PLDNANO_VHH_00220__C_CROSS__H1H3__B08__M01",
+    "RFV1__PLDNANO_VHH_00220__C_CROSS__H3__B00__M00",
+    "RFV1__PLDNANO_VHH_00220__A_CENTER__H1H3__B02__M01",
+    "RFV1__PLDNANO_VHH_00220__B_LOWER__H1H3__B06__M00",
+    "RFV1__PLDNANO_VHH_00220__B_LOWER__H1H3__B07__M01",
+    "RFV1__PLDNANO_VHH_00220__C_CROSS__H1H3__B04__M00",
+    "RFV1__PLDNANO_VHH_00220__B_LOWER__H3__B04__M01",
+    "RFV1__PLDNANO_VHH_00220__C_CROSS__H3__B04__M00",
+    "RFV1__PLDNANO_VHH_00220__A_CENTER__H3__B08__M02",
+    "RFV1__PLDNANO_VHH_00220__A_CENTER__H3__B08__M01",
+    "RFV1__PLDNANO_VHH_00220__A_CENTER__H1H3__B03__M00",
+    "RFV1__PLDNANO_VHH_00554__A_CENTER__H3__B11__M00",
+    "RFV1__PLDNANO_VHH_00554__A_CENTER__H3__B11__M02",
+    "RFV1__PLDNANO_VHH_00554__B_LOWER__H3__B11__M02",
+    "RFV1__PLDNANO_VHH_00554__C_CROSS__H3__B08__M01",
+    "RFV1__PLDNANO_VHH_00554__B_LOWER__H3__B04__M01",
+    "RFV1__PLDNANO_VHH_00554__C_CROSS__H3__B09__M02",
+    "RFV1__PLDNANO_VHH_00554__C_CROSS__H1H3__B07__M01",
+    "RFV1__PLDNANO_VHH_00554__C_CROSS__H1H3__B09__M01"
+  ],
+  "expected_shortlist_ids_sha256": "2ba3556adcec46a3143d48af1f189ecf83083176cbc87d9d37adc0f4453668f5",
+  "recovery_policy": {
+    "nfs_runtime_dependencies_allowed": false,
+    "panel_or_gate_changes": false,
+    "pass_requirements": [
+      "two valid full chunk complete.json markers",
+      "full_chunk_status.tsv exact closure",
+      "full_merged.tsv exact 24-ID closure",
+      "full_qc_summary.json with bound hashes",
+      "fresh recovery validator PASS"
+    ],
+    "rerun_scope": "only full chunks lacking valid complete.json; at freeze both chunk_000001 and chunk_000002 are missing",
+    "selection_policy": "exact frozen 24 Full-QC shortlist IDs; no replacement; no reselection"
+  },
+  "recovery_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_20260716",
+  "runtime_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_20260716/runtime_closure",
+  "schema_version": "pvrig_v4_g_unseen96_full_qc_recovery_contract_v2",
+  "source_artifacts": {
+    "cascade/cascade_state.json": "a38af895af65c8f6bbfb3e8995196547f56156f81bb16d0ee317548756029f84",
+    "cascade/fast_merged.tsv": "99490c2856c6607ae139bf326fee52b5262ca27370a63b2ca31d2aa622f2e51a",
+    "cascade/full_qc_shortlist.fasta": "c6bdfd761c063ac0f9bae753c9bdff945e170221484bcb91936f17104ef1bc0b",
+    "cascade/full_qc_shortlist.tsv": "ee677d56e72aa8cc479d044447afcd40a7990e6869b1ae15f11a6b2a0d7a4936",
+    "inputs/unseen96.fasta": "867104d4102e279b4985d8d56150684280c0942766ad9aa9dc606e480c8d6c02",
+    "inputs/unseen96_lineage.csv": "9caae6871f746e2bb77977a86b499a44492d0d88d91af15384495cd04b4aa1e3",
+    "status/runner.complete.json": "3c4200f26dd892388b695e4c41ae02e62209b43338134592894f25d8bde2704c"
+  },
+  "source_false_terminal": {
+    "contradiction": "cascade_state.stages.full.status=running; no full chunk complete markers; no full_chunk_status.tsv; no full_merged.tsv; no full_qc_summary.json",
+    "observed_status": "PASS_V4_G_UNSEEN96_FULL_QC_COMPLETE",
+    "policy": "preserve_old_evidence_read_only; this recovery receipt supersedes execution-completion claim only"
+  },
+  "source_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_v1_20260716",
+  "status": "FROZEN_RECOVERY_CONTRACT_READY"
+}

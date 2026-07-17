@@ -1,0 +1,47 @@
+{
+  "artifacts": {
+    "FAIL_CLOSED_DECISION.json": {
+      "bytes": 527,
+      "sha256": "5b9f5786e0d0bbc501cf79440694f5cedcce658a4c2ac16e8aecc2f042555970"
+    },
+    "production.log": {
+      "bytes": 1635,
+      "sha256": "1a4a08b9f5364386b19dbc8aeb5a4c6972a723e8afb3b54a935cebed9ac210a1"
+    },
+    "production.rc": {
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    "resource_monitor.tsv": {
+      "bytes": 229,
+      "sha256": "11001419f88c628d4d7ecc22fa1a841918094a3764c5466f2a83ee5e7f7038d7"
+    },
+    "support_v3_runtime_audit.json": {
+      "bytes": 35239,
+      "sha256": "6328468b5e8c14f99d8099095e8183d1270f38adc4d2fd6f67a6a3d953e9d521"
+    },
+    "terminal.json": {
+      "bytes": 140,
+      "sha256": "4e8a0338630eeecfb97d0e5aab09d1027e0171cf4ce3e3c93dab5e2f90997143"
+    }
+  },
+  "claim_boundary": "Label-free sequence-domain support audit only. Failure routes candidates to research ranking/diversity/direct Docking; it is not docking geometry, binding, affinity, competition, or experimental blocking evidence.",
+  "docking_or_experimental_label_paths_opened": 0,
+  "failed_gates": [
+    "deployment_coverage",
+    "nested_validation"
+  ],
+  "observed": {
+    "deployment_denominator": 6861,
+    "deployment_in_domain_count": 1733,
+    "deployment_in_domain_fraction": 0.2525870864305495,
+    "nested_validation_min_parent": 0.15384615384615385,
+    "nested_validation_overall": 0.588495575221239
+  },
+  "production_support_table_published": false,
+  "publication_attempted": false,
+  "return_code": 2,
+  "schema_version": "phase2_v4_d_sequence_support_v3_production_terminal_evidence_v1",
+  "status": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY",
+  "v4_f_label_paths_opened": 0
+}

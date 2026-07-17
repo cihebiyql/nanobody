@@ -1,0 +1,150 @@
+{
+  "access_accounting": {
+    "open_native_overlay_metric_values_read": 14490,
+    "open_non_success_job_files_opened_state_only": 0,
+    "open_raw_job_dirs_addressed": 1548,
+    "open_raw_job_files_missing": 1,
+    "open_raw_job_files_opened": 1547,
+    "open_success_job_files_inspected": 1547,
+    "results_root_listed_or_globbed": false,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_dirs_addressed": 0,
+    "test32_raw_job_files_opened": 0
+  },
+  "bindings": {
+    "diagnostic_evidence": {
+      "relative_path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+      "size": 117386
+    },
+    "diagnostic_script": {
+      "relative_path": "src/diagnose_phase2_v4_d_dev1_open_overlay_rmsd_v2.py",
+      "sha256": "71b067ae5978d3cc40e50c6112b77e677f36740296ac11d544336efb33ef8e3e",
+      "size": 19673
+    },
+    "job_manifest_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "opened_open_job_result_binding_count": 1547,
+    "opened_open_job_result_sha256_chain": "202d06e1ee689167427abdebcb85705e20ee867aacda31bef5211a35d44d9301",
+    "remote_exit_code_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "remote_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "remote_stdout_sha256": "a26065315997c8a74cc28086fa83fdc0f08b225da4f23686fe49b1a1ab9ed775",
+    "split_manifest_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+  },
+  "claim_boundary": "Read-only post-hoc development diagnostic of V4-D OPEN_TRAIN/OPEN_DEVELOPMENT native-reference overlay RMSD only. No threshold change, teacher/model build, V4-D pass, formal test, Docking Gold, binding, affinity, competition, experimental blocking, recovery selection, or final submission authority.",
+  "decision_boundary": {
+    "observation": "Outliers are sparse at pose level but broad at candidate level, strongly enriched in 8X6B and late pose indices, with a bimodal near-threshold versus very-large-RMSD pattern. This diagnostic does not decide whether a preregistered pose-validity mask is scientifically valid.",
+    "pose_exclusion_applied_to_teacher": false,
+    "recovery_selected": false,
+    "required_next_review": "Review overlay construction and rank-weight consequences before preregistering any V1.2 recovery.",
+    "threshold_changed": false
+  },
+  "findings": {
+    "above_1a_by_conformation": {
+      "8x6b": 89,
+      "9e6y": 10
+    },
+    "above_1a_by_conformation_seed": {
+      "8x6b_s1931": 28,
+      "8x6b_s3253": 30,
+      "8x6b_s917": 31,
+      "9e6y_s1931": 4,
+      "9e6y_s3253": 3,
+      "9e6y_s917": 3
+    },
+    "above_1a_by_pose_index": {
+      "1": 9,
+      "10": 48,
+      "2": 4,
+      "3": 2,
+      "4": 2,
+      "5": 2,
+      "6": 5,
+      "7": 3,
+      "8": 7,
+      "9": 17
+    },
+    "above_1a_by_seed": {
+      "1931": 32,
+      "3253": 33,
+      "917": 34
+    },
+    "above_1a_count": 99,
+    "above_1a_fraction": 0.0068322981366459624,
+    "above_1a_max": 162.77925,
+    "above_1a_min": 1.020382,
+    "affected_candidate_count": 83,
+    "affected_job_count": 98,
+    "affected_job_excluded_count_distribution": {
+      "1": 97,
+      "2": 1
+    },
+    "affected_job_native_model_count_before_distribution": {
+      "10": 70,
+      "6": 2,
+      "7": 3,
+      "8": 6,
+      "9": 17
+    },
+    "affected_job_retained_model_count_after_exclusion_distribution": {
+      "5": 2,
+      "6": 3,
+      "7": 6,
+      "8": 18,
+      "9": 69
+    },
+    "affected_open_candidate_fraction": 0.32170542635658916,
+    "affected_success_job_fraction": 0.06334841628959276,
+    "jobs_with_retained_model_count_below_4": 0,
+    "minimum_retained_model_count": 5,
+    "native_metric_count": 14490,
+    "native_metric_count_by_conformation": {
+      "8x6b": 7229,
+      "9e6y": 7261
+    },
+    "rmsd_bands": {
+      "gt_10": 82,
+      "gt_100": 13,
+      "gt_1_le_2": 16,
+      "gt_2_le_5": 0,
+      "gt_5": 83,
+      "gt_50": 33
+    },
+    "v1_1_trigger_row": {
+      "candidate_id": "RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B05__M02",
+      "conformation": "8x6b",
+      "job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B05__M02_8x6b_s3253_dcc3f1ca0ed6",
+      "model": "cluster_1_model_1.pdb.gz",
+      "native_reference_id": "8x6b",
+      "pose": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/runs/CANDIDATE_RFV1__PLDNANO_VHH_00010__A_CENTER__H1H3__B05__M02_8x6b_s3253_dcc3f1ca0ed6/haddock_run/6_seletopclusts/cluster_1_model_1.pdb.gz",
+      "pose_index": 1,
+      "seed": 3253,
+      "t_ca_rmsd_a": 1.934309
+    }
+  },
+  "recorded_at_utc": "2026-07-17T00:57:52.834509+00:00",
+  "remote_execution": {
+    "exit_code": 0,
+    "host": "node23",
+    "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open_overlay_diagnostic_v2_20260717",
+    "results_root_listed_or_globbed": false,
+    "source_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "stderr_size": 0
+  },
+  "schema_version": "phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt_v1",
+  "sealed_boundary": {
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_dirs_addressed": 0,
+    "test32_raw_job_files_opened": 0
+  },
+  "selection": {
+    "full_split_rows_validated": 290,
+    "open_candidates": 258,
+    "open_development_candidates": 32,
+    "open_train_candidates": 226,
+    "sealed_test_candidates": 32,
+    "selected_open_jobs": 1548,
+    "selected_sealed_jobs": 0
+  },
+  "status": "PASS_OPEN_ONLY_READ_ONLY_DIAGNOSTIC_AND_LOCAL_DELIVERY"
+}

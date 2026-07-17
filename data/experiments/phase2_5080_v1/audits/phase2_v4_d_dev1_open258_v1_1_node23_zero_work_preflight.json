@@ -1,0 +1,46 @@
+{
+  "checked_at_utc": "2026-07-17T00:40:44.001068+00:00",
+  "claim_boundary": "V1.1 predeployment zero-work hash closure only; no teacher extraction, binding, affinity, experimental blocking, or Docking Gold.",
+  "formal_v4_f_unlock_eligible": false,
+  "immutable_v1_release_absent": true,
+  "immutable_v1_status": "FAILED_DEV1_BUILD",
+  "new_root_absent": true,
+  "remote_science_work_started": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_1_node23_zero_work_preflight_v1",
+  "source_evaluator_status": "FAIL",
+  "source_hashes": {
+    "evaluator": {
+      "expected": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/reports/EVALUATOR_STABLE.json",
+      "sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674"
+    },
+    "job_results": {
+      "expected": "30c4227e15f6b049a9d9e9241ca34df30d38b247d14081b4ce7d3387fa2f3f25",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/reports/job_results.tsv",
+      "sha256": "30c4227e15f6b049a9d9e9241ca34df30d38b247d14081b4ce7d3387fa2f3f25"
+    },
+    "jobs": {
+      "expected": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/manifests/docking_jobs.tsv",
+      "sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737"
+    },
+    "pose_scores": {
+      "expected": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/reports/pose_scores.tsv",
+      "sha256": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681"
+    },
+    "split": {
+      "expected": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+      "pass": true,
+      "path": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715/inputs/fullqc290_split_manifest.tsv",
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    }
+  },
+  "status": "PASS_V1_1_ZERO_WORK_PREFLIGHT",
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

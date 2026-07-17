@@ -1,0 +1,109 @@
+{
+  "bound_census_evidence": {
+    "candidate_count": 7087,
+    "census_audit_sha256": "360a4a1c657839b379af1f340d25471c1c66ffc6de4d096faf0c6dc98e6cd61f",
+    "census_receipt_sha256": "95a805622e9fd19e42e9999e7a421d8f91ac3c594a06a8ab21088ce84fdd3497",
+    "census_tsv_sha256": "33c657fa26b3348d46fb22ebea453398b81d8fd762765668a1ca6c5dd3e16855",
+    "evidence_boundary": "large-scale-fast sequence/developability census only; official validator, AbNatiV, Sapiens, TNP, structure, and docking remain deferred",
+    "fast_hard_fail_count": 2509,
+    "fast_hard_pass_count": 4578,
+    "independent_verification_sha256": "77f7c188998f3b9d68c7ac46d8e9e3c311d523c41575bcb3c5cfe3226a762e65"
+  },
+  "claim_boundary": "V2 implementation preregistration only. No seen200 production selection, docking, binding, affinity, competition, Docking Gold, experimental blocking, or final-submission claim.",
+  "freeze_date": "2026-07-17",
+  "frozen_selection_intent": {
+    "fail_quota_per_parent": {
+      "LABEL_FREE_DIVERSITY_REPLACING_TOP": 4,
+      "LABEL_FREE_HASH_CONTROL": 1,
+      "MODEL_DISAGREEMENT": 2,
+      "UNCERTAINTY": 3
+    },
+    "identity_role_duplicate_calibration_exclusions": "unchanged_from_v1",
+    "pass_quota_per_parent": {
+      "LABEL_FREE_HASH_CONTROL": 1,
+      "MODEL_DISAGREEMENT": 2,
+      "TOP_PREDICTION": 4,
+      "UNCERTAINTY": 3
+    },
+    "rows_per_parent": 10,
+    "rows_total": 200,
+    "shortage_policy": "fail_closed_no_partial_publication_no_replacement",
+    "source_parent_clusters": [
+      "C0009",
+      "C0116",
+      "C0139",
+      "C0219",
+      "C0224",
+      "C0248",
+      "C0251",
+      "C0258",
+      "C0304",
+      "C0406",
+      "C0411",
+      "C0418",
+      "C0453",
+      "C0492",
+      "C0495",
+      "C0500",
+      "C0502",
+      "C0509",
+      "C0518",
+      "C0533"
+    ],
+    "source_parent_count": 20
+  },
+  "label_access": {
+    "docking_labels_opened": 0,
+    "experimental_labels_opened": 0,
+    "v4d_open_model_results_opened": 0,
+    "v4d_prospective_test_labels_opened": 0,
+    "v4f_labels_opened": 0
+  },
+  "preregistration_payload_sha256": "2212aba7d11cd0ab38a7aec9bdd489ed0adb44d1753b4158a0b3845227c0ce07",
+  "production_outputs_created": 0,
+  "production_selection_executed": false,
+  "required_regressions": [
+    "known hard-fail candidates in C0139 C0500 C0509 C0533 cannot be selected even with dominant model scores",
+    "census TSV receipt audit and independent-verification tamper fail closed",
+    "hash-control identity is invariant under full model score uncertainty and disagreement perturbation",
+    "missing experimental_labels_read fails closed in summary and receipt",
+    "PASS and FAIL 4 3 2 1 quotas and all V1 exclusions remain exact",
+    "no production outputs are created by freeze construction",
+    "all three sealed-label accepted-path counters missing or nonzero fail closed in both deployment summary and receipt"
+  ],
+  "schema_version": "phase2_v4_g_seen200_selector_v2_preregistration_v1",
+  "status": "FROZEN_V2_SUPERSEDING_V1_PREPRODUCTION_BLOCKERS_NO_SELECTION",
+  "supersedes": {
+    "reason_codes": [
+      "V1_NOT_BOUND_TO_NODE1_7087_FAST_QC_CENSUS",
+      "V1_CONTROL_NOT_PRE_RESERVED_BEFORE_MODEL_RANKED_BUCKETS",
+      "V1_EXPERIMENTAL_LABELS_READ_FIELD_MISSING_COULD_DEFAULT_FALSE"
+    ],
+    "v1_bytes_modified": false,
+    "v1_freeze_sha256": "fae4e1e2371dac1bac6cc4ea48a0615c3672b9f7261c48b968a2cafc231cf2dc",
+    "v1_production_selection_executed": false,
+    "v1_receipt_sha256": "fa79b140bb5141b764539de83f14be5049eaf4ffe4fb11bb0465f85f62768ea0",
+    "v1_selector_sha256": "6491cecfba82ba73925e195c5d30c737442f5a74244167e60b4b14dccdbfd818",
+    "v1_tests_sha256": "ab5f55ef18ed43eeb22b4b28c366e4b3c8c73cb7bab891f101719dbdcaa09182",
+    "version": "phase2_v4_g_seen200_selector_implementation_freeze_v1"
+  },
+  "v2_mandatory_gates": {
+    "control_policy": "pre-reserve one ascending seeded SHA256 control per parent before every other bucket and exclude it from every model-ranked/diversity bucket",
+    "fast_hard_fail_policy": "exclude fast_hard_fail=true before any score-ranked bucket or diversity/control acquisition; verify zero selected overlap",
+    "label_paths_forbidden": [
+      "V4_D_PROSPECTIVE_TEST32",
+      "V4_F_DOCKING_LABELS",
+      "DOCKING_GEOMETRY_LABELS",
+      "EXPERIMENTAL_LABELS"
+    ],
+    "node1_fastqc_census_binding": [
+      "census_tsv_exact_hash",
+      "census_receipt_exact_hash",
+      "census_audit_exact_hash",
+      "independent_verification_exact_hash",
+      "receipt_and_audit_output_hash_closure",
+      "candidate_id_sequence_sha256_parent_bijection_to_7087_pool"
+    ],
+    "sealed_label_field_policy": "prospective_test_labels_read, v4f_labels_read, and experimental_labels_read must each be explicitly present and boolean false; prospective_test_label_paths_accepted, v4f_label_paths_accepted, and experimental_label_paths_accepted must each be explicitly present and integer zero in both deployment summary and receipt"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "builder_sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276",
+  "builder_stderr_sha256": "16685cbba083f8673a74bd9292ed952d6b5852915132085b1e63296fb2040e37",
+  "claim_boundary": "Fail-closed development runtime evidence only; no teacher, no formal unlock, no binding, affinity, experimental blocking, or Docking Gold.",
+  "failed_job_id": "CANDIDATE_RFV1__PLDNANO_VHH_00322__A_CENTER__H3__B02__M00_8x6b_s3253_447e4cf0dc26",
+  "failed_job_state": "FAILED_MAX_ATTEMPTS",
+  "failure_reason": "frozen v1 required a raw results/<job_id>/job_result.json for every open job, but the single terminal failed job has no raw published job_result directory",
+  "formal_v4_f_unlock_eligible": false,
+  "launch_freeze_sha256": "6f6f1a586745dbb48305a4b66c3f8ad405bc6d27298ef85746a81866521ca6a6",
+  "launch_receipt_sha256": "12b20614925125f7b71a4c0a3362bfbddbbfc1c16377c3159c7755807ff4b722",
+  "launcher_console_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "launcher_status": {
+    "development_only": true,
+    "formal_v4_f_unlock_eligible": false,
+    "raw_test32_job_files_opened": 0,
+    "reason": "launcher_error_line=119 rc=1",
+    "schema_version": "phase2_v4_d_dev1_node23_launcher_v1",
+    "source_evaluator_status": "FAIL",
+    "status": "FAILED_DEV1_BUILD",
+    "test32_metric_values_read": 0,
+    "updated_at": "2026-07-17T00:09:21.918823+00:00"
+  },
+  "recorded_at_utc": "2026-07-17T00:12:20.988067+00:00",
+  "recovery_policy": "v1 remains failed and immutable; any recovery must be a separately preregistered v1.1 root with exact single terminal-failure fallback",
+  "release_absent": true,
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_20260717",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt",
+  "status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB",
+  "teacher_artifacts_created": false,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

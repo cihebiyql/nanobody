@@ -1,0 +1,23 @@
+{
+  "chunk_markers": {
+    "chunk_000001": "c1c6b13334554e24d873b8cdf520617775d1df53705058eba19e380f7ad61288",
+    "chunk_000002": "f80fa4dcd748c14b94c11dc2765732015b3372e5cbbd6b9e45d4d18a00ac8908"
+  },
+  "claim_boundary": "Sequence/developability QC only; no docking, binding, affinity, competition, or blocking labels.",
+  "full_hard_fail": 12,
+  "full_hard_pass": 12,
+  "full_rows": 24,
+  "old_false_terminal_preserved": {
+    "path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_v1_20260716/status/runner.complete.json",
+    "sha256": "3c4200f26dd892388b695e4c41ae02e62209b43338134592894f25d8bde2704c"
+  },
+  "outputs": {
+    "full_chunk_status.tsv": "56bcf012444205996b3a88dd782e494a78415b4eb0c253fcae3a3101b4cc78ff",
+    "full_merged.tsv": "f6b0ca1d3de522f6cc3269d498bcd89cd40e73576b81d16291bd81f49b7d6962",
+    "full_qc_summary.json": "255dee0b1bd8800cda1f82fd11f556a3c97aade65f8db0fa88280012c5597942"
+  },
+  "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+  "shortlist_ids_sha256": "2ba3556adcec46a3143d48af1f189ecf83083176cbc87d9d37adc0f4453668f5",
+  "status": "PASS_V4_G_UNSEEN96_FULL_QC_RECOVERY_VALIDATED",
+  "validated_at_utc": "2026-07-16T16:04:24.035189+00:00"
+}

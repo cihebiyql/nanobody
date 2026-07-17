@@ -1,0 +1,23 @@
+{
+  "authorization_scope": "ONE_DEV1_OPEN258_BUILDER_ATTEMPT_ON_NODE23",
+  "candidate_freeze_sha256": "8ba85c7d0d3fef1c43358174203313125e0073ddcd1736ba3fde44fece01e5a1",
+  "claim_boundary": "Launch receipt for one post-hoc development-only open258 computational dual-docking geometry teacher build. Test32 remains sealed; not binding, affinity, experimental blocking, final submission authority, or Docking Gold.",
+  "created_at_utc": "2026-07-17T00:07:54.157288+00:00",
+  "final_submission_authority": false,
+  "formal_v4_f_unlock_eligible": false,
+  "launch_freeze_sha256": "6f6f1a586745dbb48305a4b66c3f8ad405bc6d27298ef85746a81866521ca6a6",
+  "prelaunch_zero_work_receipt_sha256": "f0c62288e05d8f5d545b50ae7b77909471ae7fa4fcffd9fb8497ccf838b1dd9d",
+  "remote_execution_started": false,
+  "remote_host": "node23",
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_20260717",
+  "reviewed_bytes_deployment_receipt_sha256": "ffc2433475127af138c971d096c56db25e3fd4bfe79df31b203ef54b40510a76",
+  "reviewed_package_receipt_sha256": "76895e0c81bb46ad9e04aa5f171f91cf73329169f26bba7a8486f2248e8ecded",
+  "schema_version": "phase2_v4_d_dev1_open258_launch_receipt_v1",
+  "source_evaluator_status": "FAIL",
+  "source_evaluator_unlockable": false,
+  "source_failed_gate": "candidate_threshold_sensitivity",
+  "source_zero_work_preflight_sha256": "f20b2ec6a88ca252d20f7b132f808164485da49f7e9928966e866e12159a969d",
+  "status": "AUTHORIZED_ONE_DEV1_ATTEMPT_NOT_STARTED",
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

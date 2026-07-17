@@ -1,0 +1,26 @@
+{
+  "active_v1_2_processes": [],
+  "checked_at_utc": "2026-07-17T01:58:39.389132+00:00",
+  "claim_boundary": "Zero-work deployment preflight for post-hoc development-only computational docking geometry teacher; not binding, experimental blocking, formal V4-D PASS, or Docking Gold.",
+  "formal_v4_f_unlock_eligible": false,
+  "logs_directory_absent": true,
+  "old_failure_releases_absent": {
+    "v1_1_release_absent": true,
+    "v1_release_absent": true
+  },
+  "package_file_count": 20,
+  "package_file_hashes_match": true,
+  "package_manifest_sha256": "3267ffee9de60832a934ebd1473e165ccead5eca2c9bb817eaf34fa08560df00",
+  "package_receipt_sha256": "49f8feef040d42fb948faea3c4079da980eeff73e8bf0c8a3ba6e62bf36ed96e",
+  "release_v1_2_absent": true,
+  "remote_execution_started": false,
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_node23_zero_work_preflight_v1",
+  "science_output_created": false,
+  "status": "PASS_V1_2_REVIEWED_BYTES_DEPLOYED_ZERO_SCIENCE_OUTPUT",
+  "status_directory_absent": true,
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0,
+  "test32_raw_paths_constructed": 0
+}

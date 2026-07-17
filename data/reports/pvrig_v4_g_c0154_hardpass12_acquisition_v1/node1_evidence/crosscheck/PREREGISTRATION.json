@@ -1,0 +1,24 @@
+{
+  "claim_boundary": "descriptive_monomer_crosscheck_only_no_selection_no_replacement_no_binding_or_blocking_claim",
+  "docking_input_remains": "all 12 NanoBodyBuilder2 primary monomers",
+  "frozen_at_utc": "2026-07-16T16:34:32.410690+00:00",
+  "implementation_sha256": "d36399da5f07a7981d0b2d54730028b39b6bc87555337634418b3b8436b1e222",
+  "input_hashes": {
+    "hardpass12": "bd7da905bfc6e1131b711817be92cedbaaedcb87d38975e3ff50d055a597a43e",
+    "monomer_manifest": "1ab840eb0c7705440c2d9e96c67b2be7b0757fafc242d9c72eb2105a3e598ca0",
+    "preregistration": "4b11ab21d9abcca4092a78c9bdbe9c4d514d871ac143ede8c8e19a473da1da7d",
+    "running_marker": "be278b6f46fadb9dc4f80b1158c48235ecff657b5e5f4a6f14270f7ac280f199",
+    "structure_complete": "6865a62727edf9c5c124703b1fd57c3d57a23d5c21b6e622af87743c8f7dd978"
+  },
+  "metrics": [
+    "sequence_and_CA_coverage",
+    "framework_Kabsch_RMSD_A",
+    "CDR3_RMSD_A",
+    "CDR3_flanking_anchor_delta_A"
+  ],
+  "replacement_effect": "NONE",
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_monomer_crosscheck_preregistration_v1",
+  "selection_effect": "NONE",
+  "status": "FROZEN_BEFORE_SUPPLEMENTAL_CROSSCHECK",
+  "thresholds": null
+}

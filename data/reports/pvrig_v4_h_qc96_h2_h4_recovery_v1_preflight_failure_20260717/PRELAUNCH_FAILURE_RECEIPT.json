@@ -1,0 +1,25 @@
+{
+  "actual_source_config_selection_seed": "phase2_v4_h_h4_fullqc_hash_selection_v1_20260717",
+  "bindings": {
+    "implementation_freeze_sha256": "78b572a16d148be949ce6385acfadfbe9b62731924bd26c8e848eda4f990dd73",
+    "launcher_sha256": "c85d36f98f2f831202d86ba201a54256497678b34db948558bdd39b7f0b6e739",
+    "package_receipt_sha256": "011d65239acc5c36a653d41d27cc6f35525c3a3aa6991d120f6fe7e9cc53bb32",
+    "preregistration_sha256": "f31fb16568d906204c44d451e2e679140c99ecc0ebf8e8f97ff9a460a3bcd6a3",
+    "recovery_script_sha256": "17960e1ea7b01c8354630ffeb7c63738622bc2675365bba368342a9f14b19d22"
+  },
+  "claim_boundary": "Pre-scientific recovery preflight failure only; no candidate, QC, model, Docking, geometry, binding, affinity, or experimental result was published.",
+  "failure": "RuntimeError: selection_seed_mismatch",
+  "frozen_v1_preserved": true,
+  "frozen_v1_selection_seed": "V4_H_QC96_H4_HASH_SELECTION_V1",
+  "preflight_log_sha256": "f1fc454ea63221855d738438a7f501e3dadda266decae5c074751cde45203f40",
+  "preflight_return_code": 1,
+  "qc_rerun": false,
+  "recorded_at_utc": "2026-07-16T23:32:50.132866+00:00",
+  "remote_recovery_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_20260717",
+  "remote_recovery_root_state_after_failure": "ABSENT",
+  "required_resolution": "superseding_version_only",
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_prelaunch_failure_v1",
+  "scientific_outputs_created": 0,
+  "source_root_modified": false,
+  "status": "FAIL_PRELAUNCH_ZERO_WORK_PREFLIGHT_NO_REMOTE_OUTPUTS"
+}

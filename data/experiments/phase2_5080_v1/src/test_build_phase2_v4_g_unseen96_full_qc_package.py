@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import importlib.util
+import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -88,6 +90,36 @@ class V4GUnseen96PackageTests(unittest.TestCase):
             self.assertEqual(
                 result["waiter"]["recovery_receipt"], MODULE.CANONICAL_RECOVERY_RECEIPT
             )
+
+    def test_rc0_without_full_completion_artifacts_is_terminal_fail(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            output = self.build(root / "build")
+            fixture = Path("/tmp") / f"v4g_false_rc0_fixture_{root.name}"
+            try:
+                (fixture / "status").mkdir(parents=True, exist_ok=False)
+                completed = subprocess.run(
+                    [
+                        str(output / "run_full_qc_node1.sh"),
+                        "--terminal-contract-test",
+                        str(fixture),
+                        "0",
+                    ],
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+                self.assertEqual(completed.returncode, 86, completed.stderr)
+                failed_path = fixture / "status" / "runner.failed.json"
+                self.assertTrue(failed_path.is_file())
+                failed = json.loads(failed_path.read_text())
+                self.assertEqual(failed["status"], "FAIL_V4_G_UNSEEN96_FULL_QC")
+                self.assertEqual(failed["original_returncode"], 0)
+                self.assertEqual(failed["returncode"], 86)
+                self.assertIn("missing_cascade_state", failed["completion_contract_error"])
+                self.assertFalse((fixture / "status" / "runner.complete.json").exists())
+            finally:
+                shutil.rmtree(fixture, ignore_errors=True)
 
     def test_tampered_manifest_or_reserve_entry_is_rejected_before_build(self):
         with tempfile.TemporaryDirectory() as tmpdir:

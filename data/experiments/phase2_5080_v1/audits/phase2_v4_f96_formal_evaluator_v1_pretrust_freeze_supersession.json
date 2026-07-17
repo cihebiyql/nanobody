@@ -1,0 +1,25 @@
+{
+  "label_access": {
+    "formal_evaluation_executed": false,
+    "v4_f96_docking_label_paths_accepted": 0,
+    "v4_f96_docking_labels_read": false
+  },
+  "preserved_files": {
+    "phase2_v4_f96_formal_evaluator_v1_implementation_freeze_pretrust_superseded_preproduction.json": {
+      "sha256": "f2cdb93d7dfd0eeb485f52dd7e4c6ae03b7cfbbe325255edee2d9576459420ee",
+      "size_bytes": 3152
+    },
+    "phase2_v4_f96_formal_evaluator_v1_implementation_freeze_pretrust_superseded_preproduction.receipt.json": {
+      "sha256": "043b991eee523f2c5037cd69df54cc183fb9238c8d041c0891be3290e33b31d9",
+      "size_bytes": 917
+    },
+    "phase2_v4_f96_formal_evaluator_v1_tests_pretrust_superseded_preproduction.log": {
+      "sha256": "2d4b90168ec9998c4454a50eb3e96b9cd59e378296f5a267e1545bf55042b023",
+      "size_bytes": 3209
+    }
+  },
+  "reason": "Independent review found missing external trust root and bypassable one-shot output path. Preserve bytes, then replace with a non-circular trust-anchor launcher and canonical O_EXCL one-shot lock.",
+  "schema_version": "phase2_v4_f96_formal_evaluator_pretrust_freeze_supersession_v1",
+  "status": "SUPERSEDED_PREPRODUCTION_BEFORE_ANY_V4_F96_LABEL_OR_FORMAL_EVALUATION",
+  "superseded_at": "2026-07-16T18:07:45.764486+00:00"
+}

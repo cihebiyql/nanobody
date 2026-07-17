@@ -1,0 +1,126 @@
+{
+  "bound_governance": {
+    "canonicalization_clarification_sha256": "1fb8f1bdfdf8f8869cc1c80a477a1e1f4f74246c555925be4fa1c1ebc380b918",
+    "diagnostic_run_receipt_sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f",
+    "diagnostic_sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+    "fallback_evidence_sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+    "preregistration_independent_review_v2_sha256": "ca653df18e8cdf5d5b5451e128ffc87fcbd2ccdb8b5a39f53deb0330acd796c8",
+    "v1_1_failure_receipt_sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7",
+    "v1_failure_receipt_sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720"
+  },
+  "claim_boundary": "Candidate implementation freeze for a post-hoc development-only sequence-to-independent-dual-docking continuous computational geometry teacher. Not a V4-D pass, formal test, Docking Gold, binding, affinity, experimental blocking, or final submission authority.",
+  "formal_v4_f_unlock_eligible": false,
+  "frozen_at_utc": "2026-07-17T01:48:51.618053+00:00",
+  "immutable_formula_and_predecessors": {
+    "predecessor_files_modified": false,
+    "v1_1_builder_sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+    "v1_1_status": "FAILED_CLOSED_NATIVE_OVERLAY_RMSD_ABOVE_1A",
+    "v1_builder_sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276",
+    "v1_formula_helper_sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+    "v1_status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB"
+  },
+  "implementation": {
+    "builder": {
+      "path": "src/prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "b9792b92c2e3fb463100f4a7ef18cc1ab35898d5e2e00b57372f318696ef47e7"
+    },
+    "node23_launcher": {
+      "path": "src/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+      "sha256": "46b6c0f857768b0f339e12f616d71c4eb991e0e045a2515a648ddcf6783c61b3"
+    },
+    "tests": {
+      "path": "src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "4235124e3e7ffddd277088a5614f39368242951c453096b181794313be1d86f9"
+    },
+    "tests_log": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log",
+      "sha256": "06e8d386ed09481a5d3aafa335d2c247b7426e37b3b46e7c15c0bc0cc37e684c"
+    }
+  },
+  "implementation_contract": {
+    "atomic_release_publish": "sibling staging, fsync, atomic rename, cleanup on failure",
+    "drop_both_references_before_helper_sort_and_rank_weighting": true,
+    "exact_open_grid_pre_raw": "258 candidates x 2 conformations x 3 seeds, minus one frozen terminal fallback raw result",
+    "filter_pair_key": [
+      "job_id",
+      "model"
+    ],
+    "generic_prior_bound_and_parsed_before_raw_path_construction": true,
+    "invalid_condition": "job-native overlay.t_ca_rmsd_a > 1.0",
+    "invalid_pair_count_is_training_feature": false,
+    "invalid_pair_identity_sha256": "941d5010190c6576ee0961681227d5b9b1ce9a719cc63ae5c25a45b0f8de9c1f",
+    "minimum_retained_complete_pairs_per_success_job": 4,
+    "rank_weights_renormalized_by_unchanged_helper": true,
+    "raw_result_files": "O_NOFOLLOW dirfd immutable snapshots",
+    "raw_result_sha256_chain": "202d06e1ee689167427abdebcb85705e20ee867aacda31bef5211a35d44d9301",
+    "root_cause_artifact_read_by_builder": false,
+    "threshold_equality_retained": true
+  },
+  "independent_implementation_review_required_before_launch": true,
+  "local_verification": {
+    "bash_n": "PASS",
+    "normal_unittest": {
+      "count": 23,
+      "status": "PASS"
+    },
+    "optimized_unittest": {
+      "count": 23,
+      "status": "PASS"
+    },
+    "production_shaped_synthetic_replay": {
+      "affected_candidates": 83,
+      "affected_jobs": 98,
+      "complete_pairs_after": 14391,
+      "complete_pairs_before": 14490,
+      "deterministic": true,
+      "finite_descriptive_json": true,
+      "invalid_pairs": 99,
+      "status": "PASS",
+      "teacher_shape_rows": 258
+    },
+    "py_compile": "PASS",
+    "raw_production_results_opened": false,
+    "ssh_or_remote_execution_performed": false,
+    "teacher_or_release_created": false
+  },
+  "output_contract": {
+    "release_directory": "release_v1_2",
+    "release_name": "OPEN_TRAIN_226_PLUS_OPEN_DEVELOPMENT_32_DEV_ONLY_V1_2",
+    "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+    "teacher_audit_status": "RELEASED_DEV_ONLY_V1_2_POSE_VALIDITY_FILTER_TEST32_SEALED",
+    "teacher_basename": "v4d_dev1_open258_continuous_geometry_v1_2.tsv"
+  },
+  "preregistration": {
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+    "sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1"
+  },
+  "production_runtime_gates_not_yet_exercised": {
+    "launch_must_prove_affected_candidate_count": 83,
+    "launch_must_prove_affected_job_count": 98,
+    "launch_must_prove_all_numeric_targets_finite": true,
+    "launch_must_prove_exact_complete_pair_count_after": 14391,
+    "launch_must_prove_exact_complete_pair_count_before": 14490,
+    "launch_must_prove_exact_invalid_pair_count": 99,
+    "launch_must_prove_raw_result_sha256_chain": "202d06e1ee689167427abdebcb85705e20ee867aacda31bef5211a35d44d9301",
+    "launch_must_prove_raw_success_job_count": 1547,
+    "launch_must_prove_release_audit_and_archive_closure": true,
+    "launch_must_prove_teacher_rows": 258,
+    "prelaunch_production_replay_performed": false
+  },
+  "remote_execution_authorized": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate_v1",
+  "sealed_boundary": {
+    "candidate_rows": 32,
+    "model_split": "PROSPECTIVE_COMPUTATIONAL_TEST",
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0
+  },
+  "source_evaluator": {
+    "failed_gate": "candidate_threshold_sensitivity",
+    "status": "FAIL",
+    "unlockable": false
+  },
+  "status": "CANDIDATE_IMPLEMENTATION_FREEZE_AWAITING_INDEPENDENT_REVIEW_NOT_LAUNCH_AUTHORIZED",
+  "version": "V4-D-DEV1-V1.2"
+}

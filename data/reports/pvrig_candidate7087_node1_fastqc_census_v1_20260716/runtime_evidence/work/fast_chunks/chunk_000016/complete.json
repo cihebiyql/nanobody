@@ -1,0 +1,11 @@
+{
+  "candidate_count": 367,
+  "chunk": "chunk_000016",
+  "elapsed_seconds": 35.929,
+  "finished_at_utc": "2026-07-16T16:18:40.090890+00:00",
+  "input_fasta_sha256": "8112836df823eeea63e499b822361b6bd68069ee52d7b4937424903489ec799d",
+  "portfolio_ranked_sha256": "239524fc63ad5c18a289f15e0f8c872cf8829703c22c0692149fd9192934a967",
+  "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+  "schema_version": "candidate7087_node1_fastqc_chunk_v1",
+  "status": "complete"
+}

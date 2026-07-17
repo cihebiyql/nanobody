@@ -1,0 +1,83 @@
+{
+  "claim_boundary": "acquisition-only computational geometry evidence; not binding, affinity, competition, experimental blocking, or docking gold",
+  "node1": {
+    "candidate_count": 12,
+    "igfold_crosscheck_count": 12,
+    "monomer_manifest_sha256": "1ab840eb0c7705440c2d9e96c67b2be7b0757fafc242d9c72eb2105a3e598ca0",
+    "nbb2_primary_count": 12,
+    "nbb2_unrefined_fallback_count": 1,
+    "replacement_policy": "NO_REPLACEMENT",
+    "structure_complete_sha256": "6865a62727edf9c5c124703b1fd57c3d57a23d5c21b6e622af87743c8f7dd978",
+    "structure_preregistration_sha256": "4b11ab21d9abcca4092a78c9bdbe9c4d514d871ac143ede8c8e19a473da1da7d",
+    "structure_root": "/data1/qlyu/projects/pvrig_v4_g_c0154_hardpass12_structures_v1_20260717",
+    "terminal_closure_sha256": "c4ad95a517a82aa51e971083ca07243ddbdd46fedc1217204037ebc5ea4b0953"
+  },
+  "node23": {
+    "acquisition_job_status_files_at_record": 0,
+    "acquisition_protocol_lock_sha256": "7096c1b0970ae7010d247c84322428d7cdce69aa9203e23296e2d33b5b5beda8",
+    "acquisition_results_at_record": 0,
+    "acquisition_runs_at_record": 0,
+    "candidate_count": 12,
+    "current_gate": "WAITING_V4D_TERMINAL_OPEN_TEACHER_VERIFIED_TEST32_SEALED_LOAD_AND_V3_COMPLETE_LOCK_CLOSURE",
+    "docking_root": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717",
+    "job_count": 72,
+    "job_manifest_sha256": "fc940eb07bb391391a2a00b38be4a55298246d64014c13d1145ba6ce18648d64",
+    "max_load1": 16,
+    "open_teacher_required_release_status": "PASS_OPEN258_TEACHER_READY_TEST32_SEALED",
+    "open_teacher_required_status": "COMPLETE",
+    "open_teacher_root": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716",
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "source_v4d_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "test32_required_sealed": true,
+    "waiter_v1": {
+      "pid": 1821646,
+      "status": "STOPPED_BEFORE_ACQUISITION",
+      "trust_anchor_sha256": "af71b0cc943106ce30cd9ad573bb962c0e1c4009ff952691054e05e3aa30b1fd",
+      "upgrade_receipt_sha256": "3dbfb6855d328f4a103f78f738751b664a56d3d8b24be2a1fa53a539e5af60cd"
+    },
+    "waiter_v2": {
+      "implementation_freeze_sha256": "b15c5b32a0d5f6a00c3abe26bbbb9ee149b48724e0ec7fa08d717eccba352b99",
+      "launch_receipt_sha256": "77ce18d599d3427a1e265990fc5c3548801e54f54ceb2e7360db523d934932c8",
+      "nice": 15,
+      "pid": 1841547,
+      "preflight_receipt_sha256": "d68f6f1b03c0d727447935ffa4cfc1877d94acd3b7229205900c885477c296e8",
+      "security_stop_receipt_sha256": "0a1ead8e7849ff90dd768e3462be4fddc55c7bbc583cb07a4c35ed314a48c43b",
+      "status": "STOPPED_FOR_V3_SECURITY_FIX_BEFORE_ACQUISITION",
+      "trust_anchor_sha256": "7144e6a6adc0fa72e13c9a4f6edb4bde3913281bdea64e70cd18e2e58d9a4e3b",
+      "unit_tests": "4 PASS"
+    },
+    "waiter_v3": {
+      "environment_drift_fail_closed": true,
+      "implementation_freeze_sha256": "7c7060274af988e758a6ea428dc1b03db72871ceb4e2511eac1dca5f3c1ffcbd",
+      "launch_receipt_sha256": "23fb5dbdfef1dfc33fbb0cf8737f3a3d9974e77d932dcd3f1411dc17051a566f",
+      "launcher_sha256": "366a8a5e87fcbfadea4918c46b4305ce6ceed18e40f793312427b4a67b029cc2",
+      "nice": 15,
+      "pid": 1898924,
+      "policy_freeze_sha256": "0ef462a5d7e1b8d73580b9bfb169bb2bf1cd624cde9e91a12d1751024ad7d7ab",
+      "policy_sha256": "3f4cd75d42ea0ad6ca61d53ed1c799b650e32cc41aac069c21f8bac5caacb7ed",
+      "protocol_lock_closure": {
+        "candidate_pdb_count": 12,
+        "job_count": 72,
+        "verified_file_count": 47,
+        "verified_total_bytes": 2589493
+      },
+      "runtime_identity_frozen": true,
+      "security_tests": "9 PASS",
+      "status": "LIVE_WAITING",
+      "trust_anchor_sha256": "5b149b478f5550559822a33223ae1fca81d564927e7e7a6b99770cc5c57f9242",
+      "waiter_sha256": "8a6d5354c8bb017c3ce90621f3edd1aac5dc674babbca24a4f4a3316f3048e1a",
+      "zero_job_preflight_receipt_sha256": "a180fa0b507a2f6cd89fb91e942b978b421ba6e2450c6d7bc57ce893cd63f5e4"
+    }
+  },
+  "recorded_at_utc": "2026-07-16T17:15:57.917797+00:00",
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_acquisition_deployment_record_v3",
+  "status": "STRUCTURES_PASS_DOCKING72_V3_SECURITY_WAITER_LIVE_ACQUISITION_ZERO"
+}

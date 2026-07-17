@@ -1,0 +1,44 @@
+{
+  "bindings": {
+    "execute_preflight_log_sha256": "dd8ebc618a904066a550c7b7da784cb26057757c92da3605344195cc4a294051",
+    "execution_log_sha256": "5b9d80969805d6992bed6d66261d4141638499fb2ed47752c6950731bea4c43a",
+    "implementation_freeze_sha256": "8cfa84cee865d857255f07e87c47e17f0a9f927cfca5da87f05c1f79853dbfd3",
+    "launcher_sha256": "3d26820ff1c47fbeef719a60012bd49c0a728868c413273220bcd15e682f9a2d",
+    "package_receipt_sha256": "28e522ef0daddfc912cd4e920fd3da8d8436d1515376af3daead7d9ef12c83a3",
+    "preregistration_sha256": "32979ecf1810529e16a9283894faf7295df1d9d321444adf846e509dfe007ac9",
+    "recovery_script_sha256": "9df6cd31b5af7a26d08a7cadd22b0be9b321509e6f4e9104f0acd963ea38d066"
+  },
+  "claim_boundary": "Pre-publication recovery implementation failure only; partial files are invalid and must not be used as a QC96 release.",
+  "failure": "RuntimeError: provenance_replay_mismatch:V4H__PLDNANO_VHH_00231__A_CENTER__H1H3__B04__M00",
+  "failure_stage": "post_write_provenance_sidecar_replay_before_audit_receipt_complete",
+  "preflight_status": "PASS_V4_H_H2_H4_RECOVERY_V1_1_PREFLIGHT",
+  "publication_terminal_files": {
+    "qc96_audit_v1.json": false,
+    "qc96_receipt_v1.json": false,
+    "recovery.complete.json": false
+  },
+  "qc_rerun": false,
+  "recorded_at_utc": "2026-07-16T23:41:22.607072+00:00",
+  "remote_partial_files": {
+    "qc96_manifest_v1.tsv": {
+      "bytes": 72416,
+      "sha256": "f128f7b2389ea5e9887b931460332ce42898aece0314e7320975c204a692f723"
+    },
+    "qc96_selected_source_provenance_v1.tsv": {
+      "bytes": 116528,
+      "sha256": "c75a2e68d0006dec68ffe9a0144b02ba670e42e298a8fa4bccf1a46aa561af3c"
+    },
+    "recovery.lock": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_1_20260717",
+  "required_resolution": "superseding_V1_2_only",
+  "root_cause_hypothesis": "selected-row H4 mutation overwrote an original H1 provenance field such as model_split before source-field replay",
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_1_runtime_failure_v1",
+  "source_root_modified": false,
+  "status": "FAIL_V1_1_RUNTIME_PROVENANCE_REPLAY_NO_VALID_PUBLICATION",
+  "v1_1_preserved": true,
+  "valid_publication_created": false
+}

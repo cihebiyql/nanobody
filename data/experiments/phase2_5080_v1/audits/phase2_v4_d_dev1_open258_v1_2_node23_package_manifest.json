@@ -1,0 +1,138 @@
+{
+  "candidate_freeze_sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039",
+  "claim_boundary": "Deployment package bytes for a post-hoc development-only sequence-to-independent-dual-docking computational geometry teacher; not binding, affinity, experimental blocking, formal V4-D PASS, or Docking Gold.",
+  "created_at_utc": "2026-07-17T01:57:38.656455+00:00",
+  "files": [
+    {
+      "mode": "0o555",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json",
+      "sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7",
+      "size": 8809
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+      "size": 2895
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_candidate_freeze_v1_supersession_receipt.json",
+      "sha256": "47d5c7329a8767475be6025e1479ae60f155acb9513ba01b0c4332b64f85d981",
+      "size": 1047
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json",
+      "sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039",
+      "size": 6584
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate_v1_superseded_preproduction.json",
+      "sha256": "479f2ab1a07de69d8da5e46f0f449d7f6f11c973932ec1fc25839737f4eb0b6c",
+      "size": 6153
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_independent_implementation_review_receipt.json",
+      "sha256": "d6c71796b4b10ecb255a5348b2aeac715af8fc79aad9d4201a5dd2d5dfeab4d1",
+      "size": 12511
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json",
+      "sha256": "1fb8f1bdfdf8f8869cc1c80a477a1e1f4f74246c555925be4fa1c1ebc380b918",
+      "size": 1495
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+      "sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1",
+      "size": 7535
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log",
+      "sha256": "0e943ac88732b2e7a0e476359a10ed5747e3fb24e042487761f965d99a1450af",
+      "size": 8540
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_2_preregistration_independent_review_receipt_v2.json",
+      "sha256": "ca653df18e8cdf5d5b5451e128ffc87fcbd2ccdb8b5a39f53deb0330acd796c8",
+      "size": 13539
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720",
+      "size": 2000
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+      "size": 117386
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json",
+      "sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f",
+      "size": 5652
+    },
+    {
+      "mode": "0o755",
+      "path": "governance/v4d_dev1_fullqc290_label_free_generic_prior_v1.csv",
+      "sha256": "21b4c6a38056d6777de5b5efbfcd5887b45098c637cab61489072d1e6e7783cd",
+      "size": 128885
+    },
+    {
+      "mode": "0o755",
+      "path": "scripts/prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276",
+      "size": 27225
+    },
+    {
+      "mode": "0o755",
+      "path": "scripts/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+      "size": 23777
+    },
+    {
+      "mode": "0o755",
+      "path": "scripts/prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "872bee4bf27b894244f14b31f43b03f877a1cff89a084f6272c0cbccd026ba9b",
+      "size": 53780
+    },
+    {
+      "mode": "0o755",
+      "path": "scripts/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+      "size": 37344
+    },
+    {
+      "mode": "0o755",
+      "path": "scripts/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+      "sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae",
+      "size": 7138
+    },
+    {
+      "mode": "0o755",
+      "path": "scripts/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "dbf9e4c732cdd13f158d316805b4a89a0bdf774b2c31af5217528bfa5a08cbc1",
+      "size": 32439
+    }
+  ],
+  "formal_v4_f_unlock_eligible": false,
+  "independent_review_sha256": "d6c71796b4b10ecb255a5348b2aeac715af8fc79aad9d4201a5dd2d5dfeab4d1",
+  "remote_execution_authorized": false,
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_node23_package_manifest_v1",
+  "science_output_created": false,
+  "source_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+  "status": "REVIEWED_V1_2_BYTES_STAGED_ZERO_SCIENCE_OUTPUT",
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

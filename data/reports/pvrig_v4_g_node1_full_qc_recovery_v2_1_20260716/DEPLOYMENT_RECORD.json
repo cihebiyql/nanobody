@@ -1,0 +1,42 @@
+{
+  "claim_boundary": "Sequence/developability QC only; no docking, binding, affinity, competition, or blocking labels.",
+  "counts": {
+    "full_hard_fail": 12,
+    "full_hard_pass": 12,
+    "full_rows": 24
+  },
+  "failed_preproduction_reason": "compiled validator __pycache__ retained embedded NFS source path; failed before any Full-QC chunk launched; evidence preserved",
+  "failed_preproduction_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_20260716",
+  "implementation_hashes": {
+    "RECOVERY_CONTRACT.json": "24de8e70cb38bc71f78d12d3bca47442662d9ac013b8c5316e671e30f0486790",
+    "build_ssd_runtime_closure_node1.sh": "04c43ab73466159e3ab154b9ed89b927cc8eeaad7a589a96277ef3e018f07817",
+    "launch_recovery_v2_node1.sh": "fb9f01f2386916bc0bf54c9b0fa9b59e72384851cc394e903454ddf62cc2ae95",
+    "recover_v4g_full_qc_v2.py": "e9e63b4c228441089a0174439bb23acc6c5cf58f688772582eb5b48698d0c076"
+  },
+  "local_targeted_tests": {
+    "command": "python3 -m unittest experiments/phase2_5080_v1/src/test_build_phase2_v4_g_unseen96_full_qc_package.py -v",
+    "status": "OK",
+    "tests": 8
+  },
+  "old_false_terminal_preserved": {
+    "path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_v1_20260716/status/runner.complete.json",
+    "sha256": "3c4200f26dd892388b695e4c41ae02e62209b43338134592894f25d8bde2704c"
+  },
+  "recorded_at_utc": "2026-07-16T16:08:48.799100+00:00",
+  "recovery_receipt_sha256": "7b2786274045a45d7b487fa7b9cc4e14d7a2e6215e2cb6286d950e2b9632f356",
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716",
+  "runtime_evidence_hashes": {
+    "runtime_evidence/RUNTIME_MANIFEST.json": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+    "runtime_evidence/chunk_000001.complete.json": "c1c6b13334554e24d873b8cdf520617775d1df53705058eba19e380f7ad61288",
+    "runtime_evidence/chunk_000002.complete.json": "f80fa4dcd748c14b94c11dc2765732015b3372e5cbbd6b9e45d4d18a00ac8908",
+    "runtime_evidence/full_qc_summary.json": "255dee0b1bd8800cda1f82fd11f556a3c97aade65f8db0fa88280012c5597942",
+    "runtime_evidence/recovery.complete.json": "7b2786274045a45d7b487fa7b9cc4e14d7a2e6215e2cb6286d950e2b9632f356",
+    "runtime_evidence/recovery_state.json": "4257b775dd514bd3960bebb166f36e42e1e136bbee5580bde56b78b452cabf5d",
+    "runtime_evidence/runtime_closure_ready.json": "b37eec96def5a8533324574c3e2d4e53ce489692c6cd3f3715ad71e939bad6f1"
+  },
+  "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+  "schema_version": "pvrig_v4_g_node1_full_qc_recovery_deployment_v2_1",
+  "selection_policy": "exact frozen 24 Full-QC shortlist IDs; no replacement; no reselection",
+  "shortlist_ids_sha256": "2ba3556adcec46a3143d48af1f189ecf83083176cbc87d9d37adc0f4453668f5",
+  "status": "PASS_V4_G_FULL_QC_RECOVERY_DEPLOYED_AND_VALIDATED"
+}

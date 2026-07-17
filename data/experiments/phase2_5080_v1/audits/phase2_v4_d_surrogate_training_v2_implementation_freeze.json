@@ -1,0 +1,136 @@
+{
+  "claim_boundary": "Sequence surrogate targets computational independent dual-receptor docking geometry with frozen primary target R_dual_min. It is not binding, affinity, competition, Docking Gold, or experimental blocking truth.",
+  "frozen_at": "2026-07-16T17:38:52.392010+00:00",
+  "implementation_files": {
+    "implementation_trust_anchor": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_surrogate_training_v2_implementation_trust_anchor.json",
+      "sha256": "9d5aff568b9473a56c6111fae6221266eabe09f92be7752c76bbc596ef2d74cf",
+      "size_bytes": 6646
+    },
+    "joint_regression_log": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_v4_f_watcher_v2_production_tests.log",
+      "sha256": "b8a2558841269f045ea406afa087bec9c19a6f615044d73fe69131a9972e0a83",
+      "size_bytes": 11869
+    },
+    "launcher": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/launch_phase2_v4_d_surrogate_training_v2.sh",
+      "sha256": "b9ef88953230b439287470de3fbbca54c87f4a2286d9f9bbcfb9822da5db3fb5",
+      "size_bytes": 1996
+    },
+    "production_locked_input_preflight": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_surrogate_training_v2_production_locked_input_preflight.json",
+      "sha256": "a582869fca6c5203878cd2ebfd66689eae18c66758c397c96f90e3c9a1056a09",
+      "size_bytes": 94
+    },
+    "shared_trust_anchor_builder": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/build_phase2_watcher_v2_trust_anchor.py",
+      "sha256": "4fe38983f48736b5bea78d7ba11c2871c4cb33e07520f2089aff47669d7b7647",
+      "size_bytes": 8729
+    },
+    "shared_trust_hardening_tests": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/test_phase2_watcher_v2_trust_hardening.py",
+      "sha256": "e1bb56b22ab6a05d590a4714fef4abba6a2b1b2e8072a4da68d02fe781cc96d8",
+      "size_bytes": 8043
+    },
+    "v2_helper": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/phase2_v4_d_surrogate_watcher_helper_v2.py",
+      "sha256": "f53edf2fecea395e1ce16b29dd542b8ba6fc310db14582a2aa9b52743145f68f",
+      "size_bytes": 39301
+    },
+    "v2_watcher": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_surrogate_training_v2.sh",
+      "sha256": "5abbbd9938d0a1d898ad70a413c96214439424b99b6103735411c1db928c2cd5",
+      "size_bytes": 22095
+    },
+    "v2_watcher_tests": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/test_monitor_phase2_v4_d_surrogate_training_v2.py",
+      "sha256": "cfe3426490ff04ee20adeb9912fb832513ec580e9c7e4a38f66593717aa57b67",
+      "size_bytes": 19338
+    }
+  },
+  "label_access": {
+    "docking_or_experimental_label_paths_opened": 0,
+    "prospective_test_label_paths_accepted": 0,
+    "prospective_test_labels_read": false
+  },
+  "payload_sha256": "9dfc14d9a89d31177027258a9dfdb8290d101d230a105ec9bd9a5d9a9f244272",
+  "prelaunch_state": {
+    "surrogate_training_expected_paths": [
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_sequence_surrogate_v1",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_frozen_embedding_surrogate_v1",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_contact_fusion_surrogate_v1"
+    ],
+    "surrogate_training_output_paths_created": [],
+    "teacher_inputs_present": false,
+    "teacher_missing_paths": [
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_teacher_v1/remote_delivery_v1/current/outputs/v4d_open_teacher.tsv",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_teacher_v1/remote_delivery_v1/current/outputs/v4d_open_teacher.tsv.audit.json",
+      "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_teacher_v1/remote_delivery_v1/current/outputs/open_teacher_postprocess_receipt.json"
+    ],
+    "watcher_long_run_started": false
+  },
+  "runtime_environment": {
+    "cuda_available": true,
+    "cuda_device_0_name": "NVIDIA GeForce RTX 5080",
+    "cuda_device_0_total_memory": 17094475776,
+    "cuda_device_count": 1,
+    "python_executable": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+    "python_version": "3.10.12",
+    "torch_cuda_version": "13.0",
+    "torch_version": "2.13.0+cu130"
+  },
+  "schema_version": "phase2_v4_d_surrogate_training_v2_implementation_freeze_v1",
+  "status": "PASS_V2_IMPLEMENTATION_FROZEN_BEFORE_OPEN258_TEACHER_AND_TRAINING",
+  "test_execution": {
+    "elapsed_seconds": 616.333,
+    "parsed_test_count": 86,
+    "python_compile_status": "PASS_5_FILES",
+    "static_shell_syntax_status": "PASS_4_FILES",
+    "surrogate_anchor_verification_status": "PASS_22_FILES",
+    "test_log": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_v4_f_watcher_v2_production_tests.log",
+      "sha256": "b8a2558841269f045ea406afa087bec9c19a6f615044d73fe69131a9972e0a83",
+      "size_bytes": 11869
+    },
+    "unittest_status": "OK",
+    "v4f_anchor_verification_status": "PASS_27_FILES"
+  },
+  "trust_closure": {
+    "anchored_file_count": 22,
+    "embedding_shard_00001_sha256": "3b08d1b685904bfad4855b377541b3c9477a3082e7b017a53b7b5ca2396732f1",
+    "embedding_shard_count": 7,
+    "embedding_shard_sha256": {
+      "embedding_shard_00000": "731af1d81210f8443065c36fa8fe0472e62f2f5093d3404c2bdc6bbcb57a1465",
+      "embedding_shard_00001": "3b08d1b685904bfad4855b377541b3c9477a3082e7b017a53b7b5ca2396732f1",
+      "embedding_shard_00002": "b1041c04293a1ea3ad7f094f6185731921f9d964123ca42f524eae126f930e10",
+      "embedding_shard_00003": "ba8b7305eb75b38d72ba12b5bf965128e41d7940b9f87351607b1e5e856349bf",
+      "embedding_shard_00004": "b63998c6c00f6a2524460143be7fc2453ff77b8fc4671d8c94d5bdaf20f2f204",
+      "embedding_shard_00005": "34fd3f75bd52fc274ccdb7bf2b52aba05b916d4edc9aaa13fc9d2f61e52e512a",
+      "embedding_shard_00006": "a3779bb01273d173e9e4424e587a999171d1960ec03bb833f75823e8f060b7e9"
+    },
+    "historical_shard_00001_typo_corrected_in_v2": true,
+    "trust_anchor_sha256": "9d5aff568b9473a56c6111fae6221266eabe09f92be7752c76bbc596ef2d74cf"
+  },
+  "v1_preservation": {
+    "v1_helper": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/phase2_v4_d_surrogate_watcher_helper.py",
+      "sha256": "df920268a6edb0bf331d9712466f494bbe7f0c4eb85afe704cbdb22c4552681e",
+      "size_bytes": 33538
+    },
+    "v1_surrogate_tests": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/test_monitor_phase2_v4_d_surrogate_training.py",
+      "sha256": "a10b2b12cabebdc321aafe4a7117f92537c7168f6f2e2e50790a65fafd18b856",
+      "size_bytes": 19213
+    },
+    "v1_surrogate_watcher": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_surrogate_training.sh",
+      "sha256": "2beb8b54c8ad785102d9d1bddeb994e1ba9f3ae25de9d30ba822744333f7452b",
+      "size_bytes": 13804
+    },
+    "v1_v4f_watcher": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_f_prediction_freeze.sh",
+      "sha256": "880621bb9fc9ef323da4b81b3faab3babfc85444c5db412c263097df2f36b882",
+      "size_bytes": 9879
+    }
+  }
+}

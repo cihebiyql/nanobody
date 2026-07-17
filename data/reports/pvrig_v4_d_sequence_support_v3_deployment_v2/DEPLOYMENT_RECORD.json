@@ -1,0 +1,26 @@
+{
+  "canonical_python": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+  "created_at": "2026-07-16T14:03:39.016207+00:00",
+  "docking_or_experimental_label_paths_opened": 0,
+  "expected_trust_sha256": "0ff5b38900750e919bbfd8d6a203e7d74e4507921f68ecb2ffd7505f98fd6656",
+  "implementation_freeze_receipt_sha256": "acf6da8563ff49bbcb6d95d1d21d81c51a1db6185dd9ed554275f6f925acd8b8",
+  "implementation_freeze_sha256": "2d541646bf0af762cdd5bb38f0519acee0dc11dc059f2d09ba79ab86f270882c",
+  "launcher": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/reports/pvrig_v4_d_sequence_support_v3_deployment_v2/run_production_support_v3.sh",
+    "sha256": "eb1b184adf8fb3c811219c04433dbd9e631e07c0de4ca8f5d2b856c9bdaca4bd",
+    "size_bytes": 3300
+  },
+  "materializer_sha256": "746a30e4fd6f1d51b9f95933543459f3c88db03c5777a28d835d64b60c6cace3",
+  "payload_sha256": "4132893829cf35887099722d546107d151a1ceaea192342b0e89d217081787a1",
+  "preregistration_sha256": "72dc6adc1e3404c65304d489b303f6d7ba6a08d3edd626518dbcfc74c34c186a",
+  "production_overrides_accepted": false,
+  "publish_dir": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_sequence_support_v3",
+  "runtime_root": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34",
+  "schema_version": "phase2_v4_d_sequence_support_v3_deployment_record_v2",
+  "sha256sums": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/reports/pvrig_v4_d_sequence_support_v3_deployment_v2/SHA256SUMS",
+    "sha256": "0ff5b38900750e919bbfd8d6a203e7d74e4507921f68ecb2ffd7505f98fd6656",
+    "size_bytes": 1675
+  },
+  "status": "PASS_REPOSITORY_VISIBLE_TRUST_ROOT_READY"
+}

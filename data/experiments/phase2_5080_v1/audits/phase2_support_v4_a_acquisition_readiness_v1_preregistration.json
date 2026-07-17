@@ -1,0 +1,274 @@
+{
+  "allowed_information_contract": {
+    "all_other_candidate_columns_are_inert_and_must_not_affect_replay": true,
+    "candidate_source_fields": [
+      "candidate_id",
+      "vhh_sequence",
+      "sequence_sha256",
+      "parent_id",
+      "parent_framework_cluster",
+      "target_patch_id",
+      "design_mode",
+      "cdr3_after",
+      "cdr3_length",
+      "max_positive_cdr_identity"
+    ],
+    "fast_qc_census_fields": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_framework_cluster",
+      "fast_hard_fail"
+    ],
+    "parent_census_fields": [
+      "parent_framework_cluster",
+      "fast_hard_pass_count",
+      "support_v4_capacity_state"
+    ],
+    "role_and_identity_fields": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_framework_cluster",
+      "model_split or frozen role",
+      "known calibration exact sequence SHA256"
+    ]
+  },
+  "claim_boundary": "A label-free capacity and acquisition design for future Node1 teacher computation. It is not Support-domain PASS, model correctness, docking geometry, binding, affinity, competition, Docking Gold, experimental blocking, or binding probability.",
+  "decision_policy": {
+    "current_status": "PASS_LABEL_FREE_CAPACITY_FOR_SUPPORT_V4_A_ACQUISITION_PLANNING_ONLY",
+    "next_step": "After an explicit future authorization, materialize the frozen pool, run Node1 teacher computation, preserve the 12-per-parent audit split, and only then define a separate Support V4 production calibration protocol.",
+    "production_domain_pass_allowed": false,
+    "teacher_label_claim_allowed": false
+  },
+  "eligibility_rule": {
+    "known_calibration_identity": "exclude exact sequence SHA256 from the frozen 90-row identity-only registry",
+    "positive_cdr_identity": "max_positive_cdr_identity < 75.0; missing/non-numeric values fail closed",
+    "prior_panel_identity": "exclude candidate ID or exact sequence SHA256 already present in V4-D fullqc290, V4-F96, or V4-G96 identity manifests",
+    "required_fast_qc_state": "fast_hard_fail == False in the frozen Node1 census",
+    "required_parent_role": "OPEN_TRAIN",
+    "sequence_closure": "candidate/census candidate ID, parent cluster, sequence SHA256, and recomputed sequence SHA256 must match exactly"
+  },
+  "frozen_at": "2026-07-17T00:45:00+08:00",
+  "frozen_inputs": {
+    "candidate_census": {
+      "allowed_fields_used": [
+        "candidate_id",
+        "sequence_sha256",
+        "parent_framework_cluster",
+        "fast_hard_fail"
+      ],
+      "fast_hard_fail": 2509,
+      "fast_hard_pass": 4578,
+      "path": "reports/pvrig_candidate7087_node1_fastqc_census_v1_20260716/runtime_evidence/candidate7087_node1_fastqc_census_v1.tsv",
+      "rows": 7087,
+      "sha256": "33c657fa26b3348d46fb22ebea453398b81d8fd762765668a1ca6c5dd3e16855"
+    },
+    "candidate_pool": {
+      "allowed_fields_used": [
+        "candidate_id",
+        "vhh_sequence",
+        "sequence_sha256",
+        "parent_id",
+        "parent_framework_cluster",
+        "target_patch_id",
+        "design_mode",
+        "cdr3_after",
+        "cdr3_length",
+        "max_positive_cdr_identity"
+      ],
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1_candidates/scored_candidates_v1.csv",
+      "rows": 7087,
+      "sha256": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b"
+    },
+    "census_audit": {
+      "path": "reports/pvrig_candidate7087_node1_fastqc_census_v1_20260716/runtime_evidence/candidate7087_node1_fastqc_census_v1.audit.json",
+      "sha256": "360a4a1c657839b379af1f340d25471c1c66ffc6de4d096faf0c6dc98e6cd61f"
+    },
+    "census_receipt": {
+      "path": "reports/pvrig_candidate7087_node1_fastqc_census_v1_20260716/runtime_evidence/candidate7087_node1_fastqc_census_v1.receipt.json",
+      "sha256": "95a805622e9fd19e42e9999e7a421d8f91ac3c594a06a8ab21088ce84fdd3497"
+    },
+    "known_calibration_identity_exclusions": {
+      "identity_only": true,
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_g/known_calibration_sequence_exclusions_v1.tsv",
+      "rows": 90,
+      "sha256": "cba42df8ad9fab0399eb8a7d8608397fdf85aeea6619e2993e46d12d31dbd7d4"
+    },
+    "parent_census": {
+      "insufficient_parents": 11,
+      "path": "reports/pvrig_candidate7087_node1_fastqc_census_v1_20260716/runtime_evidence/parent40_node1_fastqc_capacity_v1.tsv",
+      "ready_parents": 29,
+      "rows": 40,
+      "sha256": "b7d77acfc447bf61c4470818a92505bee9c8f405c2c8538c80a1bec953f9d71d"
+    },
+    "reserve2_manifest": {
+      "parent_role_fields_only": true,
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_g/untouched_reserve2_parents.tsv",
+      "rows": 2,
+      "sha256": "98c11e8f72d97d60c9e772fa2bb256622f1ed6e1e9fddd9e136a8cd42959bb75"
+    },
+    "support_v3_fail_closed_decision": {
+      "path": "reports/pvrig_v4_d_sequence_support_v3_deployment_v2/runtime_fail_closed_evidence/FAIL_CLOSED_DECISION.json",
+      "sha256": "5b9f5786e0d0bbc501cf79440694f5cedcce658a4c2ac16e8aecc2f042555970"
+    },
+    "v4_d_split_manifest": {
+      "identity_and_parent_role_fields_only": true,
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "rows": 290,
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "v4_f_manifest": {
+      "identity_and_parent_role_fields_only": true,
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_f/prospective_holdout96_manifest.tsv",
+      "rows": 96,
+      "sha256": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334"
+    },
+    "v4_g_manifest": {
+      "identity_and_parent_role_fields_only": true,
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_g/unseen96_acquisition_manifest.tsv",
+      "rows": 96,
+      "sha256": "e814103ee90831e33b3f04a7e8a477e68695d61401d96732b7e95829b1bd306f"
+    }
+  },
+  "frozen_parent_roles": {
+    "OPEN_DEVELOPMENT": [
+      "C0210",
+      "C0354",
+      "C0448"
+    ],
+    "OPEN_TRAIN": [
+      "C0009",
+      "C0116",
+      "C0139",
+      "C0219",
+      "C0224",
+      "C0248",
+      "C0251",
+      "C0258",
+      "C0304",
+      "C0406",
+      "C0411",
+      "C0418",
+      "C0453",
+      "C0492",
+      "C0495",
+      "C0500",
+      "C0502",
+      "C0509",
+      "C0518",
+      "C0533"
+    ],
+    "PROSPECTIVE_COMPUTATIONAL_TEST": [
+      "C0299",
+      "C0311",
+      "C0474"
+    ],
+    "RESERVE2": [
+      "C0019",
+      "C0072"
+    ],
+    "V4_F": [
+      "C0198",
+      "C0379",
+      "C0401",
+      "C0515"
+    ],
+    "V4_G": [
+      "C0051",
+      "C0154",
+      "C0324",
+      "C0372",
+      "C0375",
+      "C0404",
+      "C0504",
+      "C0514"
+    ]
+  },
+  "future_output_contract": {
+    "interpretation": "Future Node1 teacher acquisition capacity only; not Support-domain PASS and not a training label until independent Node1 teacher computation is completed.",
+    "production_selection_status": "NOT_RUN_BY_THIS_PREREGISTRATION_OR_IMPLEMENTATION_FREEZE",
+    "receipt_publication_order": "last after exact hashes, role isolation, identity exclusions, 720-row quotas, and CDR3 uniqueness closure",
+    "required_outputs": [
+      "support_v4_a_future_teacher_acquisition_pool_v1.tsv",
+      "support_v4_a_parent_capacity_audit_v1.tsv",
+      "support_v4_a_parent_selection_audit_v1.tsv",
+      "support_v4_a_acquisition_readiness_audit_v1.json",
+      "support_v4_a_acquisition_readiness_receipt_v1.json"
+    ]
+  },
+  "future_selection_rule": {
+    "acquisition_rows_per_parent": 24,
+    "acquisition_rows_per_patch_per_parent": 8,
+    "audit_rows_per_parent": 12,
+    "audit_rows_per_patch_per_parent": 4,
+    "cdr3_policy": "All 36 selected CDR3 sequences must be exact-unique within parent. Deterministic greedy selection maximizes CDR3-length novelty then minimum normalized Levenshtein distance, with a frozen SHA256 tie-break and a global feasibility check before every choice.",
+    "forbidden_column_mutation_invariant": true,
+    "input_order_invariant": true,
+    "mode_policy": "Prefer 6 H3 + 6 H1H3 per patch. If one mode has fewer than six unique CDR3 Fast-QC eligible rows, deterministically redistribute only within the same parent and patch; never borrow a protected parent.",
+    "parents": 20,
+    "patches": [
+      "A_CENTER",
+      "B_LOWER",
+      "C_CROSS"
+    ],
+    "role_assignment": "Within each patch, assign 8 acquisition and 4 audit rows; split mode-specific audit quotas by deterministic one-third largest-remainder allocation.",
+    "rows_per_parent": 36,
+    "rows_per_patch_per_parent": 12,
+    "selection_seed": "phase2_support_v4_a_label_free_20x36_20260717",
+    "total_rows": 720
+  },
+  "label_access_gate": {
+    "docking_label_paths_opened": 0,
+    "experimental_label_paths_opened": 0,
+    "model_score_paths_opened": 0,
+    "v4_d_geometry_label_paths_opened": 0,
+    "v4_f_label_paths_opened": 0
+  },
+  "objective": "Freeze a label-free 20-parent acquisition/readiness design for future Node1 docking-teacher computation after the completed 7,087-candidate Fast-QC census.",
+  "observed_label_free_capacity": {
+    "all_open_train_parents_fast_hard_pass_ge_36": true,
+    "all_parent_global_unique_cdr3_quota_feasible": true,
+    "balanced_both_modes_parents": 16,
+    "capacity_audit_path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_capacity_audit.json",
+    "capacity_audit_sha256": "5d571436dab0fb2415bf8fa507179c89bcacf51979a154fa865217dc810502d0",
+    "forced_single_mode_parents": [
+      "C0139",
+      "C0500",
+      "C0509",
+      "C0533"
+    ],
+    "minimum_post_exclusion_patch_count": 17,
+    "minimum_post_identity_and_prior_panel_exclusion_count": 69,
+    "minimum_raw_fast_hard_pass_count": 76,
+    "mode_boundary": "Mode diversity is balanced 6/6 per patch when Fast-QC permits. Four parents have zero Fast-QC H3 survivors and therefore use explicit H1H3-only fallback; this is reported, not hidden or repaired with protected parents.",
+    "open_train_parent_count": 20
+  },
+  "role_policy": {
+    "current_acquisition_source_role": "OPEN_TRAIN",
+    "no_cross_role_replacement": true,
+    "no_parent_replacement_after_fast_qc": true,
+    "open_train_parent_count": 20,
+    "protected_roles_not_usable_for_current_training": [
+      "OPEN_DEVELOPMENT",
+      "PROSPECTIVE_COMPUTATIONAL_TEST",
+      "V4_F",
+      "V4_G",
+      "RESERVE2"
+    ]
+  },
+  "schema_version": "phase2_support_v4_a_acquisition_readiness_preregistration_v1",
+  "status": "FROZEN_BEFORE_SUPPORT_V4_A_PRODUCTION_SELECTION",
+  "version_boundary": {
+    "forbidden_actions": [
+      "lower or change any Support V3 numeric gate",
+      "publish Support V4-A domain PASS from Fast-QC capacity",
+      "use OPEN_DEVELOPMENT or PROSPECTIVE_COMPUTATIONAL_TEST parents for current training",
+      "use V4-F, V4-G, or reserve2 parents for current training",
+      "open V4-D geometry, V4-F, docking, model-score, binding, affinity, competition, or experimental-blocking labels",
+      "replace a capacity-short OPEN_TRAIN parent with a protected-role parent",
+      "select or tune by generic_binding_prior, uncertainty, disagreement, R_dual_min, G tier, HADDOCK score, or experimental outcome"
+    ],
+    "support_v3_must_not_be_repaired_or_reinterpreted": true,
+    "support_v3_status_must_remain": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY",
+    "support_v4_a_is_new_version_not_support_v3_threshold_change": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "claim_boundary": "Sequence and developability Full-QC evidence only; not Docking, geometry, binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold.",
+  "execution_policy": "all frozen 96 -> Fast-QC -> every hard-pass Full-QC; no model selection; no replacement; TNP deferred explicit unrun/NA",
+  "frozen_at_utc": "2026-07-16T17:57:30.961717+00:00",
+  "implementation_hashes": {
+    "build_phase2_v4_f_holdout96_full_qc_recovery_v2.py": "90d30680dd54fff02e6e270b18a34d72085ed75b48baa92b735d0266e3b1ff0c",
+    "pvrig_v4_f_holdout96_full_qc_recovery_v2_waiter.sh.in": "400af8a943104976e45f02270d2d73277c9c4183008e866edfaa2ad0e915c913",
+    "run_phase2_v4_f_holdout96_full_qc_recovery_v2_node1.py": "b36e2fc2908eee2cf573db065a1acb16e4b6a17f53dad85c27183ededb444d09",
+    "test_build_phase2_v4_f_holdout96_full_qc_recovery_v2.py": "a45e942443005ea86e52b22b486dbdd7bfea3bfa2c2e4da0ddecef3473e14b4b",
+    "wait_for_support_v4a720_structures_then_run_full_qc.sh": "feebca265f263c87e8240c201b19d75070782264b06346caadbddb8f3ac497aa"
+  },
+  "input_hashes": {
+    "holdout96.fasta": "696f814e9250f4eac2f8dfa524ce5d5c43f5b878f2913b49305e5654110a597c",
+    "holdout96_lineage.tsv": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334",
+    "prospective_holdout96_audit.json": "fc24cc2bd203100e29be897e87850a67ddc362b1fa1635d4172ec4335f5083a1",
+    "prospective_holdout96_manifest.tsv": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334",
+    "prospective_holdout96_receipt.json": "3adc1e3194bdc5846f35b99020c3c996859caf3e3abc2b8e02df6ac75296512f"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0,
+    "v4_f_predictions": 0
+  },
+  "preregistration_sha256": "b9d539f8936992df330e7ad844604d7d81114547e99de82b1a1fcbcbeecbebcb",
+  "remote_bindings": {
+    "python_sha256": "33de598423ed1c2a7d65e8057df2b8831a0422ad51ae385c6cf362fd0d518095",
+    "remote_root": "/data1/qlyu/projects/pvrig_v4_f_holdout96_full_qc_recovery_v2_20260717",
+    "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+    "screen_sha256": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a"
+  },
+  "resource_policy": {
+    "cpu_affinity": "0-23",
+    "gpu_requested": 0,
+    "maximum_cpu_workers": 24
+  },
+  "schema_version": "phase2_v4_f_holdout96_full_qc_recovery_v2_implementation_freeze",
+  "start_gate": {
+    "load1_max": 8.0,
+    "structure_freeze_sha256": "71fa231196bc64c2661496889fa087e54d254e72e9071b966a3a915df741881b",
+    "structure_prereg_sha256": "9af5a9913addf2472e57c75fb1228eb8e9c77213f2d89c819d710581b1c233f6",
+    "structure_runner_sha256": "3fe3be1da1591afca05c1e80d38911422645aaec421f7ce0ce803e7271e86c47",
+    "structure_runner_terminal_and_process_free": true
+  },
+  "status": "FROZEN_BEFORE_REMOTE_EXECUTION"
+}

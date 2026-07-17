@@ -1,0 +1,111 @@
+{
+  "allowed_change": [
+    "project selected rows explicitly onto the already frozen 22-column CORE_MANIFEST_FIELDS schema",
+    "write complete selected-row H1 provenance to a separate audit sidecar",
+    "publish recovery audit, receipt, and terminal marker only after replay closure"
+  ],
+  "claim_boundary": "Sequence/developability QC-qualified prospective candidate panel only; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "expected_outputs": [
+    "qc96_manifest_v1.tsv",
+    "qc96_selected_source_provenance_v1.tsv",
+    "qc96_audit_v1.json",
+    "qc96_receipt_v1.json",
+    "recovery.complete.json"
+  ],
+  "forbidden_changes": [
+    "rerun Fast-QC or Full-QC",
+    "change any QC gate or threshold",
+    "change candidate identities, sequences, parent order, selection seed, selection algorithm, or replacement policy",
+    "expand the formal qc96 manifest schema beyond the exact frozen 22 columns",
+    "read or use model predictions, Docking results, geometry labels, experimental labels, binding, affinity, or blocking evidence",
+    "modify or delete the original failed root"
+  ],
+  "formal_manifest_contract": {
+    "exact_column_count": 22,
+    "exact_columns": [
+      "candidate_id",
+      "sequence_sha256",
+      "sequence",
+      "parent_id",
+      "parent_framework_cluster",
+      "parent_queue_rank",
+      "target_patch_id",
+      "design_mode",
+      "cdr1_after",
+      "cdr2_after",
+      "cdr3_after",
+      "cdr3_length",
+      "h4_selection_hash",
+      "h4_selection_rank_in_stratum",
+      "selection_stratum",
+      "model_split",
+      "tnp_supervision_state",
+      "tnp_score",
+      "tnp_red_flag",
+      "tnp_yellow_flag",
+      "full_qc_and_docking_policy",
+      "claim_boundary"
+    ],
+    "extra_fields_forbidden": true,
+    "missing_fields_forbidden": true,
+    "path": "qc96_manifest_v1.tsv",
+    "required_nonempty_except": [
+      "tnp_score",
+      "tnp_red_flag",
+      "tnp_yellow_flag"
+    ],
+    "tnp_numeric_and_flags_must_be_empty_strings": true,
+    "tnp_state": "NOT_RUN_DEFERRED_NA"
+  },
+  "frozen_input_bindings": {
+    "candidate_qc_states_sha256": "1dce3fa8accd0801436c2fa274133fe756b77993720e87941f1a2267726ef09c",
+    "cascade_state_sha256": "c44ba8c03836390bf3bc302e35a48a289bc818b5b00bdb06efdbd5114c424d7e",
+    "fast_complete_marker_count": 24,
+    "fast_complete_marker_set_sha256": "ea39c5129e9615dd4f9144bc8d0a1a193e596c7b924be93e5880a55d3486c4da",
+    "fast_merged_sha256": "1e9ddb2f2f2809a2bc4d1e054c3a00e97ba669f40c8b28377bfdf1d80ac2a37b",
+    "full_complete_marker_count": 24,
+    "full_complete_marker_set_sha256": "3189da34ed5cad0d0a7fec75900b3aac881179db7251c7eed42edfa4a6db9b0a",
+    "full_merged_sha256": "40d5fe960654cc0282bcaba866d745e4b7be6dee9dda85dc9d496f8e4ee5cf34",
+    "h1_candidates_fasta_sha256": "5d5bf7033b8040c817810abec10df212635c76d77a3cdcce3eb413d2f428bc30",
+    "h1_candidates_tsv_sha256": "aa111562b9204aadc9b0bda4f92bc39310e07c8f9eb0d8656dcd9db0f09d4ad7",
+    "h1_receipt_sha256": "5863d6cdae14b08132cec8a3c7fec13c2b4a1096a48e8f86698470dc47dfe341",
+    "parent_capacity_sha256": "5ee50d05b83d5c072c8e5e9d97b80f6e80666399be6018c1007e525fad6aaf0e"
+  },
+  "observed_frozen_counts": {
+    "capacity_ready_parents": 11,
+    "fast_hard_pass": 1440,
+    "fast_rows": 1440,
+    "full_hard_fail": 120,
+    "full_hard_pass": 1320,
+    "full_rows": 1440,
+    "h1_candidates": 1440,
+    "h4_selected_parents": 4,
+    "h4_selected_rows": 96,
+    "h4_strata": 24,
+    "selected_per_stratum": 4
+  },
+  "preregistered_at_utc": "2026-07-16T23:23:51.785325300+00:00",
+  "preserved_failure": {
+    "error_class": "csv.DictWriter selected-row extras rejected by exact formal fieldnames",
+    "path": "status/qc.failed.json",
+    "sha256": "78073a919fc0a5a15c22f4299350efc0bb8581d7212924609433c350173f5dc6"
+  },
+  "provenance_sidecar_contract": {
+    "path": "qc96_selected_source_provenance_v1.tsv",
+    "purpose": "retain and replay full source H1 provenance without changing the formal manifest schema"
+  },
+  "recovery_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_20260717",
+  "remote_executed": false,
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_preregistration",
+  "selection_contract": {
+    "no_replacement": true,
+    "selected_parent_policy": "first four QC_CAPACITY_READY parents by frozen parent_queue_rank",
+    "selection_code_must_match_frozen_h4": true,
+    "selection_per_parent": 24,
+    "selection_per_patch_mode_stratum": 4,
+    "selection_seed": "V4_H_QC96_H4_HASH_SELECTION_V1"
+  },
+  "source_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "status": "PREREGISTERED_BEFORE_ANY_RECOVERY_EXECUTION",
+  "timestamp_source": "initial_file_mtime_before_remote_execution"
+}

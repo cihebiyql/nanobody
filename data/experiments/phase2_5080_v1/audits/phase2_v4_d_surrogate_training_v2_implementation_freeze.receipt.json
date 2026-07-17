@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-07-16T17:38:52.582282+00:00",
+  "embedding_shard_count": 7,
+  "implementation_freeze": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_d_surrogate_training_v2_implementation_freeze.json",
+    "sha256": "d5a2fc47c2f531272e9f878a55ae6b98747956a42672321561ed74a040e4fa97",
+    "size_bytes": 7308
+  },
+  "launcher_sha256": "b9ef88953230b439287470de3fbbca54c87f4a2286d9f9bbcfb9822da5db3fb5",
+  "parsed_test_count": 86,
+  "payload_sha256": "9dfc14d9a89d31177027258a9dfdb8290d101d230a105ec9bd9a5d9a9f244272",
+  "prospective_test_label_paths_accepted": 0,
+  "prospective_test_labels_read": false,
+  "schema_version": "phase2_v4_d_surrogate_training_v2_implementation_freeze_receipt_v1",
+  "status": "PASS_COMPLETE_HASH_CLOSURE_BEFORE_OPEN258_TEACHER_AND_TRAINING",
+  "trust_anchor_sha256": "9d5aff568b9473a56c6111fae6221266eabe09f92be7752c76bbc596ef2d74cf"
+}

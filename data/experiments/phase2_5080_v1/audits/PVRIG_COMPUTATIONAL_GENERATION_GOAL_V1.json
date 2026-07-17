@@ -1,0 +1,62 @@
+{
+  "schema_version": "pvrig_computational_generation_primary_goal_v1",
+  "status": "GOAL_LOCKED",
+  "effective_date": "2026-07-17",
+  "primary_goal": "Generate as many novel VHH sequences as practical and use monomer structure prediction plus independent dual-conformation 8X6B/9E6Y docking to deliver a provenance-complete, diversity-aware ranked library of candidates with better PVRIG-PVRL2 blocker-like geometry.",
+  "optimization_priority": [
+    "candidate_sequence_quantity",
+    "candidate_level_continuous_geometry_quality",
+    "dual_conformation_robustness",
+    "seed_stability",
+    "sequence_and_structure_diversity",
+    "basic_developability"
+  ],
+  "research_generation_hard_gate_exclusions": [
+    "p2_p3_p4_phase_enrichment_significance",
+    "batch_robust_a_rate_threshold",
+    "ordinary_developability_review_warning",
+    "tool_level_numbering_na_with_closed_sequence_and_structure_identity"
+  ],
+  "research_generation_true_hard_fail": [
+    "invalid_or_ambiguous_sequence_identity",
+    "unrecoverable_monomer_structure_failure",
+    "chain_residue_or_coordinate_corruption",
+    "no_usable_docking_result_across_seeds_and_conformations",
+    "persistent_unexplained_severe_internal_geometry_clash",
+    "manifest_or_evidence_hash_closure_failure"
+  ],
+  "lanes": {
+    "research_iteration": {
+      "generation_allowed": true,
+      "phase_signals_are_soft_priors": true,
+      "primary_ranking_target": "R_dual_min",
+      "formal_validation_claim": false
+    },
+    "formal_evidence": {
+      "frozen_fail_closed_gates_retained": true,
+      "independent_frozen_panel_required": true,
+      "may_block_research_generation": false
+    }
+  },
+  "current_research_pool": {
+    "source_version": "V4-H",
+    "generated_exact_unique": 1440,
+    "research_ready": 1320,
+    "quarantine_repairable_parent_n_terminus": 120,
+    "formal_qc96_is_research_pool_cap": false,
+    "research_ready_balance": {
+      "parent_count": 11,
+      "per_parent": 120,
+      "per_patch": 440,
+      "H3": 660,
+      "H1H3": 660
+    }
+  },
+  "next_compute_funnel": {
+    "monomer_structure_target_count": 1320,
+    "dual_docking_policy": "rolling_batches_until_all_monomer_qc_pass_candidates_have_8X6B_and_9E6Y_coverage",
+    "phase_enrichment_may_reduce_research_pool": false,
+    "additional_seed_policy": "continuous_geometry_quality_plus_dual_conformation_consistency_plus_diversity"
+  },
+  "claim_boundary": "Computational blocker-like geometry prioritization only; not binding, affinity, competition, Docking Gold, or experimental blocking truth."
+}

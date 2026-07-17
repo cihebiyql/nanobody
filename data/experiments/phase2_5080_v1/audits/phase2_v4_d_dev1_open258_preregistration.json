@@ -1,0 +1,134 @@
+{
+  "claim_boundary": "Post-hoc development-only sequence-to-computational-dual-docking continuous geometry evidence. It is not a V4-D pass, binding or affinity evidence, experimental blocking evidence, Docking Gold, formal prospective-test evidence, or final submission authority.",
+  "continuous_target_contract": {
+    "allowed_targets": [
+      "R_8X6B",
+      "R_9E6Y",
+      "R_dual_mean",
+      "R_dual_min",
+      "R_dual_gap",
+      "seed_sd_8X6B",
+      "seed_sd_9E6Y",
+      "missing_seed_fraction",
+      "native_cross_support_agreement_mean",
+      "model_pair_consensus_fraction_mean",
+      "continuous hotspot, occlusion, CDR contribution, clash and pose-support summaries"
+    ],
+    "candidate_specific_tolerance_forbidden": true,
+    "formula_version": "unchanged_phase2_v4_d_open_continuous_teacher_v1_formula",
+    "hard_tier_policy": "A/B/C/E and G1-G5 may be retained only as diagnostics and may not be the primary training target.",
+    "primary_target": "R_dual_min",
+    "source_sensitivity_failure_must_be_present_in_every_audit_and_receipt": true,
+    "threshold_or_formula_retuning_forbidden": true
+  },
+  "formal_isolation": {
+    "existing_v4_d_v1_and_formal_v4_f_watchers_must_not_be_modified_or_restarted": true,
+    "future_dev_training_completion_status": "DEV_ONLY_SURROGATE_ARTIFACTS_READY_NOT_FORMAL",
+    "future_dev_training_root": "runs/pvrig_v4_d_dev1_sequence_surrogate_v1",
+    "must_not_create_or_modify_paths": [
+      "prepared/pvrig_v4_d_open_teacher_v1",
+      "status/pvrig_v4_d_surrogate_training_v3",
+      "runs/pvrig_v4_d_sequence_surrogate_v1",
+      "runs/pvrig_v4_d_frozen_embedding_surrogate_v1",
+      "runs/pvrig_v4_d_contact_fusion_surrogate_v1",
+      "predictions/pvrig_v4_f_surrogate_predictions_v1"
+    ],
+    "must_not_emit_statuses": [
+      "PASS_OPEN258_TEACHER_READY_TEST32_SEALED",
+      "PASS_V4_D_SURROGATE_V3_COMPLETE_TEST32_SEALED",
+      "COMPLETE_V4_D_SURROGATE_TRAINING_TEST32_SEALED",
+      "COMPLETE_V4_F_96_PREDICTIONS_FROZEN"
+    ]
+  },
+  "frozen_at_utc": "2026-07-16T23:16:20.257932+00:00",
+  "implementation_and_launch_policy": {
+    "builder_delivery_tests_and_implementation_freeze_candidate_required_before_review": true,
+    "failure_must_leave_no_published_current_dev1_pointer": true,
+    "independent_review_required_before_promotion_to_launch_authorized_freeze": true,
+    "no_remote_start_without_a_separate_launch_receipt": true,
+    "remote_zero_work_preflight_required_after_review": true,
+    "this_preregistration_does_not_authorize_remote_execution": true
+  },
+  "objective": "Create a development-only OPEN_TRAIN/OPEN_DEVELOPMENT continuous computational dual-docking geometry dataset after the frozen V4-D evaluator failed its candidate-threshold-sensitivity gate.",
+  "physical_read_policy": {
+    "candidate_id_allowlist_must_be_built_from_the_split_manifest_before_any_raw_result_open": true,
+    "full_job_results_and_pose_scores_are_hash_binding_inputs_only_and_must_not_be_parsed_for_label_values": true,
+    "only_exact_open_candidate_job_paths_may_be_opened": true,
+    "raw_path_access_audit_required": true,
+    "sealed_raw_job_results_opened_required": 0,
+    "selected_job_directories_and_results_root_must_not_be_symlinks": true,
+    "selected_result_paths_must_be_regular_non_symlink_files": true,
+    "source_evaluator_may_only_be_used_for_frozen_release_metadata_and_hash_checks": true
+  },
+  "post_hoc_disclosure": {
+    "defined_after_source_evaluator_result_was_known": true,
+    "may_not_be_described_as": [
+      "V4-D PASS",
+      "prospective validation",
+      "formal test evidence",
+      "Docking Gold",
+      "binding probability",
+      "affinity or Kd",
+      "experimental competition or blocking"
+    ],
+    "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "source_evaluator_status": "FAIL",
+    "source_evaluator_unlockable": false,
+    "source_failed_gates_exact": [
+      "candidate_threshold_sensitivity"
+    ]
+  },
+  "release_contract": {
+    "archive_members_exact": [
+      "outputs/SHA256SUMS",
+      "outputs/v4d_dev1_open258_continuous_geometry.tsv",
+      "outputs/v4d_dev1_open258_continuous_geometry.tsv.audit.json",
+      "outputs/v4d_dev1_release_receipt.json",
+      "outputs/v4d_dev1_source_failure_receipt.json"
+    ],
+    "archive_name": "v4d_dev1_open258_delivery_v1.tar.gz",
+    "existing_different_current_dev1_must_not_be_overwritten": true,
+    "formal_v4_f_unlock_eligible": false,
+    "local_delivery_root": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_dev1_open258_v1/delivery_dev1",
+    "publication": "content-addressed by archive SHA256 with an atomic relative current_dev1 symlink",
+    "remote_root_reserved_but_not_started": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_20260717",
+    "remote_status_required_for_delivery": "DEV1_RELEASE_READY_TEST32_SEALED"
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_preregistration_v1",
+  "source_hash_closure": {
+    "job_manifest_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "job_results_sha256_binding_only": "30c4227e15f6b049a9d9e9241ca34df30d38b247d14081b4ce7d3387fa2f3f25",
+    "pose_scores_sha256_binding_only": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681",
+    "protocol_core_lock_file_sha256": "767117dc2c506cfdfc83fce8e12931514d268941348d69a9abbda5a6500bdd24",
+    "protocol_lock_file_sha256": "56ef539cb54a1aba8e665ec5d62b3653088e2289e371d8fa5bbadbc725c1d574",
+    "split_manifest_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "stability_gate_spec_sha256": "fb01cdaa5939f2846b16e4e02a09903417cd6cea04d42350c4ed57f9ae7eb774",
+    "v1_formula_helper_sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+  },
+  "split_boundary": {
+    "expected_selected_job_records": 1548,
+    "released_candidate_rows": 258,
+    "released_splits": {
+      "OPEN_DEVELOPMENT": 32,
+      "OPEN_TRAIN": 226
+    },
+    "sealed_candidate_ids_may_only_be_used_to_build_a_forbidden_id_hash": true,
+    "sealed_candidate_rows": 32,
+    "sealed_raw_job_results_may_be_opened": false,
+    "sealed_split": "PROSPECTIVE_COMPUTATIONAL_TEST",
+    "sealed_values_may_be_read_or_copied": false,
+    "v4_f_labels_may_be_read": false
+  },
+  "status": "FROZEN_POSTHOC_BEFORE_DEV1_RAW_OPEN_EXTRACTION_OR_REMOTE_EXECUTION",
+  "terminal_source_facts": {
+    "all_jobs_terminal": true,
+    "completed_pose_backed_jobs": 2021,
+    "entity_conformations_with_at_least_two_successful_seeds": 674,
+    "expected_entity_conformations": 674,
+    "failed_max_attempts_jobs": 1,
+    "successful_jobs": 2021,
+    "total_jobs": 2022
+  },
+  "timestamp_source": "initial_prereg_file_mtime_before_any_raw_open",
+  "track_id": "V4-D-DEV1"
+}

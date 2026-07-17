@@ -1,0 +1,78 @@
+{
+  "canonical_zero_eligibility_receipt": {
+    "downstream_docking_eligible_count": 0,
+    "gate_result": "NO_ELIGIBLE_DOCKING_WITHOUT_NODE23_SCIENTIFIC_WORK_OR_LABEL_RECEIPT",
+    "hardfail_count": 96,
+    "hardpass_count": 0,
+    "path": "/data1/qlyu/projects/pvrig_v4_f_holdout96_zero_eligible_terminal_v2_1_20260717/CANONICAL_ELIGIBILITY_RECEIPT.json",
+    "schema_version": "phase2_v4_f_holdout96_canonical_eligibility_receipt_v2_1",
+    "sha256": "c0ee3aae278836b91f77a3e33aa78823dd0dc6551b5f93e5458763f38c191aa7",
+    "status": "PASS_CANONICAL_ELIGIBILITY_ZERO_HARDPASS",
+    "terminal_state": "COMPLETE_WITH_ZERO_ELIGIBLE"
+  },
+  "claim_boundary": "Fixed-PVRIG computational independent-dual-receptor Docking geometry only; not binding, affinity, competition, experimental blocking, Docking Gold, or final submission authority.",
+  "current_observed_attrition_boundary": {
+    "consequence": "The deployed waiter must terminate NO_ELIGIBLE_DOCKING before Node23 scientific work.",
+    "expected_canonical_hard_pass_count": 0,
+    "factual_snapshot": "V4-F96 Fast-QC produced 96/96 frozen hard failures at L1_numbering_integrity; four FR4 motif classes each contain 24 rows"
+  },
+  "docking_protocol": {
+    "fixed_top_models": 8,
+    "independent_receptor_docking": true,
+    "minimum_successful_seeds_per_candidate_receptor": 2,
+    "node23_start_gate": "V4-D2022 all terminal and process-free; load1<=8",
+    "receptors": [
+      "8X6B",
+      "9E6Y"
+    ],
+    "records": "ATOM-only protein geometry; zero HETATM gate",
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "source_v4_d_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715"
+  },
+  "eligibility_policy": {
+    "exclude": "all Fast/Full-QC hard-fail rows",
+    "include": "all and only full_qc_hard_pass=true",
+    "no_imputation": true,
+    "no_model_selection": true,
+    "no_replacement": true,
+    "source": "canonical Node1 V4-F96 Full-QC recovery V2 terminal outputs",
+    "zero_eligible_branch": "NO_ELIGIBLE_DOCKING; zero Docking jobs; no Docking-label receipt; formal evaluator not run; do not relax, trim, replace, or Dock the 96 hard-fail rows"
+  },
+  "formal_evaluator_binding": {
+    "current_zero_eligible_policy": "formal evaluator must not run because no formal label receipt is produced",
+    "implementation_freeze_receipt_sha256": "182570215f94b399e9154cbdd1b3138594dce2a4d5baeb30a2595adbdce27a63",
+    "implementation_freeze_sha256": "2f43e8cea0bfbafb7a122a2d78c5850cb4f602598405d783b0432e8d3bbb6cf5",
+    "implementation_sha256": "e5594681e122e38834441f6e6aa53602a673a62615abc55a0cec20bb3650ef17",
+    "preregistration_sha256": "05d5727c7568ac9563c75d7ec7b916f172eefd915a728b829d29c25a12079fc3",
+    "runtime_trust_anchor_sha256": "86066e7508c701d03f3c32e17df38be398455e92643c88f761ca96c109041651"
+  },
+  "frozen_at_utc": "2026-07-16T18:34:03.915Z",
+  "frozen_panel": {
+    "manifest_sha256": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334",
+    "order": "frozen manifest order",
+    "row_count": 96
+  },
+  "label_access_at_freeze": {
+    "formal_evaluator_executed": false,
+    "v4_f96_docking_label_paths_accepted": 0,
+    "v4_f96_docking_labels_read": false
+  },
+  "monomer_policy": {
+    "failure": "retain as technical failure; no replacement",
+    "method": "NanoBodyBuilder2 refined then one explicit unrefined fallback",
+    "scope": "all Full-QC hard-pass candidates only"
+  },
+  "objective": "Dock every and only frozen V4-F96 Full-QC hard-pass candidate with independent 8X6B and 9E6Y Docking after predictions are frozen.",
+  "prediction_gate": {
+    "exact_receipt_verification": true,
+    "prediction_scores_never_used_for_docking_subset": true,
+    "required_status": "COMPLETE_V4_F_96_PREDICTIONS_FROZEN",
+    "required_watcher": "V4-F prediction freeze V3"
+  },
+  "schema_version": "phase2_v4_f96_dual_docking_v1_preregistration",
+  "status": "FROZEN_BEFORE_ANY_V4_F96_DOCKING_LABEL_GENERATION"
+}

@@ -1,0 +1,102 @@
+{
+  "schema_version": "phase2_v4_d_dev1_sequence_surrogate_preregistration_v1",
+  "registered_at": "2026-07-17T07:22:13+08:00",
+  "status": "PREREGISTERED_DEV_ONLY_BEFORE_DEV1_TEACHER_LABEL_ACCESS_OR_REAL_TRAINING",
+  "version": "V4-D-DEV1",
+  "scope": "post_hoc_development_only_sequence_surrogate_after_failed_v4_d_evaluator",
+  "post_hoc_disclosure": {
+    "defined_after_v4_d_evaluator_result_was_known": true,
+    "source_evaluator_status": "FAIL",
+    "source_evaluator_unlockable": false,
+    "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "source_failed_gate": "candidate_threshold_sensitivity",
+    "v4_d_formal_result_is_not_reinterpreted": true,
+    "v4_d_formal_result_remains": "FAIL"
+  },
+  "claim_boundary": "Fixed-PVRIG sequence-to-independent-dual-docking computational geometry development surrogate only; not binding, affinity, competition, experimental blocking, Docking Gold, a formal V4-D pass, or final submission authority.",
+  "teacher_contract": {
+    "release_status": "RELEASED_DEV_ONLY_FROM_FAILED_V4D_EVALUATOR_TEST32_SEALED",
+    "release": "OPEN_TRAIN_226_PLUS_OPEN_DEVELOPMENT_32_DEV_ONLY",
+    "total_rows": 258,
+    "split_counts": {
+      "OPEN_TRAIN": 226,
+      "OPEN_DEVELOPMENT": 32
+    },
+    "forbidden_split": "PROSPECTIVE_COMPUTATIONAL_TEST",
+    "primary_target": "R_dual_min",
+    "required_feature_fields": [
+      "candidate_id",
+      "model_split",
+      "parent_framework_cluster",
+      "sequence_sha256",
+      "sequence",
+      "design_method",
+      "design_mode",
+      "target_patch_id",
+      "cdr1",
+      "cdr2",
+      "cdr3",
+      "generic_binding_prior"
+    ],
+    "additional_continuous_geometry_and_uncertainty_fields_are_allowed": true,
+    "test32_raw_label_files_opened": 0,
+    "test32_metric_values_read": 0,
+    "test32_label_rows_emitted": 0
+  },
+  "training_protocol": {
+    "fit_split": "OPEN_TRAIN",
+    "fit_rows": 226,
+    "selection_split": "OPEN_DEVELOPMENT",
+    "selection_rows": 32,
+    "selection_rows_used_as_fit_rows": 0,
+    "group_unit": "parent_framework_cluster",
+    "fit_selection_parent_cluster_overlap": 0,
+    "primary_target": "R_dual_min",
+    "ridge_alphas": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "fixed_group_bootstrap_seeds": [
+      2026071701,
+      2026071702,
+      2026071703,
+      2026071704,
+      2026071705
+    ],
+    "seed_count": 5,
+    "model_set": [
+      "constant",
+      "parent_only",
+      "metadata_shortcut",
+      "cdr3_only",
+      "handcrafted_full_sequence",
+      "generic_prior_only",
+      "frozen_feature_ridge"
+    ],
+    "implementation_strategy": "reuse_label_agnostic_pure_functions_from_train_phase2_v4_d_surrogate_py_under_an_independent_dev1_io_and_trust_contract"
+  },
+  "future_evaluation": {
+    "panel": "V4-H_QC96",
+    "prediction_must_be_frozen_before_any_v4_h_dual_docking_label_access": true,
+    "evaluation_mode": "one_shot_formal_evaluation_under_preexisting_v4_h_preregistration",
+    "v4_d_test32_remains_sealed": true,
+    "v4_d_test32_raw_label_files_opened_by_dev1_trainer": 0,
+    "v4_d_test32_metric_values_read_by_dev1_trainer": 0
+  },
+  "non_authority": {
+    "may_create_formal_v4_d_or_v4_f_completion_receipt": false,
+    "may_unlock_v4_f": false,
+    "may_modify_existing_v4_d_or_v4_f_watchers": false,
+    "may_publish_to_existing_formal_roots": false,
+    "deployment_eligible_from_open_development_results_alone": false
+  },
+  "frozen_inputs": {
+    "label_free_split_manifest": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+    "label_free_split_manifest_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "reused_base_module": "experiments/phase2_5080_v1/src/train_phase2_v4_d_surrogate.py",
+    "reused_base_module_sha256_at_preregistration": "bbdf2d1d22ef1e375b65d1d680c25fffe6a4d09d170184528dc2c3f0292fa95e"
+  }
+}

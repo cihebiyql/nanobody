@@ -1,0 +1,32 @@
+{
+  "schema_version": "phase2_support_v4_a_acquisition720_full_qc_supplemental_interpretation_v1",
+  "status": "DESCRIPTIVE_POST_TERMINAL_QC_INTERPRETATION",
+  "hard_gate_result": {
+    "tool_hard_fail_false": 720,
+    "tool_hard_fail_true": 0,
+    "official_validator_pass": 720
+  },
+  "recommendation_counts": {
+    "REVIEW_DEVELOPABILITY": 675,
+    "REVIEW_NOVELTY_MARGIN": 37,
+    "REVIEW_RISK": 8
+  },
+  "single_domain_suitability_counts": {
+    "good": 389,
+    "borderline": 223,
+    "poor": 108
+  },
+  "novelty_margin_counts": {
+    "SAFE": 682,
+    "BORDERLINE": 38
+  },
+  "score_ranges": {
+    "AbNatiV_VHH_score": {"min": 0.466494031391662, "median_approx": 0.7263457467903043, "max": 0.8355378812108694},
+    "developability_score": {"min": 33.0, "median_approx": 76.0, "max": 98.0},
+    "expression_purity_risk_score": {"min": 0.0, "median_approx": 85.0, "max": 100.0},
+    "final_score": {"min": 44.83, "median_approx": 67.45, "max": 75.6}
+  },
+  "interpretation": "All 720 avoided the frozen hard-fail gates, but none received an automatic submit recommendation. The review categories and continuous QC fields remain necessary for downstream ranking; hard_fail=False must not be read as uniformly high developability.",
+  "tnp_policy": "DEFERRED_NO_IMPUTATION",
+  "claim_boundary": "Sequence/developability QC interpretation only; not Docking, PVRIG binding, affinity, competition, blocking, or biological truth."
+}

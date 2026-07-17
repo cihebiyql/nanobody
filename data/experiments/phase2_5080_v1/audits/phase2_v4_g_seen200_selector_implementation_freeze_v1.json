@@ -1,0 +1,199 @@
+{
+  "artifacts": {
+    "calibration_exclusions": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v4_g/known_calibration_sequence_exclusions_v1.tsv",
+      "row_count": 90,
+      "sha256": "cba42df8ad9fab0399eb8a7d8608397fdf85aeea6619e2993e46d12d31dbd7d4"
+    },
+    "parent_preregistration": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v4_g/phase2_v4_g_active_learning_preregistration.json",
+      "sha256": "1ba6ecb0e5541516649c9d3c8dc30c82f411f3c5296e0e04681486bd9441bf55"
+    },
+    "selector": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/select_phase2_v4_g_seen200_acquisition.py",
+      "sha256": "6491cecfba82ba73925e195c5d30c737442f5a74244167e60b4b14dccdbfd818"
+    },
+    "test_log": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_g_seen200_selector_tests_v1.log",
+      "sha256": "0b2dba032eaee24f90c055288aa89000db6aa9fbee820ecbf2da0b173868bd7c"
+    },
+    "tests": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/test_select_phase2_v4_g_seen200_acquisition.py",
+      "sha256": "ab5f55ef18ed43eeb22b4b28c366e4b3c8c73cb7bab891f101719dbdcaa09182"
+    }
+  },
+  "claim_boundary": "Implementation and deterministic acquisition policy freeze only; no seen200 production selection, docking label opening, model-result interpretation, binding, affinity, competition, Docking Gold, or experimental blocking claim.",
+  "deployment_result_availability_at_freeze": {
+    "candidate7087_deployment_scores_tsv_present": false,
+    "waiting_summary_or_receipt_contents_opened_by_freeze_builder": false
+  },
+  "freeze_date": "2026-07-17",
+  "freeze_payload_sha256": "c5b5a74a027765c3b5f0ea11b591f0f5a8ddaef38118d3daf8b3b8471009f83c",
+  "identity_only_exclusion_materialization": {
+    "fields_consumed": [
+      "sample_id",
+      "sequence"
+    ],
+    "nonidentity_or_label_values_used": 0,
+    "production_selector_opens_source_registry": false,
+    "source_registry_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_external_calibration_manifest_v1.csv",
+    "source_registry_sha256": "bf9b500462f4fe82061a8fd74479c672479ded0c6469b6ef863f7078e5dced4e",
+    "source_row_count": 97,
+    "unique_identity_rows_written": 90
+  },
+  "label_access": {
+    "experimental_labels_opened": 0,
+    "v4d_open_model_results_opened": 0,
+    "v4d_prospective_test_labels_opened": 0,
+    "v4f_labels_opened": 0
+  },
+  "label_access_scope": "The zero counters apply to the production seen200 selector and implementation-freeze builder. The identity-only exclusion artifact was materialized separately from an already-open calibration registry using only sample_id and sequence fields; no calibration label value is accepted by or supplied to the selector.",
+  "production_identity_inputs": {
+    "candidate_pool": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1_candidates/fast_gate/fast_gate_formal_eligible_v1.csv",
+      "row_count": 7087,
+      "sha256": "a92da7c939bf008ffaf7f3a305871477f74466d64f3489e9941c34a61a620e07"
+    },
+    "reserve2_manifest": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v4_g/untouched_reserve2_parents.tsv",
+      "sha256": "98c11e8f72d97d60c9e772fa2bb256622f1ed6e1e9fddd9e136a8cd42959bb75"
+    },
+    "v4d_manifest": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "row_count": 290,
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "v4f_manifest": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/data_splits/pvrig_v4_f/prospective_holdout96_manifest.tsv",
+      "sha256": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334"
+    }
+  },
+  "production_outputs_created": 0,
+  "production_selection_executed": false,
+  "runtime_security_contract": {
+    "accepted_model_input": "hash-closed V4-D deployment score TSV plus bound summary and receipt only",
+    "experimental_label_cli_arguments": 0,
+    "prospective_test_label_cli_arguments": 0,
+    "receipt_publication": "last after manifest and audit byte verification",
+    "v4f_label_cli_arguments": 0,
+    "verification": "exact deterministic artifact replay plus receipt hash closure"
+  },
+  "schema_version": "phase2_v4_g_seen200_selector_implementation_freeze_v1",
+  "selection_policy": {
+    "control": "ascending seeded SHA256 rank independent of model scores and labels",
+    "disagreement": "descending model_disagreement among remaining eligible candidates",
+    "fail_diversity": "greedy farthest-first maximum of minimum mean normalized Levenshtein distance over CDR1/CDR2/CDR3 against same-parent V4-D anchors and prior diversity selections",
+    "fail_quota_order": [
+      [
+        "LABEL_FREE_DIVERSITY_REPLACING_TOP",
+        4
+      ],
+      [
+        "UNCERTAINTY",
+        3
+      ],
+      [
+        "MODEL_DISAGREEMENT",
+        2
+      ],
+      [
+        "LABEL_FREE_HASH_CONTROL",
+        1
+      ]
+    ],
+    "pass_quota_order": [
+      [
+        "TOP_PREDICTION",
+        4
+      ],
+      [
+        "UNCERTAINTY",
+        3
+      ],
+      [
+        "MODEL_DISAGREEMENT",
+        2
+      ],
+      [
+        "LABEL_FREE_HASH_CONTROL",
+        1
+      ]
+    ],
+    "rows": 200,
+    "rows_per_parent": 10,
+    "selection_seed": "phase2_v4_g_seen200_acquisition_20260716",
+    "shortage_policy": "fail_closed_no_partial_publication_no_replacement",
+    "source_parent_clusters": [
+      "C0009",
+      "C0116",
+      "C0139",
+      "C0219",
+      "C0224",
+      "C0248",
+      "C0251",
+      "C0258",
+      "C0304",
+      "C0406",
+      "C0411",
+      "C0418",
+      "C0453",
+      "C0492",
+      "C0495",
+      "C0500",
+      "C0502",
+      "C0509",
+      "C0518",
+      "C0533"
+    ],
+    "tie_break": "seeded SHA256 then candidate_id",
+    "top": "descending consensus_prediction among deployment-route EXPLOITATION candidates only",
+    "uncertainty": "descending ensemble_uncertainty among remaining eligible candidates"
+  },
+  "static_preflight": {
+    "all_source_parents_have_at_least_10_identity_eligible_candidates": true,
+    "identity_eligible_counts_after_v4d_and_calibration_exclusion": {
+      "C0009": 165,
+      "C0116": 154,
+      "C0139": 144,
+      "C0219": 165,
+      "C0224": 179,
+      "C0248": 172,
+      "C0251": 173,
+      "C0258": 184,
+      "C0304": 166,
+      "C0406": 161,
+      "C0411": 174,
+      "C0418": 146,
+      "C0453": 171,
+      "C0492": 172,
+      "C0495": 178,
+      "C0500": 168,
+      "C0502": 144,
+      "C0509": 174,
+      "C0518": 158,
+      "C0533": 174
+    },
+    "minimum_identity_eligible_count_per_parent": 144,
+    "source_parent_count": 20
+  },
+  "status": "FROZEN_BEFORE_V4D_OPEN_MODEL_RESULTS_NO_SEEN200_SELECTION",
+  "test_evidence": {
+    "command": "python3 -m unittest -v experiments/phase2_5080_v1/src/test_select_phase2_v4_g_seen200_acquisition.py",
+    "coverage": [
+      "PASS quota 4/3/2/1",
+      "FAIL diversity replacement 4/3/2/1",
+      "reference and calibration leakage exclusion",
+      "forbidden label columns and label-access flags",
+      "parent shortage fail-closed",
+      "deployment receipt tamper",
+      "implementation freeze tamper",
+      "duplicate sequence rejection",
+      "receipt-last publication",
+      "exact replay and output tamper",
+      "row-order invariance",
+      "real static identity preflight"
+    ],
+    "status": "PASS",
+    "tests_run": 10
+  }
+}

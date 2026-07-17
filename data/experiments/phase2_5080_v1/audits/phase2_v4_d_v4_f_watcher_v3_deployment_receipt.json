@@ -1,0 +1,87 @@
+{
+  "claim_boundary": "Watchers are deployed and waiting only. The future surrogate estimates independent dual-receptor computational Docking geometry, not binding, affinity, competition, Docking Gold, or experimental blocking truth.",
+  "created_at": "2026-07-16T18:08:49.467791+00:00",
+  "implementation_freeze_receipt": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_v4_f_watcher_v3_implementation_freeze.receipt.json",
+    "sha256": "fe91ecf994c18c5dbf593860569e9028dc0223cf2be86d3e4b4cda9d1ec14ecc",
+    "size": 1191
+  },
+  "label_access": {
+    "prospective_test_label_paths_accepted": 0,
+    "prospective_test_labels_read": false,
+    "v4_f_label_paths_accepted": 0,
+    "v4_f_labels_read": false
+  },
+  "schema_version": "phase2_v4_d_v4_f_watcher_v3_deployment_receipt_v1",
+  "status": "PASS_V3_WATCHERS_RUNNING_FAIL_CLOSED_WAITING",
+  "surrogate": {
+    "launcher_receipt": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_d_surrogate_training_v3/launcher_receipt.json",
+      "sha256": "8f63cdc65cfb436e56cbad02b5dc87c9de685b531d08a0acd38b444c455e7496",
+      "size": 953
+    },
+    "process": {
+      "alive": true,
+      "cmdline": "bash /mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_d_surrogate_training_v3.sh",
+      "pid": 3864520,
+      "start_time_ticks": 40915822
+    },
+    "status": {
+      "claim_boundary": "Fixed-PVRIG sequence-to-independent-dual-docking computational geometry surrogate training only; not binding, affinity, competition, Docking Gold, or experimental blocking truth.",
+      "controller_pid": 3864520,
+      "prospective_test_label_paths_accepted": 0,
+      "prospective_test_labels_read": false,
+      "reason": "missing:evaluator,release_receipt,teacher,teacher_audit",
+      "schema_version": "phase2_v4_d_surrogate_training_watcher_v3",
+      "status": "WAITING_OPEN_TEACHER",
+      "updated_at": "2026-07-16T18:08:28.086609+00:00"
+    },
+    "status_file": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_d_surrogate_training_v3/status.json",
+      "sha256": "bd2995229f32bb533d07730865b6872a0fd8bcbb80f9ed8bfab7db82eacfeeaa",
+      "size": 545
+    },
+    "tmux_session": "pvrig-v4d-surrogate-training-v3",
+    "trust_anchor_sha256": "bddee8dc7a303b7239641bf0e74317ee2af8a7509506564714227b5118a6ef11"
+  },
+  "v4f": {
+    "launcher_receipt": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_f_prediction_freeze_v3/launcher_receipt.json",
+      "sha256": "10a1cf19e77cd0634383d9516d5265050f59636ca3f1579400e575491f11d87f",
+      "size": 1030
+    },
+    "process": {
+      "alive": true,
+      "cmdline": "bash /mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/monitor_phase2_v4_f_prediction_freeze_v3.sh",
+      "pid": 3864523,
+      "start_time_ticks": 40915823
+    },
+    "status": {
+      "controller_pid": 3864523,
+      "reason": "upstream surrogate state=WAITING_OPEN_TEACHER; V4-F labels remain sealed",
+      "schema_version": "phase2_v4_f_prediction_freeze_watcher_v3",
+      "status": "WAITING_V4_D_SURROGATES",
+      "updated_at": "2026-07-16T18:08:27.566695+00:00",
+      "v4_f_label_paths_accepted": 0,
+      "v4_f_labels_read": false
+    },
+    "status_file": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_f_prediction_freeze_v3/status.json",
+      "sha256": "0434f1535f4bb4498e317695414b226986411565aa4a736a32225fc2143a0e86",
+      "size": 338
+    },
+    "tmux_session": "pvrig-v4f-prediction-freeze-v3",
+    "trust_anchor_sha256": "31f7f2cc66fcee3dcf665b76fd2a4985be3ce9d64460dd74956d776e4ee9197e"
+  },
+  "verification": {
+    "expected_production_output_paths": [
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_sequence_surrogate_v1",
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_frozen_embedding_surrogate_v1",
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/runs/pvrig_v4_d_contact_fusion_surrogate_v1",
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/predictions/pvrig_v4_f_surrogate_predictions_v1"
+    ],
+    "joint_regression_status": "OK",
+    "joint_regression_tests": 18,
+    "production_output_paths_created": []
+  }
+}

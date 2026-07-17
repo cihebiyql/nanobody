@@ -1,0 +1,11 @@
+IMPLEMENTATION_FREEZE.json
+logs/waiter.nohup.log
+PACKAGE_RECEIPT.json
+PREREGISTRATION.json
+prospective_holdout96_manifest.tsv
+stage_run_phase2_v4_f96_dual_docking_node23_v1_1.py
+status/deployment_bootstrap.pid
+status/no_eligible_docking.receipt.json
+status/waiter.lock
+status/waiter_status.json
+wait_for_v4f96_gates_then_run_dual_docking.sh

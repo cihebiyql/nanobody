@@ -1,0 +1,38 @@
+{
+  "candidate_count": 96,
+  "claim_boundary": "Sequence/developability Full-QC only; not Docking, geometry, binding, affinity, competition, experimental blocking, blocker probability, or Docking Gold.",
+  "hashes": {
+    "implementation_freeze": "062f83b290166471fee54231470967425b5de786d0f61f9597b02f5bcc190805",
+    "package_receipt": "c89ba6591c10acb4007a182ec21880b17ec92f661530df8701f6c66677ae1af0",
+    "preregistration": "b9d539f8936992df330e7ad844604d7d81114547e99de82b1a1fcbcbeecbebcb",
+    "runner": "b36e2fc2908eee2cf573db065a1acb16e4b6a17f53dad85c27183ededb444d09",
+    "waiter": "feebca265f263c87e8240c201b19d75070782264b06346caadbddb8f3ac497aa",
+    "zero_work_preflight": "10069a56beba68b295570924504824e4267342c1072c52445e405bfb5230740e"
+  },
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "geometry": 0,
+    "model": 0,
+    "v4_f_predictions": 0
+  },
+  "published_at_utc": "2026-07-16T18:00:30.081948+00:00",
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_f_holdout96_full_qc_recovery_v2_20260717",
+  "resource_policy": {
+    "cpu_affinity": "0-23",
+    "gpu_requested": 0,
+    "maximum_cpu_workers": 24
+  },
+  "schema_version": "phase2_v4_f_holdout96_full_qc_recovery_v2_remote_deployment_receipt",
+  "scientific_work_started": false,
+  "status": "PASS_DEPLOYED_ZERO_WORK_WAITER_ALIVE",
+  "upstream_structure_progress": {
+    "completed_terminal_records": 330,
+    "expected": 720,
+    "status": "RUNNING",
+    "updated_at_utc": "2026-07-16T17:59:55.816721+00:00"
+  },
+  "waiter_alive": true,
+  "waiter_pid": 523095,
+  "waiter_state": "WAITING_SUPPORT_V4_A720_STRUCTURES"
+}

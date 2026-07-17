@@ -1,0 +1,30 @@
+{
+  "claim_boundary": "acquisition_only_computational_monomer_and_independent_dual_receptor_docking_evidence;not_binding_affinity_competition_experimental_blocking_or_docking_gold",
+  "frozen_at_utc": "2026-07-16T16:23:33.539760+00:00",
+  "implementation": {
+    "prepare_and_run_node1_structures.py": "46a812f6adaf93c424b5b6c47fccfa570c6e734ddc7bc62ce27e9c78400f3072"
+  },
+  "inputs": {
+    "full_merged_sha256": "f6b0ca1d3de522f6cc3269d498bcd89cd40e73576b81d16291bd81f49b7d6962",
+    "recovery_receipt_path": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716/status/recovery.complete.json",
+    "recovery_receipt_sha256": "7b2786274045a45d7b487fa7b9cc4e14d7a2e6215e2cb6286d950e2b9632f356",
+    "unseen96_acquisition_manifest_sha256": "e814103ee90831e33b3f04a7e8a477e68695d61401d96732b7e95829b1bd306f"
+  },
+  "resources": {
+    "gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "max_cpu_threads": 32,
+    "max_parallel": 4,
+    "node": "node1",
+    "ssd_only": true,
+    "threads_per_worker": 8
+  },
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_structure_implementation_freeze_v1",
+  "selection": "all and only exact-recovery full_qc hard_fail=False; no replacement; no model-score or geometry access",
+  "status": "FROZEN_BEFORE_FIRST_STRUCTURE_COMPUTE",
+  "structure_policy": "NanoBodyBuilder2 primary docking input; IgFold crosscheck only"
+}

@@ -1,0 +1,69 @@
+{
+  "claim_boundary": "PVRIG-hotspot-conditioned RFantibody sequences; sequence/developability design evidence only, not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "generation_runner_pid": 726091,
+  "generation_tasks_complete": 0,
+  "gpu_snapshot": [
+    {
+      "index": 0,
+      "memory_used_mib": 2243,
+      "utilization_percent": 77
+    },
+    {
+      "index": 1,
+      "memory_used_mib": 2243,
+      "utilization_percent": 76
+    },
+    {
+      "index": 2,
+      "memory_used_mib": 2243,
+      "utilization_percent": 76
+    },
+    {
+      "index": 3,
+      "memory_used_mib": 2545,
+      "utilization_percent": 76
+    }
+  ],
+  "implementation_freeze_sha256": "dab2f0dedc845fe3e415bf77bc7ca3281ed14bcaee1caf0bcacd60ca5fcd9209",
+  "label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "model_scores_or_predictions": 0,
+    "v4_d_test32": 0,
+    "v4_f_labels": 0
+  },
+  "parent_structures_complete": 12,
+  "preregistration_sha256": "fc7aa149eedcf11a23484b152dc6431672cdf8a0787396958004c2ffa88a612d",
+  "recorded_at_utc": "2026-07-16T19:29:47.133333+00:00",
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "resource_policy": {
+    "cpu_sets": [
+      "0-7",
+      "8-15",
+      "16-23",
+      "24-31"
+    ],
+    "gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "minimum_free_disk_bytes": 107374182400,
+    "minimum_node_cpu_count": 32
+  },
+  "schema_version": "phase2_v4_h_qc96_h0_h3_deployment_receipt_v1",
+  "status": "PASS_DEPLOYED_AND_H1_REAL_GENERATION_STARTED",
+  "test_results_sha256": "08dc97e7c238277f2e827ded14ee61e254a83485d8aa75d3769c8b8a7b870308",
+  "tmux_monitor_pane_pid": 726073,
+  "tmux_pipeline_pane_pid": 726070,
+  "tmux_session": "pvrig-v4h-qc96-v1",
+  "zero_work_preflight_label_path_access": {
+    "docking": 0,
+    "experimental": 0,
+    "model_scores_or_predictions": 0,
+    "v4_d_test32": 0,
+    "v4_f_labels": 0
+  },
+  "zero_work_preflight_status": "PASS_ZERO_WORK_PREFLIGHT"
+}

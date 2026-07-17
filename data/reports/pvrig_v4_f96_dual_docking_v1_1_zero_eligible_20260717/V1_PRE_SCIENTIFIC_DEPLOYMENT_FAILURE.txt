@@ -1,0 +1,12 @@
+./wait_for_v4f96_gates_then_run_dual_docking.sh: line 20: ROOT: readonly variable
+---TREE---
+IMPLEMENTATION_FREEZE.json
+logs/waiter.nohup.log
+PACKAGE_RECEIPT.json
+PREREGISTRATION.json
+prospective_holdout96_manifest.tsv
+stage_run_phase2_v4_f96_dual_docking_node23.py
+status/deployment_bootstrap.pid
+status/waiter.lock
+status/waiter.pid
+wait_for_v4f96_gates_then_run_dual_docking.sh

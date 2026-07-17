@@ -1,0 +1,24 @@
+{
+  "label_access": {
+    "formal_evaluation_executed": false,
+    "v4_f96_docking_labels_read": false
+  },
+  "preserved_files": {
+    "phase2_v4_f96_formal_evaluator_v1_implementation_freeze.receipt_preef10_superseded_preproduction.json": {
+      "sha256": "e98256ac418ccc5978766f862aa040da8c0cff638e15cb6db19588d9dcd3c96f",
+      "size_bytes": 917
+    },
+    "phase2_v4_f96_formal_evaluator_v1_implementation_freeze_preef10_superseded_preproduction.json": {
+      "sha256": "ac1480fa28771fefafb2daa978bdfe8c3c235bebf0748815f34afdca04379036",
+      "size_bytes": 3152
+    },
+    "phase2_v4_f96_formal_evaluator_v1_tests_preef10_superseded_preproduction.log": {
+      "sha256": "503de634ba5993e2fb8aab9f7546dd79eb8c75c7a80034ea177bceb599daf72b",
+      "size_bytes": 4250
+    }
+  },
+  "reason": "Root formal-method decision added prospectively preregistered EF@Top10% point and parent-bootstrap gates before label unseal; V1 prereg remains preserved and V2 explicitly supersedes it.",
+  "schema_version": "phase2_v4_f96_formal_evaluator_preef10_freeze_supersession_v1",
+  "status": "SUPERSEDED_PREPRODUCTION_BEFORE_ANY_V4_F96_LABEL_OR_FORMAL_EVALUATION",
+  "superseded_at": "2026-07-16T18:16:46.359772+00:00"
+}

@@ -1,0 +1,164 @@
+{
+  "deployment": {
+    "denominator": 6861,
+    "label_counts": {
+      "IN_DOMAIN": 1733,
+      "NEAR_DOMAIN": 67,
+      "OUT_OF_DOMAIN": 5061
+    }
+  },
+  "deployment_launcher_sha256": "eb1b184adf8fb3c811219c04433dbd9e631e07c0de4ca8f5d2b856c9bdaca4bd",
+  "docking_or_experimental_label_paths_opened": 0,
+  "fail_decision_repository_copy": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/reports/pvrig_v4_d_sequence_support_v3_result_v2/FAIL_CLOSED_DECISION.json",
+    "sha256": "5b9f5786e0d0bbc501cf79440694f5cedcce658a4c2ac16e8aecc2f042555970",
+    "size_bytes": 527
+  },
+  "fail_decision_source": {
+    "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/FAIL_CLOSED_DECISION.json",
+    "sha256": "5b9f5786e0d0bbc501cf79440694f5cedcce658a4c2ac16e8aecc2f042555970",
+    "size_bytes": 527
+  },
+  "gates": {
+    "cdr_composition_shuffle": {
+      "kind": "cdr_composition_shuffle",
+      "label_counts": {
+        "OUT_OF_DOMAIN": 1000
+      },
+      "maximum": 0.05,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "channel_splice": {
+      "kind": "channel_splice",
+      "label_counts": {
+        "NEAR_DOMAIN": 10,
+        "OUT_OF_DOMAIN": 990
+      },
+      "maximum": 0.05,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "cross_parent_cdr_graft": {
+      "kind": "cross_parent_cdr_graft",
+      "label_counts": {
+        "NEAR_DOMAIN": 137,
+        "OUT_OF_DOMAIN": 863
+      },
+      "maximum": 0.1,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "deployment_coverage": {
+      "minimum_count": 4117,
+      "minimum_fraction": 0.6,
+      "observed_count": 1733,
+      "observed_fraction": 0.2525870864305495,
+      "passed": false
+    },
+    "nested_validation": {
+      "every_parent_minimum": 0.6,
+      "every_parent_observed_minimum": 0.15384615384615385,
+      "minimum": 0.8,
+      "observed": 0.588495575221239,
+      "passed": false
+    },
+    "unseen_parent_chimera": {
+      "kind": "unseen_parent_chimera",
+      "label_counts": {
+        "NEAR_DOMAIN": 10,
+        "OUT_OF_DOMAIN": 990
+      },
+      "maximum": 0.1,
+      "observed_fraction": 0.01,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "NEAR_DOMAIN"
+    }
+  },
+  "implementation_freeze_sha256": "2d541646bf0af762cdd5bb38f0519acee0dc11dc059f2d09ba79ab86f270882c",
+  "nested_validation": {
+    "in_domain_fraction": 0.588495575221239,
+    "minimum_parent": "C0116",
+    "minimum_parent_fraction": 0.15384615384615385
+  },
+  "null_controls": {
+    "cdr_composition_shuffle": {
+      "kind": "cdr_composition_shuffle",
+      "label_counts": {
+        "OUT_OF_DOMAIN": 1000
+      },
+      "maximum": 0.05,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "channel_splice": {
+      "kind": "channel_splice",
+      "label_counts": {
+        "NEAR_DOMAIN": 10,
+        "OUT_OF_DOMAIN": 990
+      },
+      "maximum": 0.05,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "cross_parent_cdr_graft": {
+      "kind": "cross_parent_cdr_graft",
+      "label_counts": {
+        "NEAR_DOMAIN": 137,
+        "OUT_OF_DOMAIN": 863
+      },
+      "maximum": 0.1,
+      "observed_fraction": 0.0,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "IN_DOMAIN"
+    },
+    "unseen_parent_chimera": {
+      "kind": "unseen_parent_chimera",
+      "label_counts": {
+        "NEAR_DOMAIN": 10,
+        "OUT_OF_DOMAIN": 990
+      },
+      "maximum": 0.1,
+      "observed_fraction": 0.01,
+      "passed": true,
+      "row_count": 1000,
+      "target_label": "NEAR_DOMAIN"
+    }
+  },
+  "payload_sha256": "b928f61bbfd4a25cb1a8498c044320be3eab7890f76273c65e8587df3a7c6c37",
+  "production_support_table_published": false,
+  "publish_dir_exists": false,
+  "recorded_at": "2026-07-16T14:12:52.199567+00:00",
+  "return_code": 2,
+  "runtime_audit_repository_copy": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/reports/pvrig_v4_d_sequence_support_v3_result_v2/support_v3_runtime_audit.json",
+    "sha256": "6328468b5e8c14f99d8099095e8183d1270f38adc4d2fd6f67a6a3d953e9d521",
+    "size_bytes": 35239
+  },
+  "runtime_audit_source": {
+    "path": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/support_v3_runtime_audit.json",
+    "sha256": "6328468b5e8c14f99d8099095e8183d1270f38adc4d2fd6f67a6a3d953e9d521",
+    "size_bytes": 35239
+  },
+  "schema_version": "phase2_v4_d_sequence_support_v3_terminal_record_v2",
+  "status": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY",
+  "terminal": {
+    "child_pid": 3123339,
+    "log": "/root/pvrig_v4_d_sequence_support_v3_runtime_v2_72dc6adc1e34/production.log",
+    "return_code": 2,
+    "status": "FAILED"
+  },
+  "v4_f_label_paths_opened": 0
+}

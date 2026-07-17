@@ -1,0 +1,27 @@
+{
+  "adapter_sha256": "f9da5e4f8322362fa838cf47acb5a3fabf33be0a8c2c44554a30b4dafe8c90aa",
+  "claim_boundary": "Sequence/developability QC and VHH monomer structure predictions only; not PVRIG binding, affinity, docking, competition, or experimental blocking evidence.",
+  "frozen_at": "2026-07-16T14:03:00Z",
+  "integration_test_sha256": "db593a5fdf0cae8bff65a1c95f7a1487ff341eb11effe31e4fca0c0aab6bd2c8",
+  "merge_implementation_sha256": "1d874b69606cf4fe8f25f76d040c4ce383d47b56e466ff283fdcbed4926bc309",
+  "merge_regression_test_sha256": "1dc93c7e06550e98a8ea6635b8d8d96182d54e6a937fef6ee066fd4e1ffc9365",
+  "monitor_implementation_sha256": "e92fd2350aaa944244de63bef7ab73f743cad435c07560c990cbdb27c40c0e11",
+  "postprocess_integration_test_sha256": "3dfa789c0612e6d50e32832b623ff8eb4423bf281f9916fe6fa85af8a7b8e833",
+  "preregistration_sha256": "edac3cab4e0cf963b4e6d988c0d6d6389cadf0447a9729acdecce7881dd70a50",
+  "schema_version": "pvrig_node1_ssd_deepqc_three_state_tnp_igfold100_reconciliation_implementation_freeze_v3_2",
+  "status": "PASS_SUPERSEDING_V3_2_FROZEN_IMPLEMENTATION_18_TESTS",
+  "supersedes": {
+    "v3_1_adapter_sha256": "cda5eb9896931e81c75814c8a0efcd7480f380141dcfc816da561da9a4000d68",
+    "v3_1_status": "FAIL_CLOSED_BEFORE_PUBLICATION_AFTER_IGFOLD100",
+    "fix": "serialize heterogeneous VALID_TNP and TNP_NUMBERING_HARD_FAIL_NA manifest rows with a sorted union field set and empty missing cells"
+  },
+  "test_count": 18,
+  "tests_sha256": "9da2f9fc8424d4f0c92e6046f77efe121dc4892271f87d68474c9d12dd1e9828",
+  "tnp_partition": {
+    "TNP_NUMBERING_HARD_FAIL_NA": 7,
+    "UPSTREAM_L2_HARD_FAIL_NA": 8,
+    "VALID_TNP": 85,
+    "numeric_imputation_for_na": false
+  },
+  "validator_sha256": "96115acddde3d6bde7f801b285e1a738b5299296a3d746ad7948f540b816cf3c"
+}

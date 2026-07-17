@@ -1,0 +1,14 @@
+{
+  "audit_script_sha256": "a0dea4b745b2a1618ca53d7b26675e2f4647f3743a1aaddef64438891efa450a",
+  "candidate_level_labels_emitted": false,
+  "claim_boundary": "Retrospective endpoint-aligned sensitivity audit only; not original V4-D release authority or experimental evidence.",
+  "created_at": "2026-07-16T23:15:33.310929+00:00",
+  "declaration_sha256": "1d54b5b5dd8a034cf83a00ce21bfb3ade7fadf6d974594feb81384c5df123214",
+  "method_audit_sha256": "cff25fde02a2181a6790db01ac85682a1e2a32927ed08fe5f1eb3fbfa8b6a5ad",
+  "original_v4d_evaluator_modified": false,
+  "original_v4d_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+  "original_v4d_evaluator_status": "FAIL",
+  "prospective_claim": false,
+  "schema_version": "pvrig_v4e_endpoint_aligned_method_audit_receipt_v1",
+  "status": "PASS_RETROSPECTIVE_METHOD_AUDIT_NO_LABEL_RELEASE"
+}

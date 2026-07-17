@@ -1,0 +1,62 @@
+{
+  "schema_version": "phase2_support_v4_a_acquisition720_full_qc_v1_preregistration",
+  "status": "FROZEN_BEFORE_SUPPORT_V4_A_720_FULL_QC_EXECUTION",
+  "frozen_at_utc": "2026-07-16T17:30:00Z",
+  "objective": "Run sequence/developability Full-QC on every Fast-QC survivor from the frozen label-free Support V4-A 720 acquisition design.",
+  "input_contract": {
+    "manifest": "experiments/phase2_5080_v1/prepared/pvrig_support_v4_a_acquisition720_v1/support_v4_a_future_teacher_acquisition_pool_v1.tsv",
+    "manifest_sha256": "73454cbf8194d3faa5cad354a5b2f31f433e317d5222a6cd59906775fb56bfca",
+    "upstream_audit_sha256": "19f7465978601b346b98b7cf9fe0385cf5b139db0e1bf1ae09a3dbae5b214f1e",
+    "upstream_receipt_sha256": "440e675b1a6e39771a830d282e7e575dfe7ce24f7cb91c2966f71f577c655181",
+    "expected_rows": 720,
+    "expected_parent_clusters": 20,
+    "rows_per_parent": 36,
+    "acquisition_rows": 480,
+    "audit_rows": 240,
+    "rows_per_patch": 240,
+    "unique_candidate_ids": 720,
+    "unique_sequences": 720,
+    "unique_sequence_hashes": 720,
+    "unique_cdr3": 720,
+    "required_parent_role": "OPEN_TRAIN",
+    "required_fast_qc_state": "HARD_PASS"
+  },
+  "execution_contract": {
+    "remote_root": "/data1/qlyu/projects/pvrig_support_v4_a_acquisition720_full_qc_v1_20260717",
+    "storage_policy": "SSD_ONLY_DATA1_NO_NFS_DATA_PREFIX",
+    "stages": ["prepare", "fast", "full"],
+    "full_qc_limit": 0,
+    "selection_policy": "all Fast-QC survivors enter Full-QC; no replacement, no cap, no model-based reselection",
+    "tnp_policy": "DEFERRED_NO_IMPUTATION",
+    "fast_chunk_size": 45,
+    "full_chunk_size": 45,
+    "chunk_jobs": 16,
+    "full_chunk_jobs": 16,
+    "workers_per_chunk": 2,
+    "maximum_requested_cpu_workers": 32,
+    "gpu_requested": 0,
+    "screen_source": "/data1/qlyu/software/vhh_eval_tools/competition_qc/vhh_large_scale_screen.py",
+    "screen_source_sha256": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a",
+    "runtime_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_recovery_v2_1_20260716/runtime_closure",
+    "runtime_manifest_sha256": "603985f4af78151bbdb0b8ed8a3f2de8448f3bca57b011bbc2585a4754a6cc5d",
+    "python_sha256": "33de598423ed1c2a7d65e8057df2b8831a0422ad51ae385c6cf362fd0d518095"
+  },
+  "forbidden_input_fields": [
+    "model_score", "model_prediction", "docking_score", "docking_label", "geometry_label",
+    "r_dual", "r_dual_min", "binding_label", "affinity", "experimental_label", "blocker_label"
+  ],
+  "label_path_access": {
+    "model_scores": 0,
+    "docking": 0,
+    "v4_d_geometry": 0,
+    "v4_f_labels": 0,
+    "experimental": 0
+  },
+  "terminal_outputs": [
+    "full_qc_terminal_summary.json",
+    "full_qc_attrition_by_parent.tsv",
+    "full_qc_attrition_by_role.tsv",
+    "full_qc_attrition_by_patch.tsv"
+  ],
+  "claim_boundary": "This run measures sequence and developability Full-QC only. It is not Docking, docking geometry, PVRIG binding, affinity, competition, experimental blocking, blocker probability, or a biological teacher label."
+}

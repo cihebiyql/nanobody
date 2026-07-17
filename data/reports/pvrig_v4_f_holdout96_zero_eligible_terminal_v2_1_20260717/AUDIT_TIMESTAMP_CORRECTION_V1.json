@@ -1,0 +1,20 @@
+{
+  "affected_file": "IMPLEMENTATION_FREEZE.json",
+  "affected_file_sha256": "42fad31d08a9c868e21c528b27543e58fba4d25e275d4c8eee44b21feebcc993",
+  "canonical_receipt_sha256": "c0ee3aae278836b91f77a3e33aa78823dd0dc6551b5f93e5458763f38c191aa7",
+  "claim_boundary": "Audit metadata correction only; no scientific result or eligibility decision changed.",
+  "correction": "The embedded timestamp was manually transcribed two minutes late. The file content and hash were actually created and deployed before terminalization; no scientific field, gate, threshold, result, or hash is changed.",
+  "filesystem_ordering_evidence": {
+    "canonical_receipt_published_at_utc": "2026-07-16T18:37:22.578309+00:00",
+    "local_freeze_mtime_cst": "2026-07-17T02:36:45.534037+08:00",
+    "local_freeze_mtime_epoch": 1784227005,
+    "remote_freeze_preserved_mtime_cst": "2026-07-17T02:36:59+08:00",
+    "remote_freeze_preserved_mtime_epoch": 1784227019,
+    "remote_receipt_mtime_cst": "2026-07-17T02:37:22.577386+08:00",
+    "remote_receipt_mtime_epoch": 1784227042
+  },
+  "incorrect_embedded_frozen_at_utc": "2026-07-16T18:39:00Z",
+  "recorded_at_utc": "2026-07-16T18:37:56.089001+00:00",
+  "schema_version": "phase2_v4_f_holdout96_zero_eligible_terminal_v2_1_audit_timestamp_correction_v1",
+  "status": "CORRECTED_NONSCIENTIFIC_METADATA_ONLY"
+}

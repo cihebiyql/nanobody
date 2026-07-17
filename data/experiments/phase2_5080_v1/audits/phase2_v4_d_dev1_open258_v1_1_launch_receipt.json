@@ -1,0 +1,19 @@
+{
+  "authorization_scope": "ONE_DEV1_V1_1_OPEN258_BUILDER_ATTEMPT",
+  "claim_boundary": "Pre-execution receipt for one V1.1 DEV-only computational geometry teacher build; not binding, affinity, experimental blocking, or Docking Gold.",
+  "created_at_utc": "2026-07-17T00:42:43.932101+00:00",
+  "deployment_receipt_sha256": "858b191ce0c7210e40389da02aab32ac9f9e5eea5652ae712630a8dd7d787e64",
+  "final_submission_authority": false,
+  "formal_v4_f_unlock_eligible": false,
+  "independent_review_receipt_sha256": "dee72c7a1ced512bf8297e5f0ab85fb140a896fb214f8be9e28b18d2e43720fb",
+  "launch_freeze_sha256": "1de47077ed5b5d7fb3e0ec1e7bca82d9ce98a96ae8696d10b9dcd9ff5401aa1e",
+  "prelaunch_receipt_sha256": "8a48fb71e06ac90a997b521fb5ce2a6b5fd6539706598b5cec3adebe33c897a1",
+  "remote_execution_started": false,
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_1_20260717",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_1_launch_receipt_v1",
+  "source_evaluator_status": "FAIL",
+  "source_evaluator_unlockable": false,
+  "status": "AUTHORIZED_ONE_V1_1_ATTEMPT_NOT_STARTED",
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

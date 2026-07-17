@@ -1,0 +1,30 @@
+{
+  "checked_at_utc": "2026-07-16T18:17:00.866712+00:00",
+  "claim_boundary": "Read-only transport of a computational dual-conformation geometry teacher; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "current_exists": false,
+  "current_target": null,
+  "implementation_hashes": {
+    "freeze": "639892444fb845f34bafa5570cc42d024c3b16e11abc49af1cd321b27a233cd1",
+    "launcher": "59bb1ac6a7d3c7838b2eeba569a93ba8772dde2adfab300589c624baa5019995",
+    "preregistration": "6ff017afbdc4269601169157dc741691b06c74e77f845a191d643e1127a1c89d",
+    "script": "cbb4b26f3c628ff08376f98756335420dff4b6ccaf715935ac21a35e7bb8ce94",
+    "test": "8fb7bb6f505774fa91209867b66839936a5171b9e67e0ca9a5eec249564b6de6"
+  },
+  "label_paths_opened": 0,
+  "once_return_code": 10,
+  "remote_status": {
+    "claim_boundary": "Read-only transport of a computational dual-conformation geometry teacher; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+    "label_paths_opened": 0,
+    "reason": "remote postprocess status=WAITING_V4D",
+    "remote_status": "WAITING_V4D",
+    "schema_version": "phase2_v4_d_open_teacher_delivery_v1",
+    "status": "WAITING_REMOTE",
+    "test32_labels_read": false,
+    "updated_at": "2026-07-16T18:16:35.806395+00:00",
+    "v4f_labels_read": false
+  },
+  "schema_version": "phase2_v4_d_open_teacher_delivery_v1_prelaunch_smoke",
+  "status": "PASS_WAITING_REMOTE_NO_PUBLICATION",
+  "test32_labels_read": false,
+  "v4f_labels_read": false
+}

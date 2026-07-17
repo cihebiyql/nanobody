@@ -1,0 +1,17 @@
+{
+  "claim_boundary": "Operational session-liveness evidence only; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "exit_condition": "remote pipeline PID 726070 no longer exists",
+  "local_pane_dead": false,
+  "local_pane_pid": 52035,
+  "local_tmux_session": "pvrig-v4h-node1-keepalive-v1",
+  "reason": "Mitigate known Node1 Linger=no systemd user-session cleanup risk without changing frozen science.",
+  "recorded_at_utc": "2026-07-16T19:46:46.886731+00:00",
+  "remote_node": "node1",
+  "remote_pipeline_pid": 726070,
+  "resource_allocation_modified": false,
+  "schema_version": "phase2_v4_h_qc96_node1_keepalive_v1",
+  "scientific_configuration_modified": false,
+  "server_alive_count_max": 10,
+  "server_alive_interval_seconds": 30,
+  "status": "PASS_KEEPALIVE_SESSION_ACTIVE"
+}

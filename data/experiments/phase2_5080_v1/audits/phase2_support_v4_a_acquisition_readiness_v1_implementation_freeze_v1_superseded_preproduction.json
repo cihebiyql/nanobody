@@ -1,0 +1,117 @@
+{
+  "claim_boundary": "This freezes a label-free future Node1 teacher-acquisition/readiness implementation. It is not Support-domain PASS, docking geometry, model correctness, binding, affinity, competition, Docking Gold, or experimental blocking evidence.",
+  "frozen_at": "2026-07-17T00:55:00+08:00",
+  "frozen_files": {
+    "builder": {
+      "path": "experiments/phase2_5080_v1/src/build_phase2_support_v4_a_acquisition_readiness.py",
+      "sha256": "5648c76acb5640353dd03ab1777a764dbca1f28b79770626f0db2c500f0b8df0",
+      "size_bytes": 35710
+    },
+    "capacity_audit": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_capacity_audit.json",
+      "sha256": "956b844e5dd56c3fb8c11436482350b823417453a92902c7b08233b77736250f",
+      "size_bytes": 19053
+    },
+    "passing_test_log": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_tests.log",
+      "sha256": "134982d2cfe0ec163ba8b678ae5981672044af3b4dc755f4833204db541afe7f",
+      "size_bytes": 2294
+    },
+    "preregistration": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_preregistration.json",
+      "sha256": "ad6e110a41d77d2f98d8e1d077e6eac6fb164b4683c72eaa451b23aeea160bd7",
+      "size_bytes": 11362
+    },
+    "red_test_log": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_red_test.log",
+      "sha256": "0da1a4e05c81df7fd7ef65f7d562c6be30b76293651320fd2d758cd4c39cebd7",
+      "size_bytes": 1631
+    },
+    "tests": {
+      "path": "experiments/phase2_5080_v1/src/test_build_phase2_support_v4_a_acquisition_readiness.py",
+      "sha256": "3bd0bd043dad1de8468f389d56ea7006141384b68e04648450b3b4393b09f477",
+      "size_bytes": 12907
+    }
+  },
+  "label_access": {
+    "docking_label_paths_opened": 0,
+    "experimental_label_paths_opened": 0,
+    "model_score_paths_opened": 0,
+    "v4_d_geometry_label_paths_opened": 0,
+    "v4_f_label_paths_opened": 0
+  },
+  "observed_capacity": {
+    "all_open_train_parent_fast_pass_ge_36": true,
+    "balanced_both_modes_parents": 16,
+    "candidate_pool_rows": 7087,
+    "fast_qc_hard_fail_rows": 2509,
+    "fast_qc_hard_pass_rows": 4578,
+    "forced_single_mode_parents": [
+      "C0139",
+      "C0500",
+      "C0509",
+      "C0533"
+    ],
+    "minimum_open_train_post_exclusion_patch_rows": 17,
+    "minimum_open_train_post_exclusion_rows": 69,
+    "minimum_open_train_raw_fast_pass_count": 76,
+    "open_train_parent_count": 20,
+    "post_role_identity_exclusion_eligible_rows": 2962
+  },
+  "payload_sha256": "6cca7f8a6d591b334d4e3b8b4a5e00dbd276cbbf7fa02c0b43f1e6364615c60d",
+  "production_state": {
+    "domain_pass_published": false,
+    "interpretation": "Implementation and capacity readiness only; future Node1 teacher acquisition remains a separate authorized operation.",
+    "production_output_paths_created": [],
+    "production_pool_published": false,
+    "production_selection_run": false
+  },
+  "protected_role_contract": {
+    "cross_role_replacement_allowed": false,
+    "roles_excluded_from_current_training": [
+      "OPEN_DEVELOPMENT",
+      "PROSPECTIVE_COMPUTATIONAL_TEST",
+      "V4_F",
+      "V4_G",
+      "RESERVE2"
+    ]
+  },
+  "schema_version": "phase2_support_v4_a_acquisition_readiness_implementation_freeze_v1",
+  "selection_contract": {
+    "exact_unique_cdr3_per_parent": 36,
+    "future_acquisition_rows_per_parent": 24,
+    "future_audit_rows_per_parent": 12,
+    "future_open_train_parents": 20,
+    "future_rows_per_parent": 36,
+    "future_rows_per_patch_per_parent": 12,
+    "future_total_rows": 720,
+    "mode_policy": "balanced when Fast-QC permits; explicit deterministic same-parent/same-patch fallback otherwise",
+    "positive_cdr_identity_exclusive_maximum": 75.0,
+    "production_selection_requires_explicit_cli_authorization": true
+  },
+  "status": "PASS_IMPLEMENTATION_FROZEN_WITHOUT_PRODUCTION_SELECTION",
+  "test_first_evidence": {
+    "green_terminal_sentinel": "SUPPORT_V4_A_ACQUISITION_READINESS_TESTS_PASS",
+    "green_test_count": 10,
+    "green_test_log": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_tests.log",
+      "sha256": "134982d2cfe0ec163ba8b678ae5981672044af3b4dc755f4833204db541afe7f",
+      "size_bytes": 2294
+    },
+    "green_test_status": "OK",
+    "pycompile_status": "PYCOMPILE_OK",
+    "red_failure": "FileNotFoundError: build_phase2_support_v4_a_acquisition_readiness.py did not exist",
+    "red_test_log": {
+      "path": "experiments/phase2_5080_v1/audits/phase2_support_v4_a_acquisition_readiness_v1_red_test.log",
+      "sha256": "0da1a4e05c81df7fd7ef65f7d562c6be30b76293651320fd2d758cd4c39cebd7",
+      "size_bytes": 1631
+    },
+    "red_test_written_before_builder": true
+  },
+  "version_boundary": {
+    "support_v3_reinterpreted_as_pass": false,
+    "support_v3_status_preserved": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY",
+    "support_v3_thresholds_modified": false,
+    "support_v4_a_is_new_acquisition_readiness_version": true
+  }
+}

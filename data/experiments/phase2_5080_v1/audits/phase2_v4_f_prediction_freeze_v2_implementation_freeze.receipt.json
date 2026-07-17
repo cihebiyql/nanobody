@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-07-16T17:38:52.633759+00:00",
+  "implementation_freeze": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/audits/phase2_v4_f_prediction_freeze_v2_implementation_freeze.json",
+    "sha256": "18944a2942cf3d1d9700e07e1f6c9e4785df0a8da60ea64c725511610d82a1fc",
+    "size_bytes": 4701
+  },
+  "launcher_sha256": "4bf0f426c0b45707556e3d7e119d71087342e0d45d552b30af609885564882f1",
+  "parsed_test_count": 86,
+  "payload_sha256": "e7958e8547fc45c25ad70e4dc44fd8d77919ebc019f2c06dc0e0322dad14c646",
+  "required_surrogate_trust_anchor_sha256": "9d5aff568b9473a56c6111fae6221266eabe09f92be7752c76bbc596ef2d74cf",
+  "schema_version": "phase2_v4_f_prediction_freeze_v2_implementation_freeze_receipt_v1",
+  "status": "PASS_COMPLETE_HASH_CLOSURE_BEFORE_V4F_PREDICTION",
+  "trust_anchor_sha256": "3d6be9ddb2d0dcb8703779053aa30fcbac5a9b12191095ec0fafe1e00c527e84",
+  "v4_f_label_paths_accepted": 0,
+  "v4_f_labels_read": false
+}

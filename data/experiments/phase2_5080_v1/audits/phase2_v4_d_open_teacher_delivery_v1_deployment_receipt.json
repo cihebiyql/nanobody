@@ -1,0 +1,60 @@
+{
+  "claim_boundary": "Read-only transport of a computational dual-conformation geometry teacher; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "current_exists": false,
+  "current_target": null,
+  "deployed_at_utc": "2026-07-16T18:17:50.239142+00:00",
+  "downstream_surrogate_v3_snapshot": {
+    "controller_pid": 3864520,
+    "prospective_test_label_paths_accepted": 0,
+    "prospective_test_labels_read": false,
+    "reason": "missing:evaluator,release_receipt,teacher,teacher_audit",
+    "status": "WAITING_OPEN_TEACHER",
+    "status_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/status/pvrig_v4_d_surrogate_training_v3/status.json"
+  },
+  "hashes": {
+    "implementation_freeze": "639892444fb845f34bafa5570cc42d024c3b16e11abc49af1cd321b27a233cd1",
+    "launcher": "59bb1ac6a7d3c7838b2eeba569a93ba8772dde2adfab300589c624baa5019995",
+    "prelaunch_smoke": "3a33f98ef2c028ac40a0f93f833a689f75f11433259da0ddfce745f585b3767d",
+    "preregistration": "6ff017afbdc4269601169157dc741691b06c74e77f845a191d643e1127a1c89d",
+    "script": "cbb4b26f3c628ff08376f98756335420dff4b6ccaf715935ac21a35e7bb8ce94",
+    "test": "8fb7bb6f505774fa91209867b66839936a5171b9e67e0ca9a5eec249564b6de6",
+    "test_log": "29e1fc2e67ca46a4e0db09ed54901aa20c9158d81e8700ba9ceca842dfc937cf"
+  },
+  "label_paths_opened": 0,
+  "publication_contract": "Only remote COMPLETE plus validated archive may create by_sha256/<archive_sha256> and the atomic current symlink.",
+  "pythonoptimize_adversarial_smoke": {
+    "PYTHONOPTIMIZE": "1",
+    "production_watcher_survived": true,
+    "return_code": 2,
+    "status": "PASS_FAIL_CLOSED",
+    "stderr": "delivery_error:pythonoptimize_forbidden"
+  },
+  "remote": {
+    "host": "node23",
+    "observed_status": "WAITING_V4D",
+    "root": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716"
+  },
+  "runtime_status_snapshot": {
+    "claim_boundary": "Read-only transport of a computational dual-conformation geometry teacher; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+    "label_paths_opened": 0,
+    "reason": "remote postprocess status=WAITING_V4D",
+    "remote_status": "WAITING_V4D",
+    "schema_version": "phase2_v4_d_open_teacher_delivery_v1",
+    "status": "WAITING_REMOTE",
+    "test32_labels_read": false,
+    "updated_at": "2026-07-16T18:17:02.206773+00:00",
+    "v4f_labels_read": false
+  },
+  "schema_version": "phase2_v4_d_open_teacher_delivery_v1_deployment_receipt",
+  "status": "PASS_WATCHER_DEPLOYED_WAITING_REMOTE",
+  "test32_labels_read": false,
+  "tmux": {
+    "pane_current_command": "python3",
+    "pane_dead": false,
+    "pane_dead_status": null,
+    "pane_pid": 3899959,
+    "process_command": "/usr/bin/python3 /mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/src/deliver_phase2_v4_d_open_teacher_from_node23.py --watch --production --delivery-root /mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_teacher_v1/remote_delivery_v1 --ssh-exe /mnt/c/Windows/System32/OpenSSH/ssh.exe --remote-host node23 --remote-root /data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716 --poll-seconds 60 --preregistration /mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_open_teacher_delivery_v1_preregistration.json --implementation-freeze /mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/audits/phase2_v4_d_open_teacher_delivery_v1_implementation_freeze.json --expected-script-sha256 cbb4b26f3c628ff08376f98756335420dff4b6ccaf715935ac21a35e7bb8ce94 --expected-preregistration-sha256 6ff017afbdc4269601169157dc741691b06c74e77f845a191d643e1127a1c89d --expected-implementation-freeze-sha256 639892444fb845f34bafa5570cc42d024c3b16e11abc49af1cd321b27a233cd1",
+    "session": "pvrig_v4d_open_teacher_delivery_v1"
+  },
+  "v4f_labels_read": false
+}

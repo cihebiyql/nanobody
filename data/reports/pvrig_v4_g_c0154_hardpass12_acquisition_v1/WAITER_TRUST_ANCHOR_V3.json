@@ -1,0 +1,108 @@
+{
+  "acquisition_protocol_lock": {
+    "expected_file_count": 47,
+    "expected_total_bytes": 2589493,
+    "path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/ACQUISITION_PROTOCOL_LOCK.json",
+    "required_candidate_pdb_count": 12,
+    "required_job_count": 72,
+    "sha256": "7096c1b0970ae7010d247c84322428d7cdce69aa9203e23296e2d33b5b5beda8"
+  },
+  "claim_boundary": "Acquisition orchestration trust only; no docking labels, model scores, geometry outcomes, or teacher TSV rows are opened.",
+  "controller_execution": {
+    "argv": [
+      "--max-parallel",
+      "12",
+      "--max-attempts",
+      "2",
+      "--poll-seconds",
+      "60"
+    ],
+    "nice": 15,
+    "script": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/scripts/run_controller.py"
+  },
+  "created_at_utc": "2026-07-16T17:09:01.709186+00:00",
+  "immutable_v2_history": [
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/WAITER_TRUST_ANCHOR_V2.json",
+      "sha256": "7144e6a6adc0fa72e13c9a4f6edb4bde3913281bdea64e70cd18e2e58d9a4e3b"
+    },
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/WAITER_V2_IMPLEMENTATION_FREEZE.json",
+      "sha256": "b15c5b32a0d5f6a00c3abe26bbbb9ee149b48724e0ec7fa08d717eccba352b99"
+    },
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/status/waiter_v2_stopped_for_v3_security_fix.json",
+      "sha256": "0a1ead8e7849ff90dd768e3462be4fddc55c7bbc583cb07a4c35ed314a48c43b"
+    }
+  ],
+  "open_teacher_code_bindings": [
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+    },
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/run_after_v4d_complete_v2.sh",
+      "sha256": "636915faa40e3877e1a8b41592d951fa7e3f274dd17ae311705fb04f420ffd3d"
+    },
+    {
+      "path": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716/verify_pvrig_v4d_evaluator_release.py",
+      "sha256": "3700f65616bf217814437435516f83a3cea1073751a3457f6a9759362c966f20"
+    }
+  ],
+  "open_teacher_required_postprocess_status": "COMPLETE",
+  "open_teacher_required_release_status": "PASS_OPEN258_TEACHER_READY_TEST32_SEALED",
+  "runtime_identity": {
+    "forbidden_environment": [
+      "PVRIG_LOCAL_SCRATCH_ROOT",
+      "PVRIG_HADDOCK_CMD",
+      "HADDOCK3",
+      "PVRIG_SCORE_POSE",
+      "PVRIG_MAX_PARALLEL",
+      "PYTHONPATH",
+      "PYTHONHOME",
+      "LD_PRELOAD"
+    ],
+    "home": "/data/qlyu",
+    "lang": "C.UTF-8",
+    "max_load1": 16,
+    "open_teacher_requested": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716",
+    "open_teacher_resolved": "/data/qlyu/projects/pvrig_v4_d_open_teacher_postprocess_v1_20260716",
+    "package_root_requested": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717",
+    "package_root_resolved": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717",
+    "path": "/data/qlyu/anaconda3/envs/haddock3/bin:/usr/local/bin:/usr/bin:/bin",
+    "poll_seconds": 300,
+    "python_requested": "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+    "python_resolved": "/data/qlyu/anaconda3/envs/haddock3/bin/python3.11",
+    "python_resolved_sha256": "377159f8604e0fbfe362218df369a651be2123158a25296f6ace4b5c58c6c62a",
+    "required_environment": {
+      "HOME": "/data/qlyu",
+      "LANG": "C.UTF-8",
+      "LOGNAME": "qlyu",
+      "OMP_NUM_THREADS": "1",
+      "USER": "qlyu"
+    },
+    "source_v4d_requested": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "source_v4d_resolved": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "user": "qlyu"
+  },
+  "schema_version": "pvrig_v4_g_c0154_hardpass12_waiter_trust_anchor_v3",
+  "source_v4d_expected_job_count": 2022,
+  "source_v4d_required_terminal_statuses": [
+    "COMPLETE",
+    "COMPLETE_WITH_FAILURES"
+  ],
+  "status": "TRUST_ANCHOR_V3_POLICY_FROZEN_BEFORE_WAITER_GENERATION",
+  "test32_required_boundary": {
+    "sealed_metrics_used_for_teacher_or_ranking": false,
+    "sealed_test_raw_job_results_opened": 0
+  },
+  "trust_chain_design": "V3 waiter embeds expected V2 anchor/freeze and V3 anchor/policy-freeze hashes; launcher embeds expected waiter and V3 implementation-freeze hashes. No expected hash is sourced from the artifact it authenticates.",
+  "v3_policy": {
+    "open_teacher_release_verifier_path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/scripts/verify_open_teacher_release_v1.py",
+    "open_teacher_release_verifier_sha256": "f4ff29e2ba1cadd6c120ba982fe253471d9f06738e60f257bfc892202d6b755a",
+    "path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/scripts/waiter_v3_policy.py",
+    "security_tests_path": "/data/qlyu/projects/pvrig_v4_g_c0154_hardpass12_dual_redocking_v1_20260717/tests/test_waiter_v3_security.py",
+    "security_tests_sha256": "90d880c7d20f7d338d71a753d3f8b4ddd49047348d8bca2a68cdd9c5c9aadd18",
+    "sha256": "3f4cd75d42ea0ad6ca61d53ed1c799b650e32cc41aac069c21f8bac5caacb7ed"
+  }
+}

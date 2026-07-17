@@ -1,0 +1,121 @@
+{
+  "schema_version": "phase2_candidate7087_node1_fastqc_census_preregistration_v1",
+  "status": "FROZEN_BEFORE_GLOBAL_7087_NODE1_FAST_QC_RESULTS",
+  "frozen_at": "2026-07-17T00:08:00+08:00",
+  "objective": "Measure the exact sequence/QC-eligible deployment universe and parent-cluster capacity before defining Support V4 acquisition or production denominators.",
+  "claim_boundary": "This census is sequence/developability QC only. It is not docking geometry, binding, affinity, competition, experimental blocking, model correctness, or a teacher label.",
+  "version_boundary": {
+    "support_v3_status_must_remain": "FAIL_RESEARCH_RANKING_AND_DIRECT_DOCKING_ROUTING_ONLY",
+    "v4_g_old_false_terminal_must_remain_preserved": true,
+    "forbidden_actions": [
+      "change V4-D, V4-F, or V4-G split membership",
+      "read R_dual_min, R_8X6B, R_9E6Y, G-tier, HADDOCK score, model score, binding, affinity, or blocking labels",
+      "drop failed parent clusters from the census denominator after seeing results",
+      "change fast-QC gates or candidate sequences after seeing census results",
+      "treat Fast-QC pass as binding or blocker evidence"
+    ]
+  },
+  "frozen_inputs": {
+    "candidate_pool": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_teacher_formal_v1_candidates/scored_candidates_v1.csv",
+      "rows": 7087,
+      "parent_framework_clusters": 40,
+      "sha256": "dd97835cfa3e39229d3ebddfe37768c7a8346a6237e35d2dbe16dc3d16ab965b",
+      "allowed_fields": [
+        "candidate_id",
+        "vhh_sequence",
+        "sequence_sha256",
+        "parent_id",
+        "parent_framework_cluster",
+        "target_patch_id",
+        "design_mode",
+        "cdr1_after",
+        "cdr2_after",
+        "cdr3_after"
+      ]
+    },
+    "v4_d_split_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_d/fullqc290_split_manifest.tsv",
+      "sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd"
+    },
+    "v4_f_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_f/prospective_holdout96_manifest.tsv",
+      "sha256": "3f3c504844756703acecf586b2b218f2e2855c3a108ee22656c8f08e7f57e334"
+    },
+    "v4_g_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_g/unseen96_acquisition_manifest.tsv",
+      "sha256": "e814103ee90831e33b3f04a7e8a477e68695d61401d96732b7e95829b1bd306f"
+    },
+    "reserve2_manifest": {
+      "path": "experiments/phase2_5080_v1/data_splits/pvrig_v4_g/untouched_reserve2_parents.tsv",
+      "sha256": "98c11e8f72d97d60c9e772fa2bb256622f1ed6e1e9fddd9e136a8cd42959bb75"
+    }
+  },
+  "execution_contract": {
+    "node": "node1",
+    "storage": "versioned /data1 SSD runtime and output roots only",
+    "runtime_closure": "content-addressed regular files; no symlinks; no /data/qlyu runtime path hits; exclude .pyc and __pycache__",
+    "gate_policy": "blocker_calibrated large-scale-fast",
+    "stages": [
+      "prepare",
+      "fast",
+      "merge_fast",
+      "census_audit"
+    ],
+    "full_qc_run": false,
+    "tnp_run": false,
+    "structure_prediction_run": false,
+    "maximum_cpu_workers": 32,
+    "gpu_count": 0,
+    "candidate_id_sequence_sha256_closure_required": true,
+    "exact_row_count_required": 7087,
+    "exact_parent_count_required": 40,
+    "receipt_publication_order": "last after output-set, row, ID, sequence-hash, parent, and runtime-manifest closure"
+  },
+  "census_outputs": {
+    "candidate_table": "candidate7087_node1_fastqc_census_v1.tsv",
+    "parent_summary": "parent40_node1_fastqc_capacity_v1.tsv",
+    "audit": "candidate7087_node1_fastqc_census_v1.audit.json",
+    "receipt": "candidate7087_node1_fastqc_census_v1.receipt.json",
+    "required_candidate_fields": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_framework_cluster",
+      "fast_hard_fail",
+      "reason_summary",
+      "official_validator_failed_reason",
+      "census_role"
+    ],
+    "required_parent_fields": [
+      "parent_framework_cluster",
+      "candidate_count",
+      "fast_hard_pass_count",
+      "fast_hard_fail_count",
+      "fast_hard_pass_fraction",
+      "support_v4_capacity_state"
+    ]
+  },
+  "support_v4_readiness_interpretation": {
+    "audit_rows_per_parent_target": 12,
+    "usable_teacher_rows_per_parent_target": 24,
+    "minimum_fast_hard_pass_capacity_per_parent": 36,
+    "capacity_labels": {
+      "READY_FOR_24_TEACHER_PLUS_12_AUDIT_ACQUISITION": "fast_hard_pass_count >= 36",
+      "INSUFFICIENT_FAST_QC_CAPACITY": "fast_hard_pass_count < 36"
+    },
+    "important_boundary": "Capacity labels are deterministic planning states, not biological or docking outcomes. Parent exclusions for V4-D development/test, V4-F, and reserve2 remain explicit rather than being silently removed from census output."
+  },
+  "label_access_gate": {
+    "docking_label_paths_opened": 0,
+    "v4_d_geometry_label_paths_opened": 0,
+    "v4_f_label_paths_opened": 0,
+    "model_score_paths_opened": 0,
+    "experimental_label_paths_opened": 0
+  },
+  "decision_policy": {
+    "pass": "PASS_7087_FAST_QC_CENSUS_READY_FOR_SUPPORT_V4_A_PLANNING",
+    "fail": "FAIL_FAST_QC_CENSUS_NO_SUPPORT_V4_DENOMINATOR",
+    "no_support_v4_production_pass_allowed": true,
+    "next_step_after_pass": "Freeze a separate Support V4-A acquisition/readiness protocol using the measured Fast-QC-eligible universe; do not alter Support V3."
+  }
+}

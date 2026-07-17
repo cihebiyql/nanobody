@@ -1,0 +1,106 @@
+{
+  "candidate_label_rows_read": 0,
+  "claim_boundary": "Implementation-freeze candidate for a post-hoc development-only computational geometry release. It contains no labels, does not authorize remote execution, cannot unlock formal V4-F, and is not a V4-D PASS or Docking Gold.",
+  "files": {
+    "builder": {
+      "relative_path": "src/prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "34c27497a71085a751dd60762b754addeb9e95a6712e882a77ffb3919f13117d",
+      "size": 25363
+    },
+    "builder_tests": {
+      "relative_path": "src/test_prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "23f3d810666f7bbb76f66884c397ebe1a05db4fbec1db4fb399515e31969027e",
+      "size": 14001
+    },
+    "delivery": {
+      "relative_path": "src/deliver_phase2_v4_d_dev1_open258_from_node23.py",
+      "sha256": "fbfc9c1580fe1680945bd900da6859655d18423381ef8e6e76683ee856ffec97",
+      "size": 27890
+    },
+    "delivery_launcher": {
+      "relative_path": "src/launch_phase2_v4_d_dev1_delivery_v1.sh",
+      "sha256": "2d8ff02aa140901aa75600a57663e6833b5c6bc1d389c04ffe72f889e604cbad",
+      "size": 1858
+    },
+    "delivery_tests": {
+      "relative_path": "src/test_deliver_phase2_v4_d_dev1_open258_from_node23.py",
+      "sha256": "a05d6be5a6b5f6858f3efdd56c989f8115aac949b7d327140786648c5002ffaf",
+      "size": 11190
+    },
+    "freeze_tests": {
+      "relative_path": "src/test_phase2_v4_d_dev1_open258_freeze_contract.py",
+      "sha256": "ad3ac295bb2979d48dc551b7cb1ce09d32d87d453126523d8bcf073d4608e0d6",
+      "size": 3847
+    },
+    "materializer": {
+      "relative_path": "src/materialize_phase2_v4_d_dev1_offline_review_package.py",
+      "sha256": "9fcf1dd333ac76b59fe457722c1c62f3361edd41fcc31d2a08181d79de7e8ccc",
+      "size": 6430
+    },
+    "node23_launcher": {
+      "relative_path": "src/run_phase2_v4_d_dev1_open258_node23.sh",
+      "sha256": "2d30294e2d7a3be56754f4792f5233ce539a0ff93b7566526cfae2b4f912fe93",
+      "size": 5718
+    },
+    "pre_freeze_tests_log": {
+      "relative_path": "audits/phase2_v4_d_dev1_open258_pre_freeze_tests.log",
+      "sha256": "07c1359636c179555c847cdbbc78382beccb71362772a468b4d4d121bba39620",
+      "size": 6449
+    },
+    "preregistration": {
+      "relative_path": "audits/phase2_v4_d_dev1_open258_preregistration.json",
+      "sha256": "ee2c1076b0fd58b5bcb991f7646321c6fd03204746ff926f2d93940fec5ffe55",
+      "size": 6803
+    },
+    "v1_formula_helper": {
+      "relative_path": "src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+      "size": 37344
+    }
+  },
+  "formal_isolation": {
+    "dev_delivery_root_suffix": "pvrig_v4_d_dev1_open258_v1/delivery_dev1",
+    "dev_future_training_root": "runs/pvrig_v4_d_dev1_sequence_surrogate_v1",
+    "existing_v4d_v1_or_formal_v4f_watcher_modified": false,
+    "formal_completion_or_unlock_receipt_created": false
+  },
+  "formal_v4_f_unlock_eligible": false,
+  "frozen_at_utc": "2026-07-16T23:33:46.013023+00:00",
+  "remaining_launch_gates": [
+    "independent review of prereg, builder, delivery, launchers, tests and this candidate freeze",
+    "bind one exact label-free generic-prior file path and SHA256",
+    "create a separate FROZEN_FOR_DEV1_REMOTE_EXECUTION launch-authorized freeze",
+    "perform Node23 zero-work preflight with no DEV1 release directory present",
+    "create a separate launch receipt before starting any remote process"
+  ],
+  "remote_execution_authorized": false,
+  "remote_execution_started": false,
+  "schema_version": "phase2_v4_d_dev1_open258_implementation_freeze_candidate_v1",
+  "source_evaluator": {
+    "failed_gates": [
+      "candidate_threshold_sensitivity"
+    ],
+    "sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "status": "FAIL",
+    "unlockable": false
+  },
+  "status": "CANDIDATE_FREEZE_BEFORE_REMOTE_OR_LABEL_ACCESS",
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0,
+  "tests": {
+    "bash_n": "PASS",
+    "git_diff_check": "PASS",
+    "normal_mode": {
+      "count": 20,
+      "status": "PASS"
+    },
+    "production_ast_no_assert": "PASS",
+    "python_compile": "PASS",
+    "python_optimize_1": {
+      "count": 20,
+      "status": "PASS"
+    }
+  },
+  "timestamp_source": "initial_freeze_candidate_file_mtime_before_any_remote_or_raw_open"
+}

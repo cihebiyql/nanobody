@@ -1,0 +1,53 @@
+{
+  "claim_boundary": "Failure/provenance audit only; partial files are not a valid scientific publication and are not Docking/model/experimental evidence.",
+  "formal_publication_valid": false,
+  "observed_at_utc": "2026-07-16T23:40:24+00:00",
+  "partial_files_must_not_be_used": true,
+  "partial_recovery_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h2_h4_recovery_v1_1_20260717",
+  "preflight": {
+    "log_sha256": "dd8ebc618a904066a550c7b7da784cb26057757c92da3605344195cc4a294051",
+    "ready_parent_count": 11,
+    "selected_ids_sha256": "91e86a1ab0aba2dc37dfd2e3b4f30479fa4653690f9b005dd28c94a79f9aadf4",
+    "selected_rows": 96,
+    "status": "PASS_V4_H_H2_H4_RECOVERY_V1_1_PREFLIGHT"
+  },
+  "publication_failure": {
+    "colliding_source_field": "claim_boundary",
+    "error": "RuntimeError: provenance_replay_mismatch:V4H__PLDNANO_VHH_00231__A_CENTER__H1H3__B04__M00",
+    "failure_log_sha256": "5b9d80969805d6992bed6d66261d4141638499fb2ed47752c6950731bea4c43a",
+    "partial_sidecar_value": "Sequence/developability QC-qualified prospective candidate panel only; not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold.",
+    "root_cause": "mutated selected row overwrote source claim_boundary before provenance sidecar replay",
+    "source_value": "PVRIG-hotspot-conditioned RFantibody sequences; sequence/developability design evidence only, not Docking geometry, binding, affinity, competition, experimental blocking, or Docking Gold."
+  },
+  "qc_rerun": false,
+  "remote_partial_files": {
+    "qc96_manifest_v1.tsv": {
+      "header_columns": 22,
+      "rows": 96,
+      "sha256": "f128f7b2389ea5e9887b931460332ce42898aece0314e7320975c204a692f723",
+      "size_bytes": 72416
+    },
+    "qc96_selected_source_provenance_v1.tsv": {
+      "header_columns": 42,
+      "rows": 96,
+      "sha256": "c75a2e68d0006dec68ffe9a0144b02ba670e42e298a8fa4bccf1a46aa561af3c",
+      "size_bytes": 116528
+    },
+    "recovery.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  },
+  "remote_process_running": false,
+  "schema_version": "phase2_v4_h_qc96_h2_h4_recovery_v1_1_partial_publication_audit",
+  "scientific_publication_valid": false,
+  "source_root": "/data1/qlyu/projects/pvrig_v4_h_qc96_h0_h3_v1_20260717",
+  "status": "FAIL_V1_1_PROVENANCE_REPLAY_PARTIAL_OUTPUT_PUBLICATION_INVALID",
+  "terminal_outputs": {
+    "qc96_audit_v1.json": "ABSENT",
+    "qc96_receipt_v1.json": "ABSENT",
+    "recovery.complete.json": "ABSENT"
+  },
+  "timestamp_source": "remote_execution_failure_log_file_mtime",
+  "v1_1_disposition": "SUPERSEDED_FAILED_PARTIAL_ROOT_PRESERVE_READ_ONLY_DO_NOT_REUSE_OR_DELETE"
+}
