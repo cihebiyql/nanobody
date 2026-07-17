@@ -1,0 +1,24 @@
+{
+  "claim_boundary": "Research-only label-free monomer inputs; not docking results, formal validation, or experimental truth.",
+  "expected_count": 1320,
+  "forbidden_channels": {
+    "docking_results": 0,
+    "job_status": 0,
+    "poses": 0,
+    "test32": 0
+  },
+  "frozen_at_utc": "2026-07-17T09:56:28.914899+00:00",
+  "hashes": {
+    "candidate_manifest": "f02cfeaac9775442bb1748c7bb63413a1077b5df11f9cd7214e983d0e51c0551",
+    "materializer": "b7f2d3cb4b3876d0aaaa6991faeb0cc862f418170b89ab634f03493847242752",
+    "monomer_manifest": "e74b32d53d7a1fb2719d8b7e01b60bb2855553794607f011e14e0f5399fa8137",
+    "test_log": "619b81eff30159baaca083a333e5636f9e6322d6bc6828a2ea112f55fc5c61e8",
+    "tests": "fd9125f2d71272905fac626c38cf3beeb126b6f0b3771eab49ed0e24c7ae09b6"
+  },
+  "input_scope": "label-free candidate sequence/QC manifest plus frozen monomer manifest/PDBs only",
+  "normal_tests_passed": 15,
+  "optimized_tests_passed": 15,
+  "py_compile_passed": true,
+  "schema_version": "phase2_v4_h_research1320_structure_inputs_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_REAL_1320_PDB_MATERIALIZATION"
+}

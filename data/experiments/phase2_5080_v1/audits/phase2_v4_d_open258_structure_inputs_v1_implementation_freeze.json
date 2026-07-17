@@ -1,0 +1,39 @@
+{
+  "claim_boundary": "Label-free frozen VHH monomer input materialization only; no docking geometry or experimental truth.",
+  "docking_result_files_opened": 0,
+  "files": {
+    "materializer": {
+      "bytes": 14747,
+      "path": "experiments/phase2_5080_v1/src/materialize_phase2_v4_d_open258_structure_inputs_v1.py",
+      "sha256": "fa7897ccc36885641f3196f869a7ff77cb78aff9c6b7d107d14a0860b273f192"
+    },
+    "preregistration": {
+      "bytes": 5244,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_structure_fusion_surrogate_v1_preregistration.json",
+      "sha256": "026820be4f821e86cada34d581083196cd5c850f759a7229b854b5e59ebe9fe9"
+    },
+    "test_log": {
+      "bytes": 1781,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_open258_structure_inputs_v1_tests.log",
+      "sha256": "adc6e318e540a985b717072b7ddc9c062457a862353fe894a4cc028c97f4e3a4"
+    },
+    "tests": {
+      "bytes": 8097,
+      "path": "experiments/phase2_5080_v1/src/test_materialize_phase2_v4_d_open258_structure_inputs_v1.py",
+      "sha256": "de204e413687c081ee6484a83259cc42029edccf16241ea39258b4f3e3e76442"
+    }
+  },
+  "frozen_at_utc": "2026-07-17T08:52:18.502809+00:00",
+  "geometry_label_values_read": 0,
+  "prospective_test_labels_accessed": 0,
+  "remote_execution_started": false,
+  "schema_version": "phase2_v4_d_open258_structure_inputs_v1_implementation_freeze",
+  "sealed_monomer_files_opened": 0,
+  "status": "FROZEN_FOR_LABEL_FREE_OPEN258_STRUCTURE_INPUT_MATERIALIZATION",
+  "test_contract": {
+    "normal_status": "OK",
+    "normal_tests": 5,
+    "optimized_status": "OK",
+    "optimized_tests": 5
+  }
+}

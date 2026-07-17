@@ -1,0 +1,71 @@
+{
+  "all_numeric_values_finite": true,
+  "claim_boundary": "Label-free rigid-invariant descriptors from frozen VHH monomers; not docking labels or experimental truth.",
+  "docking_result_files_opened": 0,
+  "feature_count": 126,
+  "files": {
+    "extractor": {
+      "bytes": 16396,
+      "path": "experiments/phase2_5080_v1/src/extract_phase2_v4_d_open258_structure_features_v1.py",
+      "sha256": "c2b2e92534975a05fac796be33b9fca67c9712409889d3b85ad4c9809cbd81b7"
+    },
+    "feature_audit": {
+      "bytes": 5837,
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_open258_structure_features_v1/open258_structure_features_v1.tsv.audit.json",
+      "sha256": "167f2e4c67a3cd23ea25ca7749ba29ca4f03c4e7ede631a90bdd218d132b826b"
+    },
+    "feature_receipt": {
+      "bytes": 616,
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_open258_structure_features_v1/open258_structure_features_v1.receipt.json",
+      "sha256": "9ca62afcd38085726a5a6ff21eab3b8663077010629f0d62797b8a034deb8d44"
+    },
+    "feature_table": {
+      "bytes": 430850,
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_open258_structure_features_v1/open258_structure_features_v1.tsv",
+      "sha256": "37b6fbc4b947f2598dd83ac1a742a9382d36e13aa641a5f460e3050d17e83472"
+    },
+    "preregistration": {
+      "bytes": 5244,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_structure_fusion_surrogate_v1_preregistration.json",
+      "sha256": "026820be4f821e86cada34d581083196cd5c850f759a7229b854b5e59ebe9fe9"
+    },
+    "structure_input_delivery_receipt": {
+      "bytes": 1501,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_open258_structure_inputs_v1_delivery_receipt.json",
+      "sha256": "685ed5878d60cddfd936d70bbcb7d77bf0f365d65c40d7203dac61c9f842b7e2"
+    },
+    "test_log": {
+      "bytes": 1447,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_open258_structure_features_v1_tests.log",
+      "sha256": "c5108c0d98f1da47044fd4a34fe9120c244add79802e00f81de2ec54eed0e474"
+    },
+    "tests": {
+      "bytes": 3742,
+      "path": "experiments/phase2_5080_v1/src/test_extract_phase2_v4_d_open258_structure_features_v1.py",
+      "sha256": "4c365775e75816f70d823a694d8eb5b392155692f28c4ac71c0f4ac8b6ea929f"
+    }
+  },
+  "geometry_label_values_read": 0,
+  "pose_files_opened": 0,
+  "prospective_test_labels_accessed": 0,
+  "prospective_test_rows_emitted": 0,
+  "recorded_at_utc": "2026-07-17T08:59:58.182630+00:00",
+  "rigid_transform_invariance_tested": true,
+  "row_count": 258,
+  "schema_version": "phase2_v4_d_open258_structure_features_v1_materialization_receipt",
+  "split_counts": {
+    "OPEN_DEVELOPMENT": 32,
+    "OPEN_TRAIN": 226
+  },
+  "status": "MATERIALIZED_126_LABEL_FREE_STRUCTURE_FEATURES_FOR_OPEN258_TEST32_UNTOUCHED",
+  "tests": {
+    "normal": {
+      "count": 4,
+      "status": "OK"
+    },
+    "optimized": {
+      "count": 4,
+      "status": "OK"
+    }
+  }
+}

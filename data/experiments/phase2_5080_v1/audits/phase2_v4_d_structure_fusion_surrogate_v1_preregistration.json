@@ -1,0 +1,101 @@
+{
+  "schema_version": "phase2_v4_d_structure_fusion_surrogate_v1_preregistration",
+  "status": "FROZEN_AFTER_TEACHER_MATERIALIZATION_BEFORE_CANDIDATE_LEVEL_DEVELOPMENT_EVALUATION",
+  "frozen_at_utc": "2026-07-17T08:50:00Z",
+  "objective": "Test whether label-free frozen VHH monomer geometry improves prediction of independent dual-receptor docking continuous geometry beyond parent-only and sequence-only baselines.",
+  "claim_boundary": "Development-only approximation of computational docking geometry. Not Docking Gold, binding probability, affinity, competition, experimental blocking, or final submission authority.",
+  "teacher": {
+    "track": "V4-D-DEV1-V1.2",
+    "teacher_sha256": "89ad82c7cde28d862fecedfff4559e810bab68cf2405aa8f9e4dc5f1bd148068",
+    "teacher_audit_sha256": "533bec24823f991a8249f2115c8e31e4efbb94c05b5528390ca5060fe9b54d26",
+    "rows": 258,
+    "fit_rows": 226,
+    "development_rows": 32,
+    "primary_target": "R_dual_min",
+    "secondary_targets": ["R_8X6B", "R_9E6Y", "R_dual_gap", "teacher_uncertainty"],
+    "formal_v4_f_unlock_eligible": false
+  },
+  "split_policy": {
+    "fit_split": "OPEN_TRAIN",
+    "selection_split": "OPEN_DEVELOPMENT",
+    "group_key": "parent_framework_cluster",
+    "hyperparameter_selection": "GroupKFold on OPEN_TRAIN only",
+    "development_labels_used_once_after all feature definitions and model families are frozen": true,
+    "prospective_computational_test_rows_accessed": 0,
+    "prospective_computational_test_labels_accessed": 0
+  },
+  "prior_access_disclosure": {
+    "candidate_level_open_development_labels_examined_before_freeze": 0,
+    "aggregate_open_development_distribution_seen": true,
+    "aggregate_fields_seen": ["count", "minimum", "maximum", "mean", "median"],
+    "single_example_row_seen_before_freeze": "one OPEN_TRAIN row only",
+    "model_or_feature_choices_changed_using_open_development_outcomes": false
+  },
+  "structure_source": {
+    "campaign_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "split_manifest_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "job_manifest_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "required_monomer_source_kind": "frozen_local_candidate",
+    "required_open_candidate_count": 258,
+    "allowed_inputs": ["candidate VHH sequence", "frozen monomer PDB used as the ligand input to docking", "CDR residue ranges frozen in docking_jobs.tsv"],
+    "forbidden_inputs": ["docked complex pose", "HADDOCK score", "pose rank", "PVRIG contacts", "PVRL2 occlusion", "R_8X6B", "R_9E6Y", "R_dual_min", "G tier", "prospective test labels"]
+  },
+  "structure_feature_contract": {
+    "coordinate_invariance": "all descriptors are rigid-translation and rigid-rotation invariant",
+    "atom_policy": "ATOM records only; one CA per residue; heavy-atom counts exclude hydrogen",
+    "regions": ["ALL", "FRAMEWORK", "CDR1", "CDR2", "CDR3", "CDR_ALL"],
+    "per_region_descriptors": [
+      "residue_count",
+      "confidence_mean",
+      "confidence_std",
+      "confidence_min",
+      "confidence_q10",
+      "ca_radius_of_gyration",
+      "ca_pair_distance_q10",
+      "ca_pair_distance_q25",
+      "ca_pair_distance_q50",
+      "ca_pair_distance_q75",
+      "ca_pair_distance_q90",
+      "ca_pair_distance_max",
+      "ca_path_length",
+      "ca_end_to_end_distance",
+      "ca_tortuosity",
+      "nonlocal_ca_contact_density_8A",
+      "shape_eigenvalue_1_fraction",
+      "shape_eigenvalue_2_fraction",
+      "shape_eigenvalue_3_fraction"
+    ],
+    "cross_region_descriptors": [
+      "CDR1_CDR2_centroid_distance",
+      "CDR1_CDR3_centroid_distance",
+      "CDR2_CDR3_centroid_distance",
+      "each_CDR_to_framework_centroid_distance",
+      "each_CDR_to_framework_min_ca_distance",
+      "each_CDR_to_framework_median_min_ca_distance"
+    ],
+    "missing_value_policy": "fail closed; no imputation",
+    "feature_standardization": "fit on OPEN_TRAIN only"
+  },
+  "frozen_model_comparison": {
+    "M0_parent_only": "one-hot parent_framework_cluster plus design_mode and target_patch_id; Ridge",
+    "M1_sequence_only": "frozen sequence embedding plus frozen cheap sequence covariates; Ridge",
+    "M2_structure_only": "frozen invariant monomer structure descriptors; Ridge",
+    "M3_sequence_structure": "concatenated M1 and M2 inputs; Ridge",
+    "ridge_alpha_grid": [0.01, 0.1, 1.0, 10.0, 100.0, 1000.0],
+    "ensemble_seeds": [43, 53, 67, 79, 97],
+    "uncertainty": "standard deviation across five parent-cluster bootstrap fits",
+    "no_large_end_to_end_3D_network": true
+  },
+  "evaluation": {
+    "primary_metric": "Spearman correlation on OPEN_DEVELOPMENT for R_dual_min",
+    "secondary_metrics": ["Pearson", "MAE", "NDCG", "top20_percent_recall", "M3_minus_M1 paired bootstrap confidence interval"],
+    "structure_value_claim": "supported only if M3 exceeds M1 on primary Spearman and paired candidate bootstrap median delta is positive",
+    "selection_rule": "no claim from training fit or random row split"
+  },
+  "sealed_boundaries": {
+    "V4_F_test32_predictions_or_labels_accessed": 0,
+    "legacy128_merged": false,
+    "formal_v4_d_pass_claimed": false,
+    "experimental_blocker_claimed": false
+  }
+}

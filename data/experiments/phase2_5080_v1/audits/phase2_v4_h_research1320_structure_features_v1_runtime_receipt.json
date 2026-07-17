@@ -1,0 +1,25 @@
+{
+  "all_numeric_values_finite": true,
+  "claim_boundary": "Label-free rigid-motion-invariant V4-H monomer descriptors for research development only; no docking result, pose, geometry label, binding, affinity, or experimental blocking truth.",
+  "feature_count": 126,
+  "formal_or_prospective_authority": false,
+  "implementation_freeze_sha256": "175486d29c8d38d0bcc55a99bfcf2c35691c5b1bce5a22819f5323ac77835f9b",
+  "output_hashes": {
+    "research1320_structure_features_v1.receipt.json": "b895d99781f053f8125f417d91bf54af661497fb8aa1c9931eff3366fd5a8f9a",
+    "research1320_structure_features_v1.tsv": "c778c420792c095073d0cbf2e60e754ff5c1273e8c032eb06104223db8e365a5",
+    "research1320_structure_features_v1.tsv.audit.json": "7951c599ee139b4cd1a3c5fd9ecc80e25afdda49e0a20c06a1cabfab34c34e4d"
+  },
+  "production_log_sha256": "2b6fc06c7a7df6bc8dbb6e1aa2d460a3263075c29e4c0f71eec2bb6c40d8ae54",
+  "row_count": 1320,
+  "schema_version": "phase2_v4_h_research1320_structure_features_v1_runtime_receipt",
+  "sealed_boundary": {
+    "docking_result_files_opened": 0,
+    "geometry_label_values_read": 0,
+    "pose_files_opened": 0,
+    "status_files_opened": 0,
+    "test32_rows_opened": 0
+  },
+  "status": "VALIDATED_COMPLETE_LABEL_FREE_RESEARCH1320_STRUCTURE_FEATURES",
+  "unique_candidate_ids": 1320,
+  "validated_at_utc": "2026-07-17T09:59:53.949727+00:00"
+}

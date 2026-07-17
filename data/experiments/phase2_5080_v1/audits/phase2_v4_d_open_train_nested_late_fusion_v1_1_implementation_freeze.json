@@ -1,0 +1,39 @@
+{
+  "claim_boundary": "Development-only computational docking-geometry approximation; not Docking Gold, binding, affinity, or experimental blocking truth.",
+  "frozen_at_utc": "2026-07-17T09:52:28.851823+00:00",
+  "hashes": {
+    "embedding_manifest": "8a479c8c36d6bb7a539004f93bef0e1802262e2b102b7ddacae9e3438763e62e",
+    "embedding_shard": "3ae48934436d1c58aba83de05940abb961be298eb2a397ad789ed6a56487fa22",
+    "embedding_summary": "ddbfdc8ea2ce1c3a85080cffe48ae3568b3831f5a8a38b16362cb2a7106159d7",
+    "input_materializer": "cc7ea6cbeaf46de22272a4d9a924773a4dae69d1f1286e39143c00ec3171f393",
+    "input_materializer_tests": "3ab94e9046e910e60b67e35eb68d785415d5b2f0147fa87657b890cbc8b9c299",
+    "labels": "8fb90b20e6f939989ef2c3e5fee3fba184217ec0a094cf33c48c4996e2df9ef8",
+    "preregistration": "cabcff4f17cd5a27a5a8b248b2a247c2f39b49dce9b06f1f950db0929e7d7ecf",
+    "structure_features": "37b6fbc4b947f2598dd83ac1a742a9382d36e13aa641a5f460e3050d17e83472",
+    "test_log": "ab57115d3e6129d8196233fff2143021e6caf015080613b096bd1195a6602b92",
+    "trainer": "9ab3c615152c7615a8bbafe0db9bd3f1dbfca2b460553ec3a04394c0a7d12d5e",
+    "trainer_tests": "dd1d7f34fa687f1605d6c7d182e687638b2a9b1e1acceb05dff7f4f8451bbc59"
+  },
+  "production_command_contract": {
+    "exactly_once": true,
+    "output_dir": "experiments/phase2_5080_v1/runs/pvrig_v4_d_open_train_nested_late_fusion_v1_1",
+    "output_must_not_exist": true,
+    "python": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python"
+  },
+  "schema_version": "phase2_v4_d_open_train_nested_late_fusion_v1_1_implementation_freeze",
+  "sealed_boundaries": {
+    "V4_F_test32_labels_accessed": 0,
+    "V4_F_test32_predictions_emitted": 0,
+    "V4_F_test32_sequences_or_embeddings_accessed": 0,
+    "V4_H_docking_labels_accessed": 0,
+    "legacy128_merged": false,
+    "open_development_target_values_accessed_by_v1_1_training": 0
+  },
+  "status": "FROZEN_BEFORE_FIRST_OPEN_TRAIN_TARGET_MODEL_SELECTION_OR_FITTING",
+  "test_evidence": {
+    "normal_tests_passed": 8,
+    "optimized_tests_passed": 8,
+    "py_compile_passed": true,
+    "sentinel": "ALL_PREPRODUCTION_TESTS_PASS"
+  }
+}

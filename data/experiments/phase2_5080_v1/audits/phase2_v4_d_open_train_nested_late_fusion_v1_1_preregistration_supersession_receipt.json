@@ -1,0 +1,16 @@
+{
+  "V4_F_test32_embeddings_accessed": 0,
+  "V4_F_test32_labels_accessed": 0,
+  "V4_F_test32_sequences_accessed": 0,
+  "model_hyperparameters_selected_before_replacement": 0,
+  "reason": "The first draft referenced the global 7088-row embedding bank, which was incompatible with the declared sealed test32 sequence/embedding boundary. It was replaced before any OPEN_TRAIN target model selection or fitting by a physically isolated 226-row real-embedding bank.",
+  "replacement_closure_note": "Final pre-fit closure explicitly fixed sub-inner folds at 5 and all-226 residual targets as five-fold whole-parent cross-fitted M2 predictions.",
+  "replacement_frozen_at_utc": "2026-07-17T09:44:56.313481+00:00",
+  "replacement_preregistration_path": "experiments/phase2_5080_v1/audits/phase2_v4_d_open_train_nested_late_fusion_v1_1_preregistration.json",
+  "replacement_preregistration_sha256": "cabcff4f17cd5a27a5a8b248b2a247c2f39b49dce9b06f1f950db0929e7d7ecf",
+  "schema_version": "phase2_v4_d_open_train_nested_late_fusion_v1_1_preregistration_supersession_receipt",
+  "status": "SUPERSEDED_PREPRODUCTION_BEFORE_ANY_TARGET_MODEL_SELECTION_OR_FITTING",
+  "superseded_preregistration_path": "experiments/phase2_5080_v1/audits/phase2_v4_d_open_train_nested_late_fusion_v1_1_preregistration_superseded_preproduction.json",
+  "superseded_preregistration_sha256": "bba2ffc1ce043742056b0d551c032327a337b9e075486e60a9e55720141b7295",
+  "target_values_used_before_replacement": 0
+}

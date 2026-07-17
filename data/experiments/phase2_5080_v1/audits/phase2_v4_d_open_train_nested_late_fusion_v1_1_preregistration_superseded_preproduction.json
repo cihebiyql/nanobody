@@ -1,0 +1,132 @@
+{
+  "schema_version": "phase2_v4_d_open_train_nested_late_fusion_v1_1_preregistration",
+  "status": "FROZEN_BEFORE_OPEN_TRAIN_TARGET_MODEL_SELECTION_OR_FITTING",
+  "frozen_at_utc": "2026-07-17T09:35:00Z",
+  "objective": "Develop a leakage-controlled sequence/monomer-structure surrogate for R_dual_min using only the 226 OPEN_TRAIN candidates, with parent-cluster nested cross-validation and no re-use of OPEN_DEVELOPMENT labels.",
+  "claim_boundary": "Development-only approximation of independent dual-receptor computational docking geometry. Not Docking Gold, binding probability, affinity, competition, experimental blocking, or final submission authority.",
+  "inputs": {
+    "open_train_primary_table": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_open_train_primary_v1/open_train226_primary_v1.tsv",
+      "sha256": "2e2418e49ed300f7c6bf9f58d5090c3320b7d40f7359aad72c133fdf1a31f140",
+      "rows": 226,
+      "parent_framework_clusters": 20,
+      "model_split": "OPEN_TRAIN"
+    },
+    "open_train_projection_receipt_sha256": "bd90bf4924f874b05be2dcd2a14514725bac814b4f892e9c5acbf65febd30eb6",
+    "label_free_structure_features": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_open258_structure_features_v1/open258_structure_features_v1.tsv",
+      "sha256": "37b6fbc4b947f2598dd83ac1a742a9382d36e13aa641a5f460e3050d17e83472",
+      "feature_count": 126,
+      "allowed_rows_for_fitting": "candidate IDs present in the OPEN_TRAIN-only table"
+    },
+    "frozen_sequence_embedding_bank": {
+      "embedding_manifest_sha256": "875bb5304235ff08493919e1603bf5b9a8ef04774416e47c1d851d7a2d614521",
+      "embedding_summary_sha256": "0b5a5f01d82775ada2ed3bd505011a954be0c69fe73a2918a0c0c9c87b7af49c",
+      "sequence_manifest_sha256": "c456ec7cb4dd36df0a9e95e103ad2f9b597eebcee43281cfd6c06dc99ea06297",
+      "feature_count": 1115
+    }
+  },
+  "forbidden_inputs": [
+    "OPEN_DEVELOPMENT target values",
+    "V4-F test32 sequences, structures, predictions, or labels",
+    "legacy128 labels",
+    "V4-H docking statuses, poses, scores, contacts, occlusion, or derived labels",
+    "experimental binding or blocking labels"
+  ],
+  "target": {
+    "primary": "R_dual_min",
+    "direction": "higher_is_more_blocker_like_computational_geometry",
+    "secondary_targets_trained": []
+  },
+  "features": {
+    "sequence": "frozen 1115-dimensional ESM2/VHHBERT/physicochemical vector",
+    "structure": "frozen 126-dimensional rigid-motion-invariant monomer descriptors",
+    "standardization": "fit separately inside each training fold only",
+    "missing_values": "fail_closed_no_imputation"
+  },
+  "models": {
+    "M1_sequence_only": "Ridge on sequence features",
+    "M2_structure_only": "Ridge on structure features",
+    "M4_prediction_late_fusion": "convex prediction fusion: w_structure*M2 + (1-w_structure)*M1",
+    "M5_structure_plus_sequence_residual": "M2 plus gamma times a sequence Ridge trained on cross-fitted M2 residuals"
+  },
+  "nested_cross_validation": {
+    "group_key": "parent_framework_cluster",
+    "outer_folds": 5,
+    "inner_folds": 5,
+    "fold_assignment": "deterministic greedy whole-group bin packing by descending group size then lexical group ID",
+    "ridge_alpha_grid": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0,
+      1000.0
+    ],
+    "late_fusion_structure_weight_grid": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "residual_gamma_grid": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "selection_key": [
+      "Spearman_max",
+      "NDCG_max",
+      "top20_percent_recall_max",
+      "MAE_min",
+      "stronger_regularization_tie_break"
+    ],
+    "fusion_weight_tie_break": "prefer the weight closest to 0.5, then the higher structure weight",
+    "residual_gamma_tie_break": "prefer the smaller residual correction magnitude",
+    "residual_training": "Strict outer5-inner5-sub-inner cross-fitting. For each inner validation fold, the fold is removed first; residual targets for the remaining inner-training rows are then constructed by a separate whole-parent sub-inner cross-fit of M2 using only those remaining rows. A sequence residual Ridge is fit on those cross-fitted residual targets and applied to the untouched inner validation fold. Residual alpha/gamma are selected only from the resulting inner OOF predictions. The held-out outer fold is never used to construct residual targets or select alpha/gamma."
+  },
+  "evaluation": {
+    "scope": "OPEN_TRAIN nested out-of-fold only",
+    "metrics": [
+      "Spearman",
+      "Pearson",
+      "MAE",
+      "NDCG",
+      "top20_percent_recall"
+    ],
+    "paired_group_bootstrap": {
+      "replicates": 5000,
+      "seed": 20260717,
+      "comparisons": [
+        "M4_minus_M1_Spearman",
+        "M4_minus_M2_Spearman",
+        "M5_minus_M2_Spearman"
+      ]
+    },
+    "formal_pass_claim": false,
+    "same_data_model_family_selection_bias_disclosed": true
+  },
+  "full_train_scoring_artifacts": {
+    "fit_rows": 226,
+    "families_emitted": [
+      "M1_sequence_only",
+      "M2_structure_only",
+      "M4_prediction_late_fusion",
+      "M5_structure_plus_sequence_residual"
+    ],
+    "hyperparameters": "selected by parent-group CV on all 226 OPEN_TRAIN rows after nested OOF reporting",
+    "intended_next_use": "label-free scoring of V4-H research candidates before their docking geometry is consumed",
+    "formal_or_prospective_authority": false
+  },
+  "sealed_boundaries": {
+    "open_development_target_values_accessed_by_v1_1_training": 0,
+    "V4_F_test32_predictions_emitted": 0,
+    "V4_F_test32_labels_accessed": 0,
+    "V4_H_docking_labels_accessed_before_scoring_freeze": 0,
+    "legacy128_merged": false,
+    "formal_v4_d_pass_claimed": false
+  }
+}

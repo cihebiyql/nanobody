@@ -1,0 +1,27 @@
+{
+  "archive_member_and_checksum_closure": true,
+  "archive_sha256": "21f00fc17b153dadb2dcd93d90f24a28c4161ccddfe1876c90f0c21ab6a0467d",
+  "claim_boundary": "Post-hoc development-only sequence-to-independent-dual-docking continuous computational geometry evidence; not a V4-D pass, formal test, Docking Gold, binding, affinity, competition, experimental blocking, or final submission authority.",
+  "current_symlink": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_dev1_open258_v1_2/delivery_dev1_v1_2/current_dev1_v1_2",
+  "current_symlink_target": "by_sha256/21f00fc17b153dadb2dcd93d90f24a28c4161ccddfe1876c90f0c21ab6a0467d",
+  "formal_v4_f_unlock_eligible": false,
+  "frozen_open_split_closure": true,
+  "numeric_fields_finite": true,
+  "pose_validity_filter_closure": true,
+  "published_directory": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_dev1_open258_v1_2/delivery_dev1_v1_2/by_sha256/21f00fc17b153dadb2dcd93d90f24a28c4161ccddfe1876c90f0c21ab6a0467d",
+  "recorded_at_utc": "2026-07-17T08:48:06.075521+00:00",
+  "remote_release_receipt_sha256": "67c7901bd591dca7ae06dde7d22950819becd92bc21e0c6af1c061a6bad5768d",
+  "remote_source_failure_receipt_sha256": "72b4a3dffe49da2fad1f9150b5fc413944a0adb4eec68a279208cbda0f713b55",
+  "row_count": 258,
+  "runtime_completion_receipt_sha256": "18b9cc7b68afa8f86e6535b041eb225ff39aabfc0628db8278c77230abebf80d",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_delivery_receipt_v1",
+  "sequence_hash_closure": true,
+  "split_counts": {
+    "OPEN_DEVELOPMENT": 32,
+    "OPEN_TRAIN": 226
+  },
+  "status": "DELIVERED_CONTENT_ADDRESSED_DEV1_V1_2_TEST32_SEALED",
+  "teacher_audit_sha256": "533bec24823f991a8249f2115c8e31e4efbb94c05b5528390ca5060fe9b54d26",
+  "teacher_sha256": "89ad82c7cde28d862fecedfff4559e810bab68cf2405aa8f9e4dc5f1bd148068",
+  "test32_access_count": 0
+}

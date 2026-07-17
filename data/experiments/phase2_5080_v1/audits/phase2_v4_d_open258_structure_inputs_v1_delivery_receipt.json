@@ -1,0 +1,24 @@
+{
+  "archive_checksum_closure": true,
+  "archive_sha256": "9faa35b6a73872e37fd2f19a2919fab3f5512e5750a8d8251dd6a7c4340a18b7",
+  "audit_sha256": "6326f24198f0f375d747996eb97254fc7ccd920b627d8ff768dabc34ee9f2dac",
+  "candidate_count": 258,
+  "claim_boundary": "Label-free frozen VHH monomer inputs only; not docking labels or experimental truth.",
+  "current_symlink": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_open258_structure_inputs_v1/delivery/current",
+  "current_symlink_target": "by_sha256/9faa35b6a73872e37fd2f19a2919fab3f5512e5750a8d8251dd6a7c4340a18b7",
+  "docking_result_files_opened": 0,
+  "geometry_label_values_read": 0,
+  "implementation_freeze_sha256": "c749f10929bd2577c8ee3dd0574493c7c6f4d80c5e548497c2b4d458126ff9d8",
+  "manifest_sha256": "893556640293d15a240158d487c8607a4326b55dd7af5ece46aeb4f3890bf03c",
+  "monomer_hash_closure": true,
+  "preregistration_sha256": "026820be4f821e86cada34d581083196cd5c850f759a7229b854b5e59ebe9fe9",
+  "published_directory": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_open258_structure_inputs_v1/delivery/by_sha256/9faa35b6a73872e37fd2f19a2919fab3f5512e5750a8d8251dd6a7c4340a18b7",
+  "recorded_at_utc": "2026-07-17T08:55:44.449127+00:00",
+  "schema_version": "phase2_v4_d_open258_structure_inputs_v1_delivery_receipt",
+  "sealed_monomer_files_opened": 0,
+  "split_counts": {
+    "OPEN_DEVELOPMENT": 32,
+    "OPEN_TRAIN": 226
+  },
+  "status": "DELIVERED_OPEN258_LABEL_FREE_FROZEN_MONOMERS_TEST32_UNTOUCHED"
+}

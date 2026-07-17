@@ -1,0 +1,100 @@
+{
+  "candidate_level_open_development_labels_accessed": 0,
+  "claim_boundary": "Development-only computational docking-geometry surrogate comparison; not Docking Gold or experimental truth.",
+  "files": {
+    "base_trainer_dependency": {
+      "bytes": 67794,
+      "path": "experiments/phase2_5080_v1/src/train_phase2_v4_d_surrogate.py",
+      "sha256": "bbdf2d1d22ef1e375b65d1d680c25fffe6a4d09d170184528dc2c3f0292fa95e"
+    },
+    "embedding_trainer_dependency": {
+      "bytes": 61894,
+      "path": "experiments/phase2_5080_v1/src/train_phase2_v4_d_frozen_embedding_surrogate.py",
+      "sha256": "71dd641af2da55ecc2e35e166f4acfc5847b5085d2807e032e851001d79a2e18"
+    },
+    "preregistration": {
+      "bytes": 5244,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_structure_fusion_surrogate_v1_preregistration.json",
+      "sha256": "026820be4f821e86cada34d581083196cd5c850f759a7229b854b5e59ebe9fe9"
+    },
+    "structure_feature_materialization_receipt": {
+      "bytes": 2929,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_open258_structure_features_v1_materialization_receipt.json",
+      "sha256": "d56941e1de996f8bd0de668a60182afac94f3743402abf48081770dc260d95f4"
+    },
+    "teacher_delivery_receipt": {
+      "bytes": 1846,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_dev1_open258_v1_2_delivery_receipt.json",
+      "sha256": "665af2b799c6f91aaf1355e74900c56e8699e00d7ebe7dde908d07086b94717e"
+    },
+    "test_log": {
+      "bytes": 1929,
+      "path": "experiments/phase2_5080_v1/audits/phase2_v4_d_structure_fusion_surrogate_v1_tests.log",
+      "sha256": "6fa8184333a73cf65df7119c4a201c7a201252465cd85e24884617e550faebbf"
+    },
+    "tests": {
+      "bytes": 3456,
+      "path": "experiments/phase2_5080_v1/src/test_train_phase2_v4_d_structure_fusion_surrogate_v1.py",
+      "sha256": "7db10883f6325dd076362f2917555f2c524556b89d516b80c15b248d94f95455"
+    },
+    "trainer": {
+      "bytes": 23181,
+      "path": "experiments/phase2_5080_v1/src/train_phase2_v4_d_structure_fusion_surrogate_v1.py",
+      "sha256": "307d0bb75a73e08477c277feb9018072e3afc0a6961041e5c78ac1b810502098"
+    }
+  },
+  "formal_v4_d_pass_claimed": false,
+  "frozen_at_utc": "2026-07-17T09:06:40.719542+00:00",
+  "frozen_comparison": {
+    "alphas": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0,
+      1000.0
+    ],
+    "development_rows": 32,
+    "ensemble_seeds": [
+      43,
+      53,
+      67,
+      79,
+      97
+    ],
+    "fit_rows": 226,
+    "models": [
+      "M0_parent_only",
+      "M1_sequence_only",
+      "M2_structure_only",
+      "M3_sequence_structure"
+    ],
+    "paired_bootstrap_replicates": 5000,
+    "parent_group_folds": 5,
+    "primary_target": "R_dual_min"
+  },
+  "legacy128_merged": false,
+  "prospective_test_labels_accessed": 0,
+  "prospective_test_predictions_emitted": 0,
+  "runtime": {
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 5080",
+    "executable": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
+    "torch": "2.13.0+cu130"
+  },
+  "schema_version": "phase2_v4_d_structure_fusion_surrogate_v1_implementation_freeze",
+  "status": "FROZEN_BEFORE_FIRST_CANDIDATE_LEVEL_OPEN_DEVELOPMENT_LABEL_EVALUATION",
+  "tests": {
+    "normal": {
+      "count": 5,
+      "status": "OK"
+    },
+    "optimized": {
+      "count": 5,
+      "status": "OK"
+    }
+  }
+}

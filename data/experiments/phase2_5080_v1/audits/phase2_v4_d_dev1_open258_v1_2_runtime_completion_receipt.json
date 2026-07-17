@@ -1,0 +1,55 @@
+{
+  "active_process_count_at_completion": 0,
+  "archive_sha256": "21f00fc17b153dadb2dcd93d90f24a28c4161ccddfe1876c90f0c21ab6a0467d",
+  "attempt": 1,
+  "authorized_argv_canonical_sha256": "178396050a50b420b5795cdd56b07a095ba08d8f17dd3a17feb557ce928489fd",
+  "evidence_boundary": "post-hoc development-only computational docking geometry evidence; not Docking Gold, binding probability, Kd, or experimental blocking truth",
+  "formal_v4_f_unlock_eligible": false,
+  "launch_freeze_sha256": "f013f80163ebe1703e32fcf276954635210246f28970ca4e1f119512970d062a",
+  "launch_receipt_sha256": "fa0ca694461afea3687a3561b5212a655beea4346181cfc5955d200c06189734",
+  "pose_validity_counts": {
+    "affected_candidates": 83,
+    "affected_jobs": 98,
+    "complete_pairs_after": 14391,
+    "complete_pairs_before": 14490,
+    "invalid_pairs": 99
+  },
+  "recorded_at_utc": "2026-07-17T08:48:06.075521+00:00",
+  "remote_files": {
+    "attempt_marker": {
+      "sha256": "a146df4de2874466fbd06fcf33232d5f7a2eb6f7b49a794f4d7963768f534b4d",
+      "size": 555
+    },
+    "console": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "status": {
+      "sha256": "e50a02dd5bc4206ec1c7608be3c9d83fdfe071dc2609d0828cb790f81a5beead",
+      "size": 149
+    },
+    "stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "stdout": {
+      "sha256": "0db0174e70385c429b736519ec120bfc2f8406cf59549df59b4fed3f82afd210",
+      "size": 407
+    }
+  },
+  "remote_host": "node23",
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+  "retry_attempted": false,
+  "retry_authorized": false,
+  "row_count": 258,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_runtime_completion_receipt_v1",
+  "split_counts": {
+    "OPEN_DEVELOPMENT": 32,
+    "OPEN_TRAIN": 226
+  },
+  "status": "COMPLETE_EXACTLY_ONCE_DEV1_V1_2_RELEASE_READY_TEST32_SEALED",
+  "teacher_sha256": "89ad82c7cde28d862fecedfff4559e810bab68cf2405aa8f9e4dc5f1bd148068",
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}
