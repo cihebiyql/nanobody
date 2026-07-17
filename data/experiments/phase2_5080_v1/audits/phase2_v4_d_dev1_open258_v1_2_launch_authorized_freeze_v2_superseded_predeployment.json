@@ -1,0 +1,184 @@
+{
+  "attempt_limit": 1,
+  "attempt_marker_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/attempts/v1_2_attempt_001_consumed.json",
+  "candidate_implementation_freeze_sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039",
+  "claim_boundary": "One fail-closed, machine-enforced single runtime authorization for a post-hoc development-only sequence-to-independent-dual-docking continuous computational geometry teacher; not binding, affinity, experimental blocking, formal V4-D PASS, Docking Gold, formal V4-F unlock, or final submission authority.",
+  "deployment_preconditions": {
+    "base_active_v1_2_processes": [],
+    "base_release_v1_2_absent": true,
+    "base_remote_package_hash_replay": "PASS",
+    "python_executable": true,
+    "science_output_created_before_authorization": false,
+    "supplemental_one_shot_deployment_required_before_launch": true
+  },
+  "expected_runtime_gates": {
+    "affected_candidate_count": 83,
+    "affected_job_count": 98,
+    "all_numeric_teacher_targets_finite": true,
+    "complete_pairs_after": 14391,
+    "complete_pairs_before": 14490,
+    "invalid_pair_count": 99,
+    "minimum_retained_complete_pairs_per_success_job": 4,
+    "open_development_rows": 32,
+    "open_train_rows": 226,
+    "raw_result_sha256_chain": "202d06e1ee689167427abdebcb85705e20ee867aacda31bef5211a35d44d9301",
+    "raw_success_job_count": 1547,
+    "release_audit_archive_and_sha256sums_closure": true,
+    "release_status": "DEV1_V1_2_RELEASE_READY_TEST32_SEALED",
+    "teacher_rows": 258
+  },
+  "files": {
+    "builder": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "872bee4bf27b894244f14b31f43b03f877a1cff89a084f6272c0cbccd026ba9b"
+    },
+    "candidate_implementation_freeze": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json",
+      "sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039"
+    },
+    "canonical_clarification": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json",
+      "sha256": "1fb8f1bdfdf8f8869cc1c80a477a1e1f4f74246c555925be4fa1c1ebc380b918"
+    },
+    "deployment_receipt": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_deployment_receipt.json",
+      "sha256": "1f00193019cb3345a9eb4278631d9517143e38f8e78b3281a48c318fe08cf267"
+    },
+    "diagnostic": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead"
+    },
+    "diagnostic_receipt": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json",
+      "sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f"
+    },
+    "failed_launch_freeze_v1": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v1_superseded_preproduction.json",
+      "sha256": "8dc1495f98c4154226fa4572302cd558fdfa4e939827f699a0ca4ad7b88a9b29"
+    },
+    "failed_launch_freeze_v1_review": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_launch_freeze_v1_independent_review_receipt.json",
+      "sha256": "240fc8a5d8020c08c841019c89d8036a15111ce1ee3bec0f7bd8bad2458228cd"
+    },
+    "fallback_evidence": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481"
+    },
+    "generic_prior": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/v4d_dev1_fullqc290_label_free_generic_prior_v1.csv",
+      "sha256": "21b4c6a38056d6777de5b5efbfcd5887b45098c637cab61489072d1e6e7783cd"
+    },
+    "independent_implementation_review": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_independent_implementation_review_receipt.json",
+      "sha256": "d6c71796b4b10ecb255a5348b2aeac715af8fc79aad9d4201a5dd2d5dfeab4d1"
+    },
+    "launcher": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+      "sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae"
+    },
+    "one_shot_implementation_freeze": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_implementation_freeze.json",
+      "sha256": "23334fb503271e3ac116f9802276f058c5c702c845c40aff33dc9e217db1123a"
+    },
+    "one_shot_independent_review": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_independent_review_receipt.json",
+      "sha256": "4fa6fd2c6b3c524025c6895e5c061c126808e403259f59497a540e1f7522780e"
+    },
+    "one_shot_launcher": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53"
+    },
+    "one_shot_tests": {
+      "path": "local:src/test_run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "sha256": "104699da97638a78754439828e42e930c95668601135d0c075616160453b863e"
+    },
+    "one_shot_tests_log": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_tests.log",
+      "sha256": "21d53784db833fc8daaf012ae67fc01c171dee2f054c3528a7e62b17540e2515"
+    },
+    "package_manifest": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_package_manifest.json",
+      "sha256": "3267ffee9de60832a934ebd1473e165ccead5eca2c9bb817eaf34fa08560df00"
+    },
+    "package_receipt": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_package_receipt.json",
+      "sha256": "49f8feef040d42fb948faea3c4079da980eeff73e8bf0c8a3ba6e62bf36ed96e"
+    },
+    "preregistration": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+      "sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1"
+    },
+    "tests": {
+      "path": "local:src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "dbf9e4c732cdd13f158d316805b4a89a0bdf774b2c31af5217528bfa5a08cbc1"
+    },
+    "tests_log": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log",
+      "sha256": "0e943ac88732b2e7a0e476359a10ed5747e3fb24e042487761f965d99a1450af"
+    },
+    "v1_1_builder": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82"
+    },
+    "v1_1_failure_receipt": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json",
+      "sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7"
+    },
+    "v1_builder": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276"
+    },
+    "v1_failure_receipt": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720"
+    },
+    "v1_formula_helper": {
+      "path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145"
+    },
+    "zero_work_preflight": {
+      "path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_zero_work_preflight.json",
+      "sha256": "ba770142d43f0613ab789e71d81aa1f1c519e77d283ea0f09da2525bc3edf600"
+    }
+  },
+  "formal_v4_f_unlock_eligible": false,
+  "frozen_at_utc": "2026-07-17T02:25:34.554105+00:00",
+  "immutable_failure_lineage": {
+    "launch_freeze_v1_review_sha256": "240fc8a5d8020c08c841019c89d8036a15111ce1ee3bec0f7bd8bad2458228cd",
+    "launch_freeze_v1_sha256": "8dc1495f98c4154226fa4572302cd558fdfa4e939827f699a0ca4ad7b88a9b29",
+    "launch_freeze_v1_status": "FAIL_NOT_AUTHORIZED_TO_LAUNCH",
+    "old_failures_reinterpreted": false,
+    "v1_1_status": "FAILED_CLOSED_NATIVE_OVERLAY_RMSD_ABOVE_1A",
+    "v1_status": "FAILED_CLOSED_MISSING_RAW_RESULT_FOR_FROZEN_FAILED_MAX_ATTEMPTS_JOB"
+  },
+  "independent_implementation_review_sha256": "d6c71796b4b10ecb255a5348b2aeac715af8fc79aad9d4201a5dd2d5dfeab4d1",
+  "independent_implementation_review_status": "PASS",
+  "one_shot_implementation_freeze_sha256": "23334fb503271e3ac116f9802276f058c5c702c845c40aff33dc9e217db1123a",
+  "one_shot_independent_review_sha256": "4fa6fd2c6b3c524025c6895e5c061c126808e403259f59497a540e1f7522780e",
+  "one_shot_independent_review_status": "PASS",
+  "one_shot_launcher_required": true,
+  "remote_execution_authorized": true,
+  "remote_host": "node23",
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+  "retry_authorized": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v2",
+  "sealed_boundary": {
+    "candidate_rows": 32,
+    "model_split": "PROSPECTIVE_COMPUTATIONAL_TEST",
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0
+  },
+  "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+  "source_evaluator_status": "FAIL",
+  "source_evaluator_unlockable": false,
+  "source_failed_gate": "candidate_threshold_sensitivity",
+  "status": "FROZEN_FOR_DEV1_V1_2_REMOTE_EXECUTION",
+  "teacher_materialization_authorized": true,
+  "teacher_release_requires_runtime_gates": true,
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0,
+  "version": "V4-D-DEV1-V1.2-LAUNCH-V2"
+}

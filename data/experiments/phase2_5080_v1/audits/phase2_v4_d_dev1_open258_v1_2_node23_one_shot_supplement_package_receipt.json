@@ -1,0 +1,13 @@
+{
+  "created_at_utc": "2026-07-17T02:40:37.434295+00:00",
+  "file_count": 20,
+  "formal_v4_f_unlock_eligible": false,
+  "manifest_sha256": "8a2c0ad8671d74d5151107ed9ef2eda6b8aa8a9ecb72017e42e4481dafce3fd2",
+  "remote_execution_authorized": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_node23_one_shot_supplement_package_receipt_v1",
+  "science_output_created": false,
+  "status": "PASS_LOCAL_SUPPLEMENT_HASH_CLOSURE_NOT_DEPLOYED",
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

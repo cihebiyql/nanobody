@@ -1,0 +1,111 @@
+{
+  "authorization_scope": "EXACTLY_ONE_PORTABLE_V1_1_WRAPPER_INVOCATION_FOR_V1_2_DEV_ONLY_TEACHER",
+  "authorized_command": {
+    "argv": [
+      "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+      "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_once_v1_1.py",
+      "--freeze",
+      "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze.json",
+      "--expected-freeze-sha",
+      "f013f80163ebe1703e32fcf276954635210246f28970ca4e1f119512970d062a"
+    ],
+    "argv_canonical_json_sha256": "178396050a50b420b5795cdd56b07a095ba08d8f17dd3a17feb557ce928489fd",
+    "attempt_marker_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/attempts/v1_2_attempt_001_consumed.json",
+    "expected_freeze_sha256": "f013f80163ebe1703e32fcf276954635210246f28970ca4e1f119512970d062a",
+    "expected_freeze_sha_flag": "--expected-freeze-sha",
+    "freeze_flag": "--freeze",
+    "freeze_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze.json",
+    "inner_launcher_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+    "inner_launcher_sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae",
+    "python_executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+    "working_directory": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+    "wrapper_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_once_v1_1.py",
+    "wrapper_sha256": "8aea8734254026dbd2ba131891dafb504e2a2024f9b39a3b89f3da54bbf6bbae"
+  },
+  "claim_boundary": "Authorizes exactly one invocation of the exact portable V1.1 wrapper for the frozen V1.2 development-only sequence-to-independent-dual-docking continuous computational-geometry teacher. It does not declare invocation started, teacher success, runtime-gate success, teacher release, binding, affinity, experimental blocking, formal V4-D PASS, Docking Gold, formal V4-F unlock, or final-submission authority.",
+  "created_at_utc": "2026-07-17T02:45:44.854845+00:00",
+  "frozen_science_and_release_boundary": {
+    "final_submission_authority": false,
+    "formal_v4_f_unlock_eligible": false,
+    "source_evaluator_sha256": "289542c58cfe72c380143a910b3adb75ba4e12f65899f71907a044314bedb674",
+    "source_evaluator_status": "FAIL",
+    "source_evaluator_unlockable": false,
+    "source_failed_gate": "candidate_threshold_sensitivity",
+    "teacher_materialization_authorized": true,
+    "teacher_release_predeclared": false,
+    "teacher_release_requires_runtime_gates": true,
+    "teacher_success_declared": false
+  },
+  "invocation_limit": 1,
+  "one_shot_semantics": {
+    "authorization_is_consumed_by_first_invocation_regardless_of_outcome": true,
+    "no_retry_or_second_invocation_is_authorized_even_if_failure_precedes_marker_creation": true,
+    "runtime_outputs_remain_subject_to_all_frozen_finite_count_hash_archive_and_release_gates": true,
+    "wrapper_persistent_marker_enforces_no_second_post_marker_invocation": true
+  },
+  "prelaunch_zero_work_evidence": {
+    "active_v1_2_processes": [],
+    "attempt_marker_absent": true,
+    "attempts_directory_absent": true,
+    "base_package_all_hash_size_bindings_match": true,
+    "logs_directory_absent": true,
+    "one_attempt_available": true,
+    "portable_wrapper_exact_runtime_probe": "PASS_LIBC_MEMFD_NUMERIC_SEALS_NO_MARKER",
+    "python_is_executable": true,
+    "release_v1_2_absent": true,
+    "remote_execution_started": false,
+    "science_output_created": false,
+    "status_directory_absent": true,
+    "supplement_all_hash_size_mode_bindings_match": true
+  },
+  "receipt_creation_access_accounting": {
+    "attempt_markers_created_or_consumed": 0,
+    "local_synced_artifacts_only": true,
+    "production_raw_files_opened": 0,
+    "remote_access_count": 0,
+    "remote_execution_count": 0,
+    "ssh_calls": 0,
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0,
+    "workspace_files_modified_other_than_this_receipt": 0,
+    "wrapper_invocations_started": 0
+  },
+  "remote_execution_authorized": true,
+  "remote_execution_started": false,
+  "remote_host": "node23",
+  "remote_root": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717",
+  "retry_authorized": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_launch_receipt_v1",
+  "second_invocation_authorized": false,
+  "status": "AUTHORIZED_EXACTLY_ONE_V1_2_WRAPPER_INVOCATION",
+  "test32_sealed_boundary": {
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0
+  },
+  "trust_chain": {
+    "base_package_manifest_sha256": "3267ffee9de60832a934ebd1473e165ccead5eca2c9bb817eaf34fa08560df00",
+    "base_package_receipt_sha256": "49f8feef040d42fb948faea3c4079da980eeff73e8bf0c8a3ba6e62bf36ed96e",
+    "canonical_launch_freeze_sha256": "f013f80163ebe1703e32fcf276954635210246f28970ca4e1f119512970d062a",
+    "inner_launcher_sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae",
+    "launch_freeze_v3_review_sha256": "368f7ec919583baf260b09e5b0d53d57268c37594b2550c1144936a48745aaf1",
+    "portable_wrapper_implementation_freeze_sha256": "37af205e0872caf3df854da03725c55eae0b712a8a328817ac4712ba2a33db36",
+    "portable_wrapper_independent_review_sha256": "09bc625b5609967bde7b4718f0fecddf0d64f414373de3e5e7915583d3b465de",
+    "portable_wrapper_sha256": "8aea8734254026dbd2ba131891dafb504e2a2024f9b39a3b89f3da54bbf6bbae",
+    "prelaunch_receipt": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_prelaunch_receipt.json",
+      "sha256": "d330557bc97540cc5adf98cb0f04e7d7b21b00c933493f9d1e466d16e10d8c73",
+      "status": "PASS_ZERO_WORK_PRELAUNCH_READY_FOR_SEPARATE_SINGLE_INVOCATION_RECEIPT"
+    },
+    "supplement_deployment_receipt": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_one_shot_deployment_receipt.json",
+      "sha256": "d2a4c5237d5a2714037b5bd3c6659a7f2ab0ff67eddfd9d4bb447cf88d9cafce",
+      "status": "PASS_PORTABLE_ONE_SHOT_V1_1_SUPPLEMENT_DEPLOYED_ZERO_WORK"
+    },
+    "supplement_manifest_sha256": "8a2c0ad8671d74d5151107ed9ef2eda6b8aa8a9ecb72017e42e4481dafce3fd2",
+    "supplement_package_receipt_sha256": "0b70204631b92b5e94f53d6f5039a0c73c485d53a70d1a1957cbf3d0400731f9"
+  }
+}

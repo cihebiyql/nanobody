@@ -1,0 +1,341 @@
+{
+  "blocking_findings": [
+    {
+      "evidence": "The fail-closed Node23 capability receipt sha256 338a9ca686e9bb2c9df3237f226752794da7889c1b1a90f32cf7ef02e206a253 binds the same launcher bytes, records compatible_on_node23=false, records os_memfd_create=false and all required Python sealing constants absent, and records no marker or release creation.",
+      "finding": "The exact one-shot launcher sha256 308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53 requires os.memfd_create, os.MFD_ALLOW_SEALING, and Python fcntl sealing constants, but the authorized Node23 haddock3 Python 3.11.14 environment exposes none of them.",
+      "id": "NODE23_RUNTIME_INCOMPATIBLE_WITH_EXACT_FROZEN_ONE_SHOT_WRAPPER",
+      "impact": "The current wrapper will fail inside create_sealed_exec_snapshot before attempt-marker consumption. V2 is therefore not production-executable and must not authorize supplemental deployment, prelaunch, or runtime execution.",
+      "severity": "BLOCKING"
+    },
+    {
+      "evidence": "V2 frozen_at_utc is 2026-07-17T02:25:34.554105+00:00; the capability receipt checked_at_utc is 2026-07-17T02:27:20.998172+00:00. The prior one-shot review explicitly left Node23 memfd/fcntl availability as an untested runtime precondition.",
+      "finding": "Launch freeze V2 predates and does not bind the later Node23 capability-preflight receipt that contradicts runtime readiness of the exact frozen one-shot bytes.",
+      "id": "POST_FREEZE_BLOCKING_CAPABILITY_EVIDENCE_NOT_BOUND_BY_V2",
+      "impact": "The earlier structural PASS cannot be extended to deployment readiness after the newly captured incompatible production environment evidence.",
+      "severity": "BLOCKING"
+    }
+  ],
+  "claim_boundary": "Governance and execution-readiness review for a post-hoc development-only sequence-to-independent-dual-docking continuous computational geometry teacher. Not binding, affinity, experimental blocking, formal V4-D PASS, Docking Gold, formal V4-F unlock, teacher release, or final-submission authority.",
+  "decision": {
+    "blocking_finding_count": 2,
+    "final_submission_authority": false,
+    "formal_v4_f_unlock_eligible": false,
+    "launch_authorized_by_this_review": false,
+    "one_time_prelaunch_authorized_by_this_review": false,
+    "remote_execution_authorized_by_this_review": false,
+    "review_status": "FAIL",
+    "supplemental_one_shot_deployment_authorized_by_this_review": false,
+    "teacher_materialization_authorized_by_this_review": false,
+    "teacher_release_approved": false
+  },
+  "immutable_failure_and_remediation_lineage": {
+    "failed_launch_freeze_v1_review_sha256": "240fc8a5d8020c08c841019c89d8036a15111ce1ee3bec0f7bd8bad2458228cd",
+    "failed_launch_freeze_v1_review_status": "FAIL_NOT_AUTHORIZED_TO_LAUNCH",
+    "failed_launch_freeze_v1_sha256": "8dc1495f98c4154226fa4572302cd558fdfa4e939827f699a0ca4ad7b88a9b29",
+    "old_failures_reinterpreted": false,
+    "one_shot_implementation_freeze_sha256": "23334fb503271e3ac116f9802276f058c5c702c845c40aff33dc9e217db1123a",
+    "one_shot_independent_review_sha256": "4fa6fd2c6b3c524025c6895e5c061c126808e403259f59497a540e1f7522780e",
+    "one_shot_independent_review_status": "PASS_ONE_SHOT_IMPLEMENTATION_REVIEW_AWAITING_REPLACEMENT_LAUNCH_FREEZE"
+  },
+  "nonconsuming_wrapper_validation": {
+    "attempt_marker_consumed": false,
+    "freeze_sha256": "285d11ef2142e75a6d8f843715d3836e107815f85ebba0fda18faad20ab76eb8",
+    "function": "run_phase2_v4_d_dev1_open258_v1_2_once.validate_authorization",
+    "inner_launcher_sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae",
+    "interpretation": "Structural authorization fields pass, but this function does not prove that create_sealed_exec_snapshot is supported by the production Python runtime.",
+    "one_shot_launcher_sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53",
+    "result": "PASS"
+  },
+  "package_and_deployment_chain": {
+    "base_remote_execution_started": false,
+    "base_science_output_created": false,
+    "deployment_receipt_sha256": "1f00193019cb3345a9eb4278631d9517143e38f8e78b3281a48c318fe08cf267",
+    "package_manifest_file_count": 20,
+    "package_manifest_hash_and_size_replay": "PASS_20_OF_20",
+    "package_manifest_sha256": "3267ffee9de60832a934ebd1473e165ccead5eca2c9bb817eaf34fa08560df00",
+    "package_receipt_sha256": "49f8feef040d42fb948faea3c4079da980eeff73e8bf0c8a3ba6e62bf36ed96e",
+    "remote_package_hash_replay": "PASS",
+    "supplemental_one_shot_deployment_allowed_after_this_review": false,
+    "supplemental_one_shot_deployment_required_before_launch": true,
+    "zero_work_preflight_sha256": "ba770142d43f0613ab789e71d81aa1f1c519e77d283ea0f09da2525bc3edf600"
+  },
+  "passing_checks": {
+    "all_20_package_manifest_hash_and_size_bindings_recomputed": "PASS",
+    "all_28_launch_freeze_file_bindings_recomputed": "PASS",
+    "attempt_limit_exact_integer_one": "PASS",
+    "attempt_marker_absolute_path_exact": "PASS",
+    "candidate_freeze_top_level_and_files_hashes_exact": "PASS",
+    "formal_v4_f_unlock_eligible_false": "PASS",
+    "immutable_failed_v1_archive_and_fail_review_bound": "PASS",
+    "implementation_review_top_level_and_files_hashes_exact": "PASS",
+    "launch_freeze_sha256_recomputed": "PASS",
+    "no_scientific_formula_threshold_split_target_or_candidate_change": "PASS",
+    "old_failure_lineage_not_reinterpreted": "PASS",
+    "one_shot_implementation_freeze_and_independent_review_bound": "PASS",
+    "package_receipt_deployment_and_zero_work_hash_chain": "PASS",
+    "retry_authorized_exact_false": "PASS",
+    "sealed_boundary_including_test32_raw_paths_constructed_exact_integer_zero": "PASS",
+    "source_evaluator_status_fail_and_unlockable_false": "PASS",
+    "teacher_materialization_authorized_exact_true": "PASS",
+    "teacher_release_requires_runtime_gates_exact_true": "PASS",
+    "top_level_test32_counters_exact_integer_zero": "PASS",
+    "wrapper_absolute_inner_path_and_sha256_exact": "PASS",
+    "wrapper_absolute_one_shot_path_and_sha256_exact": "PASS",
+    "wrapper_validate_authorization_nonconsuming": "PASS_STRUCTURAL_ONLY"
+  },
+  "required_remediation": "Do not deploy or invoke V2. Create a fresh versioned one-shot implementation using the already probed libc memfd_create plus fixed Linux seal constants (or another equivalently fail-closed portable mechanism), add local normal/-O/compile and capability-path tests, obtain fresh independent implementation review, supersede V2 preproduction without editing it, and generate a new launch freeze that binds the new exact bytes and a passing Node23 capability preflight. This receipt authorizes none of those execution steps.",
+  "review_scope": "Independent local-only review of replacement launch freeze V2, exact locally mirrored file bindings, package/deployment governance chain, and the separately captured Node23 capability-preflight receipt. No SSH, launch, attempt consumption, production raw-data read, teacher materialization, release, or test32 access was performed by this reviewer.",
+  "reviewed_at_utc": "2026-07-17T02:31:10.107832+00:00",
+  "reviewed_file_bindings": {
+    "builder": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "local_review_path": "src/prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "872bee4bf27b894244f14b31f43b03f877a1cff89a084f6272c0cbccd026ba9b",
+      "size_bytes": 53780,
+      "status": "PASS"
+    },
+    "candidate_implementation_freeze": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_implementation_freeze_candidate.json",
+      "sha256": "443df675d107d7d8e7de93e72c37f98c5bb4c7fe16462e0aed2276c892a03039",
+      "size_bytes": 6584,
+      "status": "PASS"
+    },
+    "canonical_clarification": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_invalid_pair_canonicalization_clarification.json",
+      "sha256": "1fb8f1bdfdf8f8869cc1c80a477a1e1f4f74246c555925be4fa1c1ebc380b918",
+      "size_bytes": 1495,
+      "status": "PASS"
+    },
+    "deployment_receipt": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_deployment_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_deployment_receipt.json",
+      "sha256": "1f00193019cb3345a9eb4278631d9517143e38f8e78b3281a48c318fe08cf267",
+      "size_bytes": 1406,
+      "status": "PASS"
+    },
+    "diagnostic": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2.json",
+      "sha256": "ef31a254de83dec7aa0f073154c8a7176eaa43c406df0aec8c9fd65df448aead",
+      "size_bytes": 117386,
+      "status": "PASS"
+    },
+    "diagnostic_receipt": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open_overlay_rmsd_diagnostic_v2_run_receipt.json",
+      "sha256": "1a99a0a498bb44c7d64b379a553a1d117b4ad9212e6d204fa73fb0f943c58f2f",
+      "size_bytes": 5652,
+      "status": "PASS"
+    },
+    "failed_launch_freeze_v1": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v1_superseded_preproduction.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v1_superseded_preproduction.json",
+      "sha256": "8dc1495f98c4154226fa4572302cd558fdfa4e939827f699a0ca4ad7b88a9b29",
+      "size_bytes": 6760,
+      "status": "PASS"
+    },
+    "failed_launch_freeze_v1_review": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_launch_freeze_v1_independent_review_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_freeze_v1_independent_review_receipt.json",
+      "sha256": "240fc8a5d8020c08c841019c89d8036a15111ce1ee3bec0f7bd8bad2458228cd",
+      "size_bytes": 7207,
+      "status": "PASS"
+    },
+    "fallback_evidence": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_1_terminal_fallback_projection_evidence.json",
+      "sha256": "36c7e11e3a727512d04a8797122efedc10b277bf58b5b997c09315209fdc6481",
+      "size_bytes": 2895,
+      "status": "PASS"
+    },
+    "generic_prior": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/v4d_dev1_fullqc290_label_free_generic_prior_v1.csv",
+      "local_review_path": "prepared/pvrig_v4_d_dev1_open258_v1/generic_prior_v1/v4d_dev1_fullqc290_label_free_generic_prior_v1.csv",
+      "sha256": "21b4c6a38056d6777de5b5efbfcd5887b45098c637cab61489072d1e6e7783cd",
+      "size_bytes": 128885,
+      "status": "PASS"
+    },
+    "independent_implementation_review": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_independent_implementation_review_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_independent_implementation_review_receipt.json",
+      "sha256": "d6c71796b4b10ecb255a5348b2aeac715af8fc79aad9d4201a5dd2d5dfeab4d1",
+      "size_bytes": 12511,
+      "status": "PASS"
+    },
+    "launcher": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+      "local_review_path": "src/run_phase2_v4_d_dev1_open258_v1_2_node23.sh",
+      "sha256": "2fb5c83ef3758ffaf5b6fa3a7e08db3a8656f66a79d88464c38aa2b13a8f77ae",
+      "size_bytes": 7138,
+      "status": "PASS"
+    },
+    "one_shot_implementation_freeze": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_implementation_freeze.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_implementation_freeze.json",
+      "sha256": "23334fb503271e3ac116f9802276f058c5c702c845c40aff33dc9e217db1123a",
+      "size_bytes": 6552,
+      "status": "PASS"
+    },
+    "one_shot_independent_review": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_independent_review_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_independent_review_receipt.json",
+      "sha256": "4fa6fd2c6b3c524025c6895e5c061c126808e403259f59497a540e1f7522780e",
+      "size_bytes": 7024,
+      "status": "PASS"
+    },
+    "one_shot_launcher": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "local_review_path": "src/run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53",
+      "size_bytes": 12790,
+      "status": "PASS"
+    },
+    "one_shot_tests": {
+      "declared_path": "local:src/test_run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "local_review_path": "src/test_run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "sha256": "104699da97638a78754439828e42e930c95668601135d0c075616160453b863e",
+      "size_bytes": 19717,
+      "status": "PASS"
+    },
+    "one_shot_tests_log": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_tests.log",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_tests.log",
+      "sha256": "21d53784db833fc8daaf012ae67fc01c171dee2f054c3528a7e62b17540e2515",
+      "size_bytes": 7512,
+      "status": "PASS"
+    },
+    "package_manifest": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_package_manifest.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_package_manifest.json",
+      "sha256": "3267ffee9de60832a934ebd1473e165ccead5eca2c9bb817eaf34fa08560df00",
+      "size_bytes": 5589,
+      "status": "PASS"
+    },
+    "package_receipt": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_package_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_package_receipt.json",
+      "sha256": "49f8feef040d42fb948faea3c4079da980eeff73e8bf0c8a3ba6e62bf36ed96e",
+      "size_bytes": 841,
+      "status": "PASS"
+    },
+    "preregistration": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_preregistration.json",
+      "sha256": "cbc70313d47ff5f0fc99476a5a0b108abc0e94e4ecaf05d53663e1b06adf62a1",
+      "size_bytes": 7535,
+      "status": "PASS"
+    },
+    "tests": {
+      "declared_path": "local:src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "local_review_path": "src/test_prepare_phase2_v4_d_dev1_open258_v1_2.py",
+      "sha256": "dbf9e4c732cdd13f158d316805b4a89a0bdf774b2c31af5217528bfa5a08cbc1",
+      "size_bytes": 32439,
+      "status": "PASS"
+    },
+    "tests_log": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_pose_validity_recovery_tests.log",
+      "sha256": "0e943ac88732b2e7a0e476359a10ed5747e3fb24e042487761f965d99a1450af",
+      "size_bytes": 8540,
+      "status": "PASS"
+    },
+    "v1_1_builder": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "local_review_path": "src/prepare_phase2_v4_d_dev1_open258_v1_1.py",
+      "sha256": "cadc38165b272fde783f6afcf936f3c2c14cd3f57c43a6cb16148cc7413a9e82",
+      "size_bytes": 23777,
+      "status": "PASS"
+    },
+    "v1_1_failure_receipt": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_1_remote_runtime_failure_receipt.json",
+      "sha256": "7dbf808d31985cd7555ebadec0c294583b95fc32cb76b26d63b6b06adc74bea7",
+      "size_bytes": 8809,
+      "status": "PASS"
+    },
+    "v1_builder": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_dev1_open258.py",
+      "local_review_path": "src/prepare_phase2_v4_d_dev1_open258.py",
+      "sha256": "04fd7addb8f1bc16f0cd3c0d113d9cbeb2cf23a25b5a39fe0113bfd2cf65d276",
+      "size_bytes": 27225,
+      "status": "PASS"
+    },
+    "v1_failure_receipt": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/governance/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_remote_runtime_failure_receipt.json",
+      "sha256": "247b6ec684a60ada85fa38834aa176e3f6a797a379938a5dabd5755bdd041720",
+      "size_bytes": 2000,
+      "status": "PASS"
+    },
+    "v1_formula_helper": {
+      "declared_path": "/data/qlyu/projects/pvrig_v4_d_dev1_open258_v1_2_20260717/scripts/prepare_phase2_v4_d_open_teacher.py",
+      "local_review_path": "src/prepare_phase2_v4_d_open_teacher.py",
+      "sha256": "8adb3c4e1de37bbaaf469dfb967176d2c49d40f353e21a3f028baa20ea8e4145",
+      "size_bytes": 37344,
+      "status": "PASS"
+    },
+    "zero_work_preflight": {
+      "declared_path": "local:audits/phase2_v4_d_dev1_open258_v1_2_node23_zero_work_preflight.json",
+      "local_review_path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_zero_work_preflight.json",
+      "sha256": "ba770142d43f0613ab789e71d81aa1f1c519e77d283ea0f09da2525bc3edf600",
+      "size_bytes": 1228,
+      "status": "PASS"
+    }
+  },
+  "reviewed_launch_freeze": {
+    "declared_status": "FROZEN_FOR_DEV1_V1_2_REMOTE_EXECUTION",
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze.json",
+    "schema_version": "phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v2",
+    "sha256": "285d11ef2142e75a6d8f843715d3836e107815f85ebba0fda18faad20ab76eb8",
+    "size_bytes": 10256,
+    "version": "V4-D-DEV1-V1.2-LAUNCH-V2"
+  },
+  "runtime_capability_evidence": {
+    "attempt_marker_created": false,
+    "compatible_on_node23": false,
+    "exact_launcher_sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53",
+    "native_python_capabilities": {
+      "fcntl_F_ADD_SEALS": null,
+      "fcntl_F_GET_SEALS": null,
+      "fcntl_F_SEAL_GROW": null,
+      "fcntl_F_SEAL_SEAL": null,
+      "fcntl_F_SEAL_SHRINK": null,
+      "fcntl_F_SEAL_WRITE": null,
+      "libc_memfd_create_symbol": true,
+      "os_MFD_ALLOW_SEALING": null,
+      "os_memfd_create": false
+    },
+    "nonpersistent_fallback_probe": {
+      "all_required_seals_applied": true,
+      "fd_inheritable": true,
+      "libc_memfd_create": "PASS",
+      "numeric_linux_seal_constants": "PASS",
+      "proc_fd_memfd_link": true,
+      "remote_files_created_or_modified": false
+    },
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_memfd_capability_preflight_v1.json",
+    "python_executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+    "python_version": "3.11.14 conda-forge GCC 14.3.0",
+    "release_created": false,
+    "reviewer_direct_remote_replay_performed": false,
+    "sha256": "338a9ca686e9bb2c9df3237f226752794da7889c1b1a90f32cf7ef02e206a253",
+    "status": "FAIL_ONE_SHOT_V1_RUNTIME_INCOMPATIBLE_REQUIRES_PORTABLE_LIBC_FALLBACK"
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_launch_freeze_v2_independent_review_receipt_v1",
+  "sealed_boundary": {
+    "attempt_markers_created_by_reviewer": 0,
+    "launches_started_by_reviewer": 0,
+    "production_raw_files_opened_by_reviewer": 0,
+    "reviewer_remote_access_count": 0,
+    "reviewer_ssh_calls": 0,
+    "teacher_rows_materialized_by_reviewer": 0,
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0,
+    "workspace_files_modified_by_reviewer_other_than_this_receipt": 0
+  },
+  "status": "FAIL_PREDEPLOYMENT_RUNTIME_INCOMPATIBLE"
+}

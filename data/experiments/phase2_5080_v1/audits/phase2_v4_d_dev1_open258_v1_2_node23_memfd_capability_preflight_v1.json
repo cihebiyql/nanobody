@@ -1,0 +1,44 @@
+{
+  "attempt_marker_created": false,
+  "checked_at_utc": "2026-07-17T02:27:20.998172+00:00",
+  "claim_boundary": "Execution-environment capability preflight only; no Docking input/result read, no teacher materialization, no binding/affinity/blocking inference, no formal unlock.",
+  "current_one_shot_launcher": {
+    "compatible_on_node23": false,
+    "requires_os_memfd_create": true,
+    "requires_python_fcntl_seal_constants": true,
+    "sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53"
+  },
+  "formal_v4_f_unlock_eligible": false,
+  "native_python_capabilities": {
+    "fcntl_F_ADD_SEALS": null,
+    "fcntl_F_GET_SEALS": null,
+    "fcntl_F_SEAL_GROW": null,
+    "fcntl_F_SEAL_SEAL": null,
+    "fcntl_F_SEAL_SHRINK": null,
+    "fcntl_F_SEAL_WRITE": null,
+    "libc_memfd_create_symbol": true,
+    "os_MFD_ALLOW_SEALING": null,
+    "os_memfd_create": false
+  },
+  "nonpersistent_fallback_probe": {
+    "all_required_seals_applied": true,
+    "fd_inheritable": true,
+    "libc_memfd_create": "PASS",
+    "numeric_linux_seal_constants": "PASS",
+    "proc_fd_memfd_link": true,
+    "remote_files_created_or_modified": false
+  },
+  "python_executable": "/data/qlyu/anaconda3/envs/haddock3/bin/python",
+  "python_version": "3.11.14 conda-forge GCC 14.3.0",
+  "release_created": false,
+  "remote_execution_authorized_by_this_receipt": false,
+  "remote_host": "node23",
+  "remote_project_files_modified": false,
+  "required_remediation": "A fresh one-shot implementation version may use libc memfd_create and fixed Linux seal constants only after local tests, independent review, and replacement launch freeze.",
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_node23_memfd_capability_preflight_v1",
+  "status": "FAIL_ONE_SHOT_V1_RUNTIME_INCOMPATIBLE_REQUIRES_PORTABLE_LIBC_FALLBACK",
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0,
+  "test32_raw_paths_constructed": 0
+}

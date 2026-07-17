@@ -1,0 +1,167 @@
+{
+  "audit_mode": "independent read-only Node1 inspection",
+  "bound_evidence": {
+    "cascade_state": {
+      "merge_full_stage_absent": true,
+      "mtime_local": "2026-07-16 22:08:32.053110911 +0800",
+      "observed_full_chunks": 2,
+      "observed_full_status": "running",
+      "path": "cascade/cascade_state.json",
+      "sha256": "a38af895af65c8f6bbfb3e8995196547f56156f81bb16d0ee317548756029f84"
+    },
+    "chunk_000001": {
+      "abnativ_exit_code_zero": true,
+      "chunk_complete_marker_absent": true,
+      "command_sha256": "c140d2920e945b857dd340e38eb12470f32b67d48f62b7acd1a116a50f047568",
+      "input_candidate_count": 12,
+      "sapiens_csv_absent": true,
+      "sapiens_exit_marker_count": 0,
+      "sapiens_log_mtime_local": "2026-07-16 22:55:19.187031444 +0800",
+      "sapiens_log_sha256": "8215a1eab9642262dbd58b8c9b2b8a9b0fe7d27b40a1839f81d1c60fffbd98ef"
+    },
+    "chunk_000002": {
+      "abnativ_exit_code_zero": true,
+      "chunk_complete_marker_absent": true,
+      "command_sha256": "5d8fa5a713b8a9a7abc618be72e9867cadbef014c09401c7094b607d3d4e40d4",
+      "input_candidate_count": 12,
+      "sapiens_csv_absent": true,
+      "sapiens_exit_marker_count": 0,
+      "sapiens_log_mtime_local": "2026-07-16 22:55:18.989030823 +0800",
+      "sapiens_log_sha256": "933b8058e2d24b39d7e5f33548374db07db847e6d5a2ec7821fb8c84886ead75"
+    },
+    "full_qc_shortlist": {
+      "candidate_count": 24,
+      "path": "cascade/full_qc_shortlist.fasta",
+      "sha256": "c6bdfd761c063ac0f9bae753c9bdff945e170221484bcb91936f17104ef1bc0b"
+    },
+    "large_scale_screen_source": {
+      "normal_completion_requirements": [
+        "run_one_chunk requires child returncode 0 and portfolio row closure before complete.json",
+        "run_chunk_stage writes failed or complete terminal state after futures return",
+        "full stage must run merge_full after chunk completion"
+      ],
+      "normal_rc0_compatible_with_observed_files": false,
+      "path": "/data1/qlyu/software/vhh_eval_tools/competition_qc/vhh_large_scale_screen.py",
+      "sha256": "051afdde9a1aaf41532a104fdb245ccd07c77d64448c8d7df9533db11a5e5d0a"
+    },
+    "runner_complete": {
+      "declared_returncode": 0,
+      "declared_status": "PASS_V4_G_UNSEEN96_FULL_QC_COMPLETE",
+      "mtime_local": "2026-07-16 23:07:06.136249280 +0800",
+      "path": "status/runner.complete.json",
+      "sha256": "3c4200f26dd892388b695e4c41ae02e62209b43338134592894f25d8bde2704c",
+      "valid_after_closure_audit": false
+    },
+    "runner_log": {
+      "last_stage_line": "[2026-07-16T14:08:31Z] stage=full",
+      "mtime_local": "2026-07-16 22:08:31.350108671 +0800",
+      "path": "logs/full_qc_runner.log",
+      "sha256": "0defc8d74b010024565a11f293bd7a7831ff02a597ebd2babed14846bf62b24e",
+      "terminal_full_stage_line_absent": true
+    },
+    "runner_script": {
+      "artifact_closure_required_before_pass_receipt": false,
+      "explicit_hup_int_term_handlers_present": false,
+      "path": "run_full_qc_node1.sh",
+      "relevant_lines": [
+        "50-67 terminal_status maps rc==0 directly to PASS",
+        "70 EXIT-only trap captures $? and exits with it",
+        "101-104 invokes prepare, fast, full sequentially",
+        "106-142 post-full closure and summary writer were never reached"
+      ],
+      "sha256": "e5d8630f7b95a022a8bf675e98222479125a0a98088792ffb0c6b2b355df94dd"
+    },
+    "waiter_script": {
+      "normal_complete_line_reached": false,
+      "path": "wait_for_ssd_deepqc_delivery_then_run_node1.sh",
+      "relevant_lines": [
+        "140 writes RUNNING_FULL_QC",
+        "141 synchronously invokes runner",
+        "142 would write COMPLETE after normal return"
+      ],
+      "sha256": "394b749ce5bd87d7296fcef0f4d8901048ed5aeea3abec910ac86a91466d7853"
+    },
+    "watcher_status": {
+      "mtime_local": "2026-07-16 22:03:06.494073481 +0800",
+      "observed_status": "RUNNING_FULL_QC",
+      "path": "status/watcher_status.json",
+      "sha256": "2e730ce7db6374020a924637119735e3ffd0f25d0dc20517c20daece6ad67540"
+    }
+  },
+  "causal_assessment": {
+    "abnormal_external_termination_likely": true,
+    "attribution_policy": "Do not attribute the stop to a specific signal, actor, cgroup, OOM event, scheduler, or tool without additional evidence.",
+    "exact_signal_known": false,
+    "false_pass_mechanism": "The runner has only an EXIT trap. Under asynchronous shell termination while waiting for a child, the trap may observe the previous successful status as 0 and write PASS without checking cascade outputs.",
+    "normal_python_return_excluded": true,
+    "observed_fact": "Both full chunks stopped after opening Sapiens command logs but before Sapiens exit markers, Sapiens CSVs, subprocess-capture logs, complete markers, stage terminal update, merge, or summary.",
+    "oom_or_kernel_kill_evidence_found": false,
+    "signal_source_known": false
+  },
+  "claim_boundary": "Sequence/developability QC evidence only. This audit contains no docking, binding, affinity, competition, PVRIG-PVRL2 blocking, or experimental blocker labels.",
+  "decision": {
+    "classification": "FALSE_PASS_AFTER_ABNORMAL_FULL_STAGE_TERMINATION",
+    "fast_stage_complete_candidate_count": 96,
+    "full_qc_complete": false,
+    "full_qc_completed_candidate_count_proven": 0,
+    "full_qc_shortlist_count": 24,
+    "runner_complete_receipt_valid": false,
+    "safe_to_consume_as_full_qc": false
+  },
+  "missing_completion_artifacts": {
+    "additional_per_chunk_sapiens_csv_absent": true,
+    "full_qc_summary_absent": true,
+    "lineage_outputs_absent": true,
+    "per_chunk_both": [
+      "complete.json",
+      "runner.stdout.log",
+      "runner.stderr.log",
+      "qc_out/portfolio_ranked.tsv",
+      "qc_out/competition_qc_details.json",
+      "qc_out/stage_timings.tsv",
+      "qc_out/vhh_screen/screen_summary.tsv",
+      "qc_out/vhh_screen/screen_details.json"
+    ],
+    "top_level": [
+      "cascade/full_chunk_status.tsv",
+      "cascade/full_merged.tsv",
+      "cascade/geometry_shortlist.tsv",
+      "cascade/geometry_shortlist.fasta",
+      "cascade/geometry_diversity_excluded.tsv",
+      "cascade/full_qc_summary.json",
+      "cascade/full_qc_hard_pass_lineage.csv",
+      "cascade/full_qc_hard_fail_lineage.csv"
+    ]
+  },
+  "non_actions": {
+    "remote_files_modified": 0,
+    "remote_processes_signaled": 0,
+    "remote_processes_started": 0,
+    "repair_started": false
+  },
+  "process_snapshot": {
+    "match_terms": [
+      "vhh-large-scale-screen",
+      "vhh_large_scale_screen",
+      "vhh-competition-qc",
+      "sapiens-score",
+      "pvrig_v4_g_unseen96_full_qc_v1_20260716"
+    ],
+    "matching_process_count": 0,
+    "observed_at_node1_local": "2026-07-17T10:22:24.738446874+08:00",
+    "receipt_gate_waiter_pid_1659894_alive": false,
+    "watcher_launcher_pid_1659632_alive": false
+  },
+  "recorded_at_utc": "2026-07-17T02:23:28.529875+00:00",
+  "remote_host": "node1",
+  "remote_root": "/data1/qlyu/projects/pvrig_v4_g_unseen96_full_qc_v1_20260716",
+  "safe_recovery_recommendation": [
+    "Preserve the existing root, partial outputs, false PASS receipt, and state as immutable failure evidence.",
+    "Use a new versioned recovery root with the same hash-bound 96 input sequences and unchanged 24-sequence Full-QC shortlist; do not replace candidates or introduce labels.",
+    "Add explicit HUP, INT, and TERM handling with nonzero terminal codes and an idempotent terminal writer.",
+    "Before any PASS receipt, validate full and merge_full state completion, two chunk complete markers, 12 portfolio rows per chunk, two complete rows in full_chunk_status.tsv, 24 unique IDs in full_merged.tsv matching the fast hard-pass set, and the summary plus both lineage outputs with hashes.",
+    "Run under a durable execution surface independent of transient agent process groups, and independently validate closure before publication."
+  ],
+  "schema_version": "phase2_v4_g_unseen96_fullqc_false_pass_audit_v1",
+  "status": "FAIL_V4_G_FULL_QC_NOT_COMPLETE_FALSE_PASS_RECEIPT"
+}

@@ -1,0 +1,28 @@
+{
+  "claim_boundary": "Governance-only supersession of a predeployment-incompatible launch freeze; no remote deployment/execution, teacher materialization, binding, affinity, blocking, formal PASS or unlock.",
+  "created_at_utc": "2026-07-17T02:36:25.302361+00:00",
+  "failed_review": {
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_freeze_v2_independent_review_receipt.json",
+    "sha256": "e4d3508505b9792778b931ce0021dc7d9380d492805ff4622ba94fbe44e9f88a",
+    "status": "FAIL_PREDEPLOYMENT_RUNTIME_INCOMPATIBLE"
+  },
+  "formal_v4_f_unlock_eligible": false,
+  "replacement": {
+    "portable_wrapper_implementation_freeze_sha256": "37af205e0872caf3df854da03725c55eae0b712a8a328817ac4712ba2a33db36",
+    "portable_wrapper_independent_review_sha256": "09bc625b5609967bde7b4718f0fecddf0d64f414373de3e5e7915583d3b465de",
+    "portable_wrapper_sha256": "8aea8734254026dbd2ba131891dafb504e2a2024f9b39a3b89f3da54bbf6bbae",
+    "replacement_launch_freeze_reviewed": false,
+    "replacement_launch_freeze_sha256": "f013f80163ebe1703e32fcf276954635210246f28970ca4e1f119512970d062a"
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_launch_freeze_v2_supersession_receipt_v1",
+  "status": "PASS_PREDEPLOYMENT_LAUNCH_FREEZE_V2_SUPERSEDED_NOT_DEPLOYED_NOT_EXECUTED",
+  "superseded_launch_freeze": {
+    "deployed": false,
+    "executed": false,
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v2_superseded_predeployment.json",
+    "sha256": "285d11ef2142e75a6d8f843715d3836e107815f85ebba0fda18faad20ab76eb8"
+  },
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}

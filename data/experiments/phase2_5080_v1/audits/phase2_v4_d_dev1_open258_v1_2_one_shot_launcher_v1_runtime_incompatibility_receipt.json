@@ -1,0 +1,78 @@
+{
+  "access_accounting_for_receipt_creation": {
+    "raw_production_files_opened": 0,
+    "remote_files_modified": 0,
+    "remote_files_opened": 0,
+    "ssh_calls": 0,
+    "teacher_or_release_created": false
+  },
+  "claim_boundary": "Operational compatibility closure for one-shot wrapper V1 only. Not launch authorization, deployment, remote execution, teacher materialization, release, scientific evidence, or formal unlock.",
+  "failure": {
+    "node23_python_lacks_named_fcntl_seal_constants": true,
+    "node23_python_lacks_os_memfd_create": true,
+    "v1_compatible_on_node23": false,
+    "v1_requires_both_native_python_surfaces": true,
+    "v1_wrapper_sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53"
+  },
+  "failure_semantics": {
+    "attempt_consumed": false,
+    "attempt_marker_created": false,
+    "inner_launcher_executed": false,
+    "old_launch_freeze_v2_status": "SUPERSEDED_PREDEPLOYMENT",
+    "release_created": false,
+    "v1_bytes_modified_or_reinterpreted": false,
+    "v1_one_shot_deployed": false
+  },
+  "files": {
+    "node23_capability_preflight": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_node23_memfd_capability_preflight_v1.json",
+      "sha256": "338a9ca686e9bb2c9df3237f226752794da7889c1b1a90f32cf7ef02e206a253",
+      "size_bytes": 1953
+    },
+    "v1_one_shot_implementation_freeze": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_implementation_freeze.json",
+      "sha256": "23334fb503271e3ac116f9802276f058c5c702c845c40aff33dc9e217db1123a",
+      "size_bytes": 6552
+    },
+    "v1_one_shot_independent_review": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_independent_review_receipt.json",
+      "sha256": "4fa6fd2c6b3c524025c6895e5c061c126808e403259f59497a540e1f7522780e",
+      "size_bytes": 7024
+    },
+    "v1_one_shot_launcher": {
+      "path": "src/run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "sha256": "308943256277e3e3df74d7d159827f0b5d2c812a0d3694f86d626cc9713d0d53",
+      "size_bytes": 12790
+    },
+    "v1_one_shot_tests": {
+      "path": "src/test_run_phase2_v4_d_dev1_open258_v1_2_once.py",
+      "sha256": "104699da97638a78754439828e42e930c95668601135d0c075616160453b863e",
+      "size_bytes": 19717
+    },
+    "v1_one_shot_tests_log": {
+      "path": "audits/phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_tests.log",
+      "sha256": "21d53784db833fc8daaf012ae67fc01c171dee2f054c3528a7e62b17540e2515",
+      "size_bytes": 7512
+    }
+  },
+  "formal_v4_f_unlock_eligible": false,
+  "next_version_boundary": "V1.1 may add only a portable libc memfd_create and fixed Linux numeric seal-constant fallback while preserving all V1 one-shot and scientific boundaries; it requires fresh tests, freeze, independent review, deployment evidence, and replacement launch freeze.",
+  "recorded_at_utc": "2026-07-17T02:30:30.699492+00:00",
+  "remote_execution_authorized": false,
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_one_shot_launcher_v1_runtime_incompatibility_receipt_v1",
+  "sealed_boundary": {
+    "formal_v4_f_unlock_eligible": false,
+    "test32_label_rows_emitted": 0,
+    "test32_metric_values_read": 0,
+    "test32_raw_job_files_opened": 0,
+    "test32_raw_paths_constructed": 0
+  },
+  "status": "FAIL_CLOSED_ONE_SHOT_V1_RUNTIME_INCOMPATIBLE_NO_ATTEMPT_CONSUMED",
+  "teacher_materialization_authorized": false,
+  "verified_recovery_capability": {
+    "all_required_seals_applied": "PASS",
+    "libc_memfd_create_symbol": true,
+    "numeric_linux_memfd_and_seal_constants_probe": "PASS",
+    "recovery_requires_fresh_versioned_implementation": true
+  }
+}

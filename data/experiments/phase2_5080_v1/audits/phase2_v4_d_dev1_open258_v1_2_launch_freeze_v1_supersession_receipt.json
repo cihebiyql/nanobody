@@ -1,0 +1,28 @@
+{
+  "claim_boundary": "Governance-only supersession of an unapproved preproduction launch freeze; no remote execution, teacher materialization, binding, affinity, experimental blocking, formal V4-D PASS, Docking Gold, or formal unlock.",
+  "created_at_utc": "2026-07-17T02:25:57.045983+00:00",
+  "failed_independent_review": {
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_freeze_v1_independent_review_receipt.json",
+    "sha256": "240fc8a5d8020c08c841019c89d8036a15111ce1ee3bec0f7bd8bad2458228cd",
+    "status": "FAIL_NOT_AUTHORIZED_TO_LAUNCH"
+  },
+  "formal_v4_f_unlock_eligible": false,
+  "remediation": {
+    "one_shot_implementation_freeze_sha256": "23334fb503271e3ac116f9802276f058c5c702c845c40aff33dc9e217db1123a",
+    "one_shot_independent_review_sha256": "4fa6fd2c6b3c524025c6895e5c061c126808e403259f59497a540e1f7522780e",
+    "replacement_launch_freeze_reviewed": false,
+    "replacement_launch_freeze_sha256": "285d11ef2142e75a6d8f843715d3836e107815f85ebba0fda18faad20ab76eb8"
+  },
+  "schema_version": "phase2_v4_d_dev1_open258_v1_2_launch_freeze_v1_supersession_receipt_v1",
+  "status": "PASS_PREPRODUCTION_LAUNCH_FREEZE_V1_SUPERSEDED_NOT_DEPLOYED_NOT_EXECUTED",
+  "superseded_launch_freeze": {
+    "deployed": false,
+    "executed": false,
+    "launch_authorized_after_review": false,
+    "path": "audits/phase2_v4_d_dev1_open258_v1_2_launch_authorized_freeze_v1_superseded_preproduction.json",
+    "sha256": "8dc1495f98c4154226fa4572302cd558fdfa4e939827f699a0ca4ad7b88a9b29"
+  },
+  "test32_label_rows_emitted": 0,
+  "test32_metric_values_read": 0,
+  "test32_raw_job_files_opened": 0
+}
