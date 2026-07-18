@@ -115,3 +115,24 @@ contact entropy / coverage / off-interface mass
 - 不通过改阈值、删除 parent、改 fold 或挑最好 seed 修成成功；
 - 如果依赖缺失，优先完成 NumPy/Ridge 强基线，不临时引入未经批准的新依赖。
 
+## 2026-07-17 执行结果
+
+| 阶段 | 结果 | 决策 |
+|---|---|---|
+| V5-TB OPEN_TRAIN226 | B1 structure `Spearman=0.6868`；B2–B6 均未稳定超过 | 保留 B1/M2 |
+| partial937 偏置诊断 | B2/B3 仅约 `+0.003`，bootstrap CI 跨 0；B4 约 `+0.001` | 不作模型替换 |
+| V5-RC contact teacher | 226 candidates、452 receptor rows、133,062 residue-pair rows；1 seed 失败但仍满足每 receptor ≥2 seeds | contact teacher 闭合，可训练 proxy |
+| V5-RC 无泄漏 contact proxy | C0 `0.6868`；最佳 contact C2 `0.6668`；contact target 中位 Spearman `0.2620` | `FAIL_KEEP_C0_STRUCTURE_LINEAR` |
+| V5-RC.2 budget rank blend | blend `Spearman=0.6681`、parent-centered `0.2571`、Top20 `0.3913`，均未保住 C0 | contact 仅限 exploration |
+
+V5-RC 的重要信号不是全局相关性提高，而是 C2 的 Top20 recall 从 `0.4348` 提高到 `0.5217`。这说明 contact proxy 当前不适合替代连续主模型，但可能适合作为 acquisition/高分候选补充通道。该用途必须另起版本，用 nested rank blend 或 budget-aware classifier 验证，不能在本版本结果上直接事后调权重。
+
+## 下一轮建议
+
+V5-RC.2 已按上述方式执行并失败。因此当前冻结结论是：
+
+1. `C0/B1/M2 structure-only Ridge` 继续作为 exploitation 主模型；
+2. contact proxy 不进入主总分，也不替换 M2；
+3. contact 分数最多用于 10%–20% exploration quota 或模型分歧抽样；
+4. 下一次真正值得做的升级不是继续调小型融合头，而是 residue-level、target-conditioned sequence/structure cross-attention，并增加更多 parent/diverse Docking teacher；
+5. 新架构必须另起版本，并与当前 C0、C1、C2 三个强基线在 untouched parent clusters 上比较。

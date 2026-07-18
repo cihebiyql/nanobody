@@ -1,0 +1,142 @@
+{
+  "schema_version": "pvrig_v6_residue_v2_preregistration",
+  "status": "FROZEN_DESIGN_BEFORE_RESIDUE_V2_OOF_RESULTS",
+  "frozen_at_local_date": "2026-07-18",
+  "objective": "Approximate independent dual-receptor computational Docking geometry from VHH sequence, label-free VHH monomer structure, and fixed PVRIG conformer graphs.",
+  "primary_target": "R_dual_min",
+  "claim_boundary": "Sequence and label-free-structure approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "immutable_prior_version": {
+    "version": "residue_v1_5",
+    "role": "frozen comparator only",
+    "mutation_allowed": false
+  },
+  "sources": {
+    "V4D_OPEN_MULTI_SEED": {
+      "candidates": 226,
+      "parent_clusters": 20,
+      "expected_receptors": ["8x6b", "9e6y"],
+      "expected_seeds": [917, 1931, 3253],
+      "scheduled_jobs": 1356,
+      "successful_jobs": 1355,
+      "failed_jobs": 1,
+      "complete_three_seed_candidates": 225,
+      "partial_seed_candidates": 1,
+      "minimum_observed_seeds_per_candidate_receptor": 2,
+      "raw_campaign_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+      "candidates_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+      "jobs_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+      "job_results_sha256": "30c4227e15f6b049a9d9e9241ca34df30d38b247d14081b4ce7d3387fa2f3f25",
+      "pose_scores_sha256": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681",
+      "continuous_teacher_sha256": "89ad82c7cde28d862fecedfff4559e810bab68cf2405aa8f9e4dc5f1bd148068"
+    },
+    "V4H_STAGE1_SEED917": {
+      "candidates": 1281,
+      "parent_clusters": 11,
+      "technical_incomplete_excluded": 39,
+      "contact_pair_rows": 460472,
+      "pair_teacher_sha256": "baf7cdc98158796df38cb00654592b1758e03271d42d1f09a39ed8907fb5fa8e",
+      "receipt_sha256": "05e0ea6425b4fdcb1c0d1e9e45a1a57726b6e50c413bfab09d6ecd03fc5f75ea"
+    }
+  },
+  "contact_teacher": {
+    "atom_policy": "standard-amino-acid heavy ATOM only",
+    "contact_cutoff_angstrom": 4.5,
+    "top_k_after_pose_validity_filter": 8,
+    "minimum_valid_poses_per_successful_job": 4,
+    "pose_rank_weight": "normalized_1_over_log2_rank_plus_1",
+    "v4d_native_overlay_max_rmsd_angstrom": 1.0,
+    "seed_weighting": "equal_over_observed_successful_seeds",
+    "failed_seed_policy": "never impute; preserve expected and observed counts",
+    "pair_target": "mean over observed seed-specific pose-weighted pair contact frequencies",
+    "pair_variance": "population variance over observed seed-specific frequencies",
+    "pair_uncertainty_weight": "1/(1+4*variance)",
+    "residue_marginal": "mean over observed seeds of pose-weighted any-PVRIG-contact indicator",
+    "forbidden_inputs": [
+      "OPEN_DEVELOPMENT contact labels",
+      "PROSPECTIVE_COMPUTATIONAL_TEST contact labels",
+      "control contact labels"
+    ]
+  },
+  "training": {
+    "candidate_count": 1507,
+    "parent_cluster_count": 31,
+    "outer_split": "same deterministic five-fold whole-parent split as frozen M2/V1.5 comparator",
+    "inner_split": "deterministic five-fold whole-parent nested selection",
+    "microbatch": {"V4D": 2, "V4H": 6},
+    "source_balancing": "each loss component is normalized within source, then 0.5*V4D + 0.5*V4H",
+    "teacher_source_is_model_feature": false,
+    "backbone": "frozen ESM2-650M residue states",
+    "first_round_lora_allowed": false,
+    "residual_scale": 0.02,
+    "optimizer": "AdamW",
+    "head_learning_rate": 0.0001,
+    "weight_decay": 0.02,
+    "dropout": 0.25,
+    "maximum_epochs": 8,
+    "precision": "bf16",
+    "gradient_accumulation": 2
+  },
+  "model": {
+    "vhh_graph": {
+      "layers": 3,
+      "hidden_dim": 128,
+      "edges": "sequence plus CA kNN16/radius12A",
+      "rigid_invariance": "relative distance RBF and local-frame directions; no raw absolute coordinates"
+    },
+    "target_graph": {
+      "conformers": ["8X6B", "9E6Y"],
+      "layers": 2,
+      "shared_weights": true,
+      "patch_policy": "full resolvable PVRIG graph plus preregistered interface masks"
+    },
+    "interaction": "rank64 bidirectional cross-attention/biaffine residue-pair logits",
+    "prediction": "explicit cross-fit M2 plus bounded learned residual"
+  },
+  "lanes": {
+    "A_DOMAIN": "V1.5 residue head plus source-balanced sampling/loss and dual-source marginal contacts",
+    "B_VHH3D": "A plus VHH 3D residue graph",
+    "C_PATCH": "B plus dual PVRIG target graphs and cross interaction with pair BCE disabled",
+    "D_FULL_PAIR": "C plus dual-source residue-pair soft BCE"
+  },
+  "loss": {
+    "dual_weight": 1.0,
+    "receptor_weight": 0.35,
+    "marginal_contact_weight": 0.0001,
+    "pair_contact_weight_full_pair_lane": 0.00005,
+    "ranking_weight": 0.0001,
+    "ranking_minimum_delta": 0.02,
+    "ranking_temperature": 0.03,
+    "residual_l2_weight": 0.05,
+    "contact_gradient_fraction_fail_scale": 0.30
+  },
+  "promotion_gates": {
+    "global_spearman_delta_min": 0.01,
+    "v4d_spearman_delta_min": 0.0,
+    "v4h_spearman_delta_min": 0.0,
+    "parent_win_delta_min": 0.01,
+    "parent_loss_delta_max": -0.01,
+    "global_parent_wins_strictly_greater_than_losses": true,
+    "per_source_parent_wins_greater_than_or_equal_to_losses": true,
+    "global_top20_budget": 302,
+    "global_top20_net_hit_gain_min": 5,
+    "v4d_top20_budget": 46,
+    "v4h_top20_budget": 257,
+    "per_source_top20_net_hit_gain_min": 0,
+    "parent_bootstrap_positive_fraction_min": 0.8,
+    "parent_bootstrap_median_delta_strictly_positive": true,
+    "per_source_parent_bootstrap_positive_fraction_min": 0.8,
+    "per_source_parent_bootstrap_median_delta_min": 0.0,
+    "per_source_mae_max_degradation": 0.001,
+    "all_required": true,
+    "negative_status": "DO_NOT_PROMOTE_RESIDUE_V2",
+    "positive_status": "PROMOTE_RESIDUE_V2_OVER_M2"
+  },
+  "sealed_and_excluded": {
+    "v4_f_test32_access": true,
+    "open_development_hyperparameter_selection": true,
+    "legacy128_training_merge": true,
+    "technical_failure_as_zero_contact": true,
+    "candidate_docking_pose_as_model_input": true,
+    "teacher_source_as_model_feature": true
+  }
+}

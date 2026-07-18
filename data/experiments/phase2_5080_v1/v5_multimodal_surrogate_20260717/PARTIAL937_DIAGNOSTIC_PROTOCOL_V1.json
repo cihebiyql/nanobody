@@ -1,0 +1,37 @@
+{
+  "schema_version": "pvrig_v5_tb_partial937_diagnostic_protocol_v1",
+  "created_date": "2026-07-17",
+  "status": "FROZEN_AFTER_OPEN226_BEFORE_V5_PARTIAL937_PREDICTIONS",
+  "purpose": "Bias-disclosed external diagnostic of frozen OPEN_TRAIN226 V5-TB model families on the existing PARTIAL_ANALYZABLE V4-H snapshot.",
+  "claim_boundary": "Partial active-campaign development diagnostic with controller completion-order and technical-success selection bias; not independent validation, not model-selection authority, not Docking Gold, binding, affinity, competition, or experimental blocking evidence.",
+  "expected_external_candidates": 1320,
+  "expected_partial_analyzable": 937,
+  "model_selection_on_partial_labels": false,
+  "hyperparameter_source": "OPEN_TRAIN226 deterministic whole-parent OOF only",
+  "reported_models": [
+    "B0_train_mean",
+    "B1_structure_direct",
+    "B2_dual_receptor_min",
+    "B3_structure_plus_physchem",
+    "B4_direct_dual_convex",
+    "B5_top20_ridge_classifier",
+    "B6_within_parent_pairwise_ridge"
+  ],
+  "reported_metrics": [
+    "spearman",
+    "pearson",
+    "mae",
+    "ndcg",
+    "top20_percent_recall",
+    "parent_centered_spearman",
+    "per_parent_macro_mean_spearman",
+    "paired_parent_bootstrap_delta_vs_B1"
+  ],
+  "forbidden_actions": [
+    "change_model_hyperparameters_from_partial937",
+    "select_best_model_from_partial937",
+    "relax_SCORING_INVALID_gate",
+    "call_partial937_independent_test",
+    "claim_formal_pass"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "claim_boundary": "V1.1 remained preproduction and no remote model training was launched from it.",
+  "original_freeze": "IMPLEMENTATION_FREEZE_V1_1.json",
+  "original_freeze_sha256": "72fb794e6431ff5f93961a1f0c7abfc09d199695fdec991cad460019c1c73c19",
+  "reason": [
+    "V1.1 run and stage bindings omitted multiple result-affecting model, loss, optimizer, scheduler and runtime fields, so an incompatible resume could be accepted.",
+    "V1.1 OOF promotion required bootstrap CI lower bounds and MAE improvement, which did not match the frozen PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT promotion gate."
+  ],
+  "replacement": "IMPLEMENTATION_FREEZE_V1_2.json",
+  "schema_version": "pvrig_v6_residue_v1_1_superseded_preproduction",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_REMOTE_TRAINED"
+}
+

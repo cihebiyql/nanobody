@@ -1,0 +1,40 @@
+{
+  "claim_boundary": "Computational single-seed residue-contact teacher only; not binding, affinity, experimental blocking, or Docking Gold.",
+  "created_at_utc": "2026-07-17T16:39:11.391619+00:00",
+  "files": {
+    "contract": {
+      "path": "V4H_STAGE1_CONTACT_TEACHER_CONTRACT_V1.json",
+      "sha256": "1fc9d833b92867c082a1a969389306e84cb83d48ff7c06566a7127da560d1696"
+    },
+    "extractor": {
+      "path": "src/extract_v4h_stage1_contact_teacher_v1_1.py",
+      "sha256": "baa82f9291d096b8d59ba222432fbfb7e4c20aba34040bbae91d19a0eec79022"
+    },
+    "tests": {
+      "path": "tests/test_extract_v4h_stage1_contact_teacher_v1_1.py",
+      "sha256": "5ecb45996491609b87e107aba5fbb18ab4d282ce910e36376a866db86c9e7a65"
+    }
+  },
+  "schema_version": "pvrig_v6_v4h_stage1_contact_teacher_implementation_freeze_v1_1",
+  "status": "PASS_V1_1_FROZEN_AFTER_V1_PREPRODUCTION_DRY_RUN_FAIL_BEFORE_HEAVY_EXTRACTION",
+  "tests": "7 PASS including inaccessible scorer-path remap and byte determinism",
+  "unchanged_semantics": {
+    "analyzable_candidates": 1281,
+    "contact_cutoff_angstrom": 4.5,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seed": 917,
+    "technical_incomplete_na": 39,
+    "top_k": 8
+  },
+  "v1_1_change": "Resolve coordinate files exclusively from frozen job_result.selected_models canonical campaign-relative paths and join scorer entries by unique basename; fallback only for old canonical in-root pose fields.",
+  "v1_dry_run_result": {
+    "no_output_published": true,
+    "no_pose_coordinate_opened": true,
+    "reason": "pose_scores.pose retained inaccessible /root/pvrig_local_offload path on Node23",
+    "status": "FAIL_CONTACT_DRY_RUN"
+  },
+  "v1_preserved": true
+}

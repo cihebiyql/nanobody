@@ -1,0 +1,49 @@
+{
+  "canonical_raw_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+  "claim_boundary": "Frozen V4-H Stage-1 computational residue-contact extraction implementation only; not binding, affinity, experimental blocking, Docking Gold, or completed teacher output.",
+  "frozen_semantics": {
+    "output_must_be_outside_raw_root": true,
+    "ranking_labels_modified": false,
+    "single_seed_replication_allowed": false,
+    "technical_incomplete_imputed": false,
+    "technical_incomplete_results_or_poses_allowed": false
+  },
+  "frozen_stage1": {
+    "analyzable_candidates": 1281,
+    "candidates": 1320,
+    "contact_cutoff_angstrom": 4.5,
+    "failed_jobs": 4,
+    "jobs": 2640,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seed": 917,
+    "successful_jobs": 2636,
+    "technical_incomplete_candidates": 39,
+    "top_k": 8
+  },
+  "implementation_files_sha256": {
+    "IMPLEMENTATION_NOTES.md": "96b4b2093befd1698ad1aa2b1652992c8b7e951327b94dd5bd0c474461b4fe23",
+    "README_ZH.md": "b8b3a86c88efb0d0c18c05071cb4c2c89105cac571919723a69c125507094183",
+    "V4H_STAGE1_CONTACT_TEACHER_CONTRACT_V1.json": "1fc9d833b92867c082a1a969389306e84cb83d48ff7c06566a7127da560d1696",
+    "src/extract_v4h_stage1_contact_teacher.py": "c765cce36fb7c98a40a1bd6a03bf25e6ef9856f8ee19c7a1d4f9754a090ba8e8",
+    "tests/test_extract_v4h_stage1_contact_teacher.py": "b38f962c30281372f3289a2a08646bfb5194dbca302df68d161747effade9e90"
+  },
+  "schema_version": "pvrig_v6_v4h_stage1_contact_teacher_implementation_freeze_v1",
+  "status": "PASS_IMPLEMENTATION_READY_REMOTE_EXTRACTION_NOT_STARTED",
+  "upstream_reference": {
+    "path": "experiments/phase2_5080_v1/v5_multimodal_surrogate_20260717/src/extract_open_train_docking_contacts.py",
+    "sha256": "61d8c4de0dbd13bf7c049081bdc6452728fbac0aee1d3f799f4be0b751959b84"
+  },
+  "verification": {
+    "py_compile": "PASS",
+    "python": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+    "real_terminal_package_hash_closure": "PASS",
+    "remote_heavy_extraction_started": false,
+    "result": "OK",
+    "unit_test_command": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python -m unittest discover -s experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/contact_teacher/tests -p 'test_*.py' -v",
+    "unit_tests_failed": 0,
+    "unit_tests_run": 6
+  }
+}

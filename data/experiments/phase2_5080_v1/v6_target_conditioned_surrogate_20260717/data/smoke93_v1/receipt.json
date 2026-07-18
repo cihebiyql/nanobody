@@ -1,0 +1,20 @@
+{
+  "claim_boundary": "Pipeline smoke only; not model selection or scientific evidence.",
+  "created_at_utc": "2026-07-17T16:18:51.262965+00:00",
+  "outer_fold_rows": {
+    "0": 9,
+    "1": 21,
+    "2": 12,
+    "3": 30,
+    "4": 21
+  },
+  "output": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/smoke93_v1/v6_smoke93.tsv",
+  "output_sha256": "5db7659250b6d9da3ad203f0361a128469b026ccf24f101e25ec1236f4e3aff5",
+  "parent_clusters": 31,
+  "rows": 93,
+  "schema_version": "pvrig_v6_smoke_panel_v1",
+  "selection": "first_3_candidate_id_per_parent",
+  "source": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/materialized_v1_1/v6_supervised1507.tsv",
+  "source_sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633",
+  "status": "PASS_V6_SMOKE_PANEL_FROZEN"
+}

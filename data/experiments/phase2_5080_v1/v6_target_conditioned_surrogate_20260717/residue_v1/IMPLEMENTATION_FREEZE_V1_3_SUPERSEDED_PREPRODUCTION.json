@@ -1,0 +1,12 @@
+{
+  "remote_training_started": false,
+  "reason": "Preproduction audit found that the V1.3 collector parser defaulted to 2000 bootstrap repetitions and accepted any value >=100, while the already-frozen governance amendment requires exactly 1000 repetitions.",
+  "schema_version": "pvrig_v6_residue_v1_3_superseded_preproduction",
+  "status": "SUPERSEDED_PREPRODUCTION",
+  "superseded_freeze": {
+    "path": "IMPLEMENTATION_FREEZE_V1_3.json",
+    "sha256": "7c6fbd8f2c7096fbc74ba7db2c55fecc3d477e78c6bfd3ac2000b28fe8313247"
+  },
+  "superseding_version": "V1.4",
+  "v1_3_bytes_preserved": true
+}

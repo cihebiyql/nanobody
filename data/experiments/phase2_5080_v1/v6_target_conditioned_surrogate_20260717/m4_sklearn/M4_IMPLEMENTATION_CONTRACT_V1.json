@@ -1,0 +1,30 @@
+{
+  "schema_version": "pvrig_v6_m4_sklearn_implementation_contract_v1",
+  "model_family": "M4_SKLEARN_PCA_STRUCTURE_RESIDUAL",
+  "primary_target": "R_dual_min",
+  "claim_boundary": "Development approximation of independent dual-receptor computational Docking geometry; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "outer_split": "frozen outer_fold from v6_supervised1507.tsv; whole parent",
+  "selection": "inner whole-parent CV on outer-train only",
+  "m2": "weighted structure Ridge alpha=10; outer-train residual inputs are whole-parent cross-fitted",
+  "m4_features": [
+    "outer-train-only PCA of pooled ESM embedding",
+    "outer-train-only standardized 126-dimensional monomer structure features",
+    "cross-fitted M2 prediction during training and full-outer-train M2 prediction at test"
+  ],
+  "heads": ["Ridge", "ExtraTreesRegressor", "HistGradientBoostingRegressor"],
+  "selection_metrics_lexicographic": [
+    "global_spearman",
+    "parent_centered_spearman",
+    "top20_recall",
+    "negative_mae"
+  ],
+  "required_comparison": ["global_spearman", "parent_centered_spearman", "mae", "top20_recall"],
+  "input_closure": [
+    "training table receipt hash",
+    "embedding receipt input hash",
+    "embedding shard hashes",
+    "candidate ID exact set",
+    "candidate sequence SHA256",
+    "whole-parent outer-fold closure"
+  ]
+}

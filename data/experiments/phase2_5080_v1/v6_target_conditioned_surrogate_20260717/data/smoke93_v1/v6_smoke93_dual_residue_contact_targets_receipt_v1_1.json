@@ -1,0 +1,14 @@
+{
+  "claim_boundary": "mechanical smoke subset only; not model selection or biological evidence",
+  "counts": {
+    "target_rows": 4104,
+    "teacher_candidates": 33,
+    "training_candidates": 93
+  },
+  "output": {
+    "path": "v6_smoke93_dual_residue_contact_targets.tsv.gz",
+    "sha256": "acfdef0bd8bc548032394140cd4c318a3fb166c0c1fb05e73d1f763f388863d8"
+  },
+  "schema_version": "pvrig_v6_residue_dual_contact_targets_v1_receipt",
+  "status": "PASS_DUAL_CONTACT_TARGETS_MATERIALIZED"
+}

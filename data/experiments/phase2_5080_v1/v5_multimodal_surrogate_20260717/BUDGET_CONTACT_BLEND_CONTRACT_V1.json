@@ -1,0 +1,59 @@
+{
+  "schema_version": "pvrig_v5_rc2_budget_contact_blend_contract_v1",
+  "created_date": "2026-07-17",
+  "status": "FROZEN_AFTER_V5_RC1_FAILURE_BEFORE_V5_RC2_PERFORMANCE",
+  "motivation": "V5-RC1 contact bottleneck did not improve global Spearman but increased Top20 recall from 0.4348 to 0.5217. This new version tests a budget-aware use without modifying V5-RC1.",
+  "claim_boundary": "OPEN_TRAIN-only computational docking-geometry acquisition research. Not binding, affinity, competition, experimental blocking, Docking Gold, or final submission authority.",
+  "inputs": {
+    "rows": 226,
+    "parent_framework_clusters": 20,
+    "label_free_inputs": "126 monomer structure plus 27 physicochemical descriptors",
+    "contact_teacher_targets": 101,
+    "true_held_out_contacts_as_inputs": false
+  },
+  "validation": {
+    "outer_cv": "deterministic 5-fold whole-parent",
+    "inner_cv": "deterministic 5-fold whole-parent",
+    "contact_proxy": "same frozen V5-RC1 random-ReLU multi-output Ridge",
+    "contact_scalar": "inner-OOF Ridge from predicted contact targets to R_dual_min"
+  },
+  "rank_blend": {
+    "weights": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "formula": "(1-gamma)*percentile(C0)+(gamma)*percentile(C2)",
+    "weight_selection_partition": "outer-train inner-OOF predictions only",
+    "eligibility": [
+      "Spearman no more than 0.005 below gamma=0",
+      "parent-centered Spearman no more than 0.005 below gamma=0"
+    ],
+    "selection_order": [
+      "Top20 recall",
+      "global Spearman",
+      "parent-centered Spearman",
+      "smaller gamma"
+    ],
+    "continuous_calibration": "one-dimensional Ridge(alpha=1.0) fit only on outer-train blended percentiles"
+  },
+  "models": [
+    "RC2_C0_structure_linear",
+    "RC2_C1_structure_nonlinear",
+    "RC2_C2_contact_bottleneck",
+    "RC2_budget_rank_blend"
+  ],
+  "success_gate": {
+    "comparator": "RC2_C0_structure_linear",
+    "required": [
+      "global Spearman does not decrease",
+      "parent-centered Spearman does not decrease",
+      "Top20 recall strictly improves",
+      "parent-bootstrap median Spearman delta is non-negative"
+    ],
+    "failure_use": "If the gate fails, contact may only support a separately capped exploration quota; it may not change the exploitation ranking."
+  }
+}

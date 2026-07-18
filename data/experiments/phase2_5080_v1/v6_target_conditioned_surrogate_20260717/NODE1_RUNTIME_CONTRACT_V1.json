@@ -1,0 +1,30 @@
+{
+  "schema_version": "pvrig_v6_node1_runtime_contract_v1",
+  "remote_root": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717",
+  "environment": "/data1/qlyu/software/envs/pvrig-v6-tc",
+  "base_environment": "/data1/qlyu/software/envs/vhh-igfold",
+  "gpu_indices": [1, 2, 3, 4],
+  "forbidden_gpu_indices": [0],
+  "proxy": {
+    "http": "http://127.0.0.1:10800",
+    "https": "http://127.0.0.1:10800",
+    "status_command": "/data/qlyu/.config/sing-box/switch-proxy.sh status"
+  },
+  "models": {
+    "esmc_600m": "/data/qlyu/.cache/huggingface/hub/models--EvolutionaryScale--esmc-600m-2024-12/snapshots/d11cc14d44078eaecbc6a843d5eb20f4eecc1e7e/data/weights/esmc_600m_2024_12_v0.pth",
+    "esm2_650m": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c",
+    "esm2_3b": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t36_3B_UR50D/snapshots/476b639933c8baad5ad09a60ac1a87f987b656fc"
+  },
+  "storage": {
+    "all_runtime_outputs_under_data1_qlyu": true,
+    "model_cache_is_read_only_external_reference": true,
+    "minimum_free_gb_for_checkpoint": 180,
+    "minimum_free_gb_for_continue": 150,
+    "checkpoint_retention": ["best", "last"]
+  },
+  "supervision_unit": "candidate",
+  "seed_pose_rows_are_not_independent_samples": true,
+  "resume_required": true,
+  "metrics_jsonl_required": true,
+  "terminal_receipt_required": true
+}

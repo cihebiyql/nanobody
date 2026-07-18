@@ -1,0 +1,8 @@
+{
+  "schema_version": "pvrig_v6_residue_production_matrix_v1_supersession",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_EXECUTED",
+  "superseded_path": "RESIDUE_PRODUCTION_MATRIX_V1.json",
+  "superseded_sha256": "2c37c3499898fcdfe7435f5a01b2b91b8550fe4fbd9052836707a1e5d0c89804",
+  "reason": "V1 referenced V1.2 implementation before the governance binding gap was found; no production outer run used it.",
+  "successor": "RESIDUE_PRODUCTION_MATRIX_V1_1.json"
+}

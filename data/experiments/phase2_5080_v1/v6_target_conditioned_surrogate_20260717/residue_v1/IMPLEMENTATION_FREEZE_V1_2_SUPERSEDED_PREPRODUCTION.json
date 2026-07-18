@@ -1,0 +1,14 @@
+{
+  "claim_boundary": "V1.2 remained preproduction and no remote training or formal OOF collection was launched from it.",
+  "original_freeze": "IMPLEMENTATION_FREEZE_V1_2.json",
+  "original_freeze_sha256": "b9baa1bbecba316d34e9c47baea832f382b20958d724911dba4005bdde8421e2",
+  "reason": [
+    "V1.2 collector did not independently require and hash-validate the frozen governance amendment.",
+    "V1.2 freeze validation did not close governance.path and governance.sha256 to the supplied amendment.",
+    "V1.2 collector did not close result, seal and contract binding hashes to each other and to its exact implementation freeze SHA."
+  ],
+  "replacement": "IMPLEMENTATION_FREEZE_V1_3.json",
+  "schema_version": "pvrig_v6_residue_v1_2_superseded_preproduction",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_REMOTE_TRAINED"
+}
+

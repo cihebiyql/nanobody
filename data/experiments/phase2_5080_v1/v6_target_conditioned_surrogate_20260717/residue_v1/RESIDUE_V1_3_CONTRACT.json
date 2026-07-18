@@ -1,0 +1,29 @@
+{
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "governance": {
+    "path": "../PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT.json",
+    "promotion_gate": "global Spearman improves; parent-centered and Top20 non-degrade; parent bootstrap positive fraction >=0.80 and median delta >0",
+    "schema_version": "pvrig_v6_implementation_amendment_v1_1",
+    "sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226",
+    "status": "FROZEN_BEFORE_ANY_NODE1_V6_MODEL_SMOKE_OR_PRODUCTION_TRAINING"
+  },
+  "governance_validation": [
+    "regular file required",
+    "symlink forbidden",
+    "hard SHA256 match",
+    "exact schema and status",
+    "exact promotion gate",
+    "bootstrap_repetitions equals 1000"
+  ],
+  "outer_run_closure": [
+    "contract.binding.external_hashes.implementation_freeze_sha256 equals collector freeze SHA256",
+    "result.binding_hash equals seal.binding_hash equals contract.binding_hash",
+    "result artifact hash closes contract and predictions",
+    "seal result hash closes RESULT.json",
+    "contract implementation hash map equals collector freeze implementation map"
+  ],
+  "schema_version": "pvrig_v6_residue_lane_v1_3_contract",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "supersedes": "RESIDUE_V1_2_CONTRACT.json"
+}
+

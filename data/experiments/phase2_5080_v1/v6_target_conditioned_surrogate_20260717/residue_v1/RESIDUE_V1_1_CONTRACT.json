@@ -1,0 +1,58 @@
+{
+  "checkpoint": {
+    "contents": [
+      "head parameters",
+      "LoRA parameters when enabled",
+      "optimizer",
+      "scheduler",
+      "Python NumPy Torch CPU and Torch CUDA RNG",
+      "epoch and binding hash"
+    ],
+    "metrics_jsonl_reconciliation": "discard any epoch record not backed by last.pt",
+    "prohibited": "base PLM parameters"
+  },
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "disk_guards_gb": {
+    "checkpoint_minimum": 180,
+    "safe_stop": 150
+  },
+  "frozen_external_sha256": {
+    "contact_independent_validation": "8dae292b1dd922ff2af7f9f73bdaa662e4fe3f827f30f633df9d3a3ebd603911",
+    "contact_receipt": "de3973e76e48f0be0c8854fe3f8560c42522ec3e42f90ea4861ce8f9b0ed9027",
+    "contact_targets_tsv_gz": "bd3cb205af606391aa2153f3c2bbc243c9630796228e12b4a561a2a7da7c7f0f",
+    "esm2_650m_model_safetensors": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "training_tsv": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+  },
+  "inner_protocol": {
+    "epoch_selection_key": [
+      "Spearman",
+      "parent-centered Spearman",
+      "Top20 recall",
+      "negative MAE"
+    ],
+    "final_epoch_count": "rounded median of selected one-based epoch counts",
+    "fold_count": 5,
+    "hash": "sha256(PVRIG_V6_INNER|outer=<outer>|<parent>) modulo 5",
+    "selection": "train and validate independently for every observed inner fold"
+  },
+  "model": {
+    "backbone_first_lane": "frozen ESM2-650M",
+    "contact_head": "two receptor channels",
+    "lora": "supported with separate learning rate and gradient checkpointing",
+    "pooling": "global plus two contact-weighted residue pools",
+    "scalar_prediction": "explicit cross-fitted M2 base plus bounded residual"
+  },
+  "outer_protocol": {
+    "evaluation_count": 1,
+    "one_way_seal": true,
+    "oof_collector": "independent exact five-fold closure",
+    "promotion": "parent-bootstrap lower-bound gates versus M2"
+  },
+  "schema_version": "pvrig_v6_residue_lane_v1_1_contract",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "structure_features": {
+    "count": 126,
+    "schema": "exact frozen materialized_v1_1 header namespaces"
+  }
+}
+

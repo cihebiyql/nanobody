@@ -1,0 +1,44 @@
+{
+  "claim_boundary": "Integration smoke over computational Docking geometry teachers only; metrics are not formal model evidence.",
+  "first_attempt": {
+    "error": "index_add_ self Float and source BFloat16 dtype mismatch",
+    "resolution": "cast MPNN messages to residual node-state dtype before index_add_",
+    "status": "FAIL_EXPECTED_PREPRODUCTION_SMOKE"
+  },
+  "formal_metric_interpretation_forbidden": true,
+  "implementation_sha256": {
+    "residue_model_v2.py": "f2ba1b7ca11eb7141ac15b8689e18f7188e3c53fc95c8eb905e9d7d0cf3ee366",
+    "test_residue_model_v2.py": "303e4d53b112801c660b3d3070a06b7920b1ff6e0350086099c56ba9a06a7980",
+    "train_nested_residue_surrogate_v2.py": "f852fd637bab93300622626927ebac3537ebf9810ab3d73aaefb8eb07978eb78"
+  },
+  "schema_version": "pvrig_v6_residue_v2_local_full1507_c_patch_smoke_v1",
+  "sealed_test_accessed": false,
+  "status": "PASS_LOCAL_FULL1507_C_PATCH_TINY_BF16_SMOKE_AFTER_DTYPE_FIX",
+  "successful_attempt": {
+    "artifacts": {
+      "contract.json": "cdaf121a5e038fed6aeb9bb56590a82ef9bd8a149063670df3c342a7521fa472",
+      "head_final.pt": "c8d459d0704c1c14bcc3141a2f661f897b6d2d55ee20da5c86402c3c6a026e42",
+      "outer_test_predictions.tsv": "4407de4ba27c98c6920395a446aba004c31f5e624b4fd7ea8b9e5af54742fba4"
+    },
+    "contact_receipt_status": "PASS_DUAL_SOURCE_CONTACT_TARGETS_V2",
+    "final_epoch_count": 1,
+    "lane": "C_PATCH",
+    "outer_fold": 0,
+    "outer_test_rows": 238,
+    "parents": 31,
+    "rows": 1507,
+    "selected_epoch_counts": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_STAGE1_SEED917": 1281
+    },
+    "status": "PASS_OUTER_FOLD_COMPLETE",
+    "target_graph_receipt_status": "PASS_FIXED_TARGET_GRAPHS_MATERIALIZED"
+  }
+}

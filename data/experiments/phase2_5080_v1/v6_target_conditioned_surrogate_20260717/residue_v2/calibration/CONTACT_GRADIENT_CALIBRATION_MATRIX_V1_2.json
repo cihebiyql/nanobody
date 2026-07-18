@@ -1,0 +1,207 @@
+{
+  "artifacts": {
+    "augment_target_script": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/src/augment_target_graph_esm2_v2.py",
+      "sha256": "cb6492233f2dd7703171d80f14edb88f604285168cd68319df2ead9ac892fafc"
+    },
+    "base_residue_model_v1": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v1/src/residue_model.py",
+      "sha256": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb"
+    },
+    "base_target_manifest": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/base_target_graphs/target_graph_manifest_v2.tsv",
+      "sha256": "c78c30beb4ad668e28f8bfe17872b9712e92fd5871748718a70714a5d5f0ce9d"
+    },
+    "base_target_pt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/base_target_graphs/target_graphs_v2.pt",
+      "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc"
+    },
+    "base_target_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/base_target_graphs/target_graph_receipt_v2.json",
+      "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
+    },
+    "base_trainer_v1": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v1/src/train_nested_residue_surrogate.py",
+      "sha256": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8"
+    },
+    "base_trainer_v1_5": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af"
+    },
+    "build_residue_graph_cache_v2": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/src/build_residue_graph_cache_v2.py",
+      "sha256": "90953abad5e74cb6469e6b5ee4f1c409002fb45efc4f27a64949e5f0f2b4c13b"
+    },
+    "domain_balance_v2": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/src/domain_balance_v2.py",
+      "sha256": "aade00d6ebbeb97656b0a173f7ed8d0c2d862b633bcd2db90a526997bfc8e5ac"
+    },
+    "dual_marginal_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/dual_marginal/RUN_RECEIPT.json",
+      "sha256": "c68c1f0d3f2787211cb53ba2d9bc25cd9ef3ab1dc0a98fd8fff9a8008e869de7"
+    },
+    "dual_marginal_tsv_gz": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/dual_marginal/v6_dual_source_residue_contact_targets_v2.tsv.gz",
+      "sha256": "8c792366844a013f4a99d49089cc0cbf79f1e836985f55b4d82461cc0bef1038"
+    },
+    "esm2_650m_model_identity": {
+      "path": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c/model.safetensors",
+      "sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0"
+    },
+    "pair_contact_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/dual_pair/RUN_RECEIPT.json",
+      "sha256": "0858b5dd6894cb957bea8fdafd6e7fe8d3644bb64c0f9952a8a9e416fb0dcf5b"
+    },
+    "pair_contact_tsv_gz": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/dual_pair/v6_dual_source_pair_contact_targets_v2.tsv.gz",
+      "sha256": "50127c53444351273cfbe7ab2403b448be472628a02b72e42586a4bc490ad07d"
+    },
+    "preregistration": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/PREREGISTRATION_V2.json",
+      "sha256": "3847414a6db1f233543c08ceb3505d7b82fb952266fdf0c7c1314ebf18fc967e"
+    },
+    "residue_model": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/src/residue_model_v2.py",
+      "sha256": "f2ba1b7ca11eb7141ac15b8689e18f7188e3c53fc95c8eb905e9d7d0cf3ee366"
+    },
+    "selector": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/src/select_contact_loss_gradient_grid_v1.py",
+      "sha256": "c56aa64a17f905c330384bbdb6f0772180131af4fc63ccfe0c99a9696053992c"
+    },
+    "trainer": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/residue_v2/src/train_nested_residue_surrogate_v2.py",
+      "sha256": "8bcccbc445502b94195e59c707324470beb2ddac0c4ebedb85e4f147fbc2b535"
+    },
+    "training_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/v6_training_table_receipt.json",
+      "sha256": "46fae18a63e10920c05ccf1dc873de2b588ec436a0320d909405164f9d14c529"
+    },
+    "training_tsv": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/v6_supervised1507.tsv",
+      "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+    },
+    "vhh_graph_cache_npz": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/vhh_graphs/graph_cache_v2.npz",
+      "sha256": "95faf75f434375aa086cc4135967f7165b6089ede4f26c890925d9a501288d71"
+    },
+    "vhh_graph_cache_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/vhh_graphs/graph_cache_receipt_v2.json",
+      "sha256": "83fe4fb6601798293e0b95ed255faad40a5fbe9b0cee9914976a82f12b85024a"
+    },
+    "vhh_graph_closure": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/vhh_graphs/graph_input_closure_v2.tsv",
+      "sha256": "3bc95f0c7b2f1559c10e8a009a9b94ae1992fc024ee3ab5847099e69b29904df"
+    },
+    "vhh_graph_manifest": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/vhh_graphs/graph_manifest_v2.tsv",
+      "sha256": "7da6dd48a858395e1514d82189757513a9da4df9d7ddefc8a95c72b6b7cc4fd1"
+    },
+    "vhh_graph_materialization_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718/inputs/vhh_graphs/materialization_receipt_v2.json",
+      "sha256": "be32b3053aa3f42bcee0a66b213e3bc5f419db32e1a2a3b1bf8b12b825dc797e"
+    }
+  },
+  "augmentation_gpu": 5,
+  "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_bundle_v1_2_20260718",
+  "claim_boundary": "Open-only first-prestep gradient calibration against computational dual-receptor Docking geometry; not formal OOF, binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "cpu_thread_limits": {
+    "MKL_NUM_THREADS": "8",
+    "NUMEXPR_NUM_THREADS": "8",
+    "OMP_NUM_THREADS": "8",
+    "OPENBLAS_NUM_THREADS": "8",
+    "four_lane_cpu_upper_bound_approximate": 32
+  },
+  "lane_gpu_map": {
+    "A_DOMAIN": 1,
+    "B_VHH3D": 2,
+    "C_PATCH": 3,
+    "D_FULL_PAIR": 4
+  },
+  "launcher_sha256": "4dcf138e3d0955e39ba9eee35028cce1bc8515bded1211724e783cfb2afdefa3",
+  "maximum_epochs": 1,
+  "minimum_free_gib": 200,
+  "mode": "OPEN_ONLY_PREPRODUCTION_NOT_FORMAL_OOF",
+  "original_preregistration_sha256": "3847414a6db1f233543c08ceb3505d7b82fb952266fdf0c7c1314ebf18fc967e",
+  "outer_fold": 0,
+  "publication": {
+    "amendment_filename": "CONTACT_LOSS_AMENDMENT_V1.json",
+    "content_addressed": true,
+    "production_matrix_or_freeze_updated": false,
+    "receipt_filename": "RUN_RECEIPT.json",
+    "report_filename": "CONTACT_GRADIENT_CALIBRATION_REPORT_V1.json"
+  },
+  "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+  "repo_local_import_closure": {
+    "status": "COMPLETE_AST_VERIFIED",
+    "trainer_imports": [
+      "train_nested_residue_surrogate",
+      "train_nested_residue_surrogate_v1_5",
+      "residue_model",
+      "build_residue_graph_cache_v2",
+      "domain_balance_v2",
+      "residue_model_v2"
+    ],
+    "transitive_files": [
+      "residue_v1/src/train_nested_residue_surrogate.py",
+      "residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "residue_v1/src/residue_model.py",
+      "residue_v2/src/build_residue_graph_cache_v2.py",
+      "residue_v2/src/domain_balance_v2.py",
+      "residue_v2/src/residue_model_v2.py"
+    ]
+  },
+  "runtime_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_contact_gradient_calibration_v1_2_20260718",
+  "schema_version": "pvrig_v6_residue_v2_contact_gradient_calibration_matrix_v1_2",
+  "sealed_boundary": {
+    "formal_oof_started": false,
+    "prediction_metrics_used_for_selection": false,
+    "v4_f_test32_access_count": 0
+  },
+  "smoke_mode": true,
+  "status": "FROZEN_OPEN_ONLY_PREPRODUCTION_CALIBRATION_MATRIX",
+  "structure_prefixes": [
+    "ALL__",
+    "CDR1_CDR2__",
+    "CDR1_CDR3__",
+    "CDR1_FRAMEWORK__",
+    "CDR1__",
+    "CDR2_CDR3__",
+    "CDR2_FRAMEWORK__",
+    "CDR2__",
+    "CDR3_FRAMEWORK__",
+    "CDR3__",
+    "CDR_ALL__",
+    "FRAMEWORK__"
+  ],
+  "supersedes_failed_calibration": {
+    "disposition": "PRESERVED_SIGTERM_PARTIAL_UNMODIFIED",
+    "reason": "four_parallel_lane_processes_exceeded_node1_half_cpu_constraint",
+    "version": "V1_1"
+  },
+  "trainer_arguments": {
+    "component_gradient_telemetry_batches": 1,
+    "contact_balance_epsilon": 1e-08,
+    "contact_positive_class_fraction": 0.5,
+    "dropout": 0.25,
+    "dual_weight": 1.0,
+    "evaluation_batch_size": 16,
+    "gradient_accumulation": 2,
+    "gradient_clip": 1.0,
+    "graph_hidden_dim": 128,
+    "head_learning_rate": 0.0001,
+    "huber_delta": 0.03,
+    "marginal_contact_weight": 0.0001,
+    "pair_contact_weight": 5e-05,
+    "precision": "bf16",
+    "ranking_minimum_delta": 0.02,
+    "ranking_temperature": 0.03,
+    "ranking_weight": 0.0001,
+    "receptor_weight": 0.35,
+    "residual_l2_weight": 0.05,
+    "residual_scale": 0.02,
+    "ridge_alpha": 10.0,
+    "seed": 43,
+    "structure_dim": 126,
+    "weight_decay": 0.02
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "pvrig_v5_rc_contact_proxy_nested_model_contract_v1",
+  "created_date": "2026-07-17",
+  "status": "FROZEN_BEFORE_CONTACT_EXTRACTION_RESULT_AND_MODEL_PERFORMANCE",
+  "claim_boundary": "OPEN_TRAIN-only development comparison of label-free monomer/sequence proxies for computational docking contact intermediates and R_dual_min. Not binding, affinity, competition, experimental blocking, Docking Gold, or final submission authority.",
+  "data": {
+    "rows": 226,
+    "parent_framework_clusters": 20,
+    "primary_target": "R_dual_min",
+    "label_free_inputs": [
+      "126 frozen monomer structure features",
+      "27 dependency-free sequence physicochemical descriptors"
+    ],
+    "contact_teacher_input": "open_train226_candidate_contact_features.tsv",
+    "forbidden": [
+      "OPEN_DEVELOPMENT labels or contacts",
+      "PROSPECTIVE_COMPUTATIONAL_TEST labels or contacts",
+      "candidate ID, parent ID, batch ID or design metadata as model inputs",
+      "true held-out contact features as prediction inputs"
+    ]
+  },
+  "validation": {
+    "outer_cv": "deterministic 5-fold whole-parent",
+    "inner_cv": "deterministic 5-fold whole-parent",
+    "outer_test_contact_access": "only after all outer-fold predictions are fixed",
+    "alphas": [
+      0.1,
+      1.0,
+      10.0,
+      100.0,
+      1000.0
+    ],
+    "parent_bootstrap_replicates": 5000,
+    "parent_bootstrap_seed": 20260717
+  },
+  "nonlinear_expansion": {
+    "type": "deterministic Gaussian random ReLU features",
+    "input_standardization": "fit on current training fold only",
+    "seeds": [
+      101,
+      211,
+      307
+    ],
+    "units_per_seed": 128,
+    "weight_scale": "1/sqrt(input_dimension)",
+    "bias_distribution": "Normal(0,0.1)",
+    "raw_standardized_inputs_are_concatenated": true
+  },
+  "models": [
+    "C0_structure_linear",
+    "C1_structure_physchem_random_relu",
+    "C2_predicted_contact_bottleneck",
+    "C3_structure_plus_predicted_contact_stack",
+    "C4_structure_nonlinear_plus_predicted_contact_stack"
+  ],
+  "stacking": {
+    "outer_train_contact_features": "inner whole-parent OOF predictions only",
+    "outer_test_contact_features": "proxy fitted on the complete outer-train partition",
+    "contact_target_scaling": "fit on each contact-proxy training partition only",
+    "meta_model": "Ridge on OOF base predictions/contact proxies",
+    "direct_true_contact_concatenation": false
+  },
+  "success_gate": {
+    "primary_comparator": "C0_structure_linear",
+    "required": [
+      "global OOF Spearman strictly improves",
+      "parent-centered Spearman does not decrease",
+      "Top20 recall does not decrease",
+      "paired parent-bootstrap median delta is positive"
+    ],
+    "interpretation": "C2-C4 must also be compared with C1; improvement over C0 alone is insufficient to attribute gain to contact supervision."
+  }
+}

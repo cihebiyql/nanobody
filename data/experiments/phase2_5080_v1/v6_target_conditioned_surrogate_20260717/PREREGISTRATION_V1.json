@@ -1,0 +1,86 @@
+{
+  "schema_version": "pvrig_v6_target_conditioned_surrogate_preregistration_v1",
+  "status": "FROZEN_BEFORE_V6_MODEL_TRAINING",
+  "frozen_at_local_date": "2026-07-17",
+  "objective": "Approximate independent dual-receptor computational Docking geometry from VHH sequence and label-free monomer structure.",
+  "claim_boundary": "Computational docking-geometry surrogate only; not binding probability, affinity, competition, experimental blocking, Docking Gold, or submission authority.",
+  "primary_target": "R_dual_min",
+  "sources": {
+    "open_train_teacher": {
+      "rows": 226,
+      "parent_clusters": 20,
+      "sample_weight": 1.0,
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_d_dev1_open258_v1_2/delivery_dev1_v1_2/by_sha256/21f00fc17b153dadb2dcd93d90f24a28c4161ccddfe1876c90f0c21ab6a0467d/outputs/v4d_dev1_open258_continuous_geometry_v1_2.tsv"
+    },
+    "v4h_stage1_teacher": {
+      "rows_total": 1320,
+      "rows_supervised": 1281,
+      "rows_technical_incomplete": 39,
+      "parent_clusters": 11,
+      "sample_weight": 0.65,
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_stage1_terminal_v1_20260717/stage1_seed917_ranking.tsv",
+      "sha256": "b1fdf2b74e1d9a34096c2ea57256fda1a9c28a32fcf6db70e21f1abc7bc1ed7d"
+    },
+    "v4h_sequence_manifest": {
+      "rows": 1320,
+      "sha256": "9d5004b362ad9b51c5bfd11eec4c9e6c2313cc61554b6fe7d15a39a9f796207f"
+    },
+    "v4h_design_manifest": {
+      "rows": 1320,
+      "sha256": "f02cfeaac9775442bb1748c7bb63413a1077b5df11f9cd7214e983d0e51c0551"
+    },
+    "v4h_structure_features": {
+      "rows": 1320,
+      "feature_count": 126,
+      "sha256": "c778c420792c095073d0cbf2e60e754ff5c1273e8c032eb06104223db8e365a5"
+    },
+    "open258_structure_features": {
+      "rows": 258,
+      "feature_count": 126,
+      "sha256": "37b6fbc4b947f2598dd83ac1a742a9382d36e13aa641a5f460e3050d17e83472"
+    }
+  },
+  "frozen_counts": {
+    "supervised_candidates": 1507,
+    "supervised_parent_clusters": 31,
+    "open_development_candidates": 32,
+    "open_development_parent_clusters": 3
+  },
+  "split": {
+    "unit": "parent_framework_cluster",
+    "outer_folds": 5,
+    "inner_folds": 5,
+    "assignment": "sha256('PVRIG_V6|' + parent_framework_cluster) modulo fold_count",
+    "forbidden_model_features": [
+      "candidate_id",
+      "parent_id",
+      "parent_framework_cluster",
+      "campaign_id",
+      "batch_id"
+    ]
+  },
+  "excluded": {
+    "partial937_model_selection": true,
+    "technical_incomplete_as_negative": true,
+    "legacy128_training_merge": true,
+    "v4_f_test32_access": true,
+    "open_development_hyperparameter_selection": true
+  },
+  "model_families": [
+    "M2_STRUCTURE_REBASELINE",
+    "ESMC600M_FROZEN_RESIDUAL",
+    "ESMC600M_LORA_DUAL",
+    "ESM2_650M_LORA_CONTACT",
+    "ESM2_650M_STRUCTURE_FUSION",
+    "ESM2_3B_CAPACITY_AFTER_PROMOTION"
+  ],
+  "primary_metrics": [
+    "spearman",
+    "parent_centered_spearman",
+    "macro_parent_spearman",
+    "mae",
+    "top20_recall"
+  ],
+  "promotion_rule": "V6 must improve global Spearman over same-fold M2 without reducing parent-centered Spearman or Top20 recall; parent-bootstrap direction must be stable.",
+  "sealed_holdout": "V4-F/test32 remains inaccessible to V6 development and training."
+}

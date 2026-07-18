@@ -1,0 +1,15 @@
+{
+  "claim_boundary": "The V1 implementation was CPU-valid but was never authorized as the production nested evaluation protocol.",
+  "original_freeze": "IMPLEMENTATION_FREEZE_V1.json",
+  "original_freeze_sha256": "9225bbdfdc9df7f59c1faea1a7625850f51b763ba8ee330165b6dfc2d18b8a23",
+  "reason": [
+    "V1 used a residue-specific three-fold inner hash instead of the upper frozen PVRIG_V6_INNER whole-parent five-fold contract.",
+    "V1 selected one inner validation fold instead of independently selecting epochs over every observed inner fold and taking the rounded median.",
+    "V1 did not provide resumable adapter/head-only last checkpoints with optimizer, scheduler, RNG and reconciled metrics.jsonl.",
+    "V1 did not include an independent five-fold OOF collector with parent bootstrap promotion gates."
+  ],
+  "replacement": "IMPLEMENTATION_FREEZE_V1_1.json",
+  "schema_version": "pvrig_v6_residue_v1_superseded_preproduction",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_REMOTE_TRAINED"
+}
+

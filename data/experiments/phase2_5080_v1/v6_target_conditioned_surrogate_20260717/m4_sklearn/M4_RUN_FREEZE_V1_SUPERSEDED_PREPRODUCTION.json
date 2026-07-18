@@ -1,0 +1,7 @@
+{
+  "created_at_utc": "2026-07-17T16:56:46.620746+00:00",
+  "reason": "Table receipt SHA256 was transcribed incorrectly before any remote execution.",
+  "schema_version": "pvrig_v6_m4_run_freeze_v1_supersession",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_EXECUTED",
+  "superseded_sha256": "3bc75a5ca76f3925e561ce8d8af45bbbe0bd05091626a81a1d2bde75564b2510"
+}

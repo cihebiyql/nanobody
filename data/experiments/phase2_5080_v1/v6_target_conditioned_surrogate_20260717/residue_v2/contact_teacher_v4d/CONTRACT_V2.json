@@ -1,0 +1,95 @@
+{
+  "schema_version": "pvrig_v6_v4d_open226_multi_seed_contact_teacher_v2_contract",
+  "status": "FROZEN_PRE_EXTRACTION",
+  "claim_boundary": "Multi-seed residue-contact supervision derived from frozen independent 8X6B/9E6Y computational Docking poses; not binding probability, affinity, experimental competition or blocking, Docking Gold, or final submission evidence.",
+  "canonical_raw_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+  "allowed_model_split": "OPEN_TRAIN",
+  "sealed_model_splits": [
+    "OPEN_DEVELOPMENT",
+    "PROSPECTIVE_COMPUTATIONAL_TEST"
+  ],
+  "contact_definition": {
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "expected_seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "native_overlay_max_rmsd_angstrom": 1.0,
+    "top_k_after_pose_validity_filter": 8,
+    "minimum_valid_poses_per_successful_job": 4,
+    "atom_policy": "standard-amino-acid heavy ATOM only",
+    "contact_cutoff_angstrom": 4.5,
+    "pose_rank_weight": "normalized_1_over_log2_rank_plus_1",
+    "seed_weighting": "equal_over_observed_successful_seeds",
+    "failed_seed_policy": "never impute; preserve expected and observed counts",
+    "pair_target": "mean over observed seed-specific pose-weighted pair contact frequencies",
+    "pair_variance": "population",
+    "uncertainty_weight": "1/(1+4*variance)",
+    "residue_marginal": "pose_weighted_any_pvrig_contact_then_equal_seed_mean"
+  },
+  "expected_counts": {
+    "open_train_candidates": 226,
+    "open_train_parent_clusters": 20,
+    "scheduled_open_train_jobs": 1356,
+    "successful_open_train_jobs": 1355,
+    "failed_open_train_jobs": 1,
+    "complete_three_seed_candidates": 225,
+    "partial_seed_candidates": 1,
+    "selected_native_poses_before_filter": 12725,
+    "invalid_native_overlay_poses": 85,
+    "valid_native_poses_after_filter": 12640,
+    "top_k_pose_inventory_rows": 10632,
+    "residue_marginal_rows": 55138
+  },
+  "expected_failed_job_ids": [
+    "CANDIDATE_RFV1__PLDNANO_VHH_00322__A_CENTER__H3__B02__M00_8x6b_s3253_447e4cf0dc26"
+  ],
+  "expected_partial_candidate": {
+    "candidate_id": "RFV1__PLDNANO_VHH_00322__A_CENTER__H3__B02__M00",
+    "observed_seeds_8x6b": [
+      917,
+      1931
+    ],
+    "observed_seeds_9e6y": [
+      917,
+      1931,
+      3253
+    ]
+  },
+  "expected_sha256": {
+    "candidates": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "docking_jobs": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "protocol_core_lock": "767117dc2c506cfdfc83fce8e12931514d268941348d69a9abbda5a6500bdd24",
+    "protocol_lock": "56ef539cb54a1aba8e665ec5d62b3653088e2289e371d8fa5bbadbc725c1d574"
+  },
+  "provenance_only_sha256_not_read_by_extractor": {
+    "job_results_tsv": "30c4227e15f6b049a9d9e9241ca34df30d38b247d14081b4ce7d3387fa2f3f25",
+    "pose_scores_tsv": "7a2737160051c8fca8836b4086507e8f70d83cd692f87ffc17eaff8279c32681",
+    "continuous_open258_teacher": "89ad82c7cde28d862fecedfff4559e810bab68cf2405aa8f9e4dc5f1bd148068"
+  },
+  "governance_sha256": {
+    "plan_v2_zh": "ee7c7a40defbe99de48a81882a9aa2e51134abf1bfae53e370b0fd8f83e9f14f",
+    "preregistration_v2": "3847414a6db1f233543c08ceb3505d7b82fb952266fdf0c7c1314ebf18fc967e",
+    "residue_v2_contract": "701c3a48811f11bb1dd276541a7d3e6b2113739509a43bffe82a831d2691ba6a"
+  },
+  "read_policy": {
+    "shared_job_results_tsv": "FORBIDDEN",
+    "shared_pose_scores_tsv": "FORBIDDEN",
+    "sealed_split_job_result_json": "FORBIDDEN",
+    "sealed_split_pose_coordinates": "FORBIDDEN",
+    "open_train_job_result_json": "REQUIRED",
+    "open_train_selected_pose_coordinates": "REQUIRED",
+    "source_mutation": "FORBIDDEN"
+  },
+  "output_files": {
+    "pair": "v4d_open226_multi_seed_pair_contact_teacher_v2.tsv.gz",
+    "residue_marginal": "v4d_open226_multi_seed_residue_marginal_teacher_v2.tsv.gz",
+    "pose_inventory": "v4d_open226_top8_pose_inventory_v2.tsv.gz",
+    "audit": "EXTRACTION_AUDIT.json",
+    "receipt": "RUN_RECEIPT.json"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "collector_matrix": {
+    "bootstrap_repetitions": 1000,
+    "bootstrap_seed": 20260718,
+    "governance_amendment_sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226",
+    "promotion_gate": "global Spearman improves; parent-centered and Top20 non-degrade; parent bootstrap positive fraction >=0.80 and median delta >0",
+    "schema_version": "pvrig_v6_residue_v1_4_collector_matrix"
+  },
+  "collector_matrix_sha256": "6d0f3cbcc155564f0ba9e4dadd8d646405bc31072e4e3ab25b11316edb4d2116",
+  "frozen_external_sha256": {
+    "contact_independent_validation": "8dae292b1dd922ff2af7f9f73bdaa662e4fe3f827f30f633df9d3a3ebd603911",
+    "contact_receipt": "de3973e76e48f0be0c8854fe3f8560c42522ec3e42f90ea4861ce8f9b0ed9027",
+    "contact_targets_tsv_gz": "bd3cb205af606391aa2153f3c2bbc243c9630796228e12b4a561a2a7da7c7f0f",
+    "esm2_650m_model_safetensors": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "training_tsv": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+  },
+  "governance": {
+    "path": "../PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT.json",
+    "promotion_gate": "global Spearman improves; parent-centered and Top20 non-degrade; parent bootstrap positive fraction >=0.80 and median delta >0",
+    "schema_version": "pvrig_v6_implementation_amendment_v1_1",
+    "sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226",
+    "status": "FROZEN_BEFORE_ANY_NODE1_V6_MODEL_SMOKE_OR_PRODUCTION_TRAINING"
+  },
+  "implementation_sha256": {
+    "IMPLEMENTATION_FREEZE_V1_3_SUPERSEDED_PREPRODUCTION.json": "98e6d566e3906bef26954296540725e84052babd0a897027a1b4aaeb13c6d71b",
+    "README_V1_4_ZH.md": "f5ecc62d125bcb614e7097b081e332f692dbf42bdc24c4a9331a615af44b96f5",
+    "RESIDUE_V1_4_CONTRACT.json": "1014d8c619c30efa8960304dae754486b77578887d0f0b2fbb5878f8a0913d8a",
+    "src/__init__.py": "9cd948c2802fc7b648ef46ae98eaebddb02f9d816d7b4c734c362e83490beacb",
+    "src/build_dual_contact_targets.py": "59f0f8bc2f311a776b2d61ea2d075d55488e811b68d55d3665e8a760069594e5",
+    "src/collect_residue_oof_v1_4.py": "dbeaadd2bc9fde8982e264e6bca4d4d8abafe96d3b66851b0178f66a8f844279",
+    "src/residue_model.py": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb",
+    "src/train_nested_residue_surrogate.py": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8",
+    "src/train_nested_residue_surrogate_v1_4.py": "a8d80f1edb9ca3ee31fddce0671fcfe5f319c912a15056b5a7df08ddb1af96d5",
+    "tests/test_build_dual_contact_targets.py": "ddfa91f9ad9a01ea62e2ea580722e29e14a7a5030bcfc1daf5440345cd58513d",
+    "tests/test_collect_residue_oof_v1_1.py": "3aa530677a7b43e1f85a9c6c88ce7f9c0ee07176e6df1055a76ae30375011d5a",
+    "tests/test_collect_residue_oof_v1_2.py": "e6df087366742e06f9123d8ddfa717e8da17f3208c293f70c982f52fa24838a6",
+    "tests/test_collect_residue_oof_v1_3.py": "c4d02aaacaef5f13bd0d23ae97a4fc8e3dc1661513e90fea44669431a7de22fc",
+    "tests/test_collect_residue_oof_v1_4.py": "a40c9487be453096788d504385943abb2ced9fbba543264c4353ddd908b6b25a",
+    "tests/test_nested_trainer.py": "fd5024245ea2c46c769b1533399a0ba15d8cc1b2dc37661a3aeffe23d5a39802",
+    "tests/test_residue_model.py": "92f32ec7000bd81f8f25d117607460a2023d1b3c1ad17d2e8f0a873aef065744",
+    "tests/test_train_nested_residue_surrogate_v1_1.py": "887ec2b29d5fe0eea99d1da732232c874d762ac9baa88d46e87b1a9c5c036c64",
+    "tests/test_train_nested_residue_surrogate_v1_2.py": "5eda876cc2e99cfaab5175857cf300fe98198751ecc63a106edf3bc4cfce56c0",
+    "tests/test_train_nested_residue_surrogate_v1_4.py": "60a95dfa5d95f2a70c0662c6cfb3723d22709e8356dd4a79020ec745f93c1b7b"
+  },
+  "remote_training_started": false,
+  "schema_version": "pvrig_v6_residue_v1_4_implementation_freeze",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "supersedes_preproduction_freeze": {
+    "path": "IMPLEMENTATION_FREEZE_V1_3.json",
+    "sha256": "7c6fbd8f2c7096fbc74ba7db2c55fecc3d477e78c6bfd3ac2000b28fe8313247"
+  },
+  "validation": {
+    "commands": [
+      "$PY -m py_compile $ROOT/src/*.py $ROOT/tests/*.py",
+      "$PYTHONPATH=$ROOT/src $PY -m unittest discover -s $ROOT/tests -p 'test_*.py' -v"
+    ],
+    "errors": 0,
+    "failures": 0,
+    "p0_negative_tests": [
+      "bootstrap repetitions 999 and 2000",
+      "bootstrap seed drift",
+      "tampered collector matrix",
+      "tampered collector matrix SHA256",
+      "invalid matrix rejected before any input read",
+      "tampered governance SHA/content",
+      "governance symlink",
+      "tampered freeze governance path or SHA",
+      "tampered outer contract/result/seal binding"
+    ],
+    "python": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+    "result": "OK",
+    "test_file_count": 10,
+    "test_files": [
+      "tests/test_build_dual_contact_targets.py",
+      "tests/test_collect_residue_oof_v1_1.py",
+      "tests/test_collect_residue_oof_v1_2.py",
+      "tests/test_collect_residue_oof_v1_3.py",
+      "tests/test_collect_residue_oof_v1_4.py",
+      "tests/test_nested_trainer.py",
+      "tests/test_residue_model.py",
+      "tests/test_train_nested_residue_surrogate_v1_1.py",
+      "tests/test_train_nested_residue_surrogate_v1_2.py",
+      "tests/test_train_nested_residue_surrogate_v1_4.py"
+    ],
+    "tests_run": 37,
+    "wall_seconds": 8.72
+  }
+}

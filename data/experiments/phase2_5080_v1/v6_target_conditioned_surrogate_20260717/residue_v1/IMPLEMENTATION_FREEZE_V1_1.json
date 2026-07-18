@@ -1,0 +1,59 @@
+{
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "frozen_external_sha256": {
+    "contact_independent_validation": "8dae292b1dd922ff2af7f9f73bdaa662e4fe3f827f30f633df9d3a3ebd603911",
+    "contact_receipt": "de3973e76e48f0be0c8854fe3f8560c42522ec3e42f90ea4861ce8f9b0ed9027",
+    "contact_targets_tsv_gz": "bd3cb205af606391aa2153f3c2bbc243c9630796228e12b4a561a2a7da7c7f0f",
+    "esm2_650m_model_safetensors": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "training_tsv": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+  },
+  "implementation_sha256": {
+    "IMPLEMENTATION_FREEZE_V1_SUPERSEDED_PREPRODUCTION.json": "a2ffdf3bb730b12e56fb1674881e313a6a55105bcdf3d5beff6450028f80fd0a",
+    "README_V1_1_ZH.md": "04c95fb84b926a026bbd3dc75567aaa824beb03b29c7315d684a460ab7381e3a",
+    "RESIDUE_V1_1_CONTRACT.json": "1378b59f3a1dbf5996aa9103a23d93f15541800b47f2a47efe69fd9237b2efd7",
+    "src/__init__.py": "9cd948c2802fc7b648ef46ae98eaebddb02f9d816d7b4c734c362e83490beacb",
+    "src/build_dual_contact_targets.py": "59f0f8bc2f311a776b2d61ea2d075d55488e811b68d55d3665e8a760069594e5",
+    "src/collect_residue_oof_v1_1.py": "43a5d4978a7a2e46e32186650adbf2ce990a069d0f77c3982c0ea053a90f2783",
+    "src/residue_model.py": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb",
+    "src/train_nested_residue_surrogate.py": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8",
+    "src/train_nested_residue_surrogate_v1_1.py": "1b32de11af6e8c5f5daedf291c9f13daa8776b51f42515d8e05776d408391bba",
+    "tests/test_build_dual_contact_targets.py": "ddfa91f9ad9a01ea62e2ea580722e29e14a7a5030bcfc1daf5440345cd58513d",
+    "tests/test_collect_residue_oof_v1_1.py": "3aa530677a7b43e1f85a9c6c88ce7f9c0ee07176e6df1055a76ae30375011d5a",
+    "tests/test_nested_trainer.py": "fd5024245ea2c46c769b1533399a0ba15d8cc1b2dc37661a3aeffe23d5a39802",
+    "tests/test_residue_model.py": "92f32ec7000bd81f8f25d117607460a2023d1b3c1ad17d2e8f0a873aef065744",
+    "tests/test_train_nested_residue_surrogate_v1_1.py": "887ec2b29d5fe0eea99d1da732232c874d762ac9baa88d46e87b1a9c5c036c64"
+  },
+  "remote_training_started": false,
+  "schema_version": "pvrig_v6_residue_v1_1_implementation_freeze",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "supersedes_preproduction_freeze": {
+    "path": "IMPLEMENTATION_FREEZE_V1.json",
+    "sha256": "9225bbdfdc9df7f59c1faea1a7625850f51b763ba8ee330165b6dfc2d18b8a23"
+  },
+  "validation": {
+    "commands": [
+      "$PY -m py_compile $ROOT/src/*.py $ROOT/tests/*.py",
+      "$PYTHONPATH=$ROOT/src $PY -m unittest discover -s $ROOT/tests -p 'test_*.py' -v"
+    ],
+    "coverage_contracts": [
+      "dual contact materialization",
+      "explicit M2 residual head",
+      "adapter/head checkpoint exclusion",
+      "PVRIG_V6_INNER five-fold",
+      "lexicographic epoch selection",
+      "rounded median",
+      "parent-aware batching",
+      "contact receipt hash",
+      "126 real structure fields",
+      "RNG and metrics resume",
+      "single outer evaluation seal",
+      "independent parent-bootstrap OOF promotion"
+    ],
+    "errors": 0,
+    "failures": 0,
+    "python": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+    "result": "OK",
+    "tests_run": 18,
+    "wall_seconds": 7.712
+  }
+}

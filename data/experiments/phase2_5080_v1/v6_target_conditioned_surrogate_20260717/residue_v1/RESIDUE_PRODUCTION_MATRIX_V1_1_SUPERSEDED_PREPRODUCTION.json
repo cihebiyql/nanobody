@@ -1,0 +1,8 @@
+{
+  "reason": "V1.1 bound V1.3, which was superseded before production; subsequent V1.4 fixed bootstrap enforcement and V1.5 fixed formal promotion-evidence version labels. No V1.1 matrix production run was launched.",
+  "schema_version": "pvrig_v6_residue_production_matrix_v1_1_supersession",
+  "status": "SUPERSEDED_PREPRODUCTION_NEVER_EXECUTED",
+  "successor": "RESIDUE_PRODUCTION_MATRIX_V1_2.json",
+  "superseded_path": "RESIDUE_PRODUCTION_MATRIX_V1_1.json",
+  "superseded_sha256": "083b5ba2cafe85de0d4499f26ab430e5413da55ae402e49556e27b476b1c733c"
+}

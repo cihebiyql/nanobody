@@ -1,0 +1,40 @@
+{
+  "artifacts": {
+    "contract.json": "6fa603b60d3d8985710579c8657910872dfccb643879428aeff51e0e0f80f36e",
+    "head_final.pt": "93d1e789381c523f59beae440ca33a0420098a7337f46449fb61b9d1f4f6b2c5",
+    "outer_test_predictions.tsv": "cf6d37aa21f298300087dc8279b9547bd2a5a0a764df6b4a3645257315b7eebf"
+  },
+  "candidate_receptor_groups": 3014,
+  "claim_boundary": "Integration smoke over computational Docking geometry teachers only; tiny-backbone metrics are not formal model evidence.",
+  "contact_receipt_status": "PASS_DUAL_SOURCE_CONTACT_TARGETS_V2",
+  "elapsed_seconds": 97.98,
+  "final_epoch_count": 1,
+  "implementation_sha256": {
+    "model": "f2ba1b7ca11eb7141ac15b8689e18f7188e3c53fc95c8eb905e9d7d0cf3ee366",
+    "pair_builder": "9280e149ebed39a4e0bc4b0e2cc5b21209a380d17cce513b956bc13a6d1dfef1",
+    "trainer": "5a007fe4ba521208b7d4dd3ecd1a9c590cff45373000bd566619ca6888f8bb3c"
+  },
+  "lane": "D_FULL_PAIR",
+  "max_rss_kb": 3198096,
+  "optimization": "sparse nonzero pair vector scatter; exact-zero absence remains dense observed mask",
+  "outer_fold": 0,
+  "outer_test_rows": 238,
+  "pair_rows": 593346,
+  "parents": 31,
+  "rows": 1507,
+  "schema_version": "pvrig_v6_residue_v2_local_full1507_d_pair_smoke_v1",
+  "sealed_test_accessed": false,
+  "selected_epoch_counts": [
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "sources": {
+    "V4D_OPEN_MULTI_SEED": 226,
+    "V4H_STAGE1_SEED917": 1281
+  },
+  "status": "PASS_LOCAL_FULL1507_D_FULL_PAIR_TINY_BF16_SMOKE",
+  "target_graph_receipt_status": "PASS_FIXED_TARGET_GRAPHS_MATERIALIZED"
+}

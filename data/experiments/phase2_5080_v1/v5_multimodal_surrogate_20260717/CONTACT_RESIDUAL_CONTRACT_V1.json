@@ -1,0 +1,91 @@
+{
+  "schema_version": "pvrig_v5_rc_docking_contact_teacher_contract_v1",
+  "created_date": "2026-07-17",
+  "status": "FROZEN_BEFORE_BULK_OPEN_TRAIN_CONTACT_EXTRACTION",
+  "claim_boundary": "OPEN_TRAIN-only computational contact intermediates derived from independent dual-receptor HADDOCK poses. They are not binding, affinity, competition, experimental blocking, Docking Gold, or final submission evidence.",
+  "scope": {
+    "candidate_split": "OPEN_TRAIN",
+    "expected_candidates": 226,
+    "expected_parent_framework_clusters": 20,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "minimum_successful_seeds_per_candidate_receptor": 2,
+    "forbidden_splits": [
+      "OPEN_DEVELOPMENT",
+      "PROSPECTIVE_COMPUTATIONAL_TEST"
+    ],
+    "controls_are_training_rows": false
+  },
+  "frozen_remote_inputs": {
+    "campaign_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+    "candidates_290_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "docking_jobs_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "reference_normalization_summary_sha256": "7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3",
+    "score_pose_implementation_sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9"
+  },
+  "pose_policy": {
+    "atom_policy": "standard-amino-acid heavy ATOM records only",
+    "vhh_chain_source": "docking_jobs.tsv:vhh_chain",
+    "pvrig_chain_source": "docking_jobs.tsv:receptor_chain",
+    "contact_cutoff_angstrom": 4.5,
+    "pose_rank_key": "ascending finite HADDOCK score, then model filename",
+    "top_k": 8,
+    "minimum_complete_pose_models_per_job": 4,
+    "pose_rank_weight": "normalized 1/log2(rank+1), rank starts at 1",
+    "failed_seed_policy": "never impute a failed seed; require at least two observed successful seeds"
+  },
+  "aggregation": {
+    "job_pair_frequency": "rank-weighted mean of binary residue-pair contact indicators",
+    "candidate_receptor_pair_frequency_primary": "median job_pair_frequency over successful seeds, with absent pairs represented as zero within observed successful seeds",
+    "candidate_receptor_pair_frequency_auxiliary": "mean and standard deviation over successful seeds",
+    "supervision_unit": "candidate",
+    "pose_or_seed_as_independent_training_row": false
+  },
+  "derived_contact_targets": [
+    "pair_contact_mass",
+    "PVRIG residue soft coverage",
+    "full-interface hotspot soft coverage",
+    "AIR-anchor hotspot soft coverage",
+    "holdout-hotspot soft coverage",
+    "off-interface soft coverage",
+    "interface specificity",
+    "CDR1/CDR2/CDR3/framework contact mass and fractions",
+    "PVRIG contact-profile entropy",
+    "seed disagreement",
+    "dual-receptor mean/min/gap features",
+    "dual-receptor contact-profile Jensen-Shannon divergence"
+  ],
+  "leakage_boundary": {
+    "raw_or_aggregated_docking_contact_features_available_at_inference": false,
+    "allowed_use": "teacher intermediates for a sequence/label-free-monomer-to-contact proxy trained inside each whole-parent training fold",
+    "forbidden_use": "concatenate true held-out docking contacts with held-out structure features",
+    "held_out_contact_label_access": "evaluation only after held-out predictions are fixed"
+  },
+  "evaluation": {
+    "outer_cv": "deterministic 5-fold whole-parent",
+    "inner_cv": "deterministic 5-fold whole-parent",
+    "primary_target": "R_dual_min",
+    "primary_comparator": "B1_structure_direct",
+    "required_metrics": [
+      "global Spearman",
+      "parent-centered Spearman",
+      "macro-parent Spearman",
+      "MAE",
+      "Top20 recall",
+      "paired parent bootstrap delta"
+    ]
+  },
+  "observed_before_freeze": {
+    "allowed_schema_inspection": true,
+    "bulk_contact_rows_opened": false,
+    "contact_surrogate_performance_seen": false,
+    "note": "One successful job and one pose were inspected only to verify file/schema/chain feasibility before freezing this bulk-extraction contract."
+  }
+}

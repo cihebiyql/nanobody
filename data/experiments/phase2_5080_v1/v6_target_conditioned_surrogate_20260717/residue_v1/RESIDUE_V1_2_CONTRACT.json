@@ -1,0 +1,42 @@
+{
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "inherits_without_change": [
+    "PVRIG_V6_INNER whole-parent five-fold nested selection",
+    "explicit cross-fitted M2 base",
+    "two-channel contact-weighted residue pooling",
+    "adapter/head-only resumable checkpoints",
+    "single sealed outer evaluation",
+    "150GB safe stop and 180GB checkpoint guard"
+  ],
+  "promotion_gate_exact_frozen_amendment": {
+    "bootstrap": "parent resampling with replacement of global Spearman delta",
+    "bootstrap_median_delta_spearman": "> 0",
+    "bootstrap_positive_fraction": ">= 0.80",
+    "global_spearman": "residue > M2",
+    "mae": "diagnostic only and never a promotion gate",
+    "parent_centered_spearman": "residue >= M2",
+    "reference": "../PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT.json",
+    "top20_recall": "residue >= M2"
+  },
+  "resume_binding": {
+    "bound_categories": [
+      "all external content and implementation hashes",
+      "outer fold and exact ordered 126-feature schema",
+      "ridge alpha",
+      "backbone kind mode model identity and trust setting",
+      "all LoRA parameters and gradient checkpointing",
+      "fusion dropout residual scale and pooling mode",
+      "all loss weights deltas margins and temperatures",
+      "epochs batch parent chunk gradient accumulation",
+      "head and LoRA learning rates weight decay warmup clip precision seed",
+      "device safe-stop and checkpoint thresholds",
+      "candidate split manifest and observed inner folds"
+    ],
+    "terminal_resume": "recompute and verify binding before returning an existing terminal",
+    "validation_order": "binding rejection occurs before model construction or training"
+  },
+  "schema_version": "pvrig_v6_residue_lane_v1_2_contract",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "supersedes": "RESIDUE_V1_1_CONTRACT.json"
+}
+

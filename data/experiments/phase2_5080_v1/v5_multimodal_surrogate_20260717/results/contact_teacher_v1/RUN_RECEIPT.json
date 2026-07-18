@@ -1,0 +1,22 @@
+{
+  "candidate_rows": 226,
+  "claim_boundary": "OPEN_TRAIN-only computational contact intermediates derived from independent dual-receptor HADDOCK poses; not binding, affinity, competition, experimental blocking, Docking Gold, or final submission evidence.",
+  "forbidden_candidate_pose_files_opened": 0,
+  "input_hashes": {
+    "candidates_290": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+    "contract": "a1299efeff61ac3b6d7d1b4ef3ba13c415ba963396a74d2c7cc208e6240d469a",
+    "docking_jobs": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+    "implementation": "61d8c4de0dbd13bf7c049081bdc6452728fbac0aee1d3f799f4be0b751959b84",
+    "reference_normalization_summary": "7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3"
+  },
+  "output_hashes": {
+    "open_train226_candidate_contact_features.tsv": "2c2a8fdc80c26b44ce0aec7673539fc1b67dbc6aa47a9068db280840019f7a82",
+    "open_train226_contact_extraction_audit.json": "2c69d4f0d2c6badb5cffee71d8c2083fab2f47e66a86e7a146abf1ed17077c7e",
+    "open_train226_contact_pairs.tsv.gz": "bea566209e6282e40c2f52664207aebe98626c042b5ec6fcb68ba246caecae51",
+    "open_train226_receptor_contact_features.tsv": "335108506a087e8904fbf32f19d2f2e356ce1f88cf220b48cade16f46aef61df"
+  },
+  "pair_rows": 133062,
+  "receptor_rows": 452,
+  "schema_version": "pvrig_v5_rc_open_train_docking_contacts_v1_receipt",
+  "status": "COMPLETE_OPEN_TRAIN226_CONTACT_TEACHER_EXTRACTION"
+}

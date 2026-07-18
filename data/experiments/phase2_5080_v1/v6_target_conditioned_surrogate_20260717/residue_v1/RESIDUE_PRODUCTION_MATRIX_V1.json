@@ -1,0 +1,106 @@
+{
+  "schema_version": "pvrig_v6_residue_production_matrix_v1",
+  "status": "FROZEN_BEFORE_FIRST_PRODUCTION_OUTER_RESULT",
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "primary_target": "R_dual_min",
+  "sealed_evidence": [
+    "V4-F prospective/test32 remains sealed and is never read by this matrix"
+  ],
+  "frozen_inputs": {
+    "training_tsv_sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633",
+    "contact_targets_sha256": "bd3cb205af606391aa2153f3c2bbc243c9630796228e12b4a561a2a7da7c7f0f",
+    "contact_receipt_sha256": "de3973e76e48f0be0c8854fe3f8560c42522ec3e42f90ea4861ce8f9b0ed9027",
+    "contact_independent_validation_sha256": "8dae292b1dd922ff2af7f9f73bdaa662e4fe3f827f30f633df9d3a3ebd603911",
+    "esm2_650m_model_safetensors_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "implementation_freeze_v1_2_sha256": "b9baa1bbecba316d34e9c47baea832f382b20958d724911dba4005bdde8421e2",
+    "trainer_v1_2_sha256": "782e5255e06eaffc72c4546c4a87838521c7593974877b29a79f7ccac3f149d2",
+    "collector_v1_2_sha256": "244f04bb78389100164a3da52f521bba8e26187f1d746e5dc82759549ea8f3e4",
+    "governance_amendment_sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226"
+  },
+  "shared_config": {
+    "outer_folds": 5,
+    "inner_protocol": "PVRIG_V6_INNER whole-parent 5-fold",
+    "seed": 43,
+    "ridge_alpha": 10.0,
+    "fusion_dim": 64,
+    "dropout": 0.25,
+    "residual_scale": 0.02,
+    "detach_contact_pooling": true,
+    "dual_weight": 1.0,
+    "receptor_weight": 0.35,
+    "residual_weight": 0.05,
+    "huber_delta": 0.02,
+    "batch_size": 8,
+    "per_parent_batch": 2,
+    "gradient_accumulation": 2,
+    "head_learning_rate": 0.0001,
+    "weight_decay": 0.02,
+    "warmup_steps": 10,
+    "gradient_clip": 1.0,
+    "precision": "bf16",
+    "max_epochs": 8,
+    "safe_stop_free_gb": 150,
+    "checkpoint_min_free_gb": 180,
+    "sample_weights": "unchanged from supervised1507: V4D=1.0, V4H=0.65",
+    "gpu_policy": "physical GPUs 1-4 only; GPU0 forbidden",
+    "cpu_policy": "four OpenMP threads per fold process"
+  },
+  "lanes_in_fixed_execution_order": [
+    {
+      "lane": "F1_contact_low_frozen",
+      "backbone_mode": "frozen",
+      "contact_weight": 0.0001,
+      "ranking_weight": 0.0,
+      "purpose": "primary low-dose contact-supervised residue lane"
+    },
+    {
+      "lane": "F4_contact_high_frozen",
+      "backbone_mode": "frozen",
+      "contact_weight": 0.0003,
+      "ranking_weight": 0.0,
+      "purpose": "single-axis contact-dose ablation"
+    },
+    {
+      "lane": "F3_contact_low_rank_frozen",
+      "backbone_mode": "frozen",
+      "contact_weight": 0.0001,
+      "ranking_weight": 0.0001,
+      "ranking_minimum_delta": 0.02,
+      "ranking_temperature": 0.03,
+      "purpose": "single-axis low-dose within-parent ranking ablation"
+    },
+    {
+      "lane": "L1_contact_low_lora",
+      "backbone_mode": "lora",
+      "contact_weight": 0.0001,
+      "ranking_weight": 0.0,
+      "gradient_checkpointing": true,
+      "lora_r": 4,
+      "lora_alpha": 8,
+      "lora_dropout": 0.10,
+      "lora_target_modules": "query,value",
+      "lora_learning_rate": 0.000005,
+      "purpose": "capacity ablation changing only backbone adaptation"
+    }
+  ],
+  "execution": {
+    "wave_1": "GPU1 runs fold0 then fold4; GPU2 fold1; GPU3 fold2; GPU4 fold3",
+    "lane_transition": "run independent V1.2 OOF collector only after all five fold terminals close",
+    "failure_policy": "fail closed and stop later lanes; preserve resumable artifacts; never rewrite thresholds",
+    "selection_policy": "do not select or tune until every predeclared lane reaches a terminal or explicit technical failure",
+    "additional_seeds": "not part of this matrix; only a later version may pre-register seeds 107 and 211"
+  },
+  "promotion_gate": {
+    "point_global_spearman": "strictly improves over M2",
+    "point_parent_centered_spearman": "non-degradation versus M2",
+    "point_top20_recall": "non-degradation versus M2",
+    "parent_bootstrap_positive_fraction": ">=0.80",
+    "parent_bootstrap_median_delta_spearman": ">0",
+    "mae": "diagnostic only"
+  },
+  "domain_guardrails_diagnostic_only": {
+    "report_sources": ["V4D multi-seed open226", "V4H Stage1 single-seed1281"],
+    "warning_if_spearman_delta_below": -0.01,
+    "warning_if_mae_worsens_above": 0.001
+  }
+}

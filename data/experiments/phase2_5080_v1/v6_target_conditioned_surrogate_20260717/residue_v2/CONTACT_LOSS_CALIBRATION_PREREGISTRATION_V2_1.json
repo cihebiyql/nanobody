@@ -1,0 +1,91 @@
+{
+  "schema_version": "pvrig_v6_residue_v2_contact_loss_calibration_preregistration_v2_1",
+  "status": "FROZEN_BEFORE_OPEN_ONLY_GRADIENT_CALIBRATION_AND_BEFORE_FORMAL_OOF",
+  "frozen_at_local_date": "2026-07-18",
+  "parent_preregistration": {
+    "path": "PREREGISTRATION_V2.json",
+    "sha256": "3847414a6db1f233543c08ceb3505d7b82fb952266fdf0c7c1314ebf18fc967e",
+    "mutation_allowed": false,
+    "role": "immutable original V2 design; its underweighted contact loss is superseded only by the independently frozen amendment produced by this protocol"
+  },
+  "trigger": {
+    "audit_path": "LOSS_SCALE_PREFREEZE_AUDIT_ZH.md",
+    "audit_sha256": "d1d6f15040313a54b71f0250333765407691876105d5fd5f7d578d34fd57e1d5",
+    "decision": "DO_NOT_FREEZE_CURRENT_LOSS_SCALE",
+    "observed_contact_objective_fraction": 0.001839,
+    "observed_pair_exact_zero_fraction": 0.984908
+  },
+  "claim_boundary": "Open-only preproduction gradient-scale calibration for a model that approximates independent dual-receptor computational Docking geometry; no binding, affinity, experimental blocking, Docking Gold, or final submission claim.",
+  "teacher_and_split_boundary": {
+    "candidate_count": 1507,
+    "parent_cluster_count": 31,
+    "sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_STAGE1_SEED917": 1281
+    },
+    "outer_fold": 0,
+    "training_stage": "first_inner_selection_epoch0_first_batch",
+    "candidate_microbatch": {
+      "V4D_OPEN_MULTI_SEED": 2,
+      "V4H_STAGE1_SEED917": 6
+    },
+    "optimizer_steps_before_observation": 0,
+    "gradient_batches_per_lane": 1,
+    "prediction_metrics_may_select_weight": false
+  },
+  "loss_amendment": {
+    "normalization": "per_candidate_per_receptor_soft_positive_negative_balanced_then_equal_source",
+    "positive_class_fraction": 0.5,
+    "epsilon": 1e-08,
+    "exact_zero_is_observed_negative": true,
+    "soft_target_contributes_positive_and_negative_mass": true,
+    "class_missing_policy": "available_class_receives_full_weight; both_missing_is_unavailable",
+    "source_normalization": "0.5*V4D+0.5*V4H after candidate/receptor reduction"
+  },
+  "lanes": [
+    "A_DOMAIN",
+    "B_VHH3D",
+    "C_PATCH",
+    "D_FULL_PAIR"
+  ],
+  "fixed_weight_grid": [
+    {
+      "marginal_contact_weight": 0.0025,
+      "pair_contact_weight": 0.00125
+    },
+    {
+      "marginal_contact_weight": 0.005,
+      "pair_contact_weight": 0.0025
+    },
+    {
+      "marginal_contact_weight": 0.01,
+      "pair_contact_weight": 0.005
+    },
+    {
+      "marginal_contact_weight": 0.02,
+      "pair_contact_weight": 0.01
+    }
+  ],
+  "selection_rule": {
+    "metric": "direct contact gradient L2 norm divided by the sum of enabled weighted component gradient L2 norms",
+    "target_fraction_min": 0.05,
+    "target_fraction_max": 0.2,
+    "hard_ceiling": 0.3,
+    "rule": "select the smallest grid entry for which all four lanes lie in the target band and no lane exceeds the hard ceiling",
+    "no_passing_entry_status": "FAIL_NO_CONTACT_LOSS_AMENDMENT_NO_FORMAL_OOF"
+  },
+  "required_outputs": [
+    "CONTACT_LOSS_AMENDMENT_V1.json",
+    "CONTACT_GRADIENT_CALIBRATION_REPORT_V1.json",
+    "RUN_RECEIPT.json"
+  ],
+  "sealed_and_forbidden": {
+    "v4_f_test32_access": true,
+    "open_development_prediction_metric_selection": true,
+    "legacy128_training_merge": true,
+    "optimizer_step_during_observation": true,
+    "candidate_docking_pose_as_model_input": true,
+    "teacher_source_as_model_feature": true
+  },
+  "post_calibration_rule": "Only a PASS amendment produced by the frozen selector may update the production matrix and implementation freeze; no weight may be changed after formal OOF begins."
+}

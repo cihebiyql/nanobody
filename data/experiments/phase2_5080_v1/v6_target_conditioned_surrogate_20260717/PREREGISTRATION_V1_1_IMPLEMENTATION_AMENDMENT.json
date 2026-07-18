@@ -1,0 +1,67 @@
+{
+  "claim_boundary": "Development approximation of independent dual-receptor computational Docking geometry; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "files": {
+    "embedding_cache": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/src/cache_v6_esm_embeddings.py",
+      "sha256": "69d1de369e175bdf1645256f31552cf78247dbb5e793d7f6f010f1f975fb518b"
+    },
+    "embedding_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/tests/test_cache_v6_esm_embeddings.py",
+      "sha256": "12ffe674ed4ef9656b228293e76e7ad5db908905eb2fadeeaa22b8137f4e66ff"
+    },
+    "nested_contract_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/tests/test_train_v6_nested_closure_contracts.py",
+      "sha256": "129a59ca5ae32a0cb2d015400b125bb40de3a424340819c73e832eb508d6ff11"
+    },
+    "smoke_table": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/smoke93_v1/v6_smoke93.tsv",
+      "sha256": "5db7659250b6d9da3ad203f0361a128469b026ccf24f101e25ec1236f4e3aff5"
+    },
+    "supervised_receipt": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/materialized_v1_1/v6_training_table_receipt.json",
+      "sha256": "46fae18a63e10920c05ccf1dc873de2b588ec436a0320d909405164f9d14c529"
+    },
+    "supervised_table": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/materialized_v1_1/v6_supervised1507.tsv",
+      "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+    },
+    "trainer": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/src/train_v6_fusion_surrogate.py",
+      "sha256": "2d462b8b427a4784bddd2a4af6ba5fc4cc43c0160029bf810108471126ff8278"
+    },
+    "trainer_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/tests/test_train_v6_fusion_surrogate.py",
+      "sha256": "8c2bea82e97dd4891656cbf12fccdb9f7d6b70a529be2ccf3ed532365766bd5f"
+    }
+  },
+  "frozen_at_utc": "2026-07-17T16:20:46.377670+00:00",
+  "frozen_implementation": {
+    "bootstrap_repetitions": 1000,
+    "checkpoint_policy": "best and last only per outer fold; no new checkpoint below 180GB; safe stop below 150GB",
+    "epoch_selection": "per observed inner fold; lexicographic spearman, parent-centered spearman, top20 recall, negative MAE; rounded median best epoch count",
+    "inner_assignment": "sha256('PVRIG_V6_INNER|outer=<outer>|' + parent_framework_cluster) modulo 5",
+    "m2_outer_test_base": "fit on complete outer-train only",
+    "m2_train_base": "five-fold whole-parent inner cross-fitted predictions",
+    "outer_split": "existing frozen whole-parent outer_fold from materialized_v1_1",
+    "outer_test_access": "exactly once after final refit; never used for early stopping or checkpoint selection",
+    "production_join": "exact candidate and sequence-sha closure; no silent row dropping",
+    "promotion_gate": "global Spearman improves; parent-centered and Top20 non-degrade; parent bootstrap positive fraction >=0.80 and median delta >0"
+  },
+  "model_family": "M3_POOLED_ESM_STRUCTURE_RESIDUAL_BASELINE",
+  "original_preregistration_remains_preserved": true,
+  "reason": "Preproduction review found outer-test checkpoint selection and in-sample M2 stacking leakage in the first unexecuted trainer draft.",
+  "schema_version": "pvrig_v6_implementation_amendment_v1_1",
+  "smoke_panel": {
+    "not_model_selection": true,
+    "parents": 31,
+    "rows": 93,
+    "selection": "first 3 candidate IDs per parent"
+  },
+  "status": "FROZEN_BEFORE_ANY_NODE1_V6_MODEL_SMOKE_OR_PRODUCTION_TRAINING",
+  "supersedes_only_the_ambiguous_implementation_details_of": "PREREGISTRATION_V1.json",
+  "test_evidence": {
+    "contact_teacher_tests": "6 PASS",
+    "py_compile": "PASS",
+    "v6_tests": "27 PASS"
+  }
+}

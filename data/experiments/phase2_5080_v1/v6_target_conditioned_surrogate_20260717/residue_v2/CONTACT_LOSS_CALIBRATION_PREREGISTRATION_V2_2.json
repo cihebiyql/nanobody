@@ -1,0 +1,101 @@
+{
+  "schema_version": "pvrig_v6_residue_v2_contact_loss_calibration_preregistration_v2_2",
+  "status": "FROZEN_AFTER_GLOBAL_GRID_FAIL_AND_BEFORE_LANE_SPECIFIC_SELECTOR_OR_FORMAL_OOF",
+  "frozen_at_local_date": "2026-07-18",
+  "claim_boundary": "Open-only preproduction gradient-scale calibration for approximating independent dual-receptor computational Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or final submission evidence.",
+  "supersedes": {
+    "path": "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_1.json",
+    "sha256": "619a9e15e38aa8c6ecf68f070649463630d64603feb4ac79dfa52c0d424b4976",
+    "reason": "The globally shared weight grid produced no entry that placed all four architectural lanes in the frozen 5%-20% direct-contact gradient band."
+  },
+  "immutable_original_design": {
+    "path": "PREREGISTRATION_V2.json",
+    "sha256": "3847414a6db1f233543c08ceb3505d7b82fb952266fdf0c7c1314ebf18fc967e",
+    "mutation_allowed": false
+  },
+  "global_grid_failure_evidence": {
+    "calibration_matrix_sha256": "56b3a30a9d0651dec41103185072d42656168cebed84858a6d4049810d5f4ebe",
+    "selector_failure_log_sha256": "87ae1b0c8a3d214fe2ec05af76127c97559c42deec0efeba3d2d8bd31fe34337",
+    "failure": "no_grid_entry_places_all_lanes_in_target_band",
+    "formal_oof_started": false,
+    "prediction_metrics_used_for_selection": false,
+    "v4_f_test32_access_count": 0,
+    "lane_result_sha256": {
+      "A_DOMAIN": "5766ab4dc3c279e04713abf59485bc94b961dea528e23d614d4a6a4dd916bd9e",
+      "B_VHH3D": "5c2cd08131045bb20e2458aa5af06ba47932d801a5276028f45f4172fe44e048",
+      "C_PATCH": "486abd4e278ca75155aa933365e3bb48c41dc748d5d5deef198b04d236e997ce",
+      "D_FULL_PAIR": "7d0657de7bebd663231462f9ad583e3b400b1f333ea85346261c1e7ee212a9a4"
+    }
+  },
+  "rationale": "The four lanes expose different trainable paths and therefore different raw contact-gradient norms. Lane-specific preproduction scaling equalizes the direct supervision band and avoids confounding an architectural ablation with a 16-fold gradient-scale mismatch.",
+  "observation_contract": {
+    "source": "reuse the four immutable V1.2 first-inner-selection epoch0 first-batch pre-optimizer observations",
+    "optimizer_steps_before_observation": 0,
+    "gradient_batches_per_lane": 1,
+    "candidate_count_per_lane": 8,
+    "teacher_source_counts": {
+      "V4D_OPEN_MULTI_SEED": 2,
+      "V4H_STAGE1_SEED917": 6
+    },
+    "candidate_ids_sha256": "fb4e319c2553555c6f9e211e560a4a3dab577381bafba998689cc050304349de",
+    "prediction_metric_access_count": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "loss_normalization": {
+    "normalization": "per_candidate_per_receptor_soft_positive_negative_balanced_then_equal_source",
+    "positive_class_fraction": 0.5,
+    "epsilon": 1e-08,
+    "exact_zero_is_observed_negative": true,
+    "soft_target_contributes_positive_and_negative_mass": true,
+    "class_missing_policy": "available_class_receives_full_weight; both_missing_is_unavailable",
+    "source_normalization": "0.5*V4D+0.5*V4H after candidate/receptor reduction"
+  },
+  "fixed_lane_specific_grid": [
+    {
+      "marginal_contact_weight": 0.0003125,
+      "pair_contact_weight": 0.00015625
+    },
+    {
+      "marginal_contact_weight": 0.000625,
+      "pair_contact_weight": 0.0003125
+    },
+    {
+      "marginal_contact_weight": 0.00125,
+      "pair_contact_weight": 0.000625
+    },
+    {
+      "marginal_contact_weight": 0.0025,
+      "pair_contact_weight": 0.00125
+    },
+    {
+      "marginal_contact_weight": 0.005,
+      "pair_contact_weight": 0.0025
+    },
+    {
+      "marginal_contact_weight": 0.01,
+      "pair_contact_weight": 0.005
+    },
+    {
+      "marginal_contact_weight": 0.02,
+      "pair_contact_weight": 0.01
+    }
+  ],
+  "selection_rule": {
+    "scope": "independently for each lane",
+    "metric": "direct contact gradient L2 norm divided by the sum of enabled weighted component gradient L2 norms",
+    "target_fraction_min": 0.05,
+    "target_fraction_max": 0.2,
+    "hard_ceiling": 0.3,
+    "rule": "for each lane select the smallest grid entry in the target band and below the hard ceiling",
+    "no_passing_lane_status": "FAIL_NO_LANE_SPECIFIC_CONTACT_LOSS_AMENDMENT_NO_FORMAL_OOF"
+  },
+  "formal_training_rule": "Each lane must use only its own frozen lane_weights record; the trainer must reject a lane/weight mismatch. No weights may change after formal OOF begins.",
+  "sealed_and_forbidden": {
+    "v4_f_test32_access": true,
+    "prediction_metric_weight_selection": true,
+    "optimizer_step_during_observation": true,
+    "legacy128_training_merge": true,
+    "candidate_docking_pose_as_model_input": true,
+    "teacher_source_as_model_feature": true
+  }
+}

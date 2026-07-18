@@ -1,0 +1,59 @@
+{
+  "claim_boundary": "Computational docking-geometry surrogate development only.",
+  "created_at_utc": "2026-07-17T16:42:43.212940+00:00",
+  "interpretation": "The high-capacity residual overfit and failed promotion; run a bounded conservative residual sweep as development evidence, not a formal test.",
+  "lanes": [
+    {
+      "dropout": 0.3,
+      "gpu": 1,
+      "hidden": 64,
+      "lane": "conservative_a",
+      "lr": 0.0001,
+      "nll_weight": 0.0,
+      "ranking_weight": 0.0,
+      "residual_scale": 0.03,
+      "seed": 43,
+      "top_weight": 0.0
+    },
+    {
+      "dropout": 0.3,
+      "gpu": 3,
+      "hidden": 128,
+      "lane": "conservative_b",
+      "lr": 0.0001,
+      "nll_weight": 0.05,
+      "ranking_weight": 0.05,
+      "residual_scale": 0.05,
+      "seed": 107,
+      "top_weight": 0.05
+    },
+    {
+      "dropout": 0.2,
+      "gpu": 4,
+      "hidden": 64,
+      "lane": "conservative_c",
+      "lr": 5e-05,
+      "nll_weight": 0.0,
+      "ranking_weight": 0.0,
+      "residual_scale": 0.02,
+      "seed": 211,
+      "top_weight": 0.0
+    }
+  ],
+  "schema_version": "pvrig_v6_m3_conservative_development_sweep_v1",
+  "selection_boundary": "Outer OOF may diagnose lanes; it is not a sealed final test and cannot be reported as unbiased post-selection performance.",
+  "shared": {
+    "bootstrap_repetitions": 1000,
+    "embedding_receipt_sha256": "95371648f6ee177fe286c731f6891782708e4a4f86bffb13f6fa8f41abe68760",
+    "epochs": 40,
+    "input_sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633",
+    "patience": 8,
+    "trainer_sha256": "2d462b8b427a4784bddd2a4af6ba5fc4cc43c0160029bf810108471126ff8278"
+  },
+  "status": "FROZEN_BEFORE_VARIANT_EXECUTION",
+  "trigger_evidence": {
+    "M2_spearman": 0.5886398907388195,
+    "M3_spearman": 0.5750954952384375,
+    "seed43_actual_summary_sha256": "fca65774062950cc711882e1decfc7c00ae7aabb0920075794a6eb8a50a5916c"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "remote_training_started": false,
+  "reason": "Final preproduction verification found that the V1.4 collector emitted V1_3 promotion status labels despite using V1.4 collector and freeze schemas. This formal-evidence version mismatch is repaired only in V1.5.",
+  "schema_version": "pvrig_v6_residue_v1_4_superseded_preproduction",
+  "status": "SUPERSEDED_PREPRODUCTION",
+  "superseded_freeze": {
+    "path": "IMPLEMENTATION_FREEZE_V1_4.json",
+    "sha256": "78432ce89df22a6449bb8705adfc5c2ee3e00ac2cd90b990043dcd301caa70be"
+  },
+  "superseding_version": "V1.5",
+  "v1_4_bytes_preserved": true
+}

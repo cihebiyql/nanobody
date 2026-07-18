@@ -1,0 +1,100 @@
+{
+  "artifacts": {
+    "checkpoint_auditor": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/validate_residue_v1_5_smoke_checkpoint.py",
+      "sha256": "6f296284967185b082dde71baa99905eaa4c3ea2a869f53b2b0d3299d1c07554"
+    },
+    "checkpoint_auditor_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/tests/test_validate_residue_v1_5_smoke_checkpoint.py",
+      "sha256": "bbb9e03c8f5238e7f09e7d84efad33b7f5d9621abe2082b291e0c8009399772e"
+    },
+    "common": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/residue_v1_5_common.sh",
+      "sha256": "7adc545a9bfae58c93ee0124f27a89b9fb2e27e95c8e55d9f3a001639261992e"
+    },
+    "deploy": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/deploy_node1_residue_v1_5_exact.sh",
+      "sha256": "fbbe53952b57a917428cc166a816c777579e146d9d347452aca4d235b5731a69"
+    },
+    "deployment_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/tests/test_residue_v1_5_exact_deployment.py",
+      "sha256": "f480a8e94f14b9f85de9cf8f7b265721a7896ecb899efc80d0969fe0086dcb65"
+    },
+    "production_matrix_v1_2": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/RESIDUE_PRODUCTION_MATRIX_V1_2.json",
+      "sha256": "48fadb1b104d7528a574972e5d391f88b1a21df375e281e119025e5ed170683d"
+    },
+    "readme": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/README_ZH.md",
+      "sha256": "18720a3a1017db65b289a78d1229aee530dec0ecdf2c2cf4e67f84a094e12b23"
+    },
+    "smoke": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/run_node1_residue_v1_5_smoke.sh",
+      "sha256": "9cb702142bdf5a29b04f78f798c9842ee66f4316170b439691ce3ebf542d1c3a"
+    },
+    "superseded_matrix_record": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/RESIDUE_PRODUCTION_MATRIX_V1_1_SUPERSEDED_PREPRODUCTION.json",
+      "sha256": "2736c50cf45fa97694a7525fd8b923cd55baf70da000381c3f60dcb13133e421"
+    },
+    "supervisor": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/supervise_node1_residue_v1_5_production.sh",
+      "sha256": "a2bc04aaa1c3fd505003e5d6356a934a16c1654fc1ec4477a0f60db88cd7f8f6"
+    },
+    "test_results": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/deployment/residue_v1_5_exact/TEST_RESULTS.log",
+      "sha256": "a83387fc9e8b00ac6b314b85e9c1b41617a2b1e940b1de6af56a4737509d22b4"
+    }
+  },
+  "checkpoint_gate": {
+    "base_or_unexpected_trainable_keys": "FAIL_CLOSED",
+    "checkpoint_total_bytes_must_be_positive": true,
+    "frozen_allowed_trainable_state": "head.* only",
+    "gpu_memory": "physical GPU1 sampled by nvidia-smi; peak recorded per lane",
+    "lora_allowed_trainable_state": "head.* plus backbone.*lora_*; both required in every checkpoint",
+    "minimum_checkpoint_count": 2
+  },
+  "claim_boundary": "Local code, contract, and orchestration validation only; no Node1 command, smoke, production training, model selection, or biological claim was executed.",
+  "created_at_utc": "2026-07-17T18:43:07.097826+00:00",
+  "encoded_remote_preflight": {
+    "deployment_receipt_fields": [
+      "remote_test_count",
+      "remote_test_result",
+      "remote_py_compile_result"
+    ],
+    "py_compile": "REQUIRED_BEFORE_DEPLOYMENT_INSTALL",
+    "unittest_discover_exact_count": 41,
+    "unittest_required_result": "PASS_OK"
+  },
+  "immutable_v1_5": {
+    "collector_v1_5": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/collect_residue_oof_v1_5.py",
+      "sha256": "a15db4aceaeb8c62bca277d9d39015aff3e7e95bacf30a3dd635c1d18558cee0"
+    },
+    "implementation_freeze_v1_5": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/IMPLEMENTATION_FREEZE_V1_5.json",
+      "sha256": "3a4046462bcf138c25c5c36005d1f6e24f2df3f931fe32369dba80ee834e155e"
+    },
+    "trainer_v1_5": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af"
+    }
+  },
+  "local_validation": {
+    "deployment_and_checkpoint_audit_tests": {
+      "count": 15,
+      "result": "PASS"
+    },
+    "frozen_residue_v1_5_regression_tests": {
+      "count": 41,
+      "result": "PASS"
+    },
+    "git_diff_check": "PASS",
+    "python_byte_compile": "PASS",
+    "shell_syntax_scripts": 4,
+    "shellcheck": "NOT_INSTALLED"
+  },
+  "remote_commands_launched": false,
+  "remote_jobs_launched": false,
+  "schema_version": "pvrig_v6_residue_v1_5_exact_local_validation_report_v1",
+  "status": "PASS_LOCAL_IMPLEMENTATION_AND_REGRESSION_VALIDATION"
+}

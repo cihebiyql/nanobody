@@ -1,0 +1,33 @@
+{
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "implementation_sha256": {
+    "README_ZH.md": "51810a0efdf8ce5d84ec584cf0b856d9f8ecb0313d9b0c0b813b82aa9e033959",
+    "RESIDUE_V1_CONTRACT.json": "231c2c760f786191a0081e306ca985ac85037b86343dfde72ce48b0bcebfeb8c",
+    "src/__init__.py": "9cd948c2802fc7b648ef46ae98eaebddb02f9d816d7b4c734c362e83490beacb",
+    "src/build_dual_contact_targets.py": "59f0f8bc2f311a776b2d61ea2d075d55488e811b68d55d3665e8a760069594e5",
+    "src/residue_model.py": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb",
+    "src/train_nested_residue_surrogate.py": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8",
+    "tests/test_build_dual_contact_targets.py": "ddfa91f9ad9a01ea62e2ea580722e29e14a7a5030bcfc1daf5440345cd58513d",
+    "tests/test_nested_trainer.py": "fd5024245ea2c46c769b1533399a0ba15d8cc1b2dc37661a3aeffe23d5a39802",
+    "tests/test_residue_model.py": "92f32ec7000bd81f8f25d117607460a2023d1b3c1ad17d2e8f0a873aef065744"
+  },
+  "remaining_external_inputs": [
+    "formal contact teacher residue-pair TSV.GZ",
+    "exact contact teacher SHA256",
+    "Node1 local PLM identity file and SHA256"
+  ],
+  "schema_version": "pvrig_v6_residue_v1_implementation_freeze",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "validation": {
+    "commands": [
+      "$PY -m py_compile $ROOT/src/*.py $ROOT/tests/*.py",
+      "$PY -m unittest discover -s $ROOT/tests -p 'test_*.py' -v"
+    ],
+    "errors": 0,
+    "failures": 0,
+    "python": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python",
+    "result": "OK",
+    "tests_run": 8,
+    "wall_seconds": 8.263
+  }
+}

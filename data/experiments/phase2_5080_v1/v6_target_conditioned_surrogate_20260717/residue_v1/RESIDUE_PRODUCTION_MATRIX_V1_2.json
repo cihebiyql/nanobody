@@ -1,0 +1,155 @@
+{
+  "bootstrap": {
+    "repetitions": 1000,
+    "seed": 20260718
+  },
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "deployment_contract": {
+    "code_root": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5",
+    "input_paths": {
+      "contact_receipt": "inputs_v1_2/residue_contact_targets_v1/RUN_RECEIPT.json",
+      "contact_targets": "inputs_v1_2/residue_contact_targets_v1/v6_dual_residue_contact_targets.tsv.gz",
+      "contact_validation": "inputs_v1_2/residue_contact_targets_v1/INDEPENDENT_VALIDATION.json",
+      "training_receipt": "inputs_v1_2/full1507/v6_training_table_receipt.json",
+      "training_tsv": "inputs_v1_2/full1507/v6_supervised1507.tsv"
+    },
+    "matrix_remote_path": "deployment_v1_5/RESIDUE_PRODUCTION_MATRIX_V1_2.json",
+    "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "remote_root": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717",
+    "scripts": [
+      "deployment/residue_v1_5_common.sh",
+      "deployment/run_node1_residue_v1_5_smoke.sh",
+      "deployment/supervise_node1_residue_v1_5_production.sh"
+    ]
+  },
+  "execution": {
+    "collector_condition": "only after all five fold RESULT.json and OUTER_EVALUATION_SEAL.json documents validate as terminal PASS for the current lane",
+    "failure_policy": "fail closed, stop the current and all later lanes, preserve resumable artifacts, never rewrite thresholds",
+    "gpu_assignment": {
+      "physical_gpu_1": [
+        0,
+        4
+      ],
+      "physical_gpu_2": [
+        1
+      ],
+      "physical_gpu_3": [
+        2
+      ],
+      "physical_gpu_4": [
+        3
+      ]
+    },
+    "gpu_zero": "FORBIDDEN",
+    "lane_transition": "collector terminal must close before the next fixed-order lane starts",
+    "resume_policy": "resume only against the exact result-affecting binding; a started outer seal without RESULT is fail-closed and never re-evaluated",
+    "selection_policy": "do not select or tune until all four predeclared lanes reach terminal collector status or an explicit technical failure",
+    "terminal_policy": "fold wrappers and supervisor always write explicit PASS, FAIL, or SAFE_STOP terminal JSON"
+  },
+  "formal_evidence_labels": {
+    "collector_schema": "pvrig_v6_residue_v1_5_oof_collector",
+    "negative_status": "DO_NOT_PROMOTE_RESIDUE_V1_5",
+    "positive_status": "PROMOTE_RESIDUE_V1_5_OVER_M2",
+    "trainer_schema": "pvrig_v6_nested_residue_surrogate_v1_5"
+  },
+  "frozen_inputs": {
+    "collector_v1_5_sha256": "a15db4aceaeb8c62bca277d9d39015aff3e7e95bacf30a3dd635c1d18558cee0",
+    "contact_independent_validation_sha256": "8dae292b1dd922ff2af7f9f73bdaa662e4fe3f827f30f633df9d3a3ebd603911",
+    "contact_receipt_sha256": "de3973e76e48f0be0c8854fe3f8560c42522ec3e42f90ea4861ce8f9b0ed9027",
+    "contact_targets_sha256": "bd3cb205af606391aa2153f3c2bbc243c9630796228e12b4a561a2a7da7c7f0f",
+    "esm2_650m_model_safetensors_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "governance_amendment_sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226",
+    "implementation_freeze_v1_5_sha256": "3a4046462bcf138c25c5c36005d1f6e24f2df3f931fe32369dba80ee834e155e",
+    "trainer_v1_5_sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af",
+    "training_receipt_sha256": "46fae18a63e10920c05ccf1dc873de2b588ec436a0320d909405164f9d14c529",
+    "training_tsv_sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+  },
+  "lanes_in_fixed_execution_order": [
+    {
+      "backbone_mode": "frozen",
+      "contact_weight": 0.0001,
+      "lane": "F1_contact_low_frozen",
+      "purpose": "primary low-dose contact-supervised residue lane",
+      "ranking_minimum_delta": 0.005,
+      "ranking_temperature": 0.02,
+      "ranking_weight": 0.0
+    },
+    {
+      "backbone_mode": "frozen",
+      "contact_weight": 0.0003,
+      "lane": "F4_contact_high_frozen",
+      "purpose": "single-axis contact-dose ablation",
+      "ranking_minimum_delta": 0.005,
+      "ranking_temperature": 0.02,
+      "ranking_weight": 0.0
+    },
+    {
+      "backbone_mode": "frozen",
+      "contact_weight": 0.0001,
+      "lane": "F3_contact_low_rank_frozen",
+      "purpose": "single-axis low-dose within-parent ranking ablation",
+      "ranking_minimum_delta": 0.02,
+      "ranking_temperature": 0.03,
+      "ranking_weight": 0.0001
+    },
+    {
+      "backbone_mode": "lora",
+      "contact_weight": 0.0001,
+      "gradient_checkpointing": true,
+      "lane": "L1_contact_low_lora",
+      "lora_alpha": 8,
+      "lora_dropout": 0.1,
+      "lora_learning_rate": 5e-06,
+      "lora_r": 4,
+      "lora_target_modules": "query,value",
+      "purpose": "capacity ablation changing only backbone adaptation",
+      "ranking_minimum_delta": 0.005,
+      "ranking_temperature": 0.02,
+      "ranking_weight": 0.0
+    }
+  ],
+  "primary_target": "R_dual_min",
+  "promotion_gate": {
+    "mae": "diagnostic only",
+    "parent_bootstrap_median_delta_spearman": ">0",
+    "parent_bootstrap_positive_fraction": ">=0.80",
+    "point_global_spearman": "strictly improves over M2",
+    "point_parent_centered_spearman": "non-degradation versus M2",
+    "point_top20_recall": "non-degradation versus M2"
+  },
+  "schema_version": "pvrig_v6_residue_production_matrix_v1_2",
+  "sealed_evidence": {
+    "V4_F": "SEALED; prospective/test32 and every V4-F artifact are forbidden inputs and must never be read, staged, inspected, or scored by this matrix"
+  },
+  "shared_config": {
+    "batch_size": 8,
+    "checkpoint_min_free_gb": 180,
+    "cpu_threads_per_fold": 4,
+    "detach_contact_pooling": true,
+    "dropout": 0.25,
+    "dual_weight": 1.0,
+    "fusion_dim": 64,
+    "gradient_accumulation": 2,
+    "gradient_clip": 1.0,
+    "head_learning_rate": 0.0001,
+    "huber_delta": 0.02,
+    "inner_protocol": "PVRIG_V6_INNER whole-parent 5-fold",
+    "max_epochs": 8,
+    "outer_folds": 5,
+    "per_parent_batch": 2,
+    "precision": "bf16",
+    "receptor_weight": 0.35,
+    "residual_scale": 0.02,
+    "residual_weight": 0.05,
+    "ridge_alpha": 10.0,
+    "safe_stop_free_gb": 150,
+    "seed": 43,
+    "warmup_steps": 10,
+    "weight_decay": 0.02
+  },
+  "status": "FROZEN_BEFORE_FIRST_V1_5_SMOKE_OR_PRODUCTION_RUN",
+  "supersedes_preproduction_matrix": {
+    "path": "RESIDUE_PRODUCTION_MATRIX_V1_1.json",
+    "sha256": "083b5ba2cafe85de0d4499f26ab430e5413da55ae402e49556e27b476b1c733c"
+  }
+}

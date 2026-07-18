@@ -1,0 +1,40 @@
+{
+  "canonical_raw_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+  "claim_boundary": "V4-H Stage-1 single-seed computational residue-contact intermediates derived from frozen independent 8X6B/9E6Y docking poses; not binding, affinity, competition, experimental blocking, Docking Gold, or final submission evidence.",
+  "contact_definition": {
+    "contact_cutoff_angstrom": 4.5,
+    "minimum_poses": 4,
+    "pose_rank_weight": "normalized_1_over_log2_rank_plus_1",
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seed": 917,
+    "top_k": 8
+  },
+  "expected_counts": {
+    "analyzable_candidates": 1281,
+    "candidates": 1320,
+    "failed_jobs": 4,
+    "ranking_rows": 1320,
+    "stage1_jobs": 2640,
+    "successful_jobs": 2636,
+    "technical_incomplete_candidates": 39
+  },
+  "expected_sha256": {
+    "raw_candidates": "220926f45bca69464588b8eebcb8855d3235876ab98e0840d2e374bf94cdeec0",
+    "raw_hotspots": "7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3",
+    "raw_stage1_manifest": "c76de07a2725939e62b4fab9cd9af4a7c72b30398f68bfa18727a223f277c1d0",
+    "raw_stage1_ranking": "b1fdf2b74e1d9a34096c2ea57256fda1a9c28a32fcf6db70e21f1abc7bc1ed7d",
+    "stage1_all_seed917.terminal.json": "c22dc72a10050704ba2ee96899176d759772a0c69600e3dc051108780aba5b8c",
+    "stage1_all_seed917.tsv": "c76de07a2725939e62b4fab9cd9af4a7c72b30398f68bfa18727a223f277c1d0",
+    "stage1_failures.tsv": "0f495ce611ed42d41aa53c63464f598a026dea4ebd598cb426756248ac2de1e5",
+    "stage1_seed917_ranking.tsv": "b1fdf2b74e1d9a34096c2ea57256fda1a9c28a32fcf6db70e21f1abc7bc1ed7d"
+  },
+  "frozen_exclusions": {
+    "native_overlay_rmsd_gate": "unchanged; candidates carrying native_overlay_rmsd_above_1A remain TECHNICAL_INCOMPLETE_NA",
+    "technical_incomplete_candidate_policy": "retain candidate and receptor status rows with empty numeric fields; do not open or use any result or pose from all 39 candidates"
+  },
+  "schema_version": "pvrig_v6_v4h_stage1_contact_teacher_v1_contract",
+  "status": "FROZEN_PRE_EXTRACTION"
+}

@@ -1,0 +1,74 @@
+{
+  "claim_boundary": "Development-only sequence-to-independent-dual-docking computational geometry supervision; not binding, affinity, competition, experimental blocking, Docking Gold, formal validation, or final submission authority.",
+  "counts": {
+    "open_development_exclusion_parents": 3,
+    "open_development_exclusion_rows": 32,
+    "open_train_multi_seed": 226,
+    "stage1_dual_single_seed": 1281,
+    "stage1_technical_incomplete_unsupervised": 39,
+    "supervised_candidates": 1507,
+    "supervised_parents": 31
+  },
+  "folds": {
+    "algorithm": "deterministic_greedy_row_balance_v1",
+    "candidate_counts": {
+      "0": 291,
+      "1": 291,
+      "2": 290,
+      "3": 290,
+      "4": 345
+    },
+    "n_folds": 5,
+    "parent_counts": {
+      "0": 7,
+      "1": 7,
+      "2": 7,
+      "3": 7,
+      "4": 3
+    }
+  },
+  "inputs": {
+    "open_teacher": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_d_dev1_open258_v1_2/delivery_dev1_v1_2/by_sha256/21f00fc17b153dadb2dcd93d90f24a28c4161ccddfe1876c90f0c21ab6a0467d/outputs/v4d_dev1_open258_continuous_geometry_v1_2.tsv",
+      "sha256": "89ad82c7cde28d862fecedfff4559e810bab68cf2405aa8f9e4dc5f1bd148068"
+    },
+    "stage1_metadata": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_h_research_pool_v1/outputs/research_ready1320.tsv",
+      "sha256": "f02cfeaac9775442bb1748c7bb63413a1077b5df11f9cd7214e983d0e51c0551"
+    },
+    "stage1_ranking": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_h_stage1_terminal_v1_20260717/stage1_seed917_ranking.tsv",
+      "sha256": "b1fdf2b74e1d9a34096c2ea57256fda1a9c28a32fcf6db70e21f1abc7bc1ed7d"
+    }
+  },
+  "open_development_overlap": {
+    "candidate_id_overlap": 0,
+    "parent_framework_cluster_overlap": 0,
+    "sequence_sha256_overlap": 0
+  },
+  "open_development_targets_emitted": 0,
+  "outputs": {
+    "incomplete_unsupervised": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/v6_unsupervised_incomplete39.tsv",
+      "rows": 39,
+      "sha256": "4650a9de7d5fb637e8aa93f60af73ec2a72e27613959a950e1aecfcb790197a8"
+    },
+    "parent_folds": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/v6_whole_parent_fold_assignments.tsv",
+      "rows": 31,
+      "sha256": "dcd598c9367b94383bbebb8020aa7079b7f4c121b1fd80b5c17a34cc6a6714cf"
+    },
+    "supervised": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/v6_supervised1507.tsv",
+      "rows": 1507,
+      "sha256": "8686e9a1d070c9ee1cdfd73713d16bf0c6b2e0b981c0021b39ae31ba9e5c2201"
+    }
+  },
+  "reliability_weights": {
+    "V4_D_OPEN_TRAIN_MULTI_SEED": 1.0,
+    "V4_H_STAGE1_SEED917": 0.65
+  },
+  "schema_version": "pvrig_v6_target_conditioned_training_data_v1_receipt",
+  "status": "COMPLETE_LEAKAGE_CLOSED_V6_DATASET",
+  "technical_incomplete_targets_emitted": 0
+}

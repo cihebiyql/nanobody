@@ -1,0 +1,580 @@
+{
+  "bootstrap": {
+    "repetitions": 1000,
+    "seed": 20260718
+  },
+  "claim_boundary": "Sequence and label-free-structure approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "execution": {
+    "augmentation_gpu": 6,
+    "augmentation_precedes_smoke": true,
+    "cpu_threads_per_process": 8,
+    "folds_per_lane": 5,
+    "forbidden_gpus": [
+      0,
+      3
+    ],
+    "four_lanes_parallel_on_dedicated_gpus": true,
+    "gpu_zero_forbidden": true,
+    "reserved_gpus": [
+      7
+    ],
+    "smoke_precedes_production": true
+  },
+  "implementation_allowlist": [
+    "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_1.json",
+    "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_2.json",
+    "LOSS_SCALE_PREFREEZE_AUDIT_ZH.md",
+    "PLAN_V2_ZH.md",
+    "PREREGISTRATION_V2.json",
+    "RESIDUE_V2_CONTRACT.json",
+    "RESIDUE_V2_PRODUCTION_MATRIX.json",
+    "calibration/CALIBRATION_SUPERSESSION_AUDIT_V1_TO_V1_2_ZH.md",
+    "calibration/CONTACT_GRADIENT_CALIBRATION_MATRIX_V1.json",
+    "calibration/CONTACT_GRADIENT_CALIBRATION_MATRIX_V1_1.json",
+    "calibration/CONTACT_GRADIENT_CALIBRATION_MATRIX_V1_2.json",
+    "calibration/NODE1_CONTACT_GRADIENT_CALIBRATION_RUNBOOK_V1.md",
+    "calibration/NODE1_CONTACT_GRADIENT_CALIBRATION_RUNBOOK_V1_1.md",
+    "calibration/NODE1_CONTACT_GRADIENT_CALIBRATION_RUNBOOK_V1_2.md",
+    "calibration/node1_contact_gradient_calibration_v1.py",
+    "calibration/node1_contact_gradient_calibration_v1_1.py",
+    "calibration/node1_contact_gradient_calibration_v1_2.py",
+    "calibration/test_node1_contact_gradient_calibration_v1.py",
+    "calibration/test_node1_contact_gradient_calibration_v1_1.py",
+    "calibration/test_node1_contact_gradient_calibration_v1_2.py",
+    "contact_teacher_v4d/CONTRACT_V2.json",
+    "contact_teacher_v4d/README_ZH.md",
+    "contact_teacher_v4d/TEST_FIXTURE_CORRECTION_V2_1.md",
+    "contact_teacher_v4d/src/extract_v4d_contact_teacher_v2.py",
+    "contact_teacher_v4d/tests/test_extract_v4d_contact_teacher_v2.py",
+    "deployment/NODE1_RESIDUE_V2_FOUR_LANE_RUNBOOK_V1.md",
+    "deployment/NODE1_V2_PREFLIGHT.md",
+    "deployment/NODE23_V4D_CONTACT_V2_VERIFICATION.md",
+    "deployment/node1_residue_v2_four_lane_v1.py",
+    "deployment/run_node23_v4d_contact_v2.sh",
+    "deployment/test_node1_residue_v2_four_lane_v1.py",
+    "src/augment_target_graph_esm2_v2.py",
+    "src/build_dual_contact_targets_v2.py",
+    "src/build_dual_pair_contact_targets_v2.py",
+    "src/build_implementation_freeze_v2.py",
+    "src/build_residue_graph_cache_v2.py",
+    "src/build_target_graph_cache_v2.py",
+    "src/collect_residue_oof_v2.py",
+    "src/domain_balance_v2.py",
+    "src/materialize_graph_inputs_v2.py",
+    "src/residue_model_v2.py",
+    "src/select_contact_loss_gradient_grid_v1.py",
+    "src/select_contact_loss_gradient_grid_v2.py",
+    "src/train_nested_residue_surrogate_v2.py",
+    "tests/test_augment_target_graph_esm2_v2.py",
+    "tests/test_build_dual_contact_targets_v2.py",
+    "tests/test_build_dual_pair_contact_targets_v2.py",
+    "tests/test_build_implementation_freeze_v2.py",
+    "tests/test_build_residue_graph_cache_v2.py",
+    "tests/test_build_target_graph_cache_v2.py",
+    "tests/test_collect_residue_oof_v2.py",
+    "tests/test_domain_balance_v2.py",
+    "tests/test_materialize_graph_inputs_v2.py",
+    "tests/test_residue_model_v2.py",
+    "tests/test_select_contact_loss_gradient_grid_v1.py",
+    "tests/test_select_contact_loss_gradient_grid_v2.py",
+    "tests/test_train_nested_residue_surrogate_v2.py",
+    "tests/test_v1_5_immutability.py"
+  ],
+  "lanes": [
+    {
+      "lane": "A_DOMAIN",
+      "outer_folds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "physical_gpu": 1,
+      "requirements": [
+        "dual_source_balancing",
+        "dual_marginal_contacts"
+      ]
+    },
+    {
+      "lane": "B_VHH3D",
+      "outer_folds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "physical_gpu": 2,
+      "requirements": [
+        "dual_source_balancing",
+        "dual_marginal_contacts",
+        "vhh_3d_graph"
+      ]
+    },
+    {
+      "lane": "C_PATCH",
+      "outer_folds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "physical_gpu": 4,
+      "requirements": [
+        "dual_source_balancing",
+        "dual_marginal_contacts",
+        "vhh_3d_graph",
+        "dual_target_graph",
+        "cross_interaction",
+        "pair_bce_disabled"
+      ]
+    },
+    {
+      "lane": "D_FULL_PAIR",
+      "outer_folds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "physical_gpu": 5,
+      "requirements": [
+        "dual_source_balancing",
+        "dual_marginal_contacts",
+        "vhh_3d_graph",
+        "dual_target_graph",
+        "cross_interaction",
+        "dual_source_pair_soft_bce"
+      ]
+    }
+  ],
+  "node1_deployment": {
+    "artifacts": {
+      "augment_target_script": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v2/src/augment_target_graph_esm2_v2.py",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "cb6492233f2dd7703171d80f14edb88f604285168cd68319df2ead9ac892fafc"
+      },
+      "augmented_target_graph": {
+        "closure_required": true,
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2",
+        "phase": "post_augmentation_binding",
+        "sha256": null
+      },
+      "base_target_cache_npz": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graph_cache_v2.npz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108"
+      },
+      "base_target_manifest": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graph_manifest_v2.tsv",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "c78c30beb4ad668e28f8bfe17872b9712e92fd5871748718a70714a5d5f0ce9d"
+      },
+      "base_target_pt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graphs_v2.pt",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc"
+      },
+      "base_target_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graph_receipt_v2.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
+      },
+      "contact_gradient_calibration_receipt_v2_2": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/RUN_RECEIPT.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "54e2d7a03c1b44209641129951549edc1b47b4acb18315ecb25e8300f2dc894c"
+      },
+      "contact_gradient_calibration_report_v2_2": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/CONTACT_GRADIENT_CALIBRATION_REPORT_V2_2.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "d59ca85b9f6e968c3cacbfb8bef33f99521675eaa3a5e75f5fd5366dc3d9f1bd"
+      },
+      "contact_loss_amendment_v2_2": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/CONTACT_LOSS_AMENDMENT_V2_2.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "578e428ade29dba5271f5a34a3dfffa2ac4deb6a165a45d201256d71dac87fa2"
+      },
+      "dual_marginal_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_marginal/RUN_RECEIPT.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "c68c1f0d3f2787211cb53ba2d9bc25cd9ef3ab1dc0a98fd8fff9a8008e869de7"
+      },
+      "dual_marginal_tsv_gz": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_marginal/v6_dual_source_residue_contact_targets_v2.tsv.gz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "8c792366844a013f4a99d49089cc0cbf79f1e836985f55b4d82461cc0bef1038"
+      },
+      "esm2_650m_model_identity": {
+        "path": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c/model.safetensors",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0"
+      },
+      "pair_contact_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_pair/RUN_RECEIPT.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "0858b5dd6894cb957bea8fdafd6e7fe8d3644bb64c0f9952a8a9e416fb0dcf5b"
+      },
+      "pair_contact_tsv_gz": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_pair/v6_dual_source_pair_contact_targets_v2.tsv.gz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "50127c53444351273cfbe7ab2403b448be472628a02b72e42586a4bc490ad07d"
+      },
+      "residue_v1_base_trainer": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate.py",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8"
+      },
+      "residue_v1_residue_model": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v1/src/residue_model.py",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb"
+      },
+      "residue_v1_v1_5_trainer": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af"
+      },
+      "training_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v6_training_table_receipt.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "46fae18a63e10920c05ccf1dc873de2b588ec436a0320d909405164f9d14c529"
+      },
+      "training_tsv": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v6_supervised1507.tsv",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+      },
+      "v4d_marginal_teacher": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/v4d_open226_multi_seed_residue_marginal_teacher_v2.tsv.gz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "1f5906df603fdbaea166c992c93bb4ff1b95c22cccff80739cedbc892a6c6e8e"
+      },
+      "v4d_pair_teacher": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/v4d_open226_multi_seed_pair_contact_teacher_v2.tsv.gz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "39b600e6979e72ef89237070b36a1f7afaecb4be5be4735d1650d55cd17811a8"
+      },
+      "v4d_pose_inventory": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/v4d_open226_top8_pose_inventory_v2.tsv.gz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "32ea99b24277726328ba5303a532ba7cb053790588b5267beef85edf7265a042"
+      },
+      "v4d_teacher_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/RUN_RECEIPT.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f"
+      },
+      "vhh_graph_cache_npz": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_v2.npz",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "95faf75f434375aa086cc4135967f7165b6089ede4f26c890925d9a501288d71"
+      },
+      "vhh_graph_cache_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_receipt_v2.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "83fe4fb6601798293e0b95ed255faad40a5fbe9b0cee9914976a82f12b85024a"
+      },
+      "vhh_graph_closure": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_input_closure_v2.tsv",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "3bc95f0c7b2f1559c10e8a009a9b94ae1992fc024ee3ab5847099e69b29904df"
+      },
+      "vhh_graph_manifest": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_manifest_v2.tsv",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "7da6dd48a858395e1514d82189757513a9da4df9d7ddefc8a95c72b6b7cc4fd1"
+      },
+      "vhh_graph_materialization_receipt": {
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/materialization_receipt_v2.json",
+        "phase": "pre_freeze_binding",
+        "remote_only": true,
+        "sha256": "be32b3053aa3f42bcee0a66b213e3bc5f419db32e1a2a3b1bf8b12b825dc797e"
+      }
+    },
+    "augmentation_gpu": 6,
+    "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718",
+    "cpu_threads_per_process": 8,
+    "forbidden_gpus": [
+      0,
+      3
+    ],
+    "lane_gpu_map": {
+      "A_DOMAIN": 1,
+      "B_VHH3D": 2,
+      "C_PATCH": 4,
+      "D_FULL_PAIR": 5
+    },
+    "min_free_gib": 200,
+    "post_augmentation_binding": {
+      "artifact_pattern": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/by_sha256/<artifact_sha>/target_graphs_esm2_650m_v2.pt",
+      "current_json": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/CURRENT.json",
+      "deployment_input_closure": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/status/DEPLOYMENT_INPUT_CLOSURE.json",
+      "phase": "post_augmentation_binding",
+      "receipt_pattern": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/by_sha256/<artifact_sha>/target_graphs_esm2_650m_v2.receipt.json",
+      "required_before_smoke_or_production": true
+    },
+    "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "remote_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718",
+    "reserved_gpus": [
+      7
+    ],
+    "runtime_identity": {
+      "cuda_available": true,
+      "cuda_device_count_min": 8,
+      "gpu_name": "NVIDIA GeForce RTX 4090",
+      "python_executable": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+      "python_version": "3.11.14",
+      "torch_cuda_version": "12.4",
+      "torch_version": "2.6.0+cu124"
+    },
+    "safe_stop_free_gib": 150,
+    "smoke_override": {
+      "all_other_trainer_arguments_unchanged": true,
+      "maximum_epochs": 1,
+      "smoke_mode": true
+    },
+    "trainer_arguments": {
+      "component_gradient_telemetry_batches": 1,
+      "contact_balance_epsilon": 1e-08,
+      "contact_positive_class_fraction": 0.5,
+      "dropout": 0.25,
+      "dual_weight": 1.0,
+      "evaluation_batch_size": 16,
+      "gradient_accumulation": 2,
+      "gradient_clip": 1.0,
+      "graph_hidden_dim": 128,
+      "head_learning_rate": 0.0001,
+      "huber_delta": 0.03,
+      "lane_contact_weights": {
+        "A_DOMAIN": {
+          "marginal_contact_weight": 0.01,
+          "pair_contact_weight": 0.005
+        },
+        "B_VHH3D": {
+          "marginal_contact_weight": 0.0025,
+          "pair_contact_weight": 0.00125
+        },
+        "C_PATCH": {
+          "marginal_contact_weight": 0.000625,
+          "pair_contact_weight": 0.0003125
+        },
+        "D_FULL_PAIR": {
+          "marginal_contact_weight": 0.000625,
+          "pair_contact_weight": 0.0003125
+        }
+      },
+      "maximum_epochs": 8,
+      "precision": "bf16",
+      "ranking_minimum_delta": 0.02,
+      "ranking_temperature": 0.03,
+      "ranking_weight": 0.0001,
+      "receptor_weight": 0.35,
+      "residual_l2_weight": 0.05,
+      "residual_scale": 0.02,
+      "ridge_alpha": 10.0,
+      "seed": 43,
+      "structure_dim": 126,
+      "structure_prefixes": [
+        "ALL__",
+        "CDR1_CDR2__",
+        "CDR1_CDR3__",
+        "CDR1_FRAMEWORK__",
+        "CDR1__",
+        "CDR2_CDR3__",
+        "CDR2_FRAMEWORK__",
+        "CDR2__",
+        "CDR3_FRAMEWORK__",
+        "CDR3__",
+        "CDR_ALL__",
+        "FRAMEWORK__"
+      ],
+      "weight_decay": 0.02
+    }
+  },
+  "primary_target": "R_dual_min",
+  "production_runs": [
+    {
+      "lane": "A_DOMAIN",
+      "outer_fold": 0,
+      "physical_gpu": 1
+    },
+    {
+      "lane": "A_DOMAIN",
+      "outer_fold": 1,
+      "physical_gpu": 1
+    },
+    {
+      "lane": "A_DOMAIN",
+      "outer_fold": 2,
+      "physical_gpu": 1
+    },
+    {
+      "lane": "A_DOMAIN",
+      "outer_fold": 3,
+      "physical_gpu": 1
+    },
+    {
+      "lane": "A_DOMAIN",
+      "outer_fold": 4,
+      "physical_gpu": 1
+    },
+    {
+      "lane": "B_VHH3D",
+      "outer_fold": 0,
+      "physical_gpu": 2
+    },
+    {
+      "lane": "B_VHH3D",
+      "outer_fold": 1,
+      "physical_gpu": 2
+    },
+    {
+      "lane": "B_VHH3D",
+      "outer_fold": 2,
+      "physical_gpu": 2
+    },
+    {
+      "lane": "B_VHH3D",
+      "outer_fold": 3,
+      "physical_gpu": 2
+    },
+    {
+      "lane": "B_VHH3D",
+      "outer_fold": 4,
+      "physical_gpu": 2
+    },
+    {
+      "lane": "C_PATCH",
+      "outer_fold": 0,
+      "physical_gpu": 4
+    },
+    {
+      "lane": "C_PATCH",
+      "outer_fold": 1,
+      "physical_gpu": 4
+    },
+    {
+      "lane": "C_PATCH",
+      "outer_fold": 2,
+      "physical_gpu": 4
+    },
+    {
+      "lane": "C_PATCH",
+      "outer_fold": 3,
+      "physical_gpu": 4
+    },
+    {
+      "lane": "C_PATCH",
+      "outer_fold": 4,
+      "physical_gpu": 4
+    },
+    {
+      "lane": "D_FULL_PAIR",
+      "outer_fold": 0,
+      "physical_gpu": 5
+    },
+    {
+      "lane": "D_FULL_PAIR",
+      "outer_fold": 1,
+      "physical_gpu": 5
+    },
+    {
+      "lane": "D_FULL_PAIR",
+      "outer_fold": 2,
+      "physical_gpu": 5
+    },
+    {
+      "lane": "D_FULL_PAIR",
+      "outer_fold": 3,
+      "physical_gpu": 5
+    },
+    {
+      "lane": "D_FULL_PAIR",
+      "outer_fold": 4,
+      "physical_gpu": 5
+    }
+  ],
+  "promotion_gates": {
+    "all_required": true,
+    "global_parent_wins_strictly_greater_than_losses": true,
+    "global_spearman_delta_min": 0.01,
+    "global_top20_budget": 302,
+    "global_top20_net_hit_gain_min": 5,
+    "negative_status": "DO_NOT_PROMOTE_RESIDUE_V2",
+    "parent_bootstrap_median_delta_strictly_positive": true,
+    "parent_bootstrap_positive_fraction_min": 0.8,
+    "parent_loss_delta_max": -0.01,
+    "parent_win_delta_min": 0.01,
+    "per_source_mae_max_degradation": 0.001,
+    "per_source_parent_bootstrap_median_delta_min": 0.0,
+    "per_source_parent_bootstrap_positive_fraction_min": 0.8,
+    "per_source_parent_wins_greater_than_or_equal_to_losses": true,
+    "per_source_top20_net_hit_gain_min": 0,
+    "positive_status": "PROMOTE_RESIDUE_V2_OVER_M2",
+    "v4d_spearman_delta_min": 0.0,
+    "v4d_top20_budget": 46,
+    "v4h_spearman_delta_min": 0.0,
+    "v4h_top20_budget": 257
+  },
+  "schema_version": "pvrig_v6_residue_v2_production_matrix_v1",
+  "sealed_test32_exclusion": {
+    "forbidden_sources": [
+      "V4_F",
+      "test32",
+      "PROSPECTIVE_COMPUTATIONAL_TEST",
+      "OPEN_DEVELOPMENT"
+    ],
+    "hyperparameter_use_forbidden": true,
+    "path_access_count": 0,
+    "status": "SEALED_UNTIL_PREDICTION_FREEZE",
+    "training_use_forbidden": true
+  },
+  "status": "PREPRODUCTION_MATRIX_WAITING_V2_2_PRODUCTION_FREEZE",
+  "v1_5_immutable_paths": {
+    "collector_v1_5": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/src/collect_residue_oof_v1_5.py",
+    "dual_contact_builder_v1": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/src/build_dual_contact_targets.py",
+    "implementation_freeze_v1_5": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/IMPLEMENTATION_FREEZE_V1_5.json",
+    "production_matrix_v1_2": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/deployment_v1_5/RESIDUE_PRODUCTION_MATRIX_V1_2.json",
+    "residue_model_v1": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/src/residue_model.py",
+    "trainer_v1_5": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/src/train_nested_residue_surrogate_v1_5.py"
+  },
+  "v1_5_immutable_sha256": {
+    "collector_v1_5": "a15db4aceaeb8c62bca277d9d39015aff3e7e95bacf30a3dd635c1d18558cee0",
+    "dual_contact_builder_v1": "59f0f8bc2f311a776b2d61ea2d075d55488e811b68d55d3665e8a760069594e5",
+    "implementation_freeze_v1_5": "3a4046462bcf138c25c5c36005d1f6e24f2df3f931fe32369dba80ee834e155e",
+    "production_matrix_v1_2": "48fadb1b104d7528a574972e5d391f88b1a21df375e281e119025e5ed170683d",
+    "residue_model_v1": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb",
+    "trainer_v1_5": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af"
+  }
+}

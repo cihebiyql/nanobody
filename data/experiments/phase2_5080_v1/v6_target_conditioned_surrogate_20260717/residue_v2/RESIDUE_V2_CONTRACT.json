@@ -1,0 +1,26 @@
+{
+  "schema_version": "pvrig_v6_residue_v2_contract",
+  "status": "DESIGN_FROZEN_IMPLEMENTATION_PENDING",
+  "claim_boundary": "Sequence and label-free-structure approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "primary_target": "R_dual_min",
+  "preregistration": "PREREGISTRATION_V2.json",
+  "v1_5_mutation_allowed": false,
+  "required_components": [
+    "v4d_multi_seed_contact_teacher_v2",
+    "dual_source_contact_target_builder_v2",
+    "domain_balanced_sampler_and_loss_v2",
+    "vhh_residue_graph_cache_v2",
+    "dual_pvrig_target_graph_cache_v2",
+    "target_conditioned_residue_model_v2",
+    "source_stratified_oof_collector_v2"
+  ],
+  "implementation_policy": {
+    "new_files_only_until_v2_freeze": true,
+    "reuse_frozen_v1_5_by_import_only": true,
+    "candidate_docking_pose_input_forbidden": true,
+    "source_indicator_model_feature_forbidden": true,
+    "formal_oof_before_implementation_freeze_forbidden": true
+  },
+  "terminal_rule": "No production launch until all unit tests, data closure checks, graph invariance tests, sealed-boundary checks, and implementation hashes are frozen."
+}
+

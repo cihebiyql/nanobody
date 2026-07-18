@@ -1,0 +1,47 @@
+{
+  "backbone_policy": {
+    "first_lane": "frozen",
+    "lora": "supported but must expose only LoRA/adapter backbone parameters as trainable",
+    "offline_local_model_only": true
+  },
+  "checkpoint_policy": {
+    "base_plm_weights_forbidden": true,
+    "contents": [
+      "residue/contact/fusion head parameters",
+      "LoRA or adapter parameters when enabled"
+    ],
+    "m2_artifact": "separate small ridge state fitted only on the outer-training side"
+  },
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "contact_supervision": {
+    "aggregation": "maximum pose-weighted residue-pair frequency over PVRIG positions for each VHH residue and receptor",
+    "channels": [
+      "8x6b",
+      "9e6y"
+    ],
+    "technical_incomplete_policy": "no contact target; never convert to zero or negative"
+  },
+  "disk_and_hash_guards": {
+    "default_minimum_free_gb": 180.0,
+    "non_smoke_requires_exact_input_hashes": true,
+    "non_smoke_hf_requires_model_identity_file_hash": true,
+    "output_directory_must_not_exist": true,
+    "symlink_inputs_forbidden": true
+  },
+  "model": {
+    "base": "explicit externally cross-fitted M2 three-target prediction",
+    "contact_head": "two receptor channels",
+    "pooling": "global plus receptor-specific contact-weighted residue pooling",
+    "prediction": "M2 base plus bounded tanh residual"
+  },
+  "nested_evaluation": {
+    "epoch_selection": "one whole-parent inner fold inside each outer-training side",
+    "final_fit": "refit from scratch on all outer-training parents for the selected epoch count",
+    "m2_training_rows": "out-of-inner-fold predictions only",
+    "outer_test": "evaluated exactly once after inner selection and final refit"
+  },
+  "schema_version": "pvrig_v6_residue_lane_v1_contract",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "target": "R_dual_min with auxiliary R_8X6B and R_9E6Y"
+}
+

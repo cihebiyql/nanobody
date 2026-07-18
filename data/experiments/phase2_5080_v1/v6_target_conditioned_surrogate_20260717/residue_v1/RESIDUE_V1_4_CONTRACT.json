@@ -1,0 +1,26 @@
+{
+  "bootstrap_contract": {
+    "collector_matrix_sha256": "6d0f3cbcc155564f0ba9e4dadd8d646405bc31072e4e3ab25b11316edb4d2116",
+    "production_repetitions": 1000,
+    "production_seed": 20260718,
+    "repetition_source": "PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT.json",
+    "seed_source": "V1.4 reproducibility matrix; the governance amendment did not freeze a seed"
+  },
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "fail_closed_guards": [
+    "collector rejects any bootstrap repetition count other than 1000 before reading run inputs",
+    "collector rejects any bootstrap seed other than 20260718 before reading run inputs",
+    "trainer and collector require the exact canonical collector matrix and SHA256 in IMPLEMENTATION_FREEZE_V1_4.json",
+    "OOF_PROMOTION_REPORT.json records the collector matrix, its SHA256, bootstrap repetitions, and bootstrap seed"
+  ],
+  "governance": {
+    "path": "../PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT.json",
+    "promotion_gate": "global Spearman improves; parent-centered and Top20 non-degrade; parent bootstrap positive fraction >=0.80 and median delta >0",
+    "schema_version": "pvrig_v6_implementation_amendment_v1_1",
+    "sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226",
+    "status": "FROZEN_BEFORE_ANY_NODE1_V6_MODEL_SMOKE_OR_PRODUCTION_TRAINING"
+  },
+  "schema_version": "pvrig_v6_residue_lane_v1_4_contract",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "supersedes": "RESIDUE_V1_3_CONTRACT.json"
+}

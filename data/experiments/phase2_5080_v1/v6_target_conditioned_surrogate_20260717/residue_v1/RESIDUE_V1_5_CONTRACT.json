@@ -1,0 +1,26 @@
+{
+  "bootstrap_contract": {
+    "collector_matrix_reused_unchanged_from": "V1.4",
+    "collector_matrix_sha256": "6d0f3cbcc155564f0ba9e4dadd8d646405bc31072e4e3ab25b11316edb4d2116",
+    "production_repetitions": 1000,
+    "production_seed": 20260718
+  },
+  "claim_boundary": "Sequence approximation of independent dual-receptor computational Docking geometry; not binding probability, affinity, experimental competition, blocking, Docking Gold, or final submission evidence.",
+  "formal_evidence_labels": {
+    "collector_schema": "pvrig_v6_residue_v1_5_oof_collector",
+    "negative_status": "DO_NOT_PROMOTE_RESIDUE_V1_5",
+    "positive_status": "PROMOTE_RESIDUE_V1_5_OVER_M2",
+    "trainer_schema": "pvrig_v6_nested_residue_surrogate_v1_5"
+  },
+  "governance": {
+    "path": "../PREREGISTRATION_V1_1_IMPLEMENTATION_AMENDMENT.json",
+    "promotion_gate": "global Spearman improves; parent-centered and Top20 non-degrade; parent bootstrap positive fraction >=0.80 and median delta >0",
+    "schema_version": "pvrig_v6_implementation_amendment_v1_1",
+    "sha256": "dddc693483c1f9a4145b6e28b74bdc9290ec5e7544e9da302e88cc4c10aa1226",
+    "status": "FROZEN_BEFORE_ANY_NODE1_V6_MODEL_SMOKE_OR_PRODUCTION_TRAINING"
+  },
+  "logic_change_from_v1_4": "None. V1.5 changes only versioned implementation, output, freeze, and promotion-evidence labels.",
+  "schema_version": "pvrig_v6_residue_lane_v1_5_contract",
+  "status": "IMPLEMENTED_CPU_VALIDATED_NOT_REMOTE_TRAINED",
+  "supersedes": "RESIDUE_V1_4_CONTRACT.json"
+}

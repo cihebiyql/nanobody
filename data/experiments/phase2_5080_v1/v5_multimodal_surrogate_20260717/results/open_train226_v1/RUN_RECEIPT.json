@@ -1,0 +1,10 @@
+{
+  "claim_boundary": "OPEN_TRAIN-only development approximation of independent dual-receptor computational docking geometry; not Docking Gold, binding probability, affinity, competition, experimental blocking, or final submission authority.",
+  "development_gate_result": "FAIL_KEEP_B1_STRUCTURE_DIRECT",
+  "formal_pass_claimed": false,
+  "predictions_sha256": "4250addd0aa940639e7832ddc0e20310a249f78590df3a97d3261a1de0b423a4",
+  "report_sha256": "3d2429498680105680e24fa78bd64e4b63ff1b91c85c8dc5929481b6c8222200",
+  "schema_version": "pvrig_v5_tb_open_train_development_v1_receipt",
+  "status": "COMPLETE_OPEN_TRAIN226_NESTED_DEVELOPMENT_COMPARISON",
+  "summary_sha256": "474b6f222b98d4dbc1a8cb9943e4d9f37298baba2f1b49156378f516cc5f2810"
+}
