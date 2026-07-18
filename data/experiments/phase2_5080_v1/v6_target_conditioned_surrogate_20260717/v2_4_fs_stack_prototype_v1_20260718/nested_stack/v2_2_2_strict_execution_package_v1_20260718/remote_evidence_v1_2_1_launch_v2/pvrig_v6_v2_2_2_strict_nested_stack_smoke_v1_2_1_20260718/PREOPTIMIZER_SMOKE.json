@@ -1,0 +1,47 @@
+{
+  "inner_fold": 0,
+  "lanes": [
+    {
+      "graph_cache_dir": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_graphs/outer_0_inner_0",
+      "job_id": "o0.B_TARGET_NO_CONTACT.inner0.base_train",
+      "lane": "B_TARGET_NO_CONTACT",
+      "marginal_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_contacts/outer_0_inner_0.marginal.tsv.gz",
+      "pair_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_contacts/outer_0_inner_0.pair.tsv.gz",
+      "parents": 28,
+      "rows": 1269,
+      "score_rows": 184,
+      "status": "PASS_PREOPTIMIZER_INPUT_CLOSURE",
+      "train_rows": 1085
+    },
+    {
+      "graph_cache_dir": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_graphs/outer_0_inner_0",
+      "job_id": "o0.C_SPLIT_MARGINAL.inner0.base_train",
+      "lane": "C_SPLIT_MARGINAL",
+      "marginal_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_contacts/outer_0_inner_0.marginal.tsv.gz",
+      "pair_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_contacts/outer_0_inner_0.pair.tsv.gz",
+      "parents": 28,
+      "rows": 1269,
+      "score_rows": 184,
+      "status": "PASS_PREOPTIMIZER_INPUT_CLOSURE",
+      "train_rows": 1085
+    },
+    {
+      "graph_cache_dir": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_graphs/outer_0_inner_0",
+      "job_id": "o0.D_SPLIT_PAIR.inner0.base_train",
+      "lane": "D_SPLIT_PAIR",
+      "marginal_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_contacts/outer_0_inner_0.marginal.tsv.gz",
+      "pair_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_contacts/outer_0_inner_0.pair.tsv.gz",
+      "parents": 28,
+      "rows": 1269,
+      "score_rows": 184,
+      "status": "PASS_PREOPTIMIZER_INPUT_CLOSURE",
+      "train_rows": 1085
+    }
+  ],
+  "optimizer_steps": 0,
+  "outer_fold": 0,
+  "schema_version": "pvrig_v2_4_v2_2_2_v1_2_1_real_inner_preoptimizer_smoke_v1",
+  "sealed_evaluation_access_count": 0,
+  "status": "PASS_THREE_LANE_REAL_INNER_PREOPTIMIZER_SMOKE",
+  "training_executed": false
+}

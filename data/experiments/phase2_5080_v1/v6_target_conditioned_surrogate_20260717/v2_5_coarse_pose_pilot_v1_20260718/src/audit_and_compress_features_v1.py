@@ -87,7 +87,13 @@ def main(args):
         "temporal_boundary": "Development contract created after the smoke feature run; formal utility must be judged only by later whole-parent OOF evaluation, never the smoke19 descriptive labels.",
         "pca_challenger": {
             "allowed": True,
-            "input_columns": "raw columns with inner-train std > 1e-12, excluding pose_count QC",
+            "input_columns": "32 predeclared raw columns after excluding pose_count QC and top20 score entropy; then current train-fold constant filtering",
+            "predeclared_exclusions": [
+                "8x6b__pose_count",
+                "9e6y__pose_count",
+                "8x6b__top20_score_entropy",
+                "9e6y__top20_score_entropy",
+            ],
             "fit_scope": "inner-train parent clusters only",
             "standardization_scope": "inner-train parent clusters only",
             "component_count": 8,

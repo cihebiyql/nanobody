@@ -1,0 +1,81 @@
+{
+  "claim_boundary": "Open-development whole-parent OOF evaluation of a sequence/structure/contact surrogate for independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "expected_candidate_count": 1507,
+  "expected_job_count": 195,
+  "expected_job_kind_counts": {
+    "CPU_ASSEMBLE_INNER_OOF_BASE_FEATURE": 15,
+    "CPU_ASSEMBLE_OUTER_TEST_BASE_FEATURE": 15,
+    "CPU_FIT_FIVE_PARAMETER_META": 15,
+    "CPU_MATERIALIZE_OUTER_TEST_META_PREDICTION": 15,
+    "CPU_VALIDATE_INNER_OOF_BASE_FEATURE": 15,
+    "CPU_VALIDATE_OUTER_TEST_BASE_FEATURE": 15,
+    "CPU_VALIDATE_OUTER_TEST_META_PREDICTION": 15,
+    "GPU_BASE_REFIT_OUTER_TRAIN": 15,
+    "GPU_BASE_TRAIN_INNER": 75
+  },
+  "expected_job_graph_sha256": "2dab5078ad81f3b3c02fc995ce0a7b556e638d905c20d73d5eeebe81b86a0f57",
+  "expected_outer_folds": 5,
+  "expected_parent_count": 31,
+  "expected_sources": {
+    "V4D_OPEN_MULTI_SEED": 226,
+    "V4H_ADAPTIVE_SEED_RANKING": 1281
+  },
+  "formal_primary_lane": "D_SPLIT_PAIR",
+  "frozen_lanes": [
+    "B_TARGET_NO_CONTACT",
+    "C_SPLIT_MARGINAL",
+    "D_SPLIT_PAIR"
+  ],
+  "metrics": {
+    "overall": [
+      "spearman",
+      "mae",
+      "rmse"
+    ],
+    "parent_macro": [
+      "macro_mae",
+      "macro_rmse",
+      "macro_within_parent_spearman"
+    ],
+    "source_strata": [
+      "spearman",
+      "mae",
+      "rmse"
+    ],
+    "targets": [
+      "R_8X6B",
+      "R_9E6Y",
+      "R_dual_min"
+    ]
+  },
+  "non_primary_lane_policy": "B_TARGET_NO_CONTACT and C_SPLIT_MARGINAL are frozen ablation diagnostics only and cannot be selected for formal promotion after metrics are observed.",
+  "output_contract": {
+    "derived_output": "prediction_R_dual_min=min(prediction_R8,prediction_R9)",
+    "direct_outputs": [
+      "prediction_R8",
+      "prediction_R9"
+    ],
+    "same_row_stacking": false
+  },
+  "promotion_gate": {
+    "M2_Rdual_mae_ceiling": 0.0323587150283071,
+    "M2_Rdual_rmse_ceiling": 0.04290748546218935,
+    "additional_nonregression": [
+      "each source Rdual MAE <= freshly reproduced M2 source Rdual MAE",
+      "parent-macro Rdual MAE <= freshly reproduced M2 parent-macro Rdual MAE"
+    ],
+    "decision": "PROMOTE D_SPLIT_PAIR only if every criterion passes; otherwise DO_NOT_PROMOTE; B/C remain diagnostic; no post-result changes",
+    "frozen_M2_Rdual_spearman": 0.6094011215999979,
+    "required_Rdual_spearman": 0.6194011215999979
+  },
+  "prohibitions": [
+    "V4-F/test32 access",
+    "candidate Docking pose-derived input",
+    "same-row base predictions for meta fit",
+    "parent/candidate/campaign ID as predictor",
+    "post-result lane selection",
+    "post-result gate or hyperparameter changes"
+  ],
+  "schema_version": "pvrig_v2_4_strict_terminal_evaluation_contract_v1",
+  "status": "FROZEN_BEFORE_ANY_STRICT_OUTER_META_PREDICTION_EXISTED"
+}

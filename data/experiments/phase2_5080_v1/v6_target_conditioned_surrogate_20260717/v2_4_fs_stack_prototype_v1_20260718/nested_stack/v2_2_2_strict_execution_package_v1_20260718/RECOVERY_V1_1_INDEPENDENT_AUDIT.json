@@ -1,0 +1,25 @@
+{
+  "checked_file_count": 84,
+  "cpu_job_count": 105,
+  "gpu_job_count": 90,
+  "job_count": 195,
+  "job_counts": {
+    "CPU_ASSEMBLE_INNER_OOF_BASE_FEATURE": 15,
+    "CPU_ASSEMBLE_OUTER_TEST_BASE_FEATURE": 15,
+    "CPU_FIT_FIVE_PARAMETER_META": 15,
+    "CPU_MATERIALIZE_OUTER_TEST_META_PREDICTION": 15,
+    "CPU_VALIDATE_INNER_OOF_BASE_FEATURE": 15,
+    "CPU_VALIDATE_OUTER_TEST_BASE_FEATURE": 15,
+    "CPU_VALIDATE_OUTER_TEST_META_PREDICTION": 15,
+    "GPU_BASE_REFIT_OUTER_TRAIN": 15,
+    "GPU_BASE_TRAIN_INNER": 75
+  },
+  "physical_gpus": [
+    2,
+    4,
+    5
+  ],
+  "sealed_evaluation_access_count": 0,
+  "split_training_input_count": 30,
+  "status": "PASS_AUTHORIZED_V1_1_RECOVERY_READY_TO_LAUNCH"
+}

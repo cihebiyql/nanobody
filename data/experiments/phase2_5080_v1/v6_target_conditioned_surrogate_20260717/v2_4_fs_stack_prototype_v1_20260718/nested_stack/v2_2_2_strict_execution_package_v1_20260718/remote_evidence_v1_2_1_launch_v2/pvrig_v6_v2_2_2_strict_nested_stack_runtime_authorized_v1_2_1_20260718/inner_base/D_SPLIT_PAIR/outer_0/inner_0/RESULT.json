@@ -1,0 +1,148 @@
+{
+  "artifacts": {
+    "component_receipts": {
+      "path": "component_receipts.json",
+      "sha256": "a8f8dd9e3cf0a177e1995611941bcaf5ec4a71345645ad81e46c51100c98bde5"
+    },
+    "contact_score_formula": {
+      "path": "contact_score_formula_v1.json",
+      "sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7"
+    },
+    "m2_ridge": {
+      "path": "m2_ridge.json",
+      "sha256": "f763e3cdcd5c34b61eaa9e029228173fd8d3e1420bc74b450d9f7844ebbaad73"
+    },
+    "neural_head": {
+      "path": "neural_head.pt",
+      "sha256": "7ce9432e883cf687ca75826b7192509155c4add6ef7864de8f69f0a166e64db8"
+    },
+    "predictions": {
+      "path": "base_score_predictions.tsv",
+      "rows": 184,
+      "sha256": "a9c21b361c3a0e211a42727ab9bc631c1da9b9f04c7f871a63469de5eed12d9d"
+    }
+  },
+  "claim_boundary": "Open-only computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding probability, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "contact_score_component_role": "stack_eligible_pvrig_contact_composite",
+  "contact_score_formula_receipt": {
+    "applied_to_lane": true,
+    "artifact_path": "contact_score_formula_v1.json",
+    "artifact_sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7",
+    "formula_version": "pvrig_v2_4_contact_composite_v1_equal_weight_preregistered",
+    "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_2_20260718/inputs/contact_contract/contact_score_formula_v1.json",
+    "sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7",
+    "weights": {
+      "hotspot_contact_mass": 0.5,
+      "interface_specificity": 0.5
+    }
+  },
+  "contact_score_formula_receipt_sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7",
+  "contact_score_stack_eligible": true,
+  "contact_tier_loss_metadata": {
+    "A": {
+      "marginal": 1.0,
+      "pair": 1.0,
+      "scalar": 1.0
+    },
+    "B": {
+      "marginal": 0.5,
+      "pair": 0.25,
+      "scalar": 1.0
+    },
+    "C": {
+      "marginal": 0.1,
+      "pair": 0.0,
+      "scalar": 1.0
+    }
+  },
+  "fixed_epoch_selection": "NONE_FIXED_EPOCH_ONLY",
+  "gradient_accumulation": 2,
+  "lane": "D_SPLIT_PAIR",
+  "loss_weights": {
+    "dual": 0.5,
+    "marginal": 1.0,
+    "pair": 0.5,
+    "receptor": 1.0
+  },
+  "m2_branch": {
+    "independent": true,
+    "ridge_alpha": 10.0
+  },
+  "neural_feature_firewall": {
+    "126D": false,
+    "M2": false,
+    "structure_features": false
+  },
+  "open_only": true,
+  "schema_version": "pvrig_v2_4_open_base_split_trainer_v1",
+  "source_parent_candidate_weighting": {
+    "contract": "0.5/source -> equal parent -> equal candidate",
+    "sources": {
+      "V4D_OPEN_MULTI_SEED": {
+        "candidates": 155,
+        "mass": 0.4999999999999999,
+        "parents": 14
+      },
+      "V4H_ADAPTIVE_SEED_RANKING": {
+        "candidates": 930,
+        "mass": 0.5,
+        "parents": 8
+      }
+    },
+    "sum": 1.0
+  },
+  "split": {
+    "fixed_epochs": 8,
+    "open_only": true,
+    "outer_fold": 0,
+    "score_parent_set_sha256": "7a275776b4fac0d49455ef19c2b7a50e5aa9002c5d50df8d32a9b353c1d2f950",
+    "score_parents": [
+      "C0009",
+      "C0224",
+      "C0417",
+      "C0418",
+      "C0453",
+      "C0502"
+    ],
+    "split_id": "outer_0_inner_0",
+    "train_parent_set_sha256": "e0c403ad9547f163672085fd54a86082b8baf0cd207def79e24a5e9e0bbf058f",
+    "train_parents": [
+      "C0078",
+      "C0086",
+      "C0116",
+      "C0139",
+      "C0145",
+      "C0162",
+      "C0176",
+      "C0219",
+      "C0248",
+      "C0251",
+      "C0258",
+      "C0283",
+      "C0304",
+      "C0360",
+      "C0406",
+      "C0409",
+      "C0411",
+      "C0492",
+      "C0495",
+      "C0500",
+      "C0518",
+      "C0533"
+    ],
+    "v4_f_test32_access_count": 0
+  },
+  "status": "PASS_OPEN_BASE_SPLIT_COMPLETE",
+  "training": {
+    "component_gradient": {
+      "gradient_l2_norm": {
+        "contact": 0.7571186762422701,
+        "scalar": 11.773467495473604
+      },
+      "scalar_contact_cosine": -0.012660655707237048
+    },
+    "fixed_epochs": 8,
+    "optimizer_steps": 544
+  },
+  "v4_f_test32_access_count": 0
+}

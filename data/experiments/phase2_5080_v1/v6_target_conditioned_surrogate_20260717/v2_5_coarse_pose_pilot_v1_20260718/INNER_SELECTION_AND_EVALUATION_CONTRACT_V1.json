@@ -1,0 +1,49 @@
+{
+  "schema_version": "pvrig_v2_5_coarse_pose_nested_oof_selection_evaluation_v1",
+  "status": "FROZEN_BEFORE_OPEN1507_PERFORMANCE_COMPUTATION",
+  "branches": ["C1_SYMMETRIC12D_RIDGE", "C2_INNER_TRAIN_PCA8_RIDGE"],
+  "direct_targets": ["R_8X6B", "R_9E6Y"],
+  "derived_target": "R_dual_min = min(pred_R_8X6B, pred_R_9E6Y)",
+  "ridge_alpha_grid": [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0],
+  "inner_selection": {
+    "scope": "current outer-train parent clusters only",
+    "criterion": "minimize mean across parent clusters of the within-parent mean absolute error averaged equally across R_8X6B, R_9E6Y and exact-min R_dual_min on combined inner OOF predictions",
+    "tie_break": "largest alpha within absolute tolerance 1e-12",
+    "feature_selection": "none",
+    "pca_components": 8
+  },
+  "training_weights": {
+    "rule": "equal total weight per teacher source, equal weight per parent within source, equal weight per candidate within parent",
+    "normalization": "sum weights equals train candidate count"
+  },
+  "no_feature_baseline": "For each outer fold, predict the globally weighted outer-train mean R8/R9 for every outer-score row; derive exact-min. Source or parent ID is not used at prediction time.",
+  "metrics": {
+    "targets": ["R_8X6B", "R_9E6Y", "R_dual_min"],
+    "overall": ["Spearman", "MAE", "RMSE"],
+    "source_strata": ["Spearman", "MAE", "RMSE"],
+    "parent_macro": ["MAE", "RMSE", "within-parent Spearman where n>=3 and nonconstant"]
+  },
+  "no_target_leakage_sanity_gate": {
+    "overall_Rdual_spearman_margin_over_null": 0.01,
+    "overall_Rdual_mae_must_be_lower_than_null": true,
+    "overall_Rdual_rmse_must_be_lower_than_null": true,
+    "each_source_Rdual_mae_must_be_lower_than_null": true,
+    "parent_macro_Rdual_mae_must_be_lower_than_null": true
+  },
+  "unchanged_v2_4_promotion_gate": {
+    "M2_Rdual_spearman": 0.6094011215999979,
+    "required_absolute_spearman_increment": 0.01,
+    "required_Rdual_spearman": 0.6194011215999979,
+    "M2_Rdual_mae_ceiling": 0.0323587150283071,
+    "M2_Rdual_rmse_ceiling": 0.04290748546218935,
+    "additional_source_gate": "each source Rdual MAE lower than no-feature baseline",
+    "additional_parent_gate": "parent-macro Rdual MAE lower than no-feature baseline"
+  },
+  "sealed_boundary": {
+    "v4_f_or_test32_access": false,
+    "candidate_docking_pose_features": false,
+    "same_row_stacking": false,
+    "post_metric_contract_changes": false
+  },
+  "claim_boundary": "Open-development whole-parent OOF evaluation of a computational docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, or submission truth."
+}

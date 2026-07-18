@@ -1,0 +1,15 @@
+{
+  "checked_file_count": 54,
+  "cpu_job_count": 105,
+  "gpu_job_count": 90,
+  "job_count": 195,
+  "physical_gpus": [
+    2,
+    4,
+    5
+  ],
+  "schema_version": "pvrig_v2_4_v2_2_2_authorized_package_independent_audit_v1",
+  "sealed_evaluation_access_count": 0,
+  "status": "PASS_AUTHORIZED_PACKAGE_READY_TO_LAUNCH",
+  "training_or_prediction_executed": false
+}

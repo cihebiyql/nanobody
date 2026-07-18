@@ -1,0 +1,46 @@
+{
+  "artifacts": {
+    "contract": {
+      "path": "STRICT_TERMINAL_EVALUATION_CONTRACT_V1.json",
+      "sha256": "51895361a4bcf98ca4bf6020c9d922cc28d72822dff4826d9f477728784bafed"
+    },
+    "evaluator": {
+      "path": "evaluate_v2_2_2_strict_terminal_v1.py",
+      "sha256": "a6c5e759d8999a76d56132b3c0131a3378651a223d437ab0289d6ab5a7a5f0eb"
+    },
+    "premetric_remote_status": {
+      "observed": {
+        "checked_at": "2026-07-18T13:41:29Z",
+        "inner_results": 15,
+        "outer_meta_predictions": 0,
+        "stack_receipts": 0,
+        "terminal_exists": false
+      },
+      "path": "STRICT_TERMINAL_EVALUATOR_PREMETRIC_REMOTE_STATUS_V1.json",
+      "sha256": "2d46ed0c45f5e61700e3e1adaed80c8ff2f80280bca207efd33d3b0373a40617"
+    },
+    "test_log": {
+      "path": "STRICT_TERMINAL_EVALUATOR_TESTS_V1.log",
+      "sha256": "353450307da78159d2a9d95168c4d0f5913d5d93bf2e8beb6575dd644dd75c0b",
+      "status": "OK",
+      "test_count": 4
+    },
+    "tests": {
+      "path": "test_evaluate_v2_2_2_strict_terminal_v1.py",
+      "sha256": "b9b7a5a0690dd40d72dcde41533f78665d58a6611e5f23c66279ea8ed2148291"
+    }
+  },
+  "claim_boundary": "Open-development whole-parent OOF computational Docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "formal_primary_lane": "D_SPLIT_PAIR",
+  "frozen_at": "2026-07-18T13:41:40.037365+00:00",
+  "non_primary_lanes": [
+    "B_TARGET_NO_CONTACT",
+    "C_SPLIT_MARGINAL"
+  ],
+  "production_job_graph_sha256": "2dab5078ad81f3b3c02fc995ce0a7b556e638d905c20d73d5eeebe81b86a0f57",
+  "promotion_gate_identity": "unchanged V2.4 gate already carried by frozen V2.5 M2+C2 contracts",
+  "runtime_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_runtime_authorized_v1_2_1_20260718",
+  "schema_version": "pvrig_v2_4_strict_terminal_evaluator_implementation_freeze_v1",
+  "sealed_evaluation_access_count": 0,
+  "status": "FROZEN_BEFORE_ANY_STRICT_OUTER_META_PREDICTION_EXISTED"
+}

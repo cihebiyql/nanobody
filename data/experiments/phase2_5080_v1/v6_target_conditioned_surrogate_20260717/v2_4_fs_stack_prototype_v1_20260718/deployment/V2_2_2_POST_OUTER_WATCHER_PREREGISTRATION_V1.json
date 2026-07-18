@@ -1,0 +1,58 @@
+{
+  "bundle_revision": "V2.2.2_BUNDLE_RECEIPT_CONTRACT_CORRECTED",
+  "claim_boundary": "Open-only adaptive-multiseed independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "deployment_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_post_outer_watcher_v1_20260718",
+  "execution_firewall": {
+    "automatic_strict_nested_stack_launch": false,
+    "promotion_authorized": false,
+    "sealed_evaluation_access_count": 0,
+    "terminal_stop_after_open_outer_collection": true,
+    "v4_f_test32_access_count": 0
+  },
+  "implementation": {
+    "collector_path": "deployment/collect_v2_2_2_outer_oof_v1.py",
+    "collector_sha256": "0fd67b2e5879827f972d49e898f0fa38fc3ff00d7597e896f6e967de758e0222",
+    "test_count": 8,
+    "test_log_sha256": "b4f5d755ec4f670d2a1736574aa8c63d4744ca08dabe2c1087c1b4937bd526e6",
+    "test_path": "deployment/test_collect_v2_2_2_outer_oof_v1.py",
+    "test_sha256": "05eea316c33b1d83cadfff128839132583f789a8406e208ceb694128c605884e",
+    "test_status": "OK"
+  },
+  "inputs": {
+    "implementation_freeze": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_2_20260718/IMPLEMENTATION_FREEZE_V2_4_ADAPTIVE_V2_2_2.json",
+      "sha256": "d7c4975313c249e72e2490c85e545ae2ba8d03b0fd90d8b85cd82c23194f76fc"
+    },
+    "ready_manifest": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_2_20260718/V2_4_NODE1_READY_MANIFEST_V2_2_2.json",
+      "sha256": "c7c95697e40feffe6063f68daf2eabe6cc596f36f4547f563c96bdad973c6df2"
+    },
+    "runtime_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_four_lane_oof_v2_2_2_20260718",
+    "wait_for": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_four_lane_oof_v2_2_2_20260718/status/OUTER_DEVELOPMENT_RECEIPT.json"
+  },
+  "outer_metrics_seen_before_freeze": false,
+  "outer_receipt_seen_before_freeze": false,
+  "output_contract": {
+    "collection_root": "collection_v1",
+    "metrics": "collection_v1/OOF_METRICS.json",
+    "oof_tsv_pattern": "collection_v1/oof/<lane>.outer_oof.tsv",
+    "root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_post_outer_watcher_v1_20260718/runtime",
+    "terminal_receipt": "TERMINAL_RECEIPT.json",
+    "validation": "collection_v1/VALIDATION_REPORT.json",
+    "watcher_status": "WATCHER_STATUS.json"
+  },
+  "required_validation": [
+    "outer receipt schema/status/manifest/freeze/smoke/calibration/formal-artifact hashes and both claims plus revision",
+    "exactly 4 lanes x 5 folds and 20 RESULT.json/log hashes",
+    "training TSV and split artifact hashes plus exact whole-parent score partition",
+    "candidate, parent framework, teacher source, truth and M2 cross-lane closure",
+    "bit-exact truth/M2/neural Rdual=min(R8,R9)",
+    "source hierarchy weights: 0.5 per source then equal parent then equal candidate",
+    "lane contact weights A=0/0, B=0/0, C=1.5/0, D=1.0/0.5",
+    "all result component and prediction artifact hashes"
+  ],
+  "schema_version": "pvrig_v2_4_v2_2_2_post_outer_watcher_preregistration_v1",
+  "scope": "Wait for the frozen V2.2.2 OUTER_DEVELOPMENT_RECEIPT, validate all 20 open-only base-lane results, aggregate descriptive A/B/C/D OOF metrics, then stop.",
+  "status": "FROZEN_V2_2_2_OPEN_ONLY_POST_OUTER_WATCHER_BEFORE_OUTER_TERMINAL",
+  "trainer_result_claim_boundary": "Open-only computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding probability, affinity, experimental blocking, Docking Gold, or submission evidence."
+}

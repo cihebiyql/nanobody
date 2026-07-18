@@ -1,0 +1,15 @@
+{
+  "checked_file_count": 134,
+  "cpu_job_count": 105,
+  "filtered_inner_contact_input_count": 25,
+  "gpu_job_count": 90,
+  "job_count": 195,
+  "physical_gpus": [
+    2,
+    4,
+    5
+  ],
+  "sealed_evaluation_access_count": 0,
+  "split_contact_input_count": 30,
+  "status": "PASS_AUTHORIZED_V1_2_READY_FOR_PREOPTIMIZER_SMOKE"
+}

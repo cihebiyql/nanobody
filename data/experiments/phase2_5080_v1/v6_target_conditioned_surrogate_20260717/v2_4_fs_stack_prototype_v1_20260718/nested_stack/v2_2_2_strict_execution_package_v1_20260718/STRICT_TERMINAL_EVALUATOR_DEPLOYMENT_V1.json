@@ -1,0 +1,25 @@
+{
+  "claim_boundary": "Open-development strict OOF computational Docking-geometry surrogate evaluation only; V4-F/test32 remains sealed.",
+  "deployed_at": "2026-07-18T13:42:56.686102+00:00",
+  "hashes": {
+    "contract": "51895361a4bcf98ca4bf6020c9d922cc28d72822dff4826d9f477728784bafed",
+    "evaluator": "a6c5e759d8999a76d56132b3c0131a3378651a223d437ab0289d6ab5a7a5f0eb",
+    "implementation_freeze": "c2c3d33efeb843e9914d2720d4c35b80760155d26b9d6a07ea2b113645a44128",
+    "launcher": "02408834b7e29bf18789f5e71e776b3ae5dfc933b29afcf5bca809e4b8b22e31",
+    "production_job_graph": "2dab5078ad81f3b3c02fc995ce0a7b556e638d905c20d73d5eeebe81b86a0f57"
+  },
+  "node": "node1",
+  "premetric_freeze_observation": {
+    "checked_at": "2026-07-18T13:41:29Z",
+    "inner_results": 15,
+    "outer_meta_predictions": 0,
+    "stack_receipts": 0,
+    "terminal_exists": false
+  },
+  "remote_evaluator_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_terminal_evaluator_v1_20260718",
+  "remote_output_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_terminal_evaluation_v1_20260718",
+  "schema_version": "pvrig_v2_4_strict_terminal_evaluator_deployment_v1",
+  "sealed_evaluation_access_count": 0,
+  "status": "DEPLOYED_WAITING_STRICT_RUNTIME_TERMINAL",
+  "watcher_pid": 895895
+}

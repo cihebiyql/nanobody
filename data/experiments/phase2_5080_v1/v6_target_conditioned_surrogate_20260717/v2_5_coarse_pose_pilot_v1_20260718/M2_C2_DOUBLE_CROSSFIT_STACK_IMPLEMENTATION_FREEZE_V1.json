@@ -1,0 +1,36 @@
+{
+  "files": {
+    "base_evaluator_dependency": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/src/evaluate_nested_oof_challengers_v1.py",
+      "sha256": "af9a2f29fdddc5eff6d1fad2060a01b8a59b5961115dd4076a70d755276d1fec"
+    },
+    "contract": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/M2_C2_DOUBLE_CROSSFIT_STACK_CONTRACT_V1.json",
+      "sha256": "f59fa1fdbc8c95df17bdc041319679ce74a3717fd7bfa34f90198b91cfc71d60"
+    },
+    "evaluator": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/src/evaluate_m2_c2_double_crossfit_stack_v1.py",
+      "sha256": "cd12be11c5e21efc4342292ac7a21fed99dd74e9407439726a9d3e31f23cec85"
+    },
+    "evaluator_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/tests/test_evaluate_m2_c2_double_crossfit_stack_v1.py",
+      "sha256": "48885290f8c299176ec9acd66b1a3c052b023ee975e41850408225aae3e0d0f9"
+    },
+    "pca_dependency": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/src/pca8_fold_transformer_v1.py",
+      "sha256": "77de9fcb5acbda9a729e859986dd7e9c4eb12130322d4fe5870b5fa4400d51a6"
+    },
+    "premetric_tests": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/M2_C2_DOUBLE_CROSSFIT_STACK_PREMETRIC_TESTS.log",
+      "sha256": "b1ac6d9bc030b494a4f5db48779200b43cad8a6dccb558eccd979505c823bba0"
+    }
+  },
+  "prohibitions": [
+    "change code/contract after open1507 stack metrics",
+    "V4-F/test32 access",
+    "same-row stacking"
+  ],
+  "schema_version": "pvrig_v2_5_m2_c2_double_crossfit_stack_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_STACK_PERFORMANCE_COMPUTATION",
+  "test_result": "14 tests OK plus py_compile PASS"
+}

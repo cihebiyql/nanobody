@@ -1,0 +1,100 @@
+{
+  "c2_branch": {
+    "alpha_selection": "minimum inner whole-parent OOF parent-macro MAE averaged equally over R8,R9,exact-min Rdual; ties 1e-12 choose largest alpha",
+    "features": "raw36 coarse-pose minus four frozen exclusions",
+    "frozen_exclusions": [
+      "8x6b__pose_count",
+      "9e6y__pose_count",
+      "8x6b__top20_score_entropy",
+      "9e6y__top20_score_entropy"
+    ],
+    "outputs": "direct R8/R9; exact-min Rdual",
+    "ridge_alpha_grid": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "transform": "train-fold standardize/constant-filter/PCA8 only",
+    "weighting": "equal total source, equal parent within source, equal candidate within parent; normalized sum n"
+  },
+  "claim_boundary": "Open computational Docking geometry development evidence only; not binding, Kd, experimental blocking, Docking Gold, or sealed V4-F evidence.",
+  "inputs": {
+    "coarse_raw36": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_coarse_pose_pilot_v1_20260718/prepared/open1507_v1/open1507_coarse_pose_features_36d.tsv",
+      "sha256": "67c83b61734ed90d7dd646a6d32a808cde819f4c01c4fbaf31fdba675827f26e"
+    },
+    "inner_manifest": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/inner_nested_oof_manifest.tsv",
+      "sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073"
+    },
+    "labels": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+      "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+    },
+    "m2_frozen_diagnostic": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/diagnostics/M2_EXACT_MIN_BASELINE_DIAGNOSTIC_V1.json",
+      "sha256": "aa772eb22da8d5f6f0c33e27f89fa52cd12ad2c14971f58a7f2434e7cd68bd06"
+    },
+    "outer_manifest": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/outer_development_manifest.tsv",
+      "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55"
+    }
+  },
+  "m2_branch": {
+    "features": "all 126 label-free monomer structure fields containing __ in supervised table",
+    "must_reproduce_frozen_diagnostic": true,
+    "outputs": "direct R8/R9; exact-min Rdual",
+    "ridge_alpha": 10.0,
+    "weighting": "0.5/source then equal parent then equal candidate; weights sum 1"
+  },
+  "meta_head": {
+    "closed_form": "clip(sum_i,t weight_i*(C2-M2)*(truth-M2)/(sum_i,t weight_i*(C2-M2)^2+lambda),0,1)",
+    "constraints": "0 <= w_c2 <= 1; w_m2=1-w_c2",
+    "fit_data": "inner whole-parent OOF M2/C2 predictions for outer-train only",
+    "fit_weighting": "0.5/source then equal parent then equal candidate; weights sum 1",
+    "fixed_l2_toward_m2": 0.001,
+    "form": "stack_t=(1-w_c2)*M2_t+w_c2*C2_t for t in {R8,R9}",
+    "intercept": false,
+    "shared_slope_across_receptors": true
+  },
+  "outer_protocol": {
+    "base_predictions_for_meta": "inner whole-parent OOF within each outer-train only",
+    "folds": 5,
+    "outer_folds_fixed": true,
+    "outer_test_access_for_selection_or_fit": false,
+    "split_unit": "parent_framework_cluster"
+  },
+  "output_contract": {
+    "derived_output": "R_dual_min=min(R_8X6B,R_9E6Y)",
+    "direct_outputs": [
+      "R_8X6B",
+      "R_9E6Y"
+    ],
+    "same_row_stacking": false
+  },
+  "prohibitions": [
+    "V4-F/test32 access",
+    "candidate Docking pose-derived input",
+    "same-row base predictions for meta fit",
+    "parent/candidate/campaign ID as predictor",
+    "post-result gate or hyperparameter changes"
+  ],
+  "promotion_gate": {
+    "M2_Rdual_mae_ceiling": 0.0323587150283071,
+    "M2_Rdual_rmse_ceiling": 0.04290748546218935,
+    "additional_nonregression": [
+      "each source Rdual MAE <= freshly reproduced M2 source Rdual MAE",
+      "parent-macro Rdual MAE <= freshly reproduced M2 parent-macro Rdual MAE"
+    ],
+    "decision": "PROMOTE only if every criterion passes; otherwise DO_NOT_PROMOTE; no post-result changes",
+    "frozen_M2_Rdual_spearman": 0.6094011215999979,
+    "required_Rdual_spearman": 0.6194011215999979
+  },
+  "schema_version": "pvrig_v2_5_m2_c2_strict_double_crossfit_stack_contract_v1",
+  "scope": "open1507 whole-parent double-cross-fitted M2 plus coarse-pose C2 challenger only; independent of V2.4 neural C/D",
+  "status": "PREREGISTERED_BEFORE_STACK_PERFORMANCE_COMPUTATION"
+}

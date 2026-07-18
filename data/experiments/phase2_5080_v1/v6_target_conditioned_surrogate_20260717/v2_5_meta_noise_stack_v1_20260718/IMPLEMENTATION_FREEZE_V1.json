@@ -1,0 +1,106 @@
+{
+  "artifacts": {
+    "CONTRACT_V1.json": {
+      "bytes": 5228,
+      "sha256": "0cb0a0c04856d7951b29b8c1add3369450d49fbb433feae061da1ec9bf708ab3"
+    },
+    "README_ZH.md": {
+      "bytes": 4067,
+      "sha256": "92edf618c09d2f95290bcccea7cbf85237d86b9cf6f6c095a31faacf505a277c"
+    },
+    "TEST_RESULTS.log": {
+      "bytes": 1720,
+      "sha256": "7aa3f2e43afff82705f442f129920a4b6b0f4c4b09e551615bcf0caa5f9f0b4a"
+    },
+    "prepared/protocol_dry_run_v1_1/DRY_RUN_RECEIPT.json": {
+      "bytes": 6733,
+      "sha256": "7d0f44d3a9a7e4005802efa31aeb78d3d77e7cc239a2e6b0e3c4e11796f457d6"
+    },
+    "prepared/protocol_dry_run_v1_1/SHA256SUMS": {
+      "bytes": 87,
+      "sha256": "549167e54a4139da5afdf958b2c812598fc007127a348c97f95a1f05ddc2a9e8"
+    },
+    "src/c2_fold_local_v1.py": {
+      "bytes": 5848,
+      "sha256": "281027a8a91df4ee4567c7eff5e58eca24548e01e0709b7b454e8c0853e34075"
+    },
+    "src/dry_run_v1.py": {
+      "bytes": 7758,
+      "sha256": "b48b1571d06b7fc1142908c5c7e4665934847863c3826a4b40a087614b06fb4b"
+    },
+    "src/meta_noise_stack_v1.py": {
+      "bytes": 36300,
+      "sha256": "1f5c2b0ed7553a76a11f7011057004637606739b5577b69053494a484eb4af21"
+    },
+    "tests/test_c2_fold_local_v1.py": {
+      "bytes": 2961,
+      "sha256": "c1c7d81cda08c929ab0cad384741ad3d32dd4295a32521808ecc35e510c36de8"
+    },
+    "tests/test_meta_noise_stack_v1.py": {
+      "bytes": 10352,
+      "sha256": "b4e06ef187229a71dd17cb33e93160fb7cd18d872831f38dfe335367ef98f8e4"
+    }
+  },
+  "c2_reproduction": {
+    "existing_fold_local_transform_and_ridge_exact_test": true,
+    "score_rows_in_fit_api": false
+  },
+  "claim_boundary": "Open-development computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "dry_run": {
+    "canonical_candidates": 1507,
+    "canonical_parents": 31,
+    "formal_training_or_prediction_launched": false,
+    "inner_folds_per_outer": 5,
+    "outer_folds": 5,
+    "performance_metrics_computed": false,
+    "status": "PASS_V2_5_META_NOISE_BUILD_TEST_DRY_RUN"
+  },
+  "environment": {
+    "numpy": "2.2.6",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "python_environment": "experiments/phase2_5080_v1/.venv-phase2-5080",
+    "scipy": "1.15.3",
+    "sklearn": "1.6.1"
+  },
+  "frozen_gbdt": {
+    "l2_regularization": 2.0,
+    "max_depth": 2,
+    "max_iter": 64,
+    "min_samples_leaf": 64,
+    "role": "CHALLENGER_ONLY_NOT_PRIMARY"
+  },
+  "frozen_noise": {
+    "epsilon": 1e-06,
+    "reliability_bounds": [
+      0.25,
+      4.0
+    ],
+    "ridge_alpha": 10.0,
+    "tier_C_as_truth": false,
+    "truth_tiers": [
+      "A",
+      "B"
+    ]
+  },
+  "frozen_primary": {
+    "branch_weights": "nonnegative, sum<=1",
+    "direct_outputs": [
+      "R8",
+      "R9"
+    ],
+    "dual": "exact min",
+    "kind": "M2 fallback convex residual stack",
+    "l2_toward_m2": 0.001
+  },
+  "schema_version": "pvrig_v2_5_meta_noise_implementation_freeze_v1",
+  "sealed_boundary": {
+    "v4_f_test32_access_count": 0
+  },
+  "status": "FROZEN_AFTER_BUILD_TEST_DRY_RUN_BEFORE_FORMAL_META_PERFORMANCE",
+  "tests": {
+    "command": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python -m unittest discover -s experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/tests -p 'test_*.py' -v",
+    "count": 17,
+    "status": "PASS"
+  }
+}

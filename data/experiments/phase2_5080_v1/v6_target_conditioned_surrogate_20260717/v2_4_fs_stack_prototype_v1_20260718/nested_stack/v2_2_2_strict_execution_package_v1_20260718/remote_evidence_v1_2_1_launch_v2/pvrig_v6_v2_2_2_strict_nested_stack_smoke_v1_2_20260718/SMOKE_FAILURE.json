@@ -1,0 +1,13 @@
+{
+  "schema_version": "pvrig_v2_4_v2_2_2_v1_2_real_inner_preoptimizer_smoke_failure_v1",
+  "status": "FAIL_PREOPTIMIZER_GRAPH_CANDIDATE_EXACT_CLOSURE",
+  "outer_fold": 0,
+  "inner_fold": 0,
+  "failed_before_optimizer": true,
+  "optimizer_steps": 0,
+  "training_executed": false,
+  "exception_type": "train_nested_residue_surrogate_v2.TrainerV2Error",
+  "exception_message": "graph_candidate_exact_closure",
+  "root_cause": "V1.2 synchronized training/marginal/pair candidates, but retained the full-1507 label-free graph manifest; frozen GraphCacheStore requires exact candidate closure.",
+  "sealed_evaluation_access_count": 0
+}

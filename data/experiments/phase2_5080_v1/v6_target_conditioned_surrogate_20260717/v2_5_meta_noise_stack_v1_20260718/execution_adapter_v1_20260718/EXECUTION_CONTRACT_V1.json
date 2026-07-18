@@ -1,0 +1,140 @@
+{
+  "schema_version": "pvrig_v2_5_d_only_strict_meta_execution_contract_v1",
+  "status": "FROZEN_DESIGN_UNAUTHORIZED_DO_NOT_EVALUATE",
+  "claim_boundary": "Open-development computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "upstream_v2_4_strict": {
+    "package_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718",
+    "runtime_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_runtime_authorized_v1_2_1_20260718",
+    "job_graph_path": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/plan/job_graph.json",
+    "job_graph_sha256": "2dab5078ad81f3b3c02fc995ce0a7b556e638d905c20d73d5eeebe81b86a0f57",
+    "package_manifest_sha256": "8b6c5f61284b3d72637e155382825630fc91d5dbbbd2d56df108f7433ddb5bb4",
+    "authorization_overlay_sha256": "95b6dd933c37218b52e6946cbc538f3afec15dd471974427d6180ad6b66b69f3",
+    "launch_receipt_sha256": "c80b686b22340561041f1f8fddea84f7a17b968498ee947554a048ca3cafb06f",
+    "expected_terminal": {"returncode": 0, "status": "PASS"},
+    "expected_job_counts": {"total": 195, "gpu": 90, "cpu": 105},
+    "allowed_lane": "D_SPLIT_PAIR",
+    "forbidden_lanes_as_v2_5_predictors": ["B_TARGET_NO_CONTACT", "C_SPLIT_MARGINAL"],
+    "required_d_evidence_per_outer_fold": [
+      "inner_oof_base.tsv",
+      "inner_oof_base.validation.json",
+      "inner_oof_provenance.json",
+      "outer_test_base.tsv",
+      "outer_test_base.validation.json",
+      "outer_test_provenance.json"
+    ]
+  },
+  "canonical_inputs": {
+    "labels": {"filename": "v6_supervised1507_v2_4.tsv", "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"},
+    "outer_manifest": {"filename": "outer_development_manifest.tsv", "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55"},
+    "inner_manifest": {"filename": "inner_nested_oof_manifest.tsv", "sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073"},
+    "coarse_pose_raw36": {"filename": "open1507_coarse_pose_features_36d.tsv", "sha256": "67c83b61734ed90d7dd646a6d32a808cde819f4c01c4fbaf31fdba675827f26e"},
+    "existing_c2_outer_oof": {"filename": "open1507_double_crossfit_predictions.tsv", "sha256": "91ca037188219df3116c36cb2e1687e4b493c3171613e1521bdce3fc03ee3bc8"},
+    "existing_c2_alpha_selection": {"filename": "inner_c2_alpha_selection.tsv", "sha256": "6a840806f284da9c68e0a850eee0c1661c570da6511cec562868b5151ebb7a5a"}
+  },
+  "implementation_dependency": {
+    "meta_noise_freeze_sha256": "552199d7e9d73a35da712fd2446e921c4c556faa027de2d36df9d3085c68530a",
+    "meta_noise_module_sha256": "1f5c2b0ed7553a76a11f7011057004637606739b5577b69053494a484eb4af21",
+    "c2_fold_local_module_sha256": "281027a8a91df4ee4567c7eff5e58eca24548e01e0709b7b454e8c0853e34075"
+  },
+  "expected_counts": {
+    "candidates": 1507,
+    "parents": 31,
+    "outer_folds": 5,
+    "inner_folds_per_outer": 5,
+    "tier_counts": {"A": 349, "B": 241, "C": 917},
+    "source_counts": {"V4D_OPEN_MULTI_SEED": 226, "V4H_ADAPTIVE_SEED_RANKING": 1281}
+  },
+  "formal_model_matrix": [
+    {
+      "model_id": "D_ONLY_FROZEN_BASE",
+      "role": "D_ONLY_PRIMARY_NEURAL_REFERENCE",
+      "formula": "D_R8,D_R9 direct; exact-min dual",
+      "fit": "none"
+    },
+    {
+      "model_id": "M2_C2_CONVEX",
+      "role": "ORTHOGONAL_COARSE_POSE_REFERENCE",
+      "formula": "M2+w_c2*(C2-M2)",
+      "constraints": "0<=w_c2<=1; shared receptors; no intercept; lambda=0.001"
+    },
+    {
+      "model_id": "M2_D_CONVEX",
+      "role": "D_INCREMENT_REFERENCE",
+      "formula": "M2+w_d*(D-M2)",
+      "constraints": "0<=w_d<=1; shared receptors; no intercept; lambda=0.001"
+    },
+    {
+      "model_id": "M2_D_C2_CONVEX",
+      "role": "PRIMARY_PROMOTION_CANDIDATE",
+      "formula": "M2+w_d*(D-M2)+w_c2*(C2-M2)",
+      "constraints": "w_d,w_c2>=0; w_d+w_c2<=1; shared receptors; no intercept; lambda=0.001"
+    },
+    {
+      "model_id": "M2_D_C2_RELIABILITY_CONVEX",
+      "role": "RELIABILITY_CHALLENGER",
+      "formula": "same primary form, fit with whole-parent cross-fitted capped reliability",
+      "noise_truth": "A/B repeated only; C never zero-imputed"
+    },
+    {
+      "model_id": "D_C2_CONTACT_RELIABILITY_HIST_GBDT",
+      "role": "SHALLOW_GBDT_CHALLENGER_ONLY",
+      "config": {"max_depth": 2, "max_iter": 64, "learning_rate": 0.05, "min_samples_leaf": 64, "l2_regularization": 2.0, "random_state": 1931}
+    }
+  ],
+  "c2_protocol": {
+    "feature_exclusions": ["8x6b__pose_count", "9e6y__pose_count", "8x6b__top20_score_entropy", "9e6y__top20_score_entropy"],
+    "retained_dimension": 32,
+    "pca_components": 8,
+    "ridge_alpha_grid": [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0],
+    "selection": "inner whole-parent OOF parent-macro mean absolute error over R8,R9,exact-min dual; 1e-12 ties choose largest alpha",
+    "outer_prediction": "must exactly match existing frozen C2 outer OOF candidate/fold closure and selected alpha"
+  },
+  "formal_gates": {
+    "frozen_M2": {"Rdual_spearman": 0.6094011215999979, "Rdual_mae": 0.0323587150283071, "Rdual_rmse": 0.04290748546218935},
+    "primary_M2_D_C2": {
+      "Rdual_spearman_min": 0.6194011215999979,
+      "Rdual_mae_max": 0.0323587150283071,
+      "Rdual_rmse_max": 0.04290748546218935,
+      "parent_bootstrap_delta_spearman_95ci_lower_gt": 0.0,
+      "both_source_delta_spearman_min": 0.0,
+      "parent_macro_Rdual_mae_nonregression": true,
+      "parents_with_nonnegative_Rdual_mae_delta_min": 16,
+      "R8_and_R9_spearman_floor_vs_M2_delta": -0.03,
+      "bootstrap_seed": 1931,
+      "bootstrap_replicates": 10000
+    },
+    "challenger_replacement": {
+      "allowed_only_after_primary_gate_passes": true,
+      "Rdual_spearman_delta_vs_primary_min": 0.003,
+      "Rdual_mae_nonregression_vs_primary": true,
+      "Rdual_rmse_nonregression_vs_primary": true,
+      "both_source_Rdual_mae_nonregression_vs_primary": true,
+      "parent_macro_Rdual_mae_nonregression_vs_primary": true,
+      "paired_parent_bootstrap_delta_spearman_95ci_lower_gt": 0.0
+    }
+  },
+  "authorization": {
+    "execution_authorized": false,
+    "required_token_sha256": "f499f4675d1c598fbd8b9304c5f56790c7fb8a5a48ef4758aeb4a66ecb2a1e97",
+    "authorization_overlay_required": true,
+    "input_closure_receipt_hash_must_be_pinned_in_overlay": true
+  },
+  "watcher_boundary": {
+    "on_terminal_pass": "run structural input validator only",
+    "formal_metrics_read": false,
+    "formal_evaluator_launch": false,
+    "terminal_status_after_input_closure": "PASS_INPUTS_READY_UNAUTHORIZED"
+  },
+  "prohibitions": [
+    "V4-F/test32 access",
+    "B or C lane used as a V2.5 predictor",
+    "formal metrics opened by preauthorization watcher or input validator",
+    "formal evaluator launched without explicit authorization overlay and token",
+    "outer-test used for fitting, PCA, calibration, alpha selection, reliability fit, or meta fit",
+    "same-row stacking",
+    "candidate/parent/campaign/source/fold/seed ID as predictor",
+    "Tier C missing repeats interpreted as zero variance",
+    "Rdual predicted as an independent free output",
+    "post-result gate or model-matrix changes"
+  ]
+}

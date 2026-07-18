@@ -1,0 +1,12 @@
+{
+  "gpu_job_count": 90,
+  "job_count": 195,
+  "job_graph_sha256": "2dab5078ad81f3b3c02fc995ce0a7b556e638d905c20d73d5eeebe81b86a0f57",
+  "physical_gpus": [
+    2,
+    4,
+    5
+  ],
+  "sealed_evaluation_access_count": 0,
+  "status": "AUTHORIZED_LAUNCH_STARTED"
+}

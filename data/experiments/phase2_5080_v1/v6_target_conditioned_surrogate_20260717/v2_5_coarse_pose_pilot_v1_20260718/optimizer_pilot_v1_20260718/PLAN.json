@@ -1,0 +1,33 @@
+{
+  "schema_version": "pvrig_v2_5_d_inner_optimizer_pilot_plan_v1",
+  "claim_boundary": "Open inner-development parameter pilot for computational dual-receptor Docking geometry only; not formal outer evidence, binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "base_job": {
+    "lane": "D_SPLIT_PAIR",
+    "outer_fold": 0,
+    "inner_fold": 0,
+    "physical_gpu": 1,
+    "source_graph": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/plan/job_graph.json",
+    "source_job_id": "o0.D_SPLIT_PAIR.inner0.base_train"
+  },
+  "fixed": {
+    "marginal_weight": 1.0,
+    "pair_weight": 0.5,
+    "batch_size": 8,
+    "gradient_accumulation": 2,
+    "gradient_clip": 1.0,
+    "precision": "bf16",
+    "seed": 43,
+    "v4_f_test32_access_count": 0
+  },
+  "variants": [
+    {"name": "baseline_e8_lr1e4_wd02_h03", "epochs": 8, "learning_rate": 0.0001, "weight_decay": 0.02, "huber_delta": 0.03},
+    {"name": "e16_lr1e4_wd02_h03", "epochs": 16, "learning_rate": 0.0001, "weight_decay": 0.02, "huber_delta": 0.03},
+    {"name": "e16_lr5e5_wd02_h03", "epochs": 16, "learning_rate": 0.00005, "weight_decay": 0.02, "huber_delta": 0.03},
+    {"name": "e16_lr2e4_wd02_h03", "epochs": 16, "learning_rate": 0.0002, "weight_decay": 0.02, "huber_delta": 0.03},
+    {"name": "e16_lr1e4_wd01_h02", "epochs": 16, "learning_rate": 0.0001, "weight_decay": 0.01, "huber_delta": 0.02},
+    {"name": "e16_lr1e4_wd03_h04", "epochs": 16, "learning_rate": 0.0001, "weight_decay": 0.03, "huber_delta": 0.04}
+  ],
+  "selection_rule": "Descriptive inner-fold comparison only. Rank by Rdual Spearman, then MAE, while requiring finite R8/R9 metrics and exact-min closure. No automatic change to frozen V2.4 or formal gates.",
+  "sealed_evaluation_access_count": 0
+}
+

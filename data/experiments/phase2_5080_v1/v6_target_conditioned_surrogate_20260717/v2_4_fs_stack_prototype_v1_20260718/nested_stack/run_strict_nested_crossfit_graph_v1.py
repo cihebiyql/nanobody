@@ -75,6 +75,18 @@ def validate_execution_artifacts(graph: Mapping[str, Any]) -> None:
     artifacts = list((graph.get("code_contracts") or {}).values())
     artifacts.extend(graph["canonical_inputs"][name] for name in ("training_tsv", "outer_manifest", "inner_manifest", "contact_formula"))
     artifacts.extend(graph["split_manifests"].values())
+    # Inner folds intentionally exclude the corresponding outer-score parents.
+    # V2.2.2 recovery graphs therefore bind a per-split row-filtered view of the
+    # canonical 1507-row table so the frozen trainer's exact-parent-closure
+    # check remains fail-closed without changing split membership or trainer
+    # code.  Older graphs omit this optional contract and remain compatible.
+    artifacts.extend((graph.get("split_training_inputs") or {}).values())
+    for contact_bundle in (graph.get("split_contact_inputs") or {}).values():
+        require(isinstance(contact_bundle, dict), "split_contact_input_bundle")
+        artifacts.extend(contact_bundle[name] for name in ("marginal", "pair"))
+    for graph_bundle in (graph.get("split_graph_inputs") or {}).values():
+        require(isinstance(graph_bundle, dict), "split_graph_input_bundle")
+        artifacts.extend(graph_bundle[name] for name in ("cache", "manifest", "receipt"))
     require(bool(artifacts), "execution_artifact_contract_empty")
     for artifact in artifacts:
         path = Path(str(artifact.get("node1_path", "")))

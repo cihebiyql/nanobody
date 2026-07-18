@@ -1,0 +1,100 @@
+{
+  "bundle_revision": "V2.2.2_BUNDLE_RECEIPT_CONTRACT_CORRECTED",
+  "claim_boundary": "Open-only adaptive-multiseed independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "corrected_artifacts": {
+    "bundle_materializer": {
+      "path": "deployment/materialize_node1_bundle_v2_2_2.py",
+      "sha256": "7048561107e479c5de5e9e7c8e0e9a77ee709467e9eabd3b191f008264142b37"
+    },
+    "launcher": {
+      "path": "deployment/node1_v2_4_outer_development_launcher_v2_2_2.py",
+      "sha256": "786f89497ac82c41a675bd7084a46d0cf94b0b3969b23f4113e485766880b6f3"
+    },
+    "launcher_test": {
+      "path": "deployment/test_node1_v2_4_outer_development_launcher_v2_2_2.py",
+      "sha256": "b711a4c93cd8d00a75aa99bdc8d9eaf0702affa3960a1b186356f1d32e5c7590"
+    },
+    "postcalibration_materializer": {
+      "path": "deployment/materialize_postcalibration_freeze_v2_2_2.py",
+      "sha256": "d894ec890ec83ee275a38c12a770d3595756989fc1eaf8d3252d9834c0d6398d"
+    },
+    "postcalibration_materializer_test": {
+      "path": "deployment/test_materialize_postcalibration_freeze_v2_2_2.py",
+      "sha256": "538db94d86a8c3b3fdb5f8288fa88b83bbd7e9eeee1146170c5c96d4f7929dce"
+    },
+    "prefreeze_builder": {
+      "path": "deployment/build_prefreeze_manifest_v2_2_2.py",
+      "sha256": "4ed52b2333fd5fef78b0fed0bc616e057b26e51fbca13fa23e3095c8e6c14721"
+    },
+    "runner": {
+      "path": "deployment/run_open_only_prestep_calibration_v2_2_2.py",
+      "sha256": "0113018f1966f446086e7f812a426f48fc68df643e833026119147a11e252565"
+    },
+    "runner_test": {
+      "path": "deployment/test_run_open_only_prestep_calibration_v2_2_2.py",
+      "sha256": "812616e47676345090afa8f0101472c48ab41692dc5499e37be4a2ae51fdaeb7"
+    }
+  },
+  "corrective_closure": {
+    "all_v2_2_1_nonnumeric_execution_contract_corrections_preserved": true,
+    "bundle_receipt_emits_exact_bundle_revision": true,
+    "bundle_receipt_emits_exact_manifest_campaign_claim": true,
+    "bundle_receipt_emits_exact_manifest_trainer_result_claim": true,
+    "materializer_validates_all_three_fields_before_receipt_publication": true,
+    "nonnumeric_only": true,
+    "unit_tests_reject_each_independent_field_tamper": true
+  },
+  "defect": {
+    "disposition": "FAIL_CLOSED_PRECALIBRATION_SUPERSEDED_BY_NEW_IMMUTABLE_V2_2_2_ROOT",
+    "missing_or_null_fields": {
+      "bundle_revision": null,
+      "claim_boundary": null,
+      "trainer_result_claim_boundary": null
+    },
+    "scope": "staged BUNDLE_RECEIPT contract omission"
+  },
+  "execution_boundary": {
+    "formal_training_authorized": false,
+    "new_immutable_root_required": true,
+    "overwrite_superseded_root_forbidden": true,
+    "rerun_same_calibration_required": true,
+    "tiny_smoke_authorized": false
+  },
+  "frozen_numeric_equivalence": {
+    "C_SPLIT_MARGINAL": {
+      "marginal": 1.5,
+      "pair": 0.0
+    },
+    "D_SPLIT_PAIR": {
+      "marginal": 1.0,
+      "pair": 0.5
+    },
+    "attention_temperature_changes": 0,
+    "batch_changes": 0,
+    "calibration_batch_membership_changes": 0,
+    "data_changes": 0,
+    "gate_changes": 0,
+    "grid_changes": 0,
+    "loss_changes": 0,
+    "model_changes": 0,
+    "optimizer_changes": 0,
+    "outer_fold_split_changes": 0,
+    "selected_weight_changes": 0,
+    "training_data_changes": 0
+  },
+  "schema_version": "pvrig_v2_4_v2_2_2_bundle_receipt_contract_technical_supersession_v1",
+  "status": "FROZEN_V2_2_2_BUNDLE_RECEIPT_CONTRACT_SUPERSESSION",
+  "superseded_bundle_receipt_sha256": "f6c27cfb6e3e3a981a8bc7c3d615069aefe201fd896a531d93bc5d78833ed807",
+  "superseded_manifest_sha256": "866a208f91bd511d91f81d8864e0a9b12fd575ec6474f43679040f79cf7ba391",
+  "superseded_root_state": {
+    "calibration_runtime_created": false,
+    "calibration_started": false,
+    "formal_runtime_created": false,
+    "optimizer_constructed": false,
+    "optimizer_steps": 0,
+    "prediction_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "supersedes_remote_bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_1_20260718",
+  "trainer_result_claim_boundary": "Open-only computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding probability, affinity, experimental blocking, Docking Gold, or submission evidence."
+}

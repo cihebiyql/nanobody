@@ -1,0 +1,25 @@
+{
+  "created_at_utc": "2026-07-18T12:53:03.851605+00:00",
+  "exact_diff_all_20": {
+    "extra_in_result_split": [],
+    "missing_from_result_split": [
+      "schema_version",
+      "source_outer_manifest_sha256",
+      "training_tsv_sha256"
+    ],
+    "shared_key_value_differences": []
+  },
+  "failed_gate": "result_split_exact:A_VHH_ONLY:0",
+  "forbidden_repair": "No parent/test, candidate closure, hash, source, exact-min, loss-weight, or V4-F/test32 gate is weakened.",
+  "interpretation": "RESULT.split is the trainer executable split projection; the content-addressed frozen split retains three provenance-only keys. All train_parents, score_parents, their hashes, fold identity, split_id, open-only and test32 gates are identical in all 20 results.",
+  "real_parent_or_test_leakage_observed": false,
+  "schema_version": "pvrig_v2_4_v2_2_2_post_outer_watcher_v1_failure_diagnosis_v1",
+  "scope_checked": {
+    "folds": 5,
+    "lanes": 4,
+    "result_split_objects": 20
+  },
+  "status": "FAIL_V1_TECHNICAL_SCHEMA_EXACT_EQUALITY_NOT_PARENT_SPLIT_MISMATCH",
+  "v1_1_repair": "Require the exact projection key set (frozen keys minus exactly the three provenance-only keys), bit/exact JSON equality for every projected value, and independently validate the frozen split schema/training hash/source manifest hash. Existing prediction candidate/parent/outer-fold closure gates are unchanged.",
+  "v1_disposition": "preserved_fail_closed"
+}

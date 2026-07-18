@@ -1,0 +1,127 @@
+{
+  "architecture": {
+    "attention_contact_pair_projections_shared": false,
+    "attention_contact_terminal_shared": false,
+    "contact_encoder_gradient_modes": [
+      "detached",
+      "shared"
+    ],
+    "default_contact_encoder_gradient": "detached",
+    "derived_target": "exact_min(R_8X6B,R_9E6Y)",
+    "direct_targets": [
+      "R_8X6B",
+      "R_9E6Y"
+    ],
+    "scalar_contact_feedback": false
+  },
+  "claim_boundary": "Open-only computational Docking-geometry surrogate implementation and non-launching smoke package only; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "deployment": {
+    "deployed": false,
+    "launched": false,
+    "package_audit_pass": true,
+    "package_built": true,
+    "prediction_metrics_access_count": 0,
+    "training_or_prediction_executed": false,
+    "v4_f_test32_access_count": 0
+  },
+  "environment": {
+    "cuda_available": false,
+    "python": "3.10.12",
+    "torch": "2.13.0+cpu"
+  },
+  "files": {
+    "README_ZH.md": {
+      "bytes": 6392,
+      "sha256": "fae6749b011c70b7d8f0aa87439b53ebb4d157bad32a4b3cb04576579526cab5"
+    },
+    "TEST_RESULTS.log": {
+      "bytes": 2359,
+      "sha256": "52cc9511e5615a83a9dee863878bb5ea423f789cb2308181d1f64edd078ced7e"
+    },
+    "deployment/PACKAGE_AUDIT_STDOUT_V1.json": {
+      "bytes": 283,
+      "sha256": "24835663d946d5de3c475c6a9151ba6d8545b1ed0e70b4ac3483e059282543fe"
+    },
+    "deployment/PACKAGE_BUILD_STDOUT_V1.json": {
+      "bytes": 1752,
+      "sha256": "7e5ec26bffaceff52a5486be77bd63142f7025858e8996ae7e1eeb4304f51e9f"
+    },
+    "deployment/build_node1_smoke_package_v1.py": {
+      "bytes": 18547,
+      "sha256": "9c71f372e07a0f5b2bbc8a53402b9d8863a876a5dd58e1a98d80a8d5928f1305"
+    },
+    "deployment/prepared/node1_smoke_package_v1/INPUT_CONTRACT.json": {
+      "bytes": 7261,
+      "sha256": "2162a2e396ccde97098a8382cb972d502995d6e0ac12f536292e541293962946"
+    },
+    "deployment/prepared/node1_smoke_package_v1/NONLAUNCHING_JOB_PLAN.json": {
+      "bytes": 19818,
+      "sha256": "aa3915bc9ba92cb5f8bac2be3027ff0f5949f36bf4ceb35b44f5ac9bf204d514"
+    },
+    "deployment/prepared/node1_smoke_package_v1/PACKAGE_MANIFEST.json": {
+      "bytes": 1952,
+      "sha256": "8fb2fda3c9d1ab19b1ed881e9c13fff826efccc6c14238182ce784e205af6849"
+    },
+    "deployment/prepared/node1_smoke_package_v1/SHA256SUMS": {
+      "bytes": 556,
+      "sha256": "95788336b963a3eaf953f6c5434e94840cfd18cd5bb2a3d6eabc2e590a68d0a4"
+    },
+    "model/residue_model_v2_5_ortho.py": {
+      "bytes": 28492,
+      "sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521"
+    },
+    "real1507/run_real1507_split_v1.py": {
+      "bytes": 26586,
+      "sha256": "9f5dcedc1873628af9081a4d82fb2d1cc62634a12584f2286abe7a0ba4054e3a"
+    },
+    "tests/test_build_node1_smoke_package_v1.py": {
+      "bytes": 4842,
+      "sha256": "505360ab2bdfa25106a45f6a4184920e8d0db82994ba672c875493e27110b547"
+    },
+    "tests/test_residue_model_v2_5_ortho.py": {
+      "bytes": 10516,
+      "sha256": "f033f2d99a333f573425fbb0159f11eb8890cf067252d036a2b085557f2bd734"
+    },
+    "tests/test_run_real1507_split_v1.py": {
+      "bytes": 4528,
+      "sha256": "75222035d5e5392f75c675b1a936cf16db9332e258c8a22f3fc243093ef77bf4"
+    },
+    "tests/test_train_v2_5_ortho_heads.py": {
+      "bytes": 9032,
+      "sha256": "28fb79a968b4f24e8f46b0bcb18b71c8b2dc85b8adbb9c5da7c049d738dcc99d"
+    },
+    "trainer/train_v2_5_ortho_heads.py": {
+      "bytes": 22616,
+      "sha256": "a3d480fe4e164e74e2f64598e8ca53d42131c2e9e6ad16074fb7274e33a906b8"
+    }
+  },
+  "input_firewall": {
+    "candidate_docking_pose_or_pose_features": false,
+    "candidate_parent_campaign_ids": false,
+    "m2_or_126d": false
+  },
+  "lanes": [
+    "B_CLEAN_TARGET_ATTENTION",
+    "E_DECOUPLED_CONTACT_DETACHED",
+    "E_DECOUPLED_CONTACT_SHARED"
+  ],
+  "real_data_adapter": {
+    "esm2": "facebook/esm2_t33_650M_UR50D",
+    "parents": 28,
+    "rows": 1269,
+    "score_rows": 184,
+    "source_training_hash_mismatch_disclosed": true,
+    "split": "outer_0_inner_0",
+    "train_rows": 1085,
+    "training_contact_graph_candidate_closure": true,
+    "whole_parent_split": true
+  },
+  "schema_version": "pvrig_v2_5_ortho_contact_pose_stack_implementation_contract_v1",
+  "status": "PASS_BUILD_TEST_DRY_RUN_NOT_DEPLOYED_NOT_LAUNCHED",
+  "test_summary": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests_run": 19
+  }
+}

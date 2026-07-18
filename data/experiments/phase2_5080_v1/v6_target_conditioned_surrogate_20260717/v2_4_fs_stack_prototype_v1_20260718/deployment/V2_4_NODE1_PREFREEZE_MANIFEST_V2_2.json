@@ -1,0 +1,853 @@
+{
+  "adaptive_supervision": {
+    "expected_counts": {
+      "training_candidates": 1507,
+      "v4d_candidates": 226,
+      "v4h_selected_paired_jobs": 3536,
+      "v4h_source_candidates": 1320,
+      "v4h_technical_incomplete_excluded": 39,
+      "v4h_valid_candidates": 1281
+    },
+    "input_contract_artifact_label": "adaptive_input_contract",
+    "input_contract_sha256": "3c7b5b2148494e203ddbf17871ab12aca2d725e8e07f2e8e97074065f55a2382",
+    "legacy_stage1_inputs_forbidden": true,
+    "source_receipt_artifact_label": "v4h_adaptive_source_receipt",
+    "source_receipt_sha256": "ef245ace9c7e2f8c6dbe15893c67689084d00e7720a1855fb88f900fe29b79be",
+    "status": "FROZEN_V2_4_ADAPTIVE_MULTI_SEED_DUAL_SOURCE_INPUTS",
+    "teacher_generation": "V4D_MULTI_SEED_PLUS_V4H_ADAPTIVE_MULTI_SEED_V2",
+    "trainer_input_artifact_labels": {
+      "marginal": "adaptive_marginal_tsv_gz",
+      "pair": "adaptive_pair_tsv_gz"
+    },
+    "v4d_source_receipt_sha256": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f"
+  },
+  "artifacts": {
+    "adaptive_input_contract": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/adaptive_input_contract_v1.json",
+      "sha256": "3c7b5b2148494e203ddbf17871ab12aca2d725e8e07f2e8e97074065f55a2382",
+      "size_bytes": 2056,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v2_4_adaptive_dual_targets_v1_20260718/ADAPTIVE_DUAL_SOURCE_INPUT_CONTRACT_V1.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "adaptive_marginal_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/adaptive_marginal_RUN_RECEIPT.json",
+      "sha256": "aac5831ab3a398d6af6a72bd4e67adc8e9f5980a16b012af046f6e0d7e3062ec",
+      "size_bytes": 4121,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v2_4_adaptive_dual_targets_v1_20260718/marginal/RUN_RECEIPT.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "adaptive_marginal_tsv_gz": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/v6_dual_source_adaptive_multiseed_marginal_targets_v2.tsv.gz",
+      "sha256": "ed1d06b24e5315d2be38d55683f2bfadc5facd97a0086656ba3cc85e74ffcb28",
+      "size_bytes": 2052061,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v2_4_adaptive_dual_targets_v1_20260718/marginal/v6_adaptive_dual_source_residue_contact_targets_v3.tsv.gz",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "adaptive_pair_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/adaptive_pair_RUN_RECEIPT.json",
+      "sha256": "9f1bc5a0b180b62189d6f65be0f920f87ce4ff3c9aee2321209cfe5f5e8e1f59",
+      "size_bytes": 6443,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v2_4_adaptive_dual_targets_v1_20260718/pair/RUN_RECEIPT.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "adaptive_pair_tsv_gz": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/v6_dual_source_adaptive_multiseed_pair_targets_v2.tsv.gz",
+      "sha256": "29783e9473862dacc92e4a31b99a9d2f8a6ecba125a7ffac9aebc44dfb91cd86",
+      "size_bytes": 8805820,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v2_4_adaptive_dual_targets_v1_20260718/pair/v6_adaptive_dual_source_pair_contact_targets_v3.tsv.gz",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "base_target_pt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graphs_v2.pt",
+      "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc",
+      "size_bytes": 425109,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graphs_v2.pt",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "base_target_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graph_receipt_v2.json",
+      "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9",
+      "size_bytes": 3078,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graph_receipt_v2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "bundle_materializer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/materialize_node1_bundle_v2_2.py",
+      "sha256": "6b58d5bfaba96bc8ec222dc3e45f8db69f532880ca0289674676954de105804e",
+      "size_bytes": 5866,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/materialize_node1_bundle_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "calibration_runner": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/run_open_only_prestep_calibration_v2_2.py",
+      "sha256": "1af55b94dee9fd993286ec7b37ad2d162b781eea91a28abcc937014584f69fe8",
+      "size_bytes": 21200,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/run_open_only_prestep_calibration_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "calibration_runner_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/tests/test_run_open_only_prestep_calibration_v2_2.py",
+      "sha256": "cd205aa3499b52ce0d95852406d7aec1d4e6bae4e2bf45c3abcd408c5f613620",
+      "size_bytes": 2368,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/test_run_open_only_prestep_calibration_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "calibration_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/observe_v2_4_multibatch_calibration_v2_2.py",
+      "sha256": "6947f912e85f4096ad660d7dc3a47d023a44e2bae8c63e619eab9707c80bcbc1",
+      "size_bytes": 22384,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/trainer/observe_v2_4_multibatch_calibration_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "calibration_trainer_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/tests/test_observe_v2_4_multibatch_calibration_v2_2.py",
+      "sha256": "80da8ff20e3b349c25570aeb6caa81858ebedc82664eb1aca044195447533d2e",
+      "size_bytes": 5651,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/trainer/test_observe_v2_4_multibatch_calibration_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "contact_formula": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/contact_contract/contact_score_formula_v1.json",
+      "sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7",
+      "size_bytes": 876,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/contact_contract/contact_score_formula_v1.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "deployment_launcher": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/node1_v2_4_outer_development_launcher_v2_2.py",
+      "sha256": "e7af0a8f22b06fba04e69504253a65903b5a7acb3abbcbae769b52d49a625456",
+      "size_bytes": 32007,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/node1_v2_4_outer_development_launcher_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "esm2_650m_identity": {
+      "inherited_freeze_sha256": "e532b38986c620c508f78003ff1aeb897034fd5efa5e6ffc311af81153b296ca",
+      "node1_path": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c/model.safetensors",
+      "sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "size_bytes": 2609506392,
+      "validation_mode": "INHERITED_NODE1_IMMUTABLE"
+    },
+    "model": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/residue_model_v2_4.py",
+      "sha256": "d3295b4a8c8465a528f2e9a8b465e63177e465b2183999f6d972ffa4a3bde36d",
+      "size_bytes": 30433,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/model/residue_model_v2_4.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "model_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/tests/test_residue_model_v2_4.py",
+      "sha256": "2bc7712a81fc5317eac4b8373eabb6920fe7ffcc4032eae77451490bb9a99bd5",
+      "size_bytes": 11477,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/model/test_residue_model_v2_4.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_0": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/outer_fold_0.json",
+      "sha256": "e627ac7dea053bad44dfabcf68fd210a27878a3c3b79bb9122fb3021b13408d9",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_0.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_1": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/outer_fold_1.json",
+      "sha256": "4f38246e83b8dd4f647e9f36fda6349f3bcdf33aad9a808cfbb70c049d2122d4",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_1.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_2": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/outer_fold_2.json",
+      "sha256": "539f58a611626bef116d1a648bccb3da4d71a25fb9aa8a947e63452478285e27",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_3": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/outer_fold_3.json",
+      "sha256": "44cb005b228533f3429c4c3fdf55bb89f044ab00766377a3d953ca3a3d7b6db7",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_3.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_4": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/outer_fold_4.json",
+      "sha256": "a44173aa91e0681e929280b2a28702035997bb4780ef12ffc88ce3a90752cd88",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_4.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_materialization_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/receipt.json",
+      "sha256": "5f412ab844420a18ff4d7b52d4a1631c98c2ee5f3dee4322df6c650eaa8e4c21",
+      "size_bytes": 2610,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/receipt.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_source": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/splits/source_outer_development_manifest.tsv",
+      "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55",
+      "size_bytes": 3116655,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/outer_development_manifest.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "postcalibration_materializer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/materialize_postcalibration_freeze_v2_2.py",
+      "sha256": "6bbe4438c7c5a855b159033e4780819dac562c1470922f66a6fdf4587a746f72",
+      "size_bytes": 44913,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/materialize_postcalibration_freeze_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "postcalibration_materializer_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/tests/test_materialize_postcalibration_freeze_v2_2.py",
+      "sha256": "c568daeaf27b28ae5ccf179e05937e2e276f72c1c3b015da9197084eac12a119",
+      "size_bytes": 22033,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/test_materialize_postcalibration_freeze_v2_2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/src/train_v2_4_base_split.py",
+      "sha256": "59245b7aa28c14e9134f15fa1c2f4717e3a3b3a7c3e044a4d7cda06afc1c685f",
+      "size_bytes": 58686,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/trainer/train_v2_4_base_split.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "trainer_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/tests/test_train_v2_4_base_split.py",
+      "sha256": "f28d93c3df30775c4d3d1ee120d0c5e7d39fb117d6eb01b58b342e5985873704",
+      "size_bytes": 14814,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/trainer/test_train_v2_4_base_split.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "training_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/v6_supervised1507_v2_4.receipt.json",
+      "sha256": "b7e5f764a58d1d4d059c36ebbafc2851d93cce7539110b44b7fd7240e3344499",
+      "size_bytes": 4278,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.receipt.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "training_tsv": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/v6_supervised1507_v2_4.tsv",
+      "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+      "size_bytes": 3126989,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v1_5_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af",
+      "size_bytes": 52884,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v1_model": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/residue_model.py",
+      "sha256": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb",
+      "size_bytes": 13666,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/residue_model.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v1_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate.py",
+      "sha256": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8",
+      "size_bytes": 41420,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/train_nested_residue_surrogate.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v23_freeze": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v2/IMPLEMENTATION_FREEZE_V2.json",
+      "sha256": "e532b38986c620c508f78003ff1aeb897034fd5efa5e6ffc311af81153b296ca",
+      "size_bytes": 50876,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_3_numerical_soak_launcher_v1_20260718/IMPLEMENTATION_FREEZE_V2_3.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v23_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v2/src/train_nested_residue_surrogate_v2.py",
+      "sha256": "68a441b1af6ad979db30a57fb652f3b60200e382bfdfc177d640d79a55b4bb84",
+      "size_bytes": 97573,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v2/src/train_nested_residue_surrogate_v2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v2_2_supersession_audit": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/audits/V2_CALIBRATION_CLAIM_BOUNDARY_SUPERSESSION_V2_2.json",
+      "sha256": "86a1b18cbd7fb7c511f168d981e4f99f0f6d48bdd8e1c095e83db6e285519f53",
+      "size_bytes": 3688,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/V2_CALIBRATION_CLAIM_BOUNDARY_SUPERSESSION_V2_2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v2_migration_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/tests/test_v2_2_claim_supersession.py",
+      "sha256": "ff72c786585f83fcc51d735ec348e0f99e19ba71439c4ec46b6c9007e56dd742",
+      "size_bytes": 4167,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/test_v2_2_claim_supersession.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v4d_source_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/v4d_open226_source_RUN_RECEIPT.json",
+      "sha256": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f",
+      "size_bytes": 2397,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_v4d_open226_contact_teacher_v2_20260718/RUN_RECEIPT.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v4h_adaptive_source_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/inputs/adaptive_contacts/v4h_adaptive_source_RUN_RECEIPT.json",
+      "sha256": "ef245ace9c7e2f8c6dbe15893c67689084d00e7720a1855fb88f900fe29b79be",
+      "size_bytes": 1634,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v4_h_adaptive_contact_teacher_v2_20260718/RUN_RECEIPT.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_cache_npz": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_v2.npz",
+      "sha256": "95faf75f434375aa086cc4135967f7165b6089ede4f26c890925d9a501288d71",
+      "size_bytes": 217222570,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_cache_v2.npz",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_closure": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_input_closure_v2.tsv",
+      "sha256": "3bc95f0c7b2f1559c10e8a009a9b94ae1992fc024ee3ab5847099e69b29904df",
+      "size_bytes": 468069,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_input_closure_v2.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_manifest": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_manifest_v2.tsv",
+      "sha256": "7da6dd48a858395e1514d82189757513a9da4df9d7ddefc8a95c72b6b7cc4fd1",
+      "size_bytes": 361073,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_manifest_v2.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_materialization_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/materialization_receipt_v2.json",
+      "sha256": "be32b3053aa3f42bcee0a66b213e3bc5f419db32e1a2a3b1bf8b12b825dc797e",
+      "size_bytes": 2770,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/materialization_receipt_v2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_receipt_v2.json",
+      "sha256": "83fe4fb6601798293e0b95ed255faad40a5fbe9b0cee9914976a82f12b85024a",
+      "size_bytes": 888,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_cache_receipt_v2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    }
+  },
+  "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718",
+  "calibration_contract": {
+    "attention_temperatures": {
+      "8x6b": 1.0,
+      "9e6y": 1.0
+    },
+    "batch_selection": {
+      "batch_records": [
+        {
+          "batch_id": "B00_OFFSET_0000",
+          "batch_offset": 0,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00231__B_LOWER__H1H3__B03__M00",
+            "RFV1__PLDNANO_VHH_00384__C_CROSS__H1H3__B03__M01",
+            "RFV1__PLDNANO_VHH_00371__B_LOWER__H3__B07__M01",
+            "V4H__PLDNANO_VHH_00614__C_CROSS__H3__B08__M01",
+            "V4H__PLDNANO_VHH_00423__A_CENTER__H1H3__B06__M02",
+            "V4H__PLDNANO_VHH_00423__B_LOWER__H1H3__B08__M02",
+            "V4H__PLDNANO_VHH_00257__C_CROSS__H3__B01__M01",
+            "V4H__PLDNANO_VHH_00423__C_CROSS__H3__B01__M02"
+          ],
+          "candidate_ids_sha256": "0371c91ba24ad7d3f938bf511b9454d82110e77428b3abd1458e69a1a1f0e593",
+          "contact_tier_counts": {
+            "A": 3,
+            "C": 5
+          },
+          "forward_seed": 1000046,
+          "parent_framework_clusters": [
+            "C0162",
+            "C0176",
+            "C0248",
+            "C0258",
+            "C0283",
+            "C0409"
+          ],
+          "teacher_source_counts": {
+            "V4D_OPEN_MULTI_SEED": 2,
+            "V4H_ADAPTIVE_SEED_RANKING": 6
+          }
+        },
+        {
+          "batch_id": "B01_OFFSET_0022",
+          "batch_offset": 22,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00614__B_LOWER__H1H3__B03__M01",
+            "V4H__PLDNANO_VHH_00231__A_CENTER__H3__B05__M00",
+            "V4H__PLDNANO_VHH_00423__C_CROSS__H3__B09__M00",
+            "V4H__PLDNANO_VHH_00136__A_CENTER__H3__B05__M01",
+            "V4H__PLDNANO_VHH_00136__B_LOWER__H1H3__B11__M01",
+            "RFV1__PLDNANO_VHH_00376__A_CENTER__H1H3__B03__M00",
+            "V4H__PLDNANO_VHH_00231__A_CENTER__H1H3__B02__M01",
+            "V4H__PLDNANO_VHH_00231__C_CROSS__H1H3__B11__M00"
+          ],
+          "candidate_ids_sha256": "285ba42a73b8c4679d8d891927cd670a1b3bf27a034060566a5dddd45214e2a0",
+          "contact_tier_counts": {
+            "A": 1,
+            "B": 4,
+            "C": 3
+          },
+          "forward_seed": 1000068,
+          "parent_framework_clusters": [
+            "C0086",
+            "C0162",
+            "C0251",
+            "C0283",
+            "C0409"
+          ],
+          "teacher_source_counts": {
+            "V4D_OPEN_MULTI_SEED": 1,
+            "V4H_ADAPTIVE_SEED_RANKING": 7
+          }
+        },
+        {
+          "batch_id": "B02_OFFSET_0044",
+          "batch_offset": 44,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00423__A_CENTER__H1H3__B02__M02",
+            "V4H__PLDNANO_VHH_00423__B_LOWER__H1H3__B04__M01",
+            "V4H__PLDNANO_VHH_00231__A_CENTER__H1H3__B09__M00",
+            "V4H__PLDNANO_VHH_00207__C_CROSS__H1H3__B08__M02",
+            "RFV1__PLDNANO_VHH_00623__B_LOWER__H3__B02__M00",
+            "V4H__PLDNANO_VHH_00118__C_CROSS__H3__B02__M02",
+            "RFV1__PLDNANO_VHH_00371__C_CROSS__H1H3__B02__M00",
+            "V4H__PLDNANO_VHH_00118__C_CROSS__H3__B07__M01"
+          ],
+          "candidate_ids_sha256": "266fb7f55d287ac015d87b9055d39ec0dec3859d9dd60a4848645abbefa2f61a",
+          "contact_tier_counts": {
+            "A": 3,
+            "B": 2,
+            "C": 3
+          },
+          "forward_seed": 1000090,
+          "parent_framework_clusters": [
+            "C0078",
+            "C0145",
+            "C0162",
+            "C0248",
+            "C0283",
+            "C0418"
+          ],
+          "teacher_source_counts": {
+            "V4D_OPEN_MULTI_SEED": 2,
+            "V4H_ADAPTIVE_SEED_RANKING": 6
+          }
+        },
+        {
+          "batch_id": "B03_OFFSET_0067",
+          "batch_offset": 67,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "RFV1__PLDNANO_VHH_00327__A_CENTER__H1H3__B04__M01",
+            "V4H__PLDNANO_VHH_00207__C_CROSS__H1H3__B10__M02",
+            "RFV1__PLDNANO_VHH_00611__C_CROSS__H3__B04__M02",
+            "V4H__PLDNANO_VHH_00614__C_CROSS__H3__B05__M01",
+            "V4H__PLDNANO_VHH_00207__A_CENTER__H3__B03__M00",
+            "V4H__PLDNANO_VHH_00622__B_LOWER__H3__B08__M01",
+            "V4H__PLDNANO_VHH_00257__C_CROSS__H1H3__B05__M02",
+            "V4H__PLDNANO_VHH_00257__B_LOWER__H3__B09__M02"
+          ],
+          "candidate_ids_sha256": "06323c3107cf806431c7ec5d0447f7f4862fc6d67990d3414f7ce5a0dadc7d89",
+          "contact_tier_counts": {
+            "A": 2,
+            "B": 1,
+            "C": 5
+          },
+          "forward_seed": 1000113,
+          "parent_framework_clusters": [
+            "C0145",
+            "C0176",
+            "C0224",
+            "C0406",
+            "C0409",
+            "C0417"
+          ],
+          "teacher_source_counts": {
+            "V4D_OPEN_MULTI_SEED": 2,
+            "V4H_ADAPTIVE_SEED_RANKING": 6
+          }
+        },
+        {
+          "batch_id": "B04_OFFSET_0089",
+          "batch_offset": 89,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00231__C_CROSS__H1H3__B00__M00",
+            "V4H__PLDNANO_VHH_00118__B_LOWER__H1H3__B11__M01",
+            "V4H__PLDNANO_VHH_00531__B_LOWER__H1H3__B01__M01",
+            "V4H__PLDNANO_VHH_00231__A_CENTER__H3__B03__M01",
+            "V4H__PLDNANO_VHH_00136__C_CROSS__H1H3__B05__M01",
+            "V4H__PLDNANO_VHH_00622__A_CENTER__H3__B08__M02",
+            "V4H__PLDNANO_VHH_00614__A_CENTER__H3__B07__M01",
+            "V4H__PLDNANO_VHH_00423__B_LOWER__H3__B11__M02"
+          ],
+          "candidate_ids_sha256": "c6a27272d0377dc7a8899487994c05e7d4973d66b36554082f7be96aac807edb",
+          "contact_tier_counts": {
+            "A": 1,
+            "C": 7
+          },
+          "forward_seed": 1000135,
+          "parent_framework_clusters": [
+            "C0078",
+            "C0086",
+            "C0162",
+            "C0283",
+            "C0360",
+            "C0409",
+            "C0417"
+          ],
+          "teacher_source_counts": {
+            "V4H_ADAPTIVE_SEED_RANKING": 8
+          }
+        },
+        {
+          "batch_id": "B05_OFFSET_0112",
+          "batch_offset": 112,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00622__C_CROSS__H1H3__B08__M02",
+            "V4H__PLDNANO_VHH_00257__B_LOWER__H1H3__B02__M00",
+            "V4H__PLDNANO_VHH_00614__B_LOWER__H3__B08__M02",
+            "RFV1__PLDNANO_VHH_00866__A_CENTER__H1H3__B03__M02",
+            "V4H__PLDNANO_VHH_00423__A_CENTER__H1H3__B03__M01",
+            "V4H__PLDNANO_VHH_00531__B_LOWER__H1H3__B02__M00",
+            "V4H__PLDNANO_VHH_00231__B_LOWER__H1H3__B07__M02",
+            "V4H__PLDNANO_VHH_00136__B_LOWER__H3__B07__M01"
+          ],
+          "candidate_ids_sha256": "b4259ad6ce3ede033e1306c4d12e53ae23450353bac1fd450e82055da330a2b9",
+          "contact_tier_counts": {
+            "A": 1,
+            "B": 1,
+            "C": 6
+          },
+          "forward_seed": 1000158,
+          "parent_framework_clusters": [
+            "C0086",
+            "C0162",
+            "C0176",
+            "C0283",
+            "C0360",
+            "C0409",
+            "C0417",
+            "C0495"
+          ],
+          "teacher_source_counts": {
+            "V4D_OPEN_MULTI_SEED": 1,
+            "V4H_ADAPTIVE_SEED_RANKING": 7
+          }
+        },
+        {
+          "batch_id": "B06_OFFSET_0134",
+          "batch_offset": 134,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00622__B_LOWER__H1H3__B00__M00",
+            "V4H__PLDNANO_VHH_00136__C_CROSS__H3__B01__M02",
+            "V4H__PLDNANO_VHH_00622__B_LOWER__H1H3__B10__M00",
+            "V4H__PLDNANO_VHH_00614__A_CENTER__H3__B05__M00",
+            "V4H__PLDNANO_VHH_00622__B_LOWER__H1H3__B07__M02",
+            "V4H__PLDNANO_VHH_00423__B_LOWER__H3__B07__M01",
+            "V4H__PLDNANO_VHH_00531__C_CROSS__H1H3__B02__M00",
+            "V4H__PLDNANO_VHH_00231__B_LOWER__H3__B02__M00"
+          ],
+          "candidate_ids_sha256": "97753abc57dc4c10f4c41c95634857f8e1a7364ee766a2ca4df16c8fc9bb9022",
+          "contact_tier_counts": {
+            "B": 2,
+            "C": 6
+          },
+          "forward_seed": 1000180,
+          "parent_framework_clusters": [
+            "C0086",
+            "C0162",
+            "C0283",
+            "C0360",
+            "C0409",
+            "C0417"
+          ],
+          "teacher_source_counts": {
+            "V4H_ADAPTIVE_SEED_RANKING": 8
+          }
+        },
+        {
+          "batch_id": "B07_OFFSET_0157",
+          "batch_offset": 157,
+          "candidate_count": 8,
+          "candidate_ids": [
+            "V4H__PLDNANO_VHH_00423__C_CROSS__H1H3__B01__M02",
+            "V4H__PLDNANO_VHH_00614__A_CENTER__H3__B00__M00",
+            "RFV1__PLDNANO_VHH_00322__B_LOWER__H3__B05__M02",
+            "V4H__PLDNANO_VHH_00622__C_CROSS__H1H3__B11__M00",
+            "V4H__PLDNANO_VHH_00531__C_CROSS__H3__B04__M02",
+            "V4H__PLDNANO_VHH_00622__B_LOWER__H3__B10__M00",
+            "V4H__PLDNANO_VHH_00531__A_CENTER__H1H3__B05__M02",
+            "RFV1__PLDNANO_VHH_00874__B_LOWER__H3__B11__M01"
+          ],
+          "candidate_ids_sha256": "b7a2d8490646301b1d7735baefbbfaa4042db4566ea4c9511d5d9f82c2608845",
+          "contact_tier_counts": {
+            "A": 2,
+            "B": 1,
+            "C": 5
+          },
+          "forward_seed": 1000203,
+          "parent_framework_clusters": [
+            "C0219",
+            "C0283",
+            "C0360",
+            "C0409",
+            "C0417",
+            "C0502"
+          ],
+          "teacher_source_counts": {
+            "V4D_OPEN_MULTI_SEED": 2,
+            "V4H_ADAPTIVE_SEED_RANKING": 6
+          }
+        }
+      ],
+      "batch_size": 8,
+      "complete_batch_count": 158,
+      "contract_sha256": "0f7ad07e247dca1e80d15875448deacb621dd46b70e0e2dc154211e43f813923",
+      "seed": 43,
+      "selection_algorithm": "evenly_spaced_complete_batches_after_python_random_seed_shuffle_v1",
+      "training_candidate_count": 1269
+    },
+    "binding_status": "PENDING_V2_2_ADAPTIVE_OPEN_ONLY_PRESTEP_CALIBRATION",
+    "calibration_receipt_node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/CALIBRATION_RECEIPT.json",
+    "calibration_runtime_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_calibration_v2_2_20260718",
+    "fixed_grid": [
+      0.25,
+      0.5,
+      0.75,
+      1.0,
+      1.5,
+      2.0,
+      3.0,
+      5.0,
+      7.5,
+      10.0
+    ],
+    "frozen_lane_contact_weights": null,
+    "maximum_per_batch_gradient_fraction": 0.3,
+    "open_only": true,
+    "optimizer_steps_before_observation": 0,
+    "outer_metrics_access_count": 0,
+    "pair_to_marginal_ratio": 0.5,
+    "prediction_metrics_access_count": 0,
+    "receipt_artifact_label": null,
+    "selection_rule": "per_lane_smallest_grid_value_with_median_in_band_and_per_batch_max_at_or_below_ceiling_before_optimizer_step",
+    "target_median_gradient_fraction_band": [
+      0.05,
+      0.15
+    ]
+  },
+  "claim_boundary": "Open-only adaptive-multiseed independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "execution": {
+    "automatic_smoke_to_outer_transition": false,
+    "folds_sequential_within_lane": true,
+    "lanes_concurrent": 4,
+    "outer_folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "phase_order": [
+      "OPEN_ONLY_CONTACT_GRADIENT_CALIBRATION",
+      "IMPLEMENTATION_FREEZE",
+      "TINY_SMOKE",
+      "FOUR_LANE_OUTER_DEVELOPMENT"
+    ],
+    "tiny_smoke_must_pass_all_lanes": true
+  },
+  "expected_training_counts": {
+    "reliability_tiers": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
+    "rows": 1507,
+    "teacher_sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "unique_candidates": 1507,
+    "unique_parent_framework_clusters": 31
+  },
+  "historical_v1_non_input_provenance": {
+    "postcalibration_materializer_test_v1_sha256": "75044eadf059fd19459f6b4fe9a9c4f7951c9c10201aa1eab23bbaa40a49f3fd",
+    "postcalibration_materializer_v1_sha256": "56f040f2814dbdb9e27a4484b4ef0fec7320f9e7581e24776b0a99a56aa0e662",
+    "production_input": false
+  },
+  "manifest_generation": "V2_2_ADAPTIVE_MULTI_SEED_CLAIM_ALIGNED",
+  "pending": [
+    "CALIBRATION_RECEIPT.json",
+    "frozen_lane_contact_weights",
+    "IMPLEMENTATION_FREEZE_V2_4_ADAPTIVE_V2_2.json"
+  ],
+  "prediction_metrics_access_count": 0,
+  "production_authorized": false,
+  "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+  "resources": {
+    "cpu_threads_per_process": 8,
+    "lane_gpu_map": {
+      "A_VHH_ONLY": 1,
+      "B_TARGET_NO_CONTACT": 2,
+      "C_SPLIT_MARGINAL": 4,
+      "D_SPLIT_PAIR": 5
+    },
+    "thread_environment": {
+      "MKL_NUM_THREADS": "8",
+      "NUMEXPR_NUM_THREADS": "8",
+      "OMP_NUM_THREADS": "8",
+      "OPENBLAS_NUM_THREADS": "8",
+      "TOKENIZERS_PARALLELISM": "false"
+    }
+  },
+  "runtime_must_remain_absent_until_implementation_freeze": true,
+  "runtime_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_four_lane_oof_v2_2_20260718",
+  "schema_version": "pvrig_v6_residue_v2_4_node1_deployment_manifest_v2_2_adaptive_multiseed_multibatch_claim_aligned",
+  "sealed_evaluation_access_count": 0,
+  "status": "PREFREEZE_V2_2_ADAPTIVE_MULTI_SEED_CALIBRATION_PENDING_DO_NOT_START",
+  "technical_supersession": {
+    "audit_artifact_label": "v2_2_supersession_audit",
+    "audit_sha256": "86a1b18cbd7fb7c511f168d981e4f99f0f6d48bdd8e1c095e83db6e285519f53",
+    "batch_changes": 0,
+    "gate_changes": 0,
+    "grid_changes": 0,
+    "model_changes": 0,
+    "numeric_method_changes": 0,
+    "scope": "claim-boundary emission and exact validation only",
+    "v2_1_selected_contact_weights": {
+      "C_SPLIT_MARGINAL": {
+        "marginal": 1.5,
+        "pair": 0.0
+      },
+      "D_SPLIT_PAIR": {
+        "marginal": 1.0,
+        "pair": 0.5
+      }
+    },
+    "version": "V2.2_CLAIM_BOUNDARY_ALIGNMENT_ONLY"
+  },
+  "trainer": {
+    "argv_template": [
+      "{python}",
+      "{trainer}",
+      "--lane",
+      "{lane}",
+      "--output-dir",
+      "{output_dir}",
+      "--split-manifest",
+      "{split_manifest}",
+      "--v2-3-bundle-root",
+      "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718",
+      "--training-tsv",
+      "{training_tsv}",
+      "--contact-tsv-gz",
+      "{adaptive_marginal_tsv_gz}",
+      "--graph-cache-dir",
+      "{vhh_graph_dir}",
+      "--target-graph-pt",
+      "{base_target_pt}",
+      "--pair-contact-tsv-gz",
+      "{adaptive_pair_tsv_gz}",
+      "--structure-dim",
+      "126",
+      "--contact-formula-json",
+      "{contact_formula}",
+      "--model-path",
+      "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c",
+      "--model-identity-file",
+      "{esm2_650m_identity}",
+      "--expected-model-sha256",
+      "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "--learning-rate",
+      "0.0001",
+      "--weight-decay",
+      "0.02",
+      "--gradient-clip",
+      "1.0",
+      "--gradient-accumulation",
+      "2",
+      "--huber-delta",
+      "0.03",
+      "--receptor-weight",
+      "1.0",
+      "--dual-weight",
+      "0.5",
+      "--ridge-alpha",
+      "10.0",
+      "--seed",
+      "43",
+      "--structure-prefix",
+      "ALL__",
+      "--structure-prefix",
+      "CDR1_CDR2__",
+      "--structure-prefix",
+      "CDR1_CDR3__",
+      "--structure-prefix",
+      "CDR1_FRAMEWORK__",
+      "--structure-prefix",
+      "CDR1__",
+      "--structure-prefix",
+      "CDR2_CDR3__",
+      "--structure-prefix",
+      "CDR2_FRAMEWORK__",
+      "--structure-prefix",
+      "CDR2__",
+      "--structure-prefix",
+      "CDR3_FRAMEWORK__",
+      "--structure-prefix",
+      "CDR3__",
+      "--structure-prefix",
+      "CDR_ALL__",
+      "--structure-prefix",
+      "FRAMEWORK__"
+    ],
+    "artifact_label": "trainer",
+    "calibration_artifact_label": "calibration_trainer",
+    "frozen_noncalibration_parameters": {
+      "batch_size": 8,
+      "dropout": 0.25,
+      "dual_weight": 0.5,
+      "fixed_epochs": 8,
+      "gradient_accumulation": 2,
+      "gradient_clip": 1.0,
+      "graph_hidden_dim": 128,
+      "huber_delta": 0.03,
+      "learning_rate": 0.0001,
+      "precision": "bf16",
+      "receptor_weight": 1.0,
+      "ridge_alpha": 10.0,
+      "seed": 43,
+      "structure_dim": 126,
+      "weight_decay": 0.02
+    },
+    "lane_outer_extra_argv": null,
+    "outer_development_extra_argv": null,
+    "required_result_file": "RESULT.json",
+    "tiny_smoke_extra_argv": [
+      "--backbone-kind",
+      "tiny",
+      "--tiny-e2e",
+      "--fixed-epochs",
+      "1",
+      "--graph-hidden-dim",
+      "32",
+      "--dropout",
+      "0",
+      "--batch-size",
+      "4",
+      "--device",
+      "cpu",
+      "--precision",
+      "fp32"
+    ]
+  }
+}

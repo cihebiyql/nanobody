@@ -1,0 +1,112 @@
+{
+  "claim_boundary": "Open-only adaptive-multiseed independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "corrected_artifacts": {
+    "bundle_materializer": {
+      "path": "deployment/materialize_node1_bundle_v2_2_1.py",
+      "sha256": "43a001b5556f11dff95e8a90c4d5a8d04208911f5a719eb2116d998f0df56449"
+    },
+    "launcher": {
+      "path": "deployment/node1_v2_4_outer_development_launcher_v2_2_1.py",
+      "sha256": "f5f9884f097bec8107d2a25973e23db4dc4884d2f1e9a3849b98f4b0f9d954fe"
+    },
+    "launcher_test": {
+      "path": "deployment/test_node1_v2_4_outer_development_launcher_v2_2_1.py",
+      "sha256": "156ebe8216270ecfa13c56ba6d7b024314aa419124267928349f30d4005acc2d"
+    },
+    "postcalibration_materializer": {
+      "path": "deployment/materialize_postcalibration_freeze_v2_2_1.py",
+      "sha256": "a683a94e82d13439436d4dc2f768e13409a52e390cc979c11605407b27908d9a"
+    },
+    "postcalibration_materializer_test": {
+      "path": "deployment/test_materialize_postcalibration_freeze_v2_2_1.py",
+      "sha256": "f6b91ca43534c9eed2c7c971f6e8994b5e4b9a6b8f19e391bfd073ba2a4f2397"
+    },
+    "prefreeze_builder": {
+      "path": "deployment/build_prefreeze_manifest_v2_2_1.py",
+      "sha256": "5bcf5870980a1d5ab6cc97ece75eec94d60c1ef59725d13a1f74f3082a98ced2"
+    },
+    "runner": {
+      "path": "deployment/run_open_only_prestep_calibration_v2_2_1.py",
+      "sha256": "a380100bf58c4149c1f83bfb0b1490a88bdd5f80e5e123816fb1287352a481b5"
+    },
+    "runner_test": {
+      "path": "deployment/test_run_open_only_prestep_calibration_v2_2_1.py",
+      "sha256": "5f0b101e2ae518366d5240a51566a6c84e863541fe4970aeb72964302761d84f"
+    }
+  },
+  "corrective_closure": {
+    "components": [
+      "prefreeze builder schema, status, roots, artifact graph, and audit hash closure",
+      "calibration runner pending-status correction and dual-claim/revision receipt emission",
+      "launcher manifest/freeze/receipt schema, campaign claim, trainer-result claim, and bundle-revision validation",
+      "ready-manifest tiny-smoke commands receive the exact frozen per-lane contact weights; pending prefreeze dry-run remains weightless",
+      "postcalibration ready manifest and implementation freeze emit and bind both claims plus bundle revision",
+      "bundle materializer requires and copies the corrected builder, runner, launcher, postcalibration, and test artifacts",
+      "tests cover all four frozen lane weights, pending weightlessness, freeze tamper rejection, smoke-receipt tamper rejection, and trainer-result claim closure"
+    ],
+    "identifier_note": "The historical bundle revision identifier V2.2.1_STATUS_CONSTANT_ONLY names the triggering revision; this audit is authoritative for its broader nonnumeric technical closure scope.",
+    "nonnumeric_only": true,
+    "scientific_or_numeric_change": false
+  },
+  "defect": {
+    "affected_entrypoints": [
+      "dry_run",
+      "execute"
+    ],
+    "corrected_runner_status": "PREFREEZE_V2_2_1_ADAPTIVE_MULTI_SEED_CALIBRATION_PENDING_DO_NOT_START",
+    "manifest_status": "PREFREEZE_V2_2_ADAPTIVE_MULTI_SEED_CALIBRATION_PENDING_DO_NOT_START",
+    "scope_correction": "The V2.2.1 closure is not runner-only. The triggering defect is the stale status constant, while the immutable supersession also closes all nonnumeric execution contracts discovered during adversarial review.",
+    "stale_runner_status": "PREFREEZE_V2_ADAPTIVE_MULTI_SEED_CALIBRATION_PENDING_DO_NOT_START",
+    "trigger": "V2.2 calibration runner used a stale pending-manifest status literal and therefore failed before runtime creation."
+  },
+  "execution_boundary": {
+    "formal_training_authorized": false,
+    "new_immutable_root_required": true,
+    "overwrite_superseded_root_forbidden": true,
+    "rerun_same_calibration_required": true,
+    "tiny_smoke_authorized": false
+  },
+  "frozen_numeric_equivalence": {
+    "C_SPLIT_MARGINAL": {
+      "marginal": 1.5,
+      "pair": 0.0
+    },
+    "D_SPLIT_PAIR": {
+      "marginal": 1.0,
+      "pair": 0.5
+    },
+    "attention_temperature_changes": 0,
+    "batch_changes": 0,
+    "calibration_batch_membership_changes": 0,
+    "calibration_formula_changes": 0,
+    "data_changes": 0,
+    "gate_changes": 0,
+    "grid_changes": 0,
+    "loss_changes": 0,
+    "model_changes": 0,
+    "optimizer_changes": 0,
+    "outer_fold_split_changes": 0,
+    "selected_weight_changes": 0,
+    "training_data_changes": 0
+  },
+  "root_state_at_failure": {
+    "calibration_runtime_created": false,
+    "formal_runtime_created": false,
+    "optimizer_constructed": false,
+    "optimizer_steps": 0,
+    "prediction_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "schema_version": "pvrig_v2_4_v2_2_1_status_constant_technical_supersession_v1",
+  "status": "FROZEN_V2_2_1_NONNUMERIC_TECHNICAL_CLOSURE_SUPERSESSION",
+  "superseded_manifest_sha256": "0f7865bd6751e18c13eb91400bb41b07f11f29f55d33a33a87be8c8139ccd954",
+  "superseded_remote_failure_log": {
+    "exact_error": "FAIL_V2_4_ADAPTIVE_V2_2_CALIBRATION:calibration_requires_pending_manifest",
+    "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718/FAILED_PREEXECUTION_STATUS_CONSTANT_V2_2.log",
+    "sha256": "f638921aedf777aaa7a7b12c0bd14b836fcaec501c10f38cf0a5b60a43bdb701"
+  },
+  "superseded_runner_sha256": "1af55b94dee9fd993286ec7b37ad2d162b781eea91a28abcc937014584f69fe8",
+  "superseded_runner_test_sha256": "cd205aa3499b52ce0d95852406d7aec1d4e6bae4e2bf45c3abcd408c5f613620",
+  "supersedes_remote_bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718",
+  "trainer_result_claim_boundary": "Open-only computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding probability, affinity, experimental blocking, Docking Gold, or submission evidence."
+}

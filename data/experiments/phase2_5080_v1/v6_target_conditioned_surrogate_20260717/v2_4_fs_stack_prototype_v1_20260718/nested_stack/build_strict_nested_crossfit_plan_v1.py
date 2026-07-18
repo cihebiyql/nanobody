@@ -259,18 +259,29 @@ def substitute_trainer_command(
         return None
     require(set(lane_argv) >= set(LANES), "frozen_lane_argv_missing")
     artifacts = deployment["artifacts"]
+    # V2.2.2 renamed the adaptive multiseed contact artifacts while retaining
+    # the older placeholders in some prefreeze manifests.  Resolve both names
+    # explicitly so a later, separately authorized graph cannot fail only
+    # after the dry-run gate is lifted.
+    marginal = artifacts.get("adaptive_marginal_tsv_gz") or artifacts.get("dual_marginal_tsv_gz")
+    pair = artifacts.get("adaptive_pair_tsv_gz") or artifacts.get("dual_pair_tsv_gz")
+    require(isinstance(marginal, dict), "adaptive_marginal_artifact_missing")
+    require(isinstance(pair, dict), "adaptive_pair_artifact_missing")
     values = {
         "python": deployment["python"], "trainer": artifacts["trainer"]["node1_path"],
         "lane": lane, "output_dir": output_dir, "split_manifest": split_path,
         "training_tsv": artifacts["training_tsv"]["node1_path"],
-        "dual_marginal_tsv_gz": artifacts["dual_marginal_tsv_gz"]["node1_path"],
+        "dual_marginal_tsv_gz": marginal["node1_path"],
+        "adaptive_marginal_tsv_gz": marginal["node1_path"],
         "vhh_graph_dir": str(Path(artifacts["vhh_graph_cache_npz"]["node1_path"]).parent),
         "base_target_pt": artifacts["base_target_pt"]["node1_path"],
-        "dual_pair_tsv_gz": artifacts["dual_pair_tsv_gz"]["node1_path"],
+        "dual_pair_tsv_gz": pair["node1_path"],
+        "adaptive_pair_tsv_gz": pair["node1_path"],
         "contact_formula": artifacts["contact_formula"]["node1_path"],
         "esm2_650m_identity": artifacts["esm2_650m_identity"]["node1_path"],
     }
     command = [str(token).format(**values) for token in trainer["argv_template"]]
+    command.extend(str(v) for v in trainer.get("outer_development_extra_argv", []))
     command.extend(str(v) for v in lane_argv[lane])
     return command
 

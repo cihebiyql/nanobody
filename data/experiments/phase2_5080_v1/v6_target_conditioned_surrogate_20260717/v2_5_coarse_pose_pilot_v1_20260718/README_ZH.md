@@ -94,3 +94,26 @@ Smoke20 上有可测方差。12D 压缩表无常数列且全部 finite。
 最大的单特征 Spearman：R8 为 0.405、R9 为 0.521、Rdual 为 0.333。由于同时查看了多个特征、
 样本仅 19 条且没有 whole-parent CV，这些数字只能说明存在非恒定信号，不可作为提升证据、
 门限选择或压缩列选择依据。
+
+## Open1507 完整物化
+
+已对正式 open-development cohort 的全部 1,507 条生成相同的 label-free 特征：
+
+```text
+V4-D label-free monomer             226
+V4-H label-free monomer            1,281
+parent clusters                       31
+raw36D / symmetric12D coverage    1,507/1,507
+wall time                          393.23 s
+feature-loop time                  353.54 s
+mean feature-loop time/candidate     0.235 s
+maximum RSS                         45 MB
+```
+
+完整表没有运行任何标签相关性、模型训练或 performance comparison。正式 OOF 挑战者边界见：
+
+```text
+FORMAL_OPEN_ONLY_WHOLE_PARENT_OOF_CHALLENGER_PLAN_ZH.md
+OOF_CHALLENGER_CONTRACT_V1.json
+prepared/open1507_v1/DELIVERY_RECEIPT.json
+```
