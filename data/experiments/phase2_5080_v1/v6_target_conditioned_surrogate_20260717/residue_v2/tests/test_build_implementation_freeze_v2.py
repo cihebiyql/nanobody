@@ -128,6 +128,7 @@ class FreezeFixture:
             "primary_target": "R_dual_min",
             "implementation_allowlist": sorted(mod.EXPECTED_IMPLEMENTATION_PATHS),
             "promotion_gates": mod.EXPECTED_PROMOTION_GATES,
+            "technical_supersession": mod.EXPECTED_TECHNICAL_SUPERSESSION,
             "bootstrap": {"repetitions": 1000, "seed": 20260718},
             "v1_5_immutable_sha256": self.v1_hashes,
             "v1_5_immutable_paths": self.v1_paths,

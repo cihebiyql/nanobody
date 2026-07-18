@@ -1,4 +1,4 @@
-# Residue V2 Node1 四 Lane 部署运行手册 V1
+# Residue V2.3 Node1 四 Lane 部署运行手册 V1
 
 ## 1. 目标和边界
 
@@ -14,10 +14,10 @@
 
 ```text
 不可预先存在的运行根：
-/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718
+/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718
 
 只读部署 bundle：
-/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718
+/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718
 
 唯一 Python：
 /data1/qlyu/software/envs/pvrig-v6-tc/bin/python
@@ -41,7 +41,9 @@ physical GPU7：保留，不分配
 launcher 会按 freeze 中的 `implementation_files` 对这棵树逐文件复算 SHA。
 bundle 还必须包含 trainer 的三个 `residue_v1/src` 传递依赖：
 `residue_model.py`、`train_nested_residue_surrogate.py`、
-`train_nested_residue_surrogate_v1_5.py`。`build_residue_graph_cache_v2.py` 和
+`train_nested_residue_surrogate_v1_5.py`。launcher 会把 Python 实际导入的这三个
+本地 sibling 文件与 freeze 中同名 V1 静态证据的 SHA 逐个对齐，不接受
+仅验证归档路径、却执行未绑定拷贝的部署。`build_residue_graph_cache_v2.py` 和
 `domain_balance_v2.py` 也必须处于 implementation freeze 闭包内。
 
 正式训练额外绑定 V2.2 lane-specific contact amendment、calibration report 和
@@ -50,7 +52,30 @@ C `0.000625/0.0003125`、D `0.000625/0.0003125`（marginal/pair）。
 formal trainer 必须显式传入 `--contact-loss-amendment`；smoke 不携带该参数，
 且不得据 smoke 结果重新调权。
 
-## 3. 正式顺序
+V2.2 在 C/D fold0 正式训练中因 BF16 饱和概率的 entropy 路径出现
+`component_loss_nonfinite`，已终止且不得恢复。V2.3 只将 entropy 敏感
+计算提升到 FP32，并增加命名有限值门和 non-finite gradient gate；数据、
+loss 权重、优化器、学习率、epoch、seed、fold 和 promotion gate 全部不变。
+`NUMERICAL_STABILITY_AMENDMENT_V2_3.json` 必须在 freeze 和 implementation tree
+中以同一 SHA 绑定。
+
+## 3. V2.3 数值 soak（正式运行前必须）
+
+在新的 implementation freeze 完成后，使用独立、不可被正式运行复用的
+soak root，分别执行 C_PATCH/fold0 和 D_FULL_PAIR/fold0，两者都使用
+冻结的 `max_epochs=8` 和 V2.2 contact weights。soak 只允许读取：
+
+```text
+return code
+component/total/gradient finite gates
+RESULT/terminal 与输出哈希闭包
+```
+
+严禁读取或比较 soak 的 Spearman、RMSE、prediction 列或任何 promotion
+指标；soak checkpoint、prediction 和 output 不得复制到正式 runtime。任一路
+出现 non-finite 或输出闭包失败，V2.3 必须 fail-closed，不启动四路正式训练。
+
+## 4. 正式顺序
 
 ```text
 IMPLEMENTATION_FREEZE_V2.json 静态哈希闭包
@@ -68,19 +93,19 @@ IMPLEMENTATION_FREEZE_V2.json 静态哈希闭包
 任何失败都会停止下游阶段；不得修改参数、loss、optimizer、fold 或阈值后继续
 声称属于同一版本。
 
-## 4. Node1 命令（本文件不执行）
+## 5. Node1 命令（本文件不执行）
 
 部署 bundle 和正式 production freeze 均完成后，先 dry-run：
 
 ```bash
 set -euo pipefail
 
-BUNDLE=/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718
+BUNDLE=/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718
 PY=/data1/qlyu/software/envs/pvrig-v6-tc/bin/python
 LAUNCHER="$BUNDLE/residue_v2/deployment/node1_residue_v2_four_lane_v1.py"
 FREEZE="$BUNDLE/residue_v2/IMPLEMENTATION_FREEZE_V2.json"
 
-test ! -e /data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718
+test ! -e /data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718
 "$PY" "$LAUNCHER" \
   --implementation-freeze "$FREEZE" \
   --dry-run \
@@ -91,7 +116,7 @@ dry-run 通过后才可初次启动：
 
 ```bash
 set -euo pipefail
-BUNDLE=/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718
+BUNDLE=/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718
 PY=/data1/qlyu/software/envs/pvrig-v6-tc/bin/python
 
 setsid "$PY" \
@@ -107,7 +132,7 @@ echo $! > /data1/qlyu/pvrig_v6_residue_v2_node1_launcher_v1.pid
 
 ```bash
 set -euo pipefail
-BUNDLE=/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718
+BUNDLE=/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718
 PY=/data1/qlyu/software/envs/pvrig-v6-tc/bin/python
 
 setsid "$PY" \
@@ -121,7 +146,7 @@ echo $! > /data1/qlyu/pvrig_v6_residue_v2_node1_launcher_v1.pid
 
 不允许删除失败 terminal 或输出目录后用不同参数重跑同一版本。
 
-## 5. 核心证据
+## 6. 核心证据
 
 ```text
 status/BOOTSTRAP_RECEIPT.json

@@ -60,7 +60,7 @@ inode 使用仅约 3%，不是当前限制。容量可支持首轮 V2，但 `/da
 **推荐的新建、版本化、fail-closed 运行根：**
 
 ```text
-/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718
+/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718
 ```
 
 推荐子目录：
@@ -300,7 +300,7 @@ ssh: Could not resolve hostname node1: Temporary failure in name resolution
 上述推荐运行根已被实时确认为 absent。生产 launcher 必须在启动瞬间重新执行：
 
 ```bash
-test ! -e /data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718
+test ! -e /data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718
 nvidia-smi
 df -BG /data1
 ```

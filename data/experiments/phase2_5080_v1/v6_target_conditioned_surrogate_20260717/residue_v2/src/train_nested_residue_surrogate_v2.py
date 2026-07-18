@@ -1086,6 +1086,7 @@ def compute_v2_loss(
     balanced: dict[str, Tensor] = {}
     source_means: dict[str, Tensor] = {}
     for name, (values, mask) in components.items():
+        require(bool(torch.all(torch.isfinite(values))), f"component_loss_nonfinite:{name}")
         combined, means = source_balanced_component(
             values, sources, sample_weights=sample_weights, available_mask=mask,
         )
@@ -1095,6 +1096,7 @@ def compute_v2_loss(
     component_weights = loss_component_weights(args, args.lane)
     weighted = {name: component_weights[name] * balanced[name] for name in component_weights}
     total = torch.stack(tuple(weighted.values())).sum()
+    require(bool(torch.isfinite(total)), "weighted_total_loss_nonfinite")
     contribution_denominator = torch.stack(tuple(value.detach().abs() for value in weighted.values())).sum().clamp_min(
         torch.finfo(total.dtype).eps
     )
@@ -1346,7 +1348,11 @@ def run_epoch(
             (loss / args.gradient_accumulation).backward()
             should_step = (batch_index + 1) % args.gradient_accumulation == 0 or batch_index + 1 == len(loader)
             if should_step:
-                torch.nn.utils.clip_grad_norm_([parameter for parameter in model.parameters() if parameter.requires_grad], args.gradient_clip)
+                torch.nn.utils.clip_grad_norm_(
+                    [parameter for parameter in model.parameters() if parameter.requires_grad],
+                    args.gradient_clip,
+                    error_if_nonfinite=True,
+                )
                 optimizer.step()
                 optimizer.zero_grad(set_to_none=True)
             for name, value in parts.items():

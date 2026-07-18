@@ -1,0 +1,51 @@
+{
+  "schema_version": "pvrig_v6_residue_v2_numerical_stability_amendment_v2_3",
+  "status": "FROZEN_TECHNICAL_SUPERSESSION_BEFORE_V2_3_NUMERICAL_SOAK_OR_OOF",
+  "supersedes": {
+    "implementation_freeze_sha256": "2659325b58d2c1e8faeb6f20b71cb63a6216a21ef5803d71886aa100c2eff471",
+    "version": "V2.2"
+  },
+  "failure": {
+    "affected_lanes": [
+      "C_PATCH",
+      "D_FULL_PAIR"
+    ],
+    "formal_fold": 0,
+    "root_cause": "bfloat16_rounds_1_minus_1e-6_to_1_causing_zero_times_log_zero_in_pair_entropy",
+    "status": "FAIL_V2_2_BF16_PAIR_ENTROPY_NONFINITE_DO_NOT_RESUME"
+  },
+  "technical_changes": {
+    "binary_entropy_probability_dtype": "float32",
+    "binary_entropy_epsilon": 1e-06,
+    "component_finite_gate_is_named": true,
+    "gradient_clip_error_if_nonfinite": true,
+    "all_other_autocast_paths": "unchanged_bfloat16"
+  },
+  "scientific_configuration_unchanged": [
+    "R_dual_min primary target",
+    "V4D226 plus V4H1281 teacher rows",
+    "whole-parent nested folds and seeds",
+    "A_DOMAIN B_VHH3D C_PATCH D_FULL_PAIR architectures",
+    "V2.2 lane-specific marginal and pair contact weights",
+    "all other loss weights",
+    "AdamW learning rate weight decay accumulation clipping threshold and epoch count",
+    "M2 residual scale",
+    "promotion gates",
+    "V4-F test32 sealed boundary",
+    "legacy128 exclusion",
+    "V1.5 immutable comparator"
+  ],
+  "implementation_sha256": {
+    "residue_model_v2.py": "4694f4ecc77780ae5b641e6ce6d470278391a78a485e15ff572ee40002c70fc1",
+    "train_nested_residue_surrogate_v2.py": "68a441b1af6ad979db30a57fb652f3b60200e382bfdfc177d640d79a55b4bb84"
+  },
+  "required_preproduction_gates": {
+    "bfloat16_saturated_entropy_regression": "PASS",
+    "full_local_test_suite": "PASS",
+    "c_patch_fold0_eight_epoch_numerical_soak": "PASS_WITHOUT_READING_PREDICTION_METRICS",
+    "d_full_pair_fold0_eight_epoch_numerical_soak": "PASS_WITHOUT_READING_PREDICTION_METRICS",
+    "clean_four_lane_runtime_root": true,
+    "v2_2_partial_checkpoint_reuse": false
+  },
+  "claim_boundary": "Technical numerical-stability repair only; it does not change the computational Docking geometry target and does not create binding, affinity, experimental blocking, Docking Gold, or submission evidence."
+}

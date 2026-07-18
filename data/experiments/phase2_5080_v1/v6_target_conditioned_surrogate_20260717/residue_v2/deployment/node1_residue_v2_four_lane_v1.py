@@ -25,7 +25,7 @@ from typing import Any, Callable, Mapping, Sequence
 
 
 REMOTE_ROOT = pathlib.Path(
-    "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718"
+    "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718"
 )
 FIXED_PYTHON = pathlib.Path("/data1/qlyu/software/envs/pvrig-v6-tc/bin/python")
 MIN_FREE_GIB = 200
@@ -88,6 +88,18 @@ IMPLEMENTATION_RUNTIME_PATHS = {
     "trainer": "src/train_nested_residue_surrogate_v2.py",
     "collector": "src/collect_residue_oof_v2.py",
     "preregistration": "PREREGISTRATION_V2.json",
+}
+LOCAL_TRANSITIVE_RUNTIME_PATHS = {
+    "residue_v1_residue_model": "residue_v1/src/residue_model.py",
+    "residue_v1_base_trainer": "residue_v1/src/train_nested_residue_surrogate.py",
+    "residue_v1_v1_5_trainer": "residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+}
+NUMERICAL_AMENDMENT_RELATIVE = "NUMERICAL_STABILITY_AMENDMENT_V2_3.json"
+EXPECTED_TECHNICAL_SUPERSESSION = {
+    "amendment": NUMERICAL_AMENDMENT_RELATIVE,
+    "partial_checkpoint_reuse": False,
+    "superseded_freeze_sha256": "2659325b58d2c1e8faeb6f20b71cb63a6216a21ef5803d71886aa100c2eff471",
+    "superseded_version": "V2.2",
 }
 TRAINER_ARGUMENTS = {
     "structure_prefixes",
@@ -244,12 +256,29 @@ def load_freeze(
         )
         implementation_hashes[relative] = digest
     require(canonical_json_sha(implementation_hashes) == payload.get("implementation_tree_sha256"), "implementation_tree_sha_mismatch")
+    require(payload.get("technical_supersession") == EXPECTED_TECHNICAL_SUPERSESSION, "technical_supersession_not_frozen")
+    numerical = payload.get("numerical_stability_amendment")
+    require(isinstance(numerical, dict), "numerical_stability_amendment_missing")
+    numerical_record = implementation.get(NUMERICAL_AMENDMENT_RELATIVE)
+    require(isinstance(numerical_record, dict), "numerical_stability_amendment_implementation_missing")
+    require(numerical.get("sha256") == numerical_record.get("sha256"), "numerical_stability_amendment_sha_mismatch")
     for label, relative in IMPLEMENTATION_RUNTIME_PATHS.items():
         record = implementation.get(relative)
         require(isinstance(record, dict), f"implementation_binding_missing:{relative}")
         digest = record.get("sha256")
         require(isinstance(digest, str) and len(digest) == 64, f"implementation_sha_invalid:{relative}")
         artifacts[label] = Artifact(label, bundle_root / "residue_v2" / relative, digest, "pre_freeze_binding")
+    # The V2 trainer resolves these frozen V1 modules through its sibling
+    # ``residue_v1/src`` directory.  Bind the exact files that Python will
+    # import, rather than validating only the archival copies named in the
+    # static input matrix.
+    for label, relative in LOCAL_TRANSITIVE_RUNTIME_PATHS.items():
+        source = artifacts.get(label)
+        require(isinstance(source, Artifact), f"transitive_static_binding_missing:{label}")
+        artifacts[f"local_transitive::{label}"] = Artifact(
+            f"local_transitive::{label}", bundle_root / relative,
+            source.sha256, "pre_freeze_binding",
+        )
     require(artifacts[POST_ARTIFACT].path == expected_root / "cache/pvrig_graphs/esm2_650m_v2", "augmented_target_output_path_not_frozen")
     require((payload.get("post_augmentation_contract") or {}).get("required_before_smoke_or_production") is True, "post_augmentation_contract_missing")
     sealed = payload.get("sealed_test32_exclusion") or {}

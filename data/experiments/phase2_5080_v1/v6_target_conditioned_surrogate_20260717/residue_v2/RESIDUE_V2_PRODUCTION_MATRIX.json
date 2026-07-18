@@ -15,6 +15,7 @@
     ],
     "four_lanes_parallel_on_dedicated_gpus": true,
     "gpu_zero_forbidden": true,
+    "numerical_soak_precedes_clean_production": true,
     "reserved_gpus": [
       7
     ],
@@ -24,10 +25,12 @@
     "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_1.json",
     "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_2.json",
     "LOSS_SCALE_PREFREEZE_AUDIT_ZH.md",
+    "NUMERICAL_STABILITY_AMENDMENT_V2_3.json",
     "PLAN_V2_ZH.md",
     "PREREGISTRATION_V2.json",
     "RESIDUE_V2_CONTRACT.json",
     "RESIDUE_V2_PRODUCTION_MATRIX.json",
+    "V2_2_FORMAL_NUMERICAL_FAILURE_AUDIT_ZH.md",
     "calibration/CALIBRATION_SUPERSESSION_AUDIT_V1_TO_V1_2_ZH.md",
     "calibration/CONTACT_GRADIENT_CALIBRATION_MATRIX_V1.json",
     "calibration/CONTACT_GRADIENT_CALIBRATION_MATRIX_V1_1.json",
@@ -154,14 +157,14 @@
   "node1_deployment": {
     "artifacts": {
       "augment_target_script": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v2/src/augment_target_graph_esm2_v2.py",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v2/src/augment_target_graph_esm2_v2.py",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "cb6492233f2dd7703171d80f14edb88f604285168cd68319df2ead9ac892fafc"
       },
       "augmented_target_graph": {
         "closure_required": true,
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2",
         "phase": "post_augmentation_binding",
         "sha256": null
       },
@@ -190,19 +193,19 @@
         "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
       },
       "contact_gradient_calibration_receipt_v2_2": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/RUN_RECEIPT.json",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/RUN_RECEIPT.json",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "54e2d7a03c1b44209641129951549edc1b47b4acb18315ecb25e8300f2dc894c"
       },
       "contact_gradient_calibration_report_v2_2": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/CONTACT_GRADIENT_CALIBRATION_REPORT_V2_2.json",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/CONTACT_GRADIENT_CALIBRATION_REPORT_V2_2.json",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "d59ca85b9f6e968c3cacbfb8bef33f99521675eaa3a5e75f5fd5366dc3d9f1bd"
       },
       "contact_loss_amendment_v2_2": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/CONTACT_LOSS_AMENDMENT_V2_2.json",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/inputs/contact_loss_amendment_v2_2/CONTACT_LOSS_AMENDMENT_V2_2.json",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "578e428ade29dba5271f5a34a3dfffa2ac4deb6a165a45d201256d71dac87fa2"
@@ -238,19 +241,19 @@
         "sha256": "50127c53444351273cfbe7ab2403b448be472628a02b72e42586a4bc490ad07d"
       },
       "residue_v1_base_trainer": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate.py",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate.py",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8"
       },
       "residue_v1_residue_model": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v1/src/residue_model.py",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/residue_model.py",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb"
       },
       "residue_v1_v1_5_trainer": {
-        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+        "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
         "phase": "pre_freeze_binding",
         "remote_only": true,
         "sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af"
@@ -323,7 +326,7 @@
       }
     },
     "augmentation_gpu": 6,
-    "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718",
+    "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718",
     "cpu_threads_per_process": 8,
     "forbidden_gpus": [
       0,
@@ -337,15 +340,15 @@
     },
     "min_free_gib": 200,
     "post_augmentation_binding": {
-      "artifact_pattern": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/by_sha256/<artifact_sha>/target_graphs_esm2_650m_v2.pt",
-      "current_json": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/CURRENT.json",
-      "deployment_input_closure": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/status/DEPLOYMENT_INPUT_CLOSURE.json",
+      "artifact_pattern": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/by_sha256/<artifact_sha>/target_graphs_esm2_650m_v2.pt",
+      "current_json": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/CURRENT.json",
+      "deployment_input_closure": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718/status/DEPLOYMENT_INPUT_CLOSURE.json",
       "phase": "post_augmentation_binding",
-      "receipt_pattern": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/by_sha256/<artifact_sha>/target_graphs_esm2_650m_v2.receipt.json",
+      "receipt_pattern": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718/cache/pvrig_graphs/esm2_650m_v2/by_sha256/<artifact_sha>/target_graphs_esm2_650m_v2.receipt.json",
       "required_before_smoke_or_production": true
     },
     "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
-    "remote_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_four_lane_oof_v1_20260718",
+    "remote_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718",
     "reserved_gpus": [
       7
     ],
@@ -560,7 +563,13 @@
     "status": "SEALED_UNTIL_PREDICTION_FREEZE",
     "training_use_forbidden": true
   },
-  "status": "PREPRODUCTION_MATRIX_WAITING_V2_2_PRODUCTION_FREEZE",
+  "status": "PREPRODUCTION_MATRIX_WAITING_V2_3_NUMERICAL_SOAK_AND_PRODUCTION_FREEZE",
+  "technical_supersession": {
+    "amendment": "NUMERICAL_STABILITY_AMENDMENT_V2_3.json",
+    "partial_checkpoint_reuse": false,
+    "superseded_freeze_sha256": "2659325b58d2c1e8faeb6f20b71cb63a6216a21ef5803d71886aa100c2eff471",
+    "superseded_version": "V2.2"
+  },
   "v1_5_immutable_paths": {
     "collector_v1_5": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/src/collect_residue_oof_v1_5.py",
     "dual_contact_builder_v1": "/data1/qlyu/projects/pvrig_v6_target_conditioned_surrogate_20260717/code_v1_5/residue_v1/src/build_dual_contact_targets.py",

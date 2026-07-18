@@ -106,6 +106,8 @@ class Fixture:
             "sha256": None,
             "closure_required": True,
         }
+        for label, relative in mod.LOCAL_TRANSITIVE_RUNTIME_PATHS.items():
+            write(self.bundle / relative, self.artifact_paths[label].read_bytes())
         implementation: dict[str, dict[str, object]] = {}
         for _label, relative in mod.IMPLEMENTATION_RUNTIME_PATHS.items():
             content = f"implementation:{relative}\n"
@@ -118,6 +120,15 @@ class Fixture:
                 }) + "\n"
             path = write(self.bundle / "residue_v2" / relative, content)
             implementation[relative] = {"path": str(path), "sha256": mod.sha256_file(path), "size_bytes": path.stat().st_size}
+        numerical_path = write(
+            self.bundle / "residue_v2" / mod.NUMERICAL_AMENDMENT_RELATIVE,
+            json.dumps({"status": "fixture_v2_3_technical_supersession"}, sort_keys=True) + "\n",
+        )
+        implementation[mod.NUMERICAL_AMENDMENT_RELATIVE] = {
+            "path": str(numerical_path),
+            "sha256": mod.sha256_file(numerical_path),
+            "size_bytes": numerical_path.stat().st_size,
+        }
         self.freeze_payload = {
             "schema_version": "fixture_residue_v2_freeze",
             "mode": "production",
@@ -135,6 +146,12 @@ class Fixture:
             "implementation_tree_sha256": mod.canonical_json_sha({
                 relative: record["sha256"] for relative, record in implementation.items()
             }),
+            "technical_supersession": mod.EXPECTED_TECHNICAL_SUPERSESSION,
+            "numerical_stability_amendment": {
+                "path": str(numerical_path),
+                "sha256": mod.sha256_file(numerical_path),
+                "size_bytes": numerical_path.stat().st_size,
+            },
             "post_augmentation_contract": {"required_before_smoke_or_production": True},
             "sealed_test32_exclusion": {
                 "path_access_count": 0,
@@ -224,6 +241,15 @@ class DeploymentUnitTests(unittest.TestCase):
         with self.assertRaisesRegex(mod.DeploymentError, "artifact_sha_mismatch:implementation::src/train_nested"):
             mod.validate_static_artifacts(context)
 
+    def test_local_transitive_imports_are_bound_to_frozen_v1_hashes(self) -> None:
+        context = self.fixture.context()
+        observed = mod.validate_static_artifacts(context)
+        label = "local_transitive::residue_v1_base_trainer"
+        self.assertEqual(observed[label], context.artifacts["residue_v1_base_trainer"].sha256)
+        (self.fixture.bundle / mod.LOCAL_TRANSITIVE_RUNTIME_PATHS["residue_v1_base_trainer"]).write_bytes(b"tampered")
+        with self.assertRaisesRegex(mod.DeploymentError, "artifact_sha_mismatch:local_transitive::residue_v1_base_trainer"):
+            mod.validate_static_artifacts(context)
+
     def test_freeze_rejects_gpu_policy_and_sealed_artifact(self) -> None:
         payload = json.loads(json.dumps(self.fixture.freeze_payload))
         payload["node1_deployment"]["lane_gpu_map"]["A_DOMAIN"] = 0
@@ -235,6 +261,19 @@ class DeploymentUnitTests(unittest.TestCase):
         payload["formal_artifacts"]["augment_target_script"]["path"] = str(artifact)
         self.fixture.freeze.write_text(json.dumps(payload))
         with self.assertRaisesRegex(mod.DeploymentError, "sealed_or_test32_artifact_forbidden"):
+            self.fixture.context()
+
+    def test_freeze_rejects_missing_or_tampered_v2_3_numerical_amendment(self) -> None:
+        payload = json.loads(json.dumps(self.fixture.freeze_payload))
+        payload.pop("numerical_stability_amendment")
+        self.fixture.freeze.write_text(json.dumps(payload))
+        with self.assertRaisesRegex(mod.DeploymentError, "numerical_stability_amendment_missing"):
+            self.fixture.context()
+
+        payload = json.loads(json.dumps(self.fixture.freeze_payload))
+        payload["numerical_stability_amendment"]["sha256"] = "0" * 64
+        self.fixture.freeze.write_text(json.dumps(payload))
+        with self.assertRaisesRegex(mod.DeploymentError, "numerical_stability_amendment_sha_mismatch"):
             self.fixture.context()
 
     def test_fresh_root_gate_rejects_existing_symlink_and_low_space(self) -> None:

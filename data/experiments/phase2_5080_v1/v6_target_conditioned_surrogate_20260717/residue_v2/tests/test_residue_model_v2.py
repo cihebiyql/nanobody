@@ -52,6 +52,47 @@ def target_graph(nodes, node_dim, edge_dim, offset):
 
 
 class TestResidueModelV2(unittest.TestCase):
+    def test_bfloat16_saturated_pair_entropy_is_finite_and_differentiable(self):
+        logits = {
+            "8x6b": torch.tensor(
+                [[[100.0, -100.0, 0.0], [80.0, -80.0, 2.0]]],
+                dtype=torch.bfloat16,
+                requires_grad=True,
+            ),
+            "9e6y": torch.tensor(
+                [[[-100.0, 100.0, 0.0], [-80.0, 80.0, -2.0]]],
+                dtype=torch.bfloat16,
+                requires_grad=True,
+            ),
+        }
+        probabilities = {name: torch.sigmoid(value) for name, value in logits.items()}
+        residue_mask = torch.tensor([[True, True]])
+        region_index = torch.tensor([[1, 3]])
+        target_graphs = {
+            "8x6b": {
+                "interface_mask": torch.tensor([True, True, False]),
+                "hotspot_mask": torch.tensor([True, False, False]),
+            },
+            "9e6y": {
+                "interface_mask": torch.tensor([True, False, True]),
+                "hotspot_mask": torch.tensor([False, True, False]),
+            },
+        }
+
+        summary = mod.summarize_pair_probabilities(
+            probabilities,
+            residue_mask,
+            region_index,
+            target_graphs,
+            epsilon=1e-6,
+        )
+
+        self.assertEqual(summary.shape, (1, 14))
+        self.assertTrue(torch.isfinite(summary).all())
+        summary.sum().backward()
+        self.assertTrue(all(value.grad is not None for value in logits.values()))
+        self.assertTrue(all(torch.isfinite(value.grad).all() for value in logits.values()))
+
     def test_invariant_graph_encoder_supports_bfloat16_autocast(self):
         encoder = mod.InvariantGraphEncoder(
             input_dim=8, hidden_dim=16, edge_feature_dim=4, layers=2, dropout=0.0,

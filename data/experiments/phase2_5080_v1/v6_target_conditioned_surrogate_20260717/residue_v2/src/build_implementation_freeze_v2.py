@@ -59,9 +59,11 @@ EXPECTED_IMPLEMENTATION_PATHS = frozenset(
         "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_1.json",
         "CONTACT_LOSS_CALIBRATION_PREREGISTRATION_V2_2.json",
         "LOSS_SCALE_PREFREEZE_AUDIT_ZH.md",
+        "NUMERICAL_STABILITY_AMENDMENT_V2_3.json",
         "PREREGISTRATION_V2.json",
         "RESIDUE_V2_CONTRACT.json",
         "RESIDUE_V2_PRODUCTION_MATRIX.json",
+        "V2_2_FORMAL_NUMERICAL_FAILURE_AUDIT_ZH.md",
         "contact_teacher_v4d/CONTRACT_V2.json",
         "contact_teacher_v4d/README_ZH.md",
         "contact_teacher_v4d/TEST_FIXTURE_CORRECTION_V2_1.md",
@@ -191,6 +193,13 @@ EXPECTED_PROMOTION_GATES = {
     "all_required": True,
     "negative_status": "DO_NOT_PROMOTE_RESIDUE_V2",
     "positive_status": "PROMOTE_RESIDUE_V2_OVER_M2",
+}
+
+EXPECTED_TECHNICAL_SUPERSESSION = {
+    "amendment": "NUMERICAL_STABILITY_AMENDMENT_V2_3.json",
+    "partial_checkpoint_reuse": False,
+    "superseded_freeze_sha256": "2659325b58d2c1e8faeb6f20b71cb63a6216a21ef5803d71886aa100c2eff471",
+    "superseded_version": "V2.2",
 }
 
 EXPECTED_TRAINER_ARGUMENTS = {
@@ -363,6 +372,7 @@ def validate_matrix(matrix: Mapping[str, Any]) -> None:
     require(matrix.get("primary_target") == "R_dual_min", "matrix_primary_target_invalid")
     require(matrix.get("implementation_allowlist") == sorted(EXPECTED_IMPLEMENTATION_PATHS), "matrix_allowlist_invalid")
     require(matrix.get("promotion_gates") == EXPECTED_PROMOTION_GATES, "matrix_promotion_gates_invalid")
+    require(matrix.get("technical_supersession") == EXPECTED_TECHNICAL_SUPERSESSION, "matrix_technical_supersession_invalid")
     require(matrix.get("bootstrap") == {"repetitions": 1000, "seed": 20260718}, "matrix_bootstrap_invalid")
     require(matrix.get("v1_5_immutable_sha256") == EXPECTED_V1_5_IMMUTABLE, "matrix_v1_5_immutable_invalid")
 
@@ -587,6 +597,11 @@ def build_payload(
         "lanes": matrix["lanes"],
         "production_runs": matrix["production_runs"],
         "promotion_gates": matrix["promotion_gates"],
+        "technical_supersession": matrix["technical_supersession"],
+        "numerical_stability_amendment": snapshot(
+            residue_root / "NUMERICAL_STABILITY_AMENDMENT_V2_3.json",
+            "numerical_stability_amendment",
+        ),
         "sealed_test32_exclusion": matrix["sealed_test32_exclusion"],
         "pending": pending,
         "post_augmentation_contract": {

@@ -219,7 +219,12 @@ def summarize_pair_probabilities(
         for region in (1, 2, 3):
             region_mask = pair_mask & (region_index == region).unsqueeze(-1)
             cdr_masses.append(_masked_mean(probabilities, region_mask, (1, 2), epsilon))
-        clipped = probabilities.clamp(min=epsilon, max=1.0 - epsilon)
+        # BF16 cannot represent ``1 - 1e-6``.  Clamping in BF16 therefore
+        # leaves saturated sigmoid values at exactly one and the entropy term
+        # evaluates ``0 * log(0)`` to NaN.  Keep the frozen epsilon and model
+        # semantics, but perform only this numerically sensitive reduction in
+        # FP32 before it enters the residual head.
+        clipped = probabilities.float().clamp(min=epsilon, max=1.0 - epsilon)
         binary_entropy = -(clipped * clipped.log() + (1.0 - clipped) * (1.0 - clipped).log())
         entropy = _masked_mean(binary_entropy, pair_mask, (1, 2), epsilon)
         summaries.extend((hotspot_mass, interface_specificity, *cdr_masses, entropy))
