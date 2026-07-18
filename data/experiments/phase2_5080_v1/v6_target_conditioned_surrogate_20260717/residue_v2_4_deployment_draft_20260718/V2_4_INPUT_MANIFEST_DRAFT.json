@@ -1,43 +1,63 @@
 {
-  "schema_version": "pvrig_v6_residue_v2_4_open_supervision_manifest_draft_v1",
-  "status": "DRAFT_OPEN_INPUT_CLOSURE_DO_NOT_TRAIN",
   "claim_boundary": "Open V4-D/V4-H computational Docking supervision and label-free graph inputs only; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
-  "teacher_source_is_model_feature": false,
-  "prediction_metrics_access_count": 0,
-  "sealed_evaluation_access_count": 0,
   "expected_training_counts": {
+    "development_reliability_tiers": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
     "rows": 1507,
-    "unique_candidates": 1507,
-    "unique_parent_framework_clusters": 31,
     "teacher_sources": {
       "V4D_OPEN_MULTI_SEED": 226,
-      "V4H_STAGE1_SEED917": 1281
-    }
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "unique_candidates": 1507,
+    "unique_parent_framework_clusters": 31
   },
   "inputs": {
-    "training_tsv": {
-      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v6_supervised1507.tsv",
-      "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+    "base_target_pt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graphs_v2.pt",
+      "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc"
     },
-    "training_receipt": {
-      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v6_training_table_receipt.json",
-      "sha256": "46fae18a63e10920c05ccf1dc873de2b588ec436a0320d909405164f9d14c529"
+    "base_target_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graph_receipt_v2.json",
+      "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
     },
     "dual_marginal_tsv_gz": {
       "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_marginal/v6_dual_source_residue_contact_targets_v2.tsv.gz",
       "sha256": "8c792366844a013f4a99d49089cc0cbf79f1e836985f55b4d82461cc0bef1038"
     },
-    "dual_marginal_receipt": {
-      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_marginal/RUN_RECEIPT.json",
-      "sha256": "c68c1f0d3f2787211cb53ba2d9bc25cd9ef3ab1dc0a98fd8fff9a8008e869de7"
-    },
     "dual_pair_tsv_gz": {
       "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_pair/v6_dual_source_pair_contact_targets_v2.tsv.gz",
       "sha256": "50127c53444351273cfbe7ab2403b448be472628a02b72e42586a4bc490ad07d"
     },
-    "dual_pair_receipt": {
-      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_pair/RUN_RECEIPT.json",
-      "sha256": "0858b5dd6894cb957bea8fdafd6e7fe8d3644bb64c0f9952a8a9e416fb0dcf5b"
+    "esm2_650m_identity": {
+      "path": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c/model.safetensors",
+      "sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0"
+    },
+    "inner_split_manifest": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/inner_nested_oof_manifest.tsv",
+      "sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073"
+    },
+    "outer_split_manifest": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/outer_development_manifest.tsv",
+      "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55"
+    },
+    "residue_model_v2_4": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/src/residue_model_v2_4.py",
+      "sha256": "d3295b4a8c8465a528f2e9a8b465e63177e465b2183999f6d972ffa4a3bde36d"
+    },
+    "split_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/receipt.json",
+      "sha256": "ecb415d450f824d06980bb4560a6a2fd39f67f8b6c383f4f726d61b810481fd2"
+    },
+    "training_receipt": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/v6_supervised1507_v2_4.receipt.json",
+      "sha256": "b7e5f764a58d1d4d059c36ebbafc2851d93cce7539110b44b7fd7240e3344499"
+    },
+    "training_tsv": {
+      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/v6_supervised1507_v2_4.tsv",
+      "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
     },
     "v4d_marginal_teacher": {
       "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/v4d_open226_multi_seed_residue_marginal_teacher_v2.tsv.gz",
@@ -47,10 +67,6 @@
       "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/v4d_open226_multi_seed_pair_contact_teacher_v2.tsv.gz",
       "sha256": "39b600e6979e72ef89237070b36a1f7afaecb4be5be4735d1650d55cd17811a8"
     },
-    "v4d_teacher_receipt": {
-      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/v4d_teacher/RUN_RECEIPT.json",
-      "sha256": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f"
-    },
     "vhh_graph_cache_npz": {
       "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_v2.npz",
       "sha256": "95faf75f434375aa086cc4135967f7165b6089ede4f26c890925d9a501288d71"
@@ -58,14 +74,19 @@
     "vhh_graph_manifest": {
       "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_manifest_v2.tsv",
       "sha256": "7da6dd48a858395e1514d82189757513a9da4df9d7ddefc8a95c72b6b7cc4fd1"
-    },
-    "vhh_graph_receipt": {
-      "path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_receipt_v2.json",
-      "sha256": "83fe4fb6601798293e0b95ed255faad40a5fbe9b0cee9914976a82f12b85024a"
-    },
-    "esm2_650m_identity": {
-      "path": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c/model.safetensors",
-      "sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0"
     }
-  }
+  },
+  "pending_implementation_bindings": [
+    "CALIBRATION_RECEIPT.json",
+    "IMPLEMENTATION_FREEZE_V2_4.json"
+  ],
+  "prediction_metrics_access_count": 0,
+  "schema_version": "pvrig_v6_residue_v2_4_open_supervision_manifest_draft_v2",
+  "sealed_evaluation_access_count": 0,
+  "status": "SUPERSEDED_BY_FORMAL_PREFREEZE_MANIFEST_DO_NOT_TRAIN",
+  "superseded_by": {
+    "path": "../v2_4_fs_stack_prototype_v1_20260718/deployment/V2_4_NODE1_PREFREEZE_MANIFEST_V1.json",
+    "sha256": "99109a6cd093ea3b6d4938728f684711aca6170546fb529317d3170f49f0c0f9"
+  },
+  "teacher_source_is_model_feature": false
 }

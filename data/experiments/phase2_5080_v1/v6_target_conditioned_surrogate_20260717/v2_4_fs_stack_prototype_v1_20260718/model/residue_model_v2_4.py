@@ -15,6 +15,7 @@ from typing import Any, Mapping
 
 import torch
 from torch import Tensor, nn
+from torch.nn import functional as F
 
 
 RECEPTOR_NAMES = ("8x6b", "9e6y")
@@ -158,11 +159,11 @@ class SplitLowRankPairInteraction(nn.Module):
 
         self.attention_terminal = nn.Parameter(torch.ones(rank))
         self.contact_terminal = nn.Parameter(torch.empty(rank))
-        nn.init.normal_(self.contact_terminal, mean=0.0, std=0.02)
+        # Unit-normalised left/right factors make terminal norm the single,
+        # identifiable per-head gain. std=1 gives O(1/sqrt(rank)) initial logits.
+        nn.init.normal_(self.contact_terminal, mean=0.0, std=1.0)
         self.attention_vhh_bias = nn.Linear(hidden_dim, 1, bias=False)
         self.attention_target_bias = nn.Linear(hidden_dim, 1, bias=False)
-        self.contact_vhh_bias = nn.Linear(hidden_dim, 1, bias=False)
-        self.contact_target_bias = nn.Linear(hidden_dim, 1, bias=False)
 
         self.target_value = nn.Linear(hidden_dim, hidden_dim, bias=False)
         self.vhh_value = nn.Linear(hidden_dim, hidden_dim, bias=False)
@@ -180,13 +181,23 @@ class SplitLowRankPairInteraction(nn.Module):
         left: Tensor,
         right: Tensor,
         terminal: Tensor,
-        vhh_bias: nn.Linear,
-        target_bias: nn.Linear,
+        vhh_bias: nn.Linear | None,
+        target_bias: nn.Linear | None,
         vhh_states: Tensor,
         target_states: Tensor,
     ) -> Tensor:
-        logits = torch.einsum("blr,tr,r->blt", left, right, terminal) / math.sqrt(self.rank)
-        return logits + vhh_bias(vhh_states) + target_bias(target_states).view(1, 1, -1)
+        # Unit-normalised left/right factors remove their arbitrary scale.
+        # Terminal direction and norm remain trainable; terminal norm is now the
+        # single identifiable per-head gain. Contact receives no local bias
+        # because receptor-specific bias is the sole contact intercept.
+        left_unit = F.normalize(left.float(), dim=-1, eps=1e-6).to(dtype=left.dtype)
+        right_unit = F.normalize(right.float(), dim=-1, eps=1e-6).to(dtype=right.dtype)
+        logits = torch.einsum("blr,tr,r->blt", left_unit, right_unit, terminal.to(dtype=left.dtype))
+        if vhh_bias is not None:
+            logits = logits + vhh_bias(vhh_states)
+        if target_bias is not None:
+            logits = logits + target_bias(target_states).view(1, 1, -1)
+        return logits
 
     def forward(
         self,
@@ -211,7 +222,7 @@ class SplitLowRankPairInteraction(nn.Module):
         )
         contact_logits = self._terminal_logits(
             left, right, self.contact_terminal,
-            self.contact_vhh_bias, self.contact_target_bias,
+            None, None,
             vhh_states, target_states,
         )
 
@@ -641,6 +652,7 @@ def model_contract(config: ResidueV24Config) -> dict[str, Any]:
         "direct_targets": list(DIRECT_TARGET_NAMES),
         "derived_target": {DERIVED_TARGET_NAME: "exact_min(R_8X6B,R_9E6Y)"},
         "interaction": "implicit_rank64_shared_pair_factors_split_attention_contact_terminals",
+        "low_rank_identifiability": "unit_normalized_left_right_with_terminal_norm_as_per_head_gain",
         "contact_calibration": "fixed_scale_1_plus_receptor_specific_bias",
         "rank4_pair_tensor_materialized": False,
         "forbidden_neural_inputs": [

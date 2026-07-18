@@ -1,0 +1,51 @@
+{
+  "bindings": {
+    "calibration_runner_sha256": "b6ce135c7d89b97a407c923a42f13af8557ead679bdf3603981e5461544f08e5",
+    "contact_formula_sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7",
+    "launcher_sha256": "29be5df27ae38787970b85a9150481442c9b13fa81db2e5da86b26bf0bd85935",
+    "manifest_builder_sha256": "3641b644a2fff1f074113e521857e891bb23f56fe3e90bfd582f700a1f27a462",
+    "manifest_sha256": "12fb49da3baab84bd398d28d2b8a915315652e13c5e4badc143220dfc78522f1",
+    "model_sha256": "d3295b4a8c8465a528f2e9a8b465e63177e465b2183999f6d972ffa4a3bde36d",
+    "outer_split_materialization_receipt_sha256": "5f412ab844420a18ff4d7b52d4a1631c98c2ee5f3dee4322df6c650eaa8e4c21",
+    "outer_split_source_sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55",
+    "trainer_sha256": "59245b7aa28c14e9134f15fa1c2f4717e3a3b3a7c3e044a4d7cda06afc1c685f",
+    "trainer_test_sha256": "f28d93c3df30775c4d3d1ee120d0c5e7d39fb117d6eb01b58b342e5985873704",
+    "training_receipt_sha256": "b7e5f764a58d1d4d059c36ebbafc2851d93cce7539110b44b7fd7240e3344499",
+    "training_tsv_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+  },
+  "calibration_dry_run": {
+    "command_count": 2,
+    "optimizer_steps_before_observation": 0,
+    "receipt_absent": true,
+    "runtime_absent": true,
+    "sha256": "b69ce1ca511f1ac37876a1c073e591365b9006822bc8daf37a7ce43b0df9b3d8",
+    "status": "PASS_OPEN_ONLY_PRESTEP_CALIBRATION_DRY_RUN_NO_MUTATION"
+  },
+  "claim_boundary": "Open-only independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "dry_run": {
+    "outer_executable_command_count": 0,
+    "outer_planned_job_count": 20,
+    "runtime_absent": true,
+    "sha256": "ea6bf737936d05422f7a47dd1bb6fb23ac59a4a26297edd89d864827d2b6818a",
+    "status": "PASS_PREFREEZE_DRY_RUN_BLOCKED_PENDING_CALIBRATION",
+    "tiny_smoke_command_count": 4
+  },
+  "implementation_freeze_created": false,
+  "next_permitted_action": "Run open-only optimizer-prestep contact-gradient calibration; do not run outer development.",
+  "pending": [
+    "CALIBRATION_RECEIPT.json",
+    "frozen_lane_contact_weights",
+    "IMPLEMENTATION_FREEZE_V2_4.json"
+  ],
+  "prediction_metrics_access_count": 0,
+  "production_authorized": false,
+  "runtime_created": false,
+  "schema_version": "pvrig_v6_residue_v2_4_prefreeze_package_receipt_v1",
+  "sealed_evaluation_access_count": 0,
+  "status": "PASS_PREFREEZE_DEPLOYMENT_PACKAGE_CALIBRATION_PENDING_NO_FREEZE",
+  "tests": {
+    "count": 31,
+    "log_sha256": "f4215e0e5baaf374fb211951b2566a77d234d220ec4d8ea0c914b2ee51741ac5",
+    "status": "PASS"
+  }
+}

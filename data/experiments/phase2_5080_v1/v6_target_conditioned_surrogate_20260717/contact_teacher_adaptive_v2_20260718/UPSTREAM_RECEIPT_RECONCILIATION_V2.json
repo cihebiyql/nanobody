@@ -1,0 +1,96 @@
+{
+  "actual_files": {
+    "inputs/candidates_290.tsv": {
+      "rows": 1320,
+      "sha256": "220926f45bca69464588b8eebcb8855d3235876ab98e0840d2e374bf94cdeec0",
+      "size_bytes": 900491
+    },
+    "manifests/stage1_all_seed917.tsv": {
+      "rows": 2640,
+      "sha256": "c76de07a2725939e62b4fab9cd9af4a7c72b30398f68bfa18727a223f277c1d0",
+      "size_bytes": 3326991
+    },
+    "manifests/stage2_selected_seed1931.tsv": {
+      "rows": 768,
+      "sha256": "0b07ace3fd233db1980143dd174ffd6a0b67c3d6a92462c009f4437d2b74ae15",
+      "size_bytes": 974876
+    },
+    "manifests/stage3_selected_seed3253.tsv": {
+      "rows": 256,
+      "sha256": "759eace448be5c2ace4b745139d2cc53fd2d2864ea756f751d7efdda35772113",
+      "size_bytes": 325468
+    },
+    "release/ADAPTIVE_DOCKING_RECEIPT.json": {
+      "sha256": "03c52f1011087276ca04fe54d8afe869fef7f2dbd30ae69ae52e7647a20d9941",
+      "size_bytes": 2406
+    },
+    "release/final_adaptive_seed_ranking.tsv": {
+      "rows": 1320,
+      "sha256": "144da9b8ce2a25db73813df2e23c1f48f9bebca8f565e50b15e4c1670e8c040e",
+      "size_bytes": 548146
+    },
+    "release/stage2_seed917_1931_ranking.tsv": {
+      "rows": 1320,
+      "sha256": "7c3768d52128770765df7db3c51cb4d32bcff905dbfc91b09bea04b17772ce85",
+      "size_bytes": 546555
+    }
+  },
+  "canonical_raw_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+  "claim_boundary": "Sidecar reconciliation of adaptive docking terminal metadata and job-result identity only; no pose coordinates opened; not biological truth or Docking Gold.",
+  "closures": {
+    "all_receptor_seed_asymmetry_candidates": 64,
+    "candidate_rows": 1320,
+    "declared_jobs": 3664,
+    "excluded_nonteacher_success_results": 123,
+    "job_identity_mismatches": 0,
+    "manifest_rows_by_seed": {
+      "1931": 768,
+      "3253": 256,
+      "917": 2640
+    },
+    "missing_result_files": 5,
+    "paired_successful_job_identity_mismatches": 0,
+    "paired_successful_job_missing_results": 0,
+    "paired_successful_jobs": 3536,
+    "ranking_rows": 1320,
+    "result_states": {
+      "SUCCESS": 3659
+    },
+    "selected_job_result_inventory_sha256": "5773cb827d60b320101c2c7f1346f6ca7f3f5d0aa691c209b84bc858e5cfe18d",
+    "terminal_failed_jobs": 5,
+    "tier_counts": {
+      "DUAL_1_SEED": 917,
+      "DUAL_2_SEED": 241,
+      "DUAL_3_SEED": 123,
+      "TECHNICAL_INCOMPLETE": 39
+    },
+    "valid_receptor_seed_asymmetry_candidates": 25
+  },
+  "read_only_boundary": {
+    "pose_coordinate_files_opened": 0,
+    "source_mutation_operations": 0,
+    "v4_f_access_count": 0
+  },
+  "schema_version": "pvrig_v6_v4h_adaptive_terminal_reconciliation_v2",
+  "status": "PASS_RECONCILED_V4H_ADAPTIVE_TERMINAL_CLOSURE",
+  "teacher_seed_policy": {
+    "scope": "intersection_of_ranking_declared_successful_seed_ids",
+    "tier_to_paired_seed_count": {
+      "DUAL_1_SEED": 1,
+      "DUAL_2_SEED": 2,
+      "DUAL_3_SEED": 3,
+      "TECHNICAL_INCOMPLETE": 0
+    },
+    "unmatched_single_receptor_success": "excluded_without_pose_access"
+  },
+  "upstream_receipt": {
+    "actual_final_ranking_path": "release/final_adaptive_seed_ranking.tsv",
+    "actual_final_ranking_sha256": "144da9b8ce2a25db73813df2e23c1f48f9bebca8f565e50b15e4c1670e8c040e",
+    "declared_value": "144da9b8ce2a25db73813df2e23c1f48f9bebca8f565e50b15e4c1670e8c040e",
+    "field_correctly_bound": true,
+    "final_ranking_field": "final_ranking_sha256",
+    "path": "release/ADAPTIVE_DOCKING_RECEIPT.json",
+    "sha256": "03c52f1011087276ca04fe54d8afe869fef7f2dbd30ae69ae52e7647a20d9941",
+    "upstream_receipt_mutated": false
+  }
+}

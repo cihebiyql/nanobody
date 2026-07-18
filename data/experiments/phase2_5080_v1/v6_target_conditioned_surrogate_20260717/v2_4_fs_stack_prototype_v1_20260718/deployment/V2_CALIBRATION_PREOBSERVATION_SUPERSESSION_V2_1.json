@@ -1,0 +1,26 @@
+{
+  "schema_version": "pvrig_v2_4_calibration_preobservation_supersession_v2_1",
+  "status": "SUPERSEDE_V2_WITH_V2_1_AFTER_COMMAND_CONSTRUCTION_FAILURE",
+  "failed_attempt": {
+    "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_20260718",
+    "calibration_runtime": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_calibration_v2_20260718",
+    "manifest_sha256": "68531f0cdda7c69ea185f6cb5557c0dc791643161ec8ff24294d508203c7fcb3",
+    "failure": "calibration wrapper placeholder was overwritten by the base trainer artifact path",
+    "model_forward_count": 0,
+    "optimizer_constructed": false,
+    "optimizer_steps": 0,
+    "calibration_observations_published": 0,
+    "outer_metrics_access_count": 0,
+    "prediction_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0,
+    "reuse_forbidden": true
+  },
+  "superseding_attempt": {
+    "version": "V2.1",
+    "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_1_20260718",
+    "calibration_runtime": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_calibration_v2_1_20260718",
+    "production_runtime": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_four_lane_oof_v2_1_20260718",
+    "change_scope": "command construction only; adaptive inputs, folds, batches, grid, gates, model, and base trainer are unchanged"
+  },
+  "claim_boundary": "Technical deployment supersession only; no model performance or calibration weight claim."
+}

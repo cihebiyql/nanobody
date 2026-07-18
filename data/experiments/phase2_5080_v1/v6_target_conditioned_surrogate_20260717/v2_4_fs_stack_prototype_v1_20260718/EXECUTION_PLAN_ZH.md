@@ -61,15 +61,19 @@ Node1 使用 GPU `1,2,4,5`，每个进程最多 8 CPU threads：
 四条 lane 使用相同 parent folds、随机种子和 scalar 标签。contact loss 权重必须在
 正式 development OOF 前通过 open-only、optimizer-step 之前的梯度比例校准冻结；
 不能沿用 V2.3 权重后直接声明正式结果。
+注意力温度不读取 Docking 标签调参，当前版本预先冻结为双受体 `1.0`。
 
 ## 逐阶段执行
 
 1. **数据契约**：把 V4-H scalar 标签更新为 adaptive median，生成 1,507 行新表及
    A/B/C tier；验证 exact-min、parent fold、hash closure。
 2. **模型单测**：split logits、feature firewall、exact-min、BF16 finite、gradient routing。
-3. **Tiny E2E**：合成 parent 数据完成 train/eval/receipt 闭包。
-4. **Smoke93**：四卡各跑一个 lane，验证真实 ESM2、图缓存、contact teacher 和显存。
-5. **Open-only 梯度校准**：冻结 contact loss 权重和 attention temperature。
+3. **Open-only 梯度校准**：在任何 optimizer 创建/更新和开发集指标读取前，
+   从冻结网格中选定 C/D lane 的 contact loss 权重。attention temperature 保持预先
+   冻结的 `1.0`。
+4. **Implementation freeze**：绑定校准 receipt、代码、数据、划分、公式与资源合同。
+5. **Tiny E2E**：冻结后使用合成 parent 数据完成四 lane train/eval/receipt 闭包。
+   该阶段只是执行链 gate，不访问开发集性能指标。
 6. **Base development OOF**：whole-parent outer folds；输出 R8/R9、derived dual、
    receptor-specific contact summaries 和逐行 base-fit provenance。
 7. **Double cross-fit stack**：只使用 inner-OOF 六列证据训练五参数非负共享斜率模型。
@@ -81,6 +85,7 @@ Node1 使用 GPU `1,2,4,5`，每个进程最多 8 CPU threads：
 - graph hidden：128；interaction rank：64；
 - dropout：0.25；attention temperature primary：1.0；
 - optimizer：AdamW，head LR `1e-4`，weight decay `0.02`；
+- attention temperature：8X6B/9E6Y 均预先冻结为 `1.0`，不在当前开放标签上选择；
 - precision：BF16，所有 entropy/log/calibration reduction 使用 FP32；
 - max epochs：8；gradient accumulation：2；gradient clip：1.0；
 - primary scalar loss：R8/R9 Huber + exact-min auxiliary Huber；
@@ -100,3 +105,25 @@ Node1 使用 GPU `1,2,4,5`，每个进程最多 8 CPU threads：
 - meta feature 是 in-sample base prediction；
 - parent 出现在对应 base/meta training provenance；
 - 运行后修改同版本 split、阈值、权重或 promotion gate。
+
+## 2026-07-18 真实 Node1 预校准结果
+
+Node1 已在 GPU 4/5 使用开放 Stage1 contact teacher 运行了 optimizer-step 前梯度校准。
+原冻结网格 `1e-4..1e-2` 在 C/D lane 都没有达到预定 `5%..20%` contact-gradient
+fraction，因此该版 fail closed，未生成 calibration receipt、implementation freeze 或任何
+optimizer step。
+
+独立宽网格诊断（仍为零 optimizer step、零预测指标读取）显示：
+
+| Lane | weight=0.01 的 contact fraction | 估计 5% 所需 marginal weight | 估计 20% 所需 marginal weight |
+|---|---:|---:|---:|
+| C_SPLIT_MARGINAL | 0.0362% | 1.45 | 6.90 |
+| D_SPLIT_PAIR | 0.0551% | 0.95 | 4.53 |
+
+这是 loss-scale contract 的失败，不是模型性能结果。持久证据为
+`deployment/PRELIMINARY_CALIBRATION_RESULT_V1.json`。由于当前 contact teacher 中 V4-H 仍只是
+Stage1 seed917，该诊断不得用于正式 C/D 冻结。
+
+正式校准另起 protocol V2：先物化 adaptive multi-seed contact teacher，再使用预注册宽网格
+`[0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5, 7.5, 10]` 在新 runtime 中重新校准；不复用本次
+Stage1 运行的任何权重或 receipt。

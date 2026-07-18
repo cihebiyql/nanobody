@@ -1,100 +1,63 @@
 # V2.4 deterministic whole-parent nested split contract
 
-## 目的
-
-为新的 receptor-specific base trainer 生成无 parent 泄漏的 outer development 和 inner OOF manifests。
-
-外层划分不重算、不调优，完全沿用训练表中已有的 `outer_fold`。同一 parent 的所有 candidate 必须属于同一 outer fold。
-
-每个 outer-train 内再确定性生成 inner folds：
+## Canonical V3
 
 ```text
-parent 按 candidate 数量降序
--> seed + outer fold + parent SHA256 打破同值
--> 依次放入 candidate load 最小的 inner fold
--> 再以 parent load、fold index 打破同值
+src/build_whole_parent_nested_splits_v3.py
+prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/
 ```
 
-全程以 parent 为不可拆分单位。
+V1 因 candidate-count 优先可能形成 `12/4/4/4/4` inner parent counts，已标记 superseded；有效统计单位是 31 个 parent，因此不再用于新 base trainer。
 
-## 输出
+外层严格沿用训练表现有 `outer_fold`。内层 V3 使用 capacity-constrained whole-parent LPT：
 
-```text
-outer_development_manifest.tsv
-inner_nested_oof_manifest.tsv
-split_summary.json
-receipt.json
-```
-
-两个 TSV 都逐 candidate 写出：
-
-- `candidate_role=train/score`；
-- teacher source、parent、candidate；
-- outer fold，inner manifest 另含 inner fold；
-- train/score parent-set SHA256；
-- 输入训练表 SHA256；
-- builder/algorithm 版本。
-
-inner manifest 同时携带对应 outer-train 和 outer-score parent-set SHA256。
+1. 每个 inner fold 的 parent capacity 预先固定为 floor/ceil；
+2. 任意两个 fold 的 parent 数相差不超过 1；
+3. 在 capacity 约束内，按 parent candidate 数降序放置；
+4. 使用 `SHA256(seed, outer_fold, parent)` 确定性打破同值；
+5. 优先选择 candidate load 最低的未满 fold。
 
 ## 强制门控
 
-- 输入必须恰好闭合 31 个 parent；
-- parent 不得跨 outer fold 或 teacher source；
-- outer train/score parent 不得重叠，且并集必须为全部 31 parents；
-- 每个 outer-train parent 在 inner folds 中必须恰好作为 score parent 一次；
-- outer-score parent 不得进入任何对应 inner split；
-- 每个 split 的 candidate 集合必须闭合；
-- 每行必须绑定输入表和 parent sets 的 SHA256；
-- 输入、输出、source、candidate 或 parent 不得来自 V4-F 路径/命名。
+- 输入恰好闭合 31 parents；
+- parent 不跨 outer fold/source；
+- outer train/score parent 不交叉，并集为 31；
+- inner train/score parent 不交叉；
+- outer-score parent 不进入 inner；
+- 每个 outer-train parent 恰好在一个 inner fold 中作为 score；
+- inner parent counts 最大差值 ≤1；
+- 每行绑定 input-table、train-parent、score-parent SHA256；
+- 禁止 V4-F 输入、输出和行来源。
 
-## 运行
+## 真实训练表交付
 
-```bash
-experiments/phase2_5080_v1/.venv-phase2-5080/bin/python \
-  src/build_whole_parent_nested_splits_v1.py \
-  --input-tsv v6_supervised1507.tsv \
-  --inner-fold-count 5 \
-  --inner-seed 1931 \
-  --output-dir prepared/all_outer_v1
-```
-
-如只需要一个 outer development fold：
+输入：1507 candidates、31 parents、5 outer folds。
 
 ```text
---development-outer-fold 3
-```
-
-该目录只负责 split manifests，不训练模型。
-
-## 当前真实训练表交付
-
-已对 `v6_supervised1507.tsv` 生成并完成写盘后重新读取验证：
-
-```text
-prepared/whole_parent_nested_splits_all_outer_seed1931_v1/
-```
-
-结果：
-
-```text
-input candidates: 1507
-input parents: 31
-outer folds: 5
 outer manifest rows: 7535
 inner manifest rows: 30140
 materialized readback validation: PASS
 ```
 
-关键 SHA256：
+SHA256：
 
 ```text
 input table:
-ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633
+47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1
 
 outer manifest:
-f10cd0f67988545faa6213b32d482c6a5c436c99c33e1a71c8ded13dd83795ea
+ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55
 
 inner manifest:
-6886b710e37fa0e4c4d43946993f18860e372961662d31bc8424200e46a22cad
+b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073
+```
+
+实际 inner parent counts：
+
+```text
+outer0: 6/6/6/5/5
+outer1: 5/5/5/5/4
+outer2: 6/6/5/5/5
+outer3: 5/4/4/4/4
+outer4: 5/5/5/5/4
 ```

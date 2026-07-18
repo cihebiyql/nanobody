@@ -1,76 +1,67 @@
-# V2.4 receptor-specific compact inner-OOF evidence contract
+# V2.4 role-separated compact evidence contract
 
-## 用途
+## Canonical V2
 
-本目录只冻结并验证 V2.4 stack 所需的 compact inner-OOF 证据格式，不训练任何模型。
-
-严格 compact feature 只有六列：
+V1 已因 inner base feature 与 meta-fit receipt 形成循环而标记 superseded。当前 canonical schema/validator：
 
 ```text
-M2_R8
-neural_R8
-contact_score_R8
-M2_R9
-neural_R9
-contact_score_R9
+schema/receptor_compact_evidence_schema_v2.json
+src/validate_receptor_compact_evidence_v2.py
 ```
 
-不允许加入 gap、dual prediction、派生差值或额外 contact 汇总作为第七个特征。
-
-## 每行必须封闭的证据
-
-除六个特征外，每行必须包含：
-
-- candidate、teacher source、parent framework cluster；
-- outer fold 和 inner fold；
-- 真值 `R_8X6B`、`R_9E6Y`、`R_dual_min`；
-- base-training parent set digest、receipt 和 artifact path；
-- scaler-fit parent set digest、receipt 和 artifact path；
-- meta-fit parent set digest、receipt 和 artifact path。
-
-`R_dual_min` 必须与 `numpy.minimum(R_8X6B, R_9E6Y)` 的 float64 字节完全一致。
-
-## Fail-closed 条件
-
-validator 会拒绝：
-
-1. 旧 V2.3 dual-only OOF；
-2. 少列、多列或列顺序变化；
-3. 任一非有限数值或缺失值；
-4. candidate parent 出现在 base-training parents；
-5. candidate parent 出现在 scaler-fit parents；
-6. candidate parent 出现在 meta-fit parents；
-7. row/manifest 的 fold、digest、receipt 或 path 不一致；
-8. 任意 V4-F source 或 artifact path；
-9. 非绝对 artifact path；
-10. truth dual 不是双受体真值的 exact minimum。
-
-parent set digest 统一定义为：parent ID 排序、去重、每个 ID 后加换行，再计算 SHA256。
-
-## 文件
+三个角色严格互斥：
 
 ```text
-schema/receptor_compact_inner_oof_schema_v1.json
-src/validate_receptor_compact_inner_oof_v1.py
-tests/test_validate_receptor_compact_inner_oof_v1.py
+INNER_OOF_BASE_FEATURE
+OUTER_TEST_BASE_FEATURE
+OUTER_TEST_META_PREDICTION
 ```
 
-运行测试：
+前两个角色只携带六个 receptor-specific compact features，不允许出现 meta receipt：
 
-```bash
-experiments/phase2_5080_v1/.venv-phase2-5080/bin/python -m unittest -v \
-  experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/\
-v2_4_fs_stack_prototype_v1_20260718/feature_contract/tests/\
-test_validate_receptor_compact_inner_oof_v1.py
+```text
+M2_R8 / neural_R8 / contact_score_R8
+M2_R9 / neural_R9 / contact_score_R9
 ```
 
-验证真实交付：
+第三个角色只携带双受体 meta prediction、exact-min dual 和 meta receipt，不重复携带六个 base features。
 
-```bash
-python src/validate_receptor_compact_inner_oof_v1.py \
-  --evidence-tsv receptor_compact_inner_oof.tsv \
-  --provenance-json fold_provenance.json \
-  --report-json validation_report.json
+## Component provenance
+
+M2、neural、contact 分别绑定：
+
+- component receipt；
+- artifact/checkpoint path；
+- training-parent 完整列表及 SHA256；
+- outer/inner fold。
+
+每个 component training-parent digest 必须严格等于对应 split manifest 行的 train-parent digest，candidate parent 必须被排除。
+
+neural 与 contact 可以共享 checkpoint/receipt；如果共享，则 artifact path 和 training-parent digest 必须完全一致。contact 仍必须独立绑定冻结公式 receipt：
+
+```text
+../contact_contract/contact_score_formula_v1.json
 ```
 
-当前只提供 schema 和 validator；在 receptor-specific base predictions 尚未生成前，不会伪造或填补六个 compact features。
+## Meta proof closure
+
+`OUTER_TEST_META_PREDICTION` 的 meta receipt 必须额外绑定：
+
+- 实际用于 fit 的 `INNER_OOF_BASE_FEATURE` evidence path + SHA256；
+- 该文件实际观察到的 parent closure；
+- closure 必须等于 outer-train parent set；
+- scaling-fit parent set 必须等于同一 outer-train set；
+- 固定 scaling、ridge、condition ceiling、5 参数和非负共享斜率合同。
+
+这样不能只提交一个 meta parent list 来声称 OOF fit；validator 会重新读取 inner-OOF evidence 并核对 role、outer fold、candidate uniqueness 和 parent closure。
+
+## 禁止
+
+- V1 dual-only 或 V1 meta-cyclic schema；
+- in-sample component/meta parent；
+- component parent set 与 split train 不一致；
+- V4-F source/path；
+- 未冻结或改权的 contact formula；
+- truth/prediction dual 不是 float64 exact minimum。
+
+V1 文件保留作历史审计，详见 `SUPERSEDED_V1.md`，不得用于新 base trainer。

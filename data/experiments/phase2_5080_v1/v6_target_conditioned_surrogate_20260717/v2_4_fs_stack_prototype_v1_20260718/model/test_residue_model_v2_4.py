@@ -90,12 +90,27 @@ class TestResidueModelV24(unittest.TestCase):
         self.assertFalse(hasattr(model.head.contact_calibration, "raw_scale"))
         self.assertFalse(any("scale" in name for name, _ in model.head.contact_calibration.named_parameters()))
         self.assertEqual(set(dict(model.head.contact_calibration.named_parameters())), {"bias"})
+        self.assertFalse(hasattr(interaction, "contact_vhh_bias"))
+        self.assertFalse(hasattr(interaction, "contact_target_bias"))
         output = model(**inputs)
         self.assertEqual(output["attention_logits_8x6b"].ndim, 3)
         self.assertEqual(output["contact_logits_8x6b"].ndim, 3)
         self.assertFalse(torch.equal(output["attention_logits_8x6b"], output["contact_logits_8x6b"]))
+        valid_attention = output["attention_logits_8x6b"][:, :4]
+        valid_contact = output["contact_logits_8x6b"][:, :4]
+        self.assertGreater(float(valid_attention.std().detach()), 1e-4)
+        self.assertGreater(float(valid_contact.std().detach()), 1e-4)
+        initial_contact_std = float(valid_contact.std().detach())
+        with torch.no_grad():
+            interaction.contact_terminal.mul_(2.0)
+        expanded = model(**inputs)["contact_logits_8x6b"][:, :4]
+        self.assertGreater(float(expanded.std().detach()), initial_contact_std * 1.5)
         contract = mod.model_contract(config)
         self.assertFalse(contract["rank4_pair_tensor_materialized"])
+        self.assertEqual(
+            contract["low_rank_identifiability"],
+            "unit_normalized_left_right_with_terminal_norm_as_per_head_gain",
+        )
         self.assertEqual(contract["contact_calibration"], "fixed_scale_1_plus_receptor_specific_bias")
 
     def test_feature_firewall_excludes_m2_and_126d_from_forward_signatures(self):

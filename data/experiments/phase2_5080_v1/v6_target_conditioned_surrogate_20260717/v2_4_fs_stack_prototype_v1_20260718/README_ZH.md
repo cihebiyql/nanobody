@@ -77,87 +77,72 @@ contact_score_R8 / contact_score_R9
 V2_3_OOF_INPUT_COMPATIBILITY_AUDIT.json
 ```
 
-## 输入合同
+## Canonical V2.4 contracts
 
-特征 TSV 必须包含：
-
-```text
-candidate_id
-teacher_source
-parent_framework_cluster
-outer_fold
-R_8X6B
-R_9E6Y
-M2_R8
-M2_R9
-neural_R8
-neural_R9
-contact_score_R8
-contact_score_R9
-feature_outer_fold
-base_training_parent_set_sha256
-base_model_receipt_sha256
-```
-
-fold provenance JSON 必须同时封闭：
-
-1. stack outer fold 的 meta-training parent 与 score parent 完全分离；
-2. 每条 compact feature 对应的 base model training-parent 集合；
-3. 当前候选 parent 不得出现在产生其 compact feature 的 base-training parent 集合中；
-4. parent 集合使用排序、去重、逐行换行后的 SHA256；
-5. 行内 fold、parent-set digest 和 receipt 必须与 manifest 完全一致。
-
-## 文件
+Verifier S0/S1 后，V1 prototype 文件仅保留作历史审计；canonical 实现为：
 
 ```text
-src/fit_shared_nonnegative_stack_v1.py
-tests/test_fit_shared_nonnegative_stack_v1.py
-feature_contract/
-split_contract/
+src/fit_shared_nonnegative_stack_v2.py
+feature_contract/src/validate_receptor_compact_evidence_v2.py
+split_contract/src/build_whole_parent_nested_splits_v3.py
+contact_contract/contact_score_formula_v1.json
 ```
 
-`feature_contract/` 冻结并验证 receptor-specific compact inner-OOF 的六特征输入及 base/scaler/meta 三层 parent provenance；它不依赖尚未完成的模型训练。
-
-`split_contract/` 沿用训练表已有 outer fold，生成 deterministic whole-parent outer development/inner OOF manifests，并强制 31-parent closure。
-
-运行测试：
-
-```bash
-experiments/phase2_5080_v1/.venv-phase2-5080/bin/python -m unittest -v \
-  experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/\
-v2_4_fs_stack_prototype_v1_20260718/tests/test_fit_shared_nonnegative_stack_v1.py
-```
-
-命令行原型：
-
-```bash
-python src/fit_shared_nonnegative_stack_v1.py \
-  --fit-tsv nested_meta_train_features.tsv \
-  --score-tsv outer_test_features.tsv \
-  --provenance-json fold_provenance.json \
-  --outer-fold 0 \
-  --output-dir output/fold_0
-```
-
-输出：
+### 生命周期角色
 
 ```text
-model.json
-outer_test_predictions.tsv
-receipt.json
+INNER_OOF_BASE_FEATURE
+OUTER_TEST_BASE_FEATURE
+OUTER_TEST_META_PREDICTION
 ```
 
-## 下一步数据要求
+base-feature 角色没有 meta receipt；meta prediction receipt 必须反向绑定实际用于 fit 的 INNER_OOF evidence path、SHA256 和完整 outer-train parent closure。
 
-要在正式 V2.4 上使用该原型，新的 base branches 必须重新导出 receptor-specific nested OOF compact features：
+### 六个 compact features
 
-1. M2：`M2_R8`、`M2_R9`；
-2. neural：`neural_R8`、`neural_R9`；
-3. contact：每个受体严格一个预注册标量；
-4. 每条 feature 必须绑定其 base-training parent set 和 receipt；
-5. outer-test 的 base features 必须只由 outer-train parents 训练得到。
+```text
+M2_R8 / neural_R8 / contact_score_R8
+M2_R9 / neural_R9 / contact_score_R9
+```
 
-在这些数据生成前，本目录只证明拟合器、权重、exact-min 和 provenance gate 的实现，不代表 V2.4 已获得真实效果。
+M2、neural、contact 分别绑定 component receipt 和 training parents，且 training-parent digest 必须严格匹配 canonical split manifest。neural/contact 可以共享 checkpoint，但 contact 必须额外绑定冻结公式 receipt。
+
+### Contact formula
+
+```text
+contact_score_Rr
+= 0.5 * hotspot_contact_mass_Rr
++ 0.5 * interface_specificity_Rr
+```
+
+权重预注册、双受体共享，不查看 outer results 调整。
+
+### Meta 数值合同
+
+仍严格为 5 个可训练参数，并冻结：
+
+```text
+source -> parent -> candidate weights
+shared-receptor weighted z-score scaling fit on meta-train only
+ridge alpha = 1e-3（只惩罚三个共享斜率）
+condition-number ceiling = 1e6
+minimum feature scale = 1e-8
+三个共享斜率非负
+R_dual = exact min(R8, R9)
+```
+
+### Canonical split
+
+```text
+split_contract/prepared/
+whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/
+```
+
+基于当前 V2.4 labels，31-parent closure；inner parent counts 每 fold 相差不超过 1。旧 split V1/V2 及 pre-V2.4-label 产物均非 canonical。
+
+## 当前状态边界
+
+这些实现冻结 schema、provenance、split、contact formula 和数值门控，但尚未伪造尚未完成的 receptor-specific base predictions，也不代表 V2.4 已获得正式模型效果。
 
 ## 证据边界
 
@@ -167,11 +152,4 @@ receipt.json
 independent 8X6B/9E6Y docking geometry surrogate
 ```
 
-不表示：
-
-```text
-PVRIG 结合概率
-Kd
-实验阻断概率
-Docking Gold
-```
+不表示 PVRIG 结合概率、Kd、实验阻断概率或 Docking Gold。

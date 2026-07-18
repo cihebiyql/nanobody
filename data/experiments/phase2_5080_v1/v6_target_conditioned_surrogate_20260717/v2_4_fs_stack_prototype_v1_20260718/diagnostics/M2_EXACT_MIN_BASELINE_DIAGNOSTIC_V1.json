@@ -1,0 +1,220 @@
+{
+  "claim_boundary": "Open computational Docking geometry development evidence only; no sealed V4-F access.",
+  "input": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+    "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+  },
+  "parents": 31,
+  "primary_variant": "hierarchical_equal__outputs_2",
+  "ridge_alpha": 10.0,
+  "rows": 1507,
+  "schema_version": "pvrig_v2_4_m2_exact_min_baseline_diagnostic_v1",
+  "status": "PASS_OPEN_DEVELOPMENT_M2_BASELINES",
+  "structure_features": 126,
+  "variants": {
+    "hierarchical_equal__outputs_2": {
+      "R8": {
+        "mae": 0.03428268258038115,
+        "rmse": 0.044125340692932814,
+        "spearman": 0.5549841104551536
+      },
+      "R9": {
+        "mae": 0.03345958315650951,
+        "rmse": 0.042620631252527234,
+        "spearman": 0.6051290272246869
+      },
+      "Rdual": {
+        "mae": 0.0323587150283071,
+        "rmse": 0.04290748546218935,
+        "spearman": 0.6094011215999979
+      },
+      "folds": {
+        "0": {
+          "score_candidates": 238,
+          "score_parents": 3,
+          "train_candidates": 1269,
+          "train_parents": 28
+        },
+        "1": {
+          "score_candidates": 283,
+          "score_parents": 7,
+          "train_candidates": 1224,
+          "train_parents": 24
+        },
+        "2": {
+          "score_candidates": 155,
+          "score_parents": 4,
+          "train_candidates": 1352,
+          "train_parents": 27
+        },
+        "3": {
+          "score_candidates": 539,
+          "score_parents": 10,
+          "train_candidates": 968,
+          "train_parents": 21
+        },
+        "4": {
+          "score_candidates": 292,
+          "score_parents": 7,
+          "train_candidates": 1215,
+          "train_parents": 24
+        }
+      },
+      "output_contract": "direct_R8_R9_then_exact_min",
+      "promotable_architecture": true
+    },
+    "hierarchical_equal__outputs_3": {
+      "R8": {
+        "mae": 0.03428268258038115,
+        "rmse": 0.044125340692932814,
+        "spearman": 0.5549841104551536
+      },
+      "R9": {
+        "mae": 0.03345958315650951,
+        "rmse": 0.042620631252527234,
+        "spearman": 0.6051290272246869
+      },
+      "Rdual": {
+        "mae": 0.031256261084205504,
+        "rmse": 0.04062444713587195,
+        "spearman": 0.6140453542985373
+      },
+      "folds": {
+        "0": {
+          "score_candidates": 238,
+          "score_parents": 3,
+          "train_candidates": 1269,
+          "train_parents": 28
+        },
+        "1": {
+          "score_candidates": 283,
+          "score_parents": 7,
+          "train_candidates": 1224,
+          "train_parents": 24
+        },
+        "2": {
+          "score_candidates": 155,
+          "score_parents": 4,
+          "train_candidates": 1352,
+          "train_parents": 27
+        },
+        "3": {
+          "score_candidates": 539,
+          "score_parents": 10,
+          "train_candidates": 968,
+          "train_parents": 21
+        },
+        "4": {
+          "score_candidates": 292,
+          "score_parents": 7,
+          "train_candidates": 1215,
+          "train_parents": 24
+        }
+      },
+      "output_contract": "independent_third_dual_diagnostic_only",
+      "promotable_architecture": false
+    },
+    "hierarchical_fixed_tier__outputs_2": {
+      "R8": {
+        "mae": 0.034121641915699635,
+        "rmse": 0.04396993259381969,
+        "spearman": 0.5544895201947838
+      },
+      "R9": {
+        "mae": 0.033279139657742436,
+        "rmse": 0.042463205273798016,
+        "spearman": 0.6048684714935896
+      },
+      "Rdual": {
+        "mae": 0.032602032177414114,
+        "rmse": 0.04325002173807476,
+        "spearman": 0.6088395586431633
+      },
+      "folds": {
+        "0": {
+          "score_candidates": 238,
+          "score_parents": 3,
+          "train_candidates": 1269,
+          "train_parents": 28
+        },
+        "1": {
+          "score_candidates": 283,
+          "score_parents": 7,
+          "train_candidates": 1224,
+          "train_parents": 24
+        },
+        "2": {
+          "score_candidates": 155,
+          "score_parents": 4,
+          "train_candidates": 1352,
+          "train_parents": 27
+        },
+        "3": {
+          "score_candidates": 539,
+          "score_parents": 10,
+          "train_candidates": 968,
+          "train_parents": 21
+        },
+        "4": {
+          "score_candidates": 292,
+          "score_parents": 7,
+          "train_candidates": 1215,
+          "train_parents": 24
+        }
+      },
+      "output_contract": "direct_R8_R9_then_exact_min",
+      "promotable_architecture": true
+    },
+    "hierarchical_fixed_tier__outputs_3": {
+      "R8": {
+        "mae": 0.034121641915699635,
+        "rmse": 0.04396993259381969,
+        "spearman": 0.5544895201947838
+      },
+      "R9": {
+        "mae": 0.033279139657742436,
+        "rmse": 0.042463205273798016,
+        "spearman": 0.6048684714935896
+      },
+      "Rdual": {
+        "mae": 0.031046368995159355,
+        "rmse": 0.04050985617393602,
+        "spearman": 0.6133940841829649
+      },
+      "folds": {
+        "0": {
+          "score_candidates": 238,
+          "score_parents": 3,
+          "train_candidates": 1269,
+          "train_parents": 28
+        },
+        "1": {
+          "score_candidates": 283,
+          "score_parents": 7,
+          "train_candidates": 1224,
+          "train_parents": 24
+        },
+        "2": {
+          "score_candidates": 155,
+          "score_parents": 4,
+          "train_candidates": 1352,
+          "train_parents": 27
+        },
+        "3": {
+          "score_candidates": 539,
+          "score_parents": 10,
+          "train_candidates": 968,
+          "train_parents": 21
+        },
+        "4": {
+          "score_candidates": 292,
+          "score_parents": 7,
+          "train_candidates": 1215,
+          "train_parents": 24
+        }
+      },
+      "output_contract": "independent_third_dual_diagnostic_only",
+      "promotable_architecture": false
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "adaptive_contact_supervision_complete": false,
+  "claim_boundary": "Open-development A/B base-lane OOF geometry approximation only; no adaptive contact C/D, no meta stack, not binding or experimental blocking.",
+  "comparisons": {
+    "A_minus_M2_Rdual_spearman": -0.1384830148847826,
+    "B_minus_A_neural_Rdual_mae": 0.002047075794146022,
+    "B_minus_A_neural_Rdual_spearman": -0.06071360868432335,
+    "B_minus_M2_Rdual_spearman": -0.19919662356910595
+  },
+  "full_stack_complete": false,
+  "lanes": {
+    "A_VHH_ONLY": {
+      "metrics": {
+        "M2": {
+          "R8": {
+            "mae": 0.03428268258038112,
+            "rmse": 0.04412534069293279,
+            "spearman": 0.5549841104551536
+          },
+          "R9": {
+            "mae": 0.0334595831565095,
+            "rmse": 0.04262063125252723,
+            "spearman": 0.6051290272246869
+          },
+          "Rdual": {
+            "mae": 0.0323587150283071,
+            "rmse": 0.04290748546218934,
+            "spearman": 0.6094011215999979
+          }
+        },
+        "neural": {
+          "R8": {
+            "mae": 0.03863186141283461,
+            "rmse": 0.04941472879378573,
+            "spearman": 0.4315833846816386
+          },
+          "R9": {
+            "mae": 0.03853927213405985,
+            "rmse": 0.04856468416241789,
+            "spearman": 0.4549022039798928
+          },
+          "Rdual": {
+            "mae": 0.03755156589744164,
+            "rmse": 0.048012280889050823,
+            "spearman": 0.47091810671521533
+          }
+        }
+      },
+      "neural_Rdual_parent_macro_parent_count": 31,
+      "neural_Rdual_parent_macro_spearman": 0.1708761450779307,
+      "parents": 31,
+      "rows": 1507,
+      "source_strata": {
+        "V4D_OPEN_MULTI_SEED": {
+          "M2_Rdual": {
+            "mae": 0.030000525147599526,
+            "rmse": 0.03879049092341954,
+            "spearman": 0.6933494470650917
+          },
+          "neural_Rdual": {
+            "mae": 0.030343683767122796,
+            "rmse": 0.03844984088396217,
+            "spearman": 0.6064247007913921
+          },
+          "rows": 226
+        },
+        "V4H_ADAPTIVE_SEED_RANKING": {
+          "M2_Rdual": {
+            "mae": 0.03277475789562944,
+            "rmse": 0.043593494554549674,
+            "spearman": 0.5929015961867984
+          },
+          "neural_Rdual": {
+            "mae": 0.03882321411090929,
+            "rmse": 0.04950803030930701,
+            "spearman": 0.4421853364181406
+          },
+          "rows": 1281
+        }
+      }
+    },
+    "B_TARGET_NO_CONTACT": {
+      "metrics": {
+        "M2": {
+          "R8": {
+            "mae": 0.03428268258038112,
+            "rmse": 0.04412534069293279,
+            "spearman": 0.5549841104551536
+          },
+          "R9": {
+            "mae": 0.0334595831565095,
+            "rmse": 0.04262063125252723,
+            "spearman": 0.6051290272246869
+          },
+          "Rdual": {
+            "mae": 0.0323587150283071,
+            "rmse": 0.04290748546218934,
+            "spearman": 0.6094011215999979
+          }
+        },
+        "neural": {
+          "R8": {
+            "mae": 0.040030601138643714,
+            "rmse": 0.05109781659519268,
+            "spearman": 0.4290652207868885
+          },
+          "R9": {
+            "mae": 0.037901314920825435,
+            "rmse": 0.04771826457922591,
+            "spearman": 0.4207539582174945
+          },
+          "Rdual": {
+            "mae": 0.03959864169158766,
+            "rmse": 0.050241884466684594,
+            "spearman": 0.410204498030892
+          }
+        }
+      },
+      "neural_Rdual_parent_macro_parent_count": 31,
+      "neural_Rdual_parent_macro_spearman": 0.16265289535267924,
+      "parents": 31,
+      "rows": 1507,
+      "source_strata": {
+        "V4D_OPEN_MULTI_SEED": {
+          "M2_Rdual": {
+            "mae": 0.030000525147599526,
+            "rmse": 0.03879049092341954,
+            "spearman": 0.6933494470650917
+          },
+          "neural_Rdual": {
+            "mae": 0.034534338828137556,
+            "rmse": 0.0434099433036507,
+            "spearman": 0.6042561043753979
+          },
+          "rows": 226
+        },
+        "V4H_ADAPTIVE_SEED_RANKING": {
+          "M2_Rdual": {
+            "mae": 0.03277475789562944,
+            "rmse": 0.043593494554549674,
+            "spearman": 0.5929015961867984
+          },
+          "neural_Rdual": {
+            "mae": 0.04049210964407768,
+            "rmse": 0.05135297121267202,
+            "spearman": 0.3664836280219359
+          },
+          "rows": 1281
+        }
+      }
+    }
+  },
+  "optimistic_same_row_nonnegative_meta_diagnostic": {
+    "A_VHH_ONLY": {
+      "Rdual": {
+        "mae": 0.03196073460046207,
+        "rmse": 0.04230916032619777,
+        "spearman": 0.5884959034735966
+      },
+      "coefficients_on_standardized_features": {
+        "R8": {
+          "M2_R8": 0.021549474817284555,
+          "neural_R8": 0.010913350598800439
+        },
+        "R9": {
+          "M2_R9": 0.024400346780017616,
+          "neural_R9": 0.008946729899223365
+        }
+      },
+      "promotion_eligible": false,
+      "purpose": "optimistic complementarity ceiling only; strict nested cross-fitting is still required",
+      "same_rows_used_for_fit_and_evaluation": true
+    },
+    "B_TARGET_NO_CONTACT": {
+      "Rdual": {
+        "mae": 0.032193374006181615,
+        "rmse": 0.042906940839187245,
+        "spearman": 0.6138990844708624
+      },
+      "coefficients_on_standardized_features": {
+        "R8": {
+          "M2_R8": 0.023298050762087845,
+          "contact_score_R8": 0.0,
+          "neural_R8": 0.005252015078408463
+        },
+        "R9": {
+          "M2_R9": 0.027605888999855163,
+          "contact_score_R9": 0.0,
+          "neural_R9": 0.0022812391682624426
+        }
+      },
+      "promotion_eligible": false,
+      "purpose": "optimistic complementarity ceiling only; strict nested cross-fitting is still required",
+      "same_rows_used_for_fit_and_evaluation": true
+    }
+  },
+  "parents": 31,
+  "prediction_artifact_sha256": {
+    "A_VHH_ONLY/fold_0": "b6b7149783a7f61340f7c96e9fb1cbeb395a6696075a5a452c29ff7ce80e3a64",
+    "A_VHH_ONLY/fold_1": "855398b85f8612ebc297d56c70bb826f6c6ef5ebfa389901c112e28780fabc05",
+    "A_VHH_ONLY/fold_2": "0631f5993f45fe198ec372e1bdf4d4caa90d0dd70fcc7cf7f19e497a177d18a4",
+    "A_VHH_ONLY/fold_3": "a9812c1e912f84fa50ecbb3902f62f580df947ab0c0d161fa274263c5f36d44a",
+    "A_VHH_ONLY/fold_4": "1cbb0165d641c2497b44456c8e29aa7bc82c3aac5cd6dfcfd6fb826e88984c15",
+    "B_TARGET_NO_CONTACT/fold_0": "0ef731e9571a52ce44506ab1b01290d8a82bb01d60fc5bec2f3888aee8cc71c2",
+    "B_TARGET_NO_CONTACT/fold_1": "b672b17b1e8f314f54d867438c2eef5aa594cc430d504cac9bffcdc69051c525",
+    "B_TARGET_NO_CONTACT/fold_2": "3be4b8e35375a2bd11a651f589d53a781bdcd737c32940f85856f55350af284a",
+    "B_TARGET_NO_CONTACT/fold_3": "7dfb2b4c38dc3fc98da03fc80ee689b44e350f41d01201d5ad1798077066d184",
+    "B_TARGET_NO_CONTACT/fold_4": "f13f4960046e4871b11441a3fa6f322d1c9d49092f6081290fe4890f938a132a"
+  },
+  "promotion_authorized": false,
+  "rows": 1507,
+  "schema_version": "pvrig_v2_4_preliminary_ab_outer_evaluation_v1",
+  "status": "PASS_PRELIMINARY_AB_EVALUATED_NOT_FULL_STACK_NOT_PROMOTABLE",
+  "v4_f_access_count": 0
+}

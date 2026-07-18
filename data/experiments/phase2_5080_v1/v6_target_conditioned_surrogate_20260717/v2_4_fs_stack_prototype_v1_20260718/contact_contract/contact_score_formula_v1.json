@@ -1,0 +1,26 @@
+{
+  "formula_version": "pvrig_v2_4_contact_composite_v1_equal_weight_preregistered",
+  "receptors": [
+    "R8",
+    "R9"
+  ],
+  "inputs_per_receptor": [
+    "hotspot_contact_mass",
+    "interface_specificity"
+  ],
+  "input_domain": {
+    "maximum": 1.0,
+    "minimum": 0.0
+  },
+  "formula": "contact_score_Rr = 0.5 * hotspot_contact_mass_Rr + 0.5 * interface_specificity_Rr",
+  "weights": {
+    "hotspot_contact_mass": 0.5,
+    "interface_specificity": 0.5
+  },
+  "intercept": 0.0,
+  "clipping": false,
+  "label_access": false,
+  "outer_result_tuning": false,
+  "rationale": "A priori equal weighting of direct hotspot engagement and interface selectivity. No V2.4 outer-fold labels or outcomes were inspected to choose the weights.",
+  "claim_boundary": "Sequence-model contact composite for docking-geometry surrogacy only; not experimental binding or blocking evidence."
+}

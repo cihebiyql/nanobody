@@ -1,0 +1,443 @@
+{
+  "artifacts": {
+    "base_target_pt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graphs_v2.pt",
+      "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc",
+      "size_bytes": 425109,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graphs_v2.pt",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "base_target_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graph_receipt_v2.json",
+      "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9",
+      "size_bytes": 3078,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graph_receipt_v2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "calibration_runner": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/src/run_open_only_prestep_calibration_v1.py",
+      "sha256": "b6ce135c7d89b97a407c923a42f13af8557ead679bdf3603981e5461544f08e5",
+      "size_bytes": 11511,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/run_open_only_prestep_calibration_v1.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "contact_formula": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/contact_contract/contact_score_formula_v1.json",
+      "sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7",
+      "size_bytes": 876,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/contact_contract/contact_score_formula_v1.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "deployment_launcher": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/src/node1_v2_4_outer_development_launcher_v1.py",
+      "sha256": "29be5df27ae38787970b85a9150481442c9b13fa81db2e5da86b26bf0bd85935",
+      "size_bytes": 25866,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/node1_v2_4_outer_development_launcher_v1.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "dual_marginal_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_marginal/RUN_RECEIPT.json",
+      "sha256": "c68c1f0d3f2787211cb53ba2d9bc25cd9ef3ab1dc0a98fd8fff9a8008e869de7",
+      "size_bytes": 2080,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_dual_residue_contact_targets_v2_20260718/RUN_RECEIPT.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "dual_marginal_tsv_gz": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_marginal/v6_dual_source_residue_contact_targets_v2.tsv.gz",
+      "sha256": "8c792366844a013f4a99d49089cc0cbf79f1e836985f55b4d82461cc0bef1038",
+      "size_bytes": 1618378,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_dual_residue_contact_targets_v2_20260718/v6_dual_source_residue_contact_targets_v2.tsv.gz",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "dual_pair_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_pair/RUN_RECEIPT.json",
+      "sha256": "0858b5dd6894cb957bea8fdafd6e7fe8d3644bb64c0f9952a8a9e416fb0dcf5b",
+      "size_bytes": 5004,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_dual_pair_contact_targets_v2_20260718/RUN_RECEIPT.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "dual_pair_tsv_gz": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/dual_pair/v6_dual_source_pair_contact_targets_v2.tsv.gz",
+      "sha256": "50127c53444351273cfbe7ab2403b448be472628a02b72e42586a4bc490ad07d",
+      "size_bytes": 7073861,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_dual_pair_contact_targets_v2_20260718/v6_dual_source_pair_contact_targets_v2.tsv.gz",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "esm2_650m_identity": {
+      "inherited_freeze_sha256": "e532b38986c620c508f78003ff1aeb897034fd5efa5e6ffc311af81153b296ca",
+      "node1_path": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c/model.safetensors",
+      "sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "size_bytes": 2609506392,
+      "validation_mode": "INHERITED_NODE1_IMMUTABLE"
+    },
+    "model": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/src/residue_model_v2_4.py",
+      "sha256": "d3295b4a8c8465a528f2e9a8b465e63177e465b2183999f6d972ffa4a3bde36d",
+      "size_bytes": 30433,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/model/residue_model_v2_4.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "model_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/tests/test_residue_model_v2_4.py",
+      "sha256": "2bc7712a81fc5317eac4b8373eabb6920fe7ffcc4032eae77451490bb9a99bd5",
+      "size_bytes": 11477,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/model/test_residue_model_v2_4.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_0": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/outer_fold_0.json",
+      "sha256": "e627ac7dea053bad44dfabcf68fd210a27878a3c3b79bb9122fb3021b13408d9",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_0.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_1": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/outer_fold_1.json",
+      "sha256": "4f38246e83b8dd4f647e9f36fda6349f3bcdf33aad9a808cfbb70c049d2122d4",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_1.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_2": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/outer_fold_2.json",
+      "sha256": "539f58a611626bef116d1a648bccb3da4d71a25fb9aa8a947e63452478285e27",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_3": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/outer_fold_3.json",
+      "sha256": "44cb005b228533f3429c4c3fdf55bb89f044ab00766377a3d953ca3a3d7b6db7",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_3.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_4": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/outer_fold_4.json",
+      "sha256": "a44173aa91e0681e929280b2a28702035997bb4780ef12ffc88ce3a90752cd88",
+      "size_bytes": 1038,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/outer_fold_4.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_materialization_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/receipt.json",
+      "sha256": "5f412ab844420a18ff4d7b52d4a1631c98c2ee5f3dee4322df6c650eaa8e4c21",
+      "size_bytes": 2610,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/outer_split_json_v1/receipt.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "outer_split_source": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/splits/source_outer_development_manifest.tsv",
+      "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55",
+      "size_bytes": 3116655,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/outer_development_manifest.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/src/train_v2_4_base_split.py",
+      "sha256": "59245b7aa28c14e9134f15fa1c2f4717e3a3b3a7c3e044a4d7cda06afc1c685f",
+      "size_bytes": 58686,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/trainer/train_v2_4_base_split.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "trainer_test": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/tests/test_train_v2_4_base_split.py",
+      "sha256": "f28d93c3df30775c4d3d1ee120d0c5e7d39fb117d6eb01b58b342e5985873704",
+      "size_bytes": 14814,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/trainer/test_train_v2_4_base_split.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "training_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/v6_supervised1507_v2_4.receipt.json",
+      "sha256": "b7e5f764a58d1d4d059c36ebbafc2851d93cce7539110b44b7fd7240e3344499",
+      "size_bytes": 4278,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.receipt.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "training_tsv": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/inputs/v6_supervised1507_v2_4.tsv",
+      "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+      "size_bytes": 3126989,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v1_5_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "sha256": "6c4ee5e9827854406615df6e61b63e5d445d27535eb00a44fca5570c062779af",
+      "size_bytes": 52884,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/train_nested_residue_surrogate_v1_5.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v1_model": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/residue_model.py",
+      "sha256": "c6745faf5d9c4afb101015f751b89e2aefb82aa4ccfbf3259c2d2c9cba4b05bb",
+      "size_bytes": 13666,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/residue_model.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v1_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v1/src/train_nested_residue_surrogate.py",
+      "sha256": "1bd76aa3128f7cbd54c94004760547102c402dc5127a896669e0e072ca7ed5d8",
+      "size_bytes": 41420,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v1/src/train_nested_residue_surrogate.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v23_freeze": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v2/IMPLEMENTATION_FREEZE_V2.json",
+      "sha256": "e532b38986c620c508f78003ff1aeb897034fd5efa5e6ffc311af81153b296ca",
+      "size_bytes": 50876,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_3_numerical_soak_launcher_v1_20260718/IMPLEMENTATION_FREEZE_V2_3.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "v23_trainer": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718/residue_v2/src/train_nested_residue_surrogate_v2.py",
+      "sha256": "68a441b1af6ad979db30a57fb652f3b60200e382bfdfc177d640d79a55b4bb84",
+      "size_bytes": 97573,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v2/src/train_nested_residue_surrogate_v2.py",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_cache_npz": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_v2.npz",
+      "sha256": "95faf75f434375aa086cc4135967f7165b6089ede4f26c890925d9a501288d71",
+      "size_bytes": 217222570,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_cache_v2.npz",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_closure": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_input_closure_v2.tsv",
+      "sha256": "3bc95f0c7b2f1559c10e8a009a9b94ae1992fc024ee3ab5847099e69b29904df",
+      "size_bytes": 468069,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_input_closure_v2.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_manifest": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_manifest_v2.tsv",
+      "sha256": "7da6dd48a858395e1514d82189757513a9da4df9d7ddefc8a95c72b6b7cc4fd1",
+      "size_bytes": 361073,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_manifest_v2.tsv",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_materialization_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/materialization_receipt_v2.json",
+      "sha256": "be32b3053aa3f42bcee0a66b213e3bc5f419db32e1a2a3b1bf8b12b825dc797e",
+      "size_bytes": 2770,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/materialization_receipt_v2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    },
+    "vhh_graph_receipt": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/vhh_graphs/graph_cache_receipt_v2.json",
+      "sha256": "83fe4fb6601798293e0b95ed255faad40a5fbe9b0cee9914976a82f12b85024a",
+      "size_bytes": 888,
+      "source_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_supervised1507_graph_inputs_v1_20260718/graph_cache_receipt_v2.json",
+      "validation_mode": "LOCAL_SOURCE_AND_NODE1"
+    }
+  },
+  "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718",
+  "calibration_contract": {
+    "attention_temperatures": {
+      "8x6b": 1.0,
+      "9e6y": 1.0
+    },
+    "binding_status": "PENDING_OPEN_ONLY_PRESTEP_CALIBRATION",
+    "calibration_receipt_node1_path": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v1_20260718/CALIBRATION_RECEIPT.json",
+    "calibration_runtime_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_calibration_v1_20260718",
+    "fixed_grid": [
+      0.0001,
+      0.00025,
+      0.0005,
+      0.001,
+      0.0025,
+      0.005,
+      0.01
+    ],
+    "frozen_lane_contact_weights": null,
+    "open_only": true,
+    "optimizer_steps_before_observation": 0,
+    "outer_metrics_access_count": 0,
+    "pair_to_marginal_ratio": 0.5,
+    "prediction_metrics_access_count": 0,
+    "receipt_artifact_label": null,
+    "selection_rule": "per_lane_smallest_grid_value_in_target_band_before_optimizer_step",
+    "target_gradient_fraction_band": [
+      0.05,
+      0.2
+    ]
+  },
+  "claim_boundary": "Open-only independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "execution": {
+    "automatic_smoke_to_outer_transition": false,
+    "folds_sequential_within_lane": true,
+    "lanes_concurrent": 4,
+    "outer_folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "phase_order": [
+      "OPEN_ONLY_CONTACT_GRADIENT_CALIBRATION",
+      "IMPLEMENTATION_FREEZE",
+      "TINY_SMOKE",
+      "FOUR_LANE_OUTER_DEVELOPMENT"
+    ],
+    "tiny_smoke_must_pass_all_lanes": true
+  },
+  "expected_training_counts": {
+    "reliability_tiers": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
+    "rows": 1507,
+    "teacher_sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "unique_candidates": 1507,
+    "unique_parent_framework_clusters": 31
+  },
+  "pending": [
+    "CALIBRATION_RECEIPT.json",
+    "frozen_lane_contact_weights",
+    "IMPLEMENTATION_FREEZE_V2_4.json"
+  ],
+  "prediction_metrics_access_count": 0,
+  "production_authorized": false,
+  "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+  "resources": {
+    "cpu_threads_per_process": 8,
+    "lane_gpu_map": {
+      "A_VHH_ONLY": 1,
+      "B_TARGET_NO_CONTACT": 2,
+      "C_SPLIT_MARGINAL": 4,
+      "D_SPLIT_PAIR": 5
+    },
+    "thread_environment": {
+      "MKL_NUM_THREADS": "8",
+      "NUMEXPR_NUM_THREADS": "8",
+      "OMP_NUM_THREADS": "8",
+      "OPENBLAS_NUM_THREADS": "8",
+      "TOKENIZERS_PARALLELISM": "false"
+    }
+  },
+  "runtime_must_remain_absent_until_implementation_freeze": true,
+  "runtime_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_four_lane_oof_v1_20260718",
+  "schema_version": "pvrig_v6_residue_v2_4_node1_deployment_manifest_v1",
+  "sealed_evaluation_access_count": 0,
+  "status": "PREFREEZE_DRY_RUN_PENDING_CALIBRATION_DO_NOT_START",
+  "trainer": {
+    "argv_template": [
+      "{python}",
+      "{trainer}",
+      "--lane",
+      "{lane}",
+      "--output-dir",
+      "{output_dir}",
+      "--split-manifest",
+      "{split_manifest}",
+      "--v2-3-bundle-root",
+      "/data1/qlyu/projects/pvrig_v6_residue_v2_3_deployment_bundle_v1_20260718",
+      "--training-tsv",
+      "{training_tsv}",
+      "--contact-tsv-gz",
+      "{dual_marginal_tsv_gz}",
+      "--graph-cache-dir",
+      "{vhh_graph_dir}",
+      "--target-graph-pt",
+      "{base_target_pt}",
+      "--pair-contact-tsv-gz",
+      "{dual_pair_tsv_gz}",
+      "--structure-dim",
+      "126",
+      "--contact-formula-json",
+      "{contact_formula}",
+      "--model-path",
+      "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c",
+      "--model-identity-file",
+      "{esm2_650m_identity}",
+      "--expected-model-sha256",
+      "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "--learning-rate",
+      "0.0001",
+      "--weight-decay",
+      "0.02",
+      "--gradient-clip",
+      "1.0",
+      "--gradient-accumulation",
+      "2",
+      "--huber-delta",
+      "0.03",
+      "--receptor-weight",
+      "1.0",
+      "--dual-weight",
+      "0.5",
+      "--ridge-alpha",
+      "10.0",
+      "--seed",
+      "43",
+      "--structure-prefix",
+      "ALL__",
+      "--structure-prefix",
+      "CDR1_CDR2__",
+      "--structure-prefix",
+      "CDR1_CDR3__",
+      "--structure-prefix",
+      "CDR1_FRAMEWORK__",
+      "--structure-prefix",
+      "CDR1__",
+      "--structure-prefix",
+      "CDR2_CDR3__",
+      "--structure-prefix",
+      "CDR2_FRAMEWORK__",
+      "--structure-prefix",
+      "CDR2__",
+      "--structure-prefix",
+      "CDR3_FRAMEWORK__",
+      "--structure-prefix",
+      "CDR3__",
+      "--structure-prefix",
+      "CDR_ALL__",
+      "--structure-prefix",
+      "FRAMEWORK__"
+    ],
+    "artifact_label": "trainer",
+    "frozen_noncalibration_parameters": {
+      "batch_size": 8,
+      "dropout": 0.25,
+      "dual_weight": 0.5,
+      "fixed_epochs": 8,
+      "gradient_accumulation": 2,
+      "gradient_clip": 1.0,
+      "graph_hidden_dim": 128,
+      "huber_delta": 0.03,
+      "learning_rate": 0.0001,
+      "precision": "bf16",
+      "receptor_weight": 1.0,
+      "ridge_alpha": 10.0,
+      "seed": 43,
+      "structure_dim": 126,
+      "weight_decay": 0.02
+    },
+    "lane_outer_extra_argv": null,
+    "outer_development_extra_argv": null,
+    "required_result_file": "RESULT.json",
+    "tiny_smoke_extra_argv": [
+      "--backbone-kind",
+      "tiny",
+      "--tiny-e2e",
+      "--fixed-epochs",
+      "1",
+      "--graph-hidden-dim",
+      "32",
+      "--dropout",
+      "0",
+      "--batch-size",
+      "4",
+      "--device",
+      "cpu",
+      "--precision",
+      "fp32"
+    ]
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "artifacts": {
+    "contact_code": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/contact_contract/src/compute_contact_score_v1.py",
+      "sha256": "fbebf54d38a20027f7be7f26501e9738ab5fb84c3fa532ec1ea65866b67e5599"
+    },
+    "contact_formula": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/contact_contract/contact_score_formula_v1.json",
+      "sha256": "7abe8e845b33ef7c77a61397a826fb3e6f94fb34122b7abbc2ddbd77c6db2ec7"
+    },
+    "contact_tests": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/contact_contract/tests/test_compute_contact_score_v1.py",
+      "sha256": "cc899ae2f49ed3cfbb2ca410d19cb8244a9be88936e41e8e86ac1501e40f349c"
+    },
+    "feature_schema": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/feature_contract/schema/receptor_compact_evidence_schema_v2.json",
+      "sha256": "f641e6530aefb7d23fbc4807e9c7ac8d0f3eee20bd56e676f1d1f6909b8e829f"
+    },
+    "feature_tests": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/feature_contract/tests/test_validate_receptor_compact_evidence_v2.py",
+      "sha256": "a74daf442a56bda44cc6a232745bafe8350c04e1a9f60a279440a7af85609204"
+    },
+    "feature_validator": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/feature_contract/src/validate_receptor_compact_evidence_v2.py",
+      "sha256": "d80d2d6130a629fcab6c98032404b802ade9ef53134c54c31ecfee59471aa7aa"
+    },
+    "inner_split": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/inner_nested_oof_manifest.tsv",
+      "sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073"
+    },
+    "outer_split": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/outer_development_manifest.tsv",
+      "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55"
+    },
+    "split_builder": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/src/build_whole_parent_nested_splits_v3.py",
+      "sha256": "b7388517055b3e912ec6c8bd2a46620e7aec1399aeca7933b64ccd945ef6693c"
+    },
+    "split_receipt": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/prepared/whole_parent_nested_splits_all_outer_seed1931_v3_parent_balanced_v2_4/receipt.json",
+      "sha256": "ecb415d450f824d06980bb4560a6a2fd39f67f8b6c383f4f726d61b810481fd2"
+    },
+    "split_tests": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/split_contract/tests/test_build_whole_parent_nested_splits_v3.py",
+      "sha256": "f2be697d6aa17dc226ac9dd7e479de938c19e3219959b880ece85d066971f38d"
+    },
+    "stack_code": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/src/fit_shared_nonnegative_stack_v2.py",
+      "sha256": "2f722978b433b3c348520057f4f47962fb2fa4877b2958ec5ce898cab4b13f3b"
+    },
+    "stack_tests": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/tests/test_fit_shared_nonnegative_stack_v2.py",
+      "sha256": "017f81a86c803944d46e3d9323f9baa78ea8c725900061a1f5d7626a8a48ed64"
+    },
+    "test_log": {
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/audits/v2_4_s0_s1_contract_tests.log",
+      "sha256": "30aac25252d601b5edc4e304fa5a268826a016a6df04f72833ad1e192d15d6f2"
+    }
+  },
+  "canonical_label_table_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+  "claim_boundary": "Contracts, manifests, and validators only; no V2.4 base model or meta model has been trained by this freeze.",
+  "compact_features": [
+    "M2_R8",
+    "neural_R8",
+    "contact_score_R8",
+    "M2_R9",
+    "neural_R9",
+    "contact_score_R9"
+  ],
+  "contact_formula": "0.5*hotspot_contact_mass_Rr + 0.5*interface_specificity_Rr",
+  "created_at": "2026-07-18T18:20:19.115331+08:00",
+  "freeze_version": "pvrig_v2_4_s0_s1_contract_freeze_v1",
+  "roles": [
+    "INNER_OOF_BASE_FEATURE",
+    "OUTER_TEST_BASE_FEATURE",
+    "OUTER_TEST_META_PREDICTION"
+  ],
+  "split_contract": {
+    "inner_fold_count": 5,
+    "inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "inner_parent_count_max_difference": 1,
+    "inner_seed": 1931,
+    "outer_manifest_sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55",
+    "parent_count": 31
+  },
+  "stack_contract": {
+    "condition_number_ceiling": 1000000.0,
+    "minimum_feature_scale": 1e-08,
+    "parameter_count": 5,
+    "ridge_alpha": 0.001,
+    "scaling": "weighted_shared_receptor_zscore_meta_train_only_v1",
+    "shared_nonnegative_slopes": true
+  },
+  "status": "PASS_CONTRACT_ONLY_NO_MODEL_TRAINING",
+  "superseded": [
+    "feature_contract_v1_meta_cyclic",
+    "stack_v1_no_numeric_gates",
+    "split_v1_candidate_first_parent_imbalanced",
+    "pre_v2_4_label_splits"
+  ],
+  "tests": {
+    "count": 43,
+    "log_sha256": "30aac25252d601b5edc4e304fa5a268826a016a6df04f72833ad1e192d15d6f2",
+    "status": "OK"
+  },
+  "v4f_accessed": false
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "pvrig_v2_4_calibration_claim_boundary_supersession_v2_2",
+  "status": "SUPERSEDE_V2_1_WITH_V2_2_AFTER_EXACT_CLAIM_BOUNDARY_MISMATCH",
+  "supersession_version": "V2.2_CLAIM_BOUNDARY_ALIGNMENT_ONLY",
+  "failed_materialization_boundary": {
+    "failed_gate": "calibration_observation_claim_boundary",
+    "manifest_claim_boundary": "Open-only adaptive-multiseed independent 8X6B/9E6Y computational Docking geometry surrogate; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+    "v2_1_observation_claim_boundary": "Open-only computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding probability, affinity, experimental blocking, Docking Gold, or submission evidence.",
+    "reason": "V2.1 wrapper inherited the immutable base trainer claim boundary instead of emitting the manifest-bound adaptive-multiseed claim boundary.",
+    "validation_weakened": false,
+    "v2_1_ready_manifest_created": false,
+    "v2_1_implementation_freeze_created": false,
+    "formal_training_started": false,
+    "optimizer_constructed": false,
+    "optimizer_steps": 0,
+    "outer_metrics_access_count": 0,
+    "prediction_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "v2_1_observed_evidence": {
+    "node1_bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_1_20260718",
+    "node1_calibration_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_calibration_v2_1_20260718",
+    "prefreeze_manifest_sha256": "5452365b420954f27bc56e20925b4f5fd6ebedb5801afebe5c5c9d9a1d403f7b",
+    "calibration_receipt_sha256": "c2448f500bd69637d7e2d7316ea1d6ddf21c735ba44f98bf51b10e9adb441a5d",
+    "c_observation_sha256": "9b1ef0b62dd15c2810f736e60fbb32ea21452c5038db871a3b033814af92b0db",
+    "d_observation_sha256": "c41e95b4dad5054d7879beaf8e03e486b70c37a5a90eb4284dd9cf4a6d5307f7",
+    "base_trainer_sha256": "59245b7aa28c14e9134f15fa1c2f4717e3a3b3a7c3e044a4d7cda06afc1c685f",
+    "v2_1_calibration_wrapper_sha256": "a8136b28ded7f173e5327f1e0d30d8e1ec780f03bf411367058804b6afee61be",
+    "selected_contact_weights": {
+      "C_SPLIT_MARGINAL": {"marginal": 1.5, "pair": 0.0},
+      "D_SPLIT_PAIR": {"marginal": 1.0, "pair": 0.5}
+    }
+  },
+  "frozen_numeric_contract": {
+    "fixed_grid": [0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.5, 10.0],
+    "pair_to_marginal_ratio": 0.5,
+    "target_median_gradient_fraction_band": [0.05, 0.15],
+    "maximum_per_batch_gradient_fraction": 0.3,
+    "calibration_batch_count": 8,
+    "calibration_batch_contract_sha256": "0f7ad07e247dca1e80d15875448deacb621dd46b70e0e2dc154211e43f813923",
+    "selection_rule": "per_contact_lane_smallest_grid_value_with_median_in_band_and_per_batch_max_at_or_below_ceiling_before_optimizer_construction",
+    "numeric_method_changes": 0,
+    "grid_changes": 0,
+    "gate_changes": 0,
+    "batch_changes": 0,
+    "model_changes": 0,
+    "weight_changes_permitted": false
+  },
+  "v2_2_attempt": {
+    "bundle_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_deployment_bundle_v2_2_20260718",
+    "calibration_root": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_calibration_v2_2_20260718",
+    "production_runtime": "/data1/qlyu/projects/pvrig_v6_residue_v2_4_four_lane_oof_v2_2_20260718",
+    "must_rerun_calibration": true,
+    "v2_1_observation_reuse_forbidden": true,
+    "observation_claim_must_equal_manifest_exactly": true,
+    "selected_weights_must_equal_v2_1": true,
+    "formal_training_forbidden_without_new_user_message": true
+  },
+  "claim_boundary": "Technical claim-boundary deployment supersession only; no model performance, binding, affinity, experimental blocking, Docking Gold, or submission claim."
+}

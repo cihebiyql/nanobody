@@ -1,0 +1,30 @@
+{
+  "base_stage1_extractor_sha256": "baa82f9291d096b8d59ba222432fbfb7e4c20aba34040bbae91d19a0eec79022",
+  "campaign_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+  "claim_boundary": "Computational independent dual-receptor Docking contact teacher only; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "contract_sha256": "331c5c895a23ee9b34a66b31d8f4bd8fade63ff0461ff3e3b6ed32d8a4132fa8",
+  "dry_run_log_sha256": "7c12920f2b10721c6b81080d162ed50e6d9b7af34de8ed2fe37a0ccece3348ff",
+  "dry_run_status": "PASS_ADAPTIVE_READ_ONLY_DRY_RUN",
+  "extractor_sha256": "d8c094ea53e7471b92a982d8e76489bd31b37839fcd5079fc0a4cf3c8bf876ae",
+  "host": "node23",
+  "ionice_class": "idle",
+  "launch_utc": "2026-07-18T11:06:59Z",
+  "launcher_sha256": "dd9fc0a28a51108331db51dee40fec7cee9f7fc64892c5e9b7f566561eb3d0d4",
+  "log_path": "/data/qlyu/projects/pvrig_v4_h_adaptive_contact_teacher_v2_20260718/EXTRACTION.log",
+  "nice": 15,
+  "output_dir": "/data/qlyu/projects/pvrig_v4_h_adaptive_contact_teacher_v2_20260718/production_output_v2",
+  "pid": 2231398,
+  "pid_path": "/data/qlyu/projects/pvrig_v4_h_adaptive_contact_teacher_v2_20260718/EXTRACTION.pid",
+  "preproduction_failed_attempts": [
+    {
+      "pose_coordinate_files_opened": 0,
+      "production_output_created": false,
+      "reason": "launcher_base_extractor_path_was_one_parent_too_high"
+    }
+  ],
+  "python": "/data/qlyu/anaconda3/bin/python",
+  "reconciliation_receipt_sha256": "c875ce34b55bbdad42f9485d14902dba4052d5785ce80257d6ad060b2d2f92b6",
+  "schema_version": "pvrig_v6_v4h_adaptive_multiseed_contact_teacher_v2_launch_receipt",
+  "status": "LAUNCHED_FROZEN_LOW_PRIORITY_EXTRACTION",
+  "workers": 4
+}

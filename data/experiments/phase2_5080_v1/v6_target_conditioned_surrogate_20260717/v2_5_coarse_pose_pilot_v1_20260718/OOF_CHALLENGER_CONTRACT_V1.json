@@ -1,0 +1,45 @@
+{
+  "schema_version": "pvrig_v2_5_coarse_pose_open_only_whole_parent_oof_challenger_v1",
+  "status": "FROZEN_PLAN_NO_TRAINING_NO_PERFORMANCE_COMPARISON",
+  "claim_boundary": "Computational dual-receptor docking-geometry surrogate challenger only; not binding, affinity, competition, experimental blocking, Docking Gold, or submission truth.",
+  "cohort": {
+    "candidate_count": 1507,
+    "parent_cluster_count": 31,
+    "v4d_open_count": 226,
+    "v4h_open_count": 1281
+  },
+  "sealed_inputs": {
+    "candidate_docking_pose_inputs": false,
+    "scalar_teacher_features": false,
+    "v4_f_or_test32_access": false,
+    "id_features": false
+  },
+  "split_contract": {
+    "outer_manifest_sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55",
+    "inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "unit": "parent_framework_cluster"
+  },
+  "challengers": {
+    "C1_SYMMETRIC12D_RIDGE": {
+      "input_dim": 12,
+      "preprocessing": "none beyond train-fold standardization inside Ridge pipeline",
+      "direct_outputs": ["R_8X6B", "R_9E6Y"],
+      "derived_output": "R_dual_min = min(R_8X6B, R_9E6Y)"
+    },
+    "C2_INNER_TRAIN_PCA8_RIDGE": {
+      "raw_input_dim": 36,
+      "predeclared_exclusions": [
+        "8x6b__pose_count",
+        "9e6y__pose_count",
+        "8x6b__top20_score_entropy",
+        "9e6y__top20_score_entropy"
+      ],
+      "pca_input_dim_before_fold_constant_filter": 32,
+      "pca_components": 8,
+      "fit_scope": "current inner-train parents only; outer refit uses current outer-train parents only",
+      "stack_rule": "stack only fold-specific base predictions, never pooled fold-specific PCA coordinates"
+    }
+  },
+  "ridge_alpha_grid": [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0],
+  "current_execution_boundary": "Materialize and validate label-free 36D/12D only; do not train, evaluate, compare, or promote."
+}

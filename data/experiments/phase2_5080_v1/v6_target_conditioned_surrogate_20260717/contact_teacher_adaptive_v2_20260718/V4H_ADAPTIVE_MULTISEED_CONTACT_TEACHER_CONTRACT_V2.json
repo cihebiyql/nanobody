@@ -1,0 +1,80 @@
+{
+  "aggregation": {
+    "absent_union_pair": "observed_zero_within_successful_paired_seed",
+    "dual_seed_scope": "intersection_of_ranking_declared_successful_seed_ids",
+    "pair_variance": "population",
+    "pose_rank_weight": "normalized_1_over_log2_rank_plus_1",
+    "residue_marginal": "pose_weighted_any_pvrig_contact_then_equal_seed_mean",
+    "seed_weighting": "equal_over_paired_successful_seeds",
+    "uncertainty_weight": "1/(1+4*variance)"
+  },
+  "canonical_raw_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+  "claim_boundary": "V4-H adaptive-seed computational residue-contact intermediates derived from frozen independent 8X6B/9E6Y docking poses; not binding, affinity, competition, experimental blocking, Docking Gold, or final submission evidence.",
+  "contact_definition": {
+    "available_seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "contact_cutoff_angstrom": 4.5,
+    "minimum_poses": 4,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "top_k": 8
+  },
+  "execution": {
+    "process_priority": {
+      "ionice_class": "idle",
+      "nice": 15
+    },
+    "rationale": "Node23 load was approximately 59/64 due active HADDOCK; freeze a low-priority four-worker extractor to avoid interfering with critical jobs.",
+    "workers": 4
+  },
+  "expected_counts": {
+    "candidates": 1320,
+    "declared_jobs": 3664,
+    "excluded_nonteacher_success_results": 123,
+    "manifest_rows": {
+      "1931": 768,
+      "3253": 256,
+      "917": 2640
+    },
+    "selected_paired_jobs": 3536,
+    "successful_job_results": 3659,
+    "terminal_failed_jobs": 5,
+    "tier_counts": {
+      "DUAL_1_SEED": 917,
+      "DUAL_2_SEED": 241,
+      "DUAL_3_SEED": 123,
+      "TECHNICAL_INCOMPLETE": 39
+    },
+    "valid_receptor_seed_asymmetry_candidates": 25
+  },
+  "expected_sha256": {
+    "final_ranking": "144da9b8ce2a25db73813df2e23c1f48f9bebca8f565e50b15e4c1670e8c040e",
+    "manifest_seed1931": "0b07ace3fd233db1980143dd174ffd6a0b67c3d6a92462c009f4437d2b74ae15",
+    "manifest_seed3253": "759eace448be5c2ace4b745139d2cc53fd2d2864ea756f751d7efdda35772113",
+    "manifest_seed917": "c76de07a2725939e62b4fab9cd9af4a7c72b30398f68bfa18727a223f277c1d0",
+    "raw_candidates": "220926f45bca69464588b8eebcb8855d3235876ab98e0840d2e374bf94cdeec0",
+    "reconciliation_receipt": "c875ce34b55bbdad42f9485d14902dba4052d5785ce80257d6ad060b2d2f92b6",
+    "upstream_receipt": "03c52f1011087276ca04fe54d8afe869fef7f2dbd30ae69ae52e7647a20d9941"
+  },
+  "frozen_exclusions": {
+    "technical_incomplete": "39 candidates retained with empty numeric fields; no result or pose opened",
+    "unpaired_receptor_success": "excluded from teacher and not opened",
+    "v4_f": "sealed and never accessed"
+  },
+  "heavy_extraction_status": "NOT_STARTED_PENDING_LEADER_REVIEW",
+  "implementation": {
+    "adaptive_extractor_path": "src/extract_v4h_adaptive_multiseed_contact_teacher_v2.py",
+    "adaptive_extractor_sha256": "d8c094ea53e7471b92a982d8e76489bd31b37839fcd5079fc0a4cf3c8bf876ae",
+    "base_stage1_extractor_path": "../contact_teacher/src/extract_v4h_stage1_contact_teacher_v1_1.py",
+    "base_stage1_extractor_sha256": "baa82f9291d096b8d59ba222432fbfb7e4c20aba34040bbae91d19a0eec79022",
+    "reconciliation_builder_path": "src/reconcile_v4h_adaptive_terminal_v2.py",
+    "reconciliation_builder_sha256": "462ca3181cd532b67ca14c14119498954560f9872a6ec5c126fff15a53963d78"
+  },
+  "schema_version": "pvrig_v6_v4h_adaptive_multiseed_contact_teacher_v2_contract",
+  "status": "FROZEN_PRE_EXTRACTION"
+}

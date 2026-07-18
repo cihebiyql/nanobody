@@ -1,3 +1,5 @@
+> **状态更新（2026-07-18）**：本目录是已被正式 prefreeze manifest 取代的历史 draft。当前权威入口为 `../v2_4_fs_stack_prototype_v1_20260718/deployment/V2_4_NODE1_PREFREEZE_MANIFEST_V1.json`（SHA256 `99109a6cd093ea3b6d4938728f684711aca6170546fb529317d3170f49f0c0f9`）；执行顺序固定为 calibration → implementation freeze → Node1 tiny smoke → outer。
+
 # Residue V2.4 Node1 四卡部署草案
 
 ## 路径
@@ -28,11 +30,13 @@ runtime 路径必须保持不存在，直到 V2.4 的代码、参数、数值稳
 V2.4 草案暂时复用已验证的 open 监督：
 
 - V4-D：226 candidates，20 parent clusters；其中 225 条三 seed 完整，1 条 partial seed，不做 zero imputation。
-- V4-H：1281 Stage-1 seed917 candidates，11 parent clusters。
+- V4-H：1281 adaptive-seed analyzable candidates，11 parent clusters。
 - 合计：1507 candidates，31 parent clusters。
 - marginal：186328 rows。
 - pair：593346 rows；3014 candidate-receptor groups。
 - label-free VHH graph：1507 entities、186328 nodes、2926274 edges。
+- V2.4 scalar table：SHA256 `47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1`；A/B/C=349/241/917。
+- parent-balanced whole-parent split 已用 V2.4 表重建：outer SHA256 `ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55`，inner SHA256 `b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073`。
 
 `teacher_source` 只可用于 sampler、loss balance 和 audit，禁止进入模型特征。
 

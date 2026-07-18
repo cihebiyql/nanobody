@@ -1,0 +1,216 @@
+{
+  "claim_boundary": "Descriptive open-development computational Docking geometry diagnostics only; not model performance, binding, affinity, experimental blocking, or Docking Gold.",
+  "descriptive_variance_shortcuts": {
+    "R_8X6B": {
+      "design_mode": {
+        "descriptive_eta_squared": 0.0002630580960210376,
+        "group_count": 2
+      },
+      "parent": {
+        "descriptive_eta_squared": 0.3394210483056087,
+        "group_count": 31
+      },
+      "parent_patch_mode": {
+        "descriptive_eta_squared": 0.40304865103932075,
+        "group_count": 174
+      },
+      "target_patch": {
+        "descriptive_eta_squared": 0.0003439735810621096,
+        "group_count": 3
+      }
+    },
+    "R_9E6Y": {
+      "design_mode": {
+        "descriptive_eta_squared": 5.733582172266719e-05,
+        "group_count": 2
+      },
+      "parent": {
+        "descriptive_eta_squared": 0.3701661979553465,
+        "group_count": 31
+      },
+      "parent_patch_mode": {
+        "descriptive_eta_squared": 0.428414329793434,
+        "group_count": 174
+      },
+      "target_patch": {
+        "descriptive_eta_squared": 0.00024222016893105146,
+        "group_count": 3
+      }
+    },
+    "R_dual_min": {
+      "design_mode": {
+        "descriptive_eta_squared": 0.00023188368318713377,
+        "group_count": 2
+      },
+      "parent": {
+        "descriptive_eta_squared": 0.37557355370581375,
+        "group_count": 31
+      },
+      "parent_patch_mode": {
+        "descriptive_eta_squared": 0.43141783453513227,
+        "group_count": 174
+      },
+      "target_patch": {
+        "descriptive_eta_squared": 0.00030713591175564596,
+        "group_count": 3
+      }
+    }
+  },
+  "inputs": {
+    "prediction_files": [
+      {
+        "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/preliminary_ab_outer_v1/pvrig_v6_residue_v2_4_ab_outer_preliminary_v1_20260718/A_VHH_ONLY/fold_0/base_score_predictions.tsv",
+        "sha256": "b6b7149783a7f61340f7c96e9fb1cbeb395a6696075a5a452c29ff7ce80e3a64"
+      },
+      {
+        "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/preliminary_ab_outer_v1/pvrig_v6_residue_v2_4_ab_outer_preliminary_v1_20260718/A_VHH_ONLY/fold_1/base_score_predictions.tsv",
+        "sha256": "855398b85f8612ebc297d56c70bb826f6c6ef5ebfa389901c112e28780fabc05"
+      },
+      {
+        "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/preliminary_ab_outer_v1/pvrig_v6_residue_v2_4_ab_outer_preliminary_v1_20260718/A_VHH_ONLY/fold_2/base_score_predictions.tsv",
+        "sha256": "0631f5993f45fe198ec372e1bdf4d4caa90d0dd70fcc7cf7f19e497a177d18a4"
+      },
+      {
+        "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/preliminary_ab_outer_v1/pvrig_v6_residue_v2_4_ab_outer_preliminary_v1_20260718/A_VHH_ONLY/fold_3/base_score_predictions.tsv",
+        "sha256": "a9812c1e912f84fa50ecbb3902f62f580df947ab0c0d161fa274263c5f36d44a"
+      },
+      {
+        "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/deployment/prepared/preliminary_ab_outer_v1/pvrig_v6_residue_v2_4_ab_outer_preliminary_v1_20260718/A_VHH_ONLY/fold_4/base_score_predictions.tsv",
+        "sha256": "1cbb0165d641c2497b44456c8e29aa7bc82c3aac5cd6dfcfd6fb826e88984c15"
+      }
+    ],
+    "sealed_v4_f_access_count": 0,
+    "teacher_table": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+      "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+    }
+  },
+  "limitations": [
+    "Oracle residual uses truth and is a capacity upper bound, not a trainable result.",
+    "Eta-squared values are descriptive and non-causal for the unbalanced campaign design.",
+    "Teacher uncertainty summaries are not an ICC or a formal noise ceiling; raw per-seed scores are required.",
+    "V2.4 neural lanes are direct orthogonal predictors, so old residual-head saturation is not applicable to them."
+  ],
+  "oracle_clipped_m2_residual": {
+    "cap_0.020": {
+      "cap": 0.02,
+      "derived_exact_min_dual_metrics": {
+        "mae": 0.017196727835825723,
+        "rmse": 0.030081514830248138,
+        "spearman": 0.8854415249609705
+      },
+      "receptors": {
+        "R8": {
+          "oracle_metrics": {
+            "mae": 0.01815343502117581,
+            "rmse": 0.030385647051790123,
+            "spearman": 0.8881744639829843
+          },
+          "required_residual_abs_gt_cap_fraction": 0.6184472461844724,
+          "required_residual_abs_q50": 0.027704418057329927,
+          "required_residual_abs_q90": 0.07250024716643708,
+          "required_residual_abs_q95": 0.0874501280071898
+        },
+        "R9": {
+          "oracle_metrics": {
+            "mae": 0.017422159970376622,
+            "rmse": 0.02871847988365444,
+            "spearman": 0.908229099762488
+          },
+          "required_residual_abs_gt_cap_fraction": 0.6237558062375581,
+          "required_residual_abs_q50": 0.02689622645717915,
+          "required_residual_abs_q90": 0.07180380363917288,
+          "required_residual_abs_q95": 0.08511951669960609
+        }
+      }
+    },
+    "cap_0.030": {
+      "cap": 0.03,
+      "derived_exact_min_dual_metrics": {
+        "mae": 0.012098658300594704,
+        "rmse": 0.024890576076973443,
+        "spearman": 0.9337651883055469
+      },
+      "receptors": {
+        "R8": {
+          "oracle_metrics": {
+            "mae": 0.012787473131533314,
+            "rmse": 0.024823913019013922,
+            "spearman": 0.9429429827329796
+          },
+          "required_residual_abs_gt_cap_fraction": 0.47179827471798275,
+          "required_residual_abs_q50": 0.027704418057329927,
+          "required_residual_abs_q90": 0.07250024716643708,
+          "required_residual_abs_q95": 0.0874501280071898
+        },
+        "R9": {
+          "oracle_metrics": {
+            "mae": 0.012028962868441111,
+            "rmse": 0.023088051379946597,
+            "spearman": 0.9543678599667079
+          },
+          "required_residual_abs_gt_cap_fraction": 0.45852687458526875,
+          "required_residual_abs_q50": 0.02689622645717915,
+          "required_residual_abs_q90": 0.07180380363917288,
+          "required_residual_abs_q95": 0.08511951669960609
+        }
+      }
+    },
+    "cap_0.050": {
+      "cap": 0.05,
+      "derived_exact_min_dual_metrics": {
+        "mae": 0.005746558351245018,
+        "rmse": 0.016801120800622335,
+        "spearman": 0.9788783171145993
+      },
+      "receptors": {
+        "R8": {
+          "oracle_metrics": {
+            "mae": 0.005859128875784235,
+            "rmse": 0.0160785345050236,
+            "spearman": 0.9858256132524776
+          },
+          "required_residual_abs_gt_cap_fraction": 0.24419376244193763,
+          "required_residual_abs_q50": 0.027704418057329927,
+          "required_residual_abs_q90": 0.07250024716643708,
+          "required_residual_abs_q95": 0.0874501280071898
+        },
+        "R9": {
+          "oracle_metrics": {
+            "mae": 0.005196781695888916,
+            "rmse": 0.014296710427197936,
+            "spearman": 0.9896951807196557
+          },
+          "required_residual_abs_gt_cap_fraction": 0.2342402123424021,
+          "required_residual_abs_q50": 0.02689622645717915,
+          "required_residual_abs_q90": 0.07180380363917288,
+          "required_residual_abs_q95": 0.08511951669960609
+        }
+      }
+    }
+  },
+  "parents": 31,
+  "rows": 1507,
+  "schema_version": "pvrig_v2_4_prearchitecture_limits_diagnostic_v1",
+  "status": "PASS_OPEN_PREARCHITECTURE_DIAGNOSTICS",
+  "teacher_uncertainty_by_tier": {
+    "A": {
+      "rows": 349,
+      "uncertainty_mean": 0.04649668158166189,
+      "uncertainty_q50": 0.040350602,
+      "uncertainty_q90": 0.08005059099999999
+    },
+    "B": {
+      "rows": 241,
+      "uncertainty_mean": 0.027033891883817426,
+      "uncertainty_q50": 0.024679881,
+      "uncertainty_q90": 0.047501088
+    },
+    "C": {
+      "rows": 917,
+      "uncertainty_mean": 0.000344139985823337,
+      "uncertainty_q50": 0.0,
+      "uncertainty_q90": 0.0
+    }
+  }
+}

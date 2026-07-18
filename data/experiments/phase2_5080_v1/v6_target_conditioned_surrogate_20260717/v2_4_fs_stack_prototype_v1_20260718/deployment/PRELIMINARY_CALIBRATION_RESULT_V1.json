@@ -1,0 +1,327 @@
+{
+  "claim_boundary": "Open-only first-batch gradient diagnostic; no prediction metrics, no optimizer step, no V4-F access, not a docking-surrogate performance result.",
+  "contact_teacher_boundary": "V4D multi-seed plus V4H Stage1 seed917 contact; not adaptive multiseed V4H contact.",
+  "diagnosis": "Original contact-loss grid was about two orders of magnitude too small for the measured scalar gradient norm; this is a scale-contract failure, not a model-performance result.",
+  "implementation_freeze_authorized": false,
+  "lanes": {
+    "C_SPLIT_MARGINAL": {
+      "diagnostic_weight_1_fraction": 0.03495088180929092,
+      "estimated_weight_for_fraction_0_05": 1.4532411264839857,
+      "estimated_weight_for_fraction_0_20": 6.902895350798932,
+      "full_observations": [
+        {
+          "contact_gradient_fraction": 3.622413099534843e-10,
+          "contact_gradient_l2_norm": 4.567402529592384e-09,
+          "marginal_weight": 1e-08,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002539733361253017,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 1.08664384489356e-09,
+          "contact_gradient_l2_norm": 1.3701197829053433e-08,
+          "marginal_weight": 3e-08,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0024998699849602406,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 3.622603085770968e-09,
+          "contact_gradient_l2_norm": 4.56764209298209e-08,
+          "marginal_weight": 1e-07,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0024729728606166365,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 1.0866032049848823e-08,
+          "contact_gradient_l2_norm": 1.3700685545440065e-07,
+          "marginal_weight": 3e-07,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0024708632766732306,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 3.6223549407981154e-08,
+          "contact_gradient_l2_norm": 4.567329362607433e-07,
+          "marginal_weight": 1e-06,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0025076674831668276,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 1.086539292304801e-07,
+          "contact_gradient_l2_norm": 1.3699881027447872e-06,
+          "marginal_weight": 3e-06,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0024589990515854554,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 3.6218979503189046e-07,
+          "contact_gradient_l2_norm": 4.566754644281399e-06,
+          "marginal_weight": 1e-05,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002477604031599704,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 1.0865713475595557e-06,
+          "contact_gradient_l2_norm": 1.3700298601275714e-05,
+          "marginal_weight": 3e-05,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002520437682229551,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 3.6216003356581258e-06,
+          "contact_gradient_l2_norm": 4.566394273642597e-05,
+          "marginal_weight": 0.0001,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0024964797210580364,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 1.0867899379677183e-05,
+          "contact_gradient_l2_norm": 0.0001370318878703018,
+          "marginal_weight": 0.0003,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002540957121108464,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 3.6229932201424426e-05,
+          "contact_gradient_l2_norm": 0.0004568299495474636,
+          "marginal_weight": 0.001,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0024851154048040917,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 0.00010866016484767844,
+          "contact_gradient_l2_norm": 0.0013702154649362073,
+          "marginal_weight": 0.003,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.00253879114015697,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 0.00036200954062812484,
+          "contact_gradient_l2_norm": 0.0045661331950927146,
+          "marginal_weight": 0.01,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.00252771233588005,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 0.0010855610817074412,
+          "contact_gradient_l2_norm": 0.013702420360794847,
+          "marginal_weight": 0.03,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002530988380232097,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 0.003609019138784559,
+          "contact_gradient_l2_norm": 0.04566996824684205,
+          "marginal_weight": 0.1,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002486419154438941,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 0.010750558953301398,
+          "contact_gradient_l2_norm": 0.1370239692380523,
+          "marginal_weight": 0.3,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.002499254136159823,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        },
+        {
+          "contact_gradient_fraction": 0.03495088180929092,
+          "contact_gradient_l2_norm": 0.45664639290049946,
+          "marginal_weight": 1.0,
+          "pair_weight": 0.0,
+          "scalar_contact_cosine": -0.0025102770263767545,
+          "scalar_gradient_l2_norm": 12.608729050047842
+        }
+      ],
+      "observation_sha256": "c0f54b715e13d5d1916a71baf960597deaba95cb51c42cae49b50e3d4362f99e",
+      "original_grid_max_fraction": 0.00036200954062812484,
+      "scalar_contact_cosine_range": [
+        -0.002540957121108464,
+        -0.0024589990515854554
+      ]
+    },
+    "D_SPLIT_PAIR": {
+      "diagnostic_weight_1_fraction": 0.05228427459935805,
+      "estimated_weight_for_fraction_0_05": 0.9540110368424017,
+      "estimated_weight_for_fraction_0_20": 4.531552425001408,
+      "full_observations": [
+        {
+          "contact_gradient_fraction": 5.517158476643755e-10,
+          "contact_gradient_l2_norm": 6.918686509328659e-09,
+          "marginal_weight": 1e-08,
+          "pair_weight": 5e-09,
+          "scalar_contact_cosine": -0.001873852753377282,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 1.6551217526463639e-09,
+          "contact_gradient_l2_norm": 2.0755736132003113e-08,
+          "marginal_weight": 3e-08,
+          "pair_weight": 1.5e-08,
+          "scalar_contact_cosine": -0.0018425637389339986,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 5.516976712508387e-09,
+          "contact_gradient_l2_norm": 6.918458605861428e-08,
+          "marginal_weight": 1e-07,
+          "pair_weight": 5e-08,
+          "scalar_contact_cosine": -0.0019197714566268219,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 1.6548951625616936e-08,
+          "contact_gradient_l2_norm": 2.0752894931699687e-07,
+          "marginal_weight": 3e-07,
+          "pair_weight": 1.5e-07,
+          "scalar_contact_cosine": -0.001836306144707394,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 5.5156403105150035e-08,
+          "contact_gradient_l2_norm": 6.916783059973428e-07,
+          "marginal_weight": 1e-06,
+          "pair_weight": 5e-07,
+          "scalar_contact_cosine": -0.0018736696637971484,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 1.6551418279874676e-07,
+          "contact_gradient_l2_norm": 2.0755991284015867e-06,
+          "marginal_weight": 3e-06,
+          "pair_weight": 1.5e-06,
+          "scalar_contact_cosine": -0.0018508818072452678,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 5.515886404051512e-07,
+          "contact_gradient_l2_norm": 6.917095102727289e-06,
+          "marginal_weight": 1e-05,
+          "pair_weight": 5e-06,
+          "scalar_contact_cosine": -0.001785796009935684,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 1.6548098996338132e-06,
+          "contact_gradient_l2_norm": 2.0751859705290903e-05,
+          "marginal_weight": 3e-05,
+          "pair_weight": 1.5e-05,
+          "scalar_contact_cosine": -0.001832196059978094,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 5.518061461505582e-06,
+          "contact_gradient_l2_norm": 6.919857060511751e-05,
+          "marginal_weight": 0.0001,
+          "pair_weight": 5e-05,
+          "scalar_contact_cosine": -0.0019485442588174687,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 1.654718455195666e-05,
+          "contact_gradient_l2_norm": 0.00020751021994504668,
+          "marginal_weight": 0.0003,
+          "pair_weight": 0.00015,
+          "scalar_contact_cosine": -0.0018794065206228145,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 5.5171290841022284e-05,
+          "contact_gradient_l2_norm": 0.0006919031378252468,
+          "marginal_weight": 0.001,
+          "pair_weight": 0.0005,
+          "scalar_contact_cosine": -0.0019190328049732517,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 0.00016547693950021494,
+          "contact_gradient_l2_norm": 0.002075475185718016,
+          "marginal_weight": 0.003,
+          "pair_weight": 0.0015,
+          "scalar_contact_cosine": -0.0018786008546564355,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 0.0005513702144105543,
+          "contact_gradient_l2_norm": 0.006918166629166853,
+          "marginal_weight": 0.01,
+          "pair_weight": 0.005,
+          "scalar_contact_cosine": -0.0019376933523059525,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 0.001652241097555183,
+          "contact_gradient_l2_norm": 0.020753902246588306,
+          "marginal_weight": 0.03,
+          "pair_weight": 0.015,
+          "scalar_contact_cosine": -0.0018745527221317576,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 0.0054883479070942185,
+          "contact_gradient_l2_norm": 0.06920539493171458,
+          "marginal_weight": 0.1,
+          "pair_weight": 0.05,
+          "scalar_contact_cosine": -0.001911047879421648,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 0.016274808846859494,
+          "contact_gradient_l2_norm": 0.20746760671813502,
+          "marginal_weight": 0.3,
+          "pair_weight": 0.15,
+          "scalar_contact_cosine": -0.0018615395024728927,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        },
+        {
+          "contact_gradient_fraction": 0.05228427459935805,
+          "contact_gradient_l2_norm": 0.6918328724431521,
+          "marginal_weight": 1.0,
+          "pair_weight": 0.5,
+          "scalar_contact_cosine": -0.0018542818912470056,
+          "scalar_gradient_l2_norm": 12.540307723261822
+        }
+      ],
+      "observation_sha256": "f1336c74c6932726d561e06ee8e1dcb06d765d8fb0a1a6514306aded3c933def",
+      "original_grid_max_fraction": 0.0005513702144105543,
+      "scalar_contact_cosine_range": [
+        -0.0019485442588174687,
+        -0.001785796009935684
+      ]
+    }
+  },
+  "next_formal_protocol": "After adaptive multiseed contact tables close, create a new calibration protocol version with a broad pre-registered grid such as [0.25,0.5,0.75,1.0,1.5,2.0,3.0,5.0,7.5,10.0], rerun from an absent versioned runtime, and do not reuse this Stage1 receipt.",
+  "optimizer_steps": 0,
+  "original_grid": [
+    0.0001,
+    0.00025,
+    0.0005,
+    0.001,
+    0.0025,
+    0.005,
+    0.01
+  ],
+  "original_manifest_sha256": "12fb49da3baab84bd398d28d2b8a915315652e13c5e4badc143220dfc78522f1",
+  "outer_metrics_access_count": 0,
+  "promotion_authorized": false,
+  "schema_version": "pvrig_v2_4_preliminary_stage1_contact_calibration_failure_and_diagnostic_v1",
+  "status": "FAIL_ORIGINAL_GRID_NO_ELIGIBLE_WEIGHT_PRELIMINARY_NON_PROMOTABLE",
+  "target_fraction_band": [
+    0.05,
+    0.2
+  ],
+  "v4_f_access_count": 0
+}
