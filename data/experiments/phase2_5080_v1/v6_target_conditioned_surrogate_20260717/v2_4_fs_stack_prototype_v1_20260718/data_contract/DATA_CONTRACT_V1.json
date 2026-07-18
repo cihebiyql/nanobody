@@ -1,0 +1,84 @@
+{
+  "schema_version": "pvrig_v6_supervised1507_v2_4_data_contract_v1",
+  "status": "FROZEN_DEVELOPMENT_DATA_CONTRACT",
+  "claim_boundary": "Candidate-level computational dual-receptor Docking geometry supervision only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+  "inputs": {
+    "supervised_v1_1": {
+      "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+    },
+    "adaptive_ranking": {
+      "sha256": "144da9b8ce2a25db73813df2e23c1f48f9bebca8f565e50b15e4c1670e8c040e"
+    },
+    "adaptive_receipt": {
+      "sha256": "03c52f1011087276ca04fe54d8afe869fef7f2dbd30ae69ae52e7647a20d9941",
+      "required_status": "PASS_ADAPTIVE_DUAL_DOCKING_TERMINAL_WITH_EXPLICIT_TECHNICAL_STATES"
+    },
+    "adaptive_package_receipt": {
+      "sha256": "6b32c5fa09f377afbf0f95e187f0e49b7d9e877705b873e2f3fb69b355097a71",
+      "required_status": "PASS_FINAL_ADAPTIVE_DOCKING_CORE_ARTIFACTS_LOCALLY_MATERIALIZED"
+    },
+    "v4d_contract": {
+      "sha256": "ff220a5b1544c0e75bc587c91db60ac84798d37500e8a6bee640de99c92171d7"
+    },
+    "v4d_audit": {
+      "sha256": "fc638279ecc5a76a5dec68f1ac89b596fd1b5ac1b5853cebe09b4539e513cbe8",
+      "required_status": "PASS_V4D_OPEN_TRAIN_MULTI_SEED_CONTACT_CLOSURE"
+    }
+  },
+  "expected": {
+    "rows": 1507,
+    "teacher_source_counts": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "parent_cluster_count": 31,
+    "v4d_parent_cluster_count": 20,
+    "v4h_parent_cluster_count": 11,
+    "v4h_adaptive_tier_counts": {
+      "DUAL_3_SEED": 123,
+      "DUAL_2_SEED": 241,
+      "DUAL_1_SEED": 917,
+      "TECHNICAL_INCOMPLETE": 39
+    },
+    "development_reliability_tier_counts": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
+    "outer_fold_count": 5,
+    "expected_seed_ids": [917, 1931, 3253]
+  },
+  "source_labels": {
+    "v4d_old": "V4D_OPEN_MULTI_SEED",
+    "v4h_old": "V4H_STAGE1_SEED917",
+    "v4h_new": "V4H_ADAPTIVE_SEED_RANKING"
+  },
+  "development_reliability": {
+    "tier_mapping": {
+      "V4D_MULTI_SEED": "A",
+      "DUAL_3_SEED": "A",
+      "DUAL_2_SEED": "B",
+      "DUAL_1_SEED": "C"
+    },
+    "fixed_weights": {
+      "A": "1.0",
+      "B": "0.8",
+      "C": "0.65"
+    },
+    "rationale": "Preserve the existing V4-D multi-seed weight 1.0 and V4-H one-seed weight 0.65; assign the fixed monotone midpoint 0.8 to two-seed V4-H evidence."
+  },
+  "label_policy": {
+    "v4h_R_8X6B": "median_score_8X6B",
+    "v4h_R_9E6Y": "median_score_9E6Y",
+    "v4h_R_dual_min": "exact_decimal_min_of_updated_receptor_medians",
+    "v4h_uncertainty": "seed_dispersion_max",
+    "v4d": "preserve_existing_candidate_level_multi_seed_targets_and_uncertainty",
+    "technical_incomplete": "exclude",
+    "failed_seed_imputation": "forbidden"
+  },
+  "sealed_boundary": {
+    "v4f_test32_access": "FORBIDDEN",
+    "sealed_evaluation_access_count": 0,
+    "prediction_metrics_access_count": 0
+  }
+}

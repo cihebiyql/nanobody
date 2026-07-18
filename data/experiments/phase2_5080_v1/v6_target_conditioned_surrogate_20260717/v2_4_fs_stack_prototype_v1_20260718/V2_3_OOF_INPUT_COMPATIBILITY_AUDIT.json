@@ -1,0 +1,56 @@
+{
+  "audit_version": "pvrig_v2_4_stack_v2_3_input_compatibility_audit_v1",
+  "observed_at": "2026-07-18T17:45:38+08:00",
+  "local_inventory": {
+    "formal_oof_data_found": false,
+    "root": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717",
+    "note": "Collector source and tests exist locally, but no synced formal V2.3 OOF data artifact was found."
+  },
+  "node1_inventory": {
+    "connection": "/mnt/c/Windows/System32/OpenSSH/ssh.exe node1",
+    "root": "/data1/qlyu/projects/pvrig_v6_residue_v2_3_four_lane_oof_v1_20260718",
+    "observed_oof_columns": [
+      "candidate_id",
+      "teacher_source",
+      "parent_framework_cluster",
+      "outer_fold",
+      "R_dual_min",
+      "m2_prediction",
+      "residue_prediction"
+    ],
+    "lanes": {
+      "A_DOMAIN": {
+        "row_count": 1507,
+        "sha256": "f8abef7fd3b1f1c5d5f74fd02b7ac962b6e1426040fd18b669f6d16c21d12527",
+        "promotion_status": "DO_NOT_PROMOTE_RESIDUE_V2"
+      },
+      "B_VHH3D": {
+        "row_count": 1507,
+        "sha256": "3ca20570948b44ac9e0267ad45c99ec6071c70cbc221ee711d9425335196c7e4",
+        "promotion_status": "DO_NOT_PROMOTE_RESIDUE_V2"
+      },
+      "C_PATCH": {
+        "row_count": 1507,
+        "sha256": "4018f6bbc94dcc6cd5498dc96bdd13aa20121ce3a338ac1898d6c894a09aff04",
+        "promotion_status": "DO_NOT_PROMOTE_RESIDUE_V2"
+      },
+      "D_FULL_PAIR": {
+        "row_count": 1507,
+        "sha256": "253f924f994b0ff0a3a72a8460f812d029d06c5831386c219411dedd0413ccd3",
+        "promotion_status": "DO_NOT_PROMOTE_RESIDUE_V2"
+      }
+    }
+  },
+  "required_but_missing_for_v2_4": [
+    "M2_R8",
+    "M2_R9",
+    "neural_R8",
+    "neural_R9",
+    "contact_score_R8",
+    "contact_score_R9",
+    "base_training_parent_set_sha256",
+    "base_model_receipt_sha256"
+  ],
+  "compatibility_status": "FAIL_INCOMPATIBLE_WITH_V2_4_RECEPTOR_STACK",
+  "decision": "Do not train the five-parameter receptor stack from V2.3 dual-only OOF. Generate new receptor-specific nested OOF compact features with closed parent-fold provenance."
+}

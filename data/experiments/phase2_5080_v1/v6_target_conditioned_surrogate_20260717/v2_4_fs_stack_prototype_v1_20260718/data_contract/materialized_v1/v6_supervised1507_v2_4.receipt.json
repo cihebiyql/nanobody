@@ -1,0 +1,98 @@
+{
+  "builder": {
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/build_v2_4_supervised1507.py",
+    "sha256": "0e525ce0af511a6f5375498bb5e2d7e451677f9c6778e90cb58a50b9643f1245"
+  },
+  "claim_boundary": "Candidate-level computational dual-receptor Docking geometry supervision only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+  "contract": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/DATA_CONTRACT_V1.json",
+    "sha256": "9edbef93373b994fa1b2ffd37ef09ffbe2a50b5d44fd4004a27470140abf887d"
+  },
+  "development_reliability": {
+    "fixed_weights": {
+      "A": "1.0",
+      "B": "0.8",
+      "C": "0.65"
+    },
+    "rationale": "Preserve the existing V4-D multi-seed weight 1.0 and V4-H one-seed weight 0.65; assign the fixed monotone midpoint 0.8 to two-seed V4-H evidence.",
+    "tier_mapping": {
+      "DUAL_1_SEED": "C",
+      "DUAL_2_SEED": "B",
+      "DUAL_3_SEED": "A",
+      "V4D_MULTI_SEED": "A"
+    }
+  },
+  "inputs": {
+    "adaptive_package_receipt": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_adaptive_docking_terminal_v1_20260718/final_local_package_receipt.json",
+      "sha256": "6b32c5fa09f377afbf0f95e187f0e49b7d9e877705b873e2f3fb69b355097a71"
+    },
+    "adaptive_ranking": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_adaptive_docking_terminal_v1_20260718/final_adaptive_seed_ranking.tsv",
+      "sha256": "144da9b8ce2a25db73813df2e23c1f48f9bebca8f565e50b15e4c1670e8c040e"
+    },
+    "adaptive_receipt": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_adaptive_docking_terminal_v1_20260718/ADAPTIVE_DOCKING_RECEIPT.json",
+      "sha256": "03c52f1011087276ca04fe54d8afe869fef7f2dbd30ae69ae52e7647a20d9941"
+    },
+    "supervised_v1_1": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/materialized_v1_1/v6_supervised1507.tsv",
+      "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633"
+    },
+    "v4d_audit": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v6_v4d_open226_contact_teacher_v2_20260718/EXTRACTION_AUDIT.json",
+      "sha256": "fc638279ecc5a76a5dec68f1ac89b596fd1b5ac1b5853cebe09b4539e513cbe8"
+    },
+    "v4d_contract": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v2/contact_teacher_v4d/CONTRACT_V2.json",
+      "sha256": "ff220a5b1544c0e75bc587c91db60ac84798d37500e8a6bee640de99c92171d7"
+    }
+  },
+  "label_policy": {
+    "failed_seed_imputation": "forbidden",
+    "technical_incomplete": "exclude",
+    "v4d": "preserve_existing_candidate_level_multi_seed_targets_and_uncertainty",
+    "v4h_R_8X6B": "median_score_8X6B",
+    "v4h_R_9E6Y": "median_score_9E6Y",
+    "v4h_R_dual_min": "exact_decimal_min_of_updated_receptor_medians",
+    "v4h_uncertainty": "seed_dispersion_max"
+  },
+  "old_supervised_table_unchanged": true,
+  "output": {
+    "adaptive_docking_evidence_tier_counts": {
+      "DUAL_1_SEED": 917,
+      "DUAL_2_SEED": 241,
+      "DUAL_3_SEED": 123,
+      "TECHNICAL_INCOMPLETE": 39
+    },
+    "bytes": 3126989,
+    "development_reliability_tier_counts": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
+    "outer_fold_parent_counts": {
+      "0": 3,
+      "1": 7,
+      "2": 4,
+      "3": 10,
+      "4": 7
+    },
+    "parent_cluster_count": 31,
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+    "row_count": 1507,
+    "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "teacher_source_counts": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "v4d_partial_candidate": "RFV1__PLDNANO_VHH_00322__A_CENTER__H3__B02__M00"
+  },
+  "schema_version": "pvrig_v6_supervised1507_v2_4_receipt_v1",
+  "sealed_boundary": {
+    "prediction_metrics_access_count": 0,
+    "sealed_evaluation_access_count": 0,
+    "v4f_test32_access": "FORBIDDEN"
+  },
+  "status": "PASS_V2_4_SUPERVISED1507_MATERIALIZED"
+}

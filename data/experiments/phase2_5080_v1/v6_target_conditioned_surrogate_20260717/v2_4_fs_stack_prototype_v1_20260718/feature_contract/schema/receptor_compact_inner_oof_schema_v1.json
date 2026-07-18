@@ -1,0 +1,74 @@
+{
+  "schema_version": "pvrig_v2_4_receptor_compact_inner_oof_row_v1",
+  "evidence_role": "INNER_OOF",
+  "exact_tsv_columns": [
+    "schema_version",
+    "evidence_role",
+    "candidate_id",
+    "teacher_source",
+    "parent_framework_cluster",
+    "outer_fold",
+    "inner_fold",
+    "R_8X6B",
+    "R_9E6Y",
+    "R_dual_min",
+    "M2_R8",
+    "neural_R8",
+    "contact_score_R8",
+    "M2_R9",
+    "neural_R9",
+    "contact_score_R9",
+    "base_training_parent_set_sha256",
+    "base_model_receipt_sha256",
+    "base_model_artifact_path",
+    "scaler_fit_parent_set_sha256",
+    "scaler_receipt_sha256",
+    "scaler_artifact_path",
+    "meta_fit_parent_set_sha256",
+    "meta_fit_receipt_sha256",
+    "meta_fit_artifact_path"
+  ],
+  "compact_feature_columns": [
+    "M2_R8",
+    "neural_R8",
+    "contact_score_R8",
+    "M2_R9",
+    "neural_R9",
+    "contact_score_R9"
+  ],
+  "numeric_columns": [
+    "R_8X6B",
+    "R_9E6Y",
+    "R_dual_min",
+    "M2_R8",
+    "neural_R8",
+    "contact_score_R8",
+    "M2_R9",
+    "neural_R9",
+    "contact_score_R9"
+  ],
+  "sha256_columns": [
+    "base_training_parent_set_sha256",
+    "base_model_receipt_sha256",
+    "scaler_fit_parent_set_sha256",
+    "scaler_receipt_sha256",
+    "meta_fit_parent_set_sha256",
+    "meta_fit_receipt_sha256"
+  ],
+  "artifact_path_columns": [
+    "base_model_artifact_path",
+    "scaler_artifact_path",
+    "meta_fit_artifact_path"
+  ],
+  "provenance_schema_version": "pvrig_v2_4_receptor_compact_inner_oof_provenance_v1",
+  "constraints": [
+    "TSV header and order must match exact_tsv_columns exactly",
+    "R_dual_min must be bit-exact float64 minimum of R_8X6B and R_9E6Y",
+    "candidate parent must be absent from base-training parents",
+    "candidate parent must be absent from scaler-fit parents",
+    "candidate parent must be absent from meta-fit parents",
+    "row fold, digest, receipt, and artifact path must match provenance manifest",
+    "V4-F sources and artifact paths are forbidden",
+    "legacy dual-only OOF is forbidden"
+  ]
+}
