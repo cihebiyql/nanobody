@@ -1,0 +1,235 @@
+{
+  "panel_size": 36,
+  "base_positive_count": 7,
+  "mutant_count": 29,
+  "status_counts": {
+    "MULTI_MODEL_CONSENSUS": 10,
+    "MULTI_MODEL_DISAGREEMENT": 26
+  },
+  "delta_by_mutation_class": {
+    "single_conservative_cdr3": {
+      "deepnano_binding_prior": {
+        "n": 7,
+        "mean_delta": 0.00822429571428572,
+        "median_delta": 0.00044108000000001035,
+        "lower_than_base": 2,
+        "higher_than_base": 5,
+        "ties": 0
+      },
+      "nanobind_binding_prior": {
+        "n": 7,
+        "mean_delta": -0.00387015428571428,
+        "median_delta": -0.026452999999999977,
+        "lower_than_base": 5,
+        "higher_than_base": 2,
+        "ties": 0
+      },
+      "binding_prior_consensus": {
+        "n": 7,
+        "mean_delta": 0.002177070000000007,
+        "median_delta": -0.012018250000000008,
+        "lower_than_base": 5,
+        "higher_than_base": 2,
+        "ties": 0
+      },
+      "nanobind_affinity_mid_pkd": {
+        "n": 7,
+        "mean_delta": -0.04300428509485447,
+        "median_delta": 0.0,
+        "lower_than_base": 2,
+        "higher_than_base": 0,
+        "ties": 5
+      }
+    },
+    "single_aromatic_to_alanine_cdr3": {
+      "deepnano_binding_prior": {
+        "n": 7,
+        "mean_delta": -0.01193042428571428,
+        "median_delta": -0.012384829999999986,
+        "lower_than_base": 6,
+        "higher_than_base": 1,
+        "ties": 0
+      },
+      "nanobind_binding_prior": {
+        "n": 7,
+        "mean_delta": -0.08526803714285716,
+        "median_delta": -0.08953429000000002,
+        "lower_than_base": 6,
+        "higher_than_base": 1,
+        "ties": 0
+      },
+      "binding_prior_consensus": {
+        "n": 7,
+        "mean_delta": -0.04859923000000001,
+        "median_delta": -0.05095955000000002,
+        "lower_than_base": 6,
+        "higher_than_base": 1,
+        "ties": 0
+      },
+      "nanobind_affinity_mid_pkd": {
+        "n": 7,
+        "mean_delta": 0.010703043263526573,
+        "median_delta": 0.0,
+        "lower_than_base": 1,
+        "higher_than_base": 1,
+        "ties": 5
+      }
+    },
+    "multi_cdr3_alanine_scan": {
+      "deepnano_binding_prior": {
+        "n": 7,
+        "mean_delta": 0.00025037285714286234,
+        "median_delta": -0.0009589500000000001,
+        "lower_than_base": 4,
+        "higher_than_base": 3,
+        "ties": 0
+      },
+      "nanobind_binding_prior": {
+        "n": 7,
+        "mean_delta": -0.03994224285714286,
+        "median_delta": -0.032742140000000086,
+        "lower_than_base": 5,
+        "higher_than_base": 2,
+        "ties": 0
+      },
+      "binding_prior_consensus": {
+        "n": 7,
+        "mean_delta": -0.019845934285714312,
+        "median_delta": -0.027443789999999996,
+        "lower_than_base": 5,
+        "higher_than_base": 2,
+        "ties": 0
+      },
+      "nanobind_affinity_mid_pkd": {
+        "n": 7,
+        "mean_delta": 0.034212752837516396,
+        "median_delta": 0.0,
+        "lower_than_base": 0,
+        "higher_than_base": 1,
+        "ties": 6
+      }
+    },
+    "single_conservative_framework": {
+      "deepnano_binding_prior": {
+        "n": 7,
+        "mean_delta": -0.005174672857142854,
+        "median_delta": -0.00042950999999999406,
+        "lower_than_base": 4,
+        "higher_than_base": 3,
+        "ties": 0
+      },
+      "nanobind_binding_prior": {
+        "n": 7,
+        "mean_delta": 0.012565117142857154,
+        "median_delta": 0.009742980000000068,
+        "lower_than_base": 2,
+        "higher_than_base": 5,
+        "ties": 0
+      },
+      "binding_prior_consensus": {
+        "n": 7,
+        "mean_delta": 0.003695219999999995,
+        "median_delta": 0.00376605999999996,
+        "lower_than_base": 3,
+        "higher_than_base": 4,
+        "ties": 0
+      },
+      "nanobind_affinity_mid_pkd": {
+        "n": 7,
+        "mean_delta": 0.034212752837516396,
+        "median_delta": 0.0,
+        "lower_than_base": 0,
+        "higher_than_base": 1,
+        "ties": 6
+      }
+    },
+    "known_20_family_cdr3_stability_delta": {
+      "deepnano_binding_prior": {
+        "n": 1,
+        "mean_delta": 0.011743160000000002,
+        "median_delta": 0.011743160000000002,
+        "lower_than_base": 0,
+        "higher_than_base": 1,
+        "ties": 0
+      },
+      "nanobind_binding_prior": {
+        "n": 1,
+        "mean_delta": 0.14911059000000004,
+        "median_delta": 0.14911059000000004,
+        "lower_than_base": 0,
+        "higher_than_base": 1,
+        "ties": 0
+      },
+      "binding_prior_consensus": {
+        "n": 1,
+        "mean_delta": 0.08042686999999998,
+        "median_delta": 0.08042686999999998,
+        "lower_than_base": 0,
+        "higher_than_base": 1,
+        "ties": 0
+      },
+      "nanobind_affinity_mid_pkd": {
+        "n": 1,
+        "mean_delta": 0.0,
+        "median_delta": 0.0,
+        "lower_than_base": 0,
+        "higher_than_base": 0,
+        "ties": 1
+      }
+    }
+  },
+  "disruptive_vs_parent": {
+    "deepnano_binding_prior": {
+      "n": 14,
+      "mean_delta": -0.005840025714285708,
+      "median_delta": -0.005878024999999995,
+      "weakened_fraction": 0.7142857142857143,
+      "weakened_count": 10
+    },
+    "nanobind_binding_prior": {
+      "n": 14,
+      "mean_delta": -0.06260514,
+      "median_delta": -0.059161924999999976,
+      "weakened_fraction": 0.7857142857142857,
+      "weakened_count": 11
+    },
+    "binding_prior_consensus": {
+      "n": 14,
+      "mean_delta": -0.03422258214285716,
+      "median_delta": -0.03824573500000003,
+      "weakened_fraction": 0.7857142857142857,
+      "weakened_count": 11
+    },
+    "nanobind_affinity_mid_pkd": {
+      "n": 14,
+      "mean_delta": 0.022457898050521483,
+      "median_delta": 0.0,
+      "weakened_fraction": 0.07142857142857142,
+      "weakened_count": 1
+    }
+  },
+  "boundary": "Mutants are intended fragility controls without measured binding labels; directionality is an intended-response test, not validated biological classification.",
+  "disruptive_vs_control_auc": {
+    "deepnano_binding_prior": {
+      "disruptive_vs_conservative_cdr3_auc": 0.7448979591836735,
+      "disruptive_vs_framework_auc": 0.5816326530612245,
+      "n_disruptive": 14,
+      "n_conservative_cdr3": 7,
+      "n_framework": 7
+    },
+    "nanobind_binding_prior": {
+      "disruptive_vs_conservative_cdr3_auc": 0.7142857142857143,
+      "disruptive_vs_framework_auc": 0.7857142857142857,
+      "n_disruptive": 14,
+      "n_conservative_cdr3": 7,
+      "n_framework": 7
+    },
+    "binding_prior_consensus": {
+      "disruptive_vs_conservative_cdr3_auc": 0.7653061224489796,
+      "disruptive_vs_framework_auc": 0.7755102040816326,
+      "n_disruptive": 14,
+      "n_conservative_cdr3": 7,
+      "n_framework": 7
+    }
+  }
+}

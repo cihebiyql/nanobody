@@ -96,7 +96,19 @@ def main():
     model = NanoBind_pair().to(device)
     model_path = './output/checkpoint/NanoBind_pair_100.model'
     weights = torch.load(model_path, map_location=device)
-    model.load_state_dict(weights)
+    # PyTorch/Transformers releases differ on whether the deterministic
+    # position_ids buffer is serialized.  It is safe to ignore that buffer;
+    # all learned parameters must still match.
+    incompatible = model.load_state_dict(weights, strict=False)
+    unexpected = [
+        key for key in incompatible.unexpected_keys
+        if key != 'fea_extractor.pretrained_model.embeddings.position_ids'
+    ]
+    if incompatible.missing_keys or unexpected:
+        raise RuntimeError(
+            f"Checkpoint incompatibility: missing={incompatible.missing_keys}, "
+            f"unexpected={unexpected}"
+        )
     
     Dataset2 = anli_aff('./data/affinity/reference_set.csv')
     loader2 = DataLoader(Dataset2, batch_size=1, shuffle=False)
@@ -162,6 +174,8 @@ def main():
 
         row_result = {
             'pair_id': i + 1,
+            'nanobody_id': nb_id,
+            'antigen_id': ag_id,
             'best_positions': ','.join(map(str, res['best_positions'])),
             'predicted_Kd_intervals': '; '.join(res['descriptions'])
         }

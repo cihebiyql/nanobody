@@ -1,0 +1,10 @@
+{
+  "candidate_count": 11,
+  "pose_count": 99,
+  "poses_per_candidate": 9,
+  "all_chain_sets": [
+    "A,B"
+  ],
+  "protocol": "existing HADDOCK3 top_models_unzipped; first 9 lexically sorted exported poses per candidate; no redocking",
+  "scientific_boundary": "structure affinity benchmark only; no measured Kd inference without calibration"
+}

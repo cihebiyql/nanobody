@@ -1,6 +1,6 @@
 # PVRIG VHH 大规模最终阳性筛选 Runbook
 
-更新时间：2026-07-11
+更新时间：2026-07-19
 
 ## 一句话结论
 
@@ -62,7 +62,54 @@ $ROOT/bin/vhh-large-scale-screen "$IN" -o "$OUT" \
 --binder-summary /path/to/binder_scores.csv
 ```
 
-支持的候选 ID 列包括 `candidate_id/id/name/fasta_id/molecule_name`；binder 分数优先读取 `binder_score/DeepNano_score/deepnano_score/binding_score/score`。
+支持的候选 ID 列包括 `candidate_id/nanobody_id/id/name/fasta_id/molecule_name`。新版优先读取 `binding_prior_consensus`，同时仍兼容 `binder_score/DeepNano_score/deepnano_score/binding_score/score`。
+
+### Node1 已跑通的 binding-prior 前筛
+
+生产入口：
+
+```text
+/data1/qlyu/software/vhh_eval_tools/bin/vhh-binding-prior
+```
+
+它并行运行 DeepNano 8M model 1 和 NanoBind-seq，然后生成可直接交给 `--binder-summary` 的表。`NanoBind-affi` 默认不运行；只在 `RUN_AFFINITY=1` 时追加通用参考集锚定的 affinity range。
+
+```bash
+ssh.exe node1 '
+ROOT=/data1/qlyu/software/vhh_eval_tools
+CASCADE=/data1/qlyu/projects/my_run/cascade
+PRIOR=/data1/qlyu/projects/my_run/binding_prior
+PVRIG=/data1/qlyu/projects/my_run/pvrig_ecd.fasta
+
+# 1. 先去重并执行最便宜的长度/字符 hard gate
+$ROOT/bin/vhh-large-scale-screen candidates.fasta -o "$CASCADE" --stage prepare
+
+# 2. 对 unique_candidates 生成结合先验；默认不跑 affinity range
+DEEPNANO_GPU=1 NANOBIND_GPU=2 \
+  $ROOT/bin/vhh-binding-prior \
+  "$CASCADE/unique_candidates.fasta" "$PVRIG" "$PRIOR"
+
+# 3. 在 fast/full merge 时用 prior 排序，不改变 hard gate
+$ROOT/bin/vhh-large-scale-screen candidates.fasta -o "$CASCADE" --stage fast \
+  --binder-summary "$PRIOR/binding_prior_table.tsv"
+'
+```
+
+独立输出列：
+
+```text
+deepnano_binding_prior
+nabp_binding_prior
+nanobind_binding_prior
+nanobind_affinity_range
+binding_model_count
+binding_prior_consensus
+binding_model_disagreement
+binding_prior_status
+binding_prior_source
+```
+
+2026-07-19 的 10 条 Node1 E2E smoke：DeepNano 8M `7.31 s`，NanoBind-seq `7.52 s`，NanoBind-affi `18.73 s`；前两者并行。HR-151/PVRIG 上 DeepNano 和 NanoBind 分别给出 `0.1024` 和 `0.5487`，被正确标为 `MULTI_MODEL_DISAGREEMENT`，这也说明不能将任一单模型作为 hard fail。
 
 ## docking 完成后的最终归类
 

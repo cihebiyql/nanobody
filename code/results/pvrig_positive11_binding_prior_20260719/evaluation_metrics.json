@@ -1,0 +1,242 @@
+{
+  "panel_size": 11,
+  "known_kd_count": 10,
+  "known_ic50_count": 5,
+  "status_counts": {
+    "MULTI_MODEL_DISAGREEMENT": 9,
+    "MULTI_MODEL_CONSENSUS": 2
+  },
+  "kd_correlations": {
+    "deepnano_binding_prior": {
+      "n": 10,
+      "pearson_vs_pKd": 0.17297099966808743,
+      "spearman_vs_pKd": 0.3212121212121212
+    },
+    "nanobind_binding_prior": {
+      "n": 10,
+      "pearson_vs_pKd": 0.004184907471018659,
+      "spearman_vs_pKd": -0.11515151515151516
+    },
+    "binding_prior_consensus": {
+      "n": 10,
+      "pearson_vs_pKd": 0.04030132687307816,
+      "spearman_vs_pKd": 0.09090909090909091
+    },
+    "binding_model_disagreement": {
+      "n": 10,
+      "pearson_vs_pKd": -0.048870269813954904,
+      "spearman_vs_pKd": -0.1393939393939394
+    },
+    "nanobind_affinity_mid_pkd": {
+      "n": 10,
+      "pearson_vs_pKd": 0.18414319420549297,
+      "spearman_vs_pKd": 0.3113995776646092
+    }
+  },
+  "ic50_correlations": {
+    "deepnano_binding_prior": {
+      "n": 5,
+      "pearson_vs_neglog10_IC50_nM": -0.3742376068796297,
+      "spearman_vs_neglog10_IC50_nM": -0.3
+    },
+    "nanobind_binding_prior": {
+      "n": 5,
+      "pearson_vs_neglog10_IC50_nM": 0.14384151868867537,
+      "spearman_vs_neglog10_IC50_nM": 0.1
+    },
+    "binding_prior_consensus": {
+      "n": 5,
+      "pearson_vs_neglog10_IC50_nM": 0.039172294884206704,
+      "spearman_vs_neglog10_IC50_nM": 0.1
+    },
+    "binding_model_disagreement": {
+      "n": 5,
+      "pearson_vs_neglog10_IC50_nM": 0.29999806864806633,
+      "spearman_vs_neglog10_IC50_nM": 0.1
+    },
+    "nanobind_affinity_mid_pkd": {
+      "n": 5,
+      "pearson_vs_neglog10_IC50_nM": -0.4013721260916588,
+      "spearman_vs_neglog10_IC50_nM": -0.31622776601683794
+    }
+  },
+  "within_family_pairwise_direction": {
+    "deepnano_binding_prior": {
+      "correct": 4,
+      "total": 6,
+      "ties": 0,
+      "accuracy_excluding_ties": 0.6666666666666666,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "wrong"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "correct"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "correct"
+        }
+      ]
+    },
+    "nanobind_binding_prior": {
+      "correct": 3,
+      "total": 6,
+      "ties": 0,
+      "accuracy_excluding_ties": 0.5,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "wrong"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "correct"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "correct"
+        }
+      ]
+    },
+    "binding_prior_consensus": {
+      "correct": 3,
+      "total": 6,
+      "ties": 0,
+      "accuracy_excluding_ties": 0.5,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "wrong"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "correct"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "correct"
+        }
+      ]
+    },
+    "nanobind_affinity_mid_pkd": {
+      "correct": 0,
+      "total": 6,
+      "ties": 5,
+      "accuracy_excluding_ties": 0.0,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "tie"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "wrong"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "tie"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "tie"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "tie"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "tie"
+        }
+      ]
+    }
+  },
+  "scientific_boundary": "Positive-only pilot; cannot estimate AUROC/AUPR, specificity, or blocker enrichment. Scores are generic binding priors, not measured Kd or IC50."
+}

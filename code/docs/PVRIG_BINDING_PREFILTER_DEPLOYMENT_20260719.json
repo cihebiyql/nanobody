@@ -1,0 +1,43 @@
+{
+  "date": "2026-07-19",
+  "node": "node1",
+  "status": "PASS_WITH_NABP_BERT_DEFERRED",
+  "production_entrypoint": "/data1/qlyu/software/vhh_eval_tools/bin/vhh-binding-prior",
+  "cascade_entrypoint": "/data1/qlyu/software/vhh_eval_tools/bin/vhh-large-scale-screen",
+  "node1_tests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "e2e_smoke": {
+    "path": "/data1/qlyu/model_smoke/binding_prior_e2e10_20260719",
+    "candidate_count": 10,
+    "deepnano_available": 10,
+    "nanobind_available": 10,
+    "nanobind_affinity_available": 10,
+    "deepnano_seconds": 7.31,
+    "nanobind_seq_seconds": 7.52,
+    "nanobind_affinity_seconds": 18.73
+  },
+  "developability_smoke": {
+    "path": "/data1/qlyu/model_smoke/developability_hr151_20260719",
+    "vhh_eval_seconds": 0.45,
+    "abnativ_seconds": 7.52,
+    "sapiens_seconds": 4.30,
+    "tnp_path": "/data1/qlyu/model_smoke/tnp_hr151_20260719",
+    "tnp_seconds": 21.07
+  },
+  "remote_sha256": {
+    "/data1/qlyu/software/NanoBind/predict_seq.py": "2ffff0e814169d0dd4d256ae06f1c84d9138662317b8ea6df9ef5b1d7b23ba35",
+    "/data1/qlyu/software/NanoBind/predict_affi.py": "0ef8239c6f8870c99e4926e686b4e1404513d3f4dfdca92ed0333215431af6e5",
+    "/data1/qlyu/software/NanoBind/run_nanobind_predict.sh": "fbd41da0972d0dd1e2b16d589f6f000b05a976542990fd6641be5e0dcd46754d",
+    "/data1/qlyu/software/vhh_eval_tools/competition_qc/build_binding_prior_table.py": "95e00f282035425ea22454b58f024778403d00b13e026d5ae13d06f3e23a4f25",
+    "/data1/qlyu/software/vhh_eval_tools/competition_qc/run_binding_prior_prefilter_node1.sh": "89956388f35e826bb710ac5bbe9e98bed76ffde0624008afb74661c35c476be9",
+    "/data1/qlyu/software/vhh_eval_tools/competition_qc/vhh_large_scale_screen.py": "ced123c082dbb831621b5122520e1eb265af93e167b5b1f746ae2b6103b2f8bd",
+    "/data1/qlyu/software/vhh_eval_tools/competition_qc/vhh_competition_qc.py": "8d0171790e85c823c2cdc309c24cc366afbb0fbbea212e24c42caaf68189446d",
+    "/data1/qlyu/software/vhh_eval_tools/bin/vhh-binding-prior": "4e07a4caf7d562a35e2d156d272f8c51bfa40903a66e4732b8282fb772331b5a"
+  },
+  "deferred": {
+    "NABP-BERT": "Code and checkpoints are local, but node1 has no validated Python 3.7/TensorFlow 1.x tf.contrib environment or custom PVRIG inference wrapper."
+  },
+  "scientific_boundary": "Binding-model outputs are weak priors; NanoBind affinity range is not measured Kd; developability scores are not measured expression or purity; only docking contributes blocker-like geometry."
+}

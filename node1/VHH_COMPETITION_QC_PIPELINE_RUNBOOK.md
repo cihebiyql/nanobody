@@ -1,6 +1,6 @@
 # node1 PVRIG 比赛 VHH QC 门控 Runbook
 
-更新时间：2026-07-08  
+更新时间：2026-07-19  
 本地目录：`/mnt/d/work/抗体/node1`  
 远端工具目录：`/data/qlyu/software/vhh_eval_tools`  
 统一入口：`/data/qlyu/software/vhh_eval_tools/bin/vhh-competition-qc`
@@ -173,6 +173,10 @@ official_validator_pass
 pass_similarity_filter
 max_CDR_identity_to_positive
 intra_team_cluster_id
+AbNatiV_VHH_score
+AbNatiV_FR_VHH_score
+Sapiens_mean_self_probability
+Sapiens_num_suggested_mutations
 developability_score
 expression_purity_risk_score
 structure_score

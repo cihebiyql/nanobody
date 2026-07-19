@@ -371,7 +371,14 @@ def load_summary(path: Path | None) -> dict[str, dict[str, str]]:
 
 
 def binder_score(row: dict[str, str]) -> float:
-    for key in ["binder_score", "DeepNano_score", "deepnano_score", "binding_score", "score"]:
+    for key in [
+        "binding_prior_consensus",
+        "binder_score",
+        "DeepNano_score",
+        "deepnano_score",
+        "binding_score",
+        "score",
+    ]:
         if str(row.get(key, "")).strip():
             return qc.parse_float(row[key], default=0.0)
     return 0.0
@@ -400,10 +407,25 @@ def merge_chunk_portfolios(root: Path) -> list[dict[str, str]]:
 
 
 def annotate_binder(rows: list[dict[str, str]], summary: dict[str, dict[str, str]]) -> None:
+    prior_fields = [
+        "deepnano_binding_prior",
+        "nabp_binding_prior",
+        "nanobind_binding_prior",
+        "nanobind_affinity_range",
+        "binding_model_count",
+        "binding_prior_consensus",
+        "binding_model_disagreement",
+        "binding_prior_status",
+        "binding_prior_source",
+    ]
     for row in rows:
         external = summary.get(row.get("candidate_id", ""), {})
         row["external_binder_score"] = f"{binder_score(external):.6f}" if external else ""
         row["external_binder_status"] = "AVAILABLE" if external else "NOT_PROVIDED"
+        for field in prior_fields:
+            row[field] = str(external.get(field, "")) if external else ""
+        if external and not row["binding_prior_status"]:
+            row["binding_prior_status"] = "LEGACY_SINGLE_SCORE"
 
 
 def rows_to_fasta(path: Path, rows: Iterable[dict[str, str]]) -> None:

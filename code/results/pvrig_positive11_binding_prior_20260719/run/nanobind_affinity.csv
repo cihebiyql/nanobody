@@ -1,0 +1,12 @@
+pair_id,nanobody_id,antigen_id,best_positions,predicted_Kd_intervals
+1,case02_pos_01_PVRIG-151_HR151,pvrig_8x6b_chainB,25,"[9e-09,1e-08] M"
+2,case02_pos_02_PVRIG-20,pvrig_8x6b_chainB,20,"[3.5e-09,4e-09] M"
+3,case02_pos_03_PVRIG-30,pvrig_8x6b_chainB,25,"[9e-09,1e-08] M"
+4,case02_pos_04_PVRIG-38,pvrig_8x6b_chainB,23,"[5.7e-09,7.4e-09] M"
+5,case02_pos_05_PVRIG-39,pvrig_8x6b_chainB,20,"[3.5e-09,4e-09] M"
+6,case02_pos_06_20H5,pvrig_8x6b_chainB,23,"[5.7e-09,7.4e-09] M"
+7,case02_pos_07_30H2,pvrig_8x6b_chainB,25,"[9e-09,1e-08] M"
+8,case02_pos_08_39H2,pvrig_8x6b_chainB,20,"[3.5e-09,4e-09] M"
+9,case02_pos_09_39H4,pvrig_8x6b_chainB,20,"[3.5e-09,4e-09] M"
+10,case02_pos_10_151H7,pvrig_8x6b_chainB,25,"[9e-09,1e-08] M"
+11,case02_pos_11_151H8,pvrig_8x6b_chainB,25,"[9e-09,1e-08] M"

@@ -1,0 +1,15 @@
+{
+  "antigen_fasta": "/data1/qlyu/software/NanoBind/smoke_tests/pvrig_hr151_8x6b/pvrig.fasta",
+  "antigen_fasta_sha256": "efadf8f89fe2a164abe98d1688c7e9f2cd2906210c6d2877d379ffc8299012e9",
+  "candidate_count": 11,
+  "candidate_fasta": "/data1/qlyu/model_smoke/pvrig_positive11_binding_prior_20260719/positive11.fasta",
+  "candidate_fasta_sha256": "320b7aafc4bc4caf9933ae10b5be8995a58b15624c10e57bed4638aa98a346f0",
+  "created_epoch": 1784466610.8010306,
+  "deepnano_available": 11,
+  "nanobind_affinity_available": 11,
+  "nanobind_available": 11,
+  "run_affinity": true,
+  "schema_version": 1,
+  "scientific_boundary": "weak binding priors only; not Kd, IC50, or blocking evidence",
+  "status": "PASS"
+}

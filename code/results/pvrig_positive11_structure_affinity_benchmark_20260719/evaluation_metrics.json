@@ -1,0 +1,252 @@
+{
+  "pose_count": 99,
+  "candidate_count": 11,
+  "known_kd_count": 10,
+  "correlations": [
+    {
+      "feature": "prodigy_pkd_median",
+      "n": 10,
+      "pearson_vs_pKd": 0.38872993971601544,
+      "spearman_vs_pKd": 0.3100318272768329
+    },
+    {
+      "feature": "prodigy_pkd_mean",
+      "n": 10,
+      "pearson_vs_pKd": 0.20439421669046143,
+      "spearman_vs_pKd": 0.2606060606060606
+    },
+    {
+      "feature": "prodigy_pkd_strongest3_mean",
+      "n": 10,
+      "pearson_vs_pKd": 0.14939439842237742,
+      "spearman_vs_pKd": 0.21212121212121213
+    },
+    {
+      "feature": "prodigy_pkd_min",
+      "n": 10,
+      "pearson_vs_pKd": -0.08350669266415969,
+      "spearman_vs_pKd": 0.03647433262080387
+    },
+    {
+      "feature": "prodigy_pkd_max",
+      "n": 10,
+      "pearson_vs_pKd": -0.024890012987480652,
+      "spearman_vs_pKd": 0.1393939393939394
+    },
+    {
+      "feature": "foldx_interaction_median",
+      "n": 10,
+      "pearson_vs_pKd": 0.36554898056513685,
+      "spearman_vs_pKd": 0.23636363636363636
+    },
+    {
+      "feature": "foldx_interaction_mean",
+      "n": 10,
+      "pearson_vs_pKd": 0.3015557187211649,
+      "spearman_vs_pKd": 0.01818181818181818
+    },
+    {
+      "feature": "foldx_interaction_strongest3_mean",
+      "n": 10,
+      "pearson_vs_pKd": 0.055624628338535445,
+      "spearman_vs_pKd": 0.01818181818181818
+    },
+    {
+      "feature": "foldx_interaction_min",
+      "n": 10,
+      "pearson_vs_pKd": -0.12998065324846797,
+      "spearman_vs_pKd": -0.2
+    },
+    {
+      "feature": "foldx_interaction_max",
+      "n": 10,
+      "pearson_vs_pKd": 0.4694111827974357,
+      "spearman_vs_pKd": 0.3696969696969697
+    }
+  ],
+  "within_family_pair_direction": {
+    "prodigy_pkd_median": {
+      "correct": 4,
+      "wrong": 2,
+      "ties": 0,
+      "total": 6,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "correct"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "correct"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "correct"
+        }
+      ]
+    },
+    "prodigy_pkd_strongest3_mean": {
+      "correct": 3,
+      "wrong": 3,
+      "ties": 0,
+      "total": 6,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "correct"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "wrong"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "wrong"
+        }
+      ]
+    },
+    "foldx_interaction_median": {
+      "correct": 2,
+      "wrong": 4,
+      "ties": 0,
+      "total": 6,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "correct"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "wrong"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "wrong"
+        }
+      ]
+    },
+    "foldx_interaction_strongest3_mean": {
+      "correct": 2,
+      "wrong": 4,
+      "ties": 0,
+      "total": 6,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "wrong"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "wrong"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "wrong"
+        }
+      ]
+    }
+  },
+  "pose_stability": {
+    "prodigy_median_within_pose_stdev": 0.6768353438255648,
+    "prodigy_between_candidate_median_range": 1.5963076624388712,
+    "foldx_median_within_pose_stdev": 2.800936414628944,
+    "foldx_between_candidate_median_range": 5.48868
+  },
+  "boundary": "Existing HADDOCK poses only; absolute energy outputs are not measured Kd."
+}

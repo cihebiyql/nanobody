@@ -40,6 +40,8 @@ def predicting(model, device, nb_records, ag_records):
             
             results.append({
                 'pair_id': i + 1,
+                'nanobody_id': nb_id,
+                'antigen_id': ag_id,
                 'probability': probability,
                 'prediction': pred
             })
@@ -53,7 +55,19 @@ def main():
     model_name = 'NanoBind_seq(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_good.model'
     model_path = model_dir + model_name
     weights = torch.load(model_path, map_location=device)
-    model.load_state_dict(weights)
+    # PyTorch/Transformers releases differ on whether the deterministic
+    # position_ids buffer is serialized.  It is safe to ignore that buffer;
+    # all learned parameters must still match.
+    incompatible = model.load_state_dict(weights, strict=False)
+    unexpected = [
+        key for key in incompatible.unexpected_keys
+        if key != 'pretrained_model.embeddings.position_ids'
+    ]
+    if incompatible.missing_keys or unexpected:
+        raise RuntimeError(
+            f"Checkpoint incompatibility: missing={incompatible.missing_keys}, "
+            f"unexpected={unexpected}"
+        )
 
     args = get_args()
     nb_records = read_fasta(args.nanobody_fasta)
@@ -61,7 +75,9 @@ def main():
     results = predicting(model, device, nb_records, ag_records)
 
     df = pd.DataFrame(results)
-    columns_order = ['pair_id', 'probability', 'prediction']
+    columns_order = [
+        'pair_id', 'nanobody_id', 'antigen_id', 'probability', 'prediction'
+    ]
     df = df[columns_order]
     
     df.to_csv(args.output_path, index=False)

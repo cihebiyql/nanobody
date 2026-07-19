@@ -162,6 +162,37 @@ class LargeScaleCascadeTests(unittest.TestCase):
         )
         self.assertNotIn("--skip-tnp", command_with_tnp)
 
+    def test_binding_prior_columns_are_preserved_without_changing_hard_gate(self) -> None:
+        rows = [
+            {"candidate_id": "hard", "hard_fail": "True", "final_score": "99"},
+            {"candidate_id": "pass", "hard_fail": "False", "final_score": "50"},
+        ]
+        summary = {
+            "hard": {
+                "binding_prior_consensus": "0.99",
+                "deepnano_binding_prior": "0.98",
+                "nanobind_binding_prior": "1.0",
+                "binding_model_count": "2",
+                "binding_model_disagreement": "0.02",
+                "binding_prior_status": "MULTI_MODEL_CONSENSUS",
+                "binding_prior_source": "DeepNano;NanoBind-seq",
+            },
+            "pass": {
+                "binding_prior_consensus": "0.40",
+                "nanobind_affinity_range": "[1e-09,2e-09] M",
+                "binding_model_count": "1",
+                "binding_prior_status": "SINGLE_MODEL_ONLY",
+                "binding_prior_source": "DeepNano",
+            },
+        }
+        cascade.annotate_binder(rows, summary)
+        rows.sort(key=cascade.merged_sort_key)
+        self.assertEqual(rows[0]["candidate_id"], "pass")
+        self.assertEqual(rows[1]["candidate_id"], "hard")
+        self.assertEqual(rows[0]["nanobind_affinity_range"], "[1e-09,2e-09] M")
+        self.assertEqual(rows[1]["deepnano_binding_prior"], "0.98")
+        self.assertEqual(rows[1]["hard_fail"], "True")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,12 @@
+pair_id,nanobody_id,antigen_id,probability,prediction
+1,case02_pos_01_PVRIG-151_HR151,pvrig_8x6b_chainB,0.5487095713615417,1
+2,case02_pos_02_PVRIG-20,pvrig_8x6b_chainB,0.27256736159324646,0
+3,case02_pos_03_PVRIG-30,pvrig_8x6b_chainB,0.828545331954956,1
+4,case02_pos_04_PVRIG-38,pvrig_8x6b_chainB,0.21410201489925385,0
+5,case02_pos_05_PVRIG-39,pvrig_8x6b_chainB,0.6657350659370422,1
+6,case02_pos_06_20H5,pvrig_8x6b_chainB,0.5045449733734131,1
+7,case02_pos_07_30H2,pvrig_8x6b_chainB,0.5175036191940308,1
+8,case02_pos_08_39H2,pvrig_8x6b_chainB,0.5069311857223511,1
+9,case02_pos_09_39H4,pvrig_8x6b_chainB,0.6053734421730042,1
+10,case02_pos_10_151H7,pvrig_8x6b_chainB,0.6482468247413635,1
+11,case02_pos_11_151H8,pvrig_8x6b_chainB,0.5476474165916443,1
