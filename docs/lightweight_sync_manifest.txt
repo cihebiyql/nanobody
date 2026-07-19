@@ -154,6 +154,8 @@ code/downloaded_models/Sequence-Based-NABP/README.md
 code/downloaded_models/_sources/github_metadata.json
 code/downloaded_models/_sources/local_download_status.json
 code/downloaded_models/_sources/repositories.tsv
+code/pvrig_stage2_stability_20260719/build_stage2_stability.py
+code/pvrig_stage2_stability_20260719/test_build_stage2_stability.py
 code/repro_helpers/requirements-nanobinder.txt
 code/repro_helpers/requirements-sequence-baseline.txt
 code/repro_helpers/sequence_based_gapped_kmer.py
