@@ -1,0 +1,126 @@
+{
+  "claim_boundary": "Open/development computational dual-receptor Docking geometry inventory only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+  "cross_source_closure": {
+    "candidate_id_overlap_open1507_v4i": 0,
+    "final_parent_framework_clusters": 31,
+    "final_unique_supervised_candidates": 3388,
+    "final_unique_supervised_sequences": 3388,
+    "final_unsupervised_technical_rows": 81,
+    "new_parent_framework_clusters_added": 0,
+    "sequence_sha256_overlap_open1507_v4i": 0,
+    "v4i_parent_clusters_already_present_in_open1507": 11
+  },
+  "dataset_options": {
+    "open1507_reference": {
+      "receptor_scalar_targets": 3014,
+      "supervised_candidates": 1507
+    },
+    "open2007_high_evidence_increment": {
+      "definition": "open1507 plus V4I Stage2 selected500",
+      "purpose": "First conservative expansion and interpretation of approximately 4000 receptor-specific labels.",
+      "receptor_scalar_targets": 4014,
+      "supervised_candidates": 2007,
+      "v4i_tiers": {
+        "DUAL_1_SEED": 24,
+        "DUAL_2_SEED": 476
+      }
+    },
+    "open3388_full_stage1_increment": {
+      "definition": "open1507 plus all 1881 V4I Stage1-analyzable candidates with Stage2 override where available",
+      "purpose": "Maximum scalar training expansion with lower-reliability single-seed rows.",
+      "receptor_scalar_targets": 6776,
+      "supervised_candidates": 3388,
+      "v4i_tiers": {
+        "DUAL_1_SEED": 1405,
+        "DUAL_2_SEED": 476
+      }
+    }
+  },
+  "existing_open_supervision": {
+    "development_reliability_tier_counts": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
+    "parent_framework_clusters": 31,
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_4_fs_stack_prototype_v1_20260718/data_contract/materialized_v1/v6_supervised1507_v2_4.tsv",
+    "rows": 1507,
+    "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "teacher_sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "unique_candidate_ids": 1507,
+    "unique_sequence_sha256": 1507
+  },
+  "generated_date": "2026-07-19",
+  "main_risks": [
+    "3924 is a job count, not an independent candidate count.",
+    "V4I adds 1881 supervised candidates but zero new parent clusters.",
+    "V4I Stage2 repeats were adaptively selected from Stage1, so they are not an unbiased repeat sample.",
+    "V4I source_R_dual_min, source_rank, priority_rank and related provenance are forbidden model features.",
+    "Technical-incomplete rows are label-free and must never be converted to negatives or imputed.",
+    "Existing split builder assumes one teacher_source per parent and must be versioned before adding V4I to the same 11 parents."
+  ],
+  "protocol_comparability": {
+    "required_action": "Materialize an explicit protocol-semantic compatibility receipt; do not equate unequal protocol-core hashes without this audit.",
+    "scoring_and_docking_semantics_observed_equal": true,
+    "semantic_differences_observed": [
+      "candidate_panel.expected_count",
+      "candidate_panel.split_counts",
+      "docking.expected_candidate_jobs",
+      "docking.expected_total_jobs",
+      "docking.smoke_candidate_id"
+    ],
+    "v4h_protocol_spec_sha256": "448c735e5c3b580808d417d21fbbe09ba04208287bdb2c8c079a223f153d1c26",
+    "v4i_protocol_spec_sha256": "93a3dce80ef7bc7cef32d7deed0d6f4086b65c0067110c255fd383ce6edb1508"
+  },
+  "schema_version": "pvrig_v2_8_v4i_open3388_source_audit_v1",
+  "sealed_boundary": {
+    "legacy128_merged": 0,
+    "outer_truth_opened": 0,
+    "sealed_pose_or_result_files_opened": 0,
+    "v4f_test32_opened": 0
+  },
+  "status": "PASS_OPEN_SOURCE_INVENTORY_ONLY",
+  "v4i_round2": {
+    "candidate_input_remote_root": "/data/qlyu/projects/pvrig_v4_i_round2_combined_docking_input_v1_1_20260718",
+    "candidate_manifest_sha256": "66044ae67b19cb4a6fe59845c1d0366382c3ee8c27778e9e01aefd1529509b89",
+    "candidate_scalar_states": {
+      "DUAL_1_SEED": 1881,
+      "TECHNICAL_INCOMPLETE": 81
+    },
+    "canonical_remote_root": "/data/qlyu/projects/pvrig_v4_i_round2_dual_docking_v1_1_20260718",
+    "dockable_unique_candidates": 1962,
+    "final_candidate_evidence_after_stage2_override": {
+      "DUAL_1_SEED": 1405,
+      "DUAL_2_SEED": 476,
+      "TECHNICAL_INCOMPLETE": 81
+    },
+    "protocol_core_sha256": "eec4cdde8c2a57f9b27f3097bf136bbbac1fc1e4d06c651c6baf9f315103453d",
+    "source_lane_counts": {
+      "LATENT970": 964,
+      "MPNN_NODE1": 251,
+      "MPNN_NODE23": 500,
+      "MPNN_NODE23_EXTRA": 247
+    },
+    "stage1_dual_receptor_jobs": 3924,
+    "stage1_job_terminal_counts": {
+      "FAILED_MAX_ATTEMPTS": 3,
+      "SUCCESS": 3921
+    },
+    "stage1_ranking_sha256": "0e3a2aac83df22b15c6496d0d6e33831022877fbc15aae9203393dd6a63a9277",
+    "stage2_candidate_evidence": {
+      "DUAL_1_SEED": 24,
+      "DUAL_2_SEED": 476
+    },
+    "stage2_job_terminal_counts": {
+      "FAILED_MAX_ATTEMPTS": 1,
+      "SUCCESS": 999
+    },
+    "stage2_ranking_sha256": "410f0cf7a3f8ef0de0036149e3bca1e7d87739f652d5eae3ef04e3cea5ac27b7",
+    "stage2_repeat_jobs": 1000,
+    "stage2_selected_candidates": 500,
+    "unique_parent_framework_clusters": 11
+  }
+}

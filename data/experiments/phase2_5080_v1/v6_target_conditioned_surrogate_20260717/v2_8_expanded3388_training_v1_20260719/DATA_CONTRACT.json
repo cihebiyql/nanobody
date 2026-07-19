@@ -1,0 +1,69 @@
+{
+  "schema_version": "pvrig_v2_8_expanded3388_data_contract_v1",
+  "created_date": "2026-07-19",
+  "claim_boundary": "Sequence-to-computational-docking-geometry supervision only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+  "primary_target_contract": {
+    "direct_outputs": [
+      "R_8X6B",
+      "R_9E6Y"
+    ],
+    "derived_output": "R_dual_min = min(R_8X6B, R_9E6Y)",
+    "independent_R_dual_head_allowed": false
+  },
+  "input_sha256": {
+    "old_supervised1507": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "v4i_candidates": "66044ae67b19cb4a6fe59845c1d0366382c3ee8c27778e9e01aefd1529509b89",
+    "v4i_stage1_ranking": "0e3a2aac83df22b15c6496d0d6e33831022877fbc15aae9203393dd6a63a9277",
+    "v4i_stage2_ranking": "410f0cf7a3f8ef0de0036149e3bca1e7d87739f652d5eae3ef04e3cea5ac27b7",
+    "protocol_compatibility_audit": "93d09ad4df061dcb545ec010153a21be6ca123909dffa06233a34f85d97e6037"
+  },
+  "expected_counts": {
+    "old_teacher_rows": 1507,
+    "v4i_candidate_rows": 1962,
+    "v4i_stage1_rows": 1962,
+    "v4i_stage2_rows": 500,
+    "v4i_scalar_valid_rows": 1881,
+    "v4i_technical_incomplete_rows": 81,
+    "stage2_ablation_scalar_rows": 2007,
+    "expanded_scalar_rows": 3388,
+    "expanded_unique_sequence_sha256": 3388,
+    "expanded_parent_clusters": 31,
+    "expanded_multi_seed_rows": 1066,
+    "expanded_single_seed_rows": 2322
+  },
+  "reliability_policy": {
+    "MULTI_SEED": {
+      "tier": "A",
+      "base_weight": 1.0
+    },
+    "DUAL_3_SEED": {
+      "tier": "A",
+      "base_weight": 1.0
+    },
+    "DUAL_2_SEED": {
+      "tier": "B",
+      "base_weight": 0.8
+    },
+    "DUAL_1_SEED": {
+      "tier": "C",
+      "base_weight": 0.65
+    }
+  },
+  "merge_policy": {
+    "protocol_compatibility": "Require the frozen PASS semantic-compatibility audit before sharing the V4-H/V4-I scalar target scale.",
+    "old_teacher": "Preserve the canonical 1507 scalar labels and reliability fields unchanged.",
+    "v4i_stage1": "Use the 1881 rows with complete dual-receptor scalar labels.",
+    "v4i_stage2": "For the selected 500 candidates, replace the Stage-1 scalar label with the authoritative combined-seed candidate-level median label.",
+    "technical_incomplete": "Retain in a separate audit table with blank scalar labels; never impute.",
+    "duplicates": "Fail closed on any candidate-id or sequence-SHA overlap across the old and V4-I teacher sources.",
+    "split": "Bind every V4-I row to the pre-existing whole-parent outer fold; never random-split sibling sequences."
+  },
+  "forbidden_inputs": [
+    "candidate_id as a model feature",
+    "parent_framework_cluster as a model feature",
+    "campaign/source id as a model feature",
+    "Docking pose-derived features in a sequence-only model",
+    "legacy128 labels",
+    "sealed V4-F/test32 labels"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "claim_boundary": "Computational docking and blocker-like geometry planning only; not experimental binding, affinity, competition, or blocking evidence.",
+  "counts": {
+    "candidate_docking_jobs": 12620,
+    "multi_seed_labels_excluding_v4d_formal_fail": 968,
+    "multi_seed_labels_including_v4d": 1258,
+    "paired_continuous_labels_excluding_v4d_formal_fail": 3290,
+    "paired_continuous_labels_including_v4d": 3580,
+    "successful_candidate_docking_jobs": 12609,
+    "unique_any_docking": 4806,
+    "unique_independent_dual_docking": 3700
+  },
+  "generated_at_utc": "2026-07-19T11:27:11.303662+00:00",
+  "report": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/reports/PVRIG_DOCKING_10K_DATA_PLAN_20260719_ZH.md",
+  "report_sha256": "0f1b35b14601b0c0fdcc4ccc397ade7baf88389625ee47d881bcfe510336cf4d",
+  "schema_version": "pvrig_docking_10k_data_plan_v1",
+  "status": "PASS"
+}

@@ -1,0 +1,113 @@
+{
+  "R_dual_min_quantiles": {
+    "expanded3388": {
+      "max": 0.683682476,
+      "median": 0.561647655,
+      "min": 0.377861844,
+      "q10": 0.498605236,
+      "q25": 0.528687986,
+      "q75": 0.59334262,
+      "q90": 0.619501407
+    },
+    "old1507": {
+      "max": 0.669446651,
+      "median": 0.55230991,
+      "min": 0.377861844,
+      "q10": 0.486657071,
+      "q25": 0.518802574,
+      "q75": 0.582784001,
+      "q90": 0.612030947
+    },
+    "v4i1881": {
+      "max": 0.683682476,
+      "median": 0.569004958,
+      "min": 0.389541321,
+      "q10": 0.507267346,
+      "q25": 0.537247802,
+      "q75": 0.598584432,
+      "q90": 0.62426916
+    }
+  },
+  "claim_boundary": "Sequence-to-computational-docking-geometry supervision only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+  "counts": {
+    "expanded_multi_seed_rows": 1066,
+    "expanded_parent_clusters": 31,
+    "expanded_scalar_rows": 3388,
+    "expanded_single_seed_rows": 2322,
+    "expanded_unique_sequence_sha256": 3388,
+    "old_teacher_rows": 1507,
+    "receptor_specific_scalar_targets": 6776,
+    "stage2_ablation_scalar_rows": 2007,
+    "v4i_candidate_rows": 1962,
+    "v4i_scalar_valid_rows": 1881,
+    "v4i_stage1_rows": 1962,
+    "v4i_stage2_rows": 500,
+    "v4i_technical_incomplete_rows": 81
+  },
+  "distributions": {
+    "design_mode": {
+      "H1H3": 1688,
+      "H3": 1700
+    },
+    "outer_fold": {
+      "0": 627,
+      "1": 729,
+      "2": 403,
+      "3": 1027,
+      "4": 602
+    },
+    "source_campaign": {
+      "V4D": 226,
+      "V4H": 1281,
+      "V4I": 1881
+    },
+    "target_patch_id": {
+      "A_CENTER": 1147,
+      "B_LOWER": 1130,
+      "C_CROSS": 1111
+    },
+    "teacher_reliability": {
+      "DUAL_1_SEED": 2322,
+      "DUAL_2_SEED": 717,
+      "DUAL_3_SEED": 123,
+      "MULTI_SEED": 226
+    },
+    "v4i_source_lane": {
+      "LATENT970": 931,
+      "MPNN_NODE1": 236,
+      "MPNN_NODE23": 478,
+      "MPNN_NODE23_EXTRA": 236
+    }
+  },
+  "input_sha256": {
+    "old_supervised1507": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "protocol_compatibility_audit": "93d09ad4df061dcb545ec010153a21be6ca123909dffa06233a34f85d97e6037",
+    "v4i_candidates": "66044ae67b19cb4a6fe59845c1d0366382c3ee8c27778e9e01aefd1529509b89",
+    "v4i_stage1_ranking": "0e3a2aac83df22b15c6496d0d6e33831022877fbc15aae9203393dd6a63a9277",
+    "v4i_stage2_ranking": "410f0cf7a3f8ef0de0036149e3bca1e7d87739f652d5eae3ef04e3cea5ac27b7"
+  },
+  "invariants": {
+    "R_dual_exact_min": true,
+    "cross_source_sequence_overlap": 0,
+    "new_v4i_parent_clusters": 0,
+    "protocol_core_hashes_equal": false,
+    "technical_incomplete_imputed": false,
+    "v4h_v4i_protocol_semantics_compatible": true,
+    "v4i_contact_teacher_available": false,
+    "v4i_stage2_is_candidate_level_overlay_not_independent_rows": true,
+    "whole_parent_fold_binding_preserved": true
+  },
+  "output_sha256": {
+    "v4i_scalar_teacher1881_v2_8.tsv": "8af025dce58c30e9ea2193a522796242ce2374ead4bf328866238bb8fac4f19e",
+    "v4i_technical_incomplete81_v2_8.tsv": "fcfa7fef69664f0405bba1f333d2b734043e5cbb87b8ad7f20700367d2a4a95d",
+    "v6_scalar_teacher2007_stage2_ablation_v2_8.tsv": "2dade300cfd0d6a7eca5bc40181ef8e3eee641c5b81cff9f03c87554010c8cf1",
+    "v6_scalar_teacher3388_v2_8.tsv": "47c20808bdd8a804e8672c4e0c814c1cd40f8d3469723d867ce4b0986b3eec10"
+  },
+  "protocol_compatibility": {
+    "audit_sha256": "93d09ad4df061dcb545ec010153a21be6ca123909dffa06233a34f85d97e6037",
+    "normalized_protocol_semantics_sha256": "a8c23263f62b4323e8ed5c986223b14192552499a13f6a3f522011ab2d461f0c",
+    "status": "PASS_SCORING_AND_DOCKING_SEMANTICS_COMPATIBLE_PANEL_SIZE_ONLY_DIFFERENCES"
+  },
+  "schema_version": "pvrig_v2_8_expanded3388_materialization_receipt_v1",
+  "status": "PASS"
+}

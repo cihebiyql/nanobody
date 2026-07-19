@@ -1,0 +1,118 @@
+{
+  "build_docking_jobs_semantic_diff": "One fail-closed error message literal changes expected panel count from 1320 to 1962; job construction logic is otherwise byte-identical by unified diff audit.",
+  "byte_different_components": [
+    {
+      "path": "config/protocol_spec.json",
+      "v4h_sha256": "448c735e5c3b580808d417d21fbbe09ba04208287bdb2c8c079a223f153d1c26",
+      "v4i_sha256": "93a3dce80ef7bc7cef32d7deed0d6f4086b65c0067110c255fd383ce6edb1508"
+    },
+    {
+      "path": "scripts/build_docking_jobs.py",
+      "v4h_sha256": "15735d824081e9f08ea71237f17d3ae8511bf06a8d8ef446531c6fe69d158d2a",
+      "v4i_sha256": "87779bc87e8ca13a67848f8aa09bea8f854f559e5738e7a2555e4dc536cf160f"
+    }
+  ],
+  "byte_identical_fixed_components": [
+    {
+      "path": "config/blocker_judgment_rules_v2.json",
+      "v4h_sha256": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5",
+      "v4i_sha256": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5"
+    },
+    {
+      "path": "inputs/normalized/8x6b_TL_reference.pdb",
+      "v4h_sha256": "80c9e36c63ba9fa8f28f606ad5864d9eb8c50b9b228424e1db5cdfc1bc6725b0",
+      "v4i_sha256": "80c9e36c63ba9fa8f28f606ad5864d9eb8c50b9b228424e1db5cdfc1bc6725b0"
+    },
+    {
+      "path": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+      "v4h_sha256": "31b530edf01fe9b8f354935cc6140d863ba78faf50f93cf5303d0223c2a94e5a",
+      "v4i_sha256": "31b530edf01fe9b8f354935cc6140d863ba78faf50f93cf5303d0223c2a94e5a"
+    },
+    {
+      "path": "inputs/normalized/9e6y_TL_reference.pdb",
+      "v4h_sha256": "01f13b5899624cb8c0450c458fbe055cae706804a78a0f7997940b787e6f2744",
+      "v4i_sha256": "01f13b5899624cb8c0450c458fbe055cae706804a78a0f7997940b787e6f2744"
+    },
+    {
+      "path": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+      "v4h_sha256": "c850363e92aa0ed00266b0f49ecea364bc661a768b2ac3ebe90cc8946b6f64c6",
+      "v4i_sha256": "c850363e92aa0ed00266b0f49ecea364bc661a768b2ac3ebe90cc8946b6f64c6"
+    },
+    {
+      "path": "inputs/normalized/interface_hotspots_uniprot.tsv",
+      "v4h_sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44",
+      "v4i_sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44"
+    },
+    {
+      "path": "inputs/source/8X6B.pdb",
+      "v4h_sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+      "v4i_sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    {
+      "path": "inputs/source/9E6Y.pdb",
+      "v4h_sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+      "v4i_sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    {
+      "path": "inputs/source/PVRIG_hotspot_set_v1.csv",
+      "v4h_sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "v4i_sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    {
+      "path": "scripts/common.py",
+      "v4h_sha256": "479cff3f2215f45952009d54869462cd90937cca56e15ddaf6af54a418f16d4a",
+      "v4i_sha256": "479cff3f2215f45952009d54869462cd90937cca56e15ddaf6af54a418f16d4a"
+    },
+    {
+      "path": "scripts/prepare_references.py",
+      "v4h_sha256": "91e14229a8c1a532c880757cb3df25900a07b07f1024427954c040171f78e475",
+      "v4i_sha256": "91e14229a8c1a532c880757cb3df25900a07b07f1024427954c040171f78e475"
+    },
+    {
+      "path": "scripts/run_job.py",
+      "v4h_sha256": "9957e6dc80db2345737576d65606601064725c09b654518b1df76427e48a3d0a",
+      "v4i_sha256": "9957e6dc80db2345737576d65606601064725c09b654518b1df76427e48a3d0a"
+    },
+    {
+      "path": "scripts/score_pose.py",
+      "v4h_sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9",
+      "v4i_sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9"
+    }
+  ],
+  "candidate_level_aggregation": {
+    "V4H": "per-receptor successful-seed median then exact min; seed tier by paired successful seed intersection",
+    "V4I": "Stage1 same scalar scoring; Stage2 frozen transcription of V4H Top-8 scorer, 64 raw jobs reproduced to 9 decimals; per-receptor seed median then exact min",
+    "compatible_scale": true
+  },
+  "claim_boundary": "Computational Docking geometry compatibility only; not biological validation.",
+  "excluded_campaign_cardinality_fields": [
+    "candidate_panel.expected_count",
+    "candidate_panel.split_counts",
+    "docking.expected_candidate_jobs",
+    "docking.expected_total_jobs",
+    "docking.smoke_candidate_id"
+  ],
+  "merge_authorization": "V4H and V4I scalar R8/R9/Rdual may share a supervised target scale after preserving campaign and reliability provenance. Unequal protocol-core hashes must remain recorded; this receipt does not authorize sealed data access.",
+  "normalized_protocol_semantics_equal": true,
+  "normalized_protocol_semantics_sha256": "a8c23263f62b4323e8ed5c986223b14192552499a13f6a3f522011ab2d461f0c",
+  "protocol_core_sha256": {
+    "V4H": "1f0e68360531ee58e3742c461976765d1d122fadac83310b1bf4174d844cab9a",
+    "V4I": "eec4cdde8c2a57f9b27f3097bf136bbbac1fc1e4d06c651c6baf9f315103453d",
+    "equal": false,
+    "reason": "Core closure includes campaign candidate panel and therefore is expected to differ."
+  },
+  "protocol_spec_sha256": {
+    "V4H": "448c735e5c3b580808d417d21fbbe09ba04208287bdb2c8c079a223f153d1c26",
+    "V4I": "93a3dce80ef7bc7cef32d7deed0d6f4086b65c0067110c255fd383ce6edb1508"
+  },
+  "schema_version": "pvrig_v2_8_v4h_v4i_protocol_semantic_compatibility_audit_v1",
+  "scope": "Open/development computational teacher compatibility only.",
+  "sealed_access": {
+    "legacy128_merged": 0,
+    "outer_truth": 0,
+    "v4f_test32": 0
+  },
+  "status": "PASS_SCORING_AND_DOCKING_SEMANTICS_COMPATIBLE_PANEL_SIZE_ONLY_DIFFERENCES",
+  "v4h_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+  "v4i_root": "/data/qlyu/projects/pvrig_v4_i_round2_dual_docking_v1_1_20260718"
+}

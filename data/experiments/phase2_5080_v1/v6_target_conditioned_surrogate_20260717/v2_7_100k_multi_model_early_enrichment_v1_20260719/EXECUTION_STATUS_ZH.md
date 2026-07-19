@@ -71,11 +71,58 @@
    V4-F/test32 / outer truth / outer metrics access: 0 / 0 / 0
    ```
 
-## 正在运行/准备启动
+## 已完成的 contact 消融终态
 
-1. 冻结并启动 marginal-only 与 pair-only 的完整 8-epoch open-inner jobs；
-2. 用同一 tie-aware collector 与 B3、F0 combined 做匹配比较；
-3. 准备跨更多 whole-parent open folds 的 M2+F0 复现。
+V1.4.2 六个完整任务全部 PASS：
+
+```text
+marginal-only × seeds 43/97/193
+pair-only × seeds 43/97/193
+每项 8 epochs / 544 optimizer steps
+V4-F/test32 / outer truth / outer metrics access: 0 / 0 / 0
+```
+
+结果：
+
+| Variant | Rdual Spearman | within-parent Top20 EF |
+|---|---:|---:|
+| B 三 seed | 0.29837 | 1.582 |
+| F0 combined | 0.31726 | 1.582 |
+| marginal-only | **0.32455** | 1.582 |
+| pair-only | 0.31510 | **1.341** |
+
+四者在所有 global Top5/10/20 hit、Recall 和 EF 上完全相同。contact 监督改善了中段连续排序，但没有改善本 split 的早期富集。下一轮保留 marginal-only challenger，暂停 pair-only 扩张。
+
+## 已完成的 Stage 0 sequence-only 基线
+
+严格使用 outer0/inner0 whole-parent split（1085 train / 184 score），输入只包括 ESM2-650M、ESM2-3B 序列表征和序列/CDR 理化特征；不读取候选单体结构或 Docking pose。
+
+关键结果：
+
+- Ridge ESM2-650M：Rdual Spearman 0.4255；
+- Ridge 650M+3B：predicted Top10% 找回 true Top10% 的 12/19，Recall 63.2%，EF 6.12x；
+- ElasticNet：predicted Top20% 找回 true Top10% 的 16/19，Recall 84.2%，EF 4.19x；
+- 浅层 MLP 失败，Rdual Spearman -0.0147；未经校准的普通均值集成被 MLP 污染，不得使用；
+- within-parent EF 约 0.9–1.2x，主要信号仍来自跨 parent/scaffold。
+
+## 已完成的 100K label-free 选择器原型
+
+合成 100,000 → 20,000 选择器 smoke：
+
+```text
+PASS
+wall time: 3.60 s
+peak RSS: 439,484 KB
+20,000 candidate IDs 全唯一
+固定通道配额: 14000/2000/1600/1400/1000
+all label/sealed access: 0
+```
+
+该速度只表示已有模型分数表上的选择器吞吐，不包含 ESM embedding 和模型推理时间。
+
+## 当前运行状态
+
+上述相关 Node1 训练均已完成，无相关训练进程在运行；GPU 1–7 均已释放。GPU0 有约 19.8 GB 静态占用但利用率为 0，且不是上述训练进程。
 
 ## 新发现的评估风险
 
@@ -102,9 +149,10 @@ tie-aware pessimistic / expected / optimistic hits
 
 本轮开发阶段的下一停止点是同时获得：
 
-1. marginal-only / pair-only 完整 8-epoch 结果；
-2. M2+B3+F0 matched top-K overlap/exclusive-hit 审计；
-3. 至少再一个 whole-parent open fold 的复现；
-4. 是否保留 contact branch 作为独立生产召回器的冻结决定。
+1. 将 B3、marginal-only、M2、Ridge/ElasticNet 扩展到其余 open whole-parent folds；
+2. 用严格 cross-fit 而非 raw mean 训练融合/配额模型；
+3. 重点验证 global early enrichment 是否能转化为 within-parent/sibling enrichment；
+4. 在真实 100K 候选表上测量 ESM embedding、模型推理和选择器完整吞吐；
+5. 冻结下一轮 Docking 的 exploitation、disagreement、diversity 和 random sentinel 配额。
 
 V4-F/test32 和 formal outer-test truth 在这些开发选择冻结前继续 sealed。
