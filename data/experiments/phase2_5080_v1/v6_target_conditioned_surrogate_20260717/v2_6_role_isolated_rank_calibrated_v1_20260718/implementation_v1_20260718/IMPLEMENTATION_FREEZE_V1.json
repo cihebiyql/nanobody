@@ -1,0 +1,61 @@
+{
+  "schema_version": "pvrig_v2_6_role_isolated_optimizer_implementation_freeze_v1",
+  "status": "IMPLEMENTATION_FROZEN_LOCAL_CPU_VALIDATED_NONLAUNCHING",
+  "frozen_utc": "2026-07-18T15:44:18Z",
+  "claim_boundary": "Training-dynamics primitive for an open-development computational 8X6B/9E6Y Docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "source_hashes": {
+    "trainer/role_isolated_optimization_v1.py": "2dadc945ec30eb802ca9f32fac84ce647783b9defc36db68f345fc00e972f363",
+    "trainer/__init__.py": "f6352cb9741ccb66182afeae8e3769094eefc0a5664c16e22b57f78d80689cf3",
+    "tests/test_role_isolated_optimization_v1.py": "43ede29f9ecfb259aed6010014cd4c37f88d8921eca475d7ae05dd32ad40b3e2",
+    "tests/__init__.py": "50d3039cdb4fe6f5f0981723cf7530d6ac2736be23a944db42a03617c5bec384",
+    "README_ZH.md": "3ff0facd3abf03490ce68a6adab1c8330b8600d2cee8b337145a7b983f1d91ba",
+    "IMPLEMENTATION_CONTRACT_V1.json": "76fb2326ddbafb4a5edbb59322b347e0b1a946c22474f67fb6f2aefd967e29d4",
+    "TEST_RESULTS.log": "35ce8af3e64da485c6c5207b6e3fd5f9b3e28293f568220644897c07ba986aef"
+  },
+  "verification": {
+    "python": "3.10.12",
+    "torch": "2.13.0+cpu",
+    "cuda_available": false,
+    "py_compile": "PASS",
+    "unit_tests": {
+      "run": 13,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK"
+    },
+    "twenty_step_trajectory_gate": "PASS",
+    "real_v2_5_parameter_role_adapter_gate": "PASS",
+    "mutation_gates": {
+      "overlapping_role_ownership": "PASS_REJECTED",
+      "overlapping_optimizer_ownership": "PASS_REJECTED",
+      "global_all_parameter_clip": "PASS_REJECTED",
+      "contact_rng_leakage": "PASS_DETECTED",
+      "undetached_contact_payload": "PASS_REJECTED",
+      "contact_to_scalar_terminal_path": "PASS_REJECTED"
+    }
+  },
+  "frozen_invariants": {
+    "parameter_ownership": "EXHAUSTIVE_EXACTLY_ONCE",
+    "optimizer_overlap": 0,
+    "gradient_clipping": "PER_ROLE_ONLY",
+    "global_all_parameter_clip_allowed": false,
+    "strict_detached_main_rng_restored": true,
+    "strict_detached_max_scalar_trajectory_delta": 1e-07,
+    "shared_contact_gradient_budget_kappa": 0.25,
+    "shared_contact_gradient_budget_lambda": 1.0
+  },
+  "access_firewall": {
+    "remote_changes": false,
+    "v2_5_outer_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0,
+    "candidate_docking_pose_inputs_access_count": 0
+  },
+  "remaining_before_remote_formal_use": [
+    "run_same_tests_on_node1_cuda_runtime",
+    "integrate_split_scalar_and_contact_forward_into_real1507_runner",
+    "verify_runner_level_gradient_accumulation",
+    "implement_and_freeze_ParentPairEpochCache",
+    "implement_noise_aware_rank_loss",
+    "perform_nested_whole_parent_inner_pilot_before_any_outer_evaluation"
+  ]
+}

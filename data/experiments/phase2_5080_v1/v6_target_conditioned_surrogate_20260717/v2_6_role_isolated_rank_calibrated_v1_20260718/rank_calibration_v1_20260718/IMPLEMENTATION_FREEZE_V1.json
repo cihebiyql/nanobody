@@ -1,0 +1,66 @@
+{
+  "schema_version": "pvrig_v2_6_rank_calibration_implementation_freeze_v1",
+  "status": "FROZEN_IMPLEMENTATION_TESTED_NONLAUNCHING",
+  "created_date": "2026-07-18",
+  "claim_boundary": "Open-development computational dual-receptor Docking-geometry surrogate utility only; not binding, affinity, competition, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "scope": {
+    "included": [
+      "FP32 normalized softmin and exact-min inference",
+      "frozen delta_noise binding verification",
+      "deterministic split-bound ParentPairEpochCache",
+      "noise-aware within-parent PairLogit",
+      "fold-local constrained positive affine R8/R9 calibration",
+      "identity fallback and exact-min after calibration"
+    ],
+    "excluded": [
+      "outer-fold metrics",
+      "live or remote training changes",
+      "V4-F/test32 access",
+      "candidate docking pose features",
+      "model architecture or optimizer implementation",
+      "formal production promotion"
+    ]
+  },
+  "frozen_delta_noise_binding": {
+    "artifact": "../../v2_6_noise_tolerance_binding_v1_20260718/V2_6_DELTA_NOISE_BINDING.json",
+    "artifact_sha256": "0a613b87509699a28d134c02514b1240e50a06a5aefddb5ca4a9d8202cde0a0c",
+    "source_sha256": "eb44fb5ac80e0387c75b10a9f1805eb19c2cb89b18e71af32edffcfcb50e59b2",
+    "full_precision_value": 0.01961495614856818,
+    "frozen_12_decimal_value": 0.019614956149,
+    "candidate_count": 225,
+    "adaptive_v4h_excluded": true
+  },
+  "implementation_contract_sha256": "df282bd7caf82b787a332cdd16bd5b39b9fc37f9c935d78480122faf7ec1a3f9",
+  "files": {
+    "rank_calibration_core_v1.py": "1a30fb9cad28618f9199748c50aaa84e0f2c549ddf47c1e22afb6ae4f3ea8caf",
+    "test_rank_calibration_core_v1.py": "15120f75dc7017a9b1040d685efb2affe34434798a7f27806711093e6462b3ec",
+    "README_ZH.md": "ad125f895e18b6809da62964b727b994f9d1c734ddec9cdebc09667737e1f63e",
+    "TEST_RESULTS.log": "0bba7e4dd7e370d2d9023971074deff334617404515058a56cf55a55f01bbec7"
+  },
+  "validation": {
+    "command": "python3 test_rank_calibration_core_v1.py",
+    "python": "3.10.12",
+    "torch": "2.13.0+cpu",
+    "tests_run": 18,
+    "failures": 0,
+    "errors": 0,
+    "result": "PASS",
+    "coverage_contracts": [
+      "authoritative binding and binding mutation rejection",
+      "BF16 endpoint to FP32 softmin finite/equality/gradient",
+      "exact-min definition",
+      "deterministic exact-eight cache and balanced parent round-robin",
+      "split, label, seed and persisted-cache mutation rejection",
+      "minimum eligible-parent fail-closed gate",
+      "typed-softmin-only PairLogit order, weighting, grouped reduction and gradient",
+      "outer-test calibration firewall",
+      "positive affine constraints, fit improvement and identity fallback",
+      "calibration label mutation hash and exact-min after calibration"
+    ]
+  },
+  "data_access": {
+    "outer_metrics_read": 0,
+    "remote_runtime_modified": false,
+    "v4_f_or_test32_results_accessed": 0
+  }
+}

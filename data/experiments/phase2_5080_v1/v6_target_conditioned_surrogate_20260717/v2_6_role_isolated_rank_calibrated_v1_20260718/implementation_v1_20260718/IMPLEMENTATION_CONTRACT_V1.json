@@ -1,0 +1,65 @@
+{
+  "schema_version": "pvrig_v2_6_role_isolated_optimizer_implementation_contract_v1",
+  "status": "LOCAL_IMPLEMENTATION_TESTED_NONLAUNCHING",
+  "created_date": "2026-07-18",
+  "claim_boundary": "Training-dynamics primitive for an open-development computational 8X6B/9E6Y Docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "implemented": {
+    "parameter_roles": [
+      "shared_encoder",
+      "attention_scalar",
+      "contact_only"
+    ],
+    "optimizer_owners": {
+      "scalar_optimizer": [
+        "shared_encoder",
+        "attention_scalar"
+      ],
+      "contact_optimizer": [
+        "contact_only"
+      ]
+    },
+    "exactly_one_owner_per_trainable_parameter": true,
+    "global_all_parameter_clip_allowed": false,
+    "per_role_clip": true,
+    "strict_detached_contact_payload_required": true,
+    "contact_rng_mechanism": "torch.random.fork_rng_CPU_and_current_CUDA",
+    "contact_rng_seed_derivation": "SHA256(base_seed,outer_fold,inner_fold,epoch,optimizer_step,accumulation_microstep,contact_rng)",
+    "shared_gated_contact_gradient_budget": {
+      "kappa": 0.25,
+      "lambda_contact_shared": 1.0,
+      "epsilon": 1e-12
+    },
+    "v2_5_orthogonal_parameter_adapter": true
+  },
+  "verification_contract": {
+    "trajectory_steps": 20,
+    "trajectory_comparison": "B_vs_E_dropout_0.5_vs_E_dropout_0.2_loss_scale_10",
+    "parameter_max_abs_delta_tolerance": 1e-07,
+    "parameter_sha256_equal_every_step": true,
+    "main_rng_sha256_equal_every_step": true,
+    "contact_parameter_nonzero_update_required": true,
+    "mutation_tests": [
+      "overlapping_role_ownership",
+      "overlapping_optimizer_ownership",
+      "global_all_parameter_clip",
+      "contact_rng_leakage",
+      "undetached_contact_payload",
+      "contact_to_scalar_terminal_path"
+    ]
+  },
+  "access_firewall": {
+    "remote_changes": false,
+    "v2_5_formal_outer_metrics_accessed": false,
+    "v4_f_test32_accessed": false,
+    "candidate_docking_pose_input_accessed": false
+  },
+  "not_yet_implemented": [
+    "real1507_runner_integration",
+    "runner_level_gradient_accumulation",
+    "ParentPairEpochCache",
+    "noise_aware_rank_loss",
+    "fold_local_affine_calibration",
+    "nested_whole_parent_training",
+    "remote_4x4090_launch"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "artifact_hashes": {
+    "IMPLEMENTATION_FREEZE_V1.json": "552199d7e9d73a35da712fd2446e921c4c556faa027de2d36df9d3085c68530a",
+    "execution_adapter_v1_20260718/EXECUTION_CONTRACT_V1.json": "d77b6181f780c632fda05056b44aea2d7c9eec3715e24c80c3b19b777b852d55",
+    "execution_adapter_v1_20260718/EXECUTION_MANIFEST_V1.json": "ee6264048ae4e5612aeca1d092d5ade9cb1f347ae3b54c4f06caf60ce56370c3",
+    "execution_adapter_v1_20260718/README_ZH.md": "9bad89ba4eb905f6ee3745b8b09a050e7331642074e691bcccdd1a042de022b3",
+    "execution_adapter_v1_20260718/TEST_RESULTS.log": "0f5d37e923a97f1cb65920fcc629f945a39f9a595eb84f59a4d64c4b1b3ba017",
+    "execution_adapter_v1_20260718/prepared/preauthorization_dry_run_v1_1/PREAUTHORIZATION_DRY_RUN_RECEIPT.json": "49761486d9997c4202169a9d5c9781c11c27e328528e450cfd78d2c5a2af4bee",
+    "execution_adapter_v1_20260718/src/build_execution_manifest_v1.py": "976ad46a6474634c36f942dd7e706d91d2ab95fe2e4b060234fd7a22cc13acc4",
+    "execution_adapter_v1_20260718/src/dry_run_execution_adapter_v1.py": "47532c47504ffeb316c48f28b432cb7142124df37f5df9aa35815a4a27ecd279",
+    "execution_adapter_v1_20260718/src/evaluate_authorized_v2_5_strict_meta_v1.py": "d8a33a36309ec3363ce470b30228193e93af5784b1d6d739f16b5b11cfed4152",
+    "execution_adapter_v1_20260718/src/execution_common_v1.py": "6c8309bd8ca232a3ed87f562d87439fcf0f4f378c676943c2766b095c610615c",
+    "execution_adapter_v1_20260718/src/launch_node1_input_closure_watcher_v1.py": "888e3e198ae49de9523ac57a6551f4860cd0a8b104b16b7e2a6660acf5f8af72",
+    "execution_adapter_v1_20260718/src/validate_v1_2_1_strict_inputs_v1.py": "28aa6f93bf7b754b1723fc7fa37c6d5459db9c3f0ce8b69e736859e706be4cd5",
+    "execution_adapter_v1_20260718/src/watch_v1_2_1_terminal_then_validate_v1.py": "28af404d726eee84b00e7573f6417d6895dc2da6df603d69e23c6e92775c98a8",
+    "execution_adapter_v1_20260718/tests/test_execution_adapter_v1.py": "ce03f7039c2498fc4c5ead3f67312b0bd3784c9fd5a7dac0f844a57859a6d9e1",
+    "src/c2_fold_local_v1.py": "281027a8a91df4ee4567c7eff5e58eca24548e01e0709b7b454e8c0853e34075",
+    "src/meta_noise_stack_v1.py": "1f5c2b0ed7553a76a11f7011057004637606739b5577b69053494a484eb4af21"
+  },
+  "claim_boundary": "Open-development computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "execution_authorized": false,
+  "formal_evaluator_launch_allowed": false,
+  "formal_model_ids": [
+    "D_ONLY_FROZEN_BASE",
+    "M2_C2_CONVEX",
+    "M2_D_CONVEX",
+    "M2_D_C2_CONVEX",
+    "M2_D_C2_RELIABILITY_CONVEX",
+    "D_C2_CONTACT_RELIABILITY_HIST_GBDT"
+  ],
+  "preauthorization_dry_run": {
+    "D_lane_outer_evidence_opened": false,
+    "canonical_candidates": 1507,
+    "performance_evaluation_performed": false,
+    "receipt_sha256": "49761486d9997c4202169a9d5c9781c11c27e328528e450cfd78d2c5a2af4bee",
+    "selected_c2_alpha_by_outer_fold": {
+      "0": 100.0,
+      "1": 100.0,
+      "2": 100.0,
+      "3": 10.0,
+      "4": 10.0
+    },
+    "status": "PASS_PREAUTHORIZATION_BUILD_TEST_DRY_RUN"
+  },
+  "schema_version": "pvrig_v2_5_strict_meta_execution_adapter_implementation_freeze_v1",
+  "status": "FROZEN_UNAUTHORIZED_INPUT_VALIDATION_ONLY",
+  "test_evidence": {
+    "base_tests": 17,
+    "execution_adapter_tests": 7,
+    "log_sha256": "0f5d37e923a97f1cb65920fcc629f945a39f9a595eb84f59a4d64c4b1b3ba017",
+    "status": "PASS",
+    "total": 24
+  },
+  "upstream_strict_binding": {
+    "authorization_overlay_sha256": "95b6dd933c37218b52e6946cbc538f3afec15dd471974427d6180ad6b66b69f3",
+    "job_graph_sha256": "2dab5078ad81f3b3c02fc995ce0a7b556e638d905c20d73d5eeebe81b86a0f57",
+    "launch_receipt_sha256": "c80b686b22340561041f1f8fddea84f7a17b968498ee947554a048ca3cafb06f",
+    "package_manifest_sha256": "8b6c5f61284b3d72637e155382825630fc91d5dbbbd2d56df108f7433ddb5bb4"
+  },
+  "v4_f_test32_access_count": 0,
+  "watcher_terminal_boundary": "PASS_INPUTS_READY_UNAUTHORIZED"
+}

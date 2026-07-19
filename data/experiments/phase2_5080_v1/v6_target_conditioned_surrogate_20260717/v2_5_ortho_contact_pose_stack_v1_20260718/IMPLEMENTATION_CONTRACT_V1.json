@@ -16,10 +16,14 @@
   },
   "claim_boundary": "Open-only computational Docking-geometry surrogate implementation and non-launching smoke package only; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
   "deployment": {
+    "base_package_audit_pass": true,
+    "base_package_built": true,
     "deployed": false,
+    "gpu1_sequential_overlay_audit_pass": true,
+    "gpu1_sequential_overlay_built": true,
+    "launch_authorized": false,
     "launched": false,
-    "package_audit_pass": true,
-    "package_built": true,
+    "operator_authorization_included": false,
     "prediction_metrics_access_count": 0,
     "training_or_prediction_executed": false,
     "v4_f_test32_access_count": 0
@@ -31,12 +35,20 @@
   },
   "files": {
     "README_ZH.md": {
-      "bytes": 6392,
-      "sha256": "fae6749b011c70b7d8f0aa87439b53ebb4d157bad32a4b3cb04576579526cab5"
+      "bytes": 7782,
+      "sha256": "d99e0780cc9b87da4bb472b757688efb32c56b954f14b4bad02c86568092e731"
     },
     "TEST_RESULTS.log": {
-      "bytes": 2359,
-      "sha256": "52cc9511e5615a83a9dee863878bb5ea423f789cb2308181d1f64edd078ced7e"
+      "bytes": 2934,
+      "sha256": "565d06d211abd0eab13258beb616e0749b6b2cdddfce94edcf93122354dfa77a"
+    },
+    "deployment/GPU1_OVERLAY_AUDIT_STDOUT_V1.json": {
+      "bytes": 503,
+      "sha256": "9446a61215734cb0f28e321f22d7a8fbe310f16e4910650faecc9b57d77a0dae"
+    },
+    "deployment/GPU1_OVERLAY_BUILD_STDOUT_V1.json": {
+      "bytes": 1527,
+      "sha256": "9d2ad81b2f09756a3558db41f74bcc481ed985a6c7780b8418d6438a88e2d0ba"
     },
     "deployment/PACKAGE_AUDIT_STDOUT_V1.json": {
       "bytes": 283,
@@ -46,9 +58,37 @@
       "bytes": 1752,
       "sha256": "7e5ec26bffaceff52a5486be77bd63142f7025858e8996ae7e1eeb4304f51e9f"
     },
+    "deployment/build_gpu1_sequential_authorization_overlay_v1.py": {
+      "bytes": 25197,
+      "sha256": "86de605c661adb699776e3cd6584098e695fc01063945ac91903400b326b5523"
+    },
     "deployment/build_node1_smoke_package_v1.py": {
       "bytes": 18547,
       "sha256": "9c71f372e07a0f5b2bbc8a53402b9d8863a876a5dd58e1a98d80a8d5928f1305"
+    },
+    "deployment/prepared/gpu1_sequential_authorization_overlay_v1/EXPLICIT_AUTHORIZATION_OVERLAY.json": {
+      "bytes": 1368,
+      "sha256": "ebf72b4460756dde25448ba98e5d6683686082edb395f6e214134974efcee221"
+    },
+    "deployment/prepared/gpu1_sequential_authorization_overlay_v1/GPU1_SEQUENTIAL_JOB_PLAN.json": {
+      "bytes": 23885,
+      "sha256": "3ad5ad802b915421ec40d519118233f0a24ddcb6250ffdccd0880e17e19ac114"
+    },
+    "deployment/prepared/gpu1_sequential_authorization_overlay_v1/PACKAGE_MANIFEST.json": {
+      "bytes": 1579,
+      "sha256": "4bd34ea7db0dba89d8802283435feb1e556a557d8c64167d06086c6e3db7d955"
+    },
+    "deployment/prepared/gpu1_sequential_authorization_overlay_v1/SHA256SUMS": {
+      "bytes": 485,
+      "sha256": "79153e7da11b28a252f2a8ca63cd9195264c7685cec194c6aba80e02aa763854"
+    },
+    "deployment/prepared/gpu1_sequential_authorization_overlay_v1/SOURCE_PACKAGE_BINDING.json": {
+      "bytes": 2183,
+      "sha256": "ec04921400dff6c8d599f75304b1b21c6e0ef0aea5b2610b68b4cd738f6f670c"
+    },
+    "deployment/prepared/gpu1_sequential_authorization_overlay_v1/src/launch_gpu1_sequential_smoke_v1.py": {
+      "bytes": 4823,
+      "sha256": "755b82b220dea0f857257ca773c0557d1c4a1c5c4b57a946f3eb20cdf377d27e"
     },
     "deployment/prepared/node1_smoke_package_v1/INPUT_CONTRACT.json": {
       "bytes": 7261,
@@ -74,6 +114,10 @@
       "bytes": 26586,
       "sha256": "9f5dcedc1873628af9081a4d82fb2d1cc62634a12584f2286abe7a0ba4054e3a"
     },
+    "tests/test_build_gpu1_sequential_authorization_overlay_v1.py": {
+      "bytes": 4410,
+      "sha256": "fe056752b05425c125373a664afbd79c1532cc574710f2981f4169a88187b9a5"
+    },
     "tests/test_build_node1_smoke_package_v1.py": {
       "bytes": 4842,
       "sha256": "505360ab2bdfa25106a45f6a4184920e8d0db82994ba672c875493e27110b547"
@@ -94,6 +138,19 @@
       "bytes": 22616,
       "sha256": "a3d480fe4e164e74e2f64598e8ca53d42131c2e9e6ad16074fb7274e33a906b8"
     }
+  },
+  "gpu1_sequential_overlay": {
+    "command_templates_frozen": true,
+    "commands_materialized": false,
+    "cpu_core_list": "0-7",
+    "external_operator_authorization_required": true,
+    "jobs": 6,
+    "max_concurrent_jobs": 1,
+    "max_cpu_per_process": 8,
+    "model_data_parent_contact_graph_hash_firewall_unchanged": true,
+    "node1_python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "physical_gpu": 1,
+    "strictly_sequential": true
   },
   "input_firewall": {
     "candidate_docking_pose_or_pose_features": false,
@@ -117,11 +174,11 @@
     "whole_parent_split": true
   },
   "schema_version": "pvrig_v2_5_ortho_contact_pose_stack_implementation_contract_v1",
-  "status": "PASS_BUILD_TEST_DRY_RUN_NOT_DEPLOYED_NOT_LAUNCHED",
+  "status": "PASS_BUILD_TEST_AUDIT_GPU1_OVERLAY_PENDING_AUTHORIZATION_NOT_DEPLOYED_NOT_LAUNCHED",
   "test_summary": {
     "errors": 0,
     "failures": 0,
     "skipped": 0,
-    "tests_run": 19
+    "tests_run": 23
   }
 }

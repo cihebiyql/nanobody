@@ -1,0 +1,12 @@
+{
+    "diagnostic_lanes": [
+        "B_CLEAN_TARGET_ATTENTION",
+        "E_DECOUPLED_CONTACT_DETACHED"
+    ],
+    "primary_lane": "E_DECOUPLED_CONTACT_SHARED",
+    "required_raw_fields": 15,
+    "schema_version": "pvrig_v2_5_cross_lane_contract_validation_v1",
+    "status": "PASS",
+    "upstream_hashes_checked": 5,
+    "v4_f_test32_access_count": 0
+}

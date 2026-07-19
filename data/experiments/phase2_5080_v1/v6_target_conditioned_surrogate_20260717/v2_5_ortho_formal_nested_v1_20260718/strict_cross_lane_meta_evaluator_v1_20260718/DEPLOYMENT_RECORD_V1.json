@@ -1,0 +1,22 @@
+{
+  "schema_version": "pvrig_v2_5_strict_cross_lane_meta_watcher_deployment_v1",
+  "status": "DEPLOYED_WAITING_V1_3_TERMINAL",
+  "deployed_at": "2026-07-18T23:14:00+08:00",
+  "explicit_execution_basis": "User requested autonomous training/evaluation execution; parent task explicitly authorized deployment after local audit.",
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "package_manifest_sha256": "415edfe08447a151e7f9b0f252751924c3cb7230138ea5e13061f0717773e29f",
+  "local_audit_status": "PASS_LOCAL_AUDIT_NONLAUNCHING",
+  "remote_package": "/data1/qlyu/projects/pvrig_v2_5_strict_cross_lane_meta_package_v1_20260718",
+  "remote_watch_root": "/data1/qlyu/projects/pvrig_v2_5_strict_cross_lane_meta_watch_v1_20260718",
+  "remote_output": "/data1/qlyu/projects/pvrig_v2_5_strict_cross_lane_meta_formal_result_v1_20260718",
+  "upstream_runtime": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_3_20260718",
+  "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+  "watcher_pid": 1036343,
+  "remote_package_hash_verification": {
+    "status": "PASS",
+    "files": 12
+  },
+  "watcher_initial_status": "WAITING_V1_3_TERMINAL",
+  "live_301_job_graph_modified": false,
+  "v4_f_test32_access_count": 0
+}

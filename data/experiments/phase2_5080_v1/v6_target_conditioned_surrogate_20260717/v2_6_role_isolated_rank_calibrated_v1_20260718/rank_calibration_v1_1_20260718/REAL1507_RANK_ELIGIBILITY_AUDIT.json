@@ -1,0 +1,465 @@
+{
+  "claim_boundary": "Open-development computational dual-receptor Docking-geometry surrogate utility only; not binding, affinity, competition, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "global_rank_pair_audit": {
+    "below_noise_discard_count": 406,
+    "delta_noise": 0.019614956149,
+    "eligible_pair_count": 824,
+    "rank_candidate_count": 226,
+    "rank_eligible_parent_count": 20,
+    "rank_parent_count": 20,
+    "same_parent_unordered_pair_count": 1230
+  },
+  "inner_train_partition_audit": {
+    "manifest_row_count": 30140,
+    "minimum_rank_eligible_pair_count": 351,
+    "minimum_rank_eligible_parent_count": 10,
+    "partition_count": 25,
+    "partitions": [
+      {
+        "below_noise_discard_count": 286,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 539,
+        "inner_fold": 0,
+        "outer_fold": 0,
+        "rank_candidate_count": 155,
+        "rank_eligible_parent_count": 14,
+        "rank_parent_count": 14,
+        "same_parent_unordered_pair_count": 825,
+        "train_candidate_count": 1085
+      },
+      {
+        "below_noise_discard_count": 319,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 671,
+        "inner_fold": 1,
+        "outer_fold": 0,
+        "rank_candidate_count": 177,
+        "rank_eligible_parent_count": 15,
+        "rank_parent_count": 15,
+        "same_parent_unordered_pair_count": 990,
+        "train_candidate_count": 996
+      },
+      {
+        "below_noise_discard_count": 342,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 693,
+        "inner_fold": 2,
+        "outer_fold": 0,
+        "rank_candidate_count": 182,
+        "rank_eligible_parent_count": 15,
+        "rank_parent_count": 15,
+        "same_parent_unordered_pair_count": 1035,
+        "train_candidate_count": 997
+      },
+      {
+        "below_noise_discard_count": 336,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 669,
+        "inner_fold": 3,
+        "outer_fold": 0,
+        "rank_candidate_count": 183,
+        "rank_eligible_parent_count": 16,
+        "rank_parent_count": 16,
+        "same_parent_unordered_pair_count": 1005,
+        "train_candidate_count": 999
+      },
+      {
+        "below_noise_discard_count": 333,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 672,
+        "inner_fold": 4,
+        "outer_fold": 0,
+        "rank_candidate_count": 183,
+        "rank_eligible_parent_count": 16,
+        "rank_parent_count": 16,
+        "same_parent_unordered_pair_count": 1005,
+        "train_candidate_count": 999
+      },
+      {
+        "below_noise_discard_count": 205,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 455,
+        "inner_fold": 0,
+        "outer_fold": 1,
+        "rank_candidate_count": 123,
+        "rank_eligible_parent_count": 11,
+        "rank_parent_count": 11,
+        "same_parent_unordered_pair_count": 660,
+        "train_candidate_count": 1053
+      },
+      {
+        "below_noise_discard_count": 239,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 523,
+        "inner_fold": 1,
+        "outer_fold": 1,
+        "rank_candidate_count": 138,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 762,
+        "train_candidate_count": 957
+      },
+      {
+        "below_noise_discard_count": 259,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 554,
+        "inner_fold": 2,
+        "outer_fold": 1,
+        "rank_candidate_count": 144,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 813,
+        "train_candidate_count": 959
+      },
+      {
+        "below_noise_discard_count": 266,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 559,
+        "inner_fold": 3,
+        "outer_fold": 1,
+        "rank_candidate_count": 145,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 825,
+        "train_candidate_count": 960
+      },
+      {
+        "below_noise_discard_count": 255,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 573,
+        "inner_fold": 4,
+        "outer_fold": 1,
+        "rank_candidate_count": 150,
+        "rank_eligible_parent_count": 13,
+        "rank_parent_count": 13,
+        "same_parent_unordered_pair_count": 828,
+        "train_candidate_count": 967
+      },
+      {
+        "below_noise_discard_count": 259,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 512,
+        "inner_fold": 0,
+        "outer_fold": 2,
+        "rank_candidate_count": 144,
+        "rank_eligible_parent_count": 13,
+        "rank_parent_count": 13,
+        "same_parent_unordered_pair_count": 771,
+        "train_candidate_count": 1077
+      },
+      {
+        "below_noise_discard_count": 258,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 558,
+        "inner_fold": 1,
+        "outer_fold": 2,
+        "rank_candidate_count": 149,
+        "rank_eligible_parent_count": 13,
+        "rank_parent_count": 13,
+        "same_parent_unordered_pair_count": 816,
+        "train_candidate_count": 1080
+      },
+      {
+        "below_noise_discard_count": 278,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 571,
+        "inner_fold": 2,
+        "outer_fold": 2,
+        "rank_candidate_count": 157,
+        "rank_eligible_parent_count": 14,
+        "rank_parent_count": 14,
+        "same_parent_unordered_pair_count": 849,
+        "train_candidate_count": 1087
+      },
+      {
+        "below_noise_discard_count": 260,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 538,
+        "inner_fold": 3,
+        "outer_fold": 2,
+        "rank_candidate_count": 151,
+        "rank_eligible_parent_count": 14,
+        "rank_parent_count": 14,
+        "same_parent_unordered_pair_count": 798,
+        "train_candidate_count": 1082
+      },
+      {
+        "below_noise_discard_count": 257,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 541,
+        "inner_fold": 4,
+        "outer_fold": 2,
+        "rank_candidate_count": 151,
+        "rank_eligible_parent_count": 14,
+        "rank_parent_count": 14,
+        "same_parent_unordered_pair_count": 798,
+        "train_candidate_count": 1082
+      },
+      {
+        "below_noise_discard_count": 182,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 379,
+        "inner_fold": 0,
+        "outer_fold": 3,
+        "rank_candidate_count": 107,
+        "rank_eligible_parent_count": 10,
+        "rank_parent_count": 10,
+        "same_parent_unordered_pair_count": 561,
+        "train_candidate_count": 800
+      },
+      {
+        "below_noise_discard_count": 213,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 426,
+        "inner_fold": 1,
+        "outer_fold": 3,
+        "rank_candidate_count": 120,
+        "rank_eligible_parent_count": 11,
+        "rank_parent_count": 11,
+        "same_parent_unordered_pair_count": 639,
+        "train_candidate_count": 813
+      },
+      {
+        "below_noise_discard_count": 197,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 442,
+        "inner_fold": 2,
+        "outer_fold": 3,
+        "rank_candidate_count": 120,
+        "rank_eligible_parent_count": 11,
+        "rank_parent_count": 11,
+        "same_parent_unordered_pair_count": 639,
+        "train_candidate_count": 813
+      },
+      {
+        "below_noise_discard_count": 270,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 555,
+        "inner_fold": 3,
+        "outer_fold": 3,
+        "rank_candidate_count": 145,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 825,
+        "train_candidate_count": 724
+      },
+      {
+        "below_noise_discard_count": 254,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 526,
+        "inner_fold": 4,
+        "outer_fold": 3,
+        "rank_candidate_count": 140,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 780,
+        "train_candidate_count": 722
+      },
+      {
+        "below_noise_discard_count": 201,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 351,
+        "inner_fold": 0,
+        "outer_fold": 4,
+        "rank_candidate_count": 111,
+        "rank_eligible_parent_count": 11,
+        "rank_parent_count": 11,
+        "same_parent_unordered_pair_count": 552,
+        "train_candidate_count": 1044
+      },
+      {
+        "below_noise_discard_count": 258,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 447,
+        "inner_fold": 1,
+        "outer_fold": 4,
+        "rank_candidate_count": 132,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 705,
+        "train_candidate_count": 951
+      },
+      {
+        "below_noise_discard_count": 241,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 476,
+        "inner_fold": 2,
+        "outer_fold": 4,
+        "rank_candidate_count": 133,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 717,
+        "train_candidate_count": 951
+      },
+      {
+        "below_noise_discard_count": 260,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 490,
+        "inner_fold": 3,
+        "outer_fold": 4,
+        "rank_candidate_count": 137,
+        "rank_eligible_parent_count": 12,
+        "rank_parent_count": 12,
+        "same_parent_unordered_pair_count": 750,
+        "train_candidate_count": 956
+      },
+      {
+        "below_noise_discard_count": 268,
+        "delta_noise": 0.019614956149,
+        "eligible_pair_count": 464,
+        "inner_fold": 4,
+        "outer_fold": 4,
+        "rank_candidate_count": 139,
+        "rank_eligible_parent_count": 13,
+        "rank_parent_count": 13,
+        "same_parent_unordered_pair_count": 732,
+        "train_candidate_count": 958
+      }
+    ]
+  },
+  "inputs": {
+    "inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "teacher_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+  },
+  "rank_eligibility_policy_id": "V2_6_V1_1_NONADAPTIVE_V4D_A_MULTI_SEED_ONLY",
+  "schema_version": "pvrig_v2_6_real1507_rank_eligibility_audit_v1_1",
+  "scientific_policy": {
+    "adaptive_v4h": "scalar_only_until_source_tier_specific_random_sentinel_noise_is_frozen",
+    "inference_prediction": "exact_min_from_direct_R8_R9_after_fold_local_calibration",
+    "rank_prediction": "FP32_exact_min_from_direct_R8_R9",
+    "rank_supervision": "V4D_A_multi_seed_only",
+    "scalar_supervision": "all_1507_R8_R9_rows"
+  },
+  "softmin_exact_min_diagnostic": {
+    "interpretation": "descriptive_teacher_diagnostic_only; V1.1 rank uses exact-min directly",
+    "normalized_softmin_minus_exact_min": {
+      "maximum": 0.013861424668912048,
+      "mean": 0.008827118277067626,
+      "median": 0.009713301797758866
+    },
+    "within_parent_sign_flip_by_exact_delta_threshold": [
+      {
+        "comparison_count": 75195,
+        "flip_count": 2659,
+        "flip_fraction": 0.035361393709688146,
+        "threshold": 0.0
+      },
+      {
+        "comparison_count": 69237,
+        "flip_count": 721,
+        "flip_fraction": 0.010413507228793853,
+        "threshold": 0.005
+      },
+      {
+        "comparison_count": 63435,
+        "flip_count": 58,
+        "flip_fraction": 0.0009143217466698195,
+        "threshold": 0.01
+      },
+      {
+        "comparison_count": 52683,
+        "flip_count": 0,
+        "flip_fraction": 0.0,
+        "threshold": 0.019614956149
+      }
+    ]
+  },
+  "status": "PASS_REAL1507_EXACT_MIN_V4D_ONLY_RANK_POLICY_FEASIBLE",
+  "teacher": {
+    "candidate_count": 1507,
+    "parent_count": 31,
+    "rank_eligible_candidate_count": 226,
+    "rank_ineligible_candidate_count": 1281,
+    "source_counts": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "source_successful_seed_count_strata": [
+      {
+        "candidate_count": 1,
+        "successful_seed_count_8X6B": 2,
+        "successful_seed_count_9E6Y": 3,
+        "teacher_source": "V4D_OPEN_MULTI_SEED"
+      },
+      {
+        "candidate_count": 225,
+        "successful_seed_count_8X6B": 3,
+        "successful_seed_count_9E6Y": 3,
+        "teacher_source": "V4D_OPEN_MULTI_SEED"
+      },
+      {
+        "candidate_count": 897,
+        "successful_seed_count_8X6B": 1,
+        "successful_seed_count_9E6Y": 1,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 12,
+        "successful_seed_count_8X6B": 1,
+        "successful_seed_count_9E6Y": 2,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 8,
+        "successful_seed_count_8X6B": 2,
+        "successful_seed_count_9E6Y": 1,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 236,
+        "successful_seed_count_8X6B": 2,
+        "successful_seed_count_9E6Y": 2,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 4,
+        "successful_seed_count_8X6B": 2,
+        "successful_seed_count_9E6Y": 3,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 1,
+        "successful_seed_count_8X6B": 3,
+        "successful_seed_count_9E6Y": 2,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 123,
+        "successful_seed_count_8X6B": 3,
+        "successful_seed_count_9E6Y": 3,
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      }
+    ],
+    "source_tier_counts": [
+      {
+        "candidate_count": 226,
+        "development_reliability_tier": "A",
+        "docking_evidence_tier": "V4D_MULTI_SEED",
+        "teacher_reliability": "MULTI_SEED",
+        "teacher_source": "V4D_OPEN_MULTI_SEED"
+      },
+      {
+        "candidate_count": 123,
+        "development_reliability_tier": "A",
+        "docking_evidence_tier": "DUAL_3_SEED",
+        "teacher_reliability": "DUAL_3_SEED",
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 241,
+        "development_reliability_tier": "B",
+        "docking_evidence_tier": "DUAL_2_SEED",
+        "teacher_reliability": "DUAL_2_SEED",
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      },
+      {
+        "candidate_count": 917,
+        "development_reliability_tier": "C",
+        "docking_evidence_tier": "DUAL_1_SEED",
+        "teacher_reliability": "DUAL_1_SEED",
+        "teacher_source": "V4H_ADAPTIVE_SEED_RANKING"
+      }
+    ]
+  },
+  "v4_f_or_test32_results_accessed": 0
+}

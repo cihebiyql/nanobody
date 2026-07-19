@@ -1,0 +1,205 @@
+{
+  "schema_version": "pvrig_v2_5_ortho_cross_lane_nested_meta_evaluation_contract_v1",
+  "status": "FROZEN_PRE_OUTER_RESULT_CROSS_LANE_DECISION_CONTRACT",
+  "frozen_at": "2026-07-18T23:01:08+08:00",
+  "claim_boundary": "Open-development whole-parent OOF surrogate of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "preobservation_assertions": {
+    "cross_lane_outer_metrics_read_count": 0,
+    "v4_f_test32_access_count": 0,
+    "posthoc_lane_selection_allowed": false,
+    "live_training_graph_modified_by_this_contract": false
+  },
+  "upstream_identity": {
+    "formal_training_freeze": {
+      "path": "../FORMAL_TRAINING_FREEZE_V1.json",
+      "sha256": "2b1e74280527c1e1c6d2466b98d97a6cbc3bd5b5f972bdae98a6d53d11a07425"
+    },
+    "formal_job_graph": {
+      "path": "../prepared/nonlaunching_package_v1_3/node1_bundle/plan/job_graph.json",
+      "sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185"
+    },
+    "prediction_writer": {
+      "path": "../../v2_5_ortho_contact_pose_stack_v1_20260718/real1507/run_real1507_split_v1.py",
+      "sha256": "f7c4e813f19d9034a945982d029118dc87cc6c420f1f8c8cf898bfec74065b7f"
+    },
+    "frozen_m2_c2_outer_oof": {
+      "path": "../../v2_5_coarse_pose_pilot_v1_20260718/prepared/open1507_m2_c2_double_crossfit_stack_v1/open1507_double_crossfit_predictions.tsv",
+      "sha256": "91ca037188219df3116c36cb2e1687e4b493c3171613e1521bdce3fc03ee3bc8",
+      "permitted_role": "outer-test M2/C2 evidence only; it must not replace fold-local inner OOF reconstruction for meta fitting"
+    },
+    "prior_strict_meta_gate_contract": {
+      "path": "../../v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/EXECUTION_CONTRACT_V1.json",
+      "sha256": "d77b6181f780c632fda05056b44aea2d7c9eec3715e24c80c3b19b777b852d55"
+    }
+  },
+  "expected_closure": {
+    "candidates": 1507,
+    "parent_framework_clusters": 31,
+    "outer_folds": 5,
+    "inner_folds_per_outer": 5,
+    "outer_ensemble_seeds": [43, 97, 193],
+    "teacher_sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    }
+  },
+  "lane_roles": {
+    "formal_primary_base_lane": "E_DECOUPLED_CONTACT_SHARED",
+    "diagnostic_only_lanes": [
+      "B_CLEAN_TARGET_ATTENTION",
+      "E_DECOUPLED_CONTACT_DETACHED"
+    ],
+    "selection_policy": "The formal primary lane is fixed before cross-lane outer metrics. B and E_DETACHED may be reported as diagnostics but cannot replace E_SHARED after metrics are observed.",
+    "detached_claim_boundary": "E_DETACHED has no direct contact-loss autograd path into the shared encoder, but it is not dynamics-independent because global clip_grad_norm_ spans all trainable parameters and can indirectly rescale scalar-branch updates."
+  },
+  "prediction_contract": {
+    "direct_targets": ["R_8X6B", "R_9E6Y"],
+    "derived_target": "R_dual_min=min(R_8X6B,R_9E6Y)",
+    "direct_outputs": ["prediction_R8", "prediction_R9"],
+    "derived_output": "prediction_Rdual=min(prediction_R8,prediction_R9)",
+    "exact_min_tolerance": 1e-12,
+    "independent_Rdual_output_allowed": false
+  },
+  "primary_stack": {
+    "model_id": "M2_C2_E_SHARED_CONTACT2D_CONSTRAINED_STACK",
+    "role": "FORMAL_PRIMARY_PRODUCTION_CHALLENGER",
+    "base_components": [
+      "M2_FROZEN_ALPHA10",
+      "C2_INNER_SELECTED_PCA8_RIDGE",
+      "E_DECOUPLED_CONTACT_SHARED"
+    ],
+    "raw_required_fields": [
+      "candidate_id",
+      "outer_fold",
+      "parent_framework_cluster",
+      "teacher_source",
+      "truth_R8",
+      "truth_R9",
+      "truth_Rdual",
+      "M2_R8",
+      "M2_R9",
+      "C2_R8",
+      "C2_R9",
+      "E_SHARED_R8",
+      "E_SHARED_R9",
+      "contact_score_R8",
+      "contact_score_R9"
+    ],
+    "contact_feature_policy": {
+      "available_primary_raw_dimension": 2,
+      "raw_fields": ["contact_score_R8", "contact_score_R9"],
+      "full_14d_contact_summary_allowed": false,
+      "reason": "The frozen prediction writer persists only contact_score_R8 and contact_score_R9. Any unavailable contact summaries cannot be reconstructed post hoc or silently added to this version.",
+      "source": "immutable per-seed score_predictions_no_metrics.tsv files, hash-verified against each RESULT.json",
+      "outer_ensemble": "arithmetic mean across seeds 43,97,193 after candidate/fold/lane closure",
+      "scaling": {
+        "scope": "outer-train inner-OOF rows only",
+        "method": "robust_z",
+        "center": "median",
+        "scale": "max(IQR/1.349,1e-6)",
+        "clip": [-5.0, 5.0],
+        "outer_test_fit_or_recalibration": false
+      }
+    },
+    "formula": {
+      "per_receptor": "pred_r=M2_r+w_E*(E_SHARED_r-M2_r)+w_C2*(C2_r-M2_r)+beta_C*z_outer_train(contact_score_r)",
+      "constraints": [
+        "w_E>=0",
+        "w_C2>=0",
+        "w_E+w_C2<=1",
+        "beta_C>=0"
+      ],
+      "parameter_sharing": "w_E,w_C2,beta_C are shared across R8 and R9",
+      "intercept": false,
+      "contact_is_not_an_R_prediction": true,
+      "forbidden_formula": "contact_score_r-M2_r"
+    },
+    "fit_objective": {
+      "rows": "outer-train candidates carrying strictly inner-OOF base predictions only",
+      "sample_weighting": "equal teacher source, then equal parent, then equal candidate",
+      "data_term": "mean Huber loss over direct R8 and R9 with beta=0.03",
+      "regularization": "0.01*(w_E^2+w_C2^2)+0.10*beta_C^2",
+      "optimizer": "deterministic constrained SLSQP or an equivalent convex solver with KKT/constraint validation",
+      "parameter_selection_from_outer_test": false
+    },
+    "exact_m2_fallback": {
+      "candidate_parameters": {"w_E": 0.0, "w_C2": 0.0, "beta_C": 0.0},
+      "must_be_numerically_reproducible": true,
+      "used_when": [
+        "meta fit is invalid or violates constraints",
+        "outer feature closure fails",
+        "any formal promotion gate fails"
+      ],
+      "fallback_output": "exact frozen M2 direct R8/R9 predictions and exact-min dual"
+    }
+  },
+  "nested_cross_fitting": {
+    "outer_unit": "parent_framework_cluster",
+    "for_each_outer_fold": [
+      "Select the frozen E_SHARED H0/H1/H2 configuration using only the five outer-train inner folds and the already frozen selection order.",
+      "Reconstruct selected-H E_SHARED inner OOF R8/R9/contact_score_R8/contact_score_R9 from hash-verified per-job TSVs; each outer-train candidate appears exactly once.",
+      "Recompute M2 and C2 inner OOF evidence inside the same outer-train partition; all C2 scaling, filtering, PCA and Ridge fitting are inner-train-only.",
+      "Fit robust contact scaling and the constrained meta parameters using only outer-train inner-OOF rows.",
+      "Use the three frozen outer-refit seeds to form E_SHARED outer-test mean R8/R9/contact scores; seed standard deviations are diagnostic only and not primary predictors.",
+      "Read frozen fold-matched M2/C2 outer-test predictions, apply the outer-train contact transform and meta parameters, and derive exact-min dual.",
+      "Emit outer-test predictions once; outer-test truth is used only after predictions and all fit artifacts are frozen."
+    ],
+    "same_row_base_fit_and_meta_evaluation_allowed": false,
+    "outer_test_used_for_fit_scaling_selection_or_calibration": false,
+    "whole_parent_isolation_required": true
+  },
+  "diagnostic_outputs": {
+    "standalone_lanes": [
+      "B_CLEAN_TARGET_ATTENTION",
+      "E_DECOUPLED_CONTACT_DETACHED",
+      "E_DECOUPLED_CONTACT_SHARED"
+    ],
+    "ablation_stacks": [
+      "M2_C2_ONLY",
+      "M2_C2_E_SHARED_NO_CONTACT",
+      "M2_C2_E_SHARED_CONTACT2D"
+    ],
+    "uncertainty": "three-seed standard deviations may be reported descriptively but are not predictors in the formal primary stack",
+    "diagnostic_replacement_of_primary_allowed": false
+  },
+  "formal_metrics": {
+    "targets": ["R8", "R9", "Rdual"],
+    "overall": ["spearman", "mae", "rmse"],
+    "source_strata": ["spearman", "mae", "rmse"],
+    "parent_macro": ["macro_mae", "macro_rmse", "macro_within_parent_spearman"],
+    "parent_improvement": "count parents with M2_Rdual_MAE - challenger_Rdual_MAE >= 0",
+    "paired_parent_bootstrap": {
+      "unit": "parent_framework_cluster",
+      "statistic": "challenger_Rdual_spearman-M2_Rdual_spearman",
+      "replicates": 10000,
+      "seed": 1931,
+      "confidence_interval": 0.95
+    }
+  },
+  "promotion_gate": {
+    "all_criteria_required": true,
+    "Rdual_spearman_min": 0.6194011215999979,
+    "Rdual_mae_max": 0.0323587150283071,
+    "Rdual_rmse_max": 0.04290748546218935,
+    "each_source_Rdual_mae_nonregression_vs_M2": true,
+    "both_source_delta_Rdual_spearman_min": 0.0,
+    "parent_macro_Rdual_mae_nonregression_vs_M2": true,
+    "parents_with_nonnegative_Rdual_mae_delta_min": 16,
+    "paired_parent_bootstrap_delta_Rdual_spearman_95ci_lower_gt": 0.0,
+    "R8_and_R9_spearman_floor_vs_M2_delta": -0.03,
+    "decision": "PROMOTE only the frozen M2_C2_E_SHARED_CONTACT2D_CONSTRAINED_STACK if every criterion passes; otherwise DO_NOT_PROMOTE and retain exact M2 fallback."
+  },
+  "prohibitions": [
+    "V4-F/test32 access",
+    "post-result lane selection",
+    "B or E_DETACHED replacing E_SHARED as the formal primary",
+    "outer-test rows used for meta fit, scaling, calibration, hyperparameter selection, or reliability fit",
+    "same-row base prediction used to train and evaluate the meta-head",
+    "candidate ID, parent ID, campaign ID, source ID, fold ID, or seed ID used as a predictor",
+    "candidate Docking pose-derived input",
+    "contact score treated as an R prediction or differenced against M2",
+    "unpersisted 14D contact summaries reconstructed or added post hoc",
+    "R_dual_min predicted as an independent free output",
+    "post-result gate, feature, formula, or hyperparameter changes"
+  ]
+}

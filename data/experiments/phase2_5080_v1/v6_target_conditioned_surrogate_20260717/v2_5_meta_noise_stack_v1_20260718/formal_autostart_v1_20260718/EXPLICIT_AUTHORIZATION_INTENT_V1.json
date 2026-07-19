@@ -1,0 +1,29 @@
+{
+  "schema_version": "pvrig_v2_5_strict_meta_explicit_authorization_intent_v1",
+  "status": "EXPLICITLY_AUTHORIZED_PENDING_PASS_INPUT_CLOSURE",
+  "execution_authorized": true,
+  "authorization_token_sha256": "f499f4675d1c598fbd8b9304c5f56790c7fb8a5a48ef4758aeb4a66ecb2a1e97",
+  "bound_execution_manifest_sha256": "ee6264048ae4e5612aeca1d092d5ade9cb1f347ae3b54c4f06caf60ce56370c3",
+  "bound_execution_adapter_freeze_sha256": "6304bcbbfe4b5697b87f2079b75f6472f5c2254f57ef370519e7c0e289605b4e",
+  "bound_execution_contract_sha256": "d77b6181f780c632fda05056b44aea2d7c9eec3715e24c80c3b19b777b852d55",
+  "bound_formal_evaluator_sha256": "d8a33a36309ec3363ce470b30228193e93af5784b1d6d739f16b5b11cfed4152",
+  "required_input_closure_status": "PASS_INPUTS_READY_UNAUTHORIZED",
+  "required_job_result_closure": 195,
+  "required_allowed_predictor_lane": "D_SPLIT_PAIR",
+  "required_forbidden_lane_predictor_read_count": 0,
+  "required_candidates": 1507,
+  "required_outer_folds": 5,
+  "required_v4_f_test32_access_count": 0,
+  "overlay_materialization": {
+    "schema_version": "pvrig_v2_5_strict_meta_authorization_overlay_v1",
+    "status": "EXPLICITLY_AUTHORIZED",
+    "must_pin_execution_manifest_sha256": true,
+    "must_pin_input_closure_receipt_sha256": true,
+    "must_pin_authorization_intent_sha256": true,
+    "materialize_only_after_all_input_gates_pass": true
+  },
+  "formal_output_root": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_formal_evaluation_v1_20260718",
+  "formal_evaluator_child_must_reach_terminal": true,
+  "watcher_may_not_stop_at_launched": true,
+  "claim_boundary": "Open-development computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or submission evidence."
+}

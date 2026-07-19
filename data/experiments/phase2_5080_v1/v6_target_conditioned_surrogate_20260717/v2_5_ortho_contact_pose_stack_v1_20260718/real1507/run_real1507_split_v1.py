@@ -152,7 +152,17 @@ def load_v24_adapter(path: Path, expected_sha256: str) -> Any:
     require(specification is not None and specification.loader is not None, "v2_4_adapter_import_spec")
     module = importlib.util.module_from_spec(specification)
     sys.modules[name] = module
-    specification.loader.exec_module(module)
+    # ``train_v2_4_base_split.py`` imports its sibling model module by name.
+    # A file-based dynamic import does not add the adapter directory to
+    # ``sys.path`` the way executing the adapter as a script would.  Make that
+    # import context explicit, then restore the caller's path byte-for-byte so
+    # the adapter cannot leak an import precedence change into later code.
+    original_sys_path = list(sys.path)
+    try:
+        sys.path.insert(0, str(path.parent))
+        specification.loader.exec_module(module)
+    finally:
+        sys.path[:] = original_sys_path
     return module
 
 
@@ -641,4 +651,3 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

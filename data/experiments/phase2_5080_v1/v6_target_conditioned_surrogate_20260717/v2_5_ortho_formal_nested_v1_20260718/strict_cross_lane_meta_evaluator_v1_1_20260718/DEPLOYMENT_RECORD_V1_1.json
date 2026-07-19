@@ -1,0 +1,25 @@
+{
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "deployed_at": "2026-07-18T15:30:38.450527+00:00",
+  "explicit_execution_basis": "Parent task authorized superseding deployment after independent review; user requested autonomous training and evaluation.",
+  "implementation_freeze_sha256": "bfad45b31c4e5b01bb3a64e3b262d221e317a2b408e79c5cf76f4af91b84002a",
+  "live_301_job_graph_modified": false,
+  "local_audit_sha256": "329d56f1183fb5236543f1d1e8212699db5d14f5917b610950a7f04cfa5113a0",
+  "package_manifest_sha256": "f3b3e9378d51f6af90189d4b590c3d154aed5ca0dd528ebaa552e23472dda890",
+  "python": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+  "remote_output": "/data1/qlyu/projects/pvrig_v2_5_strict_cross_lane_meta_formal_result_v1_1_20260718",
+  "remote_package": "/data1/qlyu/projects/pvrig_v2_5_strict_cross_lane_meta_package_v1_1_20260718",
+  "remote_package_hash_verification": {
+    "actual_total_files": 13,
+    "payload_files": 12,
+    "status": "PASS_EXACT_FILE_AND_HASH_CLOSURE"
+  },
+  "remote_watch_root": "/data1/qlyu/projects/pvrig_v2_5_strict_cross_lane_meta_watch_v1_1_20260718",
+  "schema_version": "pvrig_v2_5_strict_cross_lane_meta_watcher_deployment_v1_1",
+  "status": "DEPLOYED_WAITING_V1_3_TERMINAL",
+  "supersession_receipt_sha256": "901f926412e83d57a3dd6856a4dd46b0cc0a4e5b1082d328dc403fbeabfb62fa",
+  "upstream_runtime": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_3_20260718",
+  "v4_f_test32_access_count": 0,
+  "watcher_initial_status": "WAITING_V1_3_TERMINAL",
+  "watcher_pid": 1059455
+}

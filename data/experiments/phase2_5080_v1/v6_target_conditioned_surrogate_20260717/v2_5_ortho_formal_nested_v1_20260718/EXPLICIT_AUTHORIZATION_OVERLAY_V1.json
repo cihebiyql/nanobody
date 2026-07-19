@@ -1,0 +1,19 @@
+{
+  "authorization_basis": "user explicitly requested sequential planning, training, effect testing, subagents, and up to four Node1 RTX4090 GPUs",
+  "execution_authorized": true,
+  "job_graph_sha256": "429a4fa0c1d3f69c092191abacd131b5371ee4ae636a352aa57bbbaf04467921",
+  "meta_terminal": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_formal_evaluation_v1_20260718/TERMINAL.json",
+  "node1_package_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_package_v1_2_20260718",
+  "node1_runtime_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_2_20260718",
+  "package_manifest_sha256": "c50788debcb0bd415df2e9e6fb3b4bd339ce61fc5308e412737309caf408bd5b",
+  "physical_gpu_allowlist": [
+    1,
+    2,
+    4,
+    5
+  ],
+  "schema_version": "pvrig_v2_5_ortho_formal_nested_authorization_overlay_v1",
+  "status": "EXPLICITLY_AUTHORIZED_PENDING_PREREQUISITES",
+  "strict_terminal": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_runtime_authorized_v1_2_1_20260718/TERMINAL.json",
+  "v4_f_test32_access_count": 0
+}

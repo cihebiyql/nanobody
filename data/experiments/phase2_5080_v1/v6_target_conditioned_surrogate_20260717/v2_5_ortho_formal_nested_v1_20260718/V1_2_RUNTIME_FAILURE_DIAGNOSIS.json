@@ -1,0 +1,10 @@
+{
+  "schema_version": "pvrig_v2_5_ortho_formal_nested_v1_2_failure_diagnosis_v1",
+  "status": "FAIL_V1_2_NODE1_BUNDLE_PREFIX_MISSING",
+  "failed_runtime": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_2_20260718",
+  "completed_jobs": 0,
+  "cause": "frozen commands referenced <package>/formal_nested but deployed source is under <package>/node1_bundle/formal_nested",
+  "scientific_configuration_changed": false,
+  "recovery_rule": "new package/runtime roots; only insert node1_bundle path component; preserve V1.2 terminal and logs",
+  "v4_f_test32_access_count": 0
+}

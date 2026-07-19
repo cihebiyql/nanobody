@@ -1,0 +1,65 @@
+{
+  "schema_version": "pvrig_v2_6_real1507_role_isolated_trainer_integration_contract_v1",
+  "status": "FROZEN_IMPLEMENTATION_TESTED_NONLAUNCHING_CPU_ONLY",
+  "created_date": "2026-07-18",
+  "claim_boundary": "Open-development sequence and label-free monomer approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "bound_dependencies": {
+    "v2_5_trainer_sha256": "af93c39054a1a73568a68d498406fb3eddbffe1d688c93e16f59319148e285b0",
+    "v2_5_model_sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521",
+    "v2_5_real1507_runner_sha256": "f7c4e813f19d9034a945982d029118dc87cc6c420f1f8c8cf898bfec74065b7f",
+    "v2_6_role_optimizer_core_sha256": "2dadc945ec30eb802ca9f32fac84ce647783b9defc36db68f345fc00e972f363",
+    "v2_6_rank_calibration_v1_1_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+    "v2_6_delta_noise_binding_sha256": "0a613b87509699a28d134c02514b1240e50a06a5aefddb5ca4a9d8202cde0a0c"
+  },
+  "training_contract": {
+    "direct_targets": ["R_8X6B", "R_9E6Y"],
+    "derived_inference_target": "exact_min(R_8X6B,R_9E6Y)",
+    "independent_Rdual_output": false,
+    "lanes": [
+      "B_SCALAR_ATTENTION_ONLY",
+      "E_STRICT_DETACHED_DYNAMICS_CONTROL",
+      "F_SHARED_GATED_CONTACT_TRANSFER"
+    ],
+    "whole_parent_exact_closure": true,
+    "score_partition_truth_access": 0,
+    "gradient_accumulation": "mean scalar/contact over actual microbatch window before one role-isolated step",
+    "partial_accumulation_window": "mean over actual window; no under-scaling",
+    "global_all_parameter_clip": false,
+    "per_role_clip": ["shared_encoder", "attention_scalar", "contact_only"],
+    "contact_rng": "forked and restored",
+    "shared_contact_gradient_budget_kappa": 0.25,
+    "contact_tier_policy": {
+      "A": {"marginal": 1.0, "pair": 1.0},
+      "B": {"marginal": 0.5, "pair": 0.25},
+      "C": {"marginal": 0.1, "pair": 0.0}
+    }
+  },
+  "rank_calibration_contract": {
+    "formal_policy": "V1.1 exact-min PairLogit only",
+    "all_scalar_train_labels_in_cache": true,
+    "rank_pair_eligible": "V4D_OPEN_MULTI_SEED / A / V4D_MULTI_SEED / MULTI_SEED / v4d_open_multi_seed_frozen_v1_1",
+    "v4h_role": "scalar-only; no rank pairs",
+    "pairs_per_scalar_step": 8,
+    "noise_margin": 0.019614956149,
+    "calibration": "outer-train inner-OOF positive affine R8/R9, then exact-min",
+    "legacy_v1_loader": "compatibility inspection only; formal training rejects it"
+  },
+  "firewalls": {
+    "neural_inputs": "V2.5 positive allowlist only",
+    "m2_126d_id_pose_model_inputs": 0,
+    "outer_metrics_accessed": 0,
+    "v4_f_test32_accessed": 0,
+    "remote_training_launched": false,
+    "live_node1_dag_modified": false
+  },
+  "verification_scope": {
+    "unit_and_mutation_tests": true,
+    "cpu_smoke": true,
+    "real_v2_5_model_B_E_trajectory_equivalence": true,
+    "strict_detached_and_shared_gated_steps": true,
+    "fold_local_calibration": true,
+    "real1507_cuda_replay": false,
+    "remote_training": false,
+    "formal_metrics": false
+  }
+}

@@ -3,8 +3,14 @@
 ## 当前结论
 
 ```text
-PASS_LAUNCHED_AND_FIRST_INNER_TRIPLE_COMPLETE
+PASS_STRICT_RUNTIME_COMPLETE
+DO_NOT_PROMOTE_V2_4_D_SPLIT_PAIR_STRICT_STACK
 ```
+
+2026-07-18 终局状态：195/195 个冻结 job 全部成功，75 个 inner base、15 个 outer
+base、15 个 strict meta 和 15 个 meta validation 全部完成；runner return code 为 0。
+正式主挑战者 `D_SPLIT_PAIR` 未通过冻结 promotion gate，V4-F/test32 继续 sealed，
+访问计数为 0。
 
 Node1 运行路径：
 
@@ -59,6 +65,31 @@ status = PASS_THREE_LANE_REAL_INNER_PREOPTIMIZER_SMOKE
 | D_SPLIT_PAIR | PASS_OPEN_BASE_SPLIT_COMPLETE | 8 | 544 | 184 |
 
 调度器已继续提交 `outer_0_inner_1` 的三路任务。
+
+## 终局 OOF 结果
+
+| 模型 | Rdual Spearman | MAE | RMSE |
+|---|---:|---:|---:|
+| M2 frozen | 0.609401 | 0.032359 | 0.042907 |
+| B_TARGET_NO_CONTACT | 0.610605 | 0.032478 | 0.043203 |
+| C_SPLIT_MARGINAL | 0.606411 | 0.033710 | 0.044587 |
+| D_SPLIT_PAIR | 0.604492 | 0.034518 | 0.045555 |
+
+M2 三项指标在 `1e-12` 内精确复现。D 的 Spearman、MAE、RMSE、source MAE
+non-regression 和 parent-macro MAE non-regression 五个冻结 gate 全部失败。
+B 只提高了 0.001204 Spearman，同时 MAE/RMSE 变差，而且它已预先定义为消融诊断，
+不能在看到结果后替换 D 作为 promotion lane。
+
+独立审计确认：1,507 条候选 × 4 个模型闭包、31 parent、5 outer folds、
+exact-min 违规 0、15/15 meta validation PASS、所有 SHA256 PASS。
+
+正式本地结果包：
+
+```text
+prepared/strict_terminal_result_v1_2_1/
+```
+
+入口文档为 `prepared/strict_terminal_result_v1_2_1/README_ZH.md`。
 
 ## 保留的 fail-closed 恢复链
 

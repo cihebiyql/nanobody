@@ -1,0 +1,158 @@
+{
+  "claim_boundary": "Open-development computational dual-receptor Docking-geometry surrogate utility only; not binding, affinity, competition, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "created_date": "2026-07-18",
+  "data_access": {
+    "live_node1_training_modified": false,
+    "outer_metrics_read": 0,
+    "remote_runtime_modified": false,
+    "v4_f_or_test32_results_accessed": 0
+  },
+  "files": {
+    "README_ZH.md": "6767c60a2a2aa0604558a0f6779dab8b8dd0b8c61eb1f4e1434735dc1dd22af8",
+    "REAL1507_RANK_ELIGIBILITY_AUDIT.json": "eb0ed07581cc79dba770c5e569e3cc4c6acc42d30e8bcd0f34bb76b46229dc26",
+    "TEST_RESULTS.log": "b004a2a475b1c60bf7022bc029e5ebcff2cd5614d7e6dbde858acbc0faf7d740",
+    "audit_real1507_rank_eligibility_v1_1.py": "63280264ceb3a6650c3862209c628b28534811b91d91ba8fe307e5c2abf57f61",
+    "rank_calibration_core_v1_1.py": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+    "test_audit_real1507_rank_eligibility_v1_1.py": "880c4028de1a9aed8ab10eac2692b2eb51ea7bf7f806f779efdf457ac6c8ee02",
+    "test_rank_calibration_core_v1_1.py": "15317af6cbdacae33bff210e0f36464593fc898a63b4293ae5044096b5496e27"
+  },
+  "frozen_delta_noise_binding": {
+    "adaptive_v4h_excluded": true,
+    "artifact": "../../v2_6_noise_tolerance_binding_v1_20260718/V2_6_DELTA_NOISE_BINDING.json",
+    "artifact_sha256": "0a613b87509699a28d134c02514b1240e50a06a5aefddb5ca4a9d8202cde0a0c",
+    "estimation_candidate_count": 225,
+    "frozen_12_decimal_value": 0.019614956149,
+    "source_sha256": "eb44fb5ac80e0387c75b10a9f1805eb19c2cb89b18e71af32edffcfcb50e59b2"
+  },
+  "frozen_policy": {
+    "calibration": {
+      "exact_min_after_calibration": true,
+      "fit_role": "OUTER_TRAIN_INNER_OOF",
+      "huber_beta": 0.03,
+      "identity_fallback": true,
+      "identity_shrinkage": 0.1,
+      "intercept_bounds": [
+        -0.1,
+        0.1
+      ],
+      "per_receptor_positive_affine": true,
+      "slope_bounds": [
+        0.5,
+        1.5
+      ]
+    },
+    "claim_boundary": "Open-development computational dual-receptor Docking-geometry surrogate utility only; not binding, affinity, competition, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+    "delta_noise": {
+      "binding_sha256": "0a613b87509699a28d134c02514b1240e50a06a5aefddb5ca4a9d8202cde0a0c",
+      "decimals": 12,
+      "estimated_from": "nonadaptive_V4D_225_three_seed_candidates",
+      "not_transferred_to_adaptive_v4h_rank_pairs": true,
+      "value": 0.019614956149
+    },
+    "dual": {
+      "independent_Rdual_output_allowed": false,
+      "inference": "exact_min(calibrated_R8,calibrated_R9)",
+      "ranking": "FP32_exact_min_only",
+      "scalar_auxiliary_training_may_use": "FP32_normalized_softmin_tau_0.02"
+    },
+    "forbidden": {
+      "adaptive_v4h_rank_pairs_without_source_specific_noise": true,
+      "outer_test_fit_or_recalibration": true,
+      "parent_id_as_predictor": true,
+      "softmin_in_rank_loss": true,
+      "v4_f_or_test32_access": true,
+      "validation_or_outer_test_rank_pairs": true
+    },
+    "pairlogit": {
+      "pair_weight": "min(abs_truth_delta/delta_noise,3)",
+      "prediction_input": "typed_FP32_exact_min_batch_from_direct_R8_R9",
+      "reduction": "mean_within_parent_then_mean_across_parents",
+      "tau": 0.03
+    },
+    "parent_pair_epoch_cache": {
+      "external_hash_binding": "expected_training_split_sha256_and_expected_label_sha256_required",
+      "minimum_rank_eligible_parents": 8,
+      "pairs_per_scalar_optimizer_step": 8,
+      "parent_sampling": "balanced_round_robin_max_count_difference_1",
+      "split_firewall": "TRAIN_only_and_explicit_forbidden_candidate_rejection",
+      "within_parent_sampling": "without_replacement_then_deterministic_cycle"
+    },
+    "rank_eligibility": {
+      "adaptive_v4h": "scalar_only_until_random_sentinel_source_tier_noise_is_frozen",
+      "eligible": {
+        "development_reliability_tier": "A",
+        "docking_evidence_tier": "V4D_MULTI_SEED",
+        "ranking_release": "v4d_open_multi_seed_frozen_v1_1",
+        "teacher_reliability": "MULTI_SEED",
+        "teacher_source": "V4D_OPEN_MULTI_SEED"
+      },
+      "policy_id": "V2_6_V1_1_NONADAPTIVE_V4D_A_MULTI_SEED_ONLY"
+    },
+    "schema_version": "pvrig_v2_6_rank_calibration_core_v1_1",
+    "v4_f_or_test32_results_accessed": 0
+  },
+  "implementation_contract_sha256": "c72c94aa8312ac20b49ea47bf3177554d0d795166b9b383a85744512511ab865",
+  "real1507_audit": {
+    "artifact": "REAL1507_RANK_ELIGIBILITY_AUDIT.json",
+    "artifact_sha256": "eb0ed07581cc79dba770c5e569e3cc4c6acc42d30e8bcd0f34bb76b46229dc26",
+    "below_noise_discard_count": 406,
+    "candidate_count": 1507,
+    "eligible_pair_count": 824,
+    "inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "minimum_inner_train_eligible_pair_count": 351,
+    "minimum_inner_train_rank_parent_count": 10,
+    "parent_count": 31,
+    "rank_eligible_candidate_count": 226,
+    "rank_ineligible_candidate_count": 1281,
+    "rank_parent_count": 20,
+    "teacher_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "v4_f_or_test32_results_accessed": 0
+  },
+  "reviewer_issues_closed": [
+    "PairLogit prediction now uses typed FP32 exact-min, identical to inference definition",
+    "normalized-softmin rank builder is a fail-closed migration guard",
+    "delta_noise from nonadaptive V4-D is not applied to adaptive V4-H rank pairs",
+    "real1507 source/tier/seed availability and all 25 inner TRAIN partitions are audited"
+  ],
+  "schema_version": "pvrig_v2_6_rank_calibration_implementation_freeze_v1_1",
+  "scientific_tradeoff": {
+    "benefit": "rank auxiliary directly optimizes the deployed exact-min order and no longer mixes V4-D noise with adaptive V4-H",
+    "cost": "rank supervision shrinks from all scalar rows to 226 nonadaptive V4-D rows across 20 parents; V4-H remains available to R8/R9 scalar loss",
+    "exact_min_gradient": "piecewise differentiable; gradient flows to the limiting receptor off ties and uses the framework deterministic subgradient at ties",
+    "future_v4h_rank_unlock": "requires preregistered random high/mid/low sentinel repeats and frozen source/tier-specific noise estimates",
+    "v4d_seed_note": "225 V4-D candidates have 3/3 successful receptor seeds; one same-campaign candidate has 2/3 and remains in the primary source-tier policy; a strict 225-only sensitivity challenger is recommended before formal launch"
+  },
+  "status": "FROZEN_IMPLEMENTATION_TESTED_AUDITED_NONLAUNCHING",
+  "supersedes_for_future_integration_only": "rank_calibration_v1_20260718",
+  "v1_immutability_evidence": {
+    "IMPLEMENTATION_FREEZE_V1.json": "1757943b7f0c7038b4067497a779f9b5b3b30f446f3f56886a92c5a67cca1ae1",
+    "README_ZH.md": "ad125f895e18b6809da62964b727b994f9d1c734ddec9cdebc09667737e1f63e",
+    "SHA256SUMS": "18514db22ca48f714fa139684ebdbdf25b7c8299bbf8b1ddb58ad2a94b1b7f13",
+    "TEST_RESULTS.log": "0bba7e4dd7e370d2d9023971074deff334617404515058a56cf55a55f01bbec7",
+    "rank_calibration_core_v1.py": "1a30fb9cad28618f9199748c50aaa84e0f2c549ddf47c1e22afb6ae4f3ea8caf",
+    "test_rank_calibration_core_v1.py": "15120f75dc7017a9b1040d685efb2affe34434798a7f27806711093e6462b3ec"
+  },
+  "v1_mutated": false,
+  "validation": {
+    "command": "python3 -m unittest discover -s experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_6_role_isolated_rank_calibrated_v1_20260718/rank_calibration_v1_1_20260718 -p test_*v1_1.py -v",
+    "coverage_contracts": [
+      "exact-min typed rank batch and limiting-receptor gradient",
+      "synthetic softmin versus exact-min order reversal",
+      "softmin rank builder fail-closed migration guard",
+      "V4-D exact source/tier/provenance eligibility",
+      "V4-H A/B/C scalar-only exclusion and provenance mutations",
+      "deterministic exact-eight cache with split/label/content hashes",
+      "real1507 source/tier/seed counts and exact-min labels",
+      "25 whole-parent inner TRAIN partition feasibility",
+      "fold-local calibration and exact-min after calibration",
+      "V4-F/test32 zero-access firewall",
+      "real1507 outer0/inner0 cache materialization with V4-H exclusion"
+    ],
+    "errors": 0,
+    "failures": 0,
+    "python": "3.10.12",
+    "result": "PASS",
+    "tests_run": 25,
+    "torch": "2.13.0+cpu"
+  }
+}

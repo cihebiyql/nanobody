@@ -1,0 +1,40 @@
+{
+  "deployment_state": "NOT_RUN_WAITING_FORMAL_OUTER_REFIT_TERMINAL",
+  "files": {
+    "README_ZH.md": {
+      "bytes": 2586,
+      "sha256": "8d5c8dc7d84dd3b27077072f9ef6ff6399d414b333e42175771005a3a7e195a9"
+    },
+    "TEST_RESULTS.log": {
+      "bytes": 2078,
+      "sha256": "d0dda7caecdf7322baef729eba95a001027b51d9f2b16ad2b3334c4f44d93d1b"
+    },
+    "src/build_export_contract_v1.py": {
+      "bytes": 8865,
+      "sha256": "21ce02237e7a9b48b10153c8d403d5c47a68c351821395699c1fd15ca3dab306"
+    },
+    "src/export_outer_label_free_features_v1.py": {
+      "bytes": 28799,
+      "sha256": "e62bfe06f98aa9a366807063640f85025ef0e90ec011632af0f1d08552003ffd"
+    },
+    "tests/test_export_outer_label_free_features_v1.py": {
+      "bytes": 15547,
+      "sha256": "a2fb6d35ec2356fdcaa9aa537eb28d126cdff672d583112b893dca631490b22f"
+    }
+  },
+  "schema_version": "pvrig_v2_5_label_free_contact_export_implementation_freeze_v1",
+  "scientific_scope": {
+    "inputs": "sequence + label-free monomer graph + fixed 8X6B/9E6Y graphs + frozen outer-refit checkpoints",
+    "outputs": "seed-level and ensemble scalar, 2D contact composite, full 14D pair_summary",
+    "pair_summary_use": "FUTURE_VERSION_DIAGNOSTIC_ONLY_NOT_CURRENT_V2_5_SELECTION",
+    "teacher_metric_files_read": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "status": "FROZEN_IMPLEMENTATION_TESTED",
+  "tests": {
+    "command": "python3 -m unittest -v tests/test_export_outer_label_free_features_v1.py",
+    "log_sha256": "d0dda7caecdf7322baef729eba95a001027b51d9f2b16ad2b3334c4f44d93d1b",
+    "status": "OK",
+    "tests_run": 7
+  }
+}

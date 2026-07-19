@@ -1,0 +1,16 @@
+{
+  "files": {
+    "README_ZH.md": "1a75b29ccc8afd2a93a661dab082f239b8f0dd4ca8e5abe3e811e71efc23265c",
+    "TEST_RESULTS.log": "27a0690ad6d898741f15f5ec03bad81f73ea792f775a6b0e86c3a21d693900a0",
+    "materialize_label_free_panel_v1.py": "d225691ae6fbe86383476b8d1b5d1e428e504f36e2f1dc2c63c0c2b77fc302ff",
+    "prepared/open1507_label_free_panel_v1/PANEL_RECEIPT.json": "326555272d65f7e18791509f97a4f646f3fb9f810ee45eba5802fc5de19375ae",
+    "test_materialize_label_free_panel_v1.py": "b65bd23f2fab10256077b69eb3afabc91425577d483cdfbaf9a9331873022582"
+  },
+  "panel_sha256": "42ed4e2dfc8e057dc3e892e3d137cdee5e378b3a818e0a1d42122ef23c869ca0",
+  "parents": 31,
+  "rows": 1507,
+  "schema_version": "pvrig_v2_5_open1507_label_free_panel_implementation_freeze_v1",
+  "status": "FROZEN_TESTED_AND_REAL1507_MATERIALIZED",
+  "teacher_fields_emitted": 0,
+  "v4_f_test32_access_count": 0
+}

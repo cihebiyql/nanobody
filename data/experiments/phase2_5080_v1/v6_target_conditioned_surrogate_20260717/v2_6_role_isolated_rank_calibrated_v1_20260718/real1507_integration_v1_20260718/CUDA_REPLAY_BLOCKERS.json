@@ -1,0 +1,26 @@
+{
+  "schema_version": "pvrig_v2_6_real1507_cuda_replay_blockers_v1",
+  "status": "NOT_RUN_BY_NONLAUNCHING_CPU_ONLY_SCOPE",
+  "created_date": "2026-07-18",
+  "blocking_items": [
+    {
+      "id": "NEW_VERSIONED_NODE1_PACKAGE_REQUIRED",
+      "detail": "The implementation is local and nonlaunching. A new content-addressed Node1 package must bind the frozen V2.5 model/trainer/real1507 runner, role optimizer core, rank V1.1 core, delta-noise receipt, ESM2 identity, graph/contact inputs, and split manifests."
+    },
+    {
+      "id": "LIVE_V2_5_DAG_IMMUTABLE",
+      "detail": "The running V2.5 301-job DAG must not be modified. CUDA replay requires a separate runtime and GPUs after an explicit package audit."
+    },
+    {
+      "id": "REAL_CUDA_DYNAMICS_NOT_YET_PROVEN",
+      "detail": "CPU tests prove B/E scalar trajectory equality and F kappa clipping, but Node1 BF16/CUDA must replay at least 20 matched B/E steps and verify max shared/scalar parameter delta <=1e-7, RNG restoration, exact-min, optimizer ownership, and finite states."
+    },
+    {
+      "id": "FORMAL_NESTED_LAUNCHER_NOT_BUILT",
+      "detail": "No V2.6 outer/inner job graph, checkpoint writer, prediction freezer, or evaluator has been created. This package is an integration primitive, not an authorized formal run."
+    }
+  ],
+  "outer_metrics_accessed": 0,
+  "v4_f_test32_accessed": 0,
+  "remote_training_launched": false
+}

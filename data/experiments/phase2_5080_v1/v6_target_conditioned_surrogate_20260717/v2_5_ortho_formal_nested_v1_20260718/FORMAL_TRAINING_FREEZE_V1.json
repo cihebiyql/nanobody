@@ -1,0 +1,29 @@
+{
+  "schema_version": "pvrig_v2_5_ortho_formal_nested_freeze_v1",
+  "status": "FROZEN_NONLAUNCHING_PENDING_AUDIT",
+  "claim_boundary": "computational dual-receptor docking geometry surrogate only; not binding, Kd, experimental blocking, Docking Gold, or submission truth",
+  "open_rows": 1507,
+  "open_parent_clusters": 31,
+  "outer_folds": 5,
+  "inner_folds": 5,
+  "lanes": [
+    "B_CLEAN_TARGET_ATTENTION",
+    "E_DECOUPLED_CONTACT_DETACHED",
+    "E_DECOUPLED_CONTACT_SHARED"
+  ],
+  "hyperparameters": {
+    "H0": {"fixed_epochs": 8, "learning_rate": 0.0001, "weight_decay": 0.02, "huber_beta": 0.03},
+    "H1": {"fixed_epochs": 16, "learning_rate": 0.0002, "weight_decay": 0.02, "huber_beta": 0.03},
+    "H2": {"fixed_epochs": 16, "learning_rate": 0.0001, "weight_decay": 0.03, "huber_beta": 0.04}
+  },
+  "inner_seed": 43,
+  "outer_ensemble_seeds": [43, 97, 193],
+  "selection_order": ["Rdual_spearman_desc", "Rdual_mae_asc", "Rdual_rmse_asc", "hparam_id_asc"],
+  "targets": {"direct": ["R_8X6B", "R_9E6Y"], "derived_inference": "R_dual_min=min(R_8X6B,R_9E6Y)", "softmin_aux_tau": 0.02},
+  "neural_input_firewall": {"forbidden": ["M2", "126D aggregate structure features", "candidate_id as feature", "parent_id as feature", "campaign_id as feature", "candidate Docking pose-derived input"]},
+  "resources": {"physical_gpu_allowlist": [1,2,4,5], "max_gpu_jobs": 4, "max_cpu_jobs": 2, "cpu_threads_per_job": 4},
+  "job_counts": {"GPU_INNER": 225, "CPU_SELECT": 15, "GPU_OUTER_REFIT": 45, "CPU_OUTER_ENSEMBLE_EVAL": 15, "CPU_FINAL_COLLECT": 1, "GPU_TOTAL": 270, "CPU_TOTAL": 31, "TOTAL": 301},
+  "metrics_access": {"inner_selection_only": true, "outer_open_final_only": true, "v4_f_test32_access_count": 0},
+  "launch_authorized": false,
+  "training_or_prediction_executed": false
+}

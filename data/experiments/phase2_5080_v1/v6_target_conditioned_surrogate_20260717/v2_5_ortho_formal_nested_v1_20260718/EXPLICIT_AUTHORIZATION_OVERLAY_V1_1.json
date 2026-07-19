@@ -1,0 +1,21 @@
+{
+  "authorization_basis": "same user-authorized training; V1.3 only repairs missing node1_bundle command prefix after V1.2 completed zero jobs",
+  "execution_authorized": true,
+  "job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+  "meta_terminal": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_formal_evaluation_v1_20260718/TERMINAL.json",
+  "node1_package_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_package_v1_3_20260718",
+  "node1_runtime_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_3_20260718",
+  "package_manifest_sha256": "7f7cd8cb5d9ea61ab8d2b5fae51db0a72eec193b5e22d497edcb4084bf44fbf7",
+  "physical_gpu_allowlist": [
+    1,
+    2,
+    4,
+    5
+  ],
+  "schema_version": "pvrig_v2_5_ortho_formal_nested_authorization_overlay_v1_1",
+  "scientific_configuration_changed": false,
+  "status": "EXPLICITLY_AUTHORIZED_PENDING_PREREQUISITES",
+  "strict_terminal": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_runtime_authorized_v1_2_1_20260718/TERMINAL.json",
+  "supersedes_failed_runtime": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_2_20260718",
+  "v4_f_test32_access_count": 0
+}

@@ -1,0 +1,14 @@
+{
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "evaluator_sha256": "d054a37050636884d56ba6b5a94ed3fb3985306dfa8aa9c89f95230b49d8d37e",
+  "live_job_graph_modified": false,
+  "local_audit_sha256": "3e3e30ad1eca1f54412a68fdf8d0f1a150c5b71087f154c9561af99f370c48c6",
+  "m2_c2_real1507_preflight_sha256": "446978af4afb36b3be26e5571f6207180f03bd42e728ae959fcf569690c82f9a",
+  "package_manifest_sha256": "415edfe08447a151e7f9b0f252751924c3cb7230138ea5e13061f0717773e29f",
+  "schema_version": "pvrig_v2_5_strict_cross_lane_meta_implementation_freeze_v1",
+  "status": "FROZEN_AFTER_LOCAL_AUDIT_BEFORE_WATCHER_DEPLOYMENT",
+  "test_log_sha256": "63e66964976f9d6d24ca1c89bfc1904fcc0ff199b947ef0b7667f708ee2791b9",
+  "tests_sha256": "a7eba763d3a88743ec2412eab34229446c9bf969faa784dcce5a744ab0990d18",
+  "v4_f_test32_access_count": 0,
+  "watcher_sha256": "f7376f3098e19722bd0b8f409e3d9df760a657f6f1d42a5208240103fa422893"
+}

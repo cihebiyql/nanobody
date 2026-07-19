@@ -244,7 +244,14 @@ def _contact_component(
     candidate = (stacked * availability.to(stacked.dtype)).sum(1) / receptor_count.clamp_min(1).to(stacked.dtype)
     eligible = receptor_count > 0
     combined_weights = sample_weights * tier_weights.float() * eligible.float()
-    require(float(combined_weights.sum()) > 0.0, f"{name}_no_eligible_weight")
+    # Adaptive full-pair supervision is sparse.  A legitimate mini-batch may
+    # contain no eligible pair label for either receptor.  In that case the
+    # contact component contributes a differentiable zero while scalar and
+    # any available marginal supervision continue unchanged.  Keep the
+    # existing weighted BCE path byte-for-byte for every batch with eligible
+    # mass.
+    if float(combined_weights.sum()) <= 0.0:
+        return stacked.sum() * 0.0
     return _weighted_mean(candidate, combined_weights)
 
 

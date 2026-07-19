@@ -1,0 +1,52 @@
+{
+  "schema_version": "pvrig_v2_6_node1_cuda_smoke_readonly_snapshot_v1",
+  "status": "PASS_READONLY_INSPECTION_NONLAUNCHING_BLOCKED_BY_LIVE_V2_5_AND_MISSING_DRIVER_AUTHORIZATION",
+  "captured_at": "2026-07-19T00:11:33+08:00",
+  "host": "node1",
+  "remote_state_modified": false,
+  "data1": {
+    "filesystem": "/dev/nvme0n1",
+    "type": "ext4",
+    "size_human": "7.0T",
+    "used_human": "6.5T",
+    "available_human": "179G",
+    "use_percent": 98,
+    "minimum_future_launch_gate_gib": 100,
+    "snapshot_gate": "PASS_BUT_LOW_HEADROOM"
+  },
+  "environment": {
+    "python_path": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "python": "3.11.14",
+    "torch": "2.6.0+cu124",
+    "cuda_available": true,
+    "cuda_version": "12.4",
+    "cudnn": 90100,
+    "bf16_supported": true,
+    "snapshot_gate": "PASS"
+  },
+  "gpu_snapshot": [
+    {"index": 1, "name": "NVIDIA GeForce RTX 4090", "memory_total_mib": 24564, "memory_used_mib": 3405, "utilization_percent": 30, "compute_pid": 1115181, "snapshot_gate": "BLOCKED_BUSY_V2_5"},
+    {"index": 2, "name": "NVIDIA GeForce RTX 4090", "memory_total_mib": 24564, "memory_used_mib": 3407, "utilization_percent": 12, "compute_pid": 1112832, "snapshot_gate": "BLOCKED_BUSY_V2_5"},
+    {"index": 4, "name": "NVIDIA GeForce RTX 4090", "memory_total_mib": 24564, "memory_used_mib": 3405, "utilization_percent": 31, "compute_pid": 1112749, "snapshot_gate": "BLOCKED_BUSY_V2_5"},
+    {"index": 5, "name": "NVIDIA GeForce RTX 4090", "memory_total_mib": 24564, "memory_used_mib": 3405, "utilization_percent": 30, "compute_pid": 1113410, "snapshot_gate": "BLOCKED_BUSY_V2_5"}
+  ],
+  "live_v2_5": {
+    "runtime": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_3_20260718",
+    "scheduler_pid": 999220,
+    "status": "RUNNING",
+    "completed": 107,
+    "running": 4,
+    "pending": 190,
+    "job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+    "terminal_present": false,
+    "v4_f_test32_access_count": 0,
+    "modified_by_this_preflight": false
+  },
+  "source_freezes": {
+    "real1507_integration_freeze_present": true,
+    "real1507_integration_freeze_sha256": "8c6bd627b1f7381c76a97a821f9eafdf3115c1859bc4120890a7239c999e5d76",
+    "rank_v1_1_freeze_sha256": "fe276bd1601c77b07440e6f1960d13a75bf81ee7769a30c8bb0229a0ee3d77ac",
+    "rank_v1_1_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec"
+  },
+  "v4_f_test32_access_count": 0
+}

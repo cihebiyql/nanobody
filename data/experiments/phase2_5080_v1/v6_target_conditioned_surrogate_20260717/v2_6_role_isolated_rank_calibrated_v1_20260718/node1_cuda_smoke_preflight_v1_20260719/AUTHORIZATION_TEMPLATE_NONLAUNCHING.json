@@ -1,0 +1,12 @@
+{
+  "schema_version": "pvrig_v2_6_node1_cuda_smoke_authorization_template_v1",
+  "status": "NONLAUNCHING_TEMPLATE_DO_NOT_EXECUTE",
+  "execution_authorized": false,
+  "package_manifest_sha256": "PENDING",
+  "integration_freeze_sha256": "8c6bd627b1f7381c76a97a821f9eafdf3115c1859bc4120890a7239c999e5d76",
+  "rank_freeze_sha256": "fe276bd1601c77b07440e6f1960d13a75bf81ee7769a30c8bb0229a0ee3d77ac",
+  "rank_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+  "driver_freeze_sha256": "PENDING",
+  "v4_f_test32_access_count": 0,
+  "note": "A separate immutable authorization overlay may be created only after every condition in AUTHORIZATION_CONDITIONS_V1.json passes. Do not edit this template into an authorization."
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "pvrig_v2_6_node1_cuda_smoke_authorization_conditions_v1",
+  "status": "FROZEN_NONLAUNCHING_PRECONDITIONS",
+  "execution_authorized": false,
+  "claim_boundary": "Open-development CUDA/BF16 numerical and training-dynamics smoke for a computational 8X6B/9E6Y Docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "immutable_bindings": {
+    "real1507_integration_freeze_sha256": "8c6bd627b1f7381c76a97a821f9eafdf3115c1859bc4120890a7239c999e5d76",
+    "real1507_integration_trainer_sha256": "8625e7f27091f05dae3ef9cbb52a88efa87acc16daad4494c89752f64a947a02",
+    "rank_v1_1_freeze_sha256": "fe276bd1601c77b07440e6f1960d13a75bf81ee7769a30c8bb0229a0ee3d77ac",
+    "rank_v1_1_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+    "v2_5_job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185"
+  },
+  "smoke_contract": {
+    "physical_gpu_map": {
+      "BE_TRAJECTORY": 1,
+      "GRADIENT_ACCUMULATION": 2,
+      "F_GRADIENT_CAP": 4,
+      "EXACT_MIN_FIREWALL_AUDIT": 5
+    },
+    "precision": "bf16",
+    "optimizer_steps": 20,
+    "gradient_accumulation": 2,
+    "kappa": 0.25,
+    "maximum_be_scalar_shared_parameter_delta": 1e-07,
+    "exact_min_tolerance": 1e-12,
+    "v4_f_test32_access_count": 0
+  },
+  "required_before_authorization": [
+    "A separate Node1 CUDA smoke driver and driver freeze exist as regular non-symlink files, pass local tests, bind the exact integration/rank hashes above, and remain NONLAUNCHING.",
+    "The V2.5 runtime terminal is PASS with returncode 0, 301 completed jobs, exact job graph hash, and v4_f_test32_access_count 0.",
+    "The V2.5 scheduler PID and all V2.5 GPU workers have exited; this preflight never stops or modifies them.",
+    "GPUs 1/2/4/5 are RTX 4090, each has no compute process, <=512 MiB used memory, and <=5 percent utilization at launch-time recheck.",
+    "/data1 has at least 100 GiB free at launch-time recheck.",
+    "The fixed /data1/qlyu/software/envs/pvrig-v6-tc/bin/python reports torch 2.6.0+cu124, CUDA 12.4, CUDA available, and BF16 supported.",
+    "A new absolute /data1/qlyu/projects runtime path does not exist and contains no V4-F/test32 token.",
+    "A distinct authorization overlay binds the immutable package manifest, integration freeze, rank freeze/core, and smoke-driver freeze hashes and explicitly sets execution_authorized true.",
+    "The launcher and later driver both validate exact-min, gradient accumulation, F kappa telemetry, B/E trajectory parity, finite optimizer state, RNG restoration, and all evidence firewalls before emitting PASS."
+  ],
+  "current_blockers_at_snapshot": [
+    "V2.5 formal nested DAG is RUNNING.",
+    "GPUs 1/2/4/5 are occupied by V2.5 workers.",
+    "A versioned Node1 CUDA smoke driver freeze has not been created.",
+    "No explicit execution authorization overlay exists."
+  ]
+}

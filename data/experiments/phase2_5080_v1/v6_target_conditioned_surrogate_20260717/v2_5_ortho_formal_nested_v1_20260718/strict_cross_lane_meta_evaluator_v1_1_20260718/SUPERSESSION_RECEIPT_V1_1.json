@@ -1,0 +1,28 @@
+{
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "created_at": "2026-07-18T15:28:31.870587+00:00",
+  "live_training_graph_modified": false,
+  "old": {
+    "evaluator_sha256": "d054a37050636884d56ba6b5a94ed3fb3985306dfa8aa9c89f95230b49d8d37e",
+    "implementation_freeze_sha256": "434ca091c2412d1de9ce0d4b1dd435a0de8de8e08f0f382e8f1bba8514760c49",
+    "package_manifest_sha256": "415edfe08447a151e7f9b0f252751924c3cb7230138ea5e13061f0717773e29f",
+    "remote_watcher_pid": 1036343,
+    "remote_watcher_state": "STOPPED_PRETERMINAL_BY_INDEPENDENT_REVIEW_PENDING_V1_1",
+    "root": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_formal_nested_v1_20260718/strict_cross_lane_meta_evaluator_v1_20260718",
+    "watcher_sha256": "f7376f3098e19722bd0b8f409e3d9df760a657f6f1d42a5208240103fa422893"
+  },
+  "outer_metrics_observed": false,
+  "reason_codes": [
+    "MISSING_WHOLE_PARENT_RUNTIME_GATE",
+    "MISSING_KKT_GATE",
+    "INCOMPLETE_PARENT_MACRO_METRICS",
+    "EXACT_MIN_TOLERANCE_MISMATCH",
+    "INCOMPLETE_PRETRUTH_PARAMETER_FREEZE",
+    "STALE_WATCHER_FAILURE_STATUS",
+    "MISSING_FROZEN_DIAGNOSTICS",
+    "INCOMPLETE_EXACT_M2_SELECTED_OUTPUT"
+  ],
+  "schema_version": "pvrig_v2_5_strict_cross_lane_meta_supersession_receipt_v1_1",
+  "status": "V1_STOPPED_PRETERMINAL_SUPERSEDED_BY_V1_1",
+  "v4_f_test32_access_count": 0
+}

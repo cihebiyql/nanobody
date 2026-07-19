@@ -1,0 +1,53 @@
+{
+  "schema_version": "pvrig_v2_5_ortho_target_contact_causal_ablation_implementation_freeze_v1",
+  "status": "PASS_FROZEN_NONLAUNCHING_IMPLEMENTATION",
+  "frozen_at": "2026-07-18T23:44:00+08:00",
+  "claim_boundary": "Implemented and statically validated causal-ablation protocol only; no training, prediction, or evaluation was launched and no causal result is claimed.",
+  "contract": {
+    "path": "CAUSAL_ABLATION_CONTRACT_V1.json",
+    "sha256": "4f0d9be7578623ab7e8256d822d52afb7bbafa1fbd043b484febf18b0b9ee9f3"
+  },
+  "sources": {
+    "causal_perturbations_v1.py": "cc5365a015e908c3a92114db5c0bdce5b5842cd30ba0078df554cec3142ded06",
+    "build_nonlaunching_causal_ablation_package_v1.py": "f50363a32f189f9519867f453c998d4173143907ac4ba7bf5dbc790938ee0dcf",
+    "validate_causal_ablation_package_v1.py": "b2955e37e4b51a808d0dba25694daf1a4b98fa66db79ef67a898ab46da14a9b0",
+    "watch_formal_terminal_then_mark_ablation_ready_v1.py": "6bc9604fdfd70508e16bf5648887b4fca14f9ce3af4733f8b4a82fe0c893f114"
+  },
+  "tests": {
+    "test_causal_perturbations_v1.py": "7446531c9efc5ca3a518fa6dbfbf4a65750589e6fb794f5f77cdda7e57157cdc",
+    "test_causal_ablation_package_v1.py": "102dca0e3e81cd5e458984e093f08e76f15e685bb93fdca075abfd9fa7613aeb",
+    "test_log_sha256": "0d973c68f8de3565df5e9016fef5f9f000960431c5c76449ba41e2d9a31bd2d5",
+    "test_count": 12,
+    "returncode": 0,
+    "terminal_marker": "OK"
+  },
+  "prepared_package": {
+    "path": "prepared/nonlaunching_package_v1",
+    "package_manifest_sha256": "7dccc2f6d1165f18092389af17a66e04641eee959d1a21227550831bcdf34174",
+    "job_graph_sha256": "19b54db049d9a7c2d6d8f74aa9691c066a3d27cc6340045e3b9b4dd4b494dc89",
+    "job_count": 131,
+    "gpu_job_count": 85,
+    "cpu_job_count": 46,
+    "launch_authorized": false,
+    "training_or_prediction_executed": false
+  },
+  "upstream_live_graph": {
+    "sha256_before_and_after_build": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+    "job_count": 301,
+    "modified": false
+  },
+  "perturbation_implementation": {
+    "HOTSPOT_INTERFACE_MASK_SWAP": "inference-only pure transform",
+    "RECEPTOR_CONFORMER_SWAP": "inference-only pure transform",
+    "TARGET_RESIDUE_FEATURE_PERMUTATION": "inference-only deterministic pure transform seed1931",
+    "CONTACT_LABEL_WITHIN_PARENT_DONOR_SHUFFLE": "deterministic same-parent train-partition derangement seed1931; retraining required",
+    "NO_CONTACT_META_EVIDENCE": "contact field omission; fold-local meta refit required"
+  },
+  "watcher": {
+    "terminal_ready_state": "READY_NONLAUNCHING_EXPLICIT_NEW_AUTHORIZATION_REQUIRED",
+    "subprocess_or_launcher_path_present": false,
+    "can_start_jobs": false
+  },
+  "live_301_job_graph_modified": false,
+  "v4_f_test32_access_count": 0
+}

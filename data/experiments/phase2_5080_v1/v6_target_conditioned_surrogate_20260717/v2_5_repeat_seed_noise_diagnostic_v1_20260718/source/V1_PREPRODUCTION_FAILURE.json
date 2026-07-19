@@ -1,0 +1,7 @@
+{
+  "status": "FAIL_PREPRODUCTION_V4D_NATIVE_OVERLAY_MODEL_NOT_FILTERED",
+  "failed_implementation_sha256": "e5ec032d378e8125a97ad5d3a7220ad0ce1686e5260e8208030e840bf37191b0",
+  "failure": "ExtractionError:native_overlay_rmsd_above_1A:1.934309",
+  "output_published": false,
+  "scientific_change_in_v1_1": "none; reproduce frozen V4-E per-model native overlay <=1A filter before job utility"
+}

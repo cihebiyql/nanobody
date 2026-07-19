@@ -1,0 +1,10 @@
+{
+  "schema_version": "pvrig_v2_5_strict_meta_authorization_overlay_v1",
+  "status": "MATERIALIZE_ONLY_AFTER_PASS_INPUT_CLOSURE",
+  "execution_authorized": false,
+  "execution_manifest_sha256": "ee6264048ae4e5612aeca1d092d5ade9cb1f347ae3b54c4f06caf60ce56370c3",
+  "input_closure_receipt_sha256": "PENDING_PASS_INPUT_CLOSURE",
+  "authorization_token_sha256": "f499f4675d1c598fbd8b9304c5f56790c7fb8a5a48ef4758aeb4a66ecb2a1e97",
+  "authorization_intent_sha256": "9481031f81ef47259467cb5a59219c43f770538a2fb7727175997bc1e44ada70",
+  "v4_f_test32_access_count": 0
+}

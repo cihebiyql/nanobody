@@ -1,0 +1,88 @@
+{
+  "claim_boundary": "Implemented and statically validated V1.1 null-validity hardening only; no training, prediction, or evaluation was launched, no causal result is claimed, frozen V1 was not mutated, and the live 301-job graph was not modified.",
+  "contract": {
+    "path": "CAUSAL_ABLATION_CONTRACT_V1_1.json",
+    "sha256": "ecbacba25bfe1f3dbda46a241b91f0a37a2e2cceb3443d6e90a72606568bff70"
+  },
+  "evidence": {
+    "build_result_sha256": "ebf844c8ea6b68b61205c121c8a636975f7d57a5d67a946180fa00be3eab6e97",
+    "v4_f_test32_access_count": 0,
+    "validation_result_sha256": "d1c4f9dafc9c9b4d1b1345e21cd48cbe87bd85f88c99440eaf26c2a3e871b2ad",
+    "validation_status": "PASS_IMMUTABLE_NONLAUNCHING_CAUSAL_ABLATION_AUDIT"
+  },
+  "exact_min_tolerance": 1e-12,
+  "frozen_at": "2026-07-19T00:09:00+08:00",
+  "hardening": {
+    "donor_payload_power_audit": {
+      "failure_policy": "FAIL_CLOSED_NULL_INEFFECTIVE",
+      "name": "DONOR_RECIPIENT_CONTACT_PAYLOAD_DISTANCE_POWER_AUDIT_V1_1",
+      "partition_scope": "current inner-train or outer-train only",
+      "required_before_model_or_optimizer_initialization": true,
+      "uses_heldout_rows": false,
+      "uses_scalar_truth": false
+    },
+    "mask_null": {
+      "conditional_randomization_p_formula": "(1 + count(null_Rdual_spearman >= clean_Rdual_spearman)) / 257",
+      "master_seed": 1931,
+      "name": "MATCHED_CARDINALITY_PREVALENCE_MASK_POSITION_NULL",
+      "preserves": [
+        "hotspot_cardinality",
+        "interface_cardinality",
+        "both_prevalences",
+        "overlap",
+        "joint_2x2_contingency"
+      ],
+      "relocation_impossible_policy": "FAIL_CLOSED",
+      "replicates": 256
+    }
+  },
+  "live_301_job_graph_modified": false,
+  "prepared_package": {
+    "contact_shuffle_pre_optimizer_audit_count": 40,
+    "cpu_job_count": 46,
+    "gpu_job_count": 85,
+    "job_count": 131,
+    "job_graph_sha256": "ff06cce1ae5497f4d17eba4325b057dd618f3a42396fdc0cab0e6f1537695bf9",
+    "launch_authorized": false,
+    "mask_null_bank_job_count": 15,
+    "mask_null_replicates_per_job": 256,
+    "package_manifest_sha256": "d3dc997d43949f834ce297682da222ae3d97354eacd074c6d96711125d2eab23",
+    "path": "prepared/nonlaunching_package_v1_1",
+    "training_or_prediction_executed": false
+  },
+  "schema_version": "pvrig_v2_5_ortho_target_contact_causal_ablation_implementation_freeze_v1_1",
+  "sources": {
+    "build_nonlaunching_causal_ablation_package_v1_1.py": "4916358a6da52b03e413972d5d84abbdb0142a9d5351e8a86337cfc22d338e4c",
+    "causal_perturbations_v1_1.py": "863a5c7d953ccaf25ab4ff9e7103419e68d986e714e95f12e1d27c503541b3dc",
+    "validate_causal_ablation_package_v1_1.py": "75d0eefb14b3201c5a54b8ba0affec9a947fe5d2d09e0687650e7f751d1bf1b9",
+    "watch_formal_terminal_then_mark_ablation_ready_v1_1.py": "5b37de975b40a6c54318538bf7283f0b7e569776f20c480fa05712f7df9b9710"
+  },
+  "status": "PASS_FROZEN_NONLAUNCHING_IMPLEMENTATION_V1_1_HARDENED",
+  "tests": {
+    "returncode": 0,
+    "terminal_marker": "OK",
+    "test_causal_ablation_package_v1_1.py": "43e55619b9403fd2accabf0fc5159f545b46911571f2fbe340044d6db95d84a8",
+    "test_causal_perturbations_v1_1.py": "1b1085c269390bf99e0d098dcd6e4b644e7ca9518f009f900a8f7ffe250fd78f",
+    "test_count": 19,
+    "test_log_sha256": "b4a9ccf2a6d00c1bf975ac2a257a1db60b07761a4ecd6b9a7cb551a80a60f54c"
+  },
+  "upstream_live_graph": {
+    "job_count": 301,
+    "modified": false,
+    "sha256_before_and_after_build": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185"
+  },
+  "v4_f_test32_access_count": 0,
+  "versioning": {
+    "frozen_v1_implementation_sha256": "b9b8f191f154710715619c21be0e7d0c751a7225f8fcef739c55dd65484a1b89",
+    "frozen_v1_mutated": false,
+    "frozen_v1_sha256sums_sha256": "8c4bf6f6aba01f176d0cda864e6c4106814437076160089c399487466985d62c",
+    "supersedes_for_future_execution": "V1",
+    "version": "V1.1"
+  },
+  "watcher": {
+    "can_start_jobs": false,
+    "subprocess_or_launcher_path_present": false,
+    "terminal_ready_state": "READY_NONLAUNCHING_EXPLICIT_NEW_AUTHORIZATION_REQUIRED"
+  },
+  "whole_parent_nested_required": true
+}

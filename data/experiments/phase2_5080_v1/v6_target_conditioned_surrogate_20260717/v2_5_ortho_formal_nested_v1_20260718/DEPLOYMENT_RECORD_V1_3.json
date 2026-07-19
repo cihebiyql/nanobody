@@ -1,0 +1,55 @@
+{
+  "active_physical_gpus": [
+    1,
+    2,
+    4,
+    5
+  ],
+  "first_real_job_batch_validation": {
+    "exact_min_contract": true,
+    "fixed_epochs": 8,
+    "forbidden_neural_inputs_count": 0,
+    "hparam_id": "H0",
+    "jobs": 5,
+    "lane": "B_CLEAN_TARGET_ATTENTION",
+    "prediction_metrics_access_count": 0,
+    "seed": 43,
+    "status": "PASS",
+    "v4_f_test32_access_count": 0
+  },
+  "graph_status": {
+    "completed": 5,
+    "pending": 292,
+    "running": 4
+  },
+  "job_counts": {
+    "cpu": 31,
+    "gpu": 270,
+    "total": 301
+  },
+  "job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+  "local_package": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_formal_nested_v1_20260718/prepared/nonlaunching_package_v1_3",
+  "node1_package_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_package_v1_3_20260718",
+  "node1_runtime_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_3_20260718",
+  "package_manifest_sha256": "7f7cd8cb5d9ea61ab8d2b5fae51db0a72eec193b5e22d497edcb4084bf44fbf7",
+  "preserved_failure": {
+    "cause": "missing node1_bundle command prefix",
+    "completed_jobs": 0,
+    "runtime": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_runtime_v1_2_20260718",
+    "status": "FAIL"
+  },
+  "recorded_at": "2026-07-18T14:49:47.541219+00:00",
+  "scheduler_pid": 999220,
+  "schema_version": "pvrig_v2_5_ortho_formal_nested_deployment_record_v1_3",
+  "scientific_configuration_changed_in_recovery": false,
+  "status": "PASS_DEPLOYED_AND_FORMAL_TRAINING_RUNNING",
+  "upstream_prerequisites": {
+    "strict_v1_2_1_terminal": "PASS",
+    "v2_5_meta_terminal": "PASS"
+  },
+  "v4_f_test32_access_count": 0,
+  "validated_at": "2026-07-18T14:53:04.797412+00:00",
+  "watch_root": "/data1/qlyu/projects/pvrig_v2_5_ortho_formal_nested_autostart_watch_v1_1_20260718",
+  "watcher_pid": 998304,
+  "watcher_terminal_status": "PASS_SCHEDULER_LAUNCHED"
+}

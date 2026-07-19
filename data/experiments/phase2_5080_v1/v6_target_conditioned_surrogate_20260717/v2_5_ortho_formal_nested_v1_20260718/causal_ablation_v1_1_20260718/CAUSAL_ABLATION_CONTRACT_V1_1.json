@@ -1,0 +1,301 @@
+{
+  "schema_version": "pvrig_v2_5_ortho_target_contact_causal_ablation_contract_v1_1",
+  "status": "FROZEN_PRE_OUTER_RESULT_NONLAUNCHING_V1_1_HARDENED",
+  "frozen_at": "2026-07-18T23:58:00+08:00",
+  "claim_boundary": "Open-development causal diagnostics for a sequence and label-free-monomer surrogate of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, submission truth, or an independent model-promotion decision. V1.1 only hardens null validity; it does not alter or reinterpret frozen V1 results.",
+  "preobservation_assertions": {
+    "e_shared_cross_lane_outer_metrics_read_count": 0,
+    "v4_f_test32_access_count": 0,
+    "live_301_job_graph_modified": false,
+    "launch_authorized": false,
+    "training_or_prediction_executed_by_this_package": false
+  },
+  "upstream_bindings": {
+    "formal_training_freeze": {
+      "path": "../FORMAL_TRAINING_FREEZE_V1.json",
+      "sha256": "2b1e74280527c1e1c6d2466b98d97a6cbc3bd5b5f972bdae98a6d53d11a07425"
+    },
+    "formal_job_graph": {
+      "path": "../prepared/nonlaunching_package_v1_3/node1_bundle/plan/job_graph.json",
+      "sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+      "immutable_job_count": 301
+    },
+    "cross_lane_evaluation_contract": {
+      "path": "../evaluation_contract_v1_20260718/CROSS_LANE_NESTED_META_EVALUATION_CONTRACT_V1.json",
+      "sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2"
+    },
+    "v2_5_model": {
+      "path": "../../v2_5_ortho_contact_pose_stack_v1_20260718/model/residue_model_v2_5_ortho.py",
+      "sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521"
+    },
+    "v2_5_real1507_adapter": {
+      "path": "../../v2_5_ortho_contact_pose_stack_v1_20260718/real1507/run_real1507_split_v1.py",
+      "sha256": "f7c4e813f19d9034a945982d029118dc87cc6c420f1f8c8cf898bfec74065b7f"
+    },
+    "frozen_v1_implementation": {
+      "path": "../causal_ablation_v1_20260718/IMPLEMENTATION_FREEZE_V1.json",
+      "sha256": "b9b8f191f154710715619c21be0e7d0c751a7225f8fcef739c55dd65484a1b89"
+    }
+  },
+  "formal_primary_reference": {
+    "base_lane": "E_DECOUPLED_CONTACT_SHARED",
+    "primary_stack": "M2_C2_E_SHARED_CONTACT2D_CONSTRAINED_STACK",
+    "diagnostic_only_lanes": [
+      "B_CLEAN_TARGET_ATTENTION",
+      "E_DECOUPLED_CONTACT_DETACHED"
+    ],
+    "posthoc_lane_replacement_allowed": false
+  },
+  "perturbations": {
+    "HOTSPOT_INTERFACE_MASK_SWAP": {
+      "execution_class": "INFERENCE_ONLY_WITH_FROZEN_BASE_MODELS_AND_CLEAN_META_PARAMETERS",
+      "transform": "Within each receptor, exchange hotspot_mask and interface_mask at fixed target positions; do not alter node features, topology, logits, scalar predictions, or receptor keys. In the same frozen-model pass, also score a preregistered matched-cardinality/matched-prevalence spatial-position null bank derived from the clean masks.",
+      "primary_effect_surface": "contact_score_R8/R9 and the frozen contact-aware meta prediction",
+      "retraining_allowed": false,
+      "seed": null,
+      "required_null_control": "MATCHED_CARDINALITY_PREVALENCE_MASK_POSITION_NULL",
+      "null_control_result_required_before_claim": true
+    },
+    "RECEPTOR_CONFORMER_SWAP": {
+      "execution_class": "INFERENCE_ONLY_WITH_FROZEN_BASE_MODELS_AND_CLEAN_META_PARAMETERS",
+      "transform": "Exchange complete 8X6B and 9E6Y target graph payloads while receptor keys, conformer embeddings, and R8/R9 output roles remain fixed.",
+      "primary_effect_surface": "direct R8/R9 alignment and exact-min Rdual",
+      "retraining_allowed": false,
+      "seed": null
+    },
+    "TARGET_RESIDUE_FEATURE_PERMUTATION": {
+      "execution_class": "INFERENCE_ONLY_WITH_FROZEN_BASE_MODELS_AND_CLEAN_META_PARAMETERS",
+      "transform": "Independently permute target node-feature rows per receptor; leave adjacency, edge features, hotspot/interface masks, receptor keys, and conformer embeddings fixed.",
+      "primary_effect_surface": "direct R8/R9, exact-min Rdual, and contact summaries",
+      "retraining_allowed": false,
+      "seed": 1931
+    },
+    "CONTACT_LABEL_WITHIN_PARENT_DONOR_SHUFFLE": {
+      "execution_class": "RETRAIN_E_SHARED_WITH_FROZEN_CLEAN_HPARAM_PER_OUTER_FOLD",
+      "transform": "Inside each current inner-train or outer-train partition, deterministically derange the complete contact payload among candidates sharing parent_framework_cluster. Held-out rows are never donors and scalar labels/sequence/monomer inputs remain on the recipient.",
+      "primary_effect_surface": "contact-supervision transfer into the shared encoder and downstream scalar/meta performance",
+      "retraining_allowed": true,
+      "seed": 1931,
+      "same_clean_selected_hparam_required": true,
+      "outer_ensemble_seeds": [
+        43,
+        97,
+        193
+      ],
+      "singleton_parent_policy": "FAIL_CLOSED_NO_CROSS_PARENT_DONOR",
+      "pre_optimizer_audit_required": "DONOR_RECIPIENT_CONTACT_PAYLOAD_DISTANCE_POWER_AUDIT_V1_1",
+      "audit_failure_policy": "FAIL_CLOSED_BEFORE_MODEL_OR_OPTIMIZER_INITIALIZATION",
+      "canonical_payload_required_before_audit": true,
+      "audit_uses_scalar_truth": false
+    },
+    "NO_CONTACT_META_EVIDENCE": {
+      "execution_class": "META_REFIT_ONLY_ON_CLEAN_INNER_OOF_WITHOUT_CONTACT_FIELDS",
+      "transform": "Omit contact_score_R8/contact_score_R9, refit the same constrained fold-local meta formula with beta_C fixed to zero, and keep clean E_SHARED base predictions.",
+      "primary_effect_surface": "incremental label-free contact evidence in the primary stack",
+      "base_model_retraining_allowed": false,
+      "outer_test_refit_allowed": false,
+      "seed": null
+    }
+  },
+  "nested_comparison": {
+    "outer_unit": "parent_framework_cluster",
+    "outer_folds": 5,
+    "inner_folds_per_outer": 5,
+    "candidate_closure": 1507,
+    "parent_closure": 31,
+    "clean_hparam_selection_reused_for_contact_label_shuffle": true,
+    "inference_perturbations_use_clean_frozen_outer_models": true,
+    "inference_perturbations_use_clean_fold_meta_parameters": true,
+    "contact_label_shuffle_inner_donors": "current inner-train rows only",
+    "contact_label_shuffle_outer_donors": "current outer-train rows only",
+    "outer_test_used_for_fit_selection_scaling_or_calibration": false,
+    "same_row_base_fit_and_meta_evaluation_allowed": false,
+    "whole_parent_isolation_required": true,
+    "matched_mask_null_uses_clean_frozen_outer_models": true,
+    "matched_mask_null_uses_clean_fold_meta_parameters": true,
+    "matched_mask_null_replicates": 256,
+    "matched_mask_null_master_seed": 1931,
+    "contact_shuffle_power_audit_before_optimizer": true,
+    "contact_shuffle_power_audit_partition_scope": "current inner-train or current outer-train only"
+  },
+  "prediction_contract": {
+    "direct_outputs": [
+      "prediction_R8",
+      "prediction_R9"
+    ],
+    "derived_output": "prediction_Rdual=min(prediction_R8,prediction_R9)",
+    "exact_min_tolerance": 1e-12,
+    "independent_Rdual_output_allowed": false
+  },
+  "metrics": {
+    "overall_and_source": [
+      "spearman",
+      "mae",
+      "rmse"
+    ],
+    "direct_receptor_alignment": [
+      "R8_spearman",
+      "R9_spearman",
+      "mean_direct_spearman",
+      "R8_mae",
+      "R9_mae"
+    ],
+    "parent_macro": [
+      "macro_mae",
+      "macro_rmse",
+      "macro_within_parent_spearman"
+    ],
+    "paired_parent_bootstrap": {
+      "unit": "parent_framework_cluster",
+      "replicates": 10000,
+      "seed": 1931,
+      "confidence_interval": 0.95,
+      "degradation_statistic": "clean_metric-minus-perturbed_metric for Spearman; perturbed_metric-minus-clean_metric for errors"
+    }
+  },
+  "causal_claim_gates": {
+    "HOTSPOT_INTERFACE_MASK_SWAP": {
+      "clean_minus_perturbed_Rdual_spearman_min": 0.005,
+      "paired_parent_bootstrap_95ci_lower_gt": 0.0,
+      "claim": "CONTACT_LOCALIZATION_SENSITIVITY_BEYOND_MASK_CARDINALITY_PREVALENCE",
+      "matched_prevalence_position_null_required": true,
+      "matched_null_replicates": 256,
+      "matched_null_empirical_p_lte": 0.05,
+      "matched_null_clean_minus_median_null_Rdual_spearman_min": 0.005,
+      "matched_null_paired_parent_bootstrap_95ci_lower_gt": 0.0
+    },
+    "RECEPTOR_CONFORMER_SWAP": {
+      "clean_minus_perturbed_mean_direct_spearman_min": 0.01,
+      "clean_minus_perturbed_Rdual_spearman_min": 0.01,
+      "paired_parent_bootstrap_95ci_lower_gt": 0.0,
+      "claim": "RECEPTOR_CONFORMER_DEPENDENCE"
+    },
+    "TARGET_RESIDUE_FEATURE_PERMUTATION": {
+      "clean_minus_perturbed_Rdual_spearman_min": 0.01,
+      "paired_parent_bootstrap_95ci_lower_gt": 0.0,
+      "claim": "TARGET_RESIDUE_DEPENDENCE"
+    },
+    "CONTACT_LABEL_WITHIN_PARENT_DONOR_SHUFFLE": {
+      "clean_minus_perturbed_Rdual_spearman_min": 0.01,
+      "paired_parent_bootstrap_95ci_lower_gt": 0.0,
+      "perturbed_Rdual_mae_may_improve_by_at_most": 0.00025,
+      "claim": "CONTACT_SUPERVISION_CAUSAL_TRANSFER",
+      "pre_optimizer_payload_distance_power_audit_required": true,
+      "audit_failure_effect": "FAIL_CLOSED_NULL_INEFFECTIVE_NO_RETRAINING_NO_CONTACT_SUPERVISION_CLAIM"
+    },
+    "NO_CONTACT_META_EVIDENCE": {
+      "clean_minus_perturbed_Rdual_spearman_min": 0.005,
+      "paired_parent_bootstrap_95ci_lower_gt": 0.0,
+      "clean_Rdual_mae_may_be_worse_by_at_most": 0.00025,
+      "claim": "CONTACT_META_INCREMENT"
+    },
+    "composite_claims": {
+      "TARGET_DEPENDENT_GEOMETRY_EVIDENCE": "RECEPTOR_CONFORMER_SWAP and TARGET_RESIDUE_FEATURE_PERMUTATION both pass",
+      "CONTACT_MECHANISM_EVIDENCE": "HOTSPOT_INTERFACE_MASK_SWAP passes together with its matched-cardinality/prevalence position-null gate, CONTACT_LABEL_WITHIN_PARENT_DONOR_SHUFFLE passes after every partition payload-power audit, and NO_CONTACT_META_EVIDENCE passes",
+      "FULL_TARGET_CONTACT_CAUSAL_SUPPORT": "all five perturbation gates pass, the mask matched-prevalence conditional-randomization gate passes, and every donor-shuffle partition power audit passes"
+    }
+  },
+  "decision_boundary": {
+    "role": "DIAGNOSTIC_ONLY_NOT_A_MODEL_PROMOTION_GATE",
+    "can_promote_v2_5": false,
+    "can_replace_formal_primary_lane": false,
+    "can_change_frozen_cross_lane_metrics_or_thresholds": false,
+    "failed_causal_gate_effect": "Withhold the corresponding target/contact-mechanism claim; do not rewrite formal predictive metrics.",
+    "passed_causal_gate_effect": "Permit only the named open-development causal-sensitivity claim; experimental blocking and sealed-test claims remain prohibited."
+  },
+  "planned_nonlaunching_job_graph": {
+    "GPU_INFERENCE_PERTURB": 45,
+    "CPU_INFERENCE_ENSEMBLE": 15,
+    "GPU_CONTACT_SHUFFLE_INNER_RETRAIN": 25,
+    "GPU_CONTACT_SHUFFLE_OUTER_RETRAIN": 15,
+    "CPU_CONTACT_SHUFFLE_ENSEMBLE": 5,
+    "CPU_NESTED_META_EVALUATE": 25,
+    "CPU_FINAL_COLLECT": 1,
+    "GPU_TOTAL": 85,
+    "CPU_TOTAL": 46,
+    "TOTAL": 131,
+    "MASK_NULL_BANK_RESCORED_INSIDE_EXISTING_MASK_SWAP_JOBS": 15,
+    "CONTACT_SHUFFLE_PRETRAIN_AUDITS_INSIDE_EXISTING_RETRAIN_JOBS": 40,
+    "EXTRA_JOBS_FOR_V1_1_HARDENING": 0
+  },
+  "firewall": {
+    "forbidden_casefold_path_tokens": [
+      "v4_f",
+      "v4-f",
+      "test32",
+      "sealed"
+    ],
+    "v4_f_test32_access_count": 0,
+    "candidate_id_parent_id_campaign_id_source_id_fold_id_seed_id_as_predictors": false,
+    "candidate_docking_pose_derived_input": false,
+    "live_301_job_graph_modification": false,
+    "v1_frozen_package_mutation": false,
+    "matched_mask_null_reads_truth_for_construction": false,
+    "donor_power_audit_reads_scalar_truth": false
+  },
+  "versioning": {
+    "version": "V1.1",
+    "supersedes_for_future_execution": "V1",
+    "frozen_v1_mutated": false,
+    "reason": "Add a matched-cardinality/matched-prevalence spatial mask null and a fail-closed donor-recipient contact-payload distance/power audit.",
+    "v1_results_reinterpreted": false
+  },
+  "null_controls": {
+    "MATCHED_CARDINALITY_PREVALENCE_MASK_POSITION_NULL": {
+      "execution_class": "INFERENCE_ONLY_RESCORE_FROM_FROZEN_CLEAN_CONTACT_MAPS",
+      "construction": "For every receptor and null replicate, jointly permute the two-column clean [hotspot_mask, interface_mask] row payload across target positions. This preserves exact hotspot cardinality, interface cardinality, per-mask prevalence, overlap count, and the full 2x2 joint contingency table while destroying residue-position assignment.",
+      "reference_condition": "CLEAN_FUNCTIONAL_MASKS",
+      "null_replicates": 256,
+      "master_seed": 1931,
+      "per_receptor_independent_permutation": true,
+      "retraining_allowed": false,
+      "model_forward_repetition_required": false,
+      "must_change_at_least_one_mask_position_per_receptor": true,
+      "fail_closed_if_relocation_impossible": true,
+      "required_invariants": [
+        "hotspot_cardinality_exact",
+        "interface_cardinality_exact",
+        "hotspot_prevalence_exact",
+        "interface_prevalence_exact",
+        "hotspot_interface_overlap_exact",
+        "joint_mask_contingency_exact",
+        "node_features_topology_edge_features_receptor_keys_unchanged"
+      ],
+      "conditional_randomization_statistic": "Rdual Spearman evaluated with the clean functional mask assignment versus the same frozen predictions rescored under each matched-cardinality/prevalence spatial mask assignment.",
+      "empirical_p_formula": "(1 + count(null_Rdual_spearman >= clean_Rdual_spearman)) / (1 + 256)",
+      "role": "Mandatory scale-controlled localization null; not a sixth promotion endpoint."
+    },
+    "DONOR_RECIPIENT_CONTACT_PAYLOAD_DISTANCE_POWER_AUDIT_V1_1": {
+      "execution_class": "PRETRAIN_FAIL_CLOSED_AUDIT_ON_CANONICALIZED_CURRENT_TRAIN_PARTITION_ONLY",
+      "scope": "Run independently for every inner-train and outer-train donor mapping before optimizer/model initialization.",
+      "uses_scalar_truth": false,
+      "uses_heldout_rows": false,
+      "distance": "Per recipient-donor mean of field-normalized L1/Hamming distances over the complete contact payload; numeric values are required finite and shape-compatible. Supervision-only and complete-payload distances are both reported.",
+      "reference_power": "Compare mapped supervision distance with all eligible non-self same-parent supervision distances in the same current train partition.",
+      "thresholds": {
+        "complete_payload_changed_fraction_min": 0.9,
+        "supervision_changed_fraction_min": 0.8,
+        "supervision_median_distance_min": 0.01,
+        "supervision_mapped_to_eligible_median_ratio_min": 0.5,
+        "supervision_kish_effective_fraction_min": 0.5,
+        "per_parent_supervision_changed_fraction_min": 0.5,
+        "distance_epsilon": 1e-08
+      },
+      "failure_policy": "Any missing field, nonfinite value, incompatible shape, cross-parent/self donor, threshold failure, or absent audit receipt fails closed before training.",
+      "receipt_required_fields": [
+        "partition_id",
+        "candidate_count",
+        "parent_count",
+        "complete_payload_changed_fraction",
+        "supervision_changed_fraction",
+        "supervision_median_distance",
+        "eligible_supervision_median_distance",
+        "supervision_mapped_to_eligible_median_ratio",
+        "supervision_kish_effective_fraction",
+        "per_parent",
+        "donor_map_sha256",
+        "status"
+      ]
+    }
+  }
+}

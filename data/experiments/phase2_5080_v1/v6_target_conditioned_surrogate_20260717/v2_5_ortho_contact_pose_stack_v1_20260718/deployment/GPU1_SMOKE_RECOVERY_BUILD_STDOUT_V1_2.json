@@ -1,0 +1,17 @@
+{
+  "autostart_files": 2,
+  "autostart_root": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_contact_pose_stack_v1_20260718/deployment/prepared/gpu1_smoke_recovery_v1_2_20260718/gpu1_recovery_autostart_package_v1_2",
+  "autostart_sha256s_sha256": "b53d7fe0a98a9280fb55e7b631de7784e49fe18be64daa01f5fa95f2b17e387f",
+  "max_cpu_per_process": 8,
+  "overlay_files": 5,
+  "overlay_root": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_contact_pose_stack_v1_20260718/deployment/prepared/gpu1_smoke_recovery_v1_2_20260718/gpu1_sequential_overlay_v1_2",
+  "overlay_sha256s_sha256": "b62c2a70dddbe2060d0c32912e167d20d19cffcfabd1a86d7b2579ac6c8309f3",
+  "physical_gpu": 1,
+  "prediction_metrics_access_count": 0,
+  "schema_version": "pvrig_v2_5_gpu1_smoke_recovery_build_v1_2",
+  "source_files": 6,
+  "source_root": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_contact_pose_stack_v1_20260718/deployment/prepared/gpu1_smoke_recovery_v1_2_20260718/node1_smoke_source_package_v1_2",
+  "source_sha256s_sha256": "c96689d2aab41abb0ee5a73876917433e2aed6796b8519fa6ea7b4dbb3d87eb0",
+  "status": "PASS_V1_2_RECOVERY_PACKAGES_BUILT_AUDITED_NOT_DEPLOYED_NOT_LAUNCHED",
+  "v4_f_test32_access_count": 0
+}

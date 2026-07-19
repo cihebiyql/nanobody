@@ -1,0 +1,16 @@
+{
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "evaluator_sha256": "871702760b89d3e5614b967a0f3df87f302e62e85eeda2c78605c88754b2faff",
+  "live_job_graph_modified": false,
+  "local_audit_sha256": "329d56f1183fb5236543f1d1e8212699db5d14f5917b610950a7f04cfa5113a0",
+  "m2_c2_real1507_preflight_sha256": "446978af4afb36b3be26e5571f6207180f03bd42e728ae959fcf569690c82f9a",
+  "outer_metrics_observed": false,
+  "package_manifest_sha256": "f3b3e9378d51f6af90189d4b590c3d154aed5ca0dd528ebaa552e23472dda890",
+  "schema_version": "pvrig_v2_5_strict_cross_lane_meta_implementation_freeze_v1_1",
+  "status": "FROZEN_AFTER_LOCAL_AUDIT_BEFORE_WATCHER_DEPLOYMENT",
+  "supersession_receipt_sha256": "901f926412e83d57a3dd6856a4dd46b0cc0a4e5b1082d328dc403fbeabfb62fa",
+  "test_log_sha256": "ca9f466c7a0e462a97fd4b342a887073fda71b37f2751e289a3335d062d63f7e",
+  "tests_sha256": "b2c585ff084e882a34c6a2aa7edc175bed28bb343d062e9a281ced679941195f",
+  "v4_f_test32_access_count": 0,
+  "watcher_sha256": "9d3e33ebb9bc6f5c3ff8b21498b960332b1a6785f44c1a3689272141c78278b0"
+}

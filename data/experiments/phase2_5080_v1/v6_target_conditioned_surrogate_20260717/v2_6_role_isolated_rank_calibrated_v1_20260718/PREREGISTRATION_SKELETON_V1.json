@@ -1,0 +1,389 @@
+{
+  "schema_version": "pvrig_v2_6_role_isolated_rank_calibrated_preregistration_skeleton_v1",
+  "status": "DRAFT_NONLAUNCHING_SKELETON_REQUIRES_HASH_AND_NOISE_DIAGNOSTIC_FREEZE",
+  "created_date": "2026-07-18",
+  "claim_boundary": "Open-development whole-parent computational 8X6B/9E6Y Docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "access_firewall": {
+    "v2_5_formal_outer_results_access_count_during_plan_authoring": 0,
+    "v4_f_test32_access_count": 0,
+    "v4_f_must_remain_sealed_until_final_prediction_freeze": true,
+    "candidate_docking_pose_features_as_model_input": false,
+    "candidate_parent_campaign_or_fold_ids_as_model_input": false,
+    "m2_126d_as_neural_input": false
+  },
+  "expected_open_data_closure": {
+    "candidates": 1507,
+    "parent_framework_clusters": 31,
+    "teacher_sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_ADAPTIVE_SEED_RANKING": 1281
+    },
+    "anticipated_repeat_tiers_requiring_manifest_verification": {
+      "A": 349,
+      "B": 241,
+      "C": 917
+    },
+    "input_manifest_sha256": "PENDING_BEFORE_FREEZE",
+    "whole_parent_split_sha256": "PENDING_BEFORE_FREEZE",
+    "repeat_seed_manifest_sha256": "PENDING_BEFORE_FREEZE"
+  },
+  "direct_and_derived_targets": {
+    "direct": [
+      "R_8X6B",
+      "R_9E6Y"
+    ],
+    "derived": "R_dual_min=exact_min(R_8X6B,R_9E6Y)",
+    "independent_Rdual_output_allowed": false,
+    "training_dual_auxiliary": "FP32_normalised_softmin_tau_0.02",
+    "inference_exact_min_tolerance": 1e-12
+  },
+  "architecture": {
+    "backbone_primary": "frozen_facebook_esm2_t33_650M_UR50D",
+    "shared_encoders": [
+      "AA_and_region_embeddings",
+      "VHH_invariant_graph_encoder",
+      "fixed_target_graph_encoder",
+      "conformer_embedding"
+    ],
+    "attention_contact_terminal_shared": false,
+    "contact_feedback_to_scalar": false,
+    "lanes": {
+      "B_SCALAR_ATTENTION_ONLY": "DIAGNOSTIC_CLEAN_SCALAR_BASELINE",
+      "E_STRICT_DETACHED_DYNAMICS_CONTROL": "DIAGNOSTIC_DYNAMICS_INDEPENDENT_CONTACT_OUTPUT_CONTROL",
+      "F_SHARED_GATED_CONTACT_TRANSFER": "FORMAL_PRIMARY_NEURAL_LANE"
+    },
+    "formal_primary_lane_fixed_before_outer_results": "F_SHARED_GATED_CONTACT_TRANSFER"
+  },
+  "optimizer_and_gradient_contract": {
+    "parameter_roles": [
+      "shared_encoder",
+      "attention_scalar",
+      "contact_only"
+    ],
+    "each_trainable_parameter_has_exactly_one_optimizer_owner": true,
+    "overlapping_optimizer_ownership_allowed": false,
+    "optimizers": {
+      "scalar": {
+        "owns": [
+          "shared_encoder",
+          "attention_scalar"
+        ],
+        "type": "AdamW",
+        "base_lr": "PENDING_INNER_PILOT_FREEZE",
+        "weight_decay": "PENDING_INNER_PILOT_FREEZE"
+      },
+      "contact": {
+        "owns": [
+          "contact_only"
+        ],
+        "type": "AdamW",
+        "base_lr": "PENDING_INNER_PILOT_FREEZE",
+        "weight_decay": "PENDING_INNER_PILOT_FREEZE"
+      }
+    },
+    "per_role_gradient_clip": {
+      "shared_encoder": 1.0,
+      "attention_scalar": 1.0,
+      "contact_only": 1.0,
+      "global_all_parameter_clip_forbidden": true
+    },
+    "strict_detached_equivalence_gate": {
+      "comparison": "B_vs_E_shared_and_scalar_parameter_trajectory",
+      "minimum_optimizer_steps": 20,
+      "maximum_absolute_parameter_delta": 1e-7,
+      "same_initial_state_seed_batches_dropout_and_precision_required": true,
+      "contact_rng_isolation": {
+        "mechanism": "torch.random.fork_rng_for_CPU_and_current_CUDA_device",
+        "contact_seed_derivation": "SHA256(base_seed,outer_fold,inner_fold,epoch,optimizer_step,accumulation_microstep,contact_rng)",
+        "contact_reuses_scalar_forward_shared_states": true,
+        "contact_replays_stochastic_encoder": false,
+        "contact_random_operations_outside_forked_context_allowed": false,
+        "main_CPU_and_CUDA_RNG_state_restored_after_contact": true
+      },
+      "adversarial_test": {
+        "contact_dropout": 0.5,
+        "contact_loss_nonzero": true,
+        "main_rng_state_hash_equal_every_step": true,
+        "contact_parameters_must_update": true,
+        "contact_dropout_0.2_or_loss_10x_must_not_change_scalar_trajectory": true
+      }
+    },
+    "shared_contact_gradient_budget": {
+      "kappa": 0.25,
+      "lambda_contact_shared": 1.0,
+      "epsilon": 1e-12,
+      "formula": "gC_capped=gC*min(1,kappa*(norm(gS)+eps)/(norm(gC)+eps)); gShared=gS+lambda*gC_capped",
+      "final_shared_clip": 1.0,
+      "required_telemetry": [
+        "scalar_shared_gradient_norm",
+        "contact_shared_gradient_norm",
+        "scalar_contact_gradient_cosine",
+        "contact_cap_multiplier",
+        "final_shared_gradient_norm"
+      ],
+      "pcgrad_or_gradnorm_in_primary": false
+    }
+  },
+  "attention_temperature_policy": {
+    "formal_primary": {
+      "8X6B": 1.0,
+      "9E6Y": 1.0,
+      "trainable": false
+    },
+    "inner_only_diagnostic_challenger": {
+      "shared_fixed_grid": [
+        0.5,
+        1.0,
+        2.0
+      ],
+      "may_replace_primary_after_outer_results": false
+    },
+    "learned_temperature_in_primary": false,
+    "reason": "Free terminal scale and free temperature are non-identifiable without terminal norm constraints."
+  },
+  "loss": {
+    "scalar": {
+      "direct_receptor_huber_weight": 1.0,
+      "direct_receptor_huber_beta": 0.03,
+      "softmin_dual_huber_weight": 0.5,
+      "softmin_tau": 0.02,
+      "within_parent_pair_rank_weight": 0.1,
+      "within_parent_pair_rank_tau": 0.03,
+      "batch_moment_or_CCC_loss_in_primary": false
+    },
+    "rank_pair_contract": {
+      "parent_id_used_as_predictor": false,
+      "parent_id_used_only_for_sampler_and_loss_grouping": true,
+      "target": "R_dual_min",
+      "predicted_dual_during_training": "FP32_normalised_softmin_tau_0.02",
+      "truth_dual_during_training": "exact_min_teacher_definition",
+      "exact_min_prediction_in_rank_loss_allowed": false,
+      "exact_min_prediction_use": "inference_prediction_freeze_and_reporting_only",
+      "discard_pair_if_abs_truth_delta_below_delta_noise": true,
+      "pair_weight": "min(abs_truth_delta/delta_noise,3)",
+      "delta_noise_formula": "clip(median_candidate(MAD_seed(Rdual))*1.4826*sqrt(2),0.01,0.03)",
+      "delta_noise_frozen_value": "PENDING_REPEAT_SEED_DIAGNOSTIC",
+      "sampler": {
+        "name": "ParentPairEpochCache",
+        "ordinary_scalar_candidate_batch_size": 8,
+        "rank_pair_batch_size_pairs": 8,
+        "rank_pairs_per_scalar_optimizer_step": 8,
+        "epoch_pair_count": "number_of_scalar_optimizer_steps_times_8",
+        "eligible_pair": "same_training_parent_and_abs_truth_Rdual_delta_ge_delta_noise",
+        "rank_eligible_parent": "has_at_least_one_eligible_pair",
+        "zero_eligible_pair_parent_policy": "audit_and_exclude_without_fabricating_order_supervision",
+        "minimum_rank_eligible_parents": 8,
+        "below_minimum_rank_eligible_parents_policy": "FAIL_CLOSED",
+        "epoch_seed_derivation": "SHA256(base_seed,outer_fold,inner_fold,epoch,rank_pair_cache)",
+        "parent_sampling": "balanced_round_robin_max_count_difference_1",
+        "within_parent_sampling": "without_replacement_until_exhausted_then_deterministic_cycle",
+        "different_parents_per_pair_batch_target": 8,
+        "deduplicate_pair_endpoints_before_scalar_only_forward": true,
+        "contact_head_evaluated_for_rank_pair_forward": false,
+        "pair_loss_reduction": "mean_within_parent_then_mean_across_parents",
+        "validation_or_outer_test_rows_allowed": false,
+        "missing_or_short_pair_batch_policy": "FAIL_CLOSED_NEVER_DIFFERENTIABLE_ZERO",
+        "persist_epoch_cache_and_audit": true,
+        "required_audit_fields": [
+          "cache_content_sha256",
+          "training_split_sha256",
+          "label_sha256",
+          "total_pairs",
+          "pairs_per_parent",
+          "zero_eligible_pair_parents",
+          "repeated_pair_fraction",
+          "noise_margin_discard_count"
+        ]
+      }
+    },
+    "contact": {
+      "representation_training": "balanced_soft_BCE",
+      "sigmoid_output_name_before_calibration": "contact_score_not_probability",
+      "marginal_weight": "PENDING_INNER_PILOT_FREEZE",
+      "pair_weight": "PENDING_INNER_PILOT_FREEZE"
+    },
+    "scalar_tier_label_weights": {
+      "A": 1.0,
+      "B": 1.0,
+      "C": 1.0,
+      "sample_balancing_order": "equal_source_then_equal_parent_then_equal_candidate",
+      "candidate_specific_inverse_variance_weighting_allowed": false
+    }
+  },
+  "fold_local_scalar_calibration": {
+    "fit_rows": "outer_train_strict_inner_OOF_only",
+    "per_receptor_positive_affine": true,
+    "slope_bounds": [
+      0.5,
+      1.5
+    ],
+    "intercept_bounds": [
+      -0.1,
+      0.1
+    ],
+    "fit_loss": "Huber_beta_0.03_plus_0.10_identity_shrinkage",
+    "outer_test_fit_or_recalibration": false,
+    "exact_min_after_calibration": true
+  },
+  "fold_local_contact_calibration": {
+    "fit_rows": "outer_train_strict_inner_OOF_contact_logits_only",
+    "method": "per_receptor_temperature_plus_bias",
+    "temperature_bounds": [
+      0.25,
+      4.0
+    ],
+    "bias_bounds": [
+      -6.0,
+      6.0
+    ],
+    "objective": "original_prevalence_unbalanced_soft_BCE",
+    "tier_weights": {
+      "A": 1.0,
+      "B": 0.5,
+      "C": 0.0
+    },
+    "outer_test_fit_or_recalibration": false,
+    "required_metrics": [
+      "Brier",
+      "log_loss",
+      "ECE_10_fixed_bins",
+      "AUPRC_and_prevalence"
+    ]
+  },
+  "repeat_seed_noise_diagnostic": {
+    "status": "MUST_PASS_AND_FREEZE_BEFORE_FORMAL_TRAINING",
+    "candidate_is_statistical_unit": true,
+    "seeds_as_independent_training_rows": false,
+    "required_targets": [
+      "R8",
+      "R9",
+      "Rdual"
+    ],
+    "required_outputs": [
+      "seed_pair_spearman_and_pearson",
+      "ICC_1_1_with_parent_bootstrap_CI",
+      "Spearman_Brown_k_seed_reliability",
+      "sqrt_reliability_reference_ceiling",
+      "single_seed_to_other_seed_aggregate_empirical_ceiling",
+      "candidate_SD_MAD_IQR",
+      "score_bin_source_parent_patch_mode_variance"
+    ],
+    "V4D_and_V4H_reported_separately": true,
+    "candidate_specific_inverse_variance_primary_weighting_allowed": false,
+    "unbiased_sentinel_required_for_future_noise_head": {
+      "candidates": 150,
+      "high_mid_low_first_seed_strata": [
+        50,
+        50,
+        50
+      ],
+      "fixed_three_seed_dual_receptor_completion": true,
+      "selection_and_hash_frozen_before_extra_seeds": true
+    },
+    "verified_values": "PENDING_REPEAT_SEED_DIAGNOSTIC"
+  },
+  "meta_stack": {
+    "base_components": [
+      "M2_frozen_126D_Ridge",
+      "C2_frozen_coarse_pose",
+      "F_SHARED_GATED_calibrated_R8_R9",
+      "predeclared_calibrated_contact_summaries_max_12D"
+    ],
+    "primary": "strongly_regularized_constrained_linear_M2_fallback_stack",
+    "same_row_meta_fit_and_evaluation_allowed": false,
+    "double_cross_fitting_required": true,
+    "outer_unit": "parent_framework_cluster",
+    "M2_exact_fallback_reproducible": true,
+    "raw_high_dimensional_latent_to_GBDT_allowed": false,
+    "shallow_GBDT_role": "PREDECLARED_DIAGNOSTIC_CHALLENGER_ONLY"
+  },
+  "formal_ablations": {
+    "dynamics": [
+      "B_vs_E_strict_detached_parameter_trajectory",
+      "F_shared_gated_vs_E_strict_detached"
+    ],
+    "loss": [
+      "rank_weight_0_vs_0.10",
+      "identity_vs_fold_local_positive_affine_scalar_calibration"
+    ],
+    "target_contact": [
+      "hotspot_mask_shuffle",
+      "interface_offinterface_mask_swap",
+      "8X6B_9E6Y_conformer_swap",
+      "target_node_feature_permutation_fixed_topology",
+      "contact_label_donor_shuffle_within_receptor_tier_source",
+      "identity_vs_fold_local_contact_calibration",
+      "remove_contact_summaries_from_meta"
+    ],
+    "shortcut_structure": [
+      "VHH_only",
+      "CDR3_only",
+      "parent_scaffold_only_diagnostic",
+      "VHH_coordinate_edge_ablation",
+      "M2_only",
+      "M2_plus_C2"
+    ],
+    "target_conditioned_claim_gate": {
+      "minimum_Rdual_spearman_drop": 0.02,
+      "minimum_same_direction_outer_folds": 4
+    },
+    "contact_transfer_claim_gate": {
+      "F_minus_E_Rdual_spearman_min": 0.01,
+      "paired_parent_bootstrap_95CI_lower_gt": 0.0
+    }
+  },
+  "larger_encoder_challengers": {
+    "structure_encoder_before_ESM2_3B": true,
+    "small_GVP_or_EGNN_requirements": {
+      "max_parameter_multiple_vs_current_head": 2.0,
+      "same_label_free_inputs_only": true,
+      "coordinate_edge_ablation_required": true,
+      "same_direction_gain_in_both_teacher_sources_required": true
+    },
+    "frozen_ESM2_3B_launch_requirements": [
+      "V2.6_650M_passes_target_and_contact_ablation",
+      "noise_ceiling_gap_at_least_0.05",
+      "650M_shows_inner_whole_parent_underfit_not_outer_overfit",
+      "3B_embeddings_precomputed_and_hash_frozen",
+      "paired_same_splits_seeds_projection_and_head",
+      "PLM_selection_uses_inner_whole_parent_only"
+    ],
+    "ESM2_3B_formal_primary_at_initial_V2_6_launch": false
+  },
+  "formal_metrics_and_promotion_gate": {
+    "Rdual_spearman_min": 0.6194011215999979,
+    "Rdual_mae_max": 0.0323587150283071,
+    "Rdual_rmse_max": 0.04290748546218935,
+    "each_source_Rdual_mae_nonregression_vs_M2": true,
+    "both_source_delta_Rdual_spearman_min": 0.0,
+    "parent_macro_Rdual_mae_nonregression_vs_M2": true,
+    "parents_with_nonnegative_Rdual_mae_delta_min": 16,
+    "paired_parent_bootstrap_delta_Rdual_spearman_95CI_lower_gt": 0.0,
+    "R8_and_R9_spearman_floor_vs_M2_delta": -0.03,
+    "exact_min_violations": 0,
+    "all_criteria_required": true,
+    "failure_decision": "DO_NOT_PROMOTE_AND_EXACT_M2_FALLBACK"
+  },
+  "stop_rules": [
+    "noise_ceiling_gap_below_0.05",
+    "target_or_contact_ablation_not_stably_degrading_model",
+    "F_shared_gated_does_not_beat_E_strict_detached",
+    "rank_gain_requires_unrepaired_MAE_or_RMSE_regression",
+    "gain_exists_in_only_one_teacher_source_or_few_parents",
+    "three_refit_seeds_have_inconsistent_direction",
+    "larger_encoder_only_improves_training_not_whole_parent_inner_validation"
+  ],
+  "prelaunch_required_bindings": {
+    "implementation_code_sha256": "PENDING",
+    "test_suite_sha256": "PENDING",
+    "formal_evaluator_sha256": "PENDING",
+    "job_graph_sha256": "PENDING",
+    "environment_receipt_sha256": "PENDING",
+    "four_gpu_mapping": "PENDING",
+    "static_validator_status": "PENDING",
+    "synthetic_tests_status": "PENDING",
+    "strict_detached_equivalence_test_status": "PENDING",
+    "formal_training_authorized": false,
+    "training_launched": false
+  }
+}

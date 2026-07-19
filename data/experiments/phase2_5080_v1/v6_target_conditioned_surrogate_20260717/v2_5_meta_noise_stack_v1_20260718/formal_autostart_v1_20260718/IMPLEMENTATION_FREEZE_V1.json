@@ -1,0 +1,44 @@
+{
+  "artifact_hashes": {
+    "EXPLICIT_AUTHORIZATION_INTENT_V1.json": "9481031f81ef47259467cb5a59219c43f770538a2fb7727175997bc1e44ada70",
+    "EXPLICIT_AUTHORIZATION_OVERLAY_TEMPLATE_V1.json": "a52f2e86a6f4ceab6b9176779e0a18a501605ff34c3905824e7330bffad9cafc",
+    "README_ZH.md": "4052490e67776777b722f64f62c4bd3807c12be5aca1d644f8f8670792ef2580",
+    "TEST_RESULTS.log": "ce28882348867fec9efdf830a24b75be4afb7b0a00c85d95003a7e6b34814eca",
+    "src/launch_formal_autostart_watcher_v1.py": "a40c22d06e736b7030947d37765b544196caa97ed2475c58cd3eb720d92ec8a1",
+    "src/run_frozen_evaluator_from_env_v1.py": "2c8ae5f10850c06fc73c9ee3ed2c7b790091d645ca7f76725d9f5eab11513248",
+    "src/watch_input_closure_then_authorize_and_evaluate_v1.py": "3958af01ee2e78af0cbd959bbeb627b5f8c68ffa3ecef20e4f4f5c3f7c60f9db",
+    "tests/test_formal_autostart_v1.py": "fe836fd2c8cd8af047585aa6f455447e8e6f4a94533edc6daa553b0e2a2118e9"
+  },
+  "bound_frozen_execution": {
+    "execution_adapter_freeze_sha256": "6304bcbbfe4b5697b87f2079b75f6472f5c2254f57ef370519e7c0e289605b4e",
+    "execution_contract_sha256": "d77b6181f780c632fda05056b44aea2d7c9eec3715e24c80c3b19b777b852d55",
+    "execution_manifest_sha256": "ee6264048ae4e5612aeca1d092d5ade9cb1f347ae3b54c4f06caf60ce56370c3",
+    "formal_evaluator_sha256": "d8a33a36309ec3363ce470b30228193e93af5784b1d6d739f16b5b11cfed4152"
+  },
+  "child_terminal_contract": {
+    "explicit_PASS_or_FAIL_terminal_required": true,
+    "formal_receipt_and_artifact_rehash_required": true,
+    "launched_is_not_terminal": true,
+    "wait_required": true
+  },
+  "claim_boundary": "Open-development computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "execution_authorized_by_intent": true,
+  "input_gate": {
+    "C2_candidates": 1507,
+    "D_outer_folds": 5,
+    "allowed_predictor_lane": "D_SPLIT_PAIR",
+    "forbidden_predictor_lane_count": 0,
+    "required_job_results": 195,
+    "required_status": "PASS_INPUTS_READY_UNAUTHORIZED",
+    "v4_f_test32_access_count": 0
+  },
+  "overlay_materialization_pending_input_closure": true,
+  "raw_token_persisted": false,
+  "schema_version": "pvrig_v2_5_strict_meta_formal_autostart_implementation_freeze_v1",
+  "status": "FROZEN_EXPLICIT_AUTHORIZATION_AUTOSTART_V1",
+  "tests": {
+    "count": 4,
+    "status": "PASS",
+    "test_log_sha256": "ce28882348867fec9efdf830a24b75be4afb7b0a00c85d95003a7e6b34814eca"
+  }
+}

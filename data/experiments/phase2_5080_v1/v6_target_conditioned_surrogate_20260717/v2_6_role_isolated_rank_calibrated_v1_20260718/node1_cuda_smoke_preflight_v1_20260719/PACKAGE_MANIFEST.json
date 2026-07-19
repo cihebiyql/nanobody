@@ -1,0 +1,24 @@
+{
+  "claim_boundary": "Open-development CUDA/BF16 numerical and training-dynamics smoke for a computational 8X6B/9E6Y Docking-geometry surrogate only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "execution_authorized": false,
+  "files": {
+    "AUTHORIZATION_CONDITIONS_V1.json": "34217e639755ed9a9535c823b9e26cd1fed2caee9fcfcccfff7b8484b6e0a6d6",
+    "AUTHORIZATION_TEMPLATE_NONLAUNCHING.json": "26a3d3257190825923a89e9f3e569d3e701f8a6dc91fce702b281adca5607dd6",
+    "IMPLEMENTATION_FREEZE_V1.json": "2ca497ad43887a605bdbbcddcb823335915b63ec41b8ee33b7cb70ddbb5ace72",
+    "NODE1_READONLY_PREFLIGHT_SNAPSHOT_V1.json": "04a89ff7828f6b79285bce189e6d68d6d572d781b993e95c15e379fd91ce70e4",
+    "README_ZH.md": "d5bfe4d2143456a478c07dcb9f81936526d10a48ce81b44dd34e7678b68c4745",
+    "TEST_RESULTS.log": "01df53dd5961db567502ce4d6e6705eaa0d02998de2d5fc007e10d99adb6ea1e",
+    "src/node1_cuda_smoke_launcher_v1.py": "cf1d99715b878e51ab93ab7f81d1a26277b2b540b838cd7c351652d7a0519a44",
+    "tests/test_node1_cuda_smoke_launcher_v1.py": "8c0f9ff0a05040e5c3a25960fb3d68f22b457a6cb649be54ab11ec5c1af2e625"
+  },
+  "future_driver_freeze_required": true,
+  "future_explicit_authorization_overlay_required": true,
+  "integration_freeze_sha256": "8c6bd627b1f7381c76a97a821f9eafdf3115c1859bc4120890a7239c999e5d76",
+  "rank_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+  "rank_freeze_sha256": "fe276bd1601c77b07440e6f1960d13a75bf81ee7769a30c8bb0229a0ee3d77ac",
+  "remote_deployed": false,
+  "remote_training_launched": false,
+  "schema_version": "pvrig_v2_6_node1_cuda_smoke_preflight_package_manifest_v1",
+  "status": "PASS_IMMUTABLE_NONLAUNCHING_PREFLIGHT_BUILT",
+  "v4_f_test32_access_count": 0
+}

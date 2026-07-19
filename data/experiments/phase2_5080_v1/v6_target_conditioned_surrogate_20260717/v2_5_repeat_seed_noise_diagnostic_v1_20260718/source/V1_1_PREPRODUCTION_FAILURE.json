@@ -1,0 +1,8 @@
+{
+  "status": "FAIL_PREPRODUCTION_V4H_ATTEMPTED_SCORING_INVALID_NONDECLARED_JOB",
+  "failed_implementation_sha256": "b07861141b925cfd52c199bee4492190a0aef8ee7bc3254ba20b6877add8f03e",
+  "failure": "DockingReleaseError:native_overlay_rmsd_above_1A:20.835992",
+  "v4d_output_status": "PASS_UNCHANGED_AND_RETAINED",
+  "v4h_output_published": false,
+  "scientific_change_in_v1_2": "none; score only terminal-ranking-declared successful V4-H receptor/seed jobs"
+}

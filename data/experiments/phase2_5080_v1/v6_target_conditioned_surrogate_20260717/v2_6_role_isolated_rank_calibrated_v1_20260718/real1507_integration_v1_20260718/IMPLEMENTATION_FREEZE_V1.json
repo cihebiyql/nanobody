@@ -1,0 +1,61 @@
+{
+  "schema_version": "pvrig_v2_6_real1507_role_isolated_trainer_implementation_freeze_v1",
+  "status": "FROZEN_IMPLEMENTATION_TESTED_NONLAUNCHING_CPU_ONLY",
+  "created_date": "2026-07-18",
+  "claim_boundary": "Open-development sequence and label-free monomer approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "files": {
+    "trainer/real1507_role_isolated_trainer_v1.py": "8625e7f27091f05dae3ef9cbb52a88efa87acc16daad4494c89752f64a947a02",
+    "tests/test_real1507_role_isolated_trainer_v1.py": "0a3abf879e60ba60f5f5a961122be3df0864d91a7300a025a1136e07c3d15f63",
+    "README_ZH.md": "6c436b2911795fb2072fc3ec8a94a2ce6a603b4daf88a99c106990b67a7e2e3a",
+    "INTEGRATION_CONTRACT_V1.json": "877186041d7123c480f392dda5fd0fc26ad268811aff1f8ac59be6fb5b45bcb7",
+    "CUDA_REPLAY_BLOCKERS.json": "5f577ebe6f078af65836f270713890df1db064915aaac7ef6cf3427f4a3fa9b6",
+    "TEST_RESULTS.log": "0adf9a7455194824c5ee40a45f140c23af389473a049bd17d06dc8a92bb325ac"
+  },
+  "bound_dependencies": {
+    "v2_5_trainer_sha256": "af93c39054a1a73568a68d498406fb3eddbffe1d688c93e16f59319148e285b0",
+    "v2_5_model_sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521",
+    "v2_5_real1507_runner_sha256": "f7c4e813f19d9034a945982d029118dc87cc6c420f1f8c8cf898bfec74065b7f",
+    "role_optimizer_core_sha256": "2dadc945ec30eb802ca9f32fac84ce647783b9defc36db68f345fc00e972f363",
+    "rank_calibration_v1_1_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+    "delta_noise_binding_sha256": "0a613b87509699a28d134c02514b1240e50a06a5aefddb5ca4a9d8202cde0a0c"
+  },
+  "validation": {
+    "commands": [
+      "python3 -m unittest -v tests/test_role_isolated_optimization_v1.py",
+      "python3 -m unittest -v test_rank_calibration_core_v1_1.py test_audit_real1507_rank_eligibility_v1_1.py",
+      "python3 -m unittest -v tests/test_real1507_role_isolated_trainer_v1.py"
+    ],
+    "tests_run": 54,
+    "failures": 0,
+    "errors": 0,
+    "result": "PASS",
+    "device_scope": "CPU_ONLY",
+    "covered": [
+      "real V2.5 model B/E scalar-shared trajectory equality",
+      "strict-detached and shared-gated role-isolated steps",
+      "per-role clipping and kappa=0.25 contact budget",
+      "gradient accumulation full and partial windows",
+      "exact-min rank V1.1 and V4D-only pair provenance",
+      "complete scalar-label cache with V4H scalar-only exclusion",
+      "whole-parent exact closure and score-truth firewall",
+      "A/B/C contact tier policy mutation",
+      "fold-local inner-OOF affine calibration then exact-min",
+      "legacy V1 formal rejection and dependency hash mutation",
+      "V4-F/test32 access remains zero"
+    ]
+  },
+  "not_verified": [
+    "Node1 CUDA/BF16 real1507 20-step replay",
+    "real1507 fixed-epoch pilot",
+    "formal nested job graph",
+    "remote 4x4090 training",
+    "outer metrics or promotion"
+  ],
+  "data_access": {
+    "outer_metrics_accessed": 0,
+    "score_partition_truth_accessed": 0,
+    "v4_f_test32_accessed": 0,
+    "remote_runtime_modified": false,
+    "live_node1_dag_modified": false
+  }
+}

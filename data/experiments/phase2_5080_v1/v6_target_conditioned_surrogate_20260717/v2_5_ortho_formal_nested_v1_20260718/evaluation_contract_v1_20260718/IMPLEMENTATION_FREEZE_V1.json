@@ -1,0 +1,31 @@
+{
+  "claim_boundary": "Computational dual-receptor Docking geometry surrogate evaluation contract only.",
+  "diagnostic_only_lanes": [
+    "B_CLEAN_TARGET_ATTENTION",
+    "E_DECOUPLED_CONTACT_DETACHED"
+  ],
+  "implementation_files": {
+    "CROSS_LANE_NESTED_META_EVALUATION_CONTRACT_V1.json": {
+      "sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2"
+    },
+    "README_ZH.md": {
+      "sha256": "485910c2319574688de1ae8e031bae793bc73c267363cd5f65e7ceeaba392673"
+    },
+    "tests/test_validate_cross_lane_contract_v1.py": {
+      "sha256": "5644f3b4bcf9fe5fd3d29b1d91ea64067cafd33d12db05070267b5bc277a13d9"
+    },
+    "validate_cross_lane_contract_v1.py": {
+      "sha256": "2e95c35f8b93be19af5adedc004ab3946912ba8d71bdd4936141fa4014389475"
+    }
+  },
+  "live_remote_job_graph_modified": false,
+  "primary_lane": "E_DECOUPLED_CONTACT_SHARED",
+  "schema_version": "pvrig_v2_5_cross_lane_evaluation_implementation_freeze_v1",
+  "status": "FROZEN_AND_STATICALLY_VALIDATED_BEFORE_FORMAL_OUTER_CROSS_LANE_EVALUATION",
+  "test_command": "python3 -m unittest discover -s experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_formal_nested_v1_20260718/evaluation_contract_v1_20260718/tests -p 'test_*.py' -v",
+  "test_count": 10,
+  "test_status": "PASS",
+  "upstream_hashes_checked": 5,
+  "v4_f_test32_access_count": 0,
+  "validator_status": "PASS"
+}

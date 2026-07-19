@@ -8,6 +8,7 @@ NOT_DEPLOYED
 NOT_LAUNCHED
 NO_V4_F_TEST32_ACCESS
 REAL_1269_OUTER0_INNER0_PACKAGE_AUDIT_PASS
+GPU1_SEQUENTIAL_OVERLAY_AUDIT_PASS_PENDING_AUTHORIZATION
 ```
 
 本目录不修改 V2.4 冻结文件。它只实现下一代 neural model/trainer
@@ -195,10 +196,58 @@ deployment/prepared/node1_smoke_package_v1/
 candidate 闭合和 whole-parent 语义闭合作为字节权威，并把 mismatch 写入
 `INPUT_CONTRACT.json`。
 
+## GPU1 串行显式授权覆盖层
+
+在不修改上述 package 的基础上，新增：
+
+```text
+deployment/prepared/gpu1_sequential_authorization_overlay_v1/
+```
+
+覆盖层把同一 6 个任务固定为严格串行：
+
+```text
+B preoptimizer
+-> B one-epoch smoke
+-> E detached preoptimizer
+-> E detached one-epoch smoke
+-> E shared preoptimizer
+-> E shared one-epoch smoke
+```
+
+资源契约：
+
+```text
+physical GPU = 1
+CUDA_VISIBLE_DEVICES = 1
+max concurrent jobs = 1
+taskset CPU affinity = 0-7
+OMP/MKL/OpenBLAS/NumExpr/Torch thread ceiling = 8
+Python = /data1/qlyu/software/envs/pvrig-v6-tc/bin/python
+```
+
+覆盖层逐文件绑定原 package 的 model、trainer、real adapter、input contract、
+whole-parent/contact/graph/hash/firewall。命令只改变 GPU/CPU 执行 envelope、输出
+runtime 路径和全局串行依赖，不改变模型参数、数据路径、split 或 loss。
+
+当前仍为：
+
+```text
+launch_authorized = false
+command = null
+authorization_file_included = false
+training_or_prediction_executed = false
+V4-F/test32 access = 0
+```
+
+`command_template` 已完整冻结。launcher 还要求 package 外的独立 operator
+authorization 文件，并绑定 plan/overlay/source package 哈希；缺少该文件时必然
+fail-closed。本轮只完成 build/test/audit，没有部署或启动。
+
 ## 尚未完成及风险
 
 1. 当前不是正式 whole-parent nested-crossfit 结果；
-2. Node1 package 尚未部署或启动，真实 GPU forward 仍待显式 deployment 通知；
+2. Node1 base package 和 GPU1 串行覆盖层尚未部署或启动，真实 GPU forward 仍待显式授权；
 3. contact evidence 尚未做 inner-train probability calibration；
 4. 8X6B/9E6Y target graph 当前仍主要是 AA/interface/hotspot/SASA/几何特征，
    尚未加入 target residue PLM；

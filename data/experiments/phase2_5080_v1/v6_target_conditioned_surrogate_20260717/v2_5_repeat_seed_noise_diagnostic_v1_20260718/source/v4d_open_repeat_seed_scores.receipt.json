@@ -1,0 +1,16 @@
+{
+  "campaign": "V4D",
+  "candidate_count": 226,
+  "claim_boundary": "Open-development repeated-seed computational dual-receptor docking geometry only; not binding, affinity, competition, experimental blocking, Docking Gold, or validation truth.",
+  "implementation_version": "v1_1_native_overlay_model_filter",
+  "non_open_v4d_candidate_results_accessed": 0,
+  "output_sha256": "eb44fb5ac80e0387c75b10a9f1805eb19c2cb89b18e71af32edffcfcb50e59b2",
+  "raw_job_result_binding_sha256": "aa4f2595df8792fbd1cc95c88d63265ead652d16f2b624a4a549338d6953f7ec",
+  "schema_version": "pvrig_v2_5_open_repeat_seed_extraction_receipt_v1",
+  "score_row_count": 1355,
+  "source_candidates_sha256": "c8845838de0a8bf524901f8257d8616b57afa655be1c0a095ca99156121fbfbd",
+  "source_jobs_sha256": "96fec07a5535615f50bff40ac48bb323a94213e06a7b12726ae5b4b2d1161737",
+  "source_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+  "status": "PASS_OPEN_REPEAT_SEED_EXTRACTION",
+  "v4_f_or_test32_results_accessed": 0
+}

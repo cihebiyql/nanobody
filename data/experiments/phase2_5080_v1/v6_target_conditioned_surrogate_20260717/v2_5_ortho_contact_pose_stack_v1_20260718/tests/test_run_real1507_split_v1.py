@@ -1,6 +1,8 @@
 import pathlib
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 
 HERE = pathlib.Path(__file__).resolve()
@@ -15,6 +17,28 @@ from test_train_v2_5_ortho_heads import make_batch
 
 
 class TestReal1507Runner(unittest.TestCase):
+    def test_dynamic_adapter_can_import_real_sibling_module_and_restores_sys_path(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            sibling_name = "v25_real_sibling_module_for_regression"
+            sibling = root / f"{sibling_name}.py"
+            adapter = root / "adapter_with_sibling_import.py"
+            sibling.write_text("VALUE = 1729\n")
+            adapter.write_text(
+                f"from {sibling_name} import VALUE\n"
+                "ADAPTER_VALUE = VALUE\n"
+            )
+            digest = mod.sha256_file(adapter)
+            before = list(sys.path)
+            sys.modules.pop(sibling_name, None)
+            try:
+                with mock.patch.object(mod, "V24_ADAPTER_SHA256", digest):
+                    loaded = mod.load_v24_adapter(adapter, digest)
+                self.assertEqual(loaded.ADAPTER_VALUE, 1729)
+                self.assertEqual(sys.path, before)
+            finally:
+                sys.modules.pop(sibling_name, None)
+
     def test_lane_variants_are_fixed_and_symmetric_between_e_modes(self):
         self.assertEqual(
             set(mod.LANE_SPECS),
@@ -92,4 +116,3 @@ class TestReal1507Runner(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

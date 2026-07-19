@@ -1,0 +1,88 @@
+{
+  "claim_boundary": "Open teacher-label mathematical diagnostic only; no outer model metrics and no V4-F/test32 access.",
+  "decision": "USE_EXACT_MIN_FOR_RANK_LOSS_KEEP_SOFTMIN_ONLY_AS_SCALAR_AUXILIARY_DIAGNOSTIC",
+  "input": {
+    "parents": 31,
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/data/materialized_v1_1/v6_supervised1507.tsv",
+    "reliability": {
+      "DUAL_1_SEED": 1281,
+      "MULTI_SEED": 226
+    },
+    "rows": 1507,
+    "sha256": "ee120e460ce5f89cf0adc68e7f112395f0460834755d858ba1e7c509de116633",
+    "sources": {
+      "V4D_OPEN_MULTI_SEED": 226,
+      "V4H_STAGE1_SEED917": 1281
+    }
+  },
+  "parameters": {
+    "delta_noise": 0.019614956149,
+    "tau": 0.02,
+    "theoretical_max_bias": 0.013862943611198907
+  },
+  "receptor_gap": {
+    "max": 0.18970870699999998,
+    "mean": 0.0366634313430657,
+    "median": 0.02934426000000001,
+    "p95": 0.09411364200000005
+  },
+  "row_bias": {
+    "max": 0.013861424668912048,
+    "mean": 0.008864967865761575,
+    "median": 0.009713439889006192,
+    "p95": 0.013682881738614983
+  },
+  "schema_version": "pvrig_v2_6_softmin_exactmin_diagnostic_v1",
+  "v4_f_test32_access_count": 0,
+  "within_parent_pair_direction": [
+    {
+      "eligible_pair_count": 75195,
+      "minimum_abs_exact_pair_delta": 0.0,
+      "sign_flip_count": 2322,
+      "sign_flip_fraction": 0.03087971274685817,
+      "tie_count": 0
+    },
+    {
+      "eligible_pair_count": 74097,
+      "minimum_abs_exact_pair_delta": 0.001,
+      "sign_flip_count": 1828,
+      "sign_flip_fraction": 0.024670364522180386,
+      "tie_count": 0
+    },
+    {
+      "eligible_pair_count": 73058,
+      "minimum_abs_exact_pair_delta": 0.002,
+      "sign_flip_count": 1427,
+      "sign_flip_fraction": 0.019532426291439677,
+      "tie_count": 0
+    },
+    {
+      "eligible_pair_count": 69997,
+      "minimum_abs_exact_pair_delta": 0.005,
+      "sign_flip_count": 628,
+      "sign_flip_fraction": 0.00897181307770333,
+      "tie_count": 0
+    },
+    {
+      "eligible_pair_count": 64743,
+      "minimum_abs_exact_pair_delta": 0.01,
+      "sign_flip_count": 51,
+      "sign_flip_fraction": 0.000787729947639127,
+      "tie_count": 0
+    },
+    {
+      "eligible_pair_count": 59578,
+      "minimum_abs_exact_pair_delta": 0.015,
+      "sign_flip_count": 0,
+      "sign_flip_fraction": 0.0,
+      "tie_count": 0
+    },
+    {
+      "eligible_pair_count": 54901,
+      "minimum_abs_exact_pair_delta": 0.019614956149,
+      "sign_flip_count": 0,
+      "sign_flip_fraction": 0.0,
+      "tie_count": 0
+    }
+  ]
+}

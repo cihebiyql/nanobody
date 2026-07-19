@@ -1,0 +1,179 @@
+{
+  "authorization_requirements": {
+    "authorization_overlay_required": true,
+    "execution_authorized": false,
+    "input_closure_receipt_hash_must_be_pinned_in_overlay": true,
+    "required_token_sha256": "f499f4675d1c598fbd8b9304c5f56790c7fb8a5a48ef4758aeb4a66ecb2a1e97"
+  },
+  "base_implementation_freeze": {
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/IMPLEMENTATION_FREEZE_V1.json",
+    "sha256": "552199d7e9d73a35da712fd2446e921c4c556faa027de2d36df9d3085c68530a"
+  },
+  "canonical_inputs": {
+    "coarse_pose_raw36": {
+      "filename": "open1507_coarse_pose_features_36d.tsv",
+      "sha256": "67c83b61734ed90d7dd646a6d32a808cde819f4c01c4fbaf31fdba675827f26e"
+    },
+    "existing_c2_alpha_selection": {
+      "filename": "inner_c2_alpha_selection.tsv",
+      "sha256": "6a840806f284da9c68e0a850eee0c1661c570da6511cec562868b5151ebb7a5a"
+    },
+    "existing_c2_outer_oof": {
+      "filename": "open1507_double_crossfit_predictions.tsv",
+      "sha256": "91ca037188219df3116c36cb2e1687e4b493c3171613e1521bdce3fc03ee3bc8"
+    },
+    "inner_manifest": {
+      "filename": "inner_nested_oof_manifest.tsv",
+      "sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073"
+    },
+    "labels": {
+      "filename": "v6_supervised1507_v2_4.tsv",
+      "sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+    },
+    "outer_manifest": {
+      "filename": "outer_development_manifest.tsv",
+      "sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55"
+    }
+  },
+  "claim_boundary": "Open-development computational surrogate of independent 8X6B/9E6Y Docking geometry; not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "code": {
+    "c2_fold_local_module": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/src/c2_fold_local_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/src/c2_fold_local_v1.py",
+      "sha256": "281027a8a91df4ee4567c7eff5e58eca24548e01e0709b7b454e8c0853e34075"
+    },
+    "common": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/src/execution_common_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/src/execution_common_v1.py",
+      "sha256": "6c8309bd8ca232a3ed87f562d87439fcf0f4f378c676943c2766b095c610615c"
+    },
+    "dry_run": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/src/dry_run_execution_adapter_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/src/dry_run_execution_adapter_v1.py",
+      "sha256": "47532c47504ffeb316c48f28b432cb7142124df37f5df9aa35815a4a27ecd279"
+    },
+    "evaluator": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/src/evaluate_authorized_v2_5_strict_meta_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/src/evaluate_authorized_v2_5_strict_meta_v1.py",
+      "sha256": "d8a33a36309ec3363ce470b30228193e93af5784b1d6d739f16b5b11cfed4152"
+    },
+    "meta_noise_module": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/src/meta_noise_stack_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/src/meta_noise_stack_v1.py",
+      "sha256": "1f5c2b0ed7553a76a11f7011057004637606739b5577b69053494a484eb4af21"
+    },
+    "validator": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/src/validate_v1_2_1_strict_inputs_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/src/validate_v1_2_1_strict_inputs_v1.py",
+      "sha256": "28aa6f93bf7b754b1723fc7fa37c6d5459db9c3f0ce8b69e736859e706be4cd5"
+    },
+    "watcher": {
+      "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/src/watch_v1_2_1_terminal_then_validate_v1.py",
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/src/watch_v1_2_1_terminal_then_validate_v1.py",
+      "sha256": "28af404d726eee84b00e7573f6417d6895dc2da6df603d69e23c6e92775c98a8"
+    }
+  },
+  "contract": {
+    "node1_path": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/EXECUTION_CONTRACT_V1.json",
+    "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_meta_noise_stack_v1_20260718/execution_adapter_v1_20260718/EXECUTION_CONTRACT_V1.json",
+    "sha256": "d77b6181f780c632fda05056b44aea2d7c9eec3715e24c80c3b19b777b852d55"
+  },
+  "execution_authorized": false,
+  "formal_evaluator_launch_allowed": false,
+  "formal_gates": {
+    "challenger_replacement": {
+      "Rdual_mae_nonregression_vs_primary": true,
+      "Rdual_rmse_nonregression_vs_primary": true,
+      "Rdual_spearman_delta_vs_primary_min": 0.003,
+      "allowed_only_after_primary_gate_passes": true,
+      "both_source_Rdual_mae_nonregression_vs_primary": true,
+      "paired_parent_bootstrap_delta_spearman_95ci_lower_gt": 0.0,
+      "parent_macro_Rdual_mae_nonregression_vs_primary": true
+    },
+    "frozen_M2": {
+      "Rdual_mae": 0.0323587150283071,
+      "Rdual_rmse": 0.04290748546218935,
+      "Rdual_spearman": 0.6094011215999979
+    },
+    "primary_M2_D_C2": {
+      "R8_and_R9_spearman_floor_vs_M2_delta": -0.03,
+      "Rdual_mae_max": 0.0323587150283071,
+      "Rdual_rmse_max": 0.04290748546218935,
+      "Rdual_spearman_min": 0.6194011215999979,
+      "bootstrap_replicates": 10000,
+      "bootstrap_seed": 1931,
+      "both_source_delta_spearman_min": 0.0,
+      "parent_bootstrap_delta_spearman_95ci_lower_gt": 0.0,
+      "parent_macro_Rdual_mae_nonregression": true,
+      "parents_with_nonnegative_Rdual_mae_delta_min": 16
+    }
+  },
+  "formal_model_matrix": [
+    {
+      "fit": "none",
+      "formula": "D_R8,D_R9 direct; exact-min dual",
+      "model_id": "D_ONLY_FROZEN_BASE",
+      "role": "D_ONLY_PRIMARY_NEURAL_REFERENCE"
+    },
+    {
+      "constraints": "0<=w_c2<=1; shared receptors; no intercept; lambda=0.001",
+      "formula": "M2+w_c2*(C2-M2)",
+      "model_id": "M2_C2_CONVEX",
+      "role": "ORTHOGONAL_COARSE_POSE_REFERENCE"
+    },
+    {
+      "constraints": "0<=w_d<=1; shared receptors; no intercept; lambda=0.001",
+      "formula": "M2+w_d*(D-M2)",
+      "model_id": "M2_D_CONVEX",
+      "role": "D_INCREMENT_REFERENCE"
+    },
+    {
+      "constraints": "w_d,w_c2>=0; w_d+w_c2<=1; shared receptors; no intercept; lambda=0.001",
+      "formula": "M2+w_d*(D-M2)+w_c2*(C2-M2)",
+      "model_id": "M2_D_C2_CONVEX",
+      "role": "PRIMARY_PROMOTION_CANDIDATE"
+    },
+    {
+      "formula": "same primary form, fit with whole-parent cross-fitted capped reliability",
+      "model_id": "M2_D_C2_RELIABILITY_CONVEX",
+      "noise_truth": "A/B repeated only; C never zero-imputed",
+      "role": "RELIABILITY_CHALLENGER"
+    },
+    {
+      "config": {
+        "l2_regularization": 2.0,
+        "learning_rate": 0.05,
+        "max_depth": 2,
+        "max_iter": 64,
+        "min_samples_leaf": 64,
+        "random_state": 1931
+      },
+      "model_id": "D_C2_CONTACT_RELIABILITY_HIST_GBDT",
+      "role": "SHALLOW_GBDT_CHALLENGER_ONLY"
+    }
+  ],
+  "node1": {
+    "adapter_input_root": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/inputs",
+    "input_closure_output": "/data1/qlyu/projects/pvrig_v2_5_strict_meta_input_closure_v1_20260718",
+    "upstream_package_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718",
+    "upstream_runtime_root": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_runtime_authorized_v1_2_1_20260718"
+  },
+  "postauthorization_command_template": [
+    "python",
+    "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/src/evaluate_authorized_v2_5_strict_meta_v1.py",
+    "--execution-manifest",
+    "/data1/qlyu/projects/pvrig_v2_5_strict_meta_execution_adapter_v1_20260718/adapter/EXECUTION_MANIFEST_V1.json",
+    "--input-closure-receipt",
+    "<PINNED_INPUT_CLOSURE_RECEIPT>",
+    "--authorization-overlay",
+    "<SEPARATELY_CREATED_AUTHORIZATION_OVERLAY>",
+    "--authorization-token",
+    "<RUNTIME_ONLY_NOT_STORED>",
+    "--output-dir",
+    "<NEW_EMPTY_FORMAL_OUTPUT_DIRECTORY>"
+  ],
+  "preauthorization_action": "WATCH_FOR_STRICT_TERMINAL_THEN_VALIDATE_D_LANE_INPUT_CLOSURE_ONLY",
+  "schema_version": "pvrig_v2_5_strict_meta_execution_manifest_v1",
+  "status": "FROZEN_UNAUTHORIZED_INPUT_VALIDATION_ONLY",
+  "v4_f_test32_access_count": 0
+}

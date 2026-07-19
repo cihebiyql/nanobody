@@ -137,6 +137,40 @@ class TestOrthoTrainer(unittest.TestCase):
         self.assertTrue(bool(available.item()))
         self.assertAlmostEqual(float(value.item()), float(torch.log(torch.tensor(2.0))), places=6)
 
+    def test_contact_component_all_zero_eligibility_is_differentiable_zero(self):
+        first = torch.tensor([0.7, 0.2], requires_grad=True)
+        second = torch.tensor([0.4, 0.9], requires_grad=True)
+        value = mod._contact_component(
+            [first, second],
+            [torch.tensor([False, False]), torch.tensor([False, False])],
+            torch.tensor([0.6, 0.4]),
+            torch.tensor([1.0, 0.5]),
+            "pair",
+        )
+        self.assertEqual(float(value.detach()), 0.0)
+        self.assertTrue(value.requires_grad)
+        value.backward()
+        self.assertTrue(torch.equal(first.grad, torch.zeros_like(first)))
+        self.assertTrue(torch.equal(second.grad, torch.zeros_like(second)))
+
+    def test_contact_component_mixed_eligibility_preserves_weighted_algorithm(self):
+        first = torch.tensor([0.8, 100.0, 0.2], requires_grad=True)
+        second = torch.tensor([0.4, 100.0, 0.6], requires_grad=True)
+        available_first = torch.tensor([True, False, True])
+        available_second = torch.tensor([True, False, False])
+        sample = torch.tensor([0.5, 0.3, 0.2])
+        tier = torch.tensor([1.0, 1.0, 0.5])
+        observed = mod._contact_component(
+            [first, second], [available_first, available_second], sample, tier, "pair",
+        )
+        # candidate losses are mean(0.8,0.4)=0.6 and 0.2; middle row is
+        # ineligible. Effective weights are 0.5 and 0.2*0.5=0.1.
+        expected = (0.6 * 0.5 + 0.2 * 0.1) / 0.6
+        self.assertAlmostEqual(float(observed.detach()), expected, places=6)
+        observed.backward()
+        self.assertEqual(float(first.grad[1]), 0.0)
+        self.assertEqual(float(second.grad[1]), 0.0)
+
     def test_fixed_epoch_loop_trains_e_without_reading_forbidden_extras(self):
         config, _unused, inputs = make_model_and_inputs(model_mod.LANE_E, "detached")
         model = mod.build_model(model_mod.LANE_E, mod.TinyBackbone(hidden_size=12), config)
