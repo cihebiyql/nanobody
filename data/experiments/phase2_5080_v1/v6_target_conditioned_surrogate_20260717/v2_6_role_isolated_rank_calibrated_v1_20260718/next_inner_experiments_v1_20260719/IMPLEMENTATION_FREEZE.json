@@ -1,0 +1,29 @@
+{
+  "schema_version": "pvrig_v2_6_next_inner_experiments_freeze_v1",
+  "status": "FROZEN_OPEN_INNER_ONLY",
+  "claim_boundary": "Open outer0/inner0 computational Docking-geometry development only; not binding, affinity, experimental blocking, Docking Gold, V4-F/test32, outer test, or submission truth.",
+  "b_extension": {
+    "seeds": [97, 193],
+    "variant": "B_SCALAR_ATTENTION_ONLY",
+    "epochs": 8,
+    "frozen_v1_3_wrapper_sha256": "cedf5adc404646f2a083a58723753115be888abe40931841a99865013835b10e",
+    "launcher_sha256": "0799dda5691280965ea70b7b6da36c542e09f55fbe5b6c51c3a182919ca9b380"
+  },
+  "early_enrichment": {
+    "collector_sha256": "1d5a672f18c1063b9107575c925f3a8df274393b6f9cfe0b474f9aa2acf3ce26",
+    "positive_fractions": [0.10, 0.20],
+    "budget_fractions": [0.05, 0.10, 0.20],
+    "within_parent_primary": "true_top20_at_pred_top20",
+    "tie_policy": "score_desc_then_candidate_id_asc_with_boundary_best_worst_expected_hits",
+    "count_rounding_policy": "ceil_primary_with_floor_sensitivity"
+  },
+  "marginal_pair_ablation": {
+    "status": "V1_4_IMPLEMENTED_CPU_TESTED_PENDING_CUDA_SMOKE",
+    "v1_3_gate": "marginal_weight > 0 and pair_weight > 0",
+    "v1_4_trainer_sha256": "a16bc446747edb95fdbc6d507c884a89810a97ec4f942dd895476c98a9f5f605",
+    "next_required_surface": "full inherited regression suite plus marginal-only and pair-only CUDA smoke"
+  },
+  "outer_test_truth_access_count": 0,
+  "outer_metrics_access_count": 0,
+  "v4_f_test32_access_count": 0
+}

@@ -1,0 +1,37 @@
+{
+  "claim_boundary": "Open-development sequence-only approximation of independent dual-receptor computational Docking geometry only.",
+  "created_at_utc": "2026-07-19T07:07:41.524712+00:00",
+  "failed_preproduction_attempts": [
+    {
+      "reason": "partition hash was incorrectly compared with full-teacher hash; failed closed before data/model fitting",
+      "runtime": "/data1/qlyu/projects/pvrig_v2_7_sequence_stage0_open_inner_runtime_v1_20260719"
+    },
+    {
+      "reason": "parent set hash omitted canonical trailing newline; failed closed before embedding/model fitting",
+      "runtime": "/data1/qlyu/projects/pvrig_v2_7_sequence_stage0_open_inner_runtime_v1_1_20260719"
+    }
+  ],
+  "files": {
+    "README_ZH.md": "d97bea0cc9fc02ad36812c6924f6e019223c152cfab4fadcad4847a57dc303d3",
+    "STAGE0_EXECUTION_PLAN_ZH.md": "6b71c1c02717a82bae78f7c7042680406697130e673fce2fd089efebb575d1ee",
+    "STAGE0_TEST_RESULTS.log": "96868b372bd0aa30bbbfdceed1c949b696a2e0de9c00c09b3b7fd35faaa71424",
+    "deployment/run_node1_stage0_v1.sh": "58ca43e7c91cc2736d93eac206e0ff48bab4000f852c61a4c97d7b2f47e465fc",
+    "prepared/stage0_open_inner_v1_2/OPEN_INNER_SCORE_PREDICTIONS.tsv": "9b26dd4c0bb3a3c7ce0b9b8de211cd6d10919091fd034e481354ac431e5a8d7b",
+    "prepared/stage0_open_inner_v1_2/REPORT_ZH.md": "16702eaa6aa4de5f9b9fad87b029876e6342a54429487825120c9e471f2a3595",
+    "prepared/stage0_open_inner_v1_2/RESULT.json": "5310722b433795ae1da5c0cd4fdf0b284fff1f7003ec1df558d3ad349d98b87b",
+    "prepared/stage0_open_inner_v1_2/SEQUENCE_STAGE0_MODELS.joblib": "f2b76cc2b2585e06cdf709d10b42322250570593a3c55d99d63c580fbbde2582",
+    "src/run_sequence_stage0_open_inner_v1.py": "8313a4f72bf5b9db70fbfd20a23aff21176124955d9960951ed487ef3803f249",
+    "tests/test_run_sequence_stage0_open_inner_v1.py": "8cf663973c8a4146e702d9ec0b0fb133b1c0db05bf7b9a002f7385fe18d14e33"
+  },
+  "input_access": {
+    "candidate_monomer_structure": 0,
+    "docking_pose_input": 0,
+    "outer_test_metrics": 0,
+    "outer_test_truth": 0,
+    "v4_f_test32": 0
+  },
+  "remote_runtime": "/data1/qlyu/projects/pvrig_v2_7_sequence_stage0_open_inner_runtime_v1_2_20260719",
+  "schema_version": "pvrig_v2_7_sequence_stage0_implementation_freeze_v1",
+  "status": "PASS_OPEN_INNER_SEQUENCE_STAGE0_IMPLEMENTED_AND_EXECUTED",
+  "test_summary": "16 unittest cases passed on Node1 (6 Stage0 + 10 shared 100k selector regression tests)"
+}

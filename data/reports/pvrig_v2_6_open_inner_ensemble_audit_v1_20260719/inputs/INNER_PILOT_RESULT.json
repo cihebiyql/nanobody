@@ -1,0 +1,161 @@
+{
+  "claim_boundary": "open-development inner-validation computational Docking-geometry surrogate only",
+  "comparisons": {
+    "F0_minus_B_Rdual_spearman": 0.054258485153657776,
+    "F0_minus_E_Rdual_spearman": 0.054258485153657776,
+    "F1_minus_F0_Rdual_spearman": -0.10965209492740255
+  },
+  "inner_score_parents": 6,
+  "inner_score_rows": 184,
+  "job_id": "outer0.inner0.collect_open_inner_metrics",
+  "job_receipts": [
+    {
+      "result_sha256": "52909cd093d39b71f30af8e26f42f21a3d503410a40a4c420e0f4741285c89ef",
+      "seed": 43,
+      "variant": "F0_SHARED_GATED_NO_RANK"
+    },
+    {
+      "result_sha256": "0f8d1129c546e2b6189b3b8396fbfd1fe32c13f5eca0d41221c7a0b68e625448",
+      "seed": 97,
+      "variant": "F0_SHARED_GATED_NO_RANK"
+    },
+    {
+      "result_sha256": "a4e90dbe60b8d577b126d2e01f8a75efaaed225fcfc3f0e824247066760feaa5",
+      "seed": 193,
+      "variant": "F0_SHARED_GATED_NO_RANK"
+    },
+    {
+      "result_sha256": "45968179acb2f0ef488d96184facee38e3835c0dbd80bdf9f363d6a23a807357",
+      "seed": 43,
+      "variant": "F1_SHARED_GATED_V4D_EXACT_MIN_RANK"
+    },
+    {
+      "result_sha256": "3b2770069e71e2c3b83d37d08832065150fd79423da7c5f61b70f47c8bd4da1c",
+      "seed": 97,
+      "variant": "F1_SHARED_GATED_V4D_EXACT_MIN_RANK"
+    },
+    {
+      "result_sha256": "a68f76c5c9ee9072c2517f53bf672ab35a5889bf415233fb6a2d8964ee9c82e3",
+      "seed": 193,
+      "variant": "F1_SHARED_GATED_V4D_EXACT_MIN_RANK"
+    },
+    {
+      "result_sha256": "a370fa6a875f41d463a67bf8d87cb606152bf3bfbd49ffdb6c99c96719f6a830",
+      "seed": 43,
+      "variant": "B_SCALAR_ATTENTION_ONLY"
+    },
+    {
+      "result_sha256": "18addd8554bc68881ea70dc9ddd8db2e13828aed210743c93d29761dd416c40e",
+      "seed": 43,
+      "variant": "E_STRICT_DETACHED_DYNAMICS_CONTROL"
+    }
+  ],
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "schema_version": "pvrig_v2_6_inner_only_pilot_metrics_recovery_v1_2_1",
+  "split_id": "outer_0_inner_0",
+  "status": "PASS_OPEN_INNER_ONLY_PILOT_METRICS_RECOVERY_V1_2_1",
+  "v4_f_test32_access_count": 0,
+  "variant_metrics": {
+    "B_SCALAR_ATTENTION_ONLY": {
+      "R8": {
+        "mae": 0.037585089831521735,
+        "rmse": 0.04954584763470276,
+        "spearman": 0.26827477812700756
+      },
+      "R9": {
+        "mae": 0.0338639341521739,
+        "rmse": 0.04120253264766773,
+        "spearman": 0.19338672452530656
+      },
+      "Rdual": {
+        "mae": 0.029746748494565215,
+        "rmse": 0.037112967107870994,
+        "spearman": 0.2630043903690701
+      },
+      "parent_macro_Rdual": {
+        "macro_mae": 0.03135072675468649,
+        "macro_rmse": 0.037972477711890135,
+        "macro_within_parent_spearman": 0.2713518030473278,
+        "parent_count": 6,
+        "parents_within_spearman": 6
+      },
+      "rows": 184
+    },
+    "E_STRICT_DETACHED_DYNAMICS_CONTROL": {
+      "R8": {
+        "mae": 0.037585089831521735,
+        "rmse": 0.04954584763470276,
+        "spearman": 0.26827477812700756
+      },
+      "R9": {
+        "mae": 0.0338639341521739,
+        "rmse": 0.04120253264766773,
+        "spearman": 0.19338672452530656
+      },
+      "Rdual": {
+        "mae": 0.029746748494565215,
+        "rmse": 0.037112967107870994,
+        "spearman": 0.2630043903690701
+      },
+      "parent_macro_Rdual": {
+        "macro_mae": 0.03135072675468649,
+        "macro_rmse": 0.037972477711890135,
+        "macro_within_parent_spearman": 0.2713518030473278,
+        "parent_count": 6,
+        "parents_within_spearman": 6
+      },
+      "rows": 184
+    },
+    "F0_SHARED_GATED_NO_RANK": {
+      "R8": {
+        "mae": 0.029313686855072466,
+        "rmse": 0.03730685291897987,
+        "spearman": 0.3021610227229679
+      },
+      "R9": {
+        "mae": 0.03803248593115941,
+        "rmse": 0.045591132925250424,
+        "spearman": 0.24710666929700983
+      },
+      "Rdual": {
+        "mae": 0.031448379269927544,
+        "rmse": 0.03784463193990843,
+        "spearman": 0.31726287552272786
+      },
+      "parent_macro_Rdual": {
+        "macro_mae": 0.031124996332004592,
+        "macro_rmse": 0.03743744107058344,
+        "macro_within_parent_spearman": 0.28548429813719495,
+        "parent_count": 6,
+        "parents_within_spearman": 6
+      },
+      "rows": 184
+    },
+    "F1_SHARED_GATED_V4D_EXACT_MIN_RANK": {
+      "R8": {
+        "mae": 0.04161187322463766,
+        "rmse": 0.053541040568428136,
+        "spearman": 0.22179614309848245
+      },
+      "R9": {
+        "mae": 0.04011233236594202,
+        "rmse": 0.05103111214895009,
+        "spearman": 0.2225429827211656
+      },
+      "Rdual": {
+        "mae": 0.04317054266485507,
+        "rmse": 0.05456830350332678,
+        "spearman": 0.2076107805953253
+      },
+      "parent_macro_Rdual": {
+        "macro_mae": 0.040054637435646044,
+        "macro_rmse": 0.050462049472662605,
+        "macro_within_parent_spearman": 0.2827327603791438,
+        "parent_count": 6,
+        "parents_within_spearman": 6
+      },
+      "rows": 184
+    }
+  }
+}

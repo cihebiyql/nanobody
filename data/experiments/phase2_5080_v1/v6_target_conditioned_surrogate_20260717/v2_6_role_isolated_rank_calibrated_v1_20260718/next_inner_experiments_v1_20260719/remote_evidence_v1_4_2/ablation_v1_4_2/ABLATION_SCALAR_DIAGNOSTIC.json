@@ -1,0 +1,33 @@
+{
+  "metrics": {
+    "B_SCALAR_ATTENTION_ONLY": {
+      "MAE": 0.031395678762681165,
+      "RMSE": 0.037853120836938696,
+      "Rdual_spearman": 0.29836892181538954,
+      "rows": 184
+    },
+    "F0_MARGINAL_ONLY_NO_RANK": {
+      "MAE": 0.031133846788043495,
+      "RMSE": 0.03742966274724739,
+      "Rdual_spearman": 0.324547283416636,
+      "rows": 184
+    },
+    "F0_PAIR_ONLY_NO_RANK": {
+      "MAE": 0.030358905682971008,
+      "RMSE": 0.03686880044030997,
+      "Rdual_spearman": 0.3150970589570869,
+      "rows": 184
+    },
+    "F0_SHARED_GATED_NO_RANK": {
+      "MAE": 0.031448379269927544,
+      "RMSE": 0.037844631939908425,
+      "Rdual_spearman": 0.31726287552272786,
+      "rows": 184
+    }
+  },
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "schema_version": "pvrig_v2_6_open_inner_contact_ablation_scalar_diagnostic_v1",
+  "status": "PASS_OPEN_INNER_DIAGNOSTIC",
+  "v4_f_test32_access_count": 0
+}

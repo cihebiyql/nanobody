@@ -1,0 +1,52 @@
+{
+  "claim_boundary": "Synthetic throughput and selector-contract smoke only; no model quality, early-enrichment, Docking, binding, or experimental claim.",
+  "created_at_utc": "2026-07-19T07:00:39.399121+00:00",
+  "host": "cihebi",
+  "implementation": {
+    "config": "configs/example_100k_selector_config.json",
+    "config_sha256": "dad271fb2748c18dfb10530f4837d3804d8fd3579cb97a57078205fef7f9c670",
+    "script": "src/select_100k_label_free_multimodel.py",
+    "script_sha256": "9e42af9933a85fdfd630e66564f35e2fc8d1ee0689816975f50f2a71e3d669e2"
+  },
+  "input": {
+    "bytes": 31433649,
+    "cdr3_groups": 5000,
+    "methods": 4,
+    "models": 3,
+    "parent_groups": 200,
+    "patches": 3,
+    "rows": 100000,
+    "sha256": "6bee356cc98827ca5f701479d9af123952079f28dc6679a3efe9e35621f1c250",
+    "synthetic": true
+  },
+  "label_access": {
+    "docking_label_files_opened": 0,
+    "docking_truth_columns_consumed": 0,
+    "experimental_labels_opened": 0,
+    "prospective_holdout_files_opened": 0,
+    "sealed_files_opened": 0
+  },
+  "output": {
+    "bytes": 11393010,
+    "channel_counts": {
+      "disagreement": 1600,
+      "diversity": 1400,
+      "exploitation": 14000,
+      "random_sentinel": 1000,
+      "single_model_rescue": 2000
+    },
+    "rows": 20000,
+    "sha256": "f5d35758b47b652e073b6ef99cb5c20a5e7086a45d7b4b5d80f955fcd3d43af5",
+    "sha256_manifest_match": true,
+    "unique_candidate_ids": 20000
+  },
+  "performance": {
+    "elapsed_wall_clock": "0:03.60",
+    "maximum_resident_set_kbytes": 439484,
+    "system_seconds": "0.29",
+    "user_seconds": "3.64"
+  },
+  "python": "3.10.12",
+  "schema_version": "pvrig_v2_7_synthetic_100k_smoke_v1",
+  "status": "PASS_SYNTHETIC_100K_LABEL_FREE_SELECTOR_SMOKE"
+}

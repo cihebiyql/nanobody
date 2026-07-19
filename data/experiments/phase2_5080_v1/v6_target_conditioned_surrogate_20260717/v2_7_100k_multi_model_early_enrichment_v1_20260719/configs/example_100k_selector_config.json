@@ -1,0 +1,68 @@
+{
+  "schema_version": "pvrig_v2_7_label_free_selector_config_v1",
+  "candidate_id_column": "candidate_id",
+  "models": [
+    {
+      "name": "sequence_student",
+      "score_column": "sequence_student_rdual",
+      "uncertainty_column": "sequence_student_uncertainty",
+      "higher_is_better": true,
+      "weight": 1.0,
+      "uncertainty_penalty": 0.08
+    },
+    {
+      "name": "cheap_tabular",
+      "score_column": "cheap_tabular_rdual",
+      "uncertainty_column": "cheap_tabular_uncertainty",
+      "higher_is_better": true,
+      "weight": 0.5,
+      "uncertainty_penalty": 0.05
+    },
+    {
+      "name": "generic_binding_prior",
+      "score_column": "generic_binding_prior",
+      "uncertainty_column": "generic_binding_uncertainty",
+      "higher_is_better": true,
+      "weight": 0.25,
+      "uncertainty_penalty": 0.03
+    }
+  ],
+  "metadata_columns": {
+    "parent": "parent_framework_cluster",
+    "cdr3": "cdr3_cluster",
+    "patch": "target_patch_id",
+    "method": "design_method"
+  },
+  "qc": {
+    "pass_columns": ["fast_qc_pass"],
+    "fail_columns": ["hard_fail"],
+    "numeric_constraints": {
+      "developability_score": {"min": 0.2}
+    }
+  },
+  "dedup_key_columns": ["sequence_sha256"],
+  "passthrough_columns": ["sequence", "cdr3", "cdr3_length"],
+  "min_models_required": 2,
+  "allow_extra_columns": false,
+  "selection": {
+    "total": 20000,
+    "quotas": {
+      "exploitation": 14000,
+      "single_model_rescue": 2000,
+      "disagreement": 1600,
+      "diversity": 1400,
+      "random_sentinel": 1000
+    },
+    "group_caps": {
+      "parent_framework_cluster": 500,
+      "cdr3_cluster": 100,
+      "target_patch_id": 8000,
+      "design_method": 12000
+    },
+    "diversity_columns": ["parent_framework_cluster", "cdr3_cluster", "target_patch_id", "design_method"],
+    "sentinel_strata_columns": ["target_patch_id", "design_method"],
+    "sentinel_score_bins": 5,
+    "disagreement_best_model_weight": 0.25,
+    "random_seed": "pvrig-v2.7-100k-production-freeze-before-scoring"
+  }
+}

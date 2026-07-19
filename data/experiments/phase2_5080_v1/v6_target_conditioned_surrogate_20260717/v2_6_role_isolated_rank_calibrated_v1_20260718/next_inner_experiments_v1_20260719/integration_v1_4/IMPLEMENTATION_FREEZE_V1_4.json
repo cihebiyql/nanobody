@@ -1,0 +1,27 @@
+{
+  "schema_version": "pvrig_v2_6_contact_ablation_integration_freeze_v1_4",
+  "status": "IMPLEMENTED_31_CPU_TESTS_PASS_AUTHORIZED_FOR_CUDA_SMOKE_ONLY",
+  "supersedes_or_modifies_v1_3": false,
+  "source_v1_3_sha256": "e99146be166cab7f703bd6cbcad3594e196d7a155c422459cb16f8cbfc2b6a24",
+  "trainer_v1_4_sha256": "a16bc446747edb95fdbc6d507c884a89810a97ec4f942dd895476c98a9f5f605",
+  "contract_test_sha256": "e958b57c655be5526febff464cde911d3d8f1922f696042d4ccc1cf562da7ef3",
+  "full_inherited_regression_test_sha256": "17e31ebbba69c4bf35d60e8c91346635980d70f17481146ed7da969c8f445c5e",
+  "test_results_sha256": "2a48f26c78a1fb05f80f512f6b209451a564c29e7c3667c30401ae8fffc4d79a",
+  "tests_run": 31,
+  "allowed_contact_modes": {
+    "COMBINED": [1.0, 0.5],
+    "MARGINAL_ONLY": [1.0, 0.0],
+    "PAIR_ONLY": [0.0, 0.5]
+  },
+  "forbidden": [
+    "both contact weights zero",
+    "negative contact weights",
+    "modification of frozen Integration V1.3",
+    "V4-F/test32 access",
+    "outer test truth or metrics access"
+  ],
+  "next_gate": "CUDA smoke for marginal-only and pair-only before eight-epoch ablation launcher authorization",
+  "outer_test_truth_access_count": 0,
+  "outer_metrics_access_count": 0,
+  "v4_f_test32_access_count": 0
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "pvrig_v2_6_contact_ablation_cuda_smoke_recovery_freeze_v1_4_1",
+  "status": "FROZEN_AUTHORIZED_CUDA_SMOKE_RECOVERY_ONLY",
+  "superseded_failed_version": "V1.4",
+  "v1_4_failure": "delta_noise_binding_path incorrectly resolved under the new package root before any optimizer step",
+  "scientific_protocol_changed": false,
+  "recovery_change": "resolve the immutable V2_6_DELTA_NOISE_BINDING.json from the frozen base package",
+  "integration_freeze_sha256": "22f34aff3c5cd9b912f94e1266dffcb217c5767974160068365bea3889e0f4fc",
+  "integration_trainer_sha256": "a16bc446747edb95fdbc6d507c884a89810a97ec4f942dd895476c98a9f5f605",
+  "smoke_job_sha256": "9d153766d518da2d1ce284a92ae515fe48c0aef6455fdf871e9d37070e6669ae",
+  "smoke_launcher_sha256": "35bb2949090c47fd3f097196d80ca14b9c314fe46b8528083b1c5ab3ec382f81",
+  "eight_epoch_ablation_training_authorized": false,
+  "outer_test_truth_access_count": 0,
+  "outer_metrics_access_count": 0,
+  "v4_f_test32_access_count": 0
+}

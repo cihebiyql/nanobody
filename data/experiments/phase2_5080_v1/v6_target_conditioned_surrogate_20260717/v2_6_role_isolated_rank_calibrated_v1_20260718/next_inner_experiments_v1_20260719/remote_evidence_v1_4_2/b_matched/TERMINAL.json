@@ -1,0 +1,12 @@
+{
+  "failure": null,
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "schema_version": "pvrig_v2_6_b_matched_seed_extension_launcher_v1",
+  "seeds": [
+    97,
+    193
+  ],
+  "status": "PASS_B_MATCHED_SEEDS_97_193",
+  "v4_f_test32_access_count": 0
+}

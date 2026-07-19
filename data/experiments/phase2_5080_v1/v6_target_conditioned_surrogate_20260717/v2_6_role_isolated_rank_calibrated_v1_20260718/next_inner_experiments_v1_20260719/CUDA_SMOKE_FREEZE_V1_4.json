@@ -1,0 +1,17 @@
+{
+  "schema_version": "pvrig_v2_6_contact_ablation_cuda_smoke_freeze_v1_4",
+  "status": "FROZEN_AUTHORIZED_CUDA_SMOKE_ONLY",
+  "integration_freeze_sha256": "22f34aff3c5cd9b912f94e1266dffcb217c5767974160068365bea3889e0f4fc",
+  "integration_trainer_sha256": "a16bc446747edb95fdbc6d507c884a89810a97ec4f942dd895476c98a9f5f605",
+  "smoke_job_sha256": "2ae1e1c03648dfc9a721958656c6e1532aaa9c883b48b01e2b7b04019ca3efa8",
+  "smoke_launcher_sha256": "d9a33312a926d6016ed3d8aa3cbbdcfcb78bb8d20dc7c5dc96c5645b0e855fd5",
+  "smoke_launcher_test_sha256": "4e2ce2bffb719edc55020dcd6e28d380fc97c0a4681ab425a0c43d372b782da1",
+  "jobs": [
+    {"variant": "F0_MARGINAL_ONLY_NO_RANK", "seed": 43, "epochs": 1, "marginal_weight": 1.0, "pair_weight": 0.0, "physical_gpu": 5},
+    {"variant": "F0_PAIR_ONLY_NO_RANK", "seed": 43, "epochs": 1, "marginal_weight": 0.0, "pair_weight": 0.5, "physical_gpu": 6}
+  ],
+  "eight_epoch_ablation_training_authorized": false,
+  "outer_test_truth_access_count": 0,
+  "outer_metrics_access_count": 0,
+  "v4_f_test32_access_count": 0
+}
