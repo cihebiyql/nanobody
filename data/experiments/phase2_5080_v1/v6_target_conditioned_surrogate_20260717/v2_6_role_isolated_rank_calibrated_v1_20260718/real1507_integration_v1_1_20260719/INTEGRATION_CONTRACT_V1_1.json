@@ -1,0 +1,44 @@
+{
+  "schema_version": "pvrig_v2_6_real1507_role_isolated_trainer_integration_contract_v1_1",
+  "status": "FROZEN_DESIGN_NONLAUNCHING",
+  "claim_boundary": "Open-development sequence and label-free monomer approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "supersedes_for_future_execution_only": "real1507_integration_v1_20260718",
+  "v1_mutation_allowed": false,
+  "shared_contact_budget": {
+    "kappa": 0.25,
+    "lambda_contact_shared": 1.0,
+    "post_lambda_contact_gradient_norm_must_not_exceed_kappa_budget": true
+  },
+  "gradient_accumulation": {
+    "scalar": "raw hierarchy mass weighted across microbatches",
+    "marginal_contact": "raw hierarchy times marginal tier times eligibility mass weighted",
+    "pair_contact": "raw hierarchy times pair tier times eligibility mass weighted",
+    "partial_uneven_windows": "normalize by actual effective mass"
+  },
+  "rank_cache_trust": {
+    "runtime_self_signing_allowed": false,
+    "external_regular_nonsymlink_anchor_required": true,
+    "external_file_sha256_required": true,
+    "source_teacher_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "source_inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "partition_anchors": 25
+  },
+  "calibration": {
+    "seeds": [43, 97, 193],
+    "inner_folds": [0, 1, 2, 3, 4],
+    "exact_three_seed_membership_per_outer_train_candidate": true,
+    "outer_train_candidate_and_parent_closure": true,
+    "outer_test_candidate_and_parent_rejected": true,
+    "fit": "positive affine R8/R9 on seed-mean inner-OOF then exact-min"
+  },
+  "cuda_evidence": {
+    "physical_logical_gpu_mapping_required": true,
+    "per_step_parameter_optimizer_batch_rank_cache_hashes": true
+  },
+  "firewalls": {
+    "outer_metrics_access_count": 0,
+    "score_partition_truth_access_count": 0,
+    "v4_f_test32_access_count": 0,
+    "candidate_docking_pose_input_count": 0
+  }
+}

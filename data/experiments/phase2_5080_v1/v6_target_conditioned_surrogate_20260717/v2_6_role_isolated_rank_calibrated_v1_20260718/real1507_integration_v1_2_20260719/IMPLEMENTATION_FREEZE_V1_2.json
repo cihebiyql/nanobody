@@ -1,0 +1,46 @@
+{
+  "created_date": "2026-07-19",
+  "data_access": {
+    "outer_metrics_accessed": 0,
+    "remote_training_launched": false,
+    "score_partition_truth_accessed": 0,
+    "v4_f_test32_accessed": 0
+  },
+  "files": {
+    "INTEGRATION_CONTRACT_V1_2.json": "41afdbee3a2851c584c47799e2980ae20168c3293dea17f5a89ce83c71245be8",
+    "README_ZH.md": "17ff43e0d85e550266226d8a34a7343048a8c08280d0df9128b2892a64b753bd",
+    "TEST_RESULTS.log": "1bf84b78ee25b6eaf6baf5f1637520c45c28b1a5f8df6a3470a7cadc24dc0e1f",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_real1507_role_isolated_trainer_v1_2.py": "ca8dbc22653e6f846ab418a43f9a4a4add0f1f8ecbfcc9261be3390059c6abf8",
+    "trainer/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trainer/real1507_role_isolated_trainer_v1_2.py": "036fb5f1d8b443bc3fd514ae6fe43970af42b6d078c378233f2825550b61d4e4",
+    "trust_anchor/frozen_real1507_trust_anchors_v1_2/TRUST_ANCHOR_SET_RECEIPT.json": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e"
+  },
+  "fixes": {
+    "calibration_provenance": "frozen inner/outer/teacher plus checkpoint and prediction receipts",
+    "optimizer_hash": "stable parameter names across processes",
+    "rank_cache_trust": "hard-bound frozen 25-anchor set receipt and receipt-selected partition anchor",
+    "retained": [
+      "post-lambda F budget",
+      "exact weighted accumulation",
+      "GPU physical/logical mapping",
+      "per-step evidence hashes"
+    ]
+  },
+  "not_verified": [
+    "Node1 CUDA/BF16 real1507 20-step replay",
+    "formal nested training",
+    "outer metrics or promotion"
+  ],
+  "schema_version": "pvrig_v2_6_real1507_role_isolated_trainer_implementation_freeze_v1_2",
+  "status": "FROZEN_IMPLEMENTATION_TESTED_NONLAUNCHING_CPU_ONLY",
+  "supersedes_for_future_execution_only": "real1507_integration_v1_1_20260719",
+  "validation": {
+    "device_scope": "CPU_ONLY",
+    "errors": 0,
+    "failures": 0,
+    "py_compile": "PASS",
+    "result": "PASS",
+    "tests_run": 61
+  }
+}

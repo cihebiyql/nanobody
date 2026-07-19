@@ -1,0 +1,31 @@
+{
+  "driver": {
+    "path": "src/run_node1_cuda_smoke_v1_3.py",
+    "sha256": "7f1ca77c76e4ba00082aedc9ff1afebf06ee693da00db595b651ef44dacfcb7d"
+  },
+  "execution_authorized": false,
+  "integration_freeze_sha256": "e73335c32e8495d609f9b5e6379ba648d1c38e4da49c40088468eae7308e3faa",
+  "integration_trainer_sha256": "e99146be166cab7f703bd6cbcad3594e196d7a155c422459cb16f8cbfc2b6a24",
+  "rank_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+  "rank_trust_anchor_set_receipt_sha256": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e",
+  "schema_version": "pvrig_v2_6_node1_cuda_smoke_driver_freeze_v1_3",
+  "smoke_contract": {
+    "canonical_scalar_forward": "E_DECOUPLED_CONTACT_DETACHED for both B/E",
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true,
+    "exact_be_hash_gate": true,
+    "gradient_accumulation": 2,
+    "lanes": [
+      "B",
+      "E",
+      "F"
+    ],
+    "logical_cuda_index": 0,
+    "optimizer_steps_per_lane": 20,
+    "physical_gpu_index": 1,
+    "precision": "bf16",
+    "tf32": false
+  },
+  "status": "FROZEN_NODE1_CUDA_SMOKE_DRIVER_TESTED_NONLAUNCHING",
+  "v4_f_test32_access_count": 0
+}

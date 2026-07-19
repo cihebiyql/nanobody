@@ -1,0 +1,15 @@
+{
+  "created_before_runtime": true,
+  "inner_fold": 0,
+  "label_sha256": "9003273f465a0791100c715281ed6ebffb9814ac77ce4bd47fd9fe3469e65d3c",
+  "outer_fold": 3,
+  "rank_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+  "rank_eligible_label_count": 107,
+  "scalar_train_label_count": 800,
+  "schema_version": "pvrig_v2_6_external_rank_split_label_trust_anchor_v1",
+  "source_inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+  "source_teacher_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+  "status": "FROZEN_EXTERNAL_PRETRAINING_TRUST_ANCHOR",
+  "training_split_sha256": "0cd48911a18f16b15e22cfdc0522924c26a089694372ea70e1e7bede1d3b9a25",
+  "v4_f_test32_access_count": 0
+}

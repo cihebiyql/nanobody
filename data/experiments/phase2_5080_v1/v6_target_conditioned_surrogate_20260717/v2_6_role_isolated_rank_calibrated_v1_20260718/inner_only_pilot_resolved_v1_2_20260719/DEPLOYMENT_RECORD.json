@@ -1,0 +1,27 @@
+{
+  "child_pids": {
+    "B_seed43": 1921858,
+    "E_seed43": 1921859,
+    "F0_seed43": 1921860,
+    "F0_seed97": 1921861
+  },
+  "controller_pid": 1921848,
+  "driver_sha256": "cedf5adc404646f2a083a58723753115be888abe40931841a99865013835b10e",
+  "job_graph_sha256": "93077cffb1b83bb0ba47b265d63e6f59a944166935f17a1f5e63982e72a516ae",
+  "node1_package_root": "/data1/qlyu/projects/pvrig_v2_6_inner_only_pilot_resolved_v1_2_20260719",
+  "node1_runtime_root": "/data1/qlyu/projects/pvrig_v2_6_inner_only_pilot_runtime_resolved_v1_2_20260719",
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "package_manifest_sha256": "a0193fadcda0400cb249144430ee2835c64fcbca51ff18631e96acfa78a04f59",
+  "physical_gpus": [
+    1,
+    4,
+    5,
+    6
+  ],
+  "schema_version": "pvrig_v2_6_inner_only_pilot_deployment_record_v1_2",
+  "smoke_result_sha256": "e6901c772411464d8b2fb906839dd07afcbfdfc39e1d8ec1d18b01e66b50ea21",
+  "status": "RUNNING_FIRST_WAVE_4_OF_8_GPU_JOBS",
+  "timestamp": "2026-07-19T11:17:00+08:00",
+  "v4_f_test32_access_count": 0
+}

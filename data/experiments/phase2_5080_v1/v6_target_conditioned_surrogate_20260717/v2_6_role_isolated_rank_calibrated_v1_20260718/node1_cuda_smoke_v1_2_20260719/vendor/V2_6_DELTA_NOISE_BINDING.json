@@ -1,0 +1,24 @@
+{
+  "adaptive_v4h_excluded": true,
+  "adaptive_v4h_exclusion_rationale": "V4-H seed2/seed3 candidates were selected after observing seed917, restricting score range and biasing repeat reliability/noise estimates.",
+  "candidate_count": 225,
+  "candidate_is_statistical_unit": true,
+  "claim_boundary": "V2.6 computational Docking-geometry measurement tolerance binding only; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "clip_bounds": [
+    0.01,
+    0.03
+  ],
+  "cohort": "V4-D OPEN_TRAIN candidates with exactly three paired 8X6B/9E6Y seeds",
+  "delta_noise": 0.01961495614856818,
+  "formula": "clip(median_candidate(MAD_seed(Rdual))*1.4826*sqrt(2), 0.01, 0.03)",
+  "median_candidate_MAD_seed_Rdual": 0.009355098142000084,
+  "normal_consistency_factor": 1.4826,
+  "paired_difference_factor": 1.4142135623730951,
+  "schema_version": "pvrig_v2_6_delta_noise_binding_v1",
+  "seed_count_per_candidate": 3,
+  "source_path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_repeat_seed_noise_diagnostic_v1_20260718/source/v4d_open_repeat_seed_scores.tsv",
+  "source_sha256": "eb44fb5ac80e0387c75b10a9f1805eb19c2cb89b18e71af32edffcfcb50e59b2",
+  "status": "FROZEN_V2_6_DELTA_NOISE_FROM_NONADAPTIVE_V4D_OPEN_TRAIN",
+  "unclipped_delta_noise": 0.01961495614856818,
+  "v4_f_or_test32_results_accessed": 0
+}

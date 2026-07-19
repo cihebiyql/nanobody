@@ -1,0 +1,24 @@
+{
+  "cuda_visible_devices": "1,4,5,6",
+  "driver_sha256": "cedf5adc404646f2a083a58723753115be888abe40931841a99865013835b10e",
+  "execution_authorized": true,
+  "execution_host": "node1",
+  "fixed_epochs": 8,
+  "integration_freeze_sha256": "e73335c32e8495d609f9b5e6379ba648d1c38e4da49c40088468eae7308e3faa",
+  "integration_trainer_sha256": "e99146be166cab7f703bd6cbcad3594e196d7a155c422459cb16f8cbfc2b6a24",
+  "job_count": 9,
+  "job_graph_sha256": "93077cffb1b83bb0ba47b265d63e6f59a944166935f17a1f5e63982e72a516ae",
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "physical_gpus": [
+    1,
+    4,
+    5,
+    6
+  ],
+  "schema_version": "pvrig_v2_6_inner_only_pilot_authorization_v1_2",
+  "smoke_result_sha256": "e6901c772411464d8b2fb906839dd07afcbfdfc39e1d8ec1d18b01e66b50ea21",
+  "smoke_terminal_sha256": "236891ec9b9a99563e73cbb878980e4e5caed570198631fa8765f12598f6ce0c",
+  "status": "AUTHORIZED_AFTER_NODE1_CUDA_SMOKE_PASS",
+  "v4_f_test32_access_count": 0
+}

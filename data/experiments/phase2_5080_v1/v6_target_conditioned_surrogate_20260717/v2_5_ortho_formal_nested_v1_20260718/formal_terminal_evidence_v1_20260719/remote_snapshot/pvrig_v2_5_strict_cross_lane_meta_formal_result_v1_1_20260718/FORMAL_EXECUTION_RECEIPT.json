@@ -1,0 +1,21 @@
+{
+  "artifacts": {
+    "FORMAL_METRICS.json": "71b7a8ae8416f5cac9fe80dd73deed24f4895267809edc34f0fabdc9c35f9284",
+    "FORMAL_OUTER_OOF_PREDICTIONS.tsv": "587e46c1a67e938f1d919077ca78348b3cd356679271e8cd423dc546bdfe3427",
+    "FORMAL_PARAMETERS.json": "4cdafa5529d50c872267fe16de983b9a2e1ba652799ead4dce6ad7db1313c86f",
+    "FORMAL_PARAMETERS_PRETRUTH.json": "6287051c72b1f610f8221f4b0a0272d20acbe59fe72a23acbc5b39f9ee21fc4c",
+    "OUTER_PREDICTIONS_PRETRUTH.tsv": "2d1d8aa4d4f65fb660dea692a887cb42faf75b854ed8de3778fd9ef24c3a49a9",
+    "PRETRUTH_FREEZE_RECEIPT.json": "ab66d4a692b79e1f34289717ab3b205b2205289a5679a7256cc34e1b1d1c6150",
+    "SELECTED_PRODUCTION_PREDICTIONS.tsv": "752f424ae079c89d312867de5958b0484bd8cf6216c2301a003c3504d6a17617"
+  },
+  "claim_boundary": "Open-development whole-parent OOF surrogate of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "decision": "DO_NOT_PROMOTE_EXACT_M2_FALLBACK",
+  "runtime_final_result_sha256": "0126e46cd229f27957ed5a337edc50eacf4d2aa8d99615b9ea0f34aeda771a7d",
+  "runtime_job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+  "runtime_terminal_sha256": "a582e99cd362f962be36c09c999e03c6249821bf1f7fe69079f49cf964e49cca",
+  "schema_version": "pvrig_v2_5_ortho_cross_lane_meta_execution_receipt_v1_1",
+  "selected_production_model_id": "M2_FROZEN_ALPHA10",
+  "status": "PASS_FORMAL_CROSS_LANE_META_EVALUATION_COMPLETED",
+  "v4_f_test32_access_count": 0
+}

@@ -1,0 +1,141 @@
+{
+  "checks": {
+    "contract_hash_closure": true,
+    "exact_min_zero": true,
+    "formal_1507_per_model": true,
+    "formal_31_parent_5_fold_closure": true,
+    "formal_artifact_hash_closure": true,
+    "formal_candidate_set_closure": true,
+    "formal_receipt_hash_closure": true,
+    "package_hash_closure": true,
+    "pretruth_formal_prediction_identity": true,
+    "pretruth_parameter_hash_closure": true,
+    "pretruth_prediction_hash_closure": true,
+    "pretruth_receipt_hash_closure": true,
+    "remote_local_snapshot_hash_identity": true,
+    "runtime_301_of_301": true,
+    "runtime_hash_closure": true,
+    "runtime_result_summary_identity": true,
+    "selected_exact_m2_fallback_1507": true,
+    "strict_watcher_terminal_pass": true,
+    "v4_f_firewall_zero": true
+  },
+  "claim_boundary": "Open-development whole-parent OOF surrogate of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "counts": {
+    "candidates": 1507,
+    "formal_models": 8,
+    "formal_total_rows": 12056,
+    "outer_folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "parent_clusters": 31,
+    "rows_per_model": [
+      1507
+    ],
+    "runtime_jobs_completed": 301,
+    "selected_production_rows": 1507
+  },
+  "exact_min_max_abs_error": {
+    "formal_prediction": 0.0,
+    "formal_truth": 0.0,
+    "selected_production_prediction": 0.0
+  },
+  "formal_decision": {
+    "M2_Rdual": {
+      "mae": 0.0323587150283071,
+      "rmse": 0.04290748546218934,
+      "spearman": 0.6094011215999979
+    },
+    "Rdual_mae_delta_vs_M2": -0.0004685224627616266,
+    "Rdual_rmse_delta_vs_M2": -0.0006126794824061269,
+    "Rdual_spearman_delta_vs_M2": 0.009123626520638028,
+    "checks": {
+      "R8_floor": true,
+      "R9_floor": true,
+      "Rdual_mae": true,
+      "Rdual_rmse": true,
+      "Rdual_spearman": false,
+      "both_source_Rdual_spearman": true,
+      "each_source_Rdual_mae": true,
+      "outer_feature_closure": true,
+      "parent_bootstrap": false,
+      "parent_count": true,
+      "parent_macro_Rdual_mae": true
+    },
+    "paired_parent_bootstrap": {
+      "ci95_lower": -0.0029694076015160625,
+      "ci95_upper": 0.025389472972297548,
+      "mean": 0.0101516765485668,
+      "replicates": 10000,
+      "seed": 1931
+    },
+    "parents_with_nonnegative_Rdual_mae_delta": 20,
+    "primary_Rdual": {
+      "mae": 0.031890192565545476,
+      "rmse": 0.04229480597978321,
+      "spearman": 0.618524748120636
+    },
+    "selected_production_model_id": "M2_FROZEN_ALPHA10",
+    "status": "DO_NOT_PROMOTE_EXACT_M2_FALLBACK"
+  },
+  "hashes": {
+    "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+    "formal_execution_receipt_sha256": "7ee359d5554cadcae37274125744354f0ec9c4e126f95e3a4094d3a485564044",
+    "package_manifest_sha256": "f3b3e9378d51f6af90189d4b590c3d154aed5ca0dd528ebaa552e23472dda890",
+    "pretruth_freeze_receipt_sha256": "ab66d4a692b79e1f34289717ab3b205b2205289a5679a7256cc34e1b1d1c6150",
+    "runtime_result_sha256": "0126e46cd229f27957ed5a337edc50eacf4d2aa8d99615b9ea0f34aeda771a7d",
+    "runtime_terminal_sha256": "a582e99cd362f962be36c09c999e03c6249821bf1f7fe69079f49cf964e49cca"
+  },
+  "lane_Rdual_metrics": {
+    "B_CLEAN_TARGET_ATTENTION": {
+      "mae": 0.03227604710373812,
+      "rmse": 0.042029404519750284,
+      "spearman": 0.5292133962313549
+    },
+    "E_DECOUPLED_CONTACT_DETACHED": {
+      "mae": 0.0344978135927892,
+      "rmse": 0.04403570307531722,
+      "spearman": 0.44188797192671175
+    },
+    "E_DECOUPLED_CONTACT_SHARED": {
+      "mae": 0.031692011175182486,
+      "rmse": 0.04132938159740399,
+      "spearman": 0.5670170184038875
+    },
+    "M2_C2_E_SHARED_CONTACT2D": {
+      "mae": 0.031890192565545476,
+      "rmse": 0.04229480597978321,
+      "spearman": 0.618524748120636
+    },
+    "M2_C2_E_SHARED_CONTACT2D_CONSTRAINED_STACK": {
+      "mae": 0.031890192565545476,
+      "rmse": 0.04229480597978321,
+      "spearman": 0.618524748120636
+    },
+    "M2_C2_E_SHARED_NO_CONTACT": {
+      "mae": 0.03188768692558722,
+      "rmse": 0.04229318458444978,
+      "spearman": 0.618491719336766
+    },
+    "M2_C2_ONLY": {
+      "mae": 0.03216533513706094,
+      "rmse": 0.04262425681598165,
+      "spearman": 0.6137862571634155
+    },
+    "M2_FROZEN_ALPHA10": {
+      "mae": 0.0323587150283071,
+      "rmse": 0.04290748546218934,
+      "spearman": 0.6094011215999979
+    }
+  },
+  "notes": [
+    "GRAPH_STATUS.json retains the scheduler's last RUNNING label, but has 301 completed, 0 pending, and 0 running; TERMINAL.json is the authoritative PASS terminal.",
+    "The strict evaluator completed, but promotion gates failed for Rdual Spearman and parent bootstrap; production therefore remains the exact M2 fallback."
+  ],
+  "schema_version": "pvrig_v2_5_formal_terminal_evidence_verification_v1",
+  "status": "PASS"
+}

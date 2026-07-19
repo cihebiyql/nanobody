@@ -1,0 +1,12 @@
+{
+  "canonical_scalar_forward": "MODEL_LANE_E on E-capable detached/shared models for B/E/F",
+  "exact_be_trajectory_gate": true,
+  "lane_difference": {
+    "B": "scalar optimizer only",
+    "E": "scalar + strict detached contact optimizer",
+    "F": "scalar + shared-gated contact optimizer"
+  },
+  "schema_version": "pvrig_v2_6_real1507_integration_contract_v1_3",
+  "status": "NONLAUNCHING_CPU_TESTED_AWAITING_DETERMINISTIC_CUDA_SMOKE",
+  "v4_f_test32_access_count": 0
+}

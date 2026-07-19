@@ -1,0 +1,75 @@
+{
+  "claim_boundary": "computational dual-receptor docking geometry surrogate only",
+  "exact_min_contract": true,
+  "job_id": "formal_open_outer.collect",
+  "lanes": {
+    "B_CLEAN_TARGET_ATTENTION": {
+      "metrics": {
+        "R8": {
+          "mae": 0.034388785332890956,
+          "rmse": 0.0441517375912917,
+          "spearman": 0.5041620611139082
+        },
+        "R9": {
+          "mae": 0.03515951407321389,
+          "rmse": 0.044107665728132975,
+          "spearman": 0.5050765056410309
+        },
+        "Rdual": {
+          "mae": 0.03227604710373812,
+          "rmse": 0.04202940451975028,
+          "spearman": 0.5292133962313549
+        }
+      },
+      "parents": 31,
+      "rows": 1507
+    },
+    "E_DECOUPLED_CONTACT_DETACHED": {
+      "metrics": {
+        "R8": {
+          "mae": 0.03453708698717098,
+          "rmse": 0.044239476471570796,
+          "spearman": 0.5099077958649095
+        },
+        "R9": {
+          "mae": 0.03809560926675515,
+          "rmse": 0.047472108670195905,
+          "spearman": 0.4267262132542834
+        },
+        "Rdual": {
+          "mae": 0.0344978135927892,
+          "rmse": 0.04403570307531722,
+          "spearman": 0.44188797192671175
+        }
+      },
+      "parents": 31,
+      "rows": 1507
+    },
+    "E_DECOUPLED_CONTACT_SHARED": {
+      "metrics": {
+        "R8": {
+          "mae": 0.034552096938287986,
+          "rmse": 0.04391710344804072,
+          "spearman": 0.5178694218430666
+        },
+        "R9": {
+          "mae": 0.03414816605861535,
+          "rmse": 0.04276411571172584,
+          "spearman": 0.547041790088657
+        },
+        "Rdual": {
+          "mae": 0.031692011175182486,
+          "rmse": 0.041329381597404,
+          "spearman": 0.5670170184038875
+        }
+      },
+      "parents": 31,
+      "rows": 1507
+    }
+  },
+  "parents_per_lane": 31,
+  "rows_per_lane": 1507,
+  "schema_version": "pvrig_v2_5_formal_nested_open_outer_summary_v1",
+  "status": "PASS_FORMAL_OPEN_OUTER_EVALUATION_COLLECTED",
+  "v4_f_test32_access_count": 0
+}

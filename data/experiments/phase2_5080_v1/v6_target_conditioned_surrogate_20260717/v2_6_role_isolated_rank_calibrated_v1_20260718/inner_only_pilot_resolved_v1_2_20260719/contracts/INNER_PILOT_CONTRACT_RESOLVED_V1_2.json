@@ -1,0 +1,101 @@
+{
+  "claim_boundary": "Open-development inner-validation approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, V4-F/test32, or submission truth.",
+  "derived_target": "exact_min(R_8X6B,R_9E6Y)",
+  "direct_targets": [
+    "R_8X6B",
+    "R_9E6Y"
+  ],
+  "driver_sha256": "cedf5adc404646f2a083a58723753115be888abe40931841a99865013835b10e",
+  "fixed_epochs": 8,
+  "gradient_accumulation": 2,
+  "integration_freeze_sha256": "e73335c32e8495d609f9b5e6379ba648d1c38e4da49c40088468eae7308e3faa",
+  "integration_trainer_sha256": "e99146be166cab7f703bd6cbcad3594e196d7a155c422459cb16f8cbfc2b6a24",
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "precision": "bf16",
+  "resource_only_supersession": {
+    "previous_physical_gpus": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "reason": "GPU2 occupied by unrelated process at launch; scientific protocol unchanged",
+    "resolved_physical_gpus": [
+      1,
+      4,
+      5,
+      6
+    ]
+  },
+  "schema_version": "pvrig_v2_6_inner_only_pilot_resolved_contract_v1_2",
+  "smoke_result_sha256": "e6901c772411464d8b2fb906839dd07afcbfdfc39e1d8ec1d18b01e66b50ea21",
+  "status": "FROZEN_RESOLVED_AUTHORIZED",
+  "v4_f_test32_access_count": 0,
+  "variants": [
+    [
+      "F0_SHARED_GATED_NO_RANK",
+      "F_SHARED_GATED_CONTACT_TRANSFER",
+      43,
+      0.0,
+      1,
+      "cuda:0"
+    ],
+    [
+      "F0_SHARED_GATED_NO_RANK",
+      "F_SHARED_GATED_CONTACT_TRANSFER",
+      97,
+      0.0,
+      4,
+      "cuda:1"
+    ],
+    [
+      "F0_SHARED_GATED_NO_RANK",
+      "F_SHARED_GATED_CONTACT_TRANSFER",
+      193,
+      0.0,
+      5,
+      "cuda:2"
+    ],
+    [
+      "F1_SHARED_GATED_V4D_EXACT_MIN_RANK",
+      "F_SHARED_GATED_CONTACT_TRANSFER",
+      43,
+      0.1,
+      6,
+      "cuda:3"
+    ],
+    [
+      "F1_SHARED_GATED_V4D_EXACT_MIN_RANK",
+      "F_SHARED_GATED_CONTACT_TRANSFER",
+      97,
+      0.1,
+      1,
+      "cuda:0"
+    ],
+    [
+      "F1_SHARED_GATED_V4D_EXACT_MIN_RANK",
+      "F_SHARED_GATED_CONTACT_TRANSFER",
+      193,
+      0.1,
+      4,
+      "cuda:1"
+    ],
+    [
+      "B_SCALAR_ATTENTION_ONLY",
+      "B_SCALAR_ATTENTION_ONLY",
+      43,
+      0.0,
+      5,
+      "cuda:2"
+    ],
+    [
+      "E_STRICT_DETACHED_DYNAMICS_CONTROL",
+      "E_STRICT_DETACHED_DYNAMICS_CONTROL",
+      43,
+      0.0,
+      6,
+      "cuda:3"
+    ]
+  ]
+}

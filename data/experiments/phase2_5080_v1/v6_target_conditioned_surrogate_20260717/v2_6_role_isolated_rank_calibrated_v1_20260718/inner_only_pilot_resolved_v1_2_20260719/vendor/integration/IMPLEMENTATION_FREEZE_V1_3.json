@@ -1,0 +1,32 @@
+{
+  "data_access": {
+    "outer_metrics_accessed": 0,
+    "remote_training_launched": false,
+    "score_partition_truth_accessed": 0,
+    "v4_f_test32_accessed": 0
+  },
+  "files": {
+    "INTEGRATION_CONTRACT_V1_3.json": "60ae64dc4beba481e1b679bcd8fa19a9a1dcd79f247a9ab6f5e4aa18ad017f1b",
+    "README_ZH.md": "2e4f6726d3de715944a8ee9574cc21c73ef83ff104c38fdcc380416a47c83cc9",
+    "TEST_RESULTS.log": "a79fceef6c1840fe085d65176b472cdd392d1fbe4933557f4b09e7fd850457ea",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_real1507_role_isolated_trainer_v1_3.py": "8a9baa709b3652525fec89deffc8af4fc0ecb81d933cd9ded8f1b348748c3b84",
+    "trainer/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trainer/real1507_role_isolated_trainer_v1_3.py": "e99146be166cab7f703bd6cbcad3594e196d7a155c422459cb16f8cbfc2b6a24",
+    "trust_anchor/frozen_real1507_trust_anchors_v1_3/TRUST_ANCHOR_SET_RECEIPT.json": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e"
+  },
+  "not_verified": [
+    "deterministic Node1 CUDA/BF16 20-step exact trajectory replay",
+    "formal pilot"
+  ],
+  "root_cause_fixed": "B/E now share canonical E-capable scalar forward graph",
+  "schema_version": "pvrig_v2_6_real1507_role_isolated_trainer_implementation_freeze_v1_3",
+  "status": "FROZEN_IMPLEMENTATION_TESTED_NONLAUNCHING_CPU_ONLY",
+  "supersedes_for_future_execution_only": "real1507_integration_v1_2_20260719",
+  "validation": {
+    "errors": 0,
+    "failures": 0,
+    "result": "PASS",
+    "tests_run": 56
+  }
+}

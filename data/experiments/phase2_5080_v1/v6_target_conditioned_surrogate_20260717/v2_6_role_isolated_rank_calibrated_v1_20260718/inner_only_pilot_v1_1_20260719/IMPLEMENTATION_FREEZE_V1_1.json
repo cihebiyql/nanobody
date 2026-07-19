@@ -1,0 +1,82 @@
+{
+  "bound_integration_v1_2": {
+    "contract_sha256": "41afdbee3a2851c584c47799e2980ae20168c3293dea17f5a89ce83c71245be8",
+    "freeze_sha256": "538abbcc495cd357b74880e6cef02626c7c969929ca891d566f99ab3e694b681",
+    "outer0_inner0_label_sha256": "044df3c1d4268421c3058cd28c45785ae98b3a1693b12248fdc8d35a2609de3a",
+    "outer0_inner0_training_split_sha256": "f09070d3f193c152a07d0a57da4f5ecc602a4bb3a7a609a941af8176242c77dd",
+    "trainer_sha256": "036fb5f1d8b443bc3fd514ae6fe43970af42b6d078c378233f2825550b61d4e4"
+  },
+  "claim_boundary": "Open-development inner-validation computational dual-receptor Docking-geometry surrogate only.",
+  "created_date": "2026-07-19",
+  "files": {
+    "CUDA_SMOKE_RECEIPT_EXPECTATION_V1_1.json": "df7fc7fc4bec811aec44bebc00638582ca4ff60dc33d0b94b06b392516c0a1e0",
+    "FUTURE_DEPLOYMENT_BINDING_TEMPLATE_V1_1.json": "f781cca8238dd8091ae0e5168ebb998caa833674256c4b55617dd5f1521640e4",
+    "INNER_PILOT_CONTRACT_V1_1.json": "7f8868e92b82ee4e783d18f956679f8b521ebf152bf354aebd1a9bbd3bb7de42",
+    "README_ZH.md": "a67dbaa7c7383d47a9d7d738a7d19fd5eb11f4c7c452cc0944611142c634dcdc",
+    "TEST_RESULTS.log": "3abe537c92c79e8d94ccfce75718a517ac8127a0d474fd8aca94f427e7f576e5",
+    "prepared/nonlaunching_skeleton_v1_1/PACKAGE_MANIFEST.json": "5b3fc6c9f3367276f619a191a1f23929c69c169f29f810c58dd82353080ad972",
+    "prepared/nonlaunching_skeleton_v1_1/node1_bundle/plan/PILOT_JOB_GRAPH_TEMPLATE.json": "cf375a907c30ee056f816956f58ab1bfa907ca2cf4e5234e99998ca40ef62c22",
+    "src/build_nonlaunching_inner_pilot_package_v1_1.py": "c58edab69dc3ff4d062a09a614d3c54ab801c3aa2b28fc131108a6e0b42297b5",
+    "src/collect_inner_pilot_metrics_v1_1.py": "b77fe9f48a26ec03aaa17e34fc70a437eb1809581c5f230925d99ccfcf94030f",
+    "src/run_resolved_inner_pilot_job_graph_v1_1.py": "82ca2bc5510fd933022710bb6c46638db1de5e20fef6b1b993206b8a63efccc0",
+    "src/validate_inner_pilot_package_v1_1.py": "c40710c3f562d7bf38c9c347f1de4072ec406e20c628e2dfb5501d8e3272caed",
+    "tests/test_inner_pilot_package_v1_1.py": "51190e0256dd910f047fd166266193652ab255cc69984acdf21ad9d5cfd20ce2"
+  },
+  "future_deployment_template_sha256": "f781cca8238dd8091ae0e5168ebb998caa833674256c4b55617dd5f1521640e4",
+  "job_graph_template_sha256": "cf375a907c30ee056f816956f58ab1bfa907ca2cf4e5234e99998ca40ef62c22",
+  "launch_authorized": false,
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "package_manifest_sha256": "5b3fc6c9f3367276f619a191a1f23929c69c169f29f810c58dd82353080ad972",
+  "pending_gates": [
+    "real CUDA driver freeze",
+    "PASS CUDA smoke receipt plus content-addressed per-step evidence",
+    "resolved package",
+    "explicit authorization overlay",
+    "idle GPU/data1 recheck"
+  ],
+  "pilot_matrix": {
+    "B_seeds": [
+      43
+    ],
+    "E_seeds": [
+      43
+    ],
+    "F0_seeds": [
+      43,
+      97,
+      193
+    ],
+    "F1_seeds": [
+      43,
+      97,
+      193
+    ],
+    "cpu_jobs": 1,
+    "gpu_jobs": 8
+  },
+  "resources": {
+    "cuda_visible_devices": "1,2,4,5",
+    "max_gpu_jobs": 4,
+    "physical_gpus": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "physical_to_logical": {
+      "1": "cuda:0",
+      "2": "cuda:1",
+      "4": "cuda:2",
+      "5": "cuda:3"
+    }
+  },
+  "schema_version": "pvrig_v2_6_inner_only_pilot_implementation_freeze_v1_1",
+  "smoke_receipt_expectation_sha256": "df7fc7fc4bec811aec44bebc00638582ca4ff60dc33d0b94b06b392516c0a1e0",
+  "status": "FROZEN_TESTED_NONLAUNCHING_INTEGRATION_V1_2_BOUND_AWAITING_REAL_CUDA_DRIVER_AND_SMOKE_PASS",
+  "supersedes_for_future_execution_only": "inner_only_pilot_v1_20260719",
+  "test_count": 10,
+  "tests_status": "PASS",
+  "training_or_prediction_executed": false,
+  "v4_f_test32_access_count": 0
+}

@@ -1,0 +1,15 @@
+{
+  "expected_gpu_jobs": 8,
+  "files": {
+    "src/collect_inner_pilot_metrics_v1_2_1.py": "754ea4f64e9954f01ca9ed8d7098e4962d5ab96a8aba36985dd78f3109e62c42",
+    "src/wait_and_collect_v1_2_1.py": "4b0aa254340e92389f370441ab2e537ea8e055d1468519897dd5598107bcd4ee"
+  },
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "output_dir": "collector_recovery_v1_2_1",
+  "reason": "Integration V1.3 receipt uses score_truth_rows_accessed=0; immutable V1.1 collector expected absent outer_test_truth_access_count. GPU artifacts are not modified.",
+  "schema_version": "pvrig_v2_6_inner_only_pilot_collector_recovery_prereg_v1_2_1",
+  "source_runtime": "/data1/qlyu/projects/pvrig_v2_6_inner_only_pilot_runtime_resolved_v1_2_20260719",
+  "status": "FROZEN_RECOVERY_FOR_V1_3_RECEIPT_FIELD_COMPATIBILITY",
+  "v4_f_test32_access_count": 0
+}

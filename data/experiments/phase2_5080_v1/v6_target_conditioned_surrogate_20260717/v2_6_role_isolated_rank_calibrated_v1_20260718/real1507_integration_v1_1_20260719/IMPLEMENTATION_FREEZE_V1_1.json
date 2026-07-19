@@ -1,0 +1,88 @@
+{
+  "bound_dependencies": {
+    "rank_v1_1_core_sha256": "b420766a7769a546418a68367b71742eb3ea7872dd2411a48609139a985ef2ec",
+    "rank_v1_1_freeze_sha256": "fe276bd1601c77b07440e6f1960d13a75bf81ee7769a30c8bb0229a0ee3d77ac",
+    "role_optimizer_core_sha256": "2dadc945ec30eb802ca9f32fac84ce647783b9defc36db68f345fc00e972f363",
+    "role_optimizer_freeze_sha256": "0287f3e70edc463edae84e90e7a41e732ef7ca981d277833608c5eeafe6b92f1",
+    "v2_5_model_sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521",
+    "v2_5_real1507_runner_sha256": "f7c4e813f19d9034a945982d029118dc87cc6c420f1f8c8cf898bfec74065b7f",
+    "v2_5_trainer_sha256": "af93c39054a1a73568a68d498406fb3eddbffe1d688c93e16f59319148e285b0"
+  },
+  "claim_boundary": "Open-development sequence and label-free monomer approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "created_date": "2026-07-19",
+  "data_access": {
+    "outer_metrics_accessed": 0,
+    "remote_training_launched": false,
+    "score_partition_truth_accessed": 0,
+    "v4_f_test32_accessed": 0
+  },
+  "files": {
+    "INTEGRATION_CONTRACT_V1_1.json": "a2ea1bfdc9836df58616fceec41c38b6bc21b7b61e41677edf246d6c3d02f186",
+    "README_ZH.md": "47f0834dd23c8656aef56ed1ac76096bab06ae6a6a3efb060a98eaa88af2137c",
+    "TEST_RESULTS.log": "51507cc2cf6ab423b27b40bdad349fa6320d280b595d9212b2e3f7d408107f2b",
+    "tests/test_real1507_role_isolated_trainer_v1_1.py": "ceba0724a92194938ffceb4f615f99e6cc9199492ec946d7a6bdc8f1ee3f310e",
+    "trainer/real1507_role_isolated_trainer_v1_1.py": "65e620114a9726ae6bb36bce8f4122d63d6e62ab1ad8ce2717506ce74ba33944",
+    "trust_anchor/build_external_rank_trust_anchors_v1_1.py": "462780a10ddb261b5ca8c06c929f007d7719af278da77a304fb96b4f752457b6",
+    "trust_anchor/frozen_real1507_trust_anchors_v1_1/TRUST_ANCHOR_SET_RECEIPT.json": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e"
+  },
+  "fixes": {
+    "accumulation": "exact raw hierarchy and contact component-specific effective mass",
+    "calibration": {
+      "inner_folds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "outer_train_candidate_parent_closure": true,
+      "seeds": [
+        43,
+        97,
+        193
+      ]
+    },
+    "cuda_mapping": "explicit physical/logical mapping required",
+    "per_step_hashes": [
+      "parameter",
+      "scalar_trajectory",
+      "optimizer",
+      "batch",
+      "rank_cache"
+    ],
+    "post_lambda_contact_budget": {
+      "kappa": 0.25,
+      "lambda_contact_shared": 1.0,
+      "telemetry_required": true
+    },
+    "rank_cache_trust": "25 external frozen split and label anchors; runtime self-signing rejected"
+  },
+  "not_verified": [
+    "independent code review",
+    "Node1 CUDA/BF16 real1507 20-step replay",
+    "formal nested training",
+    "outer metrics or promotion"
+  ],
+  "schema_version": "pvrig_v2_6_real1507_role_isolated_trainer_implementation_freeze_v1_1",
+  "status": "FROZEN_IMPLEMENTATION_TESTED_NONLAUNCHING_CPU_ONLY",
+  "supersedes_for_future_execution_only": "real1507_integration_v1_20260718",
+  "trust_anchor_set": {
+    "partition_count": 25,
+    "source_inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "source_teacher_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1",
+    "v4_f_test32_access_count": 0
+  },
+  "v1_immutability": {
+    "freeze_sha256": "8c6bd627b1f7381c76a97a821f9eafdf3115c1859bc4120890a7239c999e5d76",
+    "mutated": false,
+    "trainer_sha256": "8625e7f27091f05dae3ef9cbb52a88efa87acc16daad4494c89752f64a947a02"
+  },
+  "validation": {
+    "device_scope": "CPU_ONLY",
+    "errors": 0,
+    "failures": 0,
+    "py_compile": "PASS",
+    "result": "PASS",
+    "tests_run": 59
+  }
+}

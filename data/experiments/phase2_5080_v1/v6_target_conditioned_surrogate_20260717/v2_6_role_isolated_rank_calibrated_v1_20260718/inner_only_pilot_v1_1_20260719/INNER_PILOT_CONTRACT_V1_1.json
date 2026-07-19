@@ -1,0 +1,183 @@
+{
+  "bound_integration_v1_2": {
+    "contract_sha256": "41afdbee3a2851c584c47799e2980ae20168c3293dea17f5a89ce83c71245be8",
+    "freeze_sha256": "538abbcc495cd357b74880e6cef02626c7c969929ca891d566f99ab3e694b681",
+    "outer0_inner0_label_sha256": "044df3c1d4268421c3058cd28c45785ae98b3a1693b12248fdc8d35a2609de3a",
+    "outer0_inner0_training_split_sha256": "f09070d3f193c152a07d0a57da4f5ecc602a4bb3a7a609a941af8176242c77dd",
+    "outer0_inner0_trust_anchor_sha256": "d23ebf7df56b9c15a556eba00b3b4b1f5b5305e57b99dbb07f0ce28cd07c7485",
+    "status": "BOUND_FROZEN_CPU_TESTED_NONLAUNCHING_AWAITING_CUDA_SMOKE",
+    "trainer_sha256": "036fb5f1d8b443bc3fd514ae6fe43970af42b6d078c378233f2825550b61d4e4",
+    "trust_anchor_set_receipt_sha256": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e"
+  },
+  "claim_boundary": "Open-development inner-validation approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "created_date": "2026-07-19",
+  "derived_inference_target": "exact_min(R_8X6B,R_9E6Y)",
+  "direct_targets": [
+    "R_8X6B",
+    "R_9E6Y"
+  ],
+  "fixed_hyperparameters": {
+    "fixed_epochs": 8,
+    "gradient_accumulation": 2,
+    "hparam_id": "H0_PILOT",
+    "huber_beta": 0.03,
+    "learning_rate": 0.0001,
+    "precision": "bf16",
+    "rank_lambda_F0": 0.0,
+    "rank_lambda_F1": 0.1,
+    "rank_noise_margin": 0.019614956149,
+    "rank_pairs_per_scalar_step_F1": 8,
+    "rank_teacher_role": "V4D_OPEN_MULTI_SEED_ONLY_EXACT_MIN",
+    "shared_contact_gradient_budget_kappa": 0.25,
+    "weight_decay": 0.02
+  },
+  "fixed_split": {
+    "inner_fold": 0,
+    "outer_fold": 0,
+    "outer_test_truth_access_count": 0,
+    "selection_role": "PREDECLARED_OPEN_INNER_VALIDATION_ONLY",
+    "split_manifest_node1": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/plan/trainer_splits/outer_0_inner_0.json",
+    "split_manifest_sha256": "11b3f0f394fa3057b3e3f7fec4d91ecf677f2a3546fab223d727bf9f707d219d",
+    "training_tsv_node1": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_training/outer_0_inner_0.tsv",
+    "training_tsv_sha256": "5abacbe69e85a5f6e3a13d6af23ae7e2b2903d59554dbce46e14ea165acc4d21"
+  },
+  "independent_Rdual_output": false,
+  "job_contract": {
+    "cpu_collect_jobs": 1,
+    "cpu_threads_per_job": 4,
+    "cuda_visible_devices": "1,2,4,5",
+    "gpu_assignment_round_robin": [
+      1,
+      2,
+      4,
+      5,
+      1,
+      2,
+      4,
+      5
+    ],
+    "gpu_jobs": 8,
+    "max_gpu_jobs": 4,
+    "one_training_process_per_gpu": true,
+    "physical_gpu_allowlist": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "physical_to_logical_cuda_map": {
+      "1": "cuda:0",
+      "2": "cuda:1",
+      "4": "cuda:2",
+      "5": "cuda:3"
+    },
+    "total_jobs": 9
+  },
+  "launch_authorized": false,
+  "launch_gates": [
+    "Resolved package retains the exact bound integration V1.2 freeze/trainer/contract/trust-anchor hashes; V1 and V1.1 are rejected.",
+    "A separately frozen real CUDA driver V1.2 exists and is bound by exact SHA256.",
+    "CUDA smoke receipt is PASS and proves real-data B/E trajectory, exact accumulation, F post-lambda cap, exact-min, finite state, RNG restoration, per-step evidence, and zero sealed access.",
+    "GPU 1/2/4/5 are RTX 4090, idle, and each has at most 512 MiB used at launch.",
+    "/data1 has at least 100 GiB free.",
+    "All package and external input hashes close immediately before launch.",
+    "Runtime root does not already exist.",
+    "V4-F/test32 access count is zero in package, launcher, jobs, and collector.",
+    "Outer-test truth and outer metrics are never read by this pilot."
+  ],
+  "metrics": {
+    "B_E_protocol": "seed43_dynamics_control_only",
+    "F0_F1_ensemble_protocol": "mean_predictions_over_seeds_43_97_193_then_exact_min",
+    "comparisons": [
+      "F1_minus_F0",
+      "F0_minus_B",
+      "F0_minus_E"
+    ],
+    "dual": [
+      "spearman",
+      "mae",
+      "rmse"
+    ],
+    "outer_test_metrics_access_count": 0,
+    "parent_macro": [
+      "mae",
+      "rmse",
+      "within_parent_spearman"
+    ],
+    "per_receptor": [
+      "spearman",
+      "mae",
+      "rmse"
+    ]
+  },
+  "pilot_variants": [
+    {
+      "integration_lane": "F_SHARED_GATED_CONTACT_TRANSFER",
+      "role": "PRIMARY",
+      "seeds": [
+        43,
+        97,
+        193
+      ],
+      "variant": "F0_SHARED_GATED_NO_RANK"
+    },
+    {
+      "integration_lane": "F_SHARED_GATED_CONTACT_TRANSFER",
+      "role": "RANKING_CHALLENGER",
+      "seeds": [
+        43,
+        97,
+        193
+      ],
+      "variant": "F1_SHARED_GATED_V4D_EXACT_MIN_RANK"
+    },
+    {
+      "integration_lane": "B_SCALAR_ATTENTION_ONLY",
+      "role": "DYNAMICS_CONTROL",
+      "seeds": [
+        43
+      ],
+      "variant": "B_SCALAR_ATTENTION_ONLY"
+    },
+    {
+      "integration_lane": "E_STRICT_DETACHED_DYNAMICS_CONTROL",
+      "role": "DYNAMICS_CONTROL",
+      "seeds": [
+        43
+      ],
+      "variant": "E_STRICT_DETACHED_DYNAMICS_CONTROL"
+    }
+  ],
+  "purpose": "Technical and open-development comparison of role-isolated V2.6 lanes before any full nested formal run.",
+  "required_future_bindings": {
+    "authorization_overlay": "UNRESOLVED_REQUIRED_EXACT_SHA256",
+    "cuda_driver_v1_2": "UNRESOLVED_REQUIRED_REGULAR_FILE_AND_FREEZE_SHA256",
+    "cuda_driver_v1_2_freeze": "UNRESOLVED_REQUIRED_EXACT_SHA256",
+    "cuda_smoke_driver_freeze": "UNRESOLVED_REQUIRED_EXACT_SHA256",
+    "cuda_smoke_pass_receipt": "UNRESOLVED_REQUIRED_EXACT_SHA256"
+  },
+  "required_per_job_evidence": {
+    "checkpoint": "head/trainable-state checkpoint regular file",
+    "checkpoint_sha256": "bound in RESULT.json",
+    "exact_min_violation_count": 0,
+    "outer_metrics_access_count": 0,
+    "outer_test_truth_access_count": 0,
+    "predictions_no_metrics_tsv": "inner-score predictions only",
+    "predictions_sha256": "bound in RESULT.json",
+    "result_json": "regular file with exact job identity, variant, seed and PASS status",
+    "step_evidence_jsonl": "one canonical record per scalar optimizer step",
+    "step_evidence_row_count": "equals reported optimizer_steps",
+    "step_evidence_sha256": "bound in RESULT.json",
+    "training_receipt_json": "regular file with zero outer-test and sealed access",
+    "v4_f_test32_access_count": 0
+  },
+  "schema_version": "pvrig_v2_6_inner_only_pilot_contract_v1_1",
+  "status": "FROZEN_NONLAUNCHING_INTEGRATION_V1_2_BOUND_PENDING_CUDA_DRIVER_AND_SMOKE_PASS",
+  "superseded_integrations_for_execution": {
+    "integration_v1_1_forbidden": true,
+    "integration_v1_forbidden": true,
+    "reason": "V1.2 fixes post-lambda budget, exact weighted accumulation, external rank trust anchors, calibration provenance, stable optimizer hashes, GPU mapping, and per-step evidence contracts."
+  },
+  "training_or_prediction_executed": false,
+  "v4_f_test32_access_count": 0
+}

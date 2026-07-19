@@ -1,0 +1,71 @@
+{
+  "claim_boundary": "Open-development inner-validation computational dual-receptor Docking-geometry surrogate only.",
+  "created_date": "2026-07-19",
+  "files": {
+    "INNER_PILOT_CONTRACT_V1.json": "1a7f3573da5ec2e18a3389e6da334e58998c564a47e25fe981f8939e64605189",
+    "README_ZH.md": "d872d2482b8f06c01edef4a333a979139b5ca7faf9b871d4c6f02582cc6f19eb",
+    "TEST_RESULTS.log": "2e5d2f48bd3f24a7c3f542fb975b84718e56506c6771bdd4624e6c07bb1773d4",
+    "prepared/nonlaunching_skeleton_v1/PACKAGE_MANIFEST.json": "65bf84712403bcb6d9caa1c056b4f20e982fb9d71ba7bd83bc25998080238b33",
+    "prepared/nonlaunching_skeleton_v1/node1_bundle/plan/PILOT_JOB_GRAPH_TEMPLATE.json": "94c94ec0c370ab3c3964f4789c43c07670c7568ca084ef6cc4942f5075c9bd03",
+    "src/build_nonlaunching_inner_pilot_package_v1.py": "7aabde844f0eb2ad530da12296797319b3f8106e57d76bc7c91cbce3d57fdc0b",
+    "src/collect_inner_pilot_metrics_v1.py": "c9fa6d4a44f0c6802070fe9c27fba6b5257992e5c306e035833612a7a2ea39e8",
+    "src/run_resolved_inner_pilot_job_graph_v1.py": "4c4be08fa8be7450feda84f9f6b0772d153cee9041f13c2e75f6a255b553a0b7",
+    "src/validate_inner_pilot_package_v1.py": "37821fe57231213a67a693c1128f299b288a0c9f7fc910d6c8f73be621ebe4c5",
+    "tests/test_inner_pilot_package_v1.py": "8e189acec6adf2f3aca5db0af93720afe7787611af9999b7382ff81cae59df44"
+  },
+  "job_graph_template_sha256": "94c94ec0c370ab3c3964f4789c43c07670c7568ca084ef6cc4942f5075c9bd03",
+  "known_integration_v1_forbidden": true,
+  "launch_authorized": false,
+  "outer_metrics_access_count": 0,
+  "outer_test_truth_access_count": 0,
+  "package_manifest_sha256": "65bf84712403bcb6d9caa1c056b4f20e982fb9d71ba7bd83bc25998080238b33",
+  "pilot_matrix": {
+    "B_seeds": [
+      43
+    ],
+    "E_seeds": [
+      43
+    ],
+    "F0_seeds": [
+      43,
+      97,
+      193
+    ],
+    "F1_seeds": [
+      43,
+      97,
+      193
+    ],
+    "cpu_jobs": 1,
+    "gpu_jobs": 8
+  },
+  "required_future_gate": [
+    "reviewed integration V1.1 exact hashes",
+    "frozen CUDA driver exact hashes",
+    "outer0/inner0 split and label hashes",
+    "PASS CUDA smoke receipt exact hash",
+    "explicit authorization overlay exact hash"
+  ],
+  "resources": {
+    "cuda_visible_devices": "1,2,4,5",
+    "max_gpu_jobs": 4,
+    "physical_gpus": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "physical_to_logical": {
+      "1": "cuda:0",
+      "2": "cuda:1",
+      "4": "cuda:2",
+      "5": "cuda:3"
+    }
+  },
+  "schema_version": "pvrig_v2_6_inner_only_pilot_implementation_freeze_v1",
+  "status": "FROZEN_TESTED_NONLAUNCHING_BLOCKED_PENDING_REVIEWED_INTEGRATION_V1_1_AND_CUDA_SMOKE_PASS",
+  "test_count": 10,
+  "tests_status": "PASS",
+  "training_or_prediction_executed": false,
+  "v4_f_test32_access_count": 0
+}

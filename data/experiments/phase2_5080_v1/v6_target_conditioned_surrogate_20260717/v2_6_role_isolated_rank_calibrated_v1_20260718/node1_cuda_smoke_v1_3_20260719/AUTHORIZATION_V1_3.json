@@ -1,0 +1,21 @@
+{
+  "driver_freeze_sha256": "3654a7844fc209f280b2d15067aac1aeb914e1630082b7886a67934f61e3e716",
+  "driver_sha256": "7f1ca77c76e4ba00082aedc9ff1afebf06ee693da00db595b651ef44dacfcb7d",
+  "execution_authorized": true,
+  "integration_freeze_sha256": "e73335c32e8495d609f9b5e6379ba648d1c38e4da49c40088468eae7308e3faa",
+  "integration_trainer_sha256": "e99146be166cab7f703bd6cbcad3594e196d7a155c422459cb16f8cbfc2b6a24",
+  "lanes": [
+    "B",
+    "E",
+    "F"
+  ],
+  "logical_cuda_index": 0,
+  "optimizer_steps_per_lane": 20,
+  "physical_gpu_index": 1,
+  "precision": "bf16",
+  "rank_trust_anchor_set_receipt_sha256": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e",
+  "schema_version": "pvrig_v2_6_node1_cuda_smoke_authorization_v1_3",
+  "status": "EXPLICITLY_AUTHORIZED_NODE1_CUDA_SMOKE",
+  "v25_terminal_job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+  "v4_f_test32_access_count": 0
+}

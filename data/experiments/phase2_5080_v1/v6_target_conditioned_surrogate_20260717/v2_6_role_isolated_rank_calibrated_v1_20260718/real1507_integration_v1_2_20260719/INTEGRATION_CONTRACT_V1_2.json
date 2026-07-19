@@ -1,0 +1,15 @@
+{
+  "calibration": "manifest-derived membership + checkpoint-bound 3-seed inner-OOF predictions + frozen teacher truth",
+  "claim_boundary": "Open-development sequence and label-free monomer approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "hard_bindings": {
+    "inner_manifest_sha256": "b56cd47d2ea030cbf52cf2a966f503c1e5b8f9755329de62ad8e4343f32b6073",
+    "outer_manifest_sha256": "ce49916385ccb792b4b03dda72889ab8c72aaccd662ccfcdb1d30874bdd81e55",
+    "rank_trust_anchor_set_receipt_sha256": "2acf16069e3609a8160d9193818fa707a5105405e28354956f3431634756959e",
+    "teacher_sha256": "47c2c98fc282058e470ab0978b58daaf896262d593f017216cbc02cd5e6335e1"
+  },
+  "optimizer_state_hash_order": "stable model parameter names",
+  "remote_training_launched": false,
+  "schema_version": "pvrig_v2_6_real1507_integration_contract_v1_2",
+  "status": "NONLAUNCHING_CPU_TESTED_AWAITING_CUDA_SMOKE",
+  "v4_f_test32_access_count": 0
+}

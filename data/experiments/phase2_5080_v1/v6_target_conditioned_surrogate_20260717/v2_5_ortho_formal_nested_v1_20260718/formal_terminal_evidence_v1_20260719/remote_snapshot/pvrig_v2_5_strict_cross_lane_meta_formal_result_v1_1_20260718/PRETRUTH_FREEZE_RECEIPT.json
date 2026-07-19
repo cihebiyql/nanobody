@@ -1,0 +1,9 @@
+{
+  "contract_sha256": "0329a4749d9874f3bef7bda30d744d57b85b626783df9dc33a7fd931f3f75eb2",
+  "parameters_sha256": "6287051c72b1f610f8221f4b0a0272d20acbe59fe72a23acbc5b39f9ee21fc4c",
+  "prediction_sha256": "2d1d8aa4d4f65fb660dea692a887cb42faf75b854ed8de3778fd9ef24c3a49a9",
+  "runtime_job_graph_sha256": "ea1c4c1eedf189d9542e3e73b0c0368777b4073468fd4e39535b28fd7fa24185",
+  "schema_version": "pvrig_v2_5_ortho_cross_lane_pretruth_freeze_receipt_v1_1",
+  "status": "FROZEN_BEFORE_OUTER_TRUTH_ACCESS",
+  "v4_f_test32_access_count": 0
+}

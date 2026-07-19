@@ -1,0 +1,30 @@
+{
+  "schema_version": "pvrig_v2_6_inner_pilot_cuda_smoke_receipt_expectation_v1_1",
+  "status": "FROZEN_EXPECTATION_NONLAUNCHING",
+  "required_status_prefix": "PASS",
+  "required_integration_v1_2_freeze_sha256": "538abbcc495cd357b74880e6cef02626c7c969929ca891d566f99ab3e694b681",
+  "required_integration_v1_2_trainer_sha256": "036fb5f1d8b443bc3fd514ae6fe43970af42b6d078c378233f2825550b61d4e4",
+  "required_fields": {
+    "bf16_cuda": true,
+    "be_max_scalar_shared_parameter_delta_max": 1e-07,
+    "gradient_accumulation_closure": true,
+    "f_shared_gradient_budget_kappa": 0.25,
+    "f_shared_gradient_budget_violation_count": 0,
+    "exact_min_violation_count": 0,
+    "finite_state": true,
+    "contact_rng_restoration": true,
+    "outer_test_truth_access_count": 0,
+    "outer_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "required_content_addressed_evidence": [
+    "per-step parameter hashes",
+    "per-step optimizer-state hashes",
+    "per-step batch candidate hashes",
+    "per-step gradient-budget telemetry",
+    "rank-cache hash",
+    "input/trust-anchor receipts",
+    "before/after checkpoint hashes"
+  ],
+  "execution_authorized": false
+}

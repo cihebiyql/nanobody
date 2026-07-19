@@ -1,0 +1,133 @@
+{
+  "schema_version": "pvrig_v2_6_inner_only_pilot_contract_v1",
+  "status": "FROZEN_NONLAUNCHING_BLOCKED_PENDING_INTEGRATION_V1_1_AND_CUDA_SMOKE_PASS",
+  "created_date": "2026-07-19",
+  "claim_boundary": "Open-development inner-validation approximation of independent 8X6B/9E6Y computational Docking geometry only; not binding, affinity, experimental blocking, Docking Gold, sealed V4-F evidence, or submission truth.",
+  "purpose": "Technical and open-development comparison of role-isolated V2.6 lanes before any full nested formal run.",
+  "fixed_split": {
+    "outer_fold": 0,
+    "inner_fold": 0,
+    "selection_role": "PREDECLARED_OPEN_INNER_VALIDATION_ONLY",
+    "outer_test_truth_access_count": 0,
+    "split_manifest_node1": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/plan/trainer_splits/outer_0_inner_0.json",
+    "split_manifest_sha256": "11b3f0f394fa3057b3e3f7fec4d91ecf677f2a3546fab223d727bf9f707d219d",
+    "training_tsv_node1": "/data1/qlyu/projects/pvrig_v6_v2_2_2_strict_nested_stack_authorized_v1_2_1_20260718/inputs/split_training/outer_0_inner_0.tsv",
+    "training_tsv_sha256": "5abacbe69e85a5f6e3a13d6af23ae7e2b2903d59554dbce46e14ea165acc4d21"
+  },
+  "fixed_hyperparameters": {
+    "hparam_id": "H0_PILOT",
+    "fixed_epochs": 8,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.02,
+    "huber_beta": 0.03,
+    "gradient_accumulation": 2,
+    "precision": "bf16",
+    "shared_contact_gradient_budget_kappa": 0.25,
+    "rank_lambda_F0": 0.0,
+    "rank_lambda_F1": 0.1,
+    "rank_pairs_per_scalar_step_F1": 8,
+    "rank_noise_margin": 0.019614956149,
+    "rank_teacher_role": "V4D_OPEN_MULTI_SEED_ONLY_EXACT_MIN"
+  },
+  "pilot_variants": [
+    {
+      "variant": "F0_SHARED_GATED_NO_RANK",
+      "integration_lane": "F_SHARED_GATED_CONTACT_TRANSFER",
+      "seeds": [43, 97, 193],
+      "role": "PRIMARY"
+    },
+    {
+      "variant": "F1_SHARED_GATED_V4D_EXACT_MIN_RANK",
+      "integration_lane": "F_SHARED_GATED_CONTACT_TRANSFER",
+      "seeds": [43, 97, 193],
+      "role": "RANKING_CHALLENGER"
+    },
+    {
+      "variant": "B_SCALAR_ATTENTION_ONLY",
+      "integration_lane": "B_SCALAR_ATTENTION_ONLY",
+      "seeds": [43],
+      "role": "DYNAMICS_CONTROL"
+    },
+    {
+      "variant": "E_STRICT_DETACHED_DYNAMICS_CONTROL",
+      "integration_lane": "E_STRICT_DETACHED_DYNAMICS_CONTROL",
+      "seeds": [43],
+      "role": "DYNAMICS_CONTROL"
+    }
+  ],
+  "job_contract": {
+    "gpu_jobs": 8,
+    "cpu_collect_jobs": 1,
+    "total_jobs": 9,
+    "physical_gpu_allowlist": [1, 2, 4, 5],
+    "max_gpu_jobs": 4,
+    "one_training_process_per_gpu": true,
+    "cpu_threads_per_job": 4,
+    "gpu_assignment_round_robin": [1, 2, 4, 5, 1, 2, 4, 5],
+    "cuda_visible_devices": "1,2,4,5",
+    "physical_to_logical_cuda_map": {
+      "1": "cuda:0",
+      "2": "cuda:1",
+      "4": "cuda:2",
+      "5": "cuda:3"
+    }
+  },
+  "direct_targets": ["R_8X6B", "R_9E6Y"],
+  "derived_inference_target": "exact_min(R_8X6B,R_9E6Y)",
+  "independent_Rdual_output": false,
+  "metrics": {
+    "per_receptor": ["spearman", "mae", "rmse"],
+    "dual": ["spearman", "mae", "rmse"],
+    "parent_macro": ["mae", "rmse", "within_parent_spearman"],
+    "comparisons": ["F1_minus_F0", "F0_minus_B", "F0_minus_E"],
+    "F0_F1_ensemble_protocol": "mean_predictions_over_seeds_43_97_193_then_exact_min",
+    "B_E_protocol": "seed43_dynamics_control_only",
+    "outer_test_metrics_access_count": 0
+  },
+  "required_future_bindings": {
+    "integration_v1_1": "UNRESOLVED_REQUIRED_REGULAR_FILE_AND_FREEZE_SHA256",
+    "integration_v1_1_driver": "UNRESOLVED_REQUIRED_REGULAR_FILE_AND_FREEZE_SHA256",
+    "cuda_smoke_pass_receipt": "UNRESOLVED_REQUIRED_EXACT_SHA256",
+    "cuda_smoke_driver_freeze": "UNRESOLVED_REQUIRED_EXACT_SHA256",
+    "authorization_overlay": "UNRESOLVED_REQUIRED_EXACT_SHA256",
+    "outer0_inner0_training_partition_sha256": "UNRESOLVED_REQUIRED_FROM_INTEGRATION_V1_1_RECEIPT",
+    "outer0_inner0_rank_label_sha256": "UNRESOLVED_REQUIRED_FROM_INTEGRATION_V1_1_RECEIPT"
+  },
+  "known_blocked_integration_v1": {
+    "integration_v1_forbidden": true,
+    "reason": [
+      "lambda_contact_shared may bypass kappa telemetry/budget closure",
+      "calibration provenance and inner-OOF ensemble closure are insufficient",
+      "microbatch averaging does not yet prove exact sample/hierarchy-weighted objective closure"
+    ]
+  },
+  "launch_gates": [
+    "Resolved package binds a reviewed integration V1.1 and its exact freeze hash; integration V1 is rejected.",
+    "A separately frozen CUDA driver exists and is bound by exact SHA256.",
+    "CUDA smoke receipt is PASS and proves B/E trajectory, accumulation, F cap, exact-min, finite state, RNG restoration, and zero sealed access.",
+    "GPU 1/2/4/5 are RTX 4090, idle, and each has at most 512 MiB used at launch.",
+    "/data1 has at least 100 GiB free.",
+    "All package and external input hashes close immediately before launch.",
+    "Runtime root does not already exist.",
+    "V4-F/test32 access count is zero in package, launcher, jobs, and collector.",
+    "Outer-test truth and outer metrics are never read by this pilot."
+  ],
+  "required_per_job_evidence": {
+    "result_json": "regular file with exact job identity, variant, seed and PASS status",
+    "training_receipt_json": "regular file with zero outer-test and sealed access",
+    "step_evidence_jsonl": "one canonical record per scalar optimizer step",
+    "step_evidence_sha256": "bound in RESULT.json",
+    "step_evidence_row_count": "equals reported optimizer_steps",
+    "checkpoint": "head/trainable-state checkpoint regular file",
+    "checkpoint_sha256": "bound in RESULT.json",
+    "predictions_no_metrics_tsv": "inner-score predictions only",
+    "predictions_sha256": "bound in RESULT.json",
+    "exact_min_violation_count": 0,
+    "outer_test_truth_access_count": 0,
+    "outer_metrics_access_count": 0,
+    "v4_f_test32_access_count": 0
+  },
+  "launch_authorized": false,
+  "training_or_prediction_executed": false,
+  "v4_f_test32_access_count": 0
+}
