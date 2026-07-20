@@ -1,0 +1,22 @@
+{
+  "claim_boundary": "Open-development computational Docking geometry teacher materialization only; no frozen-test labels, binding, affinity, experimental blocking, Docking Gold, or formal validation.",
+  "files": {
+    "src/build_primary_d0_d1_teacher_v1.py": "9397a9003f67df32fc42e36547025263fdb63d27dadea2d35aff4c463abc17d9",
+    "tests/test_build_primary_d0_d1_teacher_v1.py": "536188a25553e3639dfc021a7d0cf21424765adb1f3634b576b05719008fc420"
+  },
+  "real_d0_audit": {
+    "D0_development_rows": 77,
+    "D0_rows": 3054,
+    "D0_train_rows": 2977,
+    "old_input_rows": 3388,
+    "old_rows_excluded_for_v29_frozen_parents": 334,
+    "status": "PASS_PRIMARY_D0_D1_MATERIALIZED",
+    "v29_frozen_label_numeric_parse_count": 0,
+    "v29_frozen_parent_count": 10
+  },
+  "schema_version": "pvrig_v2_9_primary_teacher_builder_implementation_freeze_v1",
+  "status": "PASS_BUILDER_AND_15_COMBINED_TESTS",
+  "test_command": "experiments/phase2_5080_v1/.venv-phase2-5080/bin/python -m unittest discover -s experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_9_expanded_training_v1_20260720/tests -p 'test_*.py' -v",
+  "test_count_combined": 15,
+  "test_runtime_seconds": 26.972
+}

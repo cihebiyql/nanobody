@@ -1,0 +1,44 @@
+{
+  "schema_version": "pvrig_v29_open_snapshot_preregistration_v1",
+  "created_date": "2026-07-20",
+  "source_campaign_root": "/data/qlyu/projects/pvrig_v29_docking25k_v1_20260720",
+  "source_host": "node23",
+  "claim_boundary": "Active-campaign open computational Docking geometry snapshot only; not terminal teacher, binding, affinity, competition, experimental blocking, Docking Gold, or formal validation.",
+  "inclusion_contract": {
+    "entity_type": "candidate",
+    "job_status": "SUCCESS",
+    "job_result_state": "SUCCESS",
+    "paired_seed_rule": "The same integer seed must have successful 8x6b and 9e6y jobs for a candidate.",
+    "candidate_aggregation": "For each receptor take the median only over the same paired-successful seed set; derive R_dual_min as exact min(R_8X6B,R_9E6Y).",
+    "minimum_complete_pose_models_per_job": 4,
+    "maximum_fixed_top_models": 8
+  },
+  "split_contract": {
+    "train": "May be emitted with labels.",
+    "development": "May be emitted with labels.",
+    "frozen_test": "May be counted only. Candidate identifiers, sequences, per-job scores and candidate-level labels must not be emitted."
+  },
+  "lineage_contract": [
+    "candidate_id must be unique",
+    "sequence_sha256 must equal SHA256(sequence) and be unique",
+    "parent_framework_cluster must be non-empty",
+    "model_split must be train, development, or frozen_test",
+    "job entity, sequence hash, conformation, seed, job hash and protocol core must match the frozen manifest and result"
+  ],
+  "reliability_policy": {
+    "DUAL_1_SEED": 0.65,
+    "DUAL_2_SEED": 0.8,
+    "DUAL_3_SEED": 1.0,
+    "DUAL_4PLUS_SEED": 1.0
+  },
+  "immutable_outputs": [
+    "v29_open_train.tsv",
+    "v29_open_development.tsv",
+    "v29_open_train_development.tsv",
+    "v29_open_paired_job_manifest.tsv",
+    "V29_FROZEN_TEST_COUNT_ONLY.json",
+    "V29_OPEN_SNAPSHOT_RECEIPT.json",
+    "SHA256SUMS",
+    "README_ZH.md"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "aggregation_contract": "Use aggregate_external2000_results.py standalone; merge runtime evidence into complete V29 project for canonical calibrated aggregation.",
+  "archive": "/data/qlyu/projects/pvrig_v29_external2000_sequences_v3_20260720.tar.zst",
+  "archive_bytes": 66590420,
+  "archive_sha256": "62f3c702f582c1d488263170b3a8835746fe7fb533fa49b01786392978483e94",
+  "archive_sha256_companion": "/data/qlyu/projects/pvrig_v29_external2000_sequences_v3_20260720.tar.zst.sha256",
+  "internal_sha256s": "/data/qlyu/projects/pvrig_v29_external2000_sequences_v3_20260720/SHA256SUMS",
+  "internal_sha256s_sha256": "643821b0d2cc98a0c686e03ca4d65a28b934690e9d31594b8670c3e7656998fd",
+  "job_set_changed": false,
+  "package_root": "/data/qlyu/projects/pvrig_v29_external2000_sequences_v3_20260720",
+  "ready": "/data/qlyu/projects/pvrig_v29_external2000_sequences_v3_20260720/status/READY.json",
+  "ready_sha256": "4d8322b9c63d0c3c676290bb0e163669031087adae736af252b712d485f4fc50",
+  "released_at_utc": "2026-07-20T08:22:51.648634+00:00",
+  "runtime_fixes": [
+    "score_pose reference summary added",
+    "validate_protocol dependency added",
+    "external2000 single-seed/no-control aggregator added"
+  ],
+  "schema_version": "pvrig_v29_external2000_v3_release_v1",
+  "sequence_set_changed": false,
+  "status": "PASS",
+  "v2_identity_preserved": true,
+  "validation": "/data/qlyu/projects/pvrig_v29_external2000_sequences_v3_20260720/status/PACKAGE_VALIDATION.json",
+  "validation_sha256": "6d4ed5e2752f5ad979eb5b935f00218243ccbf1be3f2dd71e6158612b4ea4a97",
+  "validation_status": "PASS"
+}

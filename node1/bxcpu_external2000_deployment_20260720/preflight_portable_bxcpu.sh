@@ -3,6 +3,7 @@
 set -euo pipefail
 
 CACHE_ROOT="${PVRIG_BXCPU_CACHE:-$HOME/.local/opt}"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 check() {
     local expected=$1
@@ -20,4 +21,8 @@ check 448561ec234adcf46731c64df215707a917394818d0fdfe6989bd0a1b04672bf \
     "$CACHE_ROOT/haddock3_runtime_python.tar.gz"
 check 2cadab93efa5553f51a5ffe27affd4a19fe9eeffb704bb62eafd93caf82e62ab \
     "$CACHE_ROOT/haddock3_runtime_lib.tar.gz"
+check 4fc125968ff7e4a25f0276c36d4dd8c8c4775520f0b79997b0c1d9f12e8dbc2a \
+    "$CACHE_ROOT/numpy_el7_overlay_2.0.1.tar.gz"
+check 7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3 \
+    "$SCRIPT_DIR/reference_normalization_summary.json"
 printf 'portable_cache=PASS\n'

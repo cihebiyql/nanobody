@@ -1,0 +1,17 @@
+{
+  "schema_version": "pvrig_v29_open_snapshot_implementation_freeze_v2",
+  "status": "FROZEN_BEFORE_PRODUCTION_MATERIALIZATION",
+  "supersedes": "IMPLEMENTATION_FREEZE_V1_SUPERSEDED_PREPRODUCTION.json",
+  "supersession_reason": "The preproduction V1 selected successful results while scoring. V2 freezes the complete result-directory set before reading any payload so later completions cannot enter the same snapshot.",
+  "preregistration_sha256": "07945d8d5a7d3f084949eb2b4f143486a22949f43b4095b9f836d08f6bcc1a23",
+  "test_sha256": "cfa76fa417a63a671a8e64a7c6dd398520dbcf96125501ba639f581593bde526",
+  "builder_sha256": "cd9125d41d4f8c62eeb98b14bfdc9b7795b8a06a165bc491e00195cd7b111830",
+  "materializer_sha256": "99cf1a8d3f7927dac6122d297732e50eed492a62b5715332383a32850f63e4a6",
+  "frozen_test_contract": "count only; zero labels, identifiers, sequences or parent identifiers emitted",
+  "same_seed_contract": "Only identical seeds successful for both 8x6b and 9e6y contribute to either receptor median.",
+  "snapshot_selection_contract": "Freeze result job-id set before any scoring pass; completions after that selection are excluded.",
+  "test_result": "6 tests passed; OK",
+  "production_output": "prepared/",
+  "source_host": "node23",
+  "source_root": "/data/qlyu/projects/pvrig_v29_docking25k_v1_20260720"
+}

@@ -7,6 +7,9 @@ CACHE_ROOT="${PVRIG_BXCPU_CACHE:-$HOME/.local/opt}"
 BUNDLE_ARCHIVE="$HOME/pvrig_v29_external2000_sequences_v2_20260720.tar.zst"
 PROJECT_NAME=pvrig_v29_external2000_sequences_v2_20260720
 PUBLISH_ROOT="${PVRIG_PUBLISH_ROOT:-$HOME/${PROJECT_NAME}_bxcpu_results}"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+DEPLOY_ROOT="${PVRIG_DEPLOY_ROOT:-$SCRIPT_DIR}"
+REFERENCE_SUMMARY="$DEPLOY_ROOT/reference_normalization_summary.json"
 ARRAY_INDEX="${SLURM_ARRAY_TASK_ID:-1}"
 BATCH_SIZE="${PVRIG_JOB_BATCH_SIZE:-8}"
 
@@ -14,22 +17,31 @@ BATCH_SIZE="${PVRIG_JOB_BATCH_SIZE:-8}"
     echo "invalid array index or batch size" >&2
     exit 64
 }
+printf '%s  %s\n' \
+    7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3 \
+    "$REFERENCE_SUMMARY" | sha256sum -c -
 
 WORK_BASE="${SLURM_TMPDIR:-/tmp}/${USER}/${PROJECT_NAME}/${SLURM_JOB_ID:-manual}_${ARRAY_INDEX}"
 LOCAL_ENV="$WORK_BASE/haddock3-env"
 LOCAL_SOURCE="$WORK_BASE/haddock3-source"
+NUMPY_OVERLAY="$WORK_BASE/numpy-el7-overlay"
 LOCAL_PROJECT="$WORK_BASE/$PROJECT_NAME"
-mkdir -p "$WORK_BASE" "$LOCAL_ENV" "$LOCAL_SOURCE" "$PUBLISH_ROOT/status/jobs" "$PUBLISH_ROOT/results" "$PUBLISH_ROOT/runs"
+mkdir -p "$WORK_BASE" "$LOCAL_ENV" "$LOCAL_SOURCE" "$NUMPY_OVERLAY" "$PUBLISH_ROOT/status/jobs" "$PUBLISH_ROOT/results" "$PUBLISH_ROOT/runs"
 
 for archive in haddock3_runtime_core.tar.gz haddock3_runtime_python.tar.gz haddock3_runtime_lib.tar.gz; do
     tar -xzf "$CACHE_ROOT/$archive" -C "$LOCAL_ENV"
 done
 tar -xzf "$CACHE_ROOT/haddock3_source_2025.11.0.tar.gz" -C "$LOCAL_SOURCE"
+tar -xzf "$CACHE_ROOT/numpy_el7_overlay_2.0.1.tar.gz" -C "$NUMPY_OVERLAY"
 
 export PATH="$LOCAL_ENV/bin:$PATH"
-export PYTHONPATH="$LOCAL_SOURCE/src${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONNOUSERSITE=1
+export PYTHONPATH="$NUMPY_OVERLAY/lib/python3.11/site-packages:$LOCAL_SOURCE/src"
 "$LOCAL_ENV/bin/python" -m haddock.clis.cli --version | head -n 1 | grep -Fx 'cli.py - 2025.11.0'
+"$LOCAL_ENV/bin/python" -c 'import numpy; assert numpy.__version__ == "2.0.1"'
 "$LOCAL_ENV/bin/zstd" -dc "$BUNDLE_ARCHIVE" | tar -xf - -C "$WORK_BASE"
+mkdir -p "$LOCAL_PROJECT/reports"
+install -m 0644 "$REFERENCE_SUMMARY" "$LOCAL_PROJECT/reports/reference_normalization_summary.json"
 
 SAFE_MANIFEST="$LOCAL_PROJECT/manifests/external_ready_now_jobs.tsv"
 [[ $(wc -l < "$SAFE_MANIFEST") -eq 3815 ]] || { echo "unexpected safe manifest" >&2; exit 65; }

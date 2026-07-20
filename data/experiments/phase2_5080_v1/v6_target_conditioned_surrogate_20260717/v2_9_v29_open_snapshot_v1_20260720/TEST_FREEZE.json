@@ -1,0 +1,8 @@
+{
+  "schema_version": "pvrig_v29_open_snapshot_test_freeze_v1",
+  "frozen_before_implementation": true,
+  "preregistration_sha256": "07945d8d5a7d3f084949eb2b4f143486a22949f43b4095b9f836d08f6bcc1a23",
+  "test_sha256": "cfa76fa417a63a671a8e64a7c6dd398520dbcf96125501ba639f581593bde526",
+  "initial_expected_failure": "FileNotFoundError: src/build_v29_open_snapshot_v1.py did not exist",
+  "test_file_must_not_change_after_freeze": true
+}

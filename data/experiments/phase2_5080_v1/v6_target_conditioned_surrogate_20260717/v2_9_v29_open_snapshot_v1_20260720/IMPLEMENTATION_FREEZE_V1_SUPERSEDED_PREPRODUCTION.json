@@ -1,0 +1,16 @@
+{
+  "schema_version": "pvrig_v29_open_snapshot_implementation_freeze_v1",
+  "status": "SUPERSEDED_PREPRODUCTION_NO_OUTPUT_PUBLISHED",
+  "superseded_by": "IMPLEMENTATION_FREEZE_V2.json",
+  "supersession_reason": "V1 did not freeze the complete result-directory set before its long scoring pass. The attempted run was terminated and published no output.",
+  "preregistration_sha256": "07945d8d5a7d3f084949eb2b4f143486a22949f43b4095b9f836d08f6bcc1a23",
+  "test_sha256": "cfa76fa417a63a671a8e64a7c6dd398520dbcf96125501ba639f581593bde526",
+  "builder_sha256": "69df9c230bd216209b58757cd06ef3de0f3997b246ba000be34480ba7a94db81",
+  "materializer_sha256": "99cf1a8d3f7927dac6122d297732e50eed492a62b5715332383a32850f63e4a6",
+  "frozen_test_contract": "count only; zero labels, identifiers, sequences or parent identifiers emitted",
+  "same_seed_contract": "Only identical seeds successful for both 8x6b and 9e6y contribute to either receptor median.",
+  "test_result": "6 tests passed; OK",
+  "production_output": "prepared/",
+  "source_host": "node23",
+  "source_root": "/data/qlyu/projects/pvrig_v29_docking25k_v1_20260720"
+}

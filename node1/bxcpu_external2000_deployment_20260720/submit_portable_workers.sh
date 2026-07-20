@@ -17,5 +17,5 @@ exec sbatch \
     --array="$ARRAY_SPEC" \
     --output="$HOME/${PROJECT_NAME}_bxcpu_results/slurm-%x-%A_%a.out" \
     --error="$HOME/${PROJECT_NAME}_bxcpu_results/slurm-%x-%A_%a.err" \
-    --export=ALL,PVRIG_JOB_BATCH_SIZE="$BATCH_SIZE" \
+    --export=ALL,PVRIG_JOB_BATCH_SIZE="$BATCH_SIZE",PVRIG_DEPLOY_ROOT="$SCRIPT_DIR" \
     "$SCRIPT_DIR/bxcpu_portable_worker.sh"
