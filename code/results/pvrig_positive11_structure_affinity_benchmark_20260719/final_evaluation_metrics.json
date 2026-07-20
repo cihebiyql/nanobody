@@ -1,0 +1,165 @@
+{
+  "benchmark": {
+    "positive_count": 11,
+    "known_kd_count": 10,
+    "existing_pose_count": 99,
+    "poses_per_candidate": 9,
+    "redocking_performed": false
+  },
+  "prodigy_absolute": {
+    "feature": "prodigy_pkd_median",
+    "n": 10,
+    "pearson_vs_pKd": 0.38872993971601544,
+    "spearman_vs_pKd": 0.3100318272768329,
+    "mean_absolute_pKd_error": 2.4780823695943757,
+    "median_absolute_pKd_error": 2.630120358438134,
+    "within_family_direction": {
+      "correct": 4,
+      "wrong": 2,
+      "ties": 0,
+      "total": 6,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "correct"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "correct"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "correct"
+        }
+      ]
+    }
+  },
+  "foldx_absolute": {
+    "feature": "foldx_interaction_median",
+    "n": 10,
+    "pearson_vs_pKd": 0.36554898056513685,
+    "spearman_vs_pKd": 0.23636363636363636,
+    "within_family_direction": {
+      "correct": 2,
+      "wrong": 4,
+      "ties": 0,
+      "total": 6,
+      "details": [
+        {
+          "family": "151",
+          "a": "PVRIG-151_HR151",
+          "b": "151H7",
+          "verdict": "correct"
+        },
+        {
+          "family": "20",
+          "a": "PVRIG-20",
+          "b": "20H5",
+          "verdict": "wrong"
+        },
+        {
+          "family": "30",
+          "a": "PVRIG-30",
+          "b": "30H2",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H2",
+          "verdict": "correct"
+        },
+        {
+          "family": "39",
+          "a": "PVRIG-39",
+          "b": "39H4",
+          "verdict": "wrong"
+        },
+        {
+          "family": "39",
+          "a": "39H2",
+          "b": "39H4",
+          "verdict": "wrong"
+        }
+      ]
+    }
+  },
+  "foldx_fixed_pose_relative": {
+    "n": 5,
+    "pearson": 0.12860940057859815,
+    "spearman": 0.09999999999999999,
+    "mae": 1.1032901624519016,
+    "ternary_direction_correct": 2,
+    "ternary_direction_total": 5,
+    "neutral_threshold_kcal_mol": 0.1
+  },
+  "graphinity": {
+    "n": 4,
+    "pearson": -0.9757223210269426,
+    "spearman": -0.9486832980505139,
+    "mae": 0.8056209632919686,
+    "ternary_direction_correct": 1,
+    "ternary_direction_total": 4,
+    "neutral_threshold_kcal_mol": 0.1,
+    "single_mutation_predictions": 27,
+    "pair_specific_interface_mutations": 9,
+    "total_parent_child_substitutions": 79,
+    "substitution_coverage_fraction": 0.11392405063291139,
+    "aggregation": "median across 3 FoldX conformers per mutation, then additive sum across interface mutations",
+    "scope_warning": "Graphinity int_mut is a single-interface-mutation model; additive multi-mutation aggregation is an approximation."
+  },
+  "software": {
+    "prodigy_executable_sha256": "75b9a60a33fb3b7410d17e239bb53219b68eb47e3fad9fe94a1e9157ee2989a9",
+    "foldx_version": "5.1",
+    "foldx_executable_sha256": "faed5e54e47744ab6ab75f8f9ad1a1f2e2cdbeac4f0f98d4e36c97049eb14268",
+    "graphinity_checkpoint_sha256": "40c9de6081930ef4923f4726fd45ffc84e96edea741a5a9adabe21b2e3beba77",
+    "graphinity_runtime": {
+      "python": "3.7.10",
+      "torch": "1.8.0+cpu",
+      "torch_geometric": "1.6.3",
+      "pytorch_lightning": "1.2.10"
+    }
+  },
+  "input_hashes": {
+    "pose_manifest.tsv": "07019e3639749f677f562dae60773277dc768a260c42b7515d81a6ee0bafa411",
+    "fixed_pose_pair_manifest.tsv": "e3be8f177eebb5e3227afc159e1d37a587f9f57e54ab904c1d2ec66870ab91bf",
+    "graphinity_single_mutation_manifest.tsv": "1abe805fd2b0b5d52f092cc468d7e5df74ef06f82d39979c5ca4cad60f418307",
+    "graphinity_single_mutation_input.csv": "6fb6aaefad3b62e88481b7d4b281c17e1fb65ff01c21d830795d9197362f71f8"
+  },
+  "decision": {
+    "formal_affinity_hard_gate": "none",
+    "usable_now": [
+      "PRODIGY median as a weak pose-dependent prior",
+      "fixed-pose FoldX ddG as a same-parent diagnostic for carefully validated poses"
+    ],
+    "rejected_now": [
+      "PRODIGY absolute Kd",
+      "FoldX independent-docking cross-candidate affinity ranking",
+      "Graphinity additive score for current multi-mutation candidates"
+    ]
+  }
+}

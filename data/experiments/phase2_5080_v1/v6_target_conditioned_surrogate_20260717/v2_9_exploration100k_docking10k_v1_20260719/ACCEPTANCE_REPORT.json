@@ -1,0 +1,23 @@
+{
+  "allocation_rows": 25000,
+  "input_hashes": {
+    "allocation": "338299817168b56c2a44bdcab832152bcc93d9dc022f91239c01888056bb2850",
+    "panel": "5afdcb713f997175bc10eed2b93226551ce3a7750a9216d57e9cbdac6f5cdf9e",
+    "pool": "9f70fc9513ec256462581097b7358d64f12e01f47e0da9f42f102fdf3a9a86de",
+    "split": "40caa8fcce3c5fb77e9258aafd22cd42c33d279d8bb00ea9aad7edba711e7586",
+    "teacher": "47c20808bdd8a804e8672c4e0c814c1cd40f8d3469723d867ce4b0986b3eec10"
+  },
+  "near_cdr3_family_count": 7306,
+  "new_parent_fraction": 0.6616,
+  "panel_rows": 10000,
+  "parent_count": 65,
+  "pool_rows": 100000,
+  "schema_version": "pvrig_v29_release_acceptance_v1",
+  "scientific_boundary": "Sequence/panel/allocation acceptance only; not proof of binding, affinity, blocking, expression or purity.",
+  "split_parent_counts": {
+    "development": 10,
+    "frozen_test": 10,
+    "train": 45
+  },
+  "status": "PASS_V29_SEQUENCE_PANEL_ALLOCATION_ACCEPTANCE"
+}

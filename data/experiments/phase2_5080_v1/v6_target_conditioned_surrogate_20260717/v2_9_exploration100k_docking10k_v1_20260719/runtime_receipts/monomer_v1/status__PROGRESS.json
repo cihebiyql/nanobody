@@ -1,0 +1,12 @@
+{
+  "claim_boundary": "Monomer structure generation and exact-sequence geometry QC only; not binding, affinity, competition, experimental blocking, or Docking Gold.",
+  "expected": 10000,
+  "pending": 0,
+  "schema_version": "pvrig_v2_9_monomer_progress_v1",
+  "status_counts": {
+    "SUCCESS": 9934,
+    "TECHNICAL_FAILURE": 66
+  },
+  "terminal": 10000,
+  "updated_at_utc": "2026-07-19T20:00:57.746480+00:00"
+}

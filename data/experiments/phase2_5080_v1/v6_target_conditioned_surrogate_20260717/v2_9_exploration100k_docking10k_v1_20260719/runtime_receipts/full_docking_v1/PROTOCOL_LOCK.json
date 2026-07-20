@@ -1,0 +1,17 @@
+{
+  "core_lock_sha256": "5cc15490e5dfa394de291e8f1f0e4cc36f068ea882a72a34b633ba8ed384f6f7",
+  "job_count": 24826,
+  "job_manifest_sha256": "7423d0bd8b4ea868a89a20749bdc8ead2a7b5d7e43b4fc75a3cb3303a4564bb7",
+  "launch_script_hashes": {
+    "node1": "54942b34fed7bfab03e0e28ee0c3a097ed85636f1442b0bb951c5c9bb1f1f5de",
+    "node23": "c0a7c909149436140eed80c785b842c70d786eb73ab922ebeb5770222e12f773"
+  },
+  "node1_jobs_sha256": "552adf3a3d001a7a794bbdff5bd45b5a657e234d234059d20b88736c32296c02",
+  "node23_jobs_sha256": "024252189134734252d95d095761064a555d771e44a5c007e63971041ace3226",
+  "protocol_core_sha256": "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666",
+  "protocol_id": "pvrig_v29_allocation_exact_dual_redocking_v1_20260720",
+  "protocol_lock_sha256": "d8f3eb46e7ab781949130739681d9f33c825510ef4bc743f80249c0c26764bda",
+  "reference_normalization_summary_sha256": "7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3",
+  "schema_version": 1,
+  "status": "LOCKED"
+}

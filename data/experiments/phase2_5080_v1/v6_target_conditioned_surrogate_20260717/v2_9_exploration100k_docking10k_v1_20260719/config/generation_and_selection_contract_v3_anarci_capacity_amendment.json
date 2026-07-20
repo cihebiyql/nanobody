@@ -1,0 +1,101 @@
+{
+  "amendment": {
+    "anarci_input_rows": 42810,
+    "anarci_ledger": "prepared/anarci_eligible42810_v1/anarci_imgt_ledger.tsv",
+    "anarci_pass_rows": 40676,
+    "eligible_parent_capacity_at_max_rows": 65,
+    "reason": "ANARCI fail-closed capacity audit showed 65 parent clusters support at least 154 candidates; this is the largest feasible balanced 10,000-row panel with every parent inside the requested 80-200 range. Selection labels and Docking outcomes were not consulted.",
+    "selection_labels_consulted": false,
+    "source_contract": "generation_and_selection_contract_v2_anarci_capacity_amendment.json",
+    "source_contract_sha256": "d5207e8046c12d67e1069d542a21c621f951da1e0508b3b1819d1742542e1e16"
+  },
+  "claim_boundary": "Computational candidate generation and prospective Docking-teacher allocation only; not binding, affinity, experimental blocking, expression, purity, or Docking Gold.",
+  "docking_allocation": {
+    "candidate_job_count": 25000,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seed1": 917,
+    "seed1_candidate_count": 10000,
+    "seed2": 1931,
+    "seed2_candidate_count": 2000,
+    "seed2_sampling": "stratified across acquisition lane, parent split, method, patch, mode and provisional score decile; not top-only",
+    "seed3": 3253,
+    "seed3_candidate_count": 500,
+    "seed3_sampling": "subset of seed2 covering high disagreement, high/mid/low score, new parent and method diversity"
+  },
+  "exploration_pool": {
+    "existing_parent_definition": "parent_framework_cluster present in open3388",
+    "minimum_new_parent_fraction": 0.5,
+    "parent_count": 100,
+    "rows_per_parent": 1000,
+    "total_rows": 100000
+  },
+  "minimum_admission": {
+    "forbid_cdr_n_glycosylation_motif": true,
+    "forbid_hydrophobic_run_length": 5,
+    "formal_panel_max_positive_cdr_identity_exclusive": 0.75,
+    "maximum_cdr3_hydrophobic_fraction": 0.55,
+    "maximum_hydrophobic_fraction": 0.52,
+    "maximum_length": 160,
+    "maximum_low_complexity_fraction": 0.28,
+    "minimum_cysteine_count": 2,
+    "minimum_length": 95,
+    "positive_cdr_hard_fail_identity": 0.8,
+    "require_anarci_imgt_success_for_final_panel": true,
+    "require_even_cysteine_count": true,
+    "require_nonempty_cdr1_cdr2_cdr3": true,
+    "standard_amino_acids_only": true
+  },
+  "near_cdr3_family": {
+    "algorithm": "deterministic_greedy_first_representative_sorted_by_sequence_sha256",
+    "identity_threshold": 0.8,
+    "same_length_only": true
+  },
+  "panel": {
+    "acquisition_quotas": {
+      "BOUNDARY_MIDDLE": 2000,
+      "EXPLOITATION_HIGH": 4000,
+      "MODEL_DISAGREEMENT_UNCERTAINTY": 1500,
+      "NEW_PARENT_PATCH_METHOD_EXPLORATION": 1000,
+      "QC_PASS_LOW_RANDOM_CONTROL": 1500
+    },
+    "design_mode_quotas": {
+      "H1H2H3": 2500,
+      "H1H3": 3500,
+      "H3": 4000
+    },
+    "maximum_rows_per_parent": 154,
+    "method_quotas": {
+      "CONSERVATIVE_PROFILE_LOCAL_REDESIGN": 2500,
+      "DE_NOVO_CDR_EXPLORATION": 1000,
+      "FIXED_FRAMEWORK_CDR_PERTURBATION": 500,
+      "NATURAL_CDR_DONOR_REDESIGN": 4000,
+      "RFANTIBODY_RFDIFFUSION_PROTEINMPNN": 2000
+    },
+    "minimum_rows_per_parent": 153,
+    "parent_count": 65,
+    "patch_quotas": {
+      "A_CENTER": 3334,
+      "B_LOWER": 3333,
+      "C_CROSS": 3333
+    },
+    "total": 10000
+  },
+  "random_seed": 20260719,
+  "schema_version": "pvrig_v2_9_exploration100k_docking10k_contract_v3",
+  "split": {
+    "development_fraction": 0.15,
+    "expected_parent_counts": {
+      "development": 10,
+      "frozen_test": 10,
+      "train": 45
+    },
+    "seed": "pvrig-v2.9-parent-split-20260719",
+    "test_fraction": 0.15,
+    "train_fraction": 0.7,
+    "unit": "parent_framework_cluster"
+  },
+  "status": "AMENDED_AFTER_ANARCI_TECHNICAL_CAPACITY_AUDIT"
+}

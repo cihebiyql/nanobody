@@ -1,0 +1,40 @@
+save_dir: /data1/qlyu/model_smoke/pvrig_positive11_structure_affinity_benchmark_20260719/graphinity/
+name: PVRIG-positive-fixed-pose
+test: True
+initialize_weights:
+  checkpoint_file: /data1/qlyu/software/Graphinity/example/ddg_synthetic/FoldX/varying_dataset_size/model_weights/Graphinity-varying_dataset_size-full_848597.ckpt
+model: ddgEGNN
+model_params:
+  num_node_features: 12
+  lr: 1.e-3
+  weight_decay: 1.e-16
+  balanced_loss: False
+  dropout: 0
+  num_edge_features: 1
+  egnn_layer_hidden_nfs: [128, 128, 128]
+  embedding_in_nf: 128
+  embedding_out_nf: 128
+  num_classes: 1
+  attention: False
+  residual: True
+  normalize: False
+  tanh: True
+  update_coords: True
+  scheduler: CosineAnnealing
+  norm_nodes: None
+trainer_params:
+  gpus: 0
+loader_params:
+  batch_size: 16
+  num_workers: 4
+  balanced_sampling: False
+dataset_params:
+  rotate: False
+  cache_frames: False
+  graph_generation_mode: int_mut
+  interaction_dist: 4
+  typing_mode: lmg
+  rough_search: True
+  input_files:
+    test:
+      - /data1/qlyu/model_smoke/pvrig_positive11_structure_affinity_benchmark_20260719/graphinity_input.csv

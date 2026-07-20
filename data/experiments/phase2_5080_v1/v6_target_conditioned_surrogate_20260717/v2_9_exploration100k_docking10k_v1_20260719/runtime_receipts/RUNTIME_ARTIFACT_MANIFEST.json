@@ -1,0 +1,77 @@
+{
+  "file_count": 14,
+  "files": [
+    {
+      "path": "RUNTIME_ACCEPTANCE_REPORT.json",
+      "sha256": "6db416491b9420163d3b130fe00f67725867e6fec2a91336b97b08c351167c0f",
+      "size_bytes": 1336
+    },
+    {
+      "path": "full_docking_v1/PROTOCOL_CORE_LOCK.json",
+      "sha256": "5cc15490e5dfa394de291e8f1f0e4cc36f068ea882a72a34b633ba8ed384f6f7",
+      "size_bytes": 2026694
+    },
+    {
+      "path": "full_docking_v1/PROTOCOL_LOCK.json",
+      "sha256": "e2160595e2eeaae6b20ed6f89b9af6e3b46e87e76fdc702103b9224b3b16dcc1",
+      "size_bytes": 1005
+    },
+    {
+      "path": "full_docking_v1/inputs/docking_allocation25000.tsv",
+      "sha256": "55c8607b164d1f6082fde1b920f10b3c0ddf1f23a550687fe6f546284e30e7e8",
+      "size_bytes": 17749821
+    },
+    {
+      "path": "full_docking_v1/inputs/monomer_technical_failures.tsv",
+      "sha256": "18bdc4f1adcfbd118e9f15201f4a85002f6e8573696622ae5896e98b931ce905",
+      "size_bytes": 20517
+    },
+    {
+      "path": "full_docking_v1/manifests/docking_jobs.tsv",
+      "sha256": "7423d0bd8b4ea868a89a20749bdc8ead2a7b5d7e43b4fc75a3cb3303a4564bb7",
+      "size_bytes": 30260934
+    },
+    {
+      "path": "full_docking_v1/manifests/node1_jobs.tsv",
+      "sha256": "552adf3a3d001a7a794bbdff5bd45b5a657e234d234059d20b88736c32296c02",
+      "size_bytes": 2263555
+    },
+    {
+      "path": "full_docking_v1/manifests/node23_jobs.tsv",
+      "sha256": "024252189134734252d95d095761064a555d771e44a5c007e63971041ace3226",
+      "size_bytes": 2267467
+    },
+    {
+      "path": "full_docking_v1/status/LAUNCHED.json",
+      "sha256": "684a24c77209f69d9b7636308fb30775cb07c80d1d6e655fca34e216ccafba76",
+      "size_bytes": 858
+    },
+    {
+      "path": "full_docking_v1/status/LAUNCH_ACCEPTANCE.json",
+      "sha256": "caae5132475f88c787af91804b125c926ee1b95d90e278b95b61e111c05c5ebf",
+      "size_bytes": 679
+    },
+    {
+      "path": "full_docking_v1/status/STAGED.json",
+      "sha256": "b7caae7edf32ed68c3b161c8d248c284cf957edef0bd843b83da438c6fb65985",
+      "size_bytes": 813
+    },
+    {
+      "path": "monomer_v1/outputs__monomer_manifest.tsv",
+      "sha256": "ca7a7e8aa784ddf7c0f9079d3700c5098159e1fd599253ea64ade04a2cb3fe9f",
+      "size_bytes": 4529712
+    },
+    {
+      "path": "monomer_v1/status__COMPLETE.json",
+      "sha256": "643dc28ba66e6c75ce091b13bc6f5d44033c81772a82057dd969e0f66f29beab",
+      "size_bytes": 613
+    },
+    {
+      "path": "monomer_v1/status__PROGRESS.json",
+      "sha256": "9503dbf4b84f5c1f3d3640ef9d92c7969f1a540037911fe82b53b9f283511004",
+      "size_bytes": 411
+    }
+  ],
+  "schema_version": "pvrig_v29_runtime_artifact_mirror_v1",
+  "status": "PASS_LOCAL_RUNTIME_ARTIFACT_MIRROR"
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "pvrig_v2_9_exploration100k_docking10k_contract_v1",
+  "status": "FROZEN_BEFORE_GENERATION",
+  "random_seed": 20260719,
+  "exploration_pool": {
+    "parent_count": 100,
+    "rows_per_parent": 1000,
+    "total_rows": 100000,
+    "existing_parent_definition": "parent_framework_cluster present in open3388",
+    "minimum_new_parent_fraction": 0.5
+  },
+  "minimum_admission": {
+    "standard_amino_acids_only": true,
+    "minimum_length": 95,
+    "maximum_length": 160,
+    "require_anarci_imgt_success_for_final_panel": true,
+    "require_nonempty_cdr1_cdr2_cdr3": true,
+    "require_even_cysteine_count": true,
+    "minimum_cysteine_count": 2,
+    "maximum_low_complexity_fraction": 0.28,
+    "maximum_hydrophobic_fraction": 0.52,
+    "maximum_cdr3_hydrophobic_fraction": 0.55,
+    "forbid_hydrophobic_run_length": 5,
+    "forbid_cdr_n_glycosylation_motif": true,
+    "positive_cdr_hard_fail_identity": 0.8,
+    "formal_panel_max_positive_cdr_identity_exclusive": 0.75
+  },
+  "panel": {
+    "total": 10000,
+    "parent_count": 70,
+    "minimum_rows_per_parent": 142,
+    "maximum_rows_per_parent": 143,
+    "method_quotas": {
+      "NATURAL_CDR_DONOR_REDESIGN": 4000,
+      "CONSERVATIVE_PROFILE_LOCAL_REDESIGN": 2500,
+      "RFANTIBODY_RFDIFFUSION_PROTEINMPNN": 2000,
+      "DE_NOVO_CDR_EXPLORATION": 1000,
+      "FIXED_FRAMEWORK_CDR_PERTURBATION": 500
+    },
+    "patch_quotas": {
+      "A_CENTER": 3334,
+      "B_LOWER": 3333,
+      "C_CROSS": 3333
+    },
+    "design_mode_quotas": {
+      "H3": 4000,
+      "H1H3": 3500,
+      "H1H2H3": 2500
+    },
+    "acquisition_quotas": {
+      "EXPLOITATION_HIGH": 4000,
+      "BOUNDARY_MIDDLE": 2000,
+      "QC_PASS_LOW_RANDOM_CONTROL": 1500,
+      "MODEL_DISAGREEMENT_UNCERTAINTY": 1500,
+      "NEW_PARENT_PATCH_METHOD_EXPLORATION": 1000
+    }
+  },
+  "near_cdr3_family": {
+    "same_length_only": true,
+    "identity_threshold": 0.8,
+    "algorithm": "deterministic_greedy_first_representative_sorted_by_sequence_sha256"
+  },
+  "split": {
+    "unit": "parent_framework_cluster",
+    "train_fraction": 0.7,
+    "development_fraction": 0.15,
+    "test_fraction": 0.15,
+    "seed": "pvrig-v2.9-parent-split-20260719"
+  },
+  "docking_allocation": {
+    "seed1": 917,
+    "seed1_candidate_count": 10000,
+    "seed2": 1931,
+    "seed2_candidate_count": 2000,
+    "seed3": 3253,
+    "seed3_candidate_count": 500,
+    "receptors": ["8x6b", "9e6y"],
+    "candidate_job_count": 25000,
+    "seed2_sampling": "stratified across acquisition lane, parent split, method, patch, mode and provisional score decile; not top-only",
+    "seed3_sampling": "subset of seed2 covering high disagreement, high/mid/low score, new parent and method diversity"
+  },
+  "claim_boundary": "Computational candidate generation and prospective Docking-teacher allocation only; not binding, affinity, experimental blocking, expression, purity, or Docking Gold."
+}

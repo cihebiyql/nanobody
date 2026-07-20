@@ -1,0 +1,22 @@
+{
+  "accepted_at_utc": "2026-07-19T20:02:57.999017+00:00",
+  "cdr_integrity_correction": "ANARCI CSV insertion columns must remain in emitted biological order; this run uses sequence-exact unique cdr1_after/cdr2_after/cdr3_after for Docking restraints.",
+  "claim_boundary": "Independent dual-receptor computational Docking geometry teacher launch only; not binding, Kd, IC50, expression, purity, or experimental blocking.",
+  "docking_cdr_source": "sequence_exact_unique_cdr1_after_cdr2_after_cdr3_after",
+  "executable_job_count": 24826,
+  "failure_semantics": "Monomer technical failures are NA and excluded without replacement; they are not negative Docking labels.",
+  "frozen_allocation_count": 25000,
+  "monomer_success_count": 9934,
+  "monomer_technical_failure_count": 66,
+  "node1_first_status_count_at_acceptance": 18,
+  "node1_job_count": 12413,
+  "node1_pid_at_launch": 1020114,
+  "node23_first_status_count_at_acceptance": 17,
+  "node23_job_count": 12413,
+  "node23_pid_at_launch": 1533157,
+  "panel_count": 10000,
+  "protocol_core_sha256": "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666",
+  "protocol_lock_sha256": "d8f3eb46e7ab781949130739681d9f33c825510ef4bc743f80249c0c26764bda",
+  "schema_version": "pvrig_v29_runtime_acceptance_v1",
+  "status": "PASS_MONOMER_COMPLETE_AND_FULL_DOCKING_LAUNCHED"
+}

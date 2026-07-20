@@ -1,0 +1,6 @@
+pair_id	experimental_ddg_kcal_mol	graphinity_additive_interface_ddg	interface_mutation_count	mutations	experimental_class	predicted_class
+20_to_20H5	-0.7217638594644291	0.9693755805492401	3	DA1E,RA26G,DA103E	stronger	weaker
+30_to_30H2	0.5786630122146004	-0.5952596515417098	3	HA1E,SA28T,YA29F	weaker	stronger
+39_to_39H2	-0.0034149082992686	0.0681622922420501	1	RA26G	neutral	neutral
+39_to_39H4	-0.2176822566145265	0.0681622922420501	1	RA26G	stronger	neutral
+151_to_151H8		-0.4998673498630523	1	HA1E	unknown	stronger
