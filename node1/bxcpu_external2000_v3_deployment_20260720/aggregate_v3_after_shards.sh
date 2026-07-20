@@ -42,3 +42,20 @@ rsync -a "$LOCAL_PROJECT/reports/external_job_results.tsv" \
     "$LOCAL_PROJECT/reports/EXTERNAL2000_AGGREGATION.json" "$PUBLISH_ROOT/reports/"
 printf 'aggregator_exit=%s completed_at=%s\n' "$aggregate_rc" "$(date -u +%FT%TZ)" \
     > "$PUBLISH_ROOT/markers/v3_aggregation.done"
+
+# Keep the eight-node allocation productive: submit the frozen 10,500-job
+# Stage2 shard immediately after this first shard has been aggregated.
+STAGE2_SUBMIT="$HOME/.local/share/bxcpu_external2000_v3_deployment_20260720/submit_stage2_10500_eight_nodes.sh"
+STAGE2_ARCHIVE="$HOME/pvrig_v29_bxcpu_stage2_10500_v1_20260720.tar.zst"
+STAGE2_HASH=e61156725be19e5f9ca564c176f2d2104dadd303d2bde16aebaa1b0143b466e0
+[[ -x "$STAGE2_SUBMIT" && -f "$STAGE2_ARCHIVE" ]] || {
+    echo "Stage2 handoff files are missing" >&2
+    exit 67
+}
+[[ $(sha256sum "$STAGE2_ARCHIVE" | awk '{print $1}') == "$STAGE2_HASH" ]] || {
+    echo "Stage2 archive hash mismatch" >&2
+    exit 68
+}
+"$STAGE2_SUBMIT" > "$PUBLISH_ROOT/markers/stage2_auto_submit.log" 2>&1
+printf 'submitted_at=%s submitter_job=%s\n' "$(date -u +%FT%TZ)" "${SLURM_JOB_ID:-manual}" \
+    > "$PUBLISH_ROOT/markers/stage2_auto_submit.done"
