@@ -1,0 +1,155 @@
+{
+    "input": [],
+    "output": [
+        {
+            "0": {
+                "aa_topology": null,
+                "cgtoaa_tbl": null,
+                "clt_id": null,
+                "clt_model_rank": null,
+                "clt_rank": null,
+                "created": "2026-07-20 22:20:02",
+                "file_name": "vhh_chainA_haddock.pdb",
+                "file_type": {
+                    "py/reduce": [
+                        {
+                            "py/type": "haddock.libs.libontology.Format"
+                        },
+                        {
+                            "py/tuple": [
+                                "pdb"
+                            ]
+                        }
+                    ]
+                },
+                "full_name": "vhh_chainA_haddock.pdb",
+                "ligand_param_fname": null,
+                "ligand_top_fname": null,
+                "md5": null,
+                "ori_name": "vhh_chainA",
+                "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_3/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0176__21659AF8D154A495_9e6y_s917_717d1947d9c4/haddock_run/0_topoaa",
+                "py/object": "haddock.libs.libontology.PDBFile",
+                "rel_path": {
+                    "py/reduce": [
+                        {
+                            "py/type": "pathlib.PosixPath"
+                        },
+                        {
+                            "py/tuple": [
+                                "..",
+                                "0_topoaa",
+                                "vhh_chainA_haddock.pdb"
+                            ]
+                        }
+                    ]
+                },
+                "restr_fname": null,
+                "score": NaN,
+                "seed": null,
+                "shape": null,
+                "topology": {
+                    "created": "2026-07-20 22:20:02",
+                    "file_name": "vhh_chainA_haddock.psf",
+                    "file_type": {
+                        "py/reduce": [
+                            {
+                                "py/type": "haddock.libs.libontology.Format"
+                            },
+                            {
+                                "py/tuple": [
+                                    "psf"
+                                ]
+                            }
+                        ]
+                    },
+                    "full_name": "vhh_chainA_haddock.psf",
+                    "md5": null,
+                    "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_3/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0176__21659AF8D154A495_9e6y_s917_717d1947d9c4/haddock_run/0_topoaa",
+                    "py/object": "haddock.libs.libontology.TopologyFile",
+                    "rel_path": {
+                        "py/reduce": [
+                            {
+                                "py/type": "pathlib.PosixPath"
+                            },
+                            {
+                                "py/tuple": [
+                                    "..",
+                                    "0_topoaa",
+                                    "vhh_chainA_haddock.psf"
+                                ]
+                            }
+                        ]
+                    },
+                    "restr_fname": null
+                },
+                "unw_energies": null
+            }
+        },
+        {
+            "0": {
+                "aa_topology": null,
+                "cgtoaa_tbl": null,
+                "clt_id": null,
+                "clt_model_rank": null,
+                "clt_rank": null,
+                "created": "2026-07-20 22:20:02",
+                "file_name": "pvrig_chainT_haddock.pdb",
+                "file_type": {
+                    "py/id": 5
+                },
+                "full_name": "pvrig_chainT_haddock.pdb",
+                "ligand_param_fname": null,
+                "ligand_top_fname": null,
+                "md5": null,
+                "ori_name": "pvrig_chainT",
+                "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_3/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0176__21659AF8D154A495_9e6y_s917_717d1947d9c4/haddock_run/0_topoaa",
+                "py/object": "haddock.libs.libontology.PDBFile",
+                "rel_path": {
+                    "py/reduce": [
+                        {
+                            "py/type": "pathlib.PosixPath"
+                        },
+                        {
+                            "py/tuple": [
+                                "..",
+                                "0_topoaa",
+                                "pvrig_chainT_haddock.pdb"
+                            ]
+                        }
+                    ]
+                },
+                "restr_fname": null,
+                "score": NaN,
+                "seed": null,
+                "shape": null,
+                "topology": {
+                    "created": "2026-07-20 22:20:02",
+                    "file_name": "pvrig_chainT_haddock.psf",
+                    "file_type": {
+                        "py/id": 8
+                    },
+                    "full_name": "pvrig_chainT_haddock.psf",
+                    "md5": null,
+                    "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_3/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0176__21659AF8D154A495_9e6y_s917_717d1947d9c4/haddock_run/0_topoaa",
+                    "py/object": "haddock.libs.libontology.TopologyFile",
+                    "rel_path": {
+                        "py/reduce": [
+                            {
+                                "py/type": "pathlib.PosixPath"
+                            },
+                            {
+                                "py/tuple": [
+                                    "..",
+                                    "0_topoaa",
+                                    "pvrig_chainT_haddock.psf"
+                                ]
+                            }
+                        ]
+                    },
+                    "restr_fname": null
+                },
+                "unw_energies": null
+            }
+        }
+    ]
+}

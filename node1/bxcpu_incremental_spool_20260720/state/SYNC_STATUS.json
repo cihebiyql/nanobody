@@ -1,0 +1,22 @@
+{
+  "batch_size": 20,
+  "campaigns": [
+    {
+      "batch": 20,
+      "campaign": "stage2",
+      "delivered": 880,
+      "pruned": 880
+    },
+    {
+      "batch": 0,
+      "campaign": "stage3_node20",
+      "delivered": 0,
+      "pruned": 0
+    }
+  ],
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/bxcpu_incremental_spool_20260720",
+  "node1_root": "/data/qlyu/projects/pvrig_v29_bxcpu_results_mirror_20260720",
+  "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+  "stable_age_seconds": 180,
+  "updated_at_utc": "2026-07-21T00:49:50.515663+00:00"
+}

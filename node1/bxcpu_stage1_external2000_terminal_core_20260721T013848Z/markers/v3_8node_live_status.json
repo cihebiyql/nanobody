@@ -1,0 +1,36 @@
+{
+  "aggregate_job_id": "11936122",
+  "array_job_id": "11936121",
+  "association": {
+    "GrpTRES": "node=2",
+    "MaxSubmitJobs": 10,
+    "account": "bscc-al",
+    "partition": "amd_256q",
+    "qos": "normal",
+    "user": "als001821"
+  },
+  "bundle_sha256": "62f3c702f582c1d488263170b3a8835746fe7fb533fa49b01786392978483e94",
+  "counts": {
+    "FAILED": 0,
+    "OTHER": 0,
+    "RUNNING": 3,
+    "SUCCESS": 329
+  },
+  "note": "Formal scheduling disproved the 8-node permission inference from sbatch --test-only; current authorized concurrency is two nodes.",
+  "pending_array_tasks": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "pending_reason": "AssocGrpNodeLimit",
+  "protocol_core_sha256": "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666",
+  "running_array_tasks": [
+    1,
+    2
+  ],
+  "state": "RUNNING_WITH_ASSOCIATION_LIMIT",
+  "updated_at": "2026-07-20T11:27:47.877246+00:00"
+}

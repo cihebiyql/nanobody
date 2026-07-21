@@ -1,0 +1,1502 @@
+{
+    "input": [
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_8.pdb",
+            "file_type": {
+                "py/reduce": [
+                    {
+                        "py/type": "haddock.libs.libontology.Format"
+                    },
+                    {
+                        "py/tuple": [
+                            "pdb"
+                        ]
+                    }
+                ]
+            },
+            "full_name": "rigidbody_8.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_8.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -29.380385999999998,
+            "seed": 925,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "created": "2026-07-20 22:21:22",
+                    "file_name": "vhh_chainA_haddock.psf",
+                    "file_type": {
+                        "py/reduce": [
+                            {
+                                "py/type": "haddock.libs.libontology.Format"
+                            },
+                            {
+                                "py/tuple": [
+                                    "psf"
+                                ]
+                            }
+                        ]
+                    },
+                    "full_name": "vhh_chainA_haddock.psf",
+                    "md5": null,
+                    "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/0_topoaa",
+                    "py/object": "haddock.libs.libontology.TopologyFile",
+                    "rel_path": {
+                        "py/reduce": [
+                            {
+                                "py/type": "pathlib.PosixPath"
+                            },
+                            {
+                                "py/tuple": [
+                                    "..",
+                                    "0_topoaa",
+                                    "vhh_chainA_haddock.psf"
+                                ]
+                            }
+                        ]
+                    },
+                    "restr_fname": null
+                },
+                {
+                    "created": "2026-07-20 22:21:22",
+                    "file_name": "pvrig_chainT_haddock.psf",
+                    "file_type": {
+                        "py/id": 10
+                    },
+                    "full_name": "pvrig_chainT_haddock.psf",
+                    "md5": null,
+                    "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/0_topoaa",
+                    "py/object": "haddock.libs.libontology.TopologyFile",
+                    "rel_path": {
+                        "py/reduce": [
+                            {
+                                "py/type": "pathlib.PosixPath"
+                            },
+                            {
+                                "py/tuple": [
+                                    "..",
+                                    "0_topoaa",
+                                    "pvrig_chainT_haddock.psf"
+                                ]
+                            }
+                        ]
+                    },
+                    "restr_fname": null
+                }
+            ],
+            "unw_energies": {
+                "air": 948.127,
+                "angles": 1343.95,
+                "bonds": 3236.22,
+                "bsa": 1102.77,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -27.5547,
+                "dihe": 1111.4,
+                "elec": -0.482875,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 968.006,
+                "vdw": 20.3619,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_30.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_30.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_30.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -28.862468,
+            "seed": 947,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1398.72,
+                "angles": 1343.95,
+                "bonds": 3236.2,
+                "bsa": 1026.89,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -29.8163,
+                "dihe": 1111.4,
+                "elec": -2.93875,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1413.21,
+                "vdw": 17.4282,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_26.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_26.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_26.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -28.399762000000003,
+            "seed": 943,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1334.46,
+                "angles": 1343.96,
+                "bonds": 3236.19,
+                "bsa": 1106.52,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -28.411,
+                "dihe": 1111.4,
+                "elec": -2.86378,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1391.16,
+                "vdw": 59.5618,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_38.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_38.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_38.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -28.243337000000004,
+            "seed": 955,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1131.83,
+                "angles": 1343.96,
+                "bonds": 3236.2,
+                "bsa": 1091.08,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -28.415,
+                "dihe": 1111.4,
+                "elec": -0.822363,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1189.66,
+                "vdw": 58.6526,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_22.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_22.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_22.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -28.0748362,
+            "seed": 939,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1374.01,
+                "angles": 1343.95,
+                "bonds": 3236.21,
+                "bsa": 1082.53,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -29.4856,
+                "dihe": 1111.4,
+                "elec": -1.55666,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1377.71,
+                "vdw": 5.26238,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_34.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_34.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_34.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -26.857143800000003,
+            "seed": 951,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1527.11,
+                "angles": 1343.96,
+                "bonds": 3236.2,
+                "bsa": 1038.43,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -29.2436,
+                "dihe": 1111.4,
+                "elec": -2.55777,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1530.29,
+                "vdw": 5.74262,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_9.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_9.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_9.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -26.374225000000003,
+            "seed": 926,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1446.25,
+                "angles": 1343.96,
+                "bonds": 3236.2,
+                "bsa": 1201.82,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -29.4812,
+                "dihe": 1111.4,
+                "elec": 0.53994,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1459.06,
+                "vdw": 12.2735,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_21.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_21.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_21.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -26.261744,
+            "seed": 938,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1537.77,
+                "angles": 1343.96,
+                "bonds": 3236.18,
+                "bsa": 1143.67,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -30.0535,
+                "dihe": 1111.4,
+                "elec": -0.685444,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1590.7,
+                "vdw": 53.62,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_32.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_32.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_32.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -26.03494427,
+            "seed": 949,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 733.584,
+                "angles": 1343.96,
+                "bonds": 3236.21,
+                "bsa": 1069.59,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -22.8009,
+                "dihe": 1111.4,
+                "elec": 0.05756683,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 740.487,
+                "vdw": 6.84489,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": [
+                null,
+                null
+            ],
+            "cgtoaa_tbl": [
+                null,
+                null
+            ],
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:21:23",
+            "file_name": "rigidbody_11.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "rigidbody_11.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": null,
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/1_rigidbody",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "1_rigidbody",
+                            "rigidbody_11.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": "../data/1_rigidbody/air.tbl",
+            "score": -26.018335999999998,
+            "seed": 928,
+            "shape": [
+                null,
+                null
+            ],
+            "topology": [
+                {
+                    "py/id": 9
+                },
+                {
+                    "py/id": 12
+                }
+            ],
+            "unw_energies": {
+                "air": 1514.24,
+                "angles": 1343.96,
+                "bonds": 3236.2,
+                "bsa": 1141.4,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -28.6913,
+                "dihe": 1111.4,
+                "elec": -1.57667,
+                "improper": 2337.84,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 1564.79,
+                "vdw": 52.1234,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        }
+    ],
+    "output": [
+        {
+            "aa_topology": {
+                "py/id": 3
+            },
+            "cgtoaa_tbl": {
+                "py/id": 4
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_1.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_1.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_8.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_1.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "data",
+                            "3_flexref",
+                            "air.tbl"
+                        ]
+                    }
+                ]
+            },
+            "score": -56.407500000000006,
+            "seed": 925,
+            "shape": {
+                "py/id": 7
+            },
+            "topology": {
+                "py/id": 8
+            },
+            "unw_energies": {
+                "air": 184.749,
+                "angles": 1048.43,
+                "bonds": 3299.08,
+                "bsa": 1072.54,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -20.0092,
+                "dihe": 1134.38,
+                "elec": -14.9727,
+                "improper": 1117.18,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 140.601,
+                "vdw": -29.1751,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 16
+            },
+            "cgtoaa_tbl": {
+                "py/id": 17
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_2.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_2.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_30.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_2.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -89.88059999999999,
+            "seed": 947,
+            "shape": {
+                "py/id": 19
+            },
+            "topology": {
+                "py/id": 20
+            },
+            "unw_energies": {
+                "air": 303.627,
+                "angles": 1060.33,
+                "bonds": 3313.17,
+                "bsa": 1145.94,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -29.7875,
+                "dihe": 1128.74,
+                "elec": -57.3363,
+                "improper": 1268.77,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 224.63,
+                "vdw": -21.6601,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 23
+            },
+            "cgtoaa_tbl": {
+                "py/id": 24
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_3.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_3.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_26.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_3.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -119.38550000000001,
+            "seed": 943,
+            "shape": {
+                "py/id": 26
+            },
+            "topology": {
+                "py/id": 27
+            },
+            "unw_energies": {
+                "air": 273.103,
+                "angles": 1023.37,
+                "bonds": 3315.14,
+                "bsa": 1220.34,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -30.868,
+                "dihe": 1131.98,
+                "elec": -67.1366,
+                "improper": 1141.5,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 169.479,
+                "vdw": -36.4878,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 30
+            },
+            "cgtoaa_tbl": {
+                "py/id": 31
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_4.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_4.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_38.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_4.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -101.06169999999999,
+            "seed": 955,
+            "shape": {
+                "py/id": 33
+            },
+            "topology": {
+                "py/id": 34
+            },
+            "unw_energies": {
+                "air": 204.517,
+                "angles": 1025.21,
+                "bonds": 3302.39,
+                "bsa": 1426.31,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -33.67,
+                "dihe": 1131.37,
+                "elec": -36.4344,
+                "improper": 1115.15,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 130.937,
+                "vdw": -37.1459,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 37
+            },
+            "cgtoaa_tbl": {
+                "py/id": 38
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_5.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_5.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_22.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_5.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -90.4483,
+            "seed": 939,
+            "shape": {
+                "py/id": 40
+            },
+            "topology": {
+                "py/id": 41
+            },
+            "unw_energies": {
+                "air": 264.636,
+                "angles": 1183.65,
+                "bonds": 3213.61,
+                "bsa": 1153.16,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -28.6936,
+                "dihe": 1130.69,
+                "elec": -41.071,
+                "improper": 1319.15,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 187.95,
+                "vdw": -35.6157,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 44
+            },
+            "cgtoaa_tbl": {
+                "py/id": 45
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_6.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_6.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_34.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_6.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -42.43214,
+            "seed": 951,
+            "shape": {
+                "py/id": 47
+            },
+            "topology": {
+                "py/id": 48
+            },
+            "unw_energies": {
+                "air": 313.13,
+                "angles": 1067.33,
+                "bonds": 3311.16,
+                "bsa": 1041.03,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -31.3588,
+                "dihe": 1132.64,
+                "elec": -8.08094,
+                "improper": 1247.48,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 281.154,
+                "vdw": -23.8951,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 51
+            },
+            "cgtoaa_tbl": {
+                "py/id": 52
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_7.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_7.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_9.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_7.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -74.9104,
+            "seed": 926,
+            "shape": {
+                "py/id": 54
+            },
+            "topology": {
+                "py/id": 55
+            },
+            "unw_energies": {
+                "air": 259.692,
+                "angles": 1190.98,
+                "bonds": 3215.17,
+                "bsa": 1257.95,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -33.2481,
+                "dihe": 1132.4,
+                "elec": -17.0978,
+                "improper": 1317.24,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 204.64,
+                "vdw": -37.9542,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 58
+            },
+            "cgtoaa_tbl": {
+                "py/id": 59
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_8.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_8.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_21.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_8.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -83.1933,
+            "seed": 938,
+            "shape": {
+                "py/id": 61
+            },
+            "topology": {
+                "py/id": 62
+            },
+            "unw_energies": {
+                "air": 241.423,
+                "angles": 1036.52,
+                "bonds": 3306.79,
+                "bsa": 1487.28,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -33.9871,
+                "dihe": 1134.6,
+                "elec": -9.3192,
+                "improper": 1116.52,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 182.947,
+                "vdw": -49.1565,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 65
+            },
+            "cgtoaa_tbl": {
+                "py/id": 66
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_9.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_9.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_32.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_9.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -124.06949999999999,
+            "seed": 949,
+            "shape": {
+                "py/id": 68
+            },
+            "topology": {
+                "py/id": 69
+            },
+            "unw_energies": {
+                "air": 135.347,
+                "angles": 1023.3,
+                "bonds": 3303.12,
+                "bsa": 1422.34,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -35.1044,
+                "dihe": 1129.07,
+                "elec": -53.3282,
+                "improper": 1117.45,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 47.0703,
+                "vdw": -34.9482,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        },
+        {
+            "aa_topology": {
+                "py/id": 72
+            },
+            "cgtoaa_tbl": {
+                "py/id": 73
+            },
+            "clt_id": null,
+            "clt_model_rank": null,
+            "clt_rank": null,
+            "created": "2026-07-20 22:22:27",
+            "file_name": "flexref_10.pdb",
+            "file_type": {
+                "py/id": 5
+            },
+            "full_name": "flexref_10.pdb",
+            "ligand_param_fname": null,
+            "ligand_top_fname": null,
+            "md5": null,
+            "ori_name": "rigidbody_11.pdb",
+            "path": "/tmp/als001821/pvrig_v29_bxcpu_stage2_10500_v1_20260720/eight_11936506_2/pvrig_v29_bxcpu_stage2_10500_v1_20260720/runs/CANDIDATE_V29_GEN__C0173__A607C38277942A8F_9e6y_s917_5f32f082ce30/haddock_run/3_flexref",
+            "py/object": "haddock.libs.libontology.PDBFile",
+            "rel_path": {
+                "py/reduce": [
+                    {
+                        "py/type": "pathlib.PosixPath"
+                    },
+                    {
+                        "py/tuple": [
+                            "..",
+                            "3_flexref",
+                            "flexref_10.pdb"
+                        ]
+                    }
+                ]
+            },
+            "restr_fname": {
+                "py/id": 81
+            },
+            "score": -94.7601,
+            "seed": 928,
+            "shape": {
+                "py/id": 75
+            },
+            "topology": {
+                "py/id": 76
+            },
+            "unw_energies": {
+                "air": 265.605,
+                "angles": 1019.96,
+                "bonds": 3303.81,
+                "bsa": 1550.2,
+                "cdih": 0.0,
+                "coup": 0.0,
+                "dani": 0.0,
+                "desolv": -37.9171,
+                "dihe": 1129.66,
+                "elec": -17.4139,
+                "improper": 1114.03,
+                "rdcs": 0.0,
+                "rg": 0.0,
+                "sym": 0.0,
+                "total": 197.703,
+                "vdw": -50.4876,
+                "vean": 0.0,
+                "xpcs": 0.0
+            }
+        }
+    ]
+}

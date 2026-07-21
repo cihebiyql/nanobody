@@ -1,0 +1,43 @@
+# Frozen PVRIG V3 9e6y independent docking config
+# protocol_core_sha256=49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666
+run_dir = "haddock_run"
+mode = "local"
+ncores = 4
+
+molecules = [
+    "data/vhh_chainA.pdb",
+    "data/pvrig_chainT.pdb",
+]
+
+['topoaa.1']
+iniseed = 917
+
+['rigidbody.1']
+ambig_fname = "data/air.tbl"
+iniseed = 917
+tolerance = 5
+sampling = 40
+randremoval = true
+npart = 2
+
+['seletop.1']
+select = 10
+
+['flexref.1']
+ambig_fname = "data/air.tbl"
+iniseed = 917
+tolerance = 10
+randremoval = true
+npart = 2
+
+['emref.1']
+ambig_fname = "data/air.tbl"
+iniseed = 917
+randremoval = true
+npart = 2
+
+['clustfcc.1']
+min_population = 1
+
+['seletopclusts.1']
+top_models = 4

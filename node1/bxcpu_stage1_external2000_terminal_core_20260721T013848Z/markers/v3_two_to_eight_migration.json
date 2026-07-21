@@ -1,0 +1,19 @@
+{
+  "archive_sha256": "62f3c702f582c1d488263170b3a8835746fe7fb533fa49b01786392978483e94",
+  "captured_at_utc": "2026-07-20T11:18:24.147734+00:00",
+  "identity_or_score_errors": 0,
+  "old_aggregate_job_id": "11936048",
+  "old_array_job_id": "11936029",
+  "published_status_files": 288,
+  "schema_version": "pvrig_v3_bxcpu_2_to_8_migration_v1",
+  "scientific_boundary": "Same V3 job IDs, hashes, protocol core and dual-reference scoring; scheduling-only migration.",
+  "selected_model_count_distribution_at_check": {
+    "10": 249,
+    "9": 7
+  },
+  "status": "PRE_CANCEL_SNAPSHOT",
+  "status_counts": {
+    "SUCCESS": 288
+  },
+  "validated_results_at_consistency_check": 256
+}

@@ -1,0 +1,73 @@
+### clustfcc output ###
+
+Clustering parameters 
+> contact_distance_cutoff=5.0A
+> clust_cutoff=0.6
+> min_population=1
+> strictness=0.75
+
+Note: Models marked with * represent the center of the cluster
+-----------------------------------------------
+
+Total # of clusters: 10
+
+-----------------------------------------------
+Cluster 1 (#2, n=1, top1_avg_score = -75.69 +-0.00)
+
+clt_rank	model_name	score
+1	emref_9.pdb	-75.69	*
+
+-----------------------------------------------
+Cluster 2 (#1, n=1, top1_avg_score = -74.42 +-0.00)
+
+clt_rank	model_name	score
+1	emref_10.pdb	-74.42	*
+
+-----------------------------------------------
+Cluster 3 (#7, n=1, top1_avg_score = -72.15 +-0.00)
+
+clt_rank	model_name	score
+1	emref_4.pdb	-72.15	*
+
+-----------------------------------------------
+Cluster 4 (#8, n=1, top1_avg_score = -70.43 +-0.00)
+
+clt_rank	model_name	score
+1	emref_3.pdb	-70.43	*
+
+-----------------------------------------------
+Cluster 5 (#3, n=1, top1_avg_score = -65.05 +-0.00)
+
+clt_rank	model_name	score
+1	emref_8.pdb	-65.05	*
+
+-----------------------------------------------
+Cluster 6 (#9, n=1, top1_avg_score = -48.47 +-0.00)
+
+clt_rank	model_name	score
+1	emref_2.pdb	-48.47	*
+
+-----------------------------------------------
+Cluster 7 (#4, n=1, top1_avg_score = -48.37 +-0.00)
+
+clt_rank	model_name	score
+1	emref_7.pdb	-48.37	*
+
+-----------------------------------------------
+Cluster 8 (#6, n=1, top1_avg_score = -45.53 +-0.00)
+
+clt_rank	model_name	score
+1	emref_5.pdb	-45.53	*
+
+-----------------------------------------------
+Cluster 9 (#10, n=1, top1_avg_score = -38.63 +-0.00)
+
+clt_rank	model_name	score
+1	emref_1.pdb	-38.63	*
+
+-----------------------------------------------
+Cluster 10 (#5, n=1, top1_avg_score = -34.96 +-0.00)
+
+clt_rank	model_name	score
+1	emref_6.pdb	-34.96	*
+-----------------------------------------------

@@ -1,0 +1,30 @@
+{
+  "batch_size": 5,
+  "campaigns": {
+    "stage2": 10500,
+    "stage3_node20": 734
+  },
+  "created_at_utc": "2026-07-20T15:16:45.545412+00:00",
+  "e2e_probe": {
+    "job_id": "CANDIDATE_V29_GEN__C0001__03E4B7FF010EA856_8x6b_s1931_bf936ec714fc",
+    "node1_sha256": "PASS",
+    "result_files": 31,
+    "run_files": 384
+  },
+  "local_spool": "/mnt/d/work/\u6297\u4f53/node1/bxcpu_incremental_spool_20260720",
+  "local_spool_policy": "Transient payload cache; remove results/runs/log after Node1 SHA256 verification.",
+  "node1_archive": "/data/qlyu/projects/pvrig_v29_bxcpu_results_mirror_20260720",
+  "node1_storage": "/data NFS because full raw output is expected to exceed local /mnt/d and Node1 /data1 free space.",
+  "pid": 2765456,
+  "poll_seconds": 60,
+  "schema_version": "pvrig_bxcpu_incremental_sync_ready_v1",
+  "stable_age_seconds": 600,
+  "state": "RUNNING_VALIDATED",
+  "tmux_session": "pvrig-bxcpu-result-sync",
+  "transport": "rsync compressed partial transfer with retry",
+  "validation": [
+    "terminal status stable >=600s",
+    "bxcpu/local path and byte inventory equality",
+    "Node1 batch SHA256"
+  ]
+}

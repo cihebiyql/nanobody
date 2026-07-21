@@ -1,0 +1,79 @@
+{
+  "calibration_controls_applied": false,
+  "candidate_count": 2000,
+  "candidate_state_counts": {
+    "COMPLETE_DUAL_SUCCESS": 1906,
+    "NOT_READY": 93,
+    "TECHNICAL_NA": 1
+  },
+  "candidate_summary_sha256": "9d32f8fe760bd38c616a38fc64b7e1582b5839e0134842e1de158054aa31c7ff",
+  "claim_boundary": "Computational dual-receptor, single-seed Docking geometry evidence only; not affinity, Kd, IC50, expression, purity, or experimental blocking.",
+  "full_v29_merge_and_canonical_aggregation_required": true,
+  "gates": {
+    "external_manifest": {
+      "conformation_set": [
+        "8x6b",
+        "9e6y"
+      ],
+      "entity_count": 2000,
+      "job_count": 4000,
+      "protocol_core_sha256": [
+        "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666"
+      ],
+      "reasons": [],
+      "seed_set": [
+        "917"
+      ],
+      "status": "PASS"
+    },
+    "manifest_bound_pose_evidence": {
+      "manifest_jobs": 4000,
+      "reasons": [],
+      "result_jobs": 4000,
+      "status": "PASS"
+    }
+  },
+  "job_count": 4000,
+  "job_manifest_sha256": "652eae179a7f6d44ccc2db46027e8fcdf82b1af16c7184798c3bc17c96b54167",
+  "job_results_sha256": "282ac670e349e1857a2ff1faa04c18616e2609cc11f581dd47301f91e3e733af",
+  "job_state_counts": {
+    "FAILED": 1,
+    "PENDING": 186,
+    "SUCCESS": 3813
+  },
+  "merge_contract": {
+    "canonical_full_aggregator": "scripts/aggregate_results.py in the complete V29 project after all shard results are merged",
+    "identity_keys": [
+      "job_id",
+      "job_hash",
+      "protocol_core_sha256"
+    ],
+    "return_to_full_project": [
+      "status/jobs",
+      "results",
+      "runs"
+    ],
+    "technical_failures": "NA_not_negative"
+  },
+  "multiseed_stability_gate_applied": false,
+  "pair_support_ordinal_mapping": {
+    "OTHER": 0,
+    "STRICT_A": 2,
+    "SUPPORTED_AB": 1
+  },
+  "pending_jobs": 186,
+  "pose_scores_sha256": "3087c5924b7e569b0dc363c37a4a94b3a4755f287d27b3a68c8acf22cfafb52d",
+  "protocol_core_sha256": [
+    "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666"
+  ],
+  "reports": {
+    "candidate_dual_summary": "/tmp/als001821/pvrig_v29_external2000_sequences_v3_20260720/aggregate_11936122/pvrig_v29_external2000_sequences_v3_20260720/reports/external_candidate_dual.tsv",
+    "job_results": "/tmp/als001821/pvrig_v29_external2000_sequences_v3_20260720/aggregate_11936122/pvrig_v29_external2000_sequences_v3_20260720/reports/external_job_results.tsv",
+    "pose_scores": "/tmp/als001821/pvrig_v29_external2000_sequences_v3_20260720/aggregate_11936122/pvrig_v29_external2000_sequences_v3_20260720/reports/external_pose_scores.tsv"
+  },
+  "schema_version": "pvrig_v29_external2000_aggregation_v1",
+  "scope": "external_shard_partial_aggregation",
+  "status": "NOT_READY",
+  "technical_na_jobs": 1,
+  "unlockable": false
+}

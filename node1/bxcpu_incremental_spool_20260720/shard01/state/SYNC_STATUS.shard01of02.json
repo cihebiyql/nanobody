@@ -1,0 +1,22 @@
+{
+  "batch_size": 40,
+  "campaigns": [
+    {
+      "campaign": "stage2",
+      "error": "CalledProcessError(2, ['tar', '-tzf', '/mnt/d/work/\u6297\u4f53/node1/bxcpu_incremental_spool_20260720/shard01/stage2/compressed_queue/CANDIDATE_V29_GEN__C0354__A71A30587B35EE1E_8x6b_s3253_b1863a163a2f.tar.gz'])"
+    },
+    {
+      "batch": 0,
+      "campaign": "stage3_node20",
+      "delivered": 0,
+      "pruned": 0
+    }
+  ],
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/bxcpu_incremental_spool_20260720/shard01",
+  "node1_root": "/data/qlyu/projects/pvrig_v29_bxcpu_results_mirror_20260720",
+  "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+  "shard_count": 2,
+  "shard_index": 1,
+  "stable_age_seconds": 600,
+  "updated_at_utc": "2026-07-21T02:00:53.503712+00:00"
+}
