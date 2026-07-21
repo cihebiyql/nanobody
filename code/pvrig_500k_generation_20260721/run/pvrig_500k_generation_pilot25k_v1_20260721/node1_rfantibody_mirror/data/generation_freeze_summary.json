@@ -1,0 +1,93 @@
+{
+  "arm_count": 36,
+  "arm_counts_by_lane": {
+    "primary_vhhified": 36
+  },
+  "arm_table_path": "/data1/qlyu/projects/pvrig_500k_rfantibody_pilot_v1_20260721/config/generation_arms_primary.tsv",
+  "arm_table_sha256": "095e124a1a858fae97d0e0458069ed28a18a2c75b6c342e189574a7b3ca9d8da",
+  "claim_boundary": "generated candidates are not experimentally verified binders or blockers",
+  "created_at": "2026-07-21T12:38:48.751237+00:00",
+  "docking_status": "not_run",
+  "expected_backbones_from_arm_table": 864,
+  "expected_sequence_records_from_arm_table": 6912,
+  "generation_execution_policy_path": "/data1/qlyu/projects/pvrig_500k_rfantibody_pilot_v1_20260721/config/generation_execution_policy.json",
+  "generation_execution_policy_sha256": "ca5b550dd478674af4509805b8e04756dfc3e9cd51ea207fd3f34daa45ed7925",
+  "raw_exact_known_positive_matches": 0,
+  "raw_records": 6912,
+  "raw_unique_sequences": 6282,
+  "raw_valid_records": 6912,
+  "rf2_status": "not_run",
+  "run_root": "/data1/qlyu/projects/pvrig_500k_rfantibody_pilot_v1_20260721",
+  "schema_version": 1,
+  "selected_by_arm": {
+    "P1_ekg_L": 139,
+    "P1_ekg_S": 139,
+    "P1_qkg_L": 139,
+    "P1_qkg_S": 139,
+    "P1_qrg_L": 139,
+    "P1_qrg_S": 139,
+    "P2_ekg_L": 139,
+    "P2_ekg_S": 139,
+    "P2_qkg_L": 139,
+    "P2_qkg_S": 139,
+    "P2_qrg_L": 139,
+    "P2_qrg_S": 139,
+    "P3_ekg_L": 139,
+    "P3_ekg_S": 139,
+    "P3_qkg_L": 139,
+    "P3_qkg_S": 139,
+    "P3_qrg_L": 139,
+    "P3_qrg_S": 139,
+    "P4_ekg_L": 139,
+    "P4_ekg_S": 139,
+    "P4_qkg_L": 139,
+    "P4_qkg_S": 139,
+    "P4_qrg_L": 139,
+    "P4_qrg_S": 139,
+    "P5_ekg_L": 139,
+    "P5_ekg_S": 139,
+    "P5_qkg_L": 139,
+    "P5_qkg_S": 139,
+    "P5_qrg_L": 139,
+    "P5_qrg_S": 139,
+    "P6_ekg_L": 139,
+    "P6_ekg_S": 139,
+    "P6_qkg_L": 138,
+    "P6_qkg_S": 138,
+    "P6_qrg_L": 138,
+    "P6_qrg_S": 138
+  },
+  "selected_by_h3_regime": {
+    "L": 2500,
+    "S": 2500
+  },
+  "selected_by_patch": {
+    "P1_core_blocker": 834,
+    "P2_bridge_N_C": 834,
+    "P3_charge_aromatic": 834,
+    "P4_cterm_robust": 834,
+    "P5_upper_interface": 834,
+    "P6_holdout_ablation": 830
+  },
+  "selected_by_scaffold": {
+    "ekg": 1668,
+    "qkg": 1666,
+    "qrg": 1666
+  },
+  "selected_exact_unique_sequences": 5000,
+  "selected_max_siblings_per_backbone": 8,
+  "selected_records": 5000,
+  "selected_rfd_averagemin": {
+    "count": 5000,
+    "max": 9.924132347106934,
+    "median": 6.9681243896484375,
+    "min": 4.615692615509033
+  },
+  "selected_rfd_mindist": {
+    "count": 5000,
+    "max": 6.697251319885254,
+    "median": 4.1574835777282715,
+    "min": 1.6923071146011353
+  },
+  "selected_unique_backbones": 863
+}

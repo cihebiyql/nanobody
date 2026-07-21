@@ -1,0 +1,4 @@
+record_id,name,chain,numbering_scheme,numbering_status,cdr1,cdr2,cdr3,cdr1_len,cdr2_len,cdr3_len,source_id,sequence_status,notes
+tab5_vh,Tab5,VH,IMGT,anarci_success,GFTFGTSS,ISFDGTEI,AKGSGNIYYFSGMDV,8,8,15,bioshanghaiweek_2026_sicbc,confirmed_from_official_page,"CDRs extracted with official ab-data-validator ANARCI wrapper using IMGT ranges 27-38, 56-65, 105-117."
+tab5_vl,Tab5,VL,IMGT,anarci_success,QSISGW,ETS,QQYYSYPLT,6,3,9,bioshanghaiweek_2026_sicbc,confirmed_from_official_page,"CDRs extracted with official ab-data-validator ANARCI wrapper using IMGT ranges 27-38, 56-65, 105-117."
+hr151_vhh,HR-151,VHH,IMGT,anarci_success,ASGFTYRPYC,IDIFGGT,AAGDSPDGRCGLPPQGLNY,10,7,19,bioshanghaiweek_2026_sicbc,confirmed_from_official_page,"CDRs extracted with official ab-data-validator ANARCI wrapper using IMGT ranges 27-38, 56-65, 105-117."

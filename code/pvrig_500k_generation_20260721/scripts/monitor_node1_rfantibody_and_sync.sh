@@ -25,15 +25,23 @@ PY
 done
 
 mkdir -p "$local_root/config" "$local_root/data" "$local_root/status" "$local_root/logs"
-scp.exe -q node1:"$remote_root/status/controller.json" "$local_root/status/controller.json"
-scp.exe -q node1:"$remote_root/config/generation_arms_primary.tsv" "$local_root/config/generation_arms_primary.tsv"
-scp.exe -q node1:"$remote_root/config/generation_execution_policy.json" "$local_root/config/generation_execution_policy.json"
+copy_remote() {
+  local remote_path=$1
+  local local_path=$2
+  # Windows scp.exe cannot reliably resolve WSL absolute destination paths.
+  # Stream through ssh.exe so the local shell owns the destination file.
+  ssh.exe -o BatchMode=yes node1 "cat '$remote_path'" > "$local_path"
+}
+
+copy_remote "$remote_root/status/controller.json" "$local_root/status/controller.json"
+copy_remote "$remote_root/config/generation_arms_primary.tsv" "$local_root/config/generation_arms_primary.tsv"
+copy_remote "$remote_root/config/generation_execution_policy.json" "$local_root/config/generation_execution_policy.json"
 
 if [[ "$state" == COMPLETE ]]; then
   for name in candidates.tsv candidates.tsv.sha256 candidates.fasta candidates.fasta.sha256 \
     candidates_raw.tsv candidates_raw.tsv.sha256 backbone_groups.tsv backbone_groups.tsv.sha256 \
     generation_freeze_summary.json generation_freeze_summary.json.sha256; do
-    scp.exe -q node1:"$remote_root/data/$name" "$local_root/data/$name"
+    copy_remote "$remote_root/data/$name" "$local_root/data/$name"
   done
   (
     cd "$local_root/data"
@@ -44,7 +52,7 @@ if [[ "$state" == COMPLETE ]]; then
     sha256sum -c generation_freeze_summary.json.sha256
   ) > "$local_root/status/checksums.log"
 else
-  scp.exe -q node1:"$remote_root/logs/controller.log" "$local_root/logs/controller.log" || true
+  copy_remote "$remote_root/logs/controller.log" "$local_root/logs/controller.log" || true
 fi
 
 python - "$campaign_dir" "$local_root" "$state" <<'PY'

@@ -1,0 +1,14 @@
+{
+  "artifacts": {
+    "DEVELOPMENT_METRICS.json": "e1cb3ab606cd6338c2793f6999afad623262c93ba5c372e3fe4dac12d1acd5e8",
+    "MODEL_SELECTION.tsv": "28d75d583987d210ba5674507521ee5759331563ea70a5b8e25e8ebe3762ab0e",
+    "SHA256SUMS": "ea4dd7b8fdafa714c0890b0cf18a3634da13392a1d430ada6aea97ebbb16cd33"
+  },
+  "created_at_utc": "2026-07-21T10:23:44.530332+00:00",
+  "development_rows": 795,
+  "frozen_test_access_count": 0,
+  "schema_version": "pvrig_v2_10_stage0_evaluation_terminal_v1",
+  "sealed_truth_access_count": 0,
+  "selected_model": "ELASTICNET_ESM2_650M_PCA",
+  "status": "PASS_STAGE0_AND_OPEN_DEVELOPMENT_EVALUATION"
+}

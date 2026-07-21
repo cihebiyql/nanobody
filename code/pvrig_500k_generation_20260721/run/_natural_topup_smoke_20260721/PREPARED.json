@@ -1,0 +1,17 @@
+{
+  "design_mode_counts": {
+    "H1H2H3": 9,
+    "H1H3": 7
+  },
+  "generation_batch": "natural_donor_combination_topup_v1",
+  "max_shard_size": 4,
+  "min_shard_size": 4,
+  "nodes": 2,
+  "ordinal_offset": 120000,
+  "raw_task_count": 16,
+  "reason": "Primary 120k natural-donor run yielded 82,607 exact-unique FAST-QC PASS sequences; H3-only donor space was saturated.",
+  "route": "natural_cdr_donor",
+  "shard_count": 4,
+  "status": "READY_FOR_BXCPU_TOPUP",
+  "workers_per_node": 2
+}

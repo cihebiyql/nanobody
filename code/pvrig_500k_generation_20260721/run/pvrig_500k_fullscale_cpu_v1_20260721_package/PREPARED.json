@@ -1,0 +1,14 @@
+{
+  "max_shard_size": 665,
+  "min_shard_size": 664,
+  "nodes": 8,
+  "parent_count": 180,
+  "raw_task_count": 340000,
+  "route_counts": {
+    "conservative_cdr_redesign": 220000,
+    "natural_cdr_donor": 120000
+  },
+  "shard_count": 512,
+  "status": "READY_FOR_BXCPU",
+  "workers_per_node": 64
+}

@@ -270,6 +270,12 @@ pvrig_500k_generation_20260721/run/pvrig_500k_generation_pilot25k_v1_20260721/st
 pvrig_500k_generation_20260721/run/pvrig_500k_generation_pilot25k_v1_20260721/manifests/local_cpu_effective_SHA256SUMS
 ```
 
+500k 扩量后的 bxcpu 8-node CPU 执行、50k 结构预测和 bxcpu → 本地 → Node1 滚动回传方案见：
+
+```text
+docs/PVRIG_500K_BXCPU_STRUCTURE_PREDICTION_AND_TRANSFER_PLAN_20260721_ZH.md
+```
+
 ## 13. RFantibody pilot 的当前实现边界
 
 RFantibody pilot 复用已经通过 smoke 的 P1–P6 hotspot 机制网格、3 个 VHHified scaffold 和 short/long H3 两种 regime。它用于验证“表位条件 backbone + ProteinMPNN”这条生成路线的独立产率和 QC，不与 A_CENTER/B_LOWER/C_CROSS 三分类强行一一对应。

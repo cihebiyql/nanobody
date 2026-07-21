@@ -1,0 +1,23 @@
+{
+  "arm_table_sha256": "095e124a1a858fae97d0e0458069ed28a18a2c75b6c342e189574a7b3ca9d8da",
+  "backbones_per_arm": 24,
+  "campaign_id": "pvrig_500k_rfantibody_pilot_v1_20260721",
+  "claim_boundary": "epitope-conditioned computational generation; not binding or blocking evidence",
+  "created_at": "2026-07-21T10:00:09.761646+00:00",
+  "exact_unique_freeze_target": 5000,
+  "gpu_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ],
+  "omp_threads_per_lane": 1,
+  "primary_arm_count": 36,
+  "raw_sequence_target": 6912,
+  "run_root": "/data1/qlyu/projects/pvrig_500k_rfantibody_pilot_v1_20260721",
+  "schema_version": 1,
+  "sequences_per_backbone": 8,
+  "source_pipeline": "/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712"
+}

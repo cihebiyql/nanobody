@@ -1,0 +1,23 @@
+{
+  "exact_duplicate_removed_count": 30349,
+  "exact_unique_count": 286872,
+  "input_fast_qc_pass_count": 317221,
+  "note": "ANARCI/IMGT and CDR3-family controls remain required.",
+  "outputs": {
+    "exact_unique_fast_qc_pass.fasta.gz": "f5ff71a6a86d5431474420b711a0e39f3d478cf53638d6803552676a28c6448f",
+    "exact_unique_fast_qc_pass.tsv.gz": "069a6e675b4fd74aca78a36b224fdc914f6cba6752a94361ec1f050bba76933b"
+  },
+  "route_counts": {
+    "conservative_cdr_redesign": 204265,
+    "natural_cdr_donor": 82607
+  },
+  "route_mode_counts": {
+    "conservative_cdr_redesign|H1H2H3": 91046,
+    "conservative_cdr_redesign|H1H3": 72408,
+    "conservative_cdr_redesign|H3": 40811,
+    "natural_cdr_donor|H1H2H3": 46402,
+    "natural_cdr_donor|H1H3": 33884,
+    "natural_cdr_donor|H3": 2321
+  },
+  "status": "EXACT_UNIQUE_FAST_QC_FROZEN_NOT_FINAL_ANARCI"
+}

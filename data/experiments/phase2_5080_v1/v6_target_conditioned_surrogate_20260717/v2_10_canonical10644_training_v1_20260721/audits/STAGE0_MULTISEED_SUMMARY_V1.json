@@ -1,0 +1,59 @@
+{
+  "claim_boundary": "Open-development sequence-only approximation of independent 8X6B/9E6Y computational Docking geometry; not binding, affinity, experimental blocking, Docking Gold, frozen-test, or formal validation evidence.",
+  "created_at_utc": "2026-07-21T10:23:41.577092+00:00",
+  "data_version": "D1",
+  "metrics": {
+    "ELASTICNET_ESM2_650M_PCA": {
+      "Rdual_spearman_by_seed": {
+        "193": 0.6418041445285455,
+        "43": 0.6391114357013908,
+        "97": 0.6379044120368966
+      },
+      "Rdual_spearman_mean": 0.6396066640889444,
+      "Rdual_spearman_std": 0.0016301158943430186
+    },
+    "RIDGE_ESM2_3B": {
+      "Rdual_spearman_by_seed": {
+        "193": 0.5946924633146246,
+        "43": 0.5946924633146246,
+        "97": 0.5946924633146246
+      },
+      "Rdual_spearman_mean": 0.5946924633146246,
+      "Rdual_spearman_std": 0.0
+    },
+    "RIDGE_ESM2_650M": {
+      "Rdual_spearman_by_seed": {
+        "193": 0.6092989542551406,
+        "43": 0.6092989542551406,
+        "97": 0.6092989542551406
+      },
+      "Rdual_spearman_mean": 0.6092989542551406,
+      "Rdual_spearman_std": 0.0
+    },
+    "RIDGE_ESM2_650M_3B": {
+      "Rdual_spearman_by_seed": {
+        "193": 0.5423857321873853,
+        "43": 0.5423857321873853,
+        "97": 0.5423857321873853
+      },
+      "Rdual_spearman_mean": 0.5423857321873853,
+      "Rdual_spearman_std": 0.0
+    }
+  },
+  "model_names": [
+    "RIDGE_ESM2_650M",
+    "RIDGE_ESM2_3B",
+    "RIDGE_ESM2_650M_3B",
+    "ELASTICNET_ESM2_650M_PCA"
+  ],
+  "schema_version": "pvrig_v2_9_sequence_stage0_multiseed_summary_v1",
+  "score_rows": 795,
+  "seeds": [
+    43,
+    97,
+    193
+  ],
+  "split_id": "v29_canonical_release_v1_joint_cdr3_D1",
+  "status": "PASS_MULTISEED_COMPLETE",
+  "train_rows": 9849
+}
