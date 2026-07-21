@@ -346,7 +346,7 @@ def generate_candidate(
         sequence = replace_cdr(sequence, old, new)
         cdrs[region] = new
     sequence_hash = sha256_text(sequence)
-    candidate_id = f"P50K__{task['route_id'].upper()}__{sequence_hash[:16].upper()}"
+    candidate_id = f"P25K__{task['route_id'].upper()}__{sequence_hash[:16].upper()}"
     return {
         **task,
         "candidate_id": candidate_id,

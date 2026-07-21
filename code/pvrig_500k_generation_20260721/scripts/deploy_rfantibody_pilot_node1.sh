@@ -5,6 +5,41 @@ SOURCE_ROOT=/data/qlyu/projects/pvrig_rfantibody_docking1024_v2_20260712
 RUN_ROOT=/data1/qlyu/projects/pvrig_500k_rfantibody_pilot_v1_20260721
 RF_PYTHON=/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python
 
+if [[ -s "$RUN_ROOT/status/DEPLOYED.json" ]]; then
+  python3 - "$RUN_ROOT" <<'PY'
+import hashlib, json, sys
+from pathlib import Path
+root=Path(sys.argv[1])
+deployed=json.loads((root/'status/DEPLOYED.json').read_text())
+for relative, expected in deployed.get('files', {}).items():
+    path=root/relative
+    digest=hashlib.sha256(path.read_bytes()).hexdigest()
+    if digest != expected:
+        raise SystemExit(f'existing deployment hash mismatch: {relative}')
+if not deployed.get('files'):
+    raise SystemExit('legacy/incomplete DEPLOYED marker lacks full file manifest; refusing overwrite')
+print(json.dumps({'status':'ALREADY_DEPLOYED_NO_OVERWRITE','run_root':str(root),'file_count':len(deployed['files'])},indent=2))
+PY
+  exit 0
+fi
+
+RESUME_PREPARED=0
+if [[ -s "$RUN_ROOT/status/PREPARED.json" ]]; then
+  python3 - "$RUN_ROOT" <<'PY'
+import hashlib,json,sys
+from pathlib import Path
+root=Path(sys.argv[1]); prepared=json.loads((root/'status/PREPARED.json').read_text())
+for relative,expected in prepared['files'].items():
+    path=root/relative
+    if hashlib.sha256(path.read_bytes()).hexdigest()!=expected:
+        raise SystemExit(f'half-deployment hash mismatch: {relative}')
+print('verified immutable PREPARED state')
+PY
+  RESUME_PREPARED=1
+fi
+
+if [[ "$RESUME_PREPARED" -eq 0 ]]; then
+
 test -d "$SOURCE_ROOT/scripts"
 test -d "$SOURCE_ROOT/inputs"
 test -x /data/qlyu/software/RFantibody/bin/rfdiffusion
@@ -66,15 +101,6 @@ policy = {
     "claim_boundary": "epitope-conditioned computational generation; not binding or blocking evidence",
 }
 (root / "config" / "generation_execution_policy.json").write_text(json.dumps(policy, indent=2, sort_keys=True) + "\n")
-deploy = {
-    "status": "DEPLOYED",
-    "run_root": str(root),
-    "arm_table": str(target),
-    "arm_table_sha256": digest(target),
-    "raw_sequence_target": expected,
-    "freeze_target": 5000,
-}
-(root / "status" / "DEPLOYED.json").write_text(json.dumps(deploy, indent=2, sort_keys=True) + "\n")
 PY
 
 cat >"$RUN_ROOT/scripts/run_pilot_controller.sh" <<'EOS'
@@ -84,6 +110,11 @@ RUN_ROOT=/data1/qlyu/projects/pvrig_500k_rfantibody_pilot_v1_20260721
 RF_PYTHON=/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python
 ARM_TABLE="$RUN_ROOT/config/generation_arms_primary.tsv"
 export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
+exec 9>"$RUN_ROOT/status/controller.lock"
+if ! flock -n 9; then
+  echo "controller lock is already held" >&2
+  exit 75
+fi
 
 write_state() {
   python3 - "$RUN_ROOT" "$1" "${2:-}" <<'PY'
@@ -122,12 +153,47 @@ trap - ERR
 EOS
 chmod +x "$RUN_ROOT/scripts/run_pilot_controller.sh"
 
+python3 - "$RUN_ROOT" <<'PY'
+import hashlib,json,sys
+from pathlib import Path
+root=Path(sys.argv[1])
+relative=[
+ 'config/generation_arms.tsv',
+ 'config/generation_arms_primary.tsv',
+ 'config/generation_design_summary.json',
+ 'config/generation_execution_policy.json',
+ 'inputs/pvrig_8x6b_chainT.pdb',
+ 'inputs/scaffolds/scaffold_manifest.json',
+ 'scripts/run_generation_arm.sh',
+ 'scripts/launch_generation_multi_gpu.sh',
+ 'scripts/run_generation_smoke.sh',
+ 'scripts/collect_and_freeze_candidates.py',
+ 'scripts/run_pilot_controller.sh',
+]
+payload={'status':'PREPARED_NOT_STARTED','run_root':str(root),'files':{name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in relative}}
+(root/'status/PREPARED.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+PY
+fi
+
 if [[ -s "$RUN_ROOT/status/controller.pid" ]] && kill -0 "$(cat "$RUN_ROOT/status/controller.pid")" 2>/dev/null; then
   echo "controller already running pid=$(cat "$RUN_ROOT/status/controller.pid")"
 else
   nohup "$RUN_ROOT/scripts/run_pilot_controller.sh" >"$RUN_ROOT/logs/controller.log" 2>&1 &
   echo $! > "$RUN_ROOT/status/controller.pid"
 fi
+
+sleep 1
+controller_pid=$(cat "$RUN_ROOT/status/controller.pid")
+kill -0 "$controller_pid"
+python3 - "$RUN_ROOT" "$controller_pid" <<'PY'
+import json,sys
+from pathlib import Path
+root=Path(sys.argv[1]); payload=json.loads((root/'status/PREPARED.json').read_text())
+payload.update({'status':'DEPLOYED_CONTROLLER_RUNNING','controller_pid':int(sys.argv[2]),'raw_sequence_target':6912,'planned_exact_unique_freeze_target':5000})
+tmp=root/'status/DEPLOYED.json.tmp'
+tmp.write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+tmp.replace(root/'status/DEPLOYED.json')
+PY
 
 cat "$RUN_ROOT/status/DEPLOYED.json"
 echo "controller_pid=$(cat "$RUN_ROOT/status/controller.pid")"

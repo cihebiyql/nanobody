@@ -12,16 +12,19 @@
     "target_patch_assignment is not a conditioning input for the two local CPU routes",
     "fixed-pose/AntiFold route is blocked until a validated pose or AntiFold deployment is frozen",
     "de novo route is blocked until a validated generator is frozen",
-    "RFantibody route requires a fresh Node1 GPU and disk preflight before launch"
+    "RFantibody route requires a fresh Node1 GPU and disk preflight before launch",
+    "current-top20 parent cap is enforced at effective-candidate merge after the authoritative top20 list is frozen",
+    "CDR3 80-percent family cap is enforced after sequence generation, not at task materialization"
   ],
-  "max_raw_tasks_per_parent": 256,
-  "new_parent_raw_task_fraction": 0.6755076923076923,
+  "max_raw_tasks_per_parent": 269,
+  "max_single_parent_raw_task_fraction": 0.008276923076923078,
+  "new_parent_raw_task_fraction": 0.6504,
   "parent_cdr_anarci_order_mismatch_counts": {
     "cdr1": 0,
     "cdr2": 3,
-    "cdr3": 170
+    "cdr3": 155
   },
-  "parent_count": 200,
+  "parent_count": 180,
   "raw_target_per_route": {
     "conservative_cdr_redesign": 6500,
     "denovo_disagreement_control": 6500,

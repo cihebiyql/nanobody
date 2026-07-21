@@ -1,0 +1,44 @@
+{
+  "anarci_H_rows": 10000,
+  "anarci_fail": 61,
+  "anarci_pass": 11563,
+  "cdr3_family_cap": 100,
+  "cdr3_family_count": 195,
+  "cdr3_family_definition": "equal-length connected Hamming identity >=80%",
+  "effective_candidates": 10000,
+  "failure_reasons": [
+    [
+      "cdr2_sequence_order_mismatch",
+      49
+    ],
+    [
+      "cdr3_sequence_order_mismatch",
+      12
+    ]
+  ],
+  "input_candidates": 10000,
+  "max_cdr3_family_size": 100,
+  "output_sha256": {
+    "effective_fasta": "205cb0af44abb441d7d59606bd5723679b21383a139a6201b0938fdac57de702",
+    "effective_tsv": "b6522fa006a07a8f663575cbf03a2464888af4f033dcb70f1d66d64474bfeb87",
+    "qc_tsv": "f1bb885d5cf88647d3eae04164d34e35c840f43818552ca045546c4e25b8121a"
+  },
+  "outputs": {
+    "effective_fasta": "qc/local_cpu_routes_effective.fasta",
+    "effective_tsv": "qc/local_cpu_routes_effective.tsv",
+    "qc_tsv": "qc/local_cpu_routes_anarci_qc.tsv",
+    "supplemental_qc_tsv": "qc/local_cpu_routes_supplemental_anarci_qc.tsv"
+  },
+  "pass_by_route": {
+    "conservative_cdr_redesign": 5000,
+    "natural_cdr_donor": 5000
+  },
+  "primary_anarci_fail": 53,
+  "primary_anarci_pass": 9947,
+  "schema_version": 1,
+  "status": "PASS",
+  "supplemental_anarci_H_rows": 1624,
+  "supplemental_anarci_fail": 8,
+  "supplemental_anarci_pass": 1616,
+  "supplemental_input_candidates": 1624
+}
