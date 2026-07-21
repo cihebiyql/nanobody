@@ -190,13 +190,13 @@ def fetch_batch(
     requested = LOCAL_ROOT / "state/current_bxcpu_files.txt"
     write_requested_paths(requested, job_ids)
     cleanup_local_payload(local_campaign, job_ids)
-    archive = LOCAL_ROOT / "state" / f"current_bxcpu_payload_{os.getpid()}.tar.gz"
-    partial = archive.with_suffix(".tar.gz.partial")
+    archive = LOCAL_ROOT / "state" / f"current_bxcpu_payload_{os.getpid()}.tar"
+    partial = archive.with_suffix(".tar.partial")
     partial.unlink(missing_ok=True)
     archive.unlink(missing_ok=True)
     root = f"{BXCPU_HOME}/{remote_name}"
     remote_command = (
-        f"tar -C {shlex.quote(root)} --ignore-failed-read -czf - -T -"
+        f"tar -C {shlex.quote(root)} --ignore-failed-read -cf - -T -"
     )
     with partial.open("wb") as output:
         result = subprocess.run(
@@ -212,12 +212,8 @@ def fetch_batch(
             f"{result.stderr.decode(errors='replace').strip()}"
         )
     os.replace(partial, archive)
-    run(["tar", "-tzf", str(archive)])
-    run(["tar", "-xzf", str(archive), "-C", str(local_campaign)])
-    for job_id in job_ids:
-        compact = local_campaign / "compressed_queue" / f"{job_id}.tar.gz"
-        if compact.is_file():
-            run(["tar", "-tzf", str(compact)])
+    run(["tar", "-tf", str(archive)])
+    run(["tar", "-xf", str(archive), "-C", str(local_campaign)])
     return archive
 
 
@@ -293,7 +289,14 @@ def validate_local_job(local_campaign: pathlib.Path, job_id: str) -> list[pathli
                 raise RuntimeError(f"{key} mismatch for {job_id}")
     compact_path = local_campaign / "compressed_queue" / f"{job_id}.tar.gz"
     if compact_path.is_file():
-        roots = [status_path, local_campaign / "results" / job_id / "job_result.json"]
+        # Validate each inner archive independently so one damaged historical
+        # payload defers only that job instead of aborting the whole batch.
+        run(["tar", "-tzf", str(compact_path)])
+        roots = [
+            status_path,
+            local_campaign / "results" / job_id / "job_result.json",
+            compact_path,
+        ]
     else:
         roots = [
             status_path,
@@ -321,7 +324,7 @@ def relay_and_verify(
     campaign: str,
     local_campaign: pathlib.Path,
     job_ids: list[str],
-    archive: pathlib.Path,
+    fetched_archive: pathlib.Path,
 ) -> None:
     files: list[pathlib.Path] = []
     for job_id in job_ids:
@@ -330,12 +333,32 @@ def relay_and_verify(
     batch_id = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ") + f"_{os.getpid()}"
     files_from = LOCAL_ROOT / "state/current_node1_files.txt"
     files_from.write_text("\n".join(relative) + "\n")
+    # Repack only validated jobs.  The bxcpu fetch archive can include a
+    # deferred/corrupt inner archive; it must never be relayed to Node1.
+    archive = LOCAL_ROOT / "state" / f"{campaign}_{batch_id}.tar"
+    partial = archive.with_suffix(".tar.partial")
+    partial.unlink(missing_ok=True)
+    archive.unlink(missing_ok=True)
+    run(
+        [
+            "tar",
+            "-C",
+            str(local_campaign),
+            "-cf",
+            str(partial),
+            "-T",
+            str(files_from),
+        ]
+    )
+    run(["tar", "-tf", str(partial)])
+    os.replace(partial, archive)
+    fetched_archive.unlink(missing_ok=True)
     batch_manifest = LOCAL_ROOT / "state" / f"{campaign}_{batch_id}.sha256"
     batch_manifest.write_text(
         "".join(f"{sha256(local_campaign / rel)}  {rel}\n" for rel in relative)
     )
     node1_prepare(campaign)
-    archive_sha = archive.with_suffix(".tar.gz.sha256")
+    archive_sha = archive.with_suffix(".tar.sha256")
     archive_sha.write_text(f"{sha256(archive)}  {archive.name}\n")
     incoming = f"{NODE1_ROOT}/{campaign}/state/incoming"
     run_retry([NODE1_SSH, "node1", f"mkdir -p {incoming}"])
@@ -369,14 +392,8 @@ def relay_and_verify(
         f"set -euo pipefail; cd {shlex.quote(incoming)}; "
         f"sha256sum -c {shlex.quote(archive_sha.name)}; "
         f"cp {shlex.quote(archive_sha.name)} ../batches/; "
-        f"tar -xzf {shlex.quote(archive.name)} -C {shlex.quote(remote_campaign)}; "
-        + " ".join(
-            f"p={shlex.quote(remote_campaign + '/compressed_queue/' + job_id + '.tar.gz')}; "
-            f"if [[ -f \"$p\" ]]; then tar -tzf \"$p\"; "
-            f"tar -xzf \"$p\" -C {shlex.quote(remote_campaign)}; rm -f \"$p\"; fi;"
-            for job_id in job_ids
-        )
-        + f" rm -f {shlex.quote(archive.name)} {shlex.quote(archive_sha.name)}"
+        f"tar -xf {shlex.quote(archive.name)} -C {shlex.quote(remote_campaign)}; "
+        f"rm -f {shlex.quote(archive.name)} {shlex.quote(archive_sha.name)}"
     )
     run_retry([NODE1_SSH, "node1", verify_extract], attempts=2)
     archive.unlink(missing_ok=True)
@@ -439,12 +456,42 @@ for job_id in [line.strip() for line in sys.stdin if line.strip()]:
     result_dir = root / "results" / job_id
     result_path = result_dir / "job_result.json"
     run_dir = root / "runs" / job_id
+    worker_log = root / "worker_logs" / f"{job_id}.log"
+    compact = root / "compressed_queue" / f"{job_id}.tar.gz"
     try:
         status = json.loads(status_path.read_text())
-        result = json.loads(result_path.read_text())
-        if status.get("status") != "SUCCESS" or result.get("state") != "SUCCESS":
+        state = status.get("status")
+        terminal_failure = state == "FAILED_MAX_ATTEMPTS" or (
+            state == "FAILED" and int(status.get("attempts", 0) or 0) >= 2
+        )
+        if terminal_failure:
+            if run_dir.is_dir():
+                shutil.rmtree(run_dir)
+            if result_dir.is_dir():
+                shutil.rmtree(result_dir)
+            if worker_log.exists():
+                worker_log.unlink()
+            if compact.exists():
+                compact.unlink()
+            pruned.append(job_id)
+            continue
+        if state != "SUCCESS":
             skipped.append({"job_id": job_id, "reason": "not_success"})
             continue
+        if result_path.is_file():
+            result = json.loads(result_path.read_text())
+            if result.get("state") != "SUCCESS":
+                skipped.append({"job_id": job_id, "reason": "not_success"})
+                continue
+        else:
+            # A prior interrupted prune may already have removed every heavy
+            # payload before writing the resume stub.  After Node1 verification,
+            # reconstructing that tiny stub from the immutable SUCCESS status is
+            # safer than retrying forever.
+            if run_dir.is_dir() or worker_log.exists() or compact.exists():
+                raise RuntimeError("result stub missing while heavy payload remains")
+            result = {}
+            result_dir.mkdir(parents=True, exist_ok=True)
         if run_dir.is_dir():
             shutil.rmtree(run_dir)
         for child in list(result_dir.iterdir()):
@@ -454,18 +501,16 @@ for job_id in [line.strip() for line in sys.stdin if line.strip()]:
                 shutil.rmtree(child)
             else:
                 child.unlink(missing_ok=True)
-        worker_log = root / "worker_logs" / f"{job_id}.log"
         if worker_log.exists():
             worker_log.unlink()
-        compact = root / "compressed_queue" / f"{job_id}.tar.gz"
         if compact.exists():
             compact.unlink()
         minimal_result = {
             "state": "SUCCESS",
             "job_id": result.get("job_id", job_id),
-            "job_hash": result.get("job_hash"),
-            "protocol_core_sha256": result.get("protocol_core_sha256"),
-            "selected_model_count": result.get("selected_model_count"),
+            "job_hash": result.get("job_hash") or status.get("job_hash"),
+            "protocol_core_sha256": result.get("protocol_core_sha256") or status.get("protocol_core_sha256"),
+            "selected_model_count": result.get("selected_model_count") or status.get("selected_model_count"),
             "offloaded_to_node1": True,
         }
         result_tmp = result_path.with_suffix(".json.offload_tmp")
@@ -560,6 +605,7 @@ def campaign_cycle(name: str, config: dict[str, object]) -> dict[str, object]:
             valid_jobs.append(job_id)
         except Exception as exc:
             log("job deferred after incomplete fetch", campaign=name, job_id=job_id, error=str(exc))
+            cleanup_local_payload(local_campaign, [job_id])
     if not valid_jobs:
         return {"campaign": name, "delivered": len(delivered), "batch": 0}
     relay_and_verify(name, local_campaign, valid_jobs, archive)

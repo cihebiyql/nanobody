@@ -24,6 +24,8 @@ def main():
     root = Path(args.root)
     queue = root / "compressed_queue"
     queue.mkdir(parents=True, exist_ok=True)
+    lock_root = queue / ".locks"
+    lock_root.mkdir(parents=True, exist_ok=True)
     events = queue / "COMPACTION_EVENTS.jsonl"
 
     while True:
@@ -48,9 +50,18 @@ def main():
             if age < args.minimum_age_seconds:
                 continue
             try:
+                lock = lock_root / job_id
+                try:
+                    lock.mkdir()
+                except FileExistsError:
+                    continue
+                if archive.exists() or not run_dir.is_dir():
+                    lock.rmdir()
+                    continue
                 status = json.loads(status_path.read_text())
                 result = json.loads(result_json.read_text())
                 if status.get("status") != "SUCCESS" or result.get("state") != "SUCCESS":
+                    lock.rmdir()
                     continue
                 relative = [f"status/jobs/{job_id}.json", f"results/{job_id}", f"runs/{job_id}"]
                 worker_log = root / "worker_logs" / f"{job_id}.log"
@@ -75,10 +86,26 @@ def main():
                         child.unlink()
                 if worker_log.exists():
                     worker_log.unlink()
+                minimal_result = {
+                    "state": "SUCCESS",
+                    "job_id": result.get("job_id", job_id),
+                    "job_hash": result.get("job_hash"),
+                    "protocol_core_sha256": result.get("protocol_core_sha256"),
+                    "selected_model_count": result.get("selected_model_count"),
+                    "offloaded_to_compact_archive": True,
+                }
+                result_tmp = result_json.with_suffix(".json.compact_tmp")
+                result_tmp.write_text(json.dumps(minimal_result, sort_keys=True) + "\n")
+                os.replace(str(result_tmp), str(result_json))
+                lock.rmdir()
                 with events.open("a") as handle:
                     handle.write(json.dumps({"time": time.time(), "job_id": job_id, "archive_bytes": archive.stat().st_size}) + "\n")
                 completed += 1
             except Exception as exc:
+                try:
+                    lock.rmdir()
+                except Exception:
+                    pass
                 with events.open("a") as handle:
                     handle.write(json.dumps({"time": time.time(), "job_id": job_id, "error": repr(exc)}) + "\n")
         print(json.dumps({"completed_this_pass": completed, "time": time.time()}), flush=True)

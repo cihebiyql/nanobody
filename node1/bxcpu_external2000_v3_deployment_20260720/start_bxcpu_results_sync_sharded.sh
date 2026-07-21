@@ -2,11 +2,11 @@
 set -euo pipefail
 
 DEPLOY=$(cd "$(dirname "$0")" && pwd)
-BASE=${PVRIG_BXCPU_SYNC_LOCAL_BASE:-/mnt/d/work/抗体/node1/bxcpu_incremental_spool_20260720}
-COUNT=${PVRIG_BXCPU_SYNC_SHARDS:-8}
-BATCH=${PVRIG_BXCPU_SYNC_BATCH_SIZE:-20}
+BASE=${PVRIG_BXCPU_SYNC_LOCAL_BASE:-/root/pvrig_bxcpu_incremental_spool_20260721}
+COUNT=${PVRIG_BXCPU_SYNC_SHARDS:-4}
+BATCH=${PVRIG_BXCPU_SYNC_BATCH_SIZE:-40}
 STABLE=${PVRIG_BXCPU_SYNC_STABLE_AGE_SECONDS:-180}
-POLL=${PVRIG_BXCPU_SYNC_POLL_SECONDS:-15}
+POLL=${PVRIG_BXCPU_SYNC_POLL_SECONDS:-5}
 
 python3 - "$BASE" "$COUNT" <<'PY'
 import hashlib, pathlib, sys
@@ -39,4 +39,3 @@ for ((i=0; i<COUNT; i++)); do
     tmux new-session -d -s "$session" "$command"
     echo "$session started"
 done
-
