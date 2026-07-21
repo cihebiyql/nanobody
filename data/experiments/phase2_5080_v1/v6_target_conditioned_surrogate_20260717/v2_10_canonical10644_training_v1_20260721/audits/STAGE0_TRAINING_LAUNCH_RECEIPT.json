@@ -1,0 +1,44 @@
+{
+  "claim_boundary": "Open-development computational Docking-geometry surrogate training only; no frozen-test or experimental truth access.",
+  "created_at_utc": "2026-07-21T09:50:10.822893+00:00",
+  "launcher_sha256": "6296e1496410793afa90d2599f2cf9a995dee38eff57b5d2c1112296db90bbe3",
+  "log": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/logs/stage0_sequence_v2_10_3seed_v1.log",
+  "pid": 1087094,
+  "preflight": {
+    "cache_rows_each": 13322,
+    "development_rows": 795,
+    "frozen_test_access_count": 0,
+    "sealed_truth_access_count": 0,
+    "status": "PASS_PREFLIGHT",
+    "total_rows": 10644,
+    "train_rows": 9849
+  },
+  "preflight_sha256": "916643f74f569e6aaa7ee12876d9dfa47bed6d0bbe3fbf212fb28dfe2a348ac8",
+  "remote_host": "node1",
+  "resource_caps": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "MKL_NUM_THREADS": 16,
+    "NUMEXPR_NUM_THREADS": 16,
+    "OMP_NUM_THREADS": 16,
+    "OPENBLAS_NUM_THREADS": 16
+  },
+  "ridge_alphas": [
+    1,
+    10,
+    100,
+    1000
+  ],
+  "schema_version": "pvrig_v2_10_stage0_training_launch_receipt_v1",
+  "seeds": [
+    43,
+    97,
+    193
+  ],
+  "split_manifest_sha256": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+  "stage0_code_sha256": "3ae9ef51ddbc71553985bff72920cd97385995ad6d5a39daa83479006fa80b52",
+  "started_at_node1": "2026-07-21T17:46:46+08:00",
+  "status": "RUNNING_STAGE0_SEQUENCE_3SEED",
+  "status_root": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/status/stage0_sequence_v2_10_3seed_v1",
+  "teacher_sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+  "training_root": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/training/stage0_sequence_v2_10_3seed_v1"
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "campaign_id": "pvrig_500k_generation_pilot25k_v1_20260721",
+  "scientific_target": "pvrig_dual_conformation_blocker_like_geometry_enrichment",
+  "evidence_boundary": "computational_sequence_structure_and_docking_priors_not_experimental_binding_kd_purity_or_blocking",
+  "pilot_effective_target": 25000,
+  "raw_generation_policy": {
+    "initial_overgeneration_factor": 1.3,
+    "resume_until_effective_target": true,
+    "do_not_substitute_failed_route_silently": true
+  },
+  "routes": [
+    {
+      "route_id": "conservative_cdr_redesign",
+      "effective_target": 5000,
+      "full_scale_target": 200000
+    },
+    {
+      "route_id": "natural_cdr_donor",
+      "effective_target": 5000,
+      "full_scale_target": 100000
+    },
+    {
+      "route_id": "fixed_pose_mpnn_antifold",
+      "effective_target": 5000,
+      "full_scale_target": 75000
+    },
+    {
+      "route_id": "epitope_conditioned_rfantibody",
+      "effective_target": 5000,
+      "full_scale_target": 75000
+    },
+    {
+      "route_id": "denovo_disagreement_control",
+      "effective_target": 5000,
+      "full_scale_target": 50000
+    }
+  ],
+  "quota_targets": {
+    "target_patch": {
+      "C_CROSS": 0.4,
+      "B_LOWER": 0.35,
+      "A_CENTER": 0.25
+    },
+    "design_mode": {
+      "H1H2H3": 0.45,
+      "H1H3": 0.35,
+      "H3": 0.2
+    },
+    "cdr3_length": {
+      "18_22": 0.7,
+      "16_17": 0.2,
+      "10_15": 0.1
+    },
+    "parent_cluster_target_min": 120,
+    "parent_cluster_target_max": 180,
+    "max_single_parent_fraction": 0.015,
+    "max_current_top20_parent_fraction": 0.35,
+    "min_new_parent_fraction": 0.3,
+    "cdr3_identity_cluster_threshold": 0.8,
+    "cdr3_family_cap_min": 50,
+    "cdr3_family_cap_max": 100
+  },
+  "sequence_hard_gates": {
+    "alphabet": "ACDEFGHIKLMNPQRSTVWY",
+    "min_length": 95,
+    "max_length": 160,
+    "anarci_imgt_required": true,
+    "complete_fr_cdr_required": true,
+    "conserved_cysteine_required": true,
+    "stop_or_invalid_allowed": false,
+    "severe_low_complexity_allowed": false,
+    "long_hydrophobic_run_allowed": false,
+    "exact_sequence_dedup_required": true,
+    "known_positive_any_cdr_identity_max_exclusive": 0.8,
+    "formal_pool_preferred_max_exclusive": 0.75
+  },
+  "sequence_shortlist_100k": {
+    "model_high": 60000,
+    "uncertainty_disagreement": 15000,
+    "new_parent_family_generator": 10000,
+    "binding_docking_consensus": 10000,
+    "qc_random_control": 5000
+  },
+  "structure_target": 50000,
+  "docking_panel": {
+    "candidate_count": 5000,
+    "lanes": {
+      "predicted_geometry_high": 3000,
+      "uncertainty_disagreement": 750,
+      "diversity": 500,
+      "binding_prior_consensus": 500,
+      "qc_random_control": 250
+    },
+    "primary": {
+      "candidate_count": 5000,
+      "receptors": ["8X6B", "9E6Y"],
+      "seeds": [917],
+      "job_count": 10000
+    },
+    "second_seed": {
+      "candidate_count": 1000,
+      "receptors": ["8X6B", "9E6Y"],
+      "seeds": [1931],
+      "job_count": 2000
+    },
+    "third_seed": {
+      "candidate_count": 250,
+      "receptors": ["8X6B", "9E6Y"],
+      "seeds": [3253],
+      "job_count": 500
+    },
+    "total_job_count": 12500,
+    "rdual_rule": "exact_min_r8_r9",
+    "technical_failure_semantics": "NA"
+  },
+  "release_gate": {
+    "effective_unique_sequences": 25000,
+    "exact_duplicate_count": 0,
+    "provenance_completeness_fraction": 1.0,
+    "checksums_required": true,
+    "per_route_terminal_status_required": true,
+    "scale_decision_values": ["PASS", "HOLD"]
+  }
+}

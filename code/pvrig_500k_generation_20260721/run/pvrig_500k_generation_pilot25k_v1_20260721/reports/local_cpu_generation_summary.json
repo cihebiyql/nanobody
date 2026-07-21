@@ -1,0 +1,50 @@
+{
+  "generated": 13000,
+  "global_unique_sequences": 12538,
+  "pre_anarci_selected": 10000,
+  "routes": {
+    "conservative_cdr_redesign": {
+      "fast_qc_pass": 6154,
+      "pre_anarci_selected": 5000,
+      "raw": 6500,
+      "status": "READY_FOR_ANARCI",
+      "top_failure_reasons": [
+        [
+          "cdr_n_glyco_motif",
+          344
+        ],
+        [
+          "exact_duplicate_global",
+          2
+        ]
+      ]
+    },
+    "natural_cdr_donor": {
+      "fast_qc_pass": 5516,
+      "pre_anarci_selected": 5000,
+      "raw": 6500,
+      "status": "READY_FOR_ANARCI",
+      "top_failure_reasons": [
+        [
+          "exact_duplicate_global",
+          460
+        ],
+        [
+          "new_or_worsened_hydrophobic_run_ge_5",
+          454
+        ],
+        [
+          "odd_total_cys",
+          50
+        ],
+        [
+          "cdr_n_glyco_motif",
+          26
+        ]
+      ]
+    }
+  },
+  "schema_version": 1,
+  "scientific_boundary": "fast QC and sequence design only; no binding, structure, docking, or blocking claim",
+  "status": "READY_FOR_ANARCI"
+}

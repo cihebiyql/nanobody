@@ -1,0 +1,54 @@
+{
+  "claim_boundary": "Deployment and Stage0 input/cache preflight only; no model was trained by this receipt.",
+  "created_at_utc": "2026-07-21T09:34:37.267260+00:00",
+  "dataset": {
+    "development_rows": 795,
+    "materialization_receipt_sha256": "95294be5c03514c8c8ba15e430120cf9d3d19008bb670d1c5b2594462ba4a056",
+    "new_quarantine_rows": 1,
+    "split_manifest_sha256": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+    "teacher_rows": 10644,
+    "teacher_sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+    "train_rows": 9849
+  },
+  "implementation": {
+    "builder_sha256": "6b70304192c5c3da1357758c9e5cd8e86be9ab4d7af8a28da8ac29b2433146cc",
+    "implementation_freeze_sha256": "16027119885292c6cb358f9d0508b72e8995a7f8300eacbfd1ef461c0faae83f",
+    "input_contract_sha256": "34d23db021cfcade760f1fe3cbb9f17451dc06608a20295806199144bab3fb35"
+  },
+  "remote_host": "node1",
+  "remote_independent_verification": {
+    "artifact_sha256": "0d1d658b33fb6bc6c2481353dd5f604227de92f246a8ccbb9dd32afc21201f38",
+    "leakage": {
+      "cdr3_hamming80_cross_split": 0,
+      "frozen_parent_rows": 0,
+      "parent_cross_split": 0,
+      "quarantine_rows_in_teacher": 0,
+      "technical_na_rows": 0
+    },
+    "status": "PASS_V2_10_CANONICAL_OPEN_TEACHER",
+    "targets": {
+      "Rdual_exact_min_violations": 0,
+      "nonfinite_rows": 0
+    }
+  },
+  "remote_root": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721",
+  "schema_version": "pvrig_v2_10_node1_deployment_receipt_v1",
+  "stage0_preflight": {
+    "artifact_sha256": "23bdc9b4e318ae13243faab63776d1bfcc242a09f4e19e1f7505fe6eafcfe2de",
+    "esm2_3b_cache_receipt_sha256": "16fd003a391625a8123eb35e782d0da878ba0b0ffdbeab350b18a55b55020477",
+    "esm2_3b_cache_rows": 13322,
+    "esm2_650m_cache_receipt_sha256": "b68ec1e4106e487a8ef0f7bbab877b5b9ffed32cca9bf1d4ac5c2af63c3306d7",
+    "esm2_650m_cache_rows": 13322,
+    "frozen_test_access_count": 0,
+    "log_sha256": "fd0750574a5806fa9b78c54ca3f24ad25c8f2ee982ab6005eaa0a7538600f020",
+    "models": [
+      "RIDGE_ESM2_650M",
+      "RIDGE_ESM2_3B",
+      "RIDGE_ESM2_650M_3B",
+      "ELASTICNET_ESM2_650M_PCA"
+    ],
+    "sealed_truth_access_count": 0,
+    "status": "PASS_PREFLIGHT"
+  },
+  "status": "PASS_NODE1_DEPLOYMENT_AND_STAGE0_DRY_RUN"
+}

@@ -1,0 +1,47 @@
+{
+  "canonical_access_order": [
+    "validate candidate/sequence/split metadata",
+    "require canonical_model_split in train or development",
+    "require training_label_status == WEAK_LABEL_AVAILABLE",
+    "only then parse R8_primary_seed917, R9_primary_seed917 and R_dual_min"
+  ],
+  "canonical_release": {
+    "authoritative_root": "/data1/qlyu/projects/pvrig_v29_canonical_training_release_v1_20260721",
+    "release_receipt_sha256": "2f5f9622802262ce67749ea0436653200e6dfbd077920b61c52b511fb63db8c6",
+    "release_tsv_sha256": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4",
+    "status": "PASS_CANONICAL_RELEASE",
+    "usable_development_rows_before_joint_graph": 719,
+    "usable_train_rows": 6872
+  },
+  "claim_boundary": "Computational independent dual-conformation Docking geometry weak labels only; not binding, affinity, competition, experimental blocking, expression, purity, Docking Gold, or formal biological validation.",
+  "joint_cdr3_rule": {
+    "component_definition": "equal length and Hamming identity >= 0.80 connected components",
+    "mixed_train_development_owner": "train",
+    "new_quarantine_rows": 1,
+    "post_quarantine_development_rows": 795,
+    "post_quarantine_train_rows": 9849
+  },
+  "legacy_D0": {
+    "split_manifest_sha256": "cc91b3d4f2115c179db5f8c0f1a7b19d97b48d1ecf99ffb5662eb1ca800192c8",
+    "teacher_rows": 3054,
+    "teacher_sha256": "898aa1c609c995b05d7fa323c93169db5589ed53c4a32c12795b75f27721866a"
+  },
+  "output_contract": {
+    "development_rows": 795,
+    "final_open_rows": 10644,
+    "pre_joint_graph_union_rows": 10645,
+    "quarantine_rows": 1,
+    "train_rows": 9849
+  },
+  "sample_weight_by_successful_dual_seed_count": {
+    "1": 0.65,
+    "2": 0.8,
+    "3": 1.0
+  },
+  "schema_version": "pvrig_v2_10_canonical10644_input_contract_v1",
+  "target_mapping": {
+    "R8_primary_seed917": "R_8X6B",
+    "R9_primary_seed917": "R_9E6Y",
+    "R_dual_min": "exact min of mapped R8/R9"
+  }
+}

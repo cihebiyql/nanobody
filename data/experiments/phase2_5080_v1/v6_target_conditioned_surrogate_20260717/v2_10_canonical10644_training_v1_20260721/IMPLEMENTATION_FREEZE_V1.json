@@ -1,0 +1,23 @@
+{
+  "claim_boundary": "Computational independent dual-conformation Docking geometry weak-label materialization only; not binding, affinity, competition, experimental blocking, Docking Gold, or formal biological validation.",
+  "files": {
+    "INPUT_CONTRACT.json": "34d23db021cfcade760f1fe3cbb9f17451dc06608a20295806199144bab3fb35",
+    "README_ZH.md": "7c82474eb1f862fefcb3f34e40abb65f3e5718135edb070bc085871c399926d3",
+    "audits/independent_verification_v1.json": "f460a7bea2a0334d48f1cf5a70f804d1afd2b541225cb3f6b45617b938171fc8",
+    "audits/input_freeze_review.json": "7a89be92241cbd17684d22ab6a00c81753826ba82d738342d161979031e75b38",
+    "src/build_canonical10644_primary_teacher_v1.py": "6b70304192c5c3da1357758c9e5cd8e86be9ab4d7af8a28da8ac29b2433146cc",
+    "tests/test_build_canonical10644_primary_teacher_v1.py": "4881ff864a4691d0633f7a211f89edea22baace4769a3c99d6ca018c2e5475d8",
+    "tests/test_verify_v2_10_canonical_release.py": "b7b4353e6cec5f0463b80d350007343641aa509df919dc31252e219081faedc9",
+    "tests/verify_v2_10_canonical_release.py": "8961e4bb7db0df46be96bbf22f7d02ebcb0b3790fb8139220793ab755a90a659"
+  },
+  "prepared_release": {
+    "MATERIALIZATION_RECEIPT.json": "95294be5c03514c8c8ba15e430120cf9d3d19008bb670d1c5b2594462ba4a056",
+    "SHA256SUMS": "bf24a57419f6235c5ce256e7fef6a85678be5d6712d0ffde04db312b257d3aee",
+    "joint_cdr3_quarantine.tsv": "71e4ce902c75a341a2a7584fc0dbe1a3516c76bb66a7d9d656018e362de82bcc",
+    "primary_D1_canonical10644_split_manifest.json": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+    "primary_D1_canonical10644_teacher.tsv": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3"
+  },
+  "schema_version": "pvrig_v2_10_canonical10644_implementation_freeze_v1",
+  "status": "PASS_IMPLEMENTATION_14_TESTS_AND_PRODUCTION_VERIFICATION",
+  "test_count": 14
+}

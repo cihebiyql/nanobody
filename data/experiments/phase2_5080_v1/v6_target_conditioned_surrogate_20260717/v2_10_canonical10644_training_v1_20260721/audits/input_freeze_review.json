@@ -1,0 +1,237 @@
+{
+  "schema_version": "pvrig_v2_10_input_freeze_review_v1",
+  "created_at_local": "2026-07-21T17:00:13+08:00",
+  "status": "PASS_TRUST_ANCHORS_FROZEN_WITH_ONE_PRE_ADAPTER_COUNT_RECONCILIATION_REQUIRED",
+  "scope": "Read-only trust-anchor review for the V29 canonical release, the filtered legacy D0 teacher, and frozen parent metadata. This review does not authorize frozen-test label use or claim biological truth.",
+  "canonical_release": {
+    "host": "node1",
+    "root": "/data1/qlyu/projects/pvrig_v29_canonical_training_release_v1_20260721",
+    "release_status": "PASS_CANONICAL_RELEASE",
+    "ready_status": "READY",
+    "completed_at_utc": "2026-07-21T08:43:45.521461+00:00",
+    "protocol_core_sha256": "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666",
+    "trust_anchor_files": {
+      "READY.json": {
+        "bytes": 332,
+        "sha256": "802c26b7e0da263dd8795ac5cfade6a3c4bbe2ca7354e6b6f03bd463fc7de6f6"
+      },
+      "SHA256SUMS": {
+        "bytes": 994,
+        "sha256": "2753e96811b98854608b4567aad9de186f5ac852e661fe3f326b873cb1211d0c"
+      },
+      "RELEASE_RECEIPT.json": {
+        "bytes": 2599,
+        "sha256": "2f5f9622802262ce67749ea0436653200e6dfbd077920b61c52b511fb63db8c6"
+      },
+      "release/pvrig_v29_sequence_docking_weaklabels.tsv": {
+        "bytes": 11323037,
+        "data_rows": 9934,
+        "sha256": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4"
+      },
+      "audit/split_audit.json": {
+        "bytes": 757,
+        "sha256": "5f3f3fd2d1b329a3047fcc0a96c238512495630e2e4f5bfaa03eee33b3115b09"
+      },
+      "reports/candidate_seed_dual_labels.tsv": {
+        "bytes": 4428264,
+        "data_rows": 12413,
+        "sha256": "7974f53f453cb56f02d7a5e10d37209c527dc9bea06e4164d946123c1f45cb7d"
+      },
+      "reports/canonical_job_results.tsv": {
+        "bytes": 98621688,
+        "data_rows": 24826,
+        "sha256": "4d3a8c858de78683345c7bd7f3e9f06f801d55ce6953c776f22debbc84b9fd3c"
+      },
+      "reports/canonical_top8_pose_scores.tsv": {
+        "bytes": 311997583,
+        "data_rows": 393296,
+        "sha256": "da82a28e5b477bc31a3d4fbb1db8a88ffefd501291d3ee721eb6465b5312db7a"
+      },
+      "reports/technical_failures_na.tsv": {
+        "bytes": 6240,
+        "data_rows": 11,
+        "sha256": "efdc644ce13d65a965e0e585b80b5920e7e3547bc7ff81c4c26cf5f8bbcedb01"
+      },
+      "audit/duplicate_source_conflicts.tsv": {
+        "bytes": 309251,
+        "data_rows": 446,
+        "sha256": "0c9fd795cebd53f0acbca48de8fdde0a0c29466b2ecc98404466d89984680ae2"
+      },
+      "scripts/build_canonical_training_release.py": {
+        "bytes": 47828,
+        "sha256": "db47e90ccd482cf7e306682f5cce34a8b95b92628d2bd5feca76dc27f0006939"
+      }
+    },
+    "independent_counts": {
+      "candidate_rows": 9934,
+      "candidate_id_unique": 9934,
+      "sequence_sha256_unique": 9934,
+      "sequence_hash_mismatches": 0,
+      "canonical_job_rows": 24826,
+      "canonical_job_id_unique": 24826,
+      "successful_jobs": 24815,
+      "technical_na_jobs": 11,
+      "primary_seed917_weak_labels": 9927,
+      "primary_seed917_technical_na": 7,
+      "candidate_seed_rows": 12413,
+      "top8_pose_reference_rows": 393296,
+      "exact_min_mismatches": 0,
+      "technical_na_numeric_imputations": 0,
+      "parent_clusters": 65,
+      "cdr3_families": 3401
+    },
+    "canonical_split_x_label_status": {
+      "train": {
+        "WEAK_LABEL_AVAILABLE": 6872,
+        "TECHNICAL_NA": 6,
+        "total": 6878
+      },
+      "development": {
+        "WEAK_LABEL_AVAILABLE": 719,
+        "TECHNICAL_NA": 0,
+        "total": 719
+      },
+      "frozen_test": {
+        "WEAK_LABEL_AVAILABLE": 688,
+        "TECHNICAL_NA": 0,
+        "total": 688
+      },
+      "quarantine_cdr3_overlap": {
+        "WEAK_LABEL_AVAILABLE": 1648,
+        "TECHNICAL_NA": 1,
+        "total": 1649
+      }
+    },
+    "source_snapshot_boundary": {
+      "source_paths_exist_at_review": true,
+      "selected_source_job_counts": {
+        "lab": 10240,
+        "stage2": 10493,
+        "stage3": 734,
+        "external": 3348,
+        "technical_na": 11
+      },
+      "duplicate_source_conflicts_audited": 446,
+      "source_priority_frozen_in_hashed_builder": "stage3 > stage2 > lab > external",
+      "master_protocol_lock_sha256": "e2160595e2eeaae6b20ed6f89b9af6e3b46e87e76fdc702103b9224b3b16dcc1",
+      "master_job_manifest_sha256": "7423d0bd8b4ea868a89a20749bdc8ead2a7b5d7e43b4fc75a3cb3303a4564bb7",
+      "release_is_atomically_ready_and_output_hash_closed": true,
+      "source_roots_are_live_paths_not_a_single_exported_source_archive": true,
+      "external_selected_jobs_with_blank_evidence_sha256": 3348,
+      "all_pose_rows_lack_pose_pdb_sha256": 393296,
+      "scalar_teacher_use_authorized": true,
+      "raw_3d_pose_training_use_authorized": false
+    },
+    "critical_access_boundary": {
+      "frozen_test_labels_are_physically_present_in_main_tsv": true,
+      "frozen_test_label_rows_present": 688,
+      "quarantine_label_rows_present": 1648,
+      "required_loader_order": "Read and validate canonical_model_split and training_label_status before parsing any numeric target field.",
+      "fit_allowlist": "canonical_model_split == train AND training_label_status == WEAK_LABEL_AVAILABLE",
+      "development_allowlist": "canonical_model_split == development AND training_label_status == WEAK_LABEL_AVAILABLE",
+      "forbidden_for_fit": [
+        "canonical_model_split == frozen_test",
+        "canonical_model_split == quarantine_cdr3_overlap",
+        "training_label_status == TECHNICAL_NA"
+      ]
+    }
+  },
+  "legacy_D0": {
+    "raw_provenance_only_not_direct_fit_input": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_8_expanded3388_training_v1_20260719/prepared/v6_scalar_teacher3388_v2_8.tsv",
+      "bytes": 2667361,
+      "rows": 3388,
+      "candidate_id_unique": 3388,
+      "sequence_sha256_unique": 3388,
+      "parent_clusters": 31,
+      "exact_min_mismatches": 0,
+      "sha256": "47c20808bdd8a804e8672c4e0c814c1cd40f8d3469723d867ce4b0986b3eec10",
+      "materialization_receipt_sha256": "76f5507e3592b0c8545a7f09d2f1450a0f3faa144ea20871ce2869d890a3a63a"
+    },
+    "authoritative_filtered_input": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_9_expanded_training_v1_20260720/prepared/primary_d0_d1_snapshot_20260720T085213Z/primary_D0_teacher.tsv",
+      "bytes": 1094662,
+      "rows": 3054,
+      "candidate_id_unique": 3054,
+      "sequence_sha256_unique": 3054,
+      "parent_clusters": 27,
+      "train_rows": 2977,
+      "development_rows": 77,
+      "exact_min_mismatches": 0,
+      "sha256": "898aa1c609c995b05d7fa323c93169db5589ed53c4a32c12795b75f27721866a",
+      "split_manifest_path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_9_expanded_training_v1_20260720/prepared/primary_d0_d1_snapshot_20260720T085213Z/primary_D0_split_manifest.json",
+      "split_manifest_sha256": "cc91b3d4f2115c179db5f8c0f1a7b19d97b48d1ecf99ffb5662eb1ca800192c8",
+      "materialization_receipt_sha256": "7adb666fb3c4b88b9c9cf00c308d7ffc683d352418f543f5ff244b5fd4b4dd92",
+      "sha256sums_sha256": "ceb1b82704a8ec164731a3f3308e33312a2201e9322728375d107faaec48fa6a"
+    },
+    "filter_provenance": {
+      "raw_input_rows": 3388,
+      "rows_excluded_for_V29_frozen_parents": 334,
+      "filtered_rows": 3054,
+      "frozen_parent_count": 10,
+      "frozen_test_labels_read": 0,
+      "frozen_numeric_parse_count": 0,
+      "old_frozen_parent_rows_completely_excluded": true
+    }
+  },
+  "frozen_parent_metadata": {
+    "authoritative_source": "/data1/qlyu/projects/pvrig_v29_canonical_training_release_v1_20260721/release/pvrig_v29_sequence_docking_weaklabels.tsv",
+    "authoritative_source_sha256": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4",
+    "authoritative_columns": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_framework_cluster",
+      "parent_only_model_split",
+      "canonical_model_split",
+      "training_label_status"
+    ],
+    "parent_count": 65,
+    "parent_split_counts": {
+      "train": 45,
+      "development": 10,
+      "frozen_test": 10
+    },
+    "parent_cross_split_count": 0,
+    "parent_split_map_projection": "parent_framework_cluster<TAB>parent_only_model_split sorted by parent_framework_cluster, UTF-8, LF after every row including final row",
+    "parent_split_map_sha256": "8bfb2df8e8bc3dc1669522905162fbb2cb7f1ddba1fb3fc3d56018872d0d8121",
+    "candidate_parent_projection": "candidate_id<TAB>sequence_sha256<TAB>parent_framework_cluster<TAB>parent_only_model_split<TAB>canonical_model_split<TAB>training_label_status sorted by candidate_id, UTF-8, LF after every row including final row",
+    "candidate_parent_projection_rows": 9934,
+    "candidate_parent_projection_sha256": "906249737ab992652a0264b97d6c66af69dd370200f44bd4a54e07a91525dda2",
+    "parent_set_sha256_by_parent_only_split": {
+      "train": "79a7ea54f2c8b62ffd717a3e2af3664b8c500f9ae271e7fb7b7cb35e322b7e85",
+      "development": "5eb4b80fe5c6b13214836c8f02a7f697f45fbab6a648e95ebef3a595da084c24",
+      "frozen_test": "1a8b46806c4183df0c3e5435adf9473b27b77a8d1b39b8af70ae3238c250be78"
+    },
+    "frozen_parent_set_projection": "sorted parent_framework_cluster, one per UTF-8 line, LF after final row",
+    "legacy_D0_split_manifest_frozen_parent_hash_matches": true,
+    "use_restriction": "Metadata may control split/exclusion only. Parent ID and split labels must not be model features. Frozen numeric targets must never be parsed by the fit adapter."
+  },
+  "cross_source_merge_review": {
+    "canonical_V29_open_definition": "canonical_model_split in {train, development} AND training_label_status == WEAK_LABEL_AVAILABLE",
+    "canonical_V29_open_rows": 7591,
+    "canonical_V29_train_rows": 6872,
+    "canonical_V29_development_rows": 719,
+    "filtered_legacy_D0_rows": 3054,
+    "candidate_id_overlap": 0,
+    "sequence_sha256_overlap": 0,
+    "expected_pre_adapter_union_rows": 10645,
+    "expected_pre_adapter_union_unique_sequences": 10645,
+    "directory_nominal_count": 10644,
+    "count_discrepancy": 1,
+    "required_resolution": "If the adapter emits 10644 rows, it must publish the excluded candidate/sequence hash, deterministic exclusion reason, source table, and a count equation. Without that record, 10644 is not derivable from the frozen inputs.",
+    "silent_count_hardcoding_permitted": false
+  },
+  "adapter_fail_closed_requirements": [
+    "Verify all canonical release and legacy D0 trust-anchor SHA256 values before reading rows.",
+    "Reject canonical candidate/sequence duplicates and any cross-source overlap.",
+    "Apply canonical_model_split and training_label_status gates before numeric label parsing.",
+    "Never fit on frozen_test or quarantine_cdr3_overlap rows.",
+    "Never convert TECHNICAL_NA to zero or a biological negative.",
+    "Use the filtered 3054-row D0 teacher plus its split manifest; do not fit directly from raw3388.",
+    "Preserve candidate as the statistical unit and enforce whole-parent split closure.",
+    "Derive R_dual_min as exact min(R8,R9); do not train an independent free R_dual target.",
+    "Do not use candidate_id, parent_framework_cluster, source/campaign, split, or label-status fields as model features.",
+    "Publish a row-level exclusion audit and a final SHA256 receipt before training starts."
+  ],
+  "claim_boundary": "Computational independent dual-conformation Docking geometry weak-label input review only; not binding, affinity, competition, experimental blocking, expression, purity, Docking Gold, or formal biological validation."
+}

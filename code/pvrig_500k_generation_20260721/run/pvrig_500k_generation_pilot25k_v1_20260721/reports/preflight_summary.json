@@ -1,0 +1,35 @@
+{
+  "campaign_id": "pvrig_500k_generation_pilot25k_v1_20260721",
+  "current_v29_parent_count_from_local_evidence": 65,
+  "effective_target": 25000,
+  "implementation_status_counts": {
+    "BLOCKED_NO_VALIDATED_FIXED_POSE_OR_ANTIFOLD_INPUT": 6500,
+    "BLOCKED_NO_VALIDATED_GENERATOR": 6500,
+    "LOCAL_CPU_READY": 13000,
+    "NODE1_GPU_READY_PENDING_LIVE_RESOURCE_CHECK": 6500
+  },
+  "known_limitations": [
+    "target_patch_assignment is not a conditioning input for the two local CPU routes",
+    "fixed-pose/AntiFold route is blocked until a validated pose or AntiFold deployment is frozen",
+    "de novo route is blocked until a validated generator is frozen",
+    "RFantibody route requires a fresh Node1 GPU and disk preflight before launch"
+  ],
+  "max_raw_tasks_per_parent": 256,
+  "new_parent_raw_task_fraction": 0.6755076923076923,
+  "parent_cdr_anarci_order_mismatch_counts": {
+    "cdr1": 0,
+    "cdr2": 3,
+    "cdr3": 170
+  },
+  "parent_count": 200,
+  "raw_target_per_route": {
+    "conservative_cdr_redesign": 6500,
+    "denovo_disagreement_control": 6500,
+    "epitope_conditioned_rfantibody": 6500,
+    "fixed_pose_mpnn_antifold": 6500,
+    "natural_cdr_donor": 6500
+  },
+  "schema_version": 1,
+  "status": "PREFLIGHT_READY_PARTIAL_GENERATORS",
+  "task_count": 32500
+}

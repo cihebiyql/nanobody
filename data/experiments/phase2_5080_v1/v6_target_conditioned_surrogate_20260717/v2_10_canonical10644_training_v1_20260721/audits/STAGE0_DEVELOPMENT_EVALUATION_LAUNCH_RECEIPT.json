@@ -1,0 +1,49 @@
+{
+  "claim_boundary": "Open-development computational Docking-geometry enrichment only; development model selection is not formal test or biological validation evidence.",
+  "created_at_utc": "2026-07-21T09:58:37.357204+00:00",
+  "evaluation_output": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/evaluation_outputs/stage0_open_development_v1",
+  "implementation": {
+    "audit_sha256": "8d0b33bf502ebaba2d9005ce312380256a337f9511b22687608880422987336b",
+    "evaluator_sha256": "5e8df10edfd86df4ce28919ecdd9b424f2e84891704b6c6e1533138edc9d448f",
+    "evaluator_test_sha256": "af47b266ce79d638d7300c41571d7ad276535692e1bdfc4c4cb86e77cf6feca5",
+    "unit_tests": 9,
+    "watcher_sha256": "f021128c373d4ba289aac11627e6f57efff160301f1dd06182db97eb9f1f387e"
+  },
+  "input_access": {
+    "development_truth_rows": 795,
+    "frozen_test_truth_rows": 0,
+    "sealed_truth_files": 0
+  },
+  "metric_contract": {
+    "ensemble": "mean seed R8/R9, then exact min",
+    "metrics": [
+      "recall",
+      "enrichment_factor",
+      "binary_ndcg",
+      "spearman",
+      "mae",
+      "rmse",
+      "within_parent",
+      "seed_stability"
+    ],
+    "predicted_budget_fractions": [
+      0.05,
+      0.1,
+      0.2
+    ],
+    "true_top_fractions": [
+      0.1,
+      0.2
+    ],
+    "truth": "open-development Rdual_exact_min only"
+  },
+  "remote_host": "node1",
+  "schema_version": "pvrig_v2_10_stage0_development_evaluation_launch_receipt_v1",
+  "status": "WAITING_STAGE0_MULTISEED",
+  "training_pid": 1087094,
+  "training_root": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/training/stage0_sequence_v2_10_3seed_v1",
+  "watcher_log": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/logs/stage0_open_development_evaluation_v1.log",
+  "watcher_pid": 1116805,
+  "watcher_status": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/status/stage0_open_development_evaluation_v1/watcher_status.json",
+  "watcher_terminal": "/data1/qlyu/projects/pvrig_v29_canonical_merged_teacher_v1_20260721/status/stage0_open_development_evaluation_v1/terminal.json"
+}

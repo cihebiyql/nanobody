@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "development": 795,
+    "new_quarantine": 1,
+    "open_total": 10644,
+    "train": 9849,
+    "unique_candidates": 10644,
+    "unique_sequences": 10644
+  },
+  "hashes": {
+    "quarantine_sha256": "71e4ce902c75a341a2a7584fc0dbe1a3516c76bb66a7d9d656018e362de82bcc",
+    "receipt_sha256": "95294be5c03514c8c8ba15e430120cf9d3d19008bb670d1c5b2594462ba4a056",
+    "sha256sums_sha256": "bf24a57419f6235c5ce256e7fef6a85678be5d6712d0ffde04db312b257d3aee",
+    "split_manifest_sha256": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+    "teacher_sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+    "verified_manifest_entries": {
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/MATERIALIZATION_RECEIPT.json": "95294be5c03514c8c8ba15e430120cf9d3d19008bb670d1c5b2594462ba4a056",
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/joint_cdr3_quarantine.tsv": "71e4ce902c75a341a2a7584fc0dbe1a3516c76bb66a7d9d656018e362de82bcc",
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_split_manifest.json": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+      "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_teacher.tsv": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3"
+    }
+  },
+  "leakage": {
+    "cdr3_hamming80_cross_split": 0,
+    "frozen_parent_rows": 0,
+    "parent_cross_split": 0,
+    "quarantine_rows_in_teacher": 0,
+    "technical_na_rows": 0
+  },
+  "schema_version": "pvrig_v2_10_independent_open_teacher_verification_v1",
+  "status": "PASS_V2_10_CANONICAL_OPEN_TEACHER",
+  "targets": {
+    "Rdual_exact_min_violations": 0,
+    "nonfinite_rows": 0
+  }
+}
