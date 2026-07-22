@@ -1,0 +1,9 @@
+{
+  "archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_old_cpu_remainder344295_quota_pause_v1_20260722/archives/node_006_raw_snapshot.tar.gz",
+  "bytes": 1015103255,
+  "created_epoch": 1784691911.5551643,
+  "node": "node_006",
+  "sha256": "31283568b81bd93cc82f119b1eb4b66cef46387d93caeed36426da2d5abc81e2",
+  "source_semantics": "read-only snapshot after bxcpu quota pause; includes successful PDBs and partial manifests",
+  "status": "LOCAL_ARCHIVE_VERIFIED"
+}

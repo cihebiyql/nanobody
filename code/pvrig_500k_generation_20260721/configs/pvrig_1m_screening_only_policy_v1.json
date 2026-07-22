@@ -1,0 +1,63 @@
+{
+  "candidate_pool_records": 1000000,
+  "claim_boundary": "PVRIG fixed-target dual-conformation computational blocker-like geometry screening; not experimental binding, Kd, IC50, purity, expression, or blocking evidence",
+  "diversity_caps_top5000": {
+    "near_cdr3_family_fraction": 0.01,
+    "parent_framework_cluster_fraction": 0.03
+  },
+  "hard_gates": {
+    "anarci_qc_status": "PASS",
+    "known_positive_any_cdr_identity_lt": 0.8,
+    "nbb2_status": "SUCCESS",
+    "tnp_status": "PASS"
+  },
+  "model_contract": {
+    "exact_id_closure_required": true,
+    "exact_min_tolerance": 1e-08,
+    "finite_predictions_required": true,
+    "model_ready_receipt_required": true,
+    "required_prediction_columns": [
+      "candidate_id",
+      "sequence_sha256",
+      "monomer_pdb_sha256",
+      "predicted_R8",
+      "predicted_R9",
+      "predicted_Rdual",
+      "prediction_uncertainty",
+      "ood_score",
+      "model_id"
+    ],
+    "required_model_ready_hashes": [
+      "model_sha256",
+      "training_dataset_sha256",
+      "docking_protocol_sha256",
+      "feature_schema_sha256",
+      "receptor_8x6b_sha256",
+      "receptor_9e6y_sha256",
+      "site_prompt_sha256"
+    ],
+    "sequence_sha256_closure_required": true,
+    "structure_sha256_closure_required": true
+  },
+  "objective": "screening_only_not_training",
+  "proposal_route_quotas_are_not_shortlist_quotas": true,
+  "route_enrichment_audit": {
+    "report_cutoffs": [
+      0.01,
+      0.05,
+      0.1,
+      100000,
+      20000,
+      5000
+    ],
+    "supplemental_target_conditioned_generation_is_gate_driven": true
+  },
+  "shortlist_budgets": [
+    100000,
+    50000,
+    20000,
+    5000
+  ],
+  "technical_failure_semantics": "NA_NOT_NEGATIVE",
+  "use_current_1m_for_new_docking_training": false
+}

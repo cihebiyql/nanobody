@@ -1,0 +1,122 @@
+{
+  "archives": [
+    {
+      "created_epoch": 1784690522.719886,
+      "node": "node_000",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_000_raw_snapshot.tar.gz",
+      "sha256": "917a155c15eda662395b9dd2a5643ab1f9d295b3679eda863d69676eb73ce9a3",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784690762.3246217,
+      "node": "node_001",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_001_raw_snapshot.tar.gz",
+      "sha256": "bddcc746c3a62501845781add4b4a9f0c1e6f712eb1421fa452c48f9e620fd8e",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784690999.3435426,
+      "node": "node_002",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_002_raw_snapshot.tar.gz",
+      "sha256": "95fe3b254d9b93d62feb3fdbde88d3f9fcd8e520d40a13cfca8075fe4cd59d7b",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784691245.8900309,
+      "node": "node_003",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_003_raw_snapshot.tar.gz",
+      "sha256": "befb02ef1f0f60c81a291d07ac7fca8f8fa0bd3c719c9cd81af6f688116829da",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784691567.6221302,
+      "node": "node_004",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_004_raw_snapshot.tar.gz",
+      "sha256": "c52623926a5e0b360a5132d965e46d3c8722ffb2715cdfb15ef51668e215b2af",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784691810.5707147,
+      "node": "node_005",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_005_raw_snapshot.tar.gz",
+      "sha256": "938a701edc8b09418d96fb6850ff03bfd33fe4d168f8af2e3d967d6005adbba3",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784692310.003784,
+      "node": "node_006",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_006_raw_snapshot.tar.gz",
+      "sha256": "31283568b81bd93cc82f119b1eb4b66cef46387d93caeed36426da2d5abc81e2",
+      "status": "NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784692540.0176594,
+      "node": "node_007",
+      "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722/archives/node_007_raw_snapshot.tar.gz",
+      "sha256": "0cef46cc154fb2b21954a60b7ded3fc20d0bbaef509b289b5c98f5d0b16204ca",
+      "status": "NODE1_HASH_VERIFIED"
+    }
+  ],
+  "bxcpu_remote_delete_authorized": true,
+  "created_epoch": 1784692593.3326705,
+  "purges": [
+    {
+      "created_epoch": 1784690500.3774698,
+      "node": "node_000",
+      "pdb_files": 25138,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_000/raw"
+    },
+    {
+      "created_epoch": 1784690740.0985522,
+      "node": "node_001",
+      "pdb_files": 24665,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_001/raw"
+    },
+    {
+      "created_epoch": 1784690981.8516262,
+      "node": "node_002",
+      "pdb_files": 25006,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_002/raw"
+    },
+    {
+      "created_epoch": 1784691270.6007857,
+      "node": "node_003",
+      "pdb_files": 24803,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_003/raw"
+    },
+    {
+      "created_epoch": 1784691548.8464994,
+      "node": "node_004",
+      "pdb_files": 24614,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_004/raw"
+    },
+    {
+      "created_epoch": 1784691795.8865263,
+      "node": "node_005",
+      "pdb_files": 25011,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_005/raw"
+    },
+    {
+      "created_epoch": 1784692290.8250341,
+      "node": "node_006",
+      "pdb_files": 24694,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_006/raw"
+    },
+    {
+      "created_epoch": 1784692534.3743856,
+      "node": "node_007",
+      "pdb_files": 24661,
+      "status": "BXCPU_NODE_RAW_PURGED_AFTER_LOCAL_AND_NODE1_HASH_VERIFICATION",
+      "target": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_old_cpu_remainder344295_v1/nbb2/results_11939813/node_007/raw"
+    }
+  ],
+  "remote": "/data/qlyu/projects/pvrig_1m_old_cpu_remainder344295_quota_snapshot_v1_20260722",
+  "status": "NODE1_8_NODE_SNAPSHOT_HASH_VERIFIED_AND_BXCPU_RAW_PURGED"
+}

@@ -1,0 +1,49 @@
+{
+  "date": "2026-07-22",
+  "verdict": {
+    "same_inputs_and_protocol": true,
+    "coarse_blocker_geometry_support": "mostly_consistent",
+    "exact_pose_and_continuous_scores": "not_reproducible_enough_for_identity",
+    "experimental_claim": false
+  },
+  "own_campaign": {
+    "frozen_sequences": 10000,
+    "planned_executable_jobs": 24826,
+    "live_receipt_scan_cst": "2026-07-22 10:58:06",
+    "live_receipt_counts": {
+      "SUCCESS": 10240,
+      "FAILED": 2,
+      "FAILED_MAX_ATTEMPTS": 2,
+      "NO_RECEIPT_OR_PENDING": 14582
+    },
+    "live_controller_found_20260722": false
+  },
+  "rli_campaign": {
+    "candidates": 1907,
+    "jobs": 3814,
+    "SUCCESS": 3811,
+    "FAILED_TECHNICAL_NA": 3,
+    "dual_success_candidates": 1904
+  },
+  "independent_overlap": {
+    "both_success_jobs": 465,
+    "entities": 444,
+    "dual_conformation_entities": 21,
+    "all_manifest_hash_fields_exact_fraction": 1.0
+  },
+  "key_metrics": {
+    "pair_label_exact_fraction": 0.651613,
+    "blocker_support_binary_agreement_fraction": 0.916129,
+    "pair_ordinal_within_one_fraction": 0.967742,
+    "haddock_score_pearson_r": 0.554513,
+    "haddock_score_spearman_rho": 0.541343,
+    "strict_a_fraction_pearson_r": 0.77999,
+    "top10_haddock_overlap_fraction": 0.297872,
+    "top10_strict_a_fraction_overlap": 0.404255,
+    "representative_vhh_ca_rmsd_median_a": 14.807076,
+    "representative_vhh_ca_rmsd_le_5a_fraction": 0.283871,
+    "dual_supported_status_agreement_fraction": 0.857143
+  },
+  "protocol_core_sha256": "49fffc2c7087b1ff3a8e42463319168fad409687f502b619f3661c978fc6d666",
+  "scientific_boundary": "Computational docking and blocker-like geometry reproducibility only; not experimental binding or blocking evidence."
+}

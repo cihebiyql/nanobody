@@ -1,0 +1,21 @@
+{
+  "created_epoch": 1784689592.108573,
+  "job_id": "11939813",
+  "post_cancel_empty": true,
+  "reason": "bxcpu disk quota exceeded caused false TECHNICAL_NA; stopped to prevent further contamination",
+  "semantics": "quota-induced failures are infrastructure failures, not sequence replacement triggers and not negatives",
+  "snapshot": {
+    "captured_at": "2026-07-22T11:05:44.666841+08:00",
+    "failure_class_counts": {
+      "AssertionError": 1422,
+      "OSError": 118444
+    },
+    "job_present": false,
+    "status_counts": {
+      "SUCCESS": 198592,
+      "TECHNICAL_NA": 119866
+    }
+  },
+  "snapshot_sha256": "22d7d929ddd10adc4cfc986a60a931b84a13642fe5cb321b2b322f2a3fcc59a6",
+  "status": "PAUSED_QUOTA_EXCEEDED_PRESERVE_SUCCESS_ONLY"
+}

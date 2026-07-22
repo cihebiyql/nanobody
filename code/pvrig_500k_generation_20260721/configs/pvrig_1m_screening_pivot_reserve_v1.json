@@ -1,0 +1,32 @@
+{
+  "bxcpu_quota_pause": {
+    "job_id": "11939813",
+    "quota_induced_technical_na": 118444,
+    "status": "CANCELLED_AND_PRESERVING_SUCCESS",
+    "true_non_quota_technical_na_in_old_batch_snapshot": 1422
+  },
+  "cpu_pool": {
+    "exact_unique_sequences_generated": 700000,
+    "nbb2_success_preserved": 552782,
+    "nbb2_success_tnp_complete": 354190,
+    "nbb2_success_tnp_pending_after_migration": 198592,
+    "structure_gap_not_scheduled_for_cpu_rerun": 147218
+  },
+  "current_target_conditioned_gpu_pool": {
+    "fixed_pose_proteinmpnn_target": 150000,
+    "rfantibody_target": 150000,
+    "total_target": 300000
+  },
+  "final_policy": {
+    "exact_final_records": 1000000,
+    "proposal_pool_may_exceed_one_million": true,
+    "route_quotas_are_not_final_selection_quotas": true,
+    "selection_primary": "frozen_10k_docking_surrogate_conservative_score",
+    "use_new_pool_for_docking_training": false
+  },
+  "supplemental_target_conditioned_reserve": {
+    "fixed_pose_proteinmpnn_raw_target": 100000,
+    "rfantibody_raw_target": 100000,
+    "total_raw_target": 200000
+  }
+}

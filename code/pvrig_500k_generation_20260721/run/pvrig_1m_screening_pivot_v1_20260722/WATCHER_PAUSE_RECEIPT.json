@@ -1,0 +1,19 @@
+{
+  "created_epoch": 1784689846.6219485,
+  "preserved_sessions": [
+    "pvrig-sync-topup305705",
+    "pvrig-sync-gpu300k",
+    "pvrig-sync-node1-gpu1m",
+    "pvrig-normalize-gpu1m",
+    "pvrig-deploy-gpu-prefilter"
+  ],
+  "reason": "quota failures must not enter dynamic sequence replacement; preserve successful CPU structures and fill final pool with target-conditioned reserve",
+  "status": "OLD_CPU700K_FINALIZATION_PAUSED_FOR_SCREENING_PIVOT",
+  "stopped_sessions": [
+    "pvrig-sync-old344295",
+    "pvrig-cpu700k-replacement",
+    "pvrig-build-cpu700k-corrected",
+    "pvrig-finalize-1m",
+    "pvrig-build-1m-release"
+  ]
+}
