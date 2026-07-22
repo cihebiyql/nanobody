@@ -1,0 +1,23 @@
+{
+  "compatibility": {
+    "bitwise_pdb_identity": false,
+    "core_code_overlay_matches_bxcpu": true,
+    "hmmer_binary_matches_bxcpu": true,
+    "model_weight_hashes_match": true,
+    "sequence_and_atom_identity_closure": true
+  },
+  "evidence": {
+    "common_atoms": 1897,
+    "interpretation": "Node23-vs-bxcpu coordinate variation is within same-host repeat variation; exact PDB hashes are not a valid determinism requirement for this refinement step.",
+    "node23_same_host_repeat_aligned_rmsd_A": 0.8257905957120334,
+    "node23_vs_bxcpu_aligned_rmsd_A": 0.8029247619095118,
+    "same_atom_key_set": true
+  },
+  "model": "NanoBodyBuilder2 / ImmuneBuilder-1.2",
+  "production_decision": {
+    "fallback": "Use Node23 only if a bxcpu shard fails or capacity is lost; create a disjoint replacement shard and explicit merged manifest before release.",
+    "integrate_now": false,
+    "reason": "The active bxcpu campaign already has frozen 8-shard manifests and downstream archive/hash closure. Splitting it now would save only about one-node equivalent while adding cross-campaign aggregation risk."
+  },
+  "status": "VALIDATED_STANDBY_NOT_IN_PRODUCTION"
+}

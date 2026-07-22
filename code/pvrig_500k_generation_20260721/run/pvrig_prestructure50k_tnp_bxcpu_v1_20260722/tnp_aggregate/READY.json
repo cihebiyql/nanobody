@@ -1,0 +1,13 @@
+{
+  "id_set_exact_match": true,
+  "metric_semantics": "TNP structure developability proxy; not measured expression or purity",
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/prestructure50k_v1/tnp_aggregated_11939616/tnp_prestructure50000.tsv.gz",
+  "records": 50000,
+  "sha256": "fc8f34e4e663e49901827220016faf60b7fb9849155a5d3581a39d132c48e5bd",
+  "shards": 8,
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "status_counts": {
+    "PASS": 49840,
+    "TECHNICAL_NA": 160
+  }
+}

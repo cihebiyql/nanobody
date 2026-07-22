@@ -1,0 +1,73 @@
+{
+  "claim_boundary": "Open-development sequence plus label-free VHH monomer graph plus fixed public 8X6B/9E6Y target-graph approximation of independent dual-receptor computational Docking geometry; not binding, affinity, experimental blocking, Docking Gold, frozen-test, or submission evidence.",
+  "contact_supervision_enabled": false,
+  "expected_counts": {
+    "development": 795,
+    "total": 10644,
+    "train": 9849
+  },
+  "fixed_hyperparameters": {
+    "batch_size": 8,
+    "dropout": 0.25,
+    "dual_weight": 0.5,
+    "epochs": 8,
+    "gradient_accumulation": 4,
+    "graph_hidden_dim": 128,
+    "huber_beta": 0.03,
+    "learning_rate": 0.0001,
+    "precision": "bf16",
+    "receptor_weight": 1.0,
+    "softmin_tau": 0.02,
+    "weight_decay": 0.02
+  },
+  "fixed_target_graph": {
+    "receipt": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graph_receipt_v2.json",
+      "sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
+    },
+    "torch_artifact": {
+      "path": "experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graphs_v2.pt",
+      "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc"
+    }
+  },
+  "four_gpu_tasks": [
+    {"fold_id": "D1", "gpu": 0, "seed": 43},
+    {"fold_id": "D1", "gpu": 1, "seed": 917},
+    {"fold_id": "D1", "gpu": 2, "seed": 1931},
+    {"fold_id": "D1", "gpu": 3, "seed": 3253}
+  ],
+  "graph_cache": {
+    "runtime_required_status": "PASS_CANONICAL10644_LABEL_FREE_GRAPH_MATERIALIZED",
+    "runtime_triplet_closure": "candidate_id+sequence_sha256+monomer_sha256"
+  },
+  "lane": "B_CLEAN_TARGET_ATTENTION",
+  "neural_input_allowlist": [
+    "input_ids",
+    "attention_mask",
+    "residue_mask",
+    "vhh_aa_index",
+    "vhh_region_index",
+    "vhh_confidence",
+    "vhh_edge_index",
+    "vhh_edge_features",
+    "target_graphs"
+  ],
+  "ortho_model": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_contact_pose_stack_v1_20260718/model/residue_model_v2_5_ortho.py",
+    "sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521"
+  },
+  "ortho_trainer": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_5_ortho_contact_pose_stack_v1_20260718/trainer/train_v2_5_ortho_heads.py",
+    "sha256": "af93c39054a1a73568a68d498406fb3eddbffe1d688c93e16f59319148e285b0"
+  },
+  "schema_version": "pvrig_v2_11_full10644_clean_attention_contract_v1",
+  "split_manifest": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_split_manifest.json",
+    "sha256": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed"
+  },
+  "status": "FROZEN_PRE_LAUNCH",
+  "training_table": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_teacher.tsv",
+    "sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3"
+  }
+}

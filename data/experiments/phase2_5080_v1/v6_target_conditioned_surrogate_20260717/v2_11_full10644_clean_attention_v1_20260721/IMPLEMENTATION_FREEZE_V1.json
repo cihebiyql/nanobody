@@ -1,0 +1,55 @@
+{
+  "claim_boundary": "Full canonical10644 open-development clean target-attention challenger; sequence tokens plus label-free VHH monomer graph plus fixed public 8X6B/9E6Y target graphs only; no M2, C2, contact supervision, candidate Docking pose, frozen-test truth, or submission claim.",
+  "files": {
+    "CLEAN_ATTENTION_CONTRACT_V1.json": "e8a69755840f0f8847c6a942d825ac245131762be4f57df18a9d11826861f7f8",
+    "README_ZH.md": "8f044f7ac8be8119436e810b670c0d565b28822d1165b5431e7022c4dd966f77",
+    "launch_4gpu_clean_attention_seeds_v1.sh": "4567c717abc6823628ed4b534e2a8151436005e5c7c7e60f04aab148156310a3",
+    "src/evaluate_multiseed_clean_attention_v1.py": "10d42d104d4d7b36e5f3e65e0ecfab7eb5ad9a8bfee3b21392ad0e0aaa315493",
+    "src/run_full10644_clean_attention_v1.py": "239a8141c464bbc5e817322082b1dfb509aac2b917417e43d302883af70b5177",
+    "tests/test_run_full10644_clean_attention_v1.py": "5600ae59e60e4807b0089a8deef113d6eb174eaae8b54c36c032b35331741a59"
+  },
+  "frozen_execution": {
+    "development_selection": "NONE",
+    "epochs": 8,
+    "multiseed_aggregation": "mean R8/R9 then per-row exact min; report all seeds and stability",
+    "split": "D1 whole-parent train9849/development795",
+    "tasks": [
+      {
+        "fold_id": "D1",
+        "gpu": 0,
+        "seed": 43
+      },
+      {
+        "fold_id": "D1",
+        "gpu": 1,
+        "seed": 917
+      },
+      {
+        "fold_id": "D1",
+        "gpu": 2,
+        "seed": 1931
+      },
+      {
+        "fold_id": "D1",
+        "gpu": 3,
+        "seed": 3253
+      }
+    ]
+  },
+  "lane": "B_CLEAN_TARGET_ATTENTION",
+  "remaining_prerequisites": [
+    "PASS_CANONICAL10644_LABEL_FREE_GRAPH_MATERIALIZED receipt and graph-cache triplet closure",
+    "local frozen ESM2-650M directory plus hash-pinned identity file"
+  ],
+  "schema_version": "pvrig_v2_11_full10644_clean_attention_implementation_freeze_v1",
+  "status": "FROZEN_IMPLEMENTED_NOT_LAUNCHED",
+  "verification": {
+    "contact_optimizer_parameter_values": 0,
+    "lightweight_production_contract_preflight": "PASS total10644/train9849/development795/train_parents54/development_parents10",
+    "neural_input_firewall": "PASS positive allowlist; M2/C2/contact/ID inputs absent",
+    "python_compile": "PASS",
+    "shell_syntax": "PASS",
+    "training_or_gpu_launch_started_by_this_implementation": false,
+    "unit_tests": "7/7 PASS"
+  }
+}

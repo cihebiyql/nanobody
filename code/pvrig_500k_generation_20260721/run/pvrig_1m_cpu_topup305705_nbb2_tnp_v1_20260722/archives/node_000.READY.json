@@ -1,0 +1,14 @@
+{
+  "archive": "node_000.tar.gz",
+  "archive_bytes": 1566021868,
+  "archive_sha256": "d39d181f0f57ff8730c4cf2bcad97e6dc549a30b893f01ab37faa9680db6320a",
+  "created_epoch": 1784677579.4703455,
+  "expected_records": 38214,
+  "records": 38214,
+  "status": "READY",
+  "status_counts": {
+    "SUCCESS": 38031,
+    "TECHNICAL_NA": 183
+  },
+  "technical_na_is_not_negative": true
+}

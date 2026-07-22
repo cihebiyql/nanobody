@@ -1,0 +1,16 @@
+{
+  "candidate_id_exact_unique": true,
+  "fast_qc_all_pass": true,
+  "fasta_sha256": "91c82e76b1487f7b10e3f1504728c18c6ca3069d7a319c3f091c6bfe0b6218c9",
+  "fasta_tsv_exact_ordered_closure": true,
+  "known_nbb2_incompatible_parent_absent": true,
+  "records": 12124,
+  "route_counts": {
+    "conservative_cdr_redesign": 6488,
+    "natural_cdr_donor": 4008,
+    "profile_diversified_exploration_control": 1628
+  },
+  "sequence_exact_unique": true,
+  "status": "PASS",
+  "tsv_sha256": "612fbf59142f30e124b84206f568dcefd84de95924b3f86809b4aa757c3df9b9"
+}

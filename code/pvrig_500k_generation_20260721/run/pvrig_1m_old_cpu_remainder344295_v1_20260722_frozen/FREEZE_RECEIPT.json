@@ -1,0 +1,15 @@
+{
+  "exclude": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_provisional_prestructure50k_v1_20260722/provisional_prestructure50000.tsv.gz",
+  "excluded_records": 50000,
+  "id_set_exact_difference": true,
+  "output_records": 344295,
+  "outputs": {
+    "exact_id_difference.fasta.gz": "9c23d3bd234da0c2c22da22d5e4d8656d68aac66679c3d55590dad56a55a3d6a",
+    "exact_id_difference.tsv.gz": "770ff9f0dc0fe412f8e32ec938a5c51f629481fd6c544afa71de4d4b95f02e7c"
+  },
+  "overlap_records": 50000,
+  "sequence_exact_unique": true,
+  "source": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_500k_cpu_control_combined394k_v1_20260721/combined_exact_unique_fast_qc_pass.tsv.gz",
+  "source_records": 394295,
+  "status": "PASS"
+}

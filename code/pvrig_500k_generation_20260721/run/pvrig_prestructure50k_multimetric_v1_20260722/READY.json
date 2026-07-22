@@ -1,0 +1,30 @@
+{
+  "created_epoch": 1784658302.3237092,
+  "id_set_exact_match": true,
+  "metric_summary": "METRIC_SUMMARY.json",
+  "nbb2_status_counts": {
+    "SUCCESS": 49840,
+    "TECHNICAL_NA": 160
+  },
+  "output": "prestructure50000_multimetric.tsv.gz",
+  "records": 50000,
+  "scientific_boundaries": {
+    "binding_priors": "weak binding priors; not Kd, IC50, or blocking evidence",
+    "nbb2": "VHH monomer geometry prediction; not binding, affinity, docking, or blocking evidence",
+    "tnp": "structure developability proxy; not measured expression or purity"
+  },
+  "sha256": "ea4cffbbec119a092487d4c9d7ba5a254a0b236cc050f19d0ef3a45a9b3c9c45",
+  "status": "READY_WITH_TECHNICAL_NA",
+  "tnp_red_flag_count_distribution": {
+    "": 160,
+    "0": 39837,
+    "1": 9494,
+    "2": 506,
+    "3": 3
+  },
+  "tnp_status_counts": {
+    "PASS": 49840,
+    "TECHNICAL_NA": 160
+  },
+  "updated_epoch": 1784658374.1454983
+}

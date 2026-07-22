@@ -1,8 +1,59 @@
 # PVRIG VHH 结合先验与可开发性前筛部署状态
 
-更新：2026-07-19  
-节点：`node1`  
+更新：2026-07-21
+
+节点：`bxcpu` 全量生产，`node1` 保留早期 smoke 与后续汇总
 目标：在结构预测和 Docking 之前，用已验证的快速信号做排序和风险标注，但不把它们写成 Kd、IC50 或真实阻断。
+
+## 0. 2026-07-21 bxcpu 全量生产结果
+
+已在 bxcpu 部署 CPU 隔离环境，并对冻结的 `394,295` 条候选完成全量预测。
+
+```text
+运行根目录:
+  $HOME/pvrig_bxcpu_model_runtime_v1_20260721
+环境:
+  $HOME/pvrig_bxcpu_model_runtime_v1_20260721/env
+本地汇总:
+  /mnt/d/work/抗体/code/pvrig_500k_generation_20260721/run/
+    pvrig_bxcpu_model_predictions_v1_20260721
+```
+
+| 模块 | bxcpu 资源 | 全量用时 | 结果 |
+| --- | --- | ---: | --- |
+| DeepNano + NanoBind | 8 节点 / 512 CPU | 10m44s（初版） | 394,295/394,295 |
+| DeepNano 精确长度分桶修正 | 8 节点 / 512 CPU | 5m03s | 394,295/394,295 |
+| Sapiens | 8 节点 / 512 CPU | 1m31s | 394,295/394,295 |
+| AbNatiV | 8 节点 / 512 CPU | 55s | PASS 381,030；NA 13,265 |
+
+DeepNano 生产时发现上游代码在对 `last_hidden_state` 做 mean/max/min 池化时没有屏蔽 padding，因此同一条序列的分数会轻微受同 batch 其他序列长度影响。生产 V2 改为“相同 VHH 长度分桶后批处理”，对 256 条 smoke 比较 batch=32 和 batch=1：
+
+```text
+max_abs_diff = 7.75e-07
+tolerance    = 1e-06
+status       = PASS
+```
+
+当前权威 binding 文件是 V2：
+
+```text
+binding_priors_all_v2.tsv.gz
+SHA256 3f0aa87ce8b89dfec9906995a8328ee014147c0422514756adbb94fb873755ce
+```
+
+修正后 DeepNano 分布：均值 `0.14429`，中位数 `0.13356`，范围 `0.00939–0.56701`。与初版 Pearson 相关为 `0.99691`，但初版已标记为 superseded。
+
+AbNatiV 的 `13,265` 条 NA 均为上游 AHo 表示不支持插入位点，必须保留为技术/适用性 NA，不得改写成低可开发性或生物学阴性。
+
+统一前筛表：
+
+```text
+pvrig_prefilter_all_v1.tsv.gz
+records 394,295
+SHA256 273e85d6a46d55964997418e48dd8063f74d1e6b6db3f2c98c83db3f4b61fcd5
+```
+
+该表按 `candidate_id` 一对一合并了候选序列与 provenance、序列风险、DeepNano/NanoBind、Sapiens 和 AbNatiV；五个输入的 ID 集合均严格一致。
 
 ## 1. 当前可用性矩阵
 

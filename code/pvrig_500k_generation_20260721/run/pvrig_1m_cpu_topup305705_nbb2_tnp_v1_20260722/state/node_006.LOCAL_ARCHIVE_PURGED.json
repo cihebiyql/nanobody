@@ -1,0 +1,8 @@
+{
+  "archive_bytes": 1566050036,
+  "archive_sha256": "8c8812d8300307564ff620c83d2b3d63c7a1a69a98f7582e6bf1176b307753e2",
+  "created_at": "2026-07-22T00:25:17.646968+00:00",
+  "durable_node1_path": "/data/qlyu/projects/pvrig_1m_cpu_topup305705_nbb2_tnp_v1_20260722/archives/node_006.tar.gz",
+  "node": "006",
+  "status": "PURGED_AFTER_NODE1_SHA256_ACK"
+}

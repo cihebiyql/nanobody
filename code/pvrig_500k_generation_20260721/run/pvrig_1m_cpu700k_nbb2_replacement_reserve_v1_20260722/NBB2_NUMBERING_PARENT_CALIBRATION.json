@@ -1,0 +1,134 @@
+{
+  "model_gate": "min(IMGT)<8 and max(IMGT)>120",
+  "results": {
+    "C0018": {
+      "candidate_id": "P25K__NATURAL_CDR_DONOR__9FAEBD6CE72DD2EE",
+      "fr1_len": 19,
+      "fr4_len": 11,
+      "max_number": 128,
+      "min_number": 7,
+      "status": "PASS"
+    },
+    "C0020": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__A81673747F437EA8",
+      "fr1_len": 19,
+      "fr4_len": 11,
+      "max_number": 128,
+      "min_number": 7,
+      "status": "PASS"
+    },
+    "C0371": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__539F6536B96DAB95",
+      "fr1_len": 19,
+      "fr4_len": 11,
+      "max_number": 128,
+      "min_number": 7,
+      "status": "PASS"
+    },
+    "C0372": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__104272FA3A8C50C9",
+      "fr1_len": 19,
+      "fr4_len": 11,
+      "max_number": 128,
+      "min_number": 7,
+      "status": "PASS"
+    },
+    "C0532": {
+      "candidate_id": "P25K__NATURAL_CDR_DONOR__DDACDD6CE53EAD2F",
+      "error": "AssertionError:Sequence missing too many residues to model correctly. Please give whole sequence:\nGGGSLRLSCAKSGSAFSINAMSWYRQAPGKERDFVASITPGGLTRYADSVKGRFTISQDNAKNTVYLQINGLKPEDTAMYYCNADLERYSDFGREVDDYWGQGTMVTVSS",
+      "fr1_len": 11,
+      "fr4_len": 11,
+      "status": "FAIL"
+    },
+    "C0535": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__903C2A1AF1A0F64F",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0536": {
+      "candidate_id": "P25K__NATURAL_CDR_DONOR__0DD405F31DAD1AC5",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0539": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__66CE3D3D8313A9B1",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0540": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__B461088ECE5E9ED4",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0542": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__3BF18CE76FA13724",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0545": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__AF2CBED72EDBE704",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0546": {
+      "candidate_id": "P25K__NATURAL_CDR_DONOR__986E9BC75A39E245",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0551": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__85FEB69AF85E8ED9",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0555": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__716CD552CCA7A5C2",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0556": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__A3438368B5443654",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    },
+    "C0590": {
+      "candidate_id": "P25K__CONSERVATIVE_CDR_REDESIGN__8450D0DDF25052B0",
+      "fr1_len": 22,
+      "fr4_len": 8,
+      "max_number": 125,
+      "min_number": 4,
+      "status": "PASS"
+    }
+  },
+  "status": "CALIBRATED",
+  "tested_parent_clusters": 16
+}

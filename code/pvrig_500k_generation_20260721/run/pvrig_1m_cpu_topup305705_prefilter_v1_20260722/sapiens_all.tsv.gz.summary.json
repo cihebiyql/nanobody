@@ -1,0 +1,24 @@
+{
+  "mean_self_probability": {
+    "max": 0.7672372178076917,
+    "mean": 0.6995194320033251,
+    "median": 0.7054779179438594,
+    "min": 0.5523579322825406,
+    "q05": 0.6449316380797848,
+    "q95": 0.73744945447317
+  },
+  "num_suggested_mutations": {
+    "max": 41.0,
+    "mean": 19.96896681441259,
+    "median": 20.0,
+    "min": 6.0,
+    "q05": 14.0,
+    "q95": 27.0
+  },
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu_topup305705_v1/aggregated/sapiens_all.tsv.gz",
+  "output_sha256": "685e294ce96ae34ec5126f064eb6de4131b2b6f97dc3571ace739f3d49b07fdd",
+  "records": 305705,
+  "scientific_boundary": "human-likeness/developability proxy; not measured expression or purity",
+  "status": "PASS",
+  "tasks": 32
+}

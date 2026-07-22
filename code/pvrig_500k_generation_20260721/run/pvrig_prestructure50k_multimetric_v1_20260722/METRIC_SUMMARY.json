@@ -1,0 +1,73 @@
+{
+  "created_epoch": 1784658374.0843256,
+  "flags": {
+    "tnp_flag_C": {
+      "amber": 843,
+      "green": 48866,
+      "red": 131
+    },
+    "tnp_flag_L": {
+      "amber": 4797,
+      "green": 44624,
+      "red": 419
+    },
+    "tnp_flag_L3": {
+      "amber": 4615,
+      "green": 45225
+    },
+    "tnp_flag_PNC": {
+      "amber": 1536,
+      "green": 46378,
+      "red": 1926
+    },
+    "tnp_flag_PPC": {
+      "amber": 6257,
+      "green": 36273,
+      "red": 7310
+    },
+    "tnp_flag_PSH": {
+      "amber": 5338,
+      "green": 43773,
+      "red": 729
+    }
+  },
+  "metrics": {
+    "tnp_cdr3_compactness": {
+      "max": 1.9457334522490708,
+      "median": 1.3783752368581443,
+      "min": 0.7553703167521937,
+      "n": 49840,
+      "q05": 0.8929996630882809,
+      "q95": 1.5260871621770082
+    },
+    "tnp_pnc": {
+      "max": 6.5027,
+      "median": 0.1207,
+      "min": 0.0,
+      "n": 49840,
+      "q05": 0.0,
+      "q95": 1.638844999999996
+    },
+    "tnp_ppc": {
+      "max": 5.9848,
+      "median": 0.1772,
+      "min": 0.0,
+      "n": 49840,
+      "q05": 0.0,
+      "q95": 1.6449
+    },
+    "tnp_psh": {
+      "max": 195.1139,
+      "median": 101.13295,
+      "min": 0.0,
+      "n": 49840,
+      "q05": 79.79598499999999,
+      "q95": 130.68809
+    }
+  },
+  "scientific_boundary": "TNP structure developability proxy; not measured expression or purity",
+  "status_counts": {
+    "PASS": 49840,
+    "TECHNICAL_NA": 160
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "abnativ_vhh_score_pass_only": {
+    "max": 0.9806512168829511,
+    "mean": 0.7846302540824431,
+    "median": 0.7948093814385558,
+    "min": 0.40638283080055415,
+    "q05": 0.6523511088340931,
+    "q95": 0.8833890104734881
+  },
+  "na_reason_counts": {
+    "AHO_INSERTION_UNSUPPORTED": 13265
+  },
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/results/abnativ_aggregated_11939430/abnativ_all.tsv.gz",
+  "output_sha256": "48adbc3ee3e40b3a87812aba5b6b4a74289f0b4c3569b48f76f6d1277c678e56",
+  "records": 394295,
+  "scientific_boundary": "VHH nativeness/developability proxy; not measured expression or purity",
+  "status": "PASS",
+  "status_counts": {
+    "NA": 13265,
+    "PASS": 381030
+  },
+  "tasks": 32
+}

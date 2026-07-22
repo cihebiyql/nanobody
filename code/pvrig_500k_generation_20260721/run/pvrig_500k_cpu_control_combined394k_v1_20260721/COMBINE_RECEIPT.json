@@ -1,0 +1,31 @@
+{
+  "candidate_id_count": 394295,
+  "exact_unique_count": 394295,
+  "note": "ANARCI/IMGT and CDR3-family controls remain required before a final 300k CPU-route freeze.",
+  "outputs": {
+    "combined_exact_unique_fast_qc_pass.fasta.gz": "834ec33980ba42e88f20b8a91c14ade48bacae40bd041739b000cfc69d4eaf3b",
+    "combined_exact_unique_fast_qc_pass.tsv.gz": "e5cc1b7cf8ffb1b82552921b7a80bc50cd70e9e6ce872d7eaaf3569aceadc3d7"
+  },
+  "route_counts": {
+    "conservative_cdr_redesign": 204265,
+    "natural_cdr_donor": 129079,
+    "profile_diversified_exploration_control": 60951
+  },
+  "route_mode_counts": {
+    "conservative_cdr_redesign|H1H2H3": 91046,
+    "conservative_cdr_redesign|H1H3": 72408,
+    "conservative_cdr_redesign|H3": 40811,
+    "natural_cdr_donor|H1H2H3": 74267,
+    "natural_cdr_donor|H1H3": 52491,
+    "natural_cdr_donor|H3": 2321,
+    "profile_diversified_exploration_control|H1H2H3": 13799,
+    "profile_diversified_exploration_control|H1H3": 21167,
+    "profile_diversified_exploration_control|H3": 25985
+  },
+  "source_counts": {
+    "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_500k_exploration_control70k_v1_20260721_exact_unique/exact_unique_fast_qc_pass.tsv.gz": 60951,
+    "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_500k_fullscale_cpu_v1_20260721_exact_unique/exact_unique_fast_qc_pass.tsv.gz": 286872,
+    "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_500k_natural_topup60k_v1_20260721_new_exact_unique/exact_unique_fast_qc_pass.tsv.gz": 46472
+  },
+  "status": "COMBINED_EXACT_UNIQUE_FAST_QC_NOT_FINAL_ANARCI"
+}

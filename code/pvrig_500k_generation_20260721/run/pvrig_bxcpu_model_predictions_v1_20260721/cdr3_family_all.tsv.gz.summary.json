@@ -1,0 +1,12 @@
+{
+  "candidates_in_families_over_cap_100": 338283,
+  "definition": "equal-length connected components at Hamming identity >=80%",
+  "families_over_cap_100": 195,
+  "family_count": 55854,
+  "max_family_candidate_size": 5806,
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/cdr3_family394k_v1/aggregated_11939512/cdr3_family_all.tsv.gz",
+  "output_sha256": "89743cb1aee70589106b1a34ca11198aceb6418ba975400cf2d034d8f619b3c3",
+  "records": 394295,
+  "status": "PASS",
+  "unique_cdr3": 229592
+}

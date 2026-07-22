@@ -1,0 +1,45 @@
+{
+  "duplicate_task_id_count": 0,
+  "exact_unique_fast_qc_pass_count": 383734,
+  "fast_qc_fail_count": 33533,
+  "fast_qc_pass_count": 396467,
+  "node_count": 8,
+  "note": "Fast-QC PASS is not final eligibility; ANARCI/IMGT and global family controls remain required.",
+  "raw_count": 430000,
+  "route_exact_unique_fast_qc_pass_counts": {
+    "conservative_cdr_redesign": 241225,
+    "natural_cdr_donor": 98888,
+    "profile_diversified_exploration_control": 43621
+  },
+  "route_fast_qc_pass_counts": {
+    "conservative_cdr_redesign": 245078,
+    "natural_cdr_donor": 107768,
+    "profile_diversified_exploration_control": 43621
+  },
+  "route_mode_exact_unique_fast_qc_pass_counts": {
+    "conservative_cdr_redesign|H1H2H3": 107716,
+    "conservative_cdr_redesign|H1H3": 85671,
+    "conservative_cdr_redesign|H3": 47838,
+    "natural_cdr_donor|H1H2H3": 56465,
+    "natural_cdr_donor|H1H3": 42423,
+    "profile_diversified_exploration_control|H1H2H3": 9920,
+    "profile_diversified_exploration_control|H1H3": 15102,
+    "profile_diversified_exploration_control|H3": 18599
+  },
+  "route_mode_fast_qc_pass_counts": {
+    "conservative_cdr_redesign|H1H2H3": 107794,
+    "conservative_cdr_redesign|H1H3": 86369,
+    "conservative_cdr_redesign|H3": 50915,
+    "natural_cdr_donor|H1H2H3": 57497,
+    "natural_cdr_donor|H1H3": 50271,
+    "profile_diversified_exploration_control|H1H2H3": 9920,
+    "profile_diversified_exploration_control|H1H3": 15102,
+    "profile_diversified_exploration_control|H3": 18599
+  },
+  "route_raw_counts": {
+    "conservative_cdr_redesign": 260000,
+    "natural_cdr_donor": 120000,
+    "profile_diversified_exploration_control": 50000
+  },
+  "status": "MERGED_FAST_QC_ONLY_NOT_FINAL_ANARCI"
+}

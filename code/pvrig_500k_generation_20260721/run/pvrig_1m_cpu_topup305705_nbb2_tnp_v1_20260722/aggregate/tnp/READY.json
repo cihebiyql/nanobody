@@ -1,0 +1,14 @@
+{
+  "id_set_exact_match": true,
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu_topup305705_v1/nbb2/tnp_aggregated_11939801/tnp_all.tsv.gz",
+  "records": 305705,
+  "scientific_boundary": "TNP structure developability proxy; not measured expression or purity",
+  "sha256": "f4adec2c02c0cfd47f51db1476da0c3efd20dcfb48178e5e8b3e3930efdcbb85",
+  "shards": 8,
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "status_counts": {
+    "PASS": 304350,
+    "TECHNICAL_NA": 1355
+  },
+  "technical_na_is_not_negative": true
+}

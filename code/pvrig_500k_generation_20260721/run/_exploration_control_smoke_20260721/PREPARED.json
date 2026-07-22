@@ -1,0 +1,17 @@
+{
+  "design_mode_counts": {
+    "H1H2H3": 8,
+    "H1H3": 11,
+    "H3": 13
+  },
+  "max_shard_size": 8,
+  "min_shard_size": 8,
+  "nodes": 2,
+  "raw_task_count": 32,
+  "route": "profile_diversified_exploration_control",
+  "scientific_boundary": "Independent broad CDR-profile exploration/control route; not de novo structure generation and not a binding claim.",
+  "shard_count": 4,
+  "status": "READY_FOR_BXCPU_EXPLORATION_CONTROL",
+  "target_exact_unique_fast_qc": 50000,
+  "workers_per_node": 2
+}

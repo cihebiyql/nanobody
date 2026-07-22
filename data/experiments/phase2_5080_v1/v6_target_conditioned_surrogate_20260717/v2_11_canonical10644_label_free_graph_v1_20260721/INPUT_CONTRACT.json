@@ -1,0 +1,50 @@
+{
+  "canonical_candidates": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_teacher.tsv",
+    "sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3"
+  },
+  "claim_boundary": "Label-free single-chain VHH monomer residue graphs for canonical10644 plus frozen public 8X6B/9E6Y target graphs; no contact teacher, candidate Docking pose, Docking result, pose-derived feature, binding, affinity, experimental blocking, or Docking Gold truth.",
+  "expected_rows": 10644,
+  "fixed_target_graph": {
+    "artifacts": {
+      "target_graph_cache_v2.npz": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graph_cache_v2.npz",
+        "sha256": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108"
+      },
+      "target_graph_manifest_v2.tsv": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graph_manifest_v2.tsv",
+        "sha256": "c78c30beb4ad668e28f8bfe17872b9712e92fd5871748718a70714a5d5f0ce9d"
+      },
+      "target_graphs_v2.pt": {
+        "path": "experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graphs_v2.pt",
+        "sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc"
+      }
+    },
+    "receipt_path": "experiments/phase2_5080_v1/prepared/pvrig_v6_residue_v2_fixed_target_graphs_v1_20260718/target_graph_receipt_v2.json",
+    "receipt_sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
+  },
+  "forbidden_inputs": [
+    "contact teacher",
+    "candidate Docking pose",
+    "Docking job result",
+    "pose-derived feature",
+    "teacher_source as model input"
+  ],
+  "graph_builder": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/residue_v2/src/build_residue_graph_cache_v2.py",
+    "sha256": "90953abad5e74cb6469e6b5ee4f1c409002fb45efc4f27a64949e5f0f2b4c13b"
+  },
+  "implicit_materialization_authorized": false,
+  "schema_version": "pvrig_v2_11_canonical10644_label_free_graph_input_contract_v1",
+  "status": "FROZEN_PRE_MATERIALIZATION",
+  "structure_manifest_contract": {
+    "expected_exact_rows": 10644,
+    "required_row_identity": [
+      "candidate_id",
+      "sequence_sha256",
+      "monomer_sha256"
+    ],
+    "sha256_must_be_supplied_explicitly_at_prepare_time": true,
+    "unified_local_manifest_delivered": false
+  }
+}

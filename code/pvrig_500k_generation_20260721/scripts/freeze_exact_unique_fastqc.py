@@ -24,6 +24,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--exclude", type=Path, action="append", default=[])
     args = parser.parse_args()
     source = args.input.resolve()
     output = args.output_dir.resolve()
@@ -31,6 +32,13 @@ def main() -> int:
     tsv_path = output / "exact_unique_fast_qc_pass.tsv.gz"
     fasta_path = output / "exact_unique_fast_qc_pass.fasta.gz"
     seen: set[str] = set()
+    excluded_sequence_count = 0
+    for exclude_path in args.exclude:
+        opener = gzip.open if exclude_path.suffix == ".gz" else open
+        with opener(exclude_path, "rt", encoding="utf-8", newline="") as handle:
+            for row in csv.DictReader(handle, delimiter="\t"):
+                seen.add(row["sequence"])
+    excluded_sequence_count = len(seen)
     input_count = duplicate_count = 0
     route_counts: Counter[str] = Counter()
     mode_counts: Counter[str] = Counter()
@@ -61,7 +69,9 @@ def main() -> int:
         "status": "EXACT_UNIQUE_FAST_QC_FROZEN_NOT_FINAL_ANARCI",
         "input_fast_qc_pass_count": input_count,
         "exact_duplicate_removed_count": duplicate_count,
-        "exact_unique_count": len(seen),
+        "excluded_prior_sequence_count": excluded_sequence_count,
+        "new_exact_unique_count": len(seen) - excluded_sequence_count,
+        "exact_unique_count": len(seen) - excluded_sequence_count,
         "route_counts": dict(sorted(route_counts.items())),
         "route_mode_counts": dict(sorted(mode_counts.items())),
         "outputs": {

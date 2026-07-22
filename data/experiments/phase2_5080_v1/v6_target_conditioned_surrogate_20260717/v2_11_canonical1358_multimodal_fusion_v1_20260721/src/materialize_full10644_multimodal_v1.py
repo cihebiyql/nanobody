@@ -247,6 +247,7 @@ def validate_cache(
         receipt_path, expected_receipt_sha256, "embedding_cache_receipt"
     )
     require(receipt.get("schema_version") == EMBEDDING_SCHEMA, "embedding_schema")
+    require(receipt.get("status") == "PASS_V6_ESM_EMBEDDING_CACHE_COMPLETE", "embedding_status")
     shard_records = receipt.get("shards")
     require(isinstance(shard_records, list) and shard_records, "embedding_shards_invalid")
     seen: dict[str, str] = {}
@@ -270,6 +271,7 @@ def validate_cache(
             raise MaterializationError(f"embedding_shard_payload:{shard.name}") from exc
         require(values.ndim == 2, f"embedding_shard_rank:{shard.name}")
         require(values.shape[0] == len(identifiers) == len(sequence_hashes), f"embedding_shard_shape:{shard.name}")
+        require(item.get("rows") == len(identifiers), f"embedding_shard_receipt_rows:{shard.name}")
         if width is None:
             width = int(values.shape[1])
             require(width > 0, "embedding_width_zero")
@@ -281,6 +283,7 @@ def validate_cache(
             seen[candidate] = sequence_sha256
         shard_audit.append({"path": shard.name, "sha256": shard_sha256, "rows": len(identifiers)})
     require(receipt.get("rows") == len(seen), "embedding_receipt_rows")
+    require(receipt.get("embedding_dimension") == width, "embedding_receipt_width")
     require(set(expected_sha_by_id) <= set(seen), "embedding_candidate_missing")
     for candidate, sequence_sha256 in expected_sha_by_id.items():
         require(seen[candidate] == sequence_sha256, f"embedding_sequence_mismatch:{candidate}")

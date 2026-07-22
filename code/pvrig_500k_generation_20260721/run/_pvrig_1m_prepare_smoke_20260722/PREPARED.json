@@ -1,0 +1,35 @@
+{
+  "campaign": "pvrig_1m_cpu_topup_v1_20260722",
+  "existing_frozen_cpu_records": 394295,
+  "existing_frozen_route_counts": {
+    "conservative_cdr_redesign": 204265,
+    "natural_cdr_donor": 129079,
+    "profile_diversified_exploration_control": 60951
+  },
+  "max_shard_size": 15,
+  "min_shard_size": 15,
+  "nodes": 1,
+  "parent_count": 180,
+  "raw_route_counts": {
+    "conservative_cdr_redesign": 12,
+    "natural_cdr_donor": 10,
+    "profile_diversified_exploration_control": 8
+  },
+  "raw_task_count": 30,
+  "requested_new_cpu_route_quotas": {
+    "conservative_cdr_redesign": 195735,
+    "natural_cdr_donor": 70921,
+    "profile_diversified_exploration_control": 39049
+  },
+  "scientific_boundary": "Sequence generation and fast QC only; not binding, affinity, expression, purity, docking, or blocking evidence.",
+  "shard_count": 2,
+  "status": "READY_FOR_BXCPU_1M_CPU_TOPUP",
+  "target_1m_route_totals": {
+    "conservative_cdr_redesign": 400000,
+    "epitope_conditioned_rfantibody": 150000,
+    "fixed_pose_mpnn_antifold": 150000,
+    "natural_cdr_donor": 200000,
+    "profile_diversified_exploration_control": 100000
+  },
+  "workers_per_node": 2
+}

@@ -1,0 +1,51 @@
+{
+  "bad_parent_cluster": "C0532",
+  "candidate_id_exact_unique": true,
+  "created_at": "2026-07-21T21:41:13.490000+00:00",
+  "incompatible_records": 3031,
+  "incompatible_route_counts": {
+    "conservative_cdr_redesign": 1622,
+    "natural_cdr_donor": 1002,
+    "profile_diversified_exploration_control": 407
+  },
+  "outputs": {
+    "cpu700k_nbb2_incompatible.tsv.gz": "cbd7891fc6385872b0175386bc98ec5da438329da9fc08052e28d209960cfe16",
+    "cpu700k_nbb2_replacement_reserve.fasta.gz": "91c82e76b1487f7b10e3f1504728c18c6ca3069d7a319c3f091c6bfe0b6218c9",
+    "cpu700k_nbb2_replacement_reserve.tsv.gz": "612fbf59142f30e124b84206f568dcefd84de95924b3f86809b4aa757c3df9b9"
+  },
+  "oversample_factor": 4.0,
+  "reserve_max_per_parent": {
+    "conservative_cdr_redesign": 37,
+    "natural_cdr_donor": 23,
+    "profile_diversified_exploration_control": 10
+  },
+  "reserve_parent_cluster_counts": {
+    "conservative_cdr_redesign": 179,
+    "natural_cdr_donor": 179,
+    "profile_diversified_exploration_control": 179
+  },
+  "reserve_pool_excluded_bad_parent": 257,
+  "reserve_pool_excluded_selected": 305705,
+  "reserve_pool_records": 366648,
+  "reserve_records": 12124,
+  "reserve_route_counts": {
+    "conservative_cdr_redesign": 6488,
+    "natural_cdr_donor": 4008,
+    "profile_diversified_exploration_control": 1628
+  },
+  "reserve_targets": {
+    "conservative_cdr_redesign": 6488,
+    "natural_cdr_donor": 4008,
+    "profile_diversified_exploration_control": 1628
+  },
+  "selected_overlap_records": 0,
+  "selected_records": 700000,
+  "selected_route_counts": {
+    "conservative_cdr_redesign": 400000,
+    "natural_cdr_donor": 200000,
+    "profile_diversified_exploration_control": 100000
+  },
+  "sequence_exact_unique": true,
+  "status": "READY_FOR_FULL_PREFILTER",
+  "technical_na_is_not_biological_negative": true
+}

@@ -1,0 +1,56 @@
+{
+  "abnativ_status_counts": {
+    "NA": 332,
+    "PASS": 11792
+  },
+  "anarci_qc_status_counts": {
+    "PASS": 12124
+  },
+  "id_checks": {
+    "abnativ": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 12124
+    },
+    "anarci": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 12124
+    },
+    "binding": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 12124
+    },
+    "candidates": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 12124
+    },
+    "risk": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 12124
+    },
+    "sapiens": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 12124
+    }
+  },
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu700k_replacement_reserve12124_prefilter_v1_20260722/aggregated/finalize_11939795/prefilter_all.tsv.gz",
+  "output_sha256": "22c31a6a45fc8aaa1cf8a54df6ba0589bcfdf3ac8e5fbbbf460d8ce4151ea4e3",
+  "records": 12124,
+  "risk_tier_counts": {
+    "HIGH": 1540,
+    "LOW": 6014,
+    "MODERATE": 4570
+  },
+  "scientific_boundaries": {
+    "abnativ": "VHH nativeness proxy; NA denotes model incompatibility, not negative biology",
+    "binding": "weak binding priors; not Kd, IC50, or blocking evidence",
+    "sapiens": "human-likeness proxy; not measured purity or expression",
+    "sequence_risk": "partial sequence-only developability proxy; not measured purity or expression"
+  },
+  "status": "PASS"
+}

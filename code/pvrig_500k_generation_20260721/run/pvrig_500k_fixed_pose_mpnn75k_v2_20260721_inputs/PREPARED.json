@@ -1,0 +1,11 @@
+{
+  "chain_mapping": "H=VHH (source A); T=PVRIG (source B)",
+  "exact_unique_freeze_target": 75000,
+  "gpu_plan": "physical GPUs 1-7, three workers per GPU after RFantibody controller completes",
+  "pose_count": 99,
+  "raw_sequence_target": 118800,
+  "scientific_boundary": "Positive-pose-conditioned ProteinMPNN sequence proposal; not affinity or blocking proof.",
+  "seqs_per_pose": 1200,
+  "source_candidate_count": 11,
+  "status": "INPUTS_PREPARED_NOT_YET_SMOKE_VALIDATED"
+}

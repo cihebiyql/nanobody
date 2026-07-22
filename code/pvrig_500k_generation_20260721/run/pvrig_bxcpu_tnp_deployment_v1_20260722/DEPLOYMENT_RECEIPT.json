@@ -1,0 +1,28 @@
+{
+  "adapter": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/scripts/tnp_score_precomputed_pdb.py",
+  "adapter_sha256": "4552f9b8fb009aebb65f433b8355f2e8bc7289c4787c44cc254539658fca8237",
+  "created_epoch": 1784655723.928127,
+  "metric_semantics": "TNP structure developability proxy; not measured expression or purity",
+  "official_cli_note": "The upstream sequence CLI failed with the installed newer ANARCI API and would rebuild NBB2; the validated adapter uses frozen ANARCI CDR fields and official TNP structure functions directly.",
+  "psa_sha256": "9f38d64c4e533ab5da8c7d608312065e8dc0fb7b41c7dd27216ce40f6fc220e3",
+  "remote_root": "$HOME/pvrig_bxcpu_model_runtime_v1_20260721/TNP",
+  "status": "DEPLOYED_AND_SMOKE_VALIDATED",
+  "upstream_commit": "29dcac72f1380e8538e8870f45a699d3c6156162",
+  "upstream_repository": "https://github.com/oxpig/TNP",
+  "validation": {
+    "parallel_64": {
+      "counts": {
+        "PASS": 64,
+        "TECHNICAL_NA": 0
+      },
+      "elapsed_seconds": 4.0580267906188965,
+      "metric_semantics": "TNP structure developability proxy; not measured expression or purity",
+      "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/tnp_smoke_precomputed_pdb_v1/smoke64.tsv",
+      "records": 64,
+      "status": "PASS",
+      "workers": 16
+    },
+    "single_candidate": "PASS",
+    "upstream_reference_parity": "REFERENCE_PARITY_PASS"
+  }
+}

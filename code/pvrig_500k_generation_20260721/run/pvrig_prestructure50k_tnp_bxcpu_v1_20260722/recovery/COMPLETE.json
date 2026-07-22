@@ -1,0 +1,54 @@
+{
+  "manifest": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/prestructure50k_v1/recovery_11939532/final_11939606/prestructure50000_nbb2_final_manifest.tsv.gz",
+  "manifest_sha256": "8833aee0aaf87c5b2cb481e41b25181f01c0a0d15297939a396ada3f80c35eb8",
+  "records": 50000,
+  "recovery_archives": [
+    {
+      "archive": "recovery_node_000.tar.gz",
+      "bytes": 528,
+      "sha256": "ee4801b8362d00f22a780cd01c418459fa39b930785482693bd2b0c2cfc72b1d"
+    },
+    {
+      "archive": "recovery_node_001.tar.gz",
+      "bytes": 529,
+      "sha256": "d8320c341e65f81622546778c9ee897e53992ec40517d76582b5bd0c4fd407fa"
+    },
+    {
+      "archive": "recovery_node_002.tar.gz",
+      "bytes": 529,
+      "sha256": "2242ad8cda2ccb2f84b8f77506fc6df30f75edd8ee8ae0477a42c94ac8c3c9e3"
+    },
+    {
+      "archive": "recovery_node_003.tar.gz",
+      "bytes": 529,
+      "sha256": "9097959302740405ba9dd6e93c68ce7fe3d2a5e85fedd637b21e78b6dcb36af4"
+    },
+    {
+      "archive": "recovery_node_004.tar.gz",
+      "bytes": 528,
+      "sha256": "0bf148823c75d6c3334c72abeb4523b0a10dc27bf1df0c55ce411c64986b077a"
+    },
+    {
+      "archive": "recovery_node_005.tar.gz",
+      "bytes": 529,
+      "sha256": "231dfc216e86b86d4401375c3d058c5f5525be7706e8ee283b65515883663aba"
+    },
+    {
+      "archive": "recovery_node_006.tar.gz",
+      "bytes": 528,
+      "sha256": "7dbfbdc35436b685d28c3cc60274ec8bbd14c12d5ab8c2ff47ee1aa6cde5b558"
+    },
+    {
+      "archive": "recovery_node_007.tar.gz",
+      "bytes": 530,
+      "sha256": "f1b01d5d640532c97eaf9b5a9566bd789d3afb624bd27065d780b48a6b1c3b05"
+    }
+  ],
+  "scientific_boundary": "VHH monomer predictions and technical QC; not binding, affinity, docking, or blocking evidence",
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "status_counts": {
+    "SUCCESS": 49840,
+    "TECHNICAL_NA": 160
+  },
+  "successful_structures": 49840
+}

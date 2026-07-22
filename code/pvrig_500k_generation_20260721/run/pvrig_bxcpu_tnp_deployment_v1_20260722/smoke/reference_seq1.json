@@ -1,0 +1,43 @@
+{
+  "absolute_tolerances": {
+    "cdr3_compactness": 0.001,
+    "cdr3_length": 0,
+    "pnc": 0.01,
+    "ppc": 0.01,
+    "psh": 0.1,
+    "total_cdr_length": 0
+  },
+  "expected": {
+    "cdr3_compactness": 0.5634161539313097,
+    "cdr3_length": 5,
+    "pnc": 0.0,
+    "ppc": 0.0526,
+    "psh": 79.3627,
+    "total_cdr_length": 20
+  },
+  "observed": {
+    "amber_flag_count": 4,
+    "candidate_id": "TNP_REFERENCE_ENRISTOMIG_VHH1",
+    "cdr3_compactness": 0.5633102154954935,
+    "cdr3_length": 5,
+    "failure_reason": "",
+    "flags": {
+      "C": "amber",
+      "L": "amber",
+      "L3": "amber",
+      "PNC": "green",
+      "PPC": "green",
+      "PSH": "amber"
+    },
+    "h_scale": 0,
+    "metric_semantics": "TNP structure developability proxy; not measured expression or purity",
+    "pdb_path": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/TNP/paper/paper_data/vhh_clinical_set_models/seq1_NanoBodyBuilder2_Model.pdb",
+    "pnc": 0.0,
+    "ppc": 0.0515,
+    "psh": 79.3304,
+    "red_flag_count": 0,
+    "status": "PASS",
+    "total_cdr_length": 20
+  },
+  "status": "REFERENCE_PARITY_PASS"
+}

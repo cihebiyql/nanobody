@@ -1,0 +1,24 @@
+{
+  "abnativ_file": "abnativ_all.tsv.gz",
+  "anarci_imgt_file": "anarci_imgt_qc_all.tsv.gz",
+  "anarci_pass": 394295,
+  "anarci_records": 394295,
+  "created_epoch": 1784652376.4894202,
+  "current_binding_file": "binding_priors_all_v2.tsv.gz",
+  "current_unified_prefilter_file": "pvrig_prefilter_all_v2.tsv.gz",
+  "records": 394295,
+  "sapiens_file": "sapiens_all.tsv.gz",
+  "scientific_boundaries": {
+    "abnativ": "VHH nativeness proxy; NA denotes model incompatibility, not negative biology",
+    "anarci": "ANARCI/IMGT numbering and domain QC; not binding, affinity, purity, or blocking evidence",
+    "binding": "weak binding priors; not Kd, IC50, or blocking evidence",
+    "sapiens": "human-likeness proxy; not measured purity or expression",
+    "sequence_risk": "partial sequence-only proxy; not measured purity or expression"
+  },
+  "sha256_manifest": "SHA256SUMS",
+  "status": "READY",
+  "superseded_binding_file": "binding_priors_all.tsv.gz",
+  "superseded_unified_prefilter_file": "pvrig_prefilter_all_v1.tsv.gz",
+  "unified_prefilter_file": "pvrig_prefilter_all_v2.tsv.gz",
+  "updated_epoch": 1784655495.0070674
+}

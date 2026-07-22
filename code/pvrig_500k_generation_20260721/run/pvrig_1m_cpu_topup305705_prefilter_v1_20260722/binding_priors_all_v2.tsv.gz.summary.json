@@ -1,0 +1,20 @@
+{
+  "deepnano_binding_prior_corrected": {
+    "max": 0.5266868472099304,
+    "mean": 0.14460872403612096,
+    "median": 0.1343574970960617,
+    "min": 0.008714907802641392
+  },
+  "old_vs_corrected_abs_diff": {
+    "max": 0.05435305392837525,
+    "mean": 0.004756747590660176,
+    "median": 0.003533429444217681,
+    "min": 3.051725538938399e-13
+  },
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu_topup305705_v1/aggregated/binding_priors_all_v2.tsv.gz",
+  "output_sha256": "0cfcc703f16d1837d7554b339c6d7293e430a1732e1c3fc9afd134c0e7cb5b98",
+  "pearson_old_vs_corrected": 0.9968572874006975,
+  "records": 305705,
+  "scientific_boundary": "weak binding priors; not Kd, IC50, or blocking evidence",
+  "status": "PASS"
+}

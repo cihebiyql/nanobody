@@ -1,0 +1,29 @@
+{
+  "duplicate_task_id_count": 0,
+  "exact_unique_fast_qc_pass_count": 60951,
+  "fast_qc_fail_count": 9049,
+  "fast_qc_pass_count": 60951,
+  "node_count": 8,
+  "note": "Fast-QC PASS is not final eligibility; ANARCI/IMGT and global family controls remain required.",
+  "raw_count": 70000,
+  "route_exact_unique_fast_qc_pass_counts": {
+    "profile_diversified_exploration_control": 60951
+  },
+  "route_fast_qc_pass_counts": {
+    "profile_diversified_exploration_control": 60951
+  },
+  "route_mode_exact_unique_fast_qc_pass_counts": {
+    "profile_diversified_exploration_control|H1H2H3": 13799,
+    "profile_diversified_exploration_control|H1H3": 21167,
+    "profile_diversified_exploration_control|H3": 25985
+  },
+  "route_mode_fast_qc_pass_counts": {
+    "profile_diversified_exploration_control|H1H2H3": 13799,
+    "profile_diversified_exploration_control|H1H3": 21167,
+    "profile_diversified_exploration_control|H3": 25985
+  },
+  "route_raw_counts": {
+    "profile_diversified_exploration_control": 70000
+  },
+  "status": "MERGED_FAST_QC_ONLY_NOT_FINAL_ANARCI"
+}

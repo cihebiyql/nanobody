@@ -1,0 +1,56 @@
+{
+  "abnativ_status_counts": {
+    "NA": 13265,
+    "PASS": 381030
+  },
+  "anarci_qc_status_counts": {
+    "PASS": 394295
+  },
+  "id_checks": {
+    "abnativ": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 394295
+    },
+    "anarci": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 394295
+    },
+    "binding": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 394295
+    },
+    "candidates": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 394295
+    },
+    "risk": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 394295
+    },
+    "sapiens": {
+      "extra_vs_candidates": 0,
+      "missing_vs_candidates": 0,
+      "records": 394295
+    }
+  },
+  "output": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_bxcpu_model_predictions_v1_20260721/pvrig_prefilter_all_v2.tsv.gz",
+  "output_sha256": "36c04ccae3d2069ca4db516ed0d3d4d48a55511489ce3a78a38ccce1653dad20",
+  "records": 394295,
+  "risk_tier_counts": {
+    "HIGH": 62019,
+    "LOW": 177801,
+    "MODERATE": 154475
+  },
+  "scientific_boundaries": {
+    "abnativ": "VHH nativeness proxy; NA denotes model incompatibility, not negative biology",
+    "binding": "weak binding priors; not Kd, IC50, or blocking evidence",
+    "sapiens": "human-likeness proxy; not measured purity or expression",
+    "sequence_risk": "partial sequence-only developability proxy; not measured purity or expression"
+  },
+  "status": "PASS"
+}

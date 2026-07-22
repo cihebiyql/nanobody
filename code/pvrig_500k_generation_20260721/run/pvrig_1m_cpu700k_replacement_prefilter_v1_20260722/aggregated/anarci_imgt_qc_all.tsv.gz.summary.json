@@ -1,0 +1,13 @@
+{
+  "failure_reason_counts": {},
+  "input_shards": 32,
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu700k_replacement_reserve12124_prefilter_v1_20260722/aggregated/finalize_11939795/anarci_imgt_qc_all.tsv.gz",
+  "output_sha256": "985a7634ce64dc36e01b2e5191d708439e0338924799b36c14c2b8925a5384e2",
+  "qc_status_counts": {
+    "PASS": 12124
+  },
+  "records": 12124,
+  "result_shards": 32,
+  "scientific_boundary": "ANARCI/IMGT identity and domain-completeness QC; not binding, affinity, purity, or blocking evidence",
+  "status": "PASS"
+}

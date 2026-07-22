@@ -1,0 +1,30 @@
+{
+  "created_epoch": 1784673763.218581,
+  "decision": "final CPU replacement uses deterministic base union observed NBB2/TNP failures; replacement and GPU structure pools require total Cys == 2",
+  "failure_class_counts": {
+    "ASSERTION_TRUNCATED_FRAMEWORK": 1036,
+    "OPENMM_CYS_TOPOLOGY": 7
+  },
+  "matched_selection_records": 1043,
+  "nbb2_job_id": "11939698",
+  "parent_cluster_counts": {
+    "C0054": 1,
+    "C0219": 1,
+    "C0340": 3,
+    "C0393": 1,
+    "C0423": 1,
+    "C0532": 1036
+  },
+  "route_counts": {
+    "conservative_cdr_redesign": 624,
+    "natural_cdr_donor": 299,
+    "profile_diversified_exploration_control": 120
+  },
+  "sequence_total_cys_counts": {
+    "2": 253,
+    "4": 790
+  },
+  "status": "NONFINAL_LIVE_CENSUS",
+  "technical_na_is_not_biological_negative": true,
+  "technical_na_records": 1043
+}

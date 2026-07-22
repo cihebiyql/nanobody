@@ -1,0 +1,24 @@
+{
+  "mean_self_probability": {
+    "max": 0.7633328305805223,
+    "mean": 0.7012444106760787,
+    "median": 0.7069259082080841,
+    "min": 0.5680525010977765,
+    "q05": 0.6470925706683115,
+    "q95": 0.7383032071680363
+  },
+  "num_suggested_mutations": {
+    "max": 37.0,
+    "mean": 19.828192015836358,
+    "median": 19.0,
+    "min": 8.0,
+    "q05": 14.0,
+    "q95": 26.0
+  },
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu700k_replacement_reserve12124_prefilter_v1_20260722/aggregated/finalize_11939795/sapiens_all.tsv.gz",
+  "output_sha256": "9d200e8b654aaee01ce686c7167375ce0375e42e073f528851faec0b180c4cac",
+  "records": 12124,
+  "scientific_boundary": "human-likeness/developability proxy; not measured expression or purity",
+  "status": "PASS",
+  "tasks": 4
+}

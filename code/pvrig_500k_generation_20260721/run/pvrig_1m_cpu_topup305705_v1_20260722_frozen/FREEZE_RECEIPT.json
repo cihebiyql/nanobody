@@ -1,0 +1,46 @@
+{
+  "available_route_counts": {
+    "conservative_cdr_redesign": 235881,
+    "natural_cdr_donor": 87146,
+    "profile_diversified_exploration_control": 43621
+  },
+  "input": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_topup430k_v1_20260722_new_exact_unique/exact_unique_fast_qc_pass.tsv.gz",
+  "outputs": {
+    "route_quota_exact_unique.fasta.gz": "1c4835a7f95935d31d4ab8e11872fe79a2fb28ad99e5473a8313a5a58ef3ca56",
+    "route_quota_exact_unique.tsv.gz": "b49dfe55e13245c30be3d8e9c4bf059ebf7a5dcf62302fcaee0eeba1e1d06b53"
+  },
+  "route_mode_counts": {
+    "conservative_cdr_redesign|H1H2H3": 89089,
+    "conservative_cdr_redesign|H1H3": 70056,
+    "conservative_cdr_redesign|H3": 36590,
+    "natural_cdr_donor|H1H2H3": 44247,
+    "natural_cdr_donor|H1H3": 26674,
+    "profile_diversified_exploration_control|H1H2H3": 8884,
+    "profile_diversified_exploration_control|H1H3": 13523,
+    "profile_diversified_exploration_control|H3": 16642
+  },
+  "route_parent_cluster_count": {
+    "conservative_cdr_redesign": 180,
+    "natural_cdr_donor": 180,
+    "profile_diversified_exploration_control": 180
+  },
+  "route_patch_counts": {
+    "conservative_cdr_redesign|A_CENTER": 48939,
+    "conservative_cdr_redesign|B_LOWER": 68746,
+    "conservative_cdr_redesign|C_CROSS": 78050,
+    "natural_cdr_donor|A_CENTER": 17706,
+    "natural_cdr_donor|B_LOWER": 24844,
+    "natural_cdr_donor|C_CROSS": 28371,
+    "profile_diversified_exploration_control|A_CENTER": 9725,
+    "profile_diversified_exploration_control|B_LOWER": 13682,
+    "profile_diversified_exploration_control|C_CROSS": 15642
+  },
+  "route_quotas": {
+    "conservative_cdr_redesign": 195735,
+    "natural_cdr_donor": 70921,
+    "profile_diversified_exploration_control": 39049
+  },
+  "scientific_boundary": "Sequence generation and deterministic quota freezing only; ANARCI and predictive models remain required.",
+  "selected_records": 305705,
+  "status": "ROUTE_QUOTA_EXACT_UNIQUE_FROZEN_NOT_FINAL_ANARCI"
+}

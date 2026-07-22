@@ -1,0 +1,40 @@
+{
+  "family_cap": 100,
+  "family_count": 30577,
+  "fasta_sha256": "3dee0ee5a427894410730c35e7ad3b1ffabf52442f046e143daea6f30a355c36",
+  "lane_counts": {
+    "binding_consensus": 20000,
+    "binding_disagreement": 7500,
+    "developability": 10000,
+    "family_parent_diversity": 7500,
+    "stratified_random_control": 5000
+  },
+  "max_selected_per_family": 100,
+  "max_selected_per_parent": 750,
+  "mode_counts": {
+    "H1H2H3": 22500,
+    "H1H3": 17500,
+    "H3": 10000
+  },
+  "parent_cap": 750,
+  "patch_counts": {
+    "A_CENTER": 12499,
+    "B_LOWER": 17501,
+    "C_CROSS": 20000
+  },
+  "records": 50000,
+  "risk_counts": {
+    "HIGH": 7070,
+    "LOW": 28116,
+    "MODERATE": 14814
+  },
+  "route_counts": {
+    "conservative_cdr_redesign": 7137,
+    "natural_cdr_donor": 12211,
+    "profile_diversified_exploration_control": 30652
+  },
+  "scientific_boundary": "Reusable structure-compute pool selected before the final Docking surrogate; not a final blocker ranking and not binding, Kd, IC50, or purity evidence",
+  "selection_status": "PROVISIONAL_PRESTRUCTURE_REUSE_POOL",
+  "status": "PASS",
+  "table_sha256": "3959592036ce29fcb5f37717dcd290dd829a5f24c8d99cd3235ec81dee4061dd"
+}

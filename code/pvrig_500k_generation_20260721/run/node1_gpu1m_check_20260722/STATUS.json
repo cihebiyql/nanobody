@@ -1,0 +1,2336 @@
+{
+  "actions_taken": [
+    {
+      "action": "reused_existing_rf75_controller",
+      "pid": 1703363,
+      "result": "RUNNING_NO_DUPLICATE"
+    },
+    {
+      "action": "reused_existing_mpnn75_waiting_controller",
+      "pid": 1863964,
+      "result": "WAITING_RFANTIBODY_NO_DUPLICATE"
+    },
+    {
+      "action": "repaired_mpnn150_prestart_nested_metadata_and_hash_closure",
+      "remote_receipt": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/MPNN150_PRESTART_HASH_REPAIR_RECEIPT.json",
+      "result": "VERIFIED_PASS",
+      "result_files_modified": false
+    },
+    {
+      "action": "hardened_chain_watcher_to_fail_closed_and_restarted_single_instance",
+      "pid": 3043140,
+      "remote_receipt": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/CHAIN_WATCHER_STRICT_GATE_PATCH_RECEIPT.json",
+      "result": "ACTIVE_LOCK_HELD"
+    },
+    {
+      "action": "normalized_watcher_pid_files",
+      "chain_pid": 3043140,
+      "result": "MATCH",
+      "watcher_pid": 3043140
+    }
+  ],
+  "capacity_guard": {
+    "additional_conservative_allowance_bytes": 42949672960,
+    "checked_at": "2026-07-21T21:27:35.816229+00:00",
+    "conservative_total_bytes": 62039777641.91796,
+    "filesystem": "/data1",
+    "free_bytes": 247569948672,
+    "free_gib": 230.5674819946289,
+    "nbb2_tnp_archives_destination": "/data/qlyu/projects (NFS, not /data1)",
+    "observed_backbone_pdb_count": 3299,
+    "observed_backbone_pdb_mean_bytes": 61212.5929069415,
+    "observed_sequence_pdb_count": 35184,
+    "observed_sequence_pdb_mean_bytes": 60279.71168713051,
+    "projected_headroom_after_conservative_total_bytes": 185530171030.08203,
+    "projected_rf150_bytes": 13292916219.517344,
+    "projected_rf75_bytes": 5797188462.4006195,
+    "status": "CAPACITY_PASS",
+    "watcher_min_free_gib": 100
+  },
+  "chain": {
+    "chain_pid_process": {
+      "alive": true,
+      "cmd": "bash /data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+      "pgid": 3043140,
+      "pid": 3043140,
+      "ppid": 1,
+      "sid": 3043140
+    },
+    "lock_held": true,
+    "matching_processes": [
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+        "pgid": 3043140,
+        "pid": 3043140,
+        "ppid": 1,
+        "sid": 3043140
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+        "pgid": 3043140,
+        "pid": 3043153,
+        "ppid": 3043140,
+        "sid": 3043140
+      }
+    ],
+    "mpnn150_hash_repair_receipt": {
+      "action": "repair_prestart_nested_metadata_and_hash_closure",
+      "after_sha256": {
+        "PREPARED_SHA256SUMS": "ce36020122a6dd63ecfb3f3f393a0240278fc216e22f219e5f461083cb8f9455",
+        "inputs/PREPARED.json": "b3d05ca38f61a6f13a4939d6ec6211db302f7f4bd94e39382b7d60aefaaf3145",
+        "inputs/SHA256SUMS": "b5e5704297ebe32118e3306a4d918c7e81c89374e2462d91260e5306a98470ca"
+      },
+      "backup_dir": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/mpnn150_prestart_hash_repair_backup_20260721T225417Z",
+      "before_sha256": {
+        "PREPARED_SHA256SUMS": "791fbf47d4d3573bdb6da9888c0efa321b82e1134cbfdfd5a621715616b6fd7c",
+        "inputs/PREPARED.json": "85271788eae618adddb938986ec5ad3926cbcca76c2d64f3981d1bba5d20dc93",
+        "inputs/SHA256SUMS": "016134c6245b712d517bfd0b4fd94b4c760d699b837bda0141a46ac591f55e8f"
+      },
+      "campaign": "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722",
+      "created_at": "2026-07-21T22:54:17.484741+00:00",
+      "new_fields": {
+        "exact_unique_freeze_target": 150000,
+        "raw_sequence_target": 237600,
+        "seqs_per_pose": 2400
+      },
+      "old_fields": {
+        "exact_unique_freeze_target": 75000,
+        "raw_sequence_target": 118800,
+        "seqs_per_pose": 1200
+      },
+      "reason": "fixed_pose_mpnn_tasks.tsv was expanded to 2400 sequences per pose after the nested 1200-per-pose manifest was created",
+      "safety": {
+        "controller_alive": false,
+        "result_files_modified": false,
+        "result_trees_nonempty": false
+      },
+      "status": "VERIFIED_PASS",
+      "verified_at": "2026-07-21T23:02:54.342551+00:00"
+    },
+    "root": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722",
+    "script_sha256": "8b49822c8681a57b3d404c70a8966cecf3369198c82d24fd1f42d37bdcdcca32",
+    "status": {
+      "message": "state=WAITING_RFANTIBODY root=/data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721",
+      "pid": 3043153,
+      "state": "WAITING_CURRENT_MPNN",
+      "updated_at": "2026-07-21T23:01:39.605917+00:00"
+    },
+    "status_writer_process": {
+      "alive": true,
+      "cmd": "bash /data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+      "pgid": 3043140,
+      "pid": 3043153,
+      "ppid": 3043140,
+      "sid": 3043140
+    },
+    "strict_gate_patch_receipt": {
+      "action": "harden_chain_watcher_fail_closed",
+      "after_sha256": "8b49822c8681a57b3d404c70a8966cecf3369198c82d24fd1f42d37bdcdcca32",
+      "backup": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh.pre_strict_gate_20260721T225851Z",
+      "before_sha256": "24ca3f90295382ea38fb3a43551ca4eb5a1ea95912ae29e1d3577ba87bbe367b",
+      "changes": [
+        "HOLD no longer advances the chain",
+        "COMPLETE requires nonempty status/controller.complete",
+        "current RF75 and MPNN75 input manifests verified on watcher startup",
+        "RF150 top manifest and 207360/150000 semantics verified before start",
+        "MPNN150 top+nested manifests and 237600/150000 semantics verified before start"
+      ],
+      "created_at": "2026-07-21T22:58:51.677462+00:00",
+      "new_watcher_pid": 3043140,
+      "restart_failure": {
+        "pid": 3041806,
+        "reason": "verify_manifest local declaration referenced label before assignment under set -u",
+        "remediation": "split local declaration before path expansion"
+      },
+      "restarted_at": "2026-07-21T23:00:41.498585+00:00",
+      "script": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+      "status": "ACTIVE_VERIFIED"
+    },
+    "watcher_and_chain_pid_match": true,
+    "watcher_process": {
+      "alive": true,
+      "cmd": "bash /data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+      "pgid": 3043140,
+      "pid": 3043140,
+      "ppid": 1,
+      "sid": 3043140
+    }
+  },
+  "disk": {
+    "/data1": {
+      "capacity_gate_pass": true,
+      "df_reported_use_pct": 97,
+      "free_bytes": 246508556288,
+      "free_gib": 229.579,
+      "latest_df_free_bytes_after_snapshot": 246503174144,
+      "total_bytes": 7620712947712,
+      "used_bytes": 6990112559104,
+      "used_pct": 91.725,
+      "watcher_min_free_gib": 100
+    },
+    "/tmp": {
+      "free_bytes": 732272947200,
+      "free_gib": 681.982,
+      "total_bytes": 843832025088,
+      "used_bytes": 68619579392,
+      "used_pct": 8.132
+    }
+  },
+  "eta": {
+    "as_of_node1": "2026-07-22T07:02:24+08:00",
+    "basis": "50,605/90,432 raw outputs at 07:02; whole-run 1.50070 seq/s; 114-second recent output window 2.10526 seq/s; queued RFdiffusion/ProteinMPNN waves make instantaneous rate lumpy.",
+    "confidence": "RF75 medium; downstream coarse/low until MPNN75 smoke establishes measured throughput",
+    "downstream_coarse_duration_after_rf75_freeze_hours": {
+      "mpnn150": {
+        "max": 12.0,
+        "min": 9.0
+      },
+      "mpnn75": {
+        "max": 6.0,
+        "min": 4.5
+      },
+      "rf150": {
+        "max": 42.0,
+        "min": 36.0
+      }
+    },
+    "historical_linear_point_estimate_raw_complete_node1": "2026-07-22T14:24:43.200000+08:00",
+    "historical_linear_remaining_hours": 7.372,
+    "pipeline_wave_adjusted_raw_complete_range_node1": [
+      "2026-07-22T14:00:00+08:00",
+      "2026-07-22T16:00:00+08:00"
+    ],
+    "recent_measurement": {
+      "delta_sequence_pdb": 240,
+      "end_sequence_pdb_count": 49648,
+      "end_time_node1": "2026-07-22T06:54:35+08:00",
+      "sequence_pdb_rate_per_sec": 2.10526,
+      "start_sequence_pdb_count": 49408,
+      "start_time_node1": "2026-07-22T06:52:41+08:00",
+      "window_seconds": 114
+    },
+    "rf75_freeze_complete_range_node1": [
+      "2026-07-22T14:30:00+08:00",
+      "2026-07-22T16:30:00+08:00"
+    ],
+    "whole_gpu_chain_coarse_finish_range_node1": [
+      "2026-07-24T16:00:00+08:00",
+      "2026-07-25T05:00:00+08:00"
+    ]
+  },
+  "evidence": {
+    "local_receipt": "/mnt/d/work/抗体/code/pvrig_500k_generation_20260721/run/node1_gpu1m_check_20260722/STATUS.json",
+    "remote_chain_script": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/monitor_node1_1m_gpu_double_chain.sh",
+    "remote_chain_status": "/data1/qlyu/projects/pvrig_1m_gpu_double_prepare_v1_20260722/CHAIN_STATUS.json",
+    "remote_mpnn75_controller": "/data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721/status/controller.json",
+    "remote_rf75_controller": "/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/status/controller.json"
+  },
+  "generated_at_node1": "2026-07-22T07:02:24+08:00",
+  "generated_at_utc": "2026-07-21T23:02:24.304648+00:00",
+  "gpus": [
+    {
+      "compute_processes": [
+        {
+          "pid": 4134194,
+          "process_name": "python",
+          "used_memory_mib": 4032
+        }
+      ],
+      "index": 0,
+      "memory_free_mib": 20027,
+      "memory_used_mib": 4055,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 67.97,
+      "temperature_c": 36,
+      "utilization_pct": 0,
+      "uuid": "GPU-1ca5bb20-3e80-d3d9-e6b6-697c01a5cf9f"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 2881334,
+          "process_name": "python",
+          "used_memory_mib": 3648
+        },
+        {
+          "pid": 2904805,
+          "process_name": "python",
+          "used_memory_mib": 3450
+        },
+        {
+          "pid": 2917649,
+          "process_name": "python",
+          "used_memory_mib": 4050
+        }
+      ],
+      "index": 1,
+      "memory_free_mib": 12900,
+      "memory_used_mib": 11182,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 151.71,
+      "temperature_c": 52,
+      "utilization_pct": 51,
+      "uuid": "GPU-51a96c5f-a4f5-baff-aa17-a83cabea2e0e"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 2923110,
+          "process_name": "python",
+          "used_memory_mib": 3144
+        },
+        {
+          "pid": 2963827,
+          "process_name": "python",
+          "used_memory_mib": 3648
+        }
+      ],
+      "index": 2,
+      "memory_free_mib": 17261,
+      "memory_used_mib": 6821,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 180.49,
+      "temperature_c": 56,
+      "utilization_pct": 14,
+      "uuid": "GPU-ef1e8b40-b1d7-ed8a-38e8-585b6ebaa1df"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 2864991,
+          "process_name": "python",
+          "used_memory_mib": 4050
+        },
+        {
+          "pid": 2870407,
+          "process_name": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python",
+          "used_memory_mib": 642
+        }
+      ],
+      "index": 3,
+      "memory_free_mib": 19361,
+      "memory_used_mib": 4721,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 81.43,
+      "temperature_c": 52,
+      "utilization_pct": 3,
+      "uuid": "GPU-d92387c0-aed8-ebd3-c264-bb7c1bdce851"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 2863293,
+          "process_name": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python",
+          "used_memory_mib": 642
+        },
+        {
+          "pid": 2876524,
+          "process_name": "python",
+          "used_memory_mib": 3450
+        }
+      ],
+      "index": 4,
+      "memory_free_mib": 19961,
+      "memory_used_mib": 4121,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 117.4,
+      "temperature_c": 46,
+      "utilization_pct": 14,
+      "uuid": "GPU-3327c427-8020-e378-d86a-15c27afea036"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 2916116,
+          "process_name": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python",
+          "used_memory_mib": 640
+        },
+        {
+          "pid": 2920397,
+          "process_name": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python",
+          "used_memory_mib": 640
+        },
+        {
+          "pid": 3037334,
+          "process_name": "python",
+          "used_memory_mib": 2746
+        }
+      ],
+      "index": 5,
+      "memory_free_mib": 20022,
+      "memory_used_mib": 4060,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 147.33,
+      "temperature_c": 56,
+      "utilization_pct": 53,
+      "uuid": "GPU-8d547c0e-4f23-1a56-3d15-b54c1f225aa4"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 1931924,
+          "process_name": "python",
+          "used_memory_mib": 3304
+        },
+        {
+          "pid": 2890056,
+          "process_name": "python",
+          "used_memory_mib": 3648
+        },
+        {
+          "pid": 2914208,
+          "process_name": "python",
+          "used_memory_mib": 3450
+        }
+      ],
+      "index": 6,
+      "memory_free_mib": 13646,
+      "memory_used_mib": 10436,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 181.62,
+      "temperature_c": 51,
+      "utilization_pct": 100,
+      "uuid": "GPU-780e428b-c086-8729-562b-71e8db209020"
+    },
+    {
+      "compute_processes": [
+        {
+          "pid": 2851556,
+          "process_name": "python",
+          "used_memory_mib": 3450
+        },
+        {
+          "pid": 2889371,
+          "process_name": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python",
+          "used_memory_mib": 640
+        },
+        {
+          "pid": 2901136,
+          "process_name": "python",
+          "used_memory_mib": 3352
+        }
+      ],
+      "index": 7,
+      "memory_free_mib": 16606,
+      "memory_used_mib": 7476,
+      "name": "NVIDIA GeForce RTX 4090",
+      "power_w": 140.15,
+      "temperature_c": 46,
+      "utilization_pct": 72,
+      "uuid": "GPU-d1a19526-44b4-f27f-b6e1-007c10f71e9c"
+    }
+  ],
+  "host": "node1",
+  "integrity": {
+    "mpnn150_inputs": {
+      "base": "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722/inputs",
+      "checked_at": "2026-07-21T23:02:23.700965+00:00",
+      "checked_entries": 102,
+      "manifest": "SHA256SUMS",
+      "manifest_sha256": "b5e5704297ebe32118e3306a4d918c7e81c89374e2462d91260e5306a98470ca",
+      "return_code": 0,
+      "status": "PASS",
+      "tail": [
+        "poses_ht/FPMPNN_095_case02_pos_11_151H8__pose05.pdb: OK",
+        "poses_ht/FPMPNN_096_case02_pos_11_151H8__pose06.pdb: OK",
+        "poses_ht/FPMPNN_097_case02_pos_11_151H8__pose07.pdb: OK",
+        "poses_ht/FPMPNN_098_case02_pos_11_151H8__pose08.pdb: OK",
+        "poses_ht/FPMPNN_099_case02_pos_11_151H8__pose09.pdb: OK"
+      ]
+    },
+    "mpnn150_prepared": {
+      "base": "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722",
+      "checked_at": "2026-07-21T23:02:23.465956+00:00",
+      "checked_entries": 114,
+      "manifest": "PREPARED_SHA256SUMS",
+      "manifest_sha256": "ce36020122a6dd63ecfb3f3f393a0240278fc216e22f219e5f461083cb8f9455",
+      "return_code": 0,
+      "status": "PASS",
+      "tail": [
+        "scripts/collect_fixed_pose_mpnn_candidates.py: OK",
+        "scripts/generate_local_cpu_routes.py: OK",
+        "scripts/run_fixed_pose_mpnn_controller.sh: OK",
+        "scripts/run_fixed_pose_mpnn_controller.sh.pre_terminal150k_fix_20260722: OK",
+        "scripts/run_fixed_pose_mpnn_worker.sh: OK"
+      ]
+    },
+    "mpnn75_inputs": {
+      "base": "/data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721/inputs",
+      "checked_at": "2026-07-21T23:02:23.155866+00:00",
+      "checked_entries": 102,
+      "manifest": "SHA256SUMS",
+      "manifest_sha256": "016134c6245b712d517bfd0b4fd94b4c760d699b837bda0141a46ac591f55e8f",
+      "return_code": 0,
+      "status": "PASS",
+      "tail": [
+        "poses_ht/FPMPNN_095_case02_pos_11_151H8__pose05.pdb: OK",
+        "poses_ht/FPMPNN_096_case02_pos_11_151H8__pose06.pdb: OK",
+        "poses_ht/FPMPNN_097_case02_pos_11_151H8__pose07.pdb: OK",
+        "poses_ht/FPMPNN_098_case02_pos_11_151H8__pose08.pdb: OK",
+        "poses_ht/FPMPNN_099_case02_pos_11_151H8__pose09.pdb: OK"
+      ]
+    },
+    "rf150_prepared": {
+      "base": "/data1/qlyu/projects/pvrig_1m_rfantibody150k_v1_20260722",
+      "checked_at": "2026-07-21T23:02:23.423143+00:00",
+      "checked_entries": 93,
+      "manifest": "PREPARED_SHA256SUMS",
+      "manifest_sha256": "d10d9bb5bf9f3b267595aa43021cd999f88939c35808f9e6ddc9178956dd4637",
+      "return_code": 0,
+      "status": "PASS",
+      "tail": [
+        "scripts/status_generation.py: OK",
+        "scripts/transition_generation_to_primary_only.sh: OK",
+        "scripts/validate_final_delivery.py: OK",
+        "scripts/watch_haddock_sidecars.sh: OK",
+        "scripts/write_final_report.py: OK"
+      ]
+    },
+    "rf75_prepared": {
+      "base": "/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721",
+      "checked_at": "2026-07-21T23:02:23.150382+00:00",
+      "checked_entries": 4,
+      "manifest": "status/PREPARED_SHA256SUMS",
+      "manifest_sha256": "a2ddd2a288f59e45fa5bb01609bc42d1ceeb00e5eca29cbdb2e7669230980bac",
+      "return_code": 0,
+      "status": "PASS",
+      "tail": [
+        "config/generation_arms_primary.tsv: OK",
+        "config/generation_arms_smoke21.tsv: OK",
+        "scripts/launch_rfantibody_multiworker_gpu.sh: OK",
+        "scripts/run_rfantibody_75k_controller.sh: OK"
+      ]
+    }
+  },
+  "mpnn150": {
+    "controller": null,
+    "controller_complete_marker": false,
+    "controller_process": {
+      "alive": false,
+      "cmd": null,
+      "pgid": null,
+      "pid": null,
+      "ppid": null,
+      "sid": null
+    },
+    "generation_result_files": 0,
+    "input_prepared": {
+      "campaign": "pvrig_1m_fixed_pose_mpnn150k_v1_20260722",
+      "chain_mapping": "H=VHH (source A); T=PVRIG (source B)",
+      "exact_unique_freeze_target": 150000,
+      "gpu_plan": "physical GPUs 1-7, three workers per GPU after RFantibody controller completes",
+      "pose_count": 99,
+      "raw_sequence_target": 237600,
+      "scientific_boundary": "Positive-pose-conditioned ProteinMPNN sequence proposal; not affinity or blocking proof.",
+      "seqs_per_pose": 2400,
+      "source_candidate_count": 11,
+      "status": "INPUTS_PREPARED_NOT_YET_SMOKE_VALIDATED"
+    },
+    "prepared": {
+      "campaign": "pvrig_1m_fixed_pose_mpnn150k_v1_20260722",
+      "duplicate_semantics": "Deterministic first-half overlap with the 75k campaign is expected and must be removed by global exact-sequence deduplication.",
+      "freeze_target": 150000,
+      "pose_input_hash_closure": true,
+      "poses": 99,
+      "raw_target": 237600,
+      "sequences_per_pose": 2400,
+      "source_campaign": "/data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721",
+      "status": "PREPARED_NOT_STARTED",
+      "unique_pose_inputs": 99
+    },
+    "root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722"
+  },
+  "mpnn75": {
+    "controller": {
+      "message": "state=GENERATING",
+      "pid": 1863964,
+      "state": "WAITING_RFANTIBODY",
+      "updated_at": "2026-07-21T23:01:49.944715+00:00"
+    },
+    "controller_complete_marker": false,
+    "controller_hold_marker": false,
+    "controller_process": {
+      "alive": true,
+      "cmd": "bash /data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721/scripts/run_fixed_pose_mpnn_controller.sh",
+      "pgid": 1863963,
+      "pid": 1863964,
+      "ppid": 1,
+      "sid": 1863963
+    },
+    "freeze_target": 75000,
+    "matching_processes": [
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721/scripts/run_fixed_pose_mpnn_controller.sh",
+        "pgid": 1863963,
+        "pid": 1863964,
+        "ppid": 1,
+        "sid": 1863963
+      }
+    ],
+    "raw_target": 118800,
+    "root": "/data1/qlyu/projects/pvrig_500k_fixed_pose_mpnn75k_v2_20260721",
+    "state_expected_now": "WAITING_RFANTIBODY"
+  },
+  "objective": {
+    "gpu_routes": {
+      "fixed_pose_mpnn_exact_unique_target": 150000,
+      "rfantibody_exact_unique_target": 150000
+    },
+    "strict_final_candidates": 1000000
+  },
+  "post_write_verification": {
+    "all_core_pids_alive": true,
+    "chain_lock_held": true,
+    "chain_status_mtime_advanced_seconds": 60,
+    "end_time_node1": "2026-07-22T07:04:59+08:00",
+    "failed_markers": 0,
+    "interval_seconds": 65,
+    "mpnn75_controller_pid": 1863964,
+    "rf75_delta": 111,
+    "rf75_latest_progress_pct": 56.2102,
+    "rf75_rate_per_sec": 1.70769,
+    "rf75_sequence_pdb_after": 50832,
+    "rf75_sequence_pdb_before": 50721,
+    "rf_controller_pid": 1703363,
+    "start_time_node1": "2026-07-22T07:03:54+08:00",
+    "verdict": "SUSTAINABLE_BACKGROUND_PASS",
+    "watcher_pid": 3043140
+  },
+  "production_verdict": {
+    "automatic_order": [
+      "RF75_COMPLETE",
+      "MPNN75_COMPLETE",
+      "RF150_COMPLETE",
+      "MPNN150_COMPLETE"
+    ],
+    "current_gate": {
+      "mpnn150_nested_hash": "PASS",
+      "mpnn150_semantics": "PASS_237600_RAW_150000_FREEZE",
+      "mpnn150_top_hash": "PASS",
+      "mpnn75_controller": "WAITING_RFANTIBODY",
+      "mpnn75_input_hash": "PASS",
+      "rf150_prepared_hash": "PASS",
+      "rf150_semantics": "PASS_207360_RAW_150000_FREEZE",
+      "rf75_complete": false,
+      "rf75_prepared_hash": "PASS",
+      "rf75_smoke": "PASS"
+    },
+    "duplicate_start_detected": false,
+    "latest_verified_rf75_progress_pct": 56.2102,
+    "latest_verified_rf75_raw_count": 50832,
+    "manual_campaign_start_performed": false,
+    "reason": "RF75 raw/freeze is not COMPLETE; existing RF75 controller and 7-GPU x 3-worker topology remain active, MPNN75 controller waits on RF75, and one strict watcher will continue the chain.",
+    "status": "AUTO_CHAIN_ARMED_RF75_RUNNING",
+    "sustainable_background_state": true,
+    "transition_policy": "fail_closed: only COMPLETE plus nonempty status/controller.complete advances; HOLD/FAILED/BLOCKED stops the chain"
+  },
+  "rf150": {
+    "controller": null,
+    "controller_complete_marker": false,
+    "controller_process": {
+      "alive": false,
+      "cmd": null,
+      "pgid": null,
+      "pid": null,
+      "ppid": null,
+      "sid": null
+    },
+    "generation_result_files": 0,
+    "prepared": {
+      "arms": 36,
+      "campaign": "pvrig_1m_rfantibody150k_v1_20260722",
+      "capacity_margin_basis": "partial final-hard-QC sample: 82.2% exact-unique pass; 207360 raw projects about 170450",
+      "duplicate_semantics": "Deterministic first-half overlap with the 75k campaign is expected and must be removed by global exact-sequence deduplication.",
+      "freeze_target": 150000,
+      "raw_target": 207360,
+      "sequences_per_backbone": 16,
+      "source_campaign": "/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721",
+      "status": "PREPARED_NOT_STARTED",
+      "target_backbones_per_arm": 360
+    },
+    "root": "/data1/qlyu/projects/pvrig_1m_rfantibody150k_v1_20260722"
+  },
+  "rf75": {
+    "arms": [
+      {
+        "arm_id": "P1_qrg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P1_qrg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P1_ekg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P1_ekg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 1936,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P1_qkg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 2480,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P1_qkg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P2_qrg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P2_qrg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P2_ekg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P2_ekg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 1933,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P2_qkg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P2_qkg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P3_qrg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P3_qrg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P3_ekg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P3_ekg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P3_qkg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P3_qkg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P4_qrg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 2352,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P4_qrg_L",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": true,
+        "exists": true,
+        "sequence_pdb": 2512,
+        "status_files": [
+          "completed_at.txt",
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P4_ekg_S",
+        "backbone_pdb": 157,
+        "backbone_trb": 157,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 1712,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P4_ekg_L",
+        "backbone_pdb": 36,
+        "backbone_trb": 36,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P4_qkg_S",
+        "backbone_pdb": 28,
+        "backbone_trb": 28,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P4_qkg_L",
+        "backbone_pdb": 54,
+        "backbone_trb": 54,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P5_qrg_S",
+        "backbone_pdb": 0,
+        "backbone_trb": 0,
+        "complete_marker": false,
+        "exists": false,
+        "sequence_pdb": 0,
+        "status_files": []
+      },
+      {
+        "arm_id": "P5_qrg_L",
+        "backbone_pdb": 0,
+        "backbone_trb": 0,
+        "complete_marker": false,
+        "exists": false,
+        "sequence_pdb": 0,
+        "status_files": []
+      },
+      {
+        "arm_id": "P5_ekg_S",
+        "backbone_pdb": 40,
+        "backbone_trb": 40,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P5_ekg_L",
+        "backbone_pdb": 53,
+        "backbone_trb": 53,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P5_qkg_S",
+        "backbone_pdb": 44,
+        "backbone_trb": 44,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P5_qkg_L",
+        "backbone_pdb": 39,
+        "backbone_trb": 39,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P6_qrg_S",
+        "backbone_pdb": 0,
+        "backbone_trb": 0,
+        "complete_marker": false,
+        "exists": false,
+        "sequence_pdb": 0,
+        "status_files": []
+      },
+      {
+        "arm_id": "P6_qrg_L",
+        "backbone_pdb": 54,
+        "backbone_trb": 54,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P6_ekg_S",
+        "backbone_pdb": 1,
+        "backbone_trb": 1,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P6_ekg_L",
+        "backbone_pdb": 41,
+        "backbone_trb": 41,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P6_qkg_S",
+        "backbone_pdb": 44,
+        "backbone_trb": 44,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      },
+      {
+        "arm_id": "P6_qkg_L",
+        "backbone_pdb": 40,
+        "backbone_trb": 40,
+        "complete_marker": false,
+        "exists": true,
+        "sequence_pdb": 0,
+        "status_files": [
+          "gpu.txt",
+          "pid",
+          "started_at.txt",
+          "status.json"
+        ]
+      }
+    ],
+    "arms_complete": 16,
+    "arms_started": 33,
+    "arms_total": 36,
+    "backbone_pdb_count": 3771,
+    "backbone_progress_pct": 66.7197,
+    "backbone_target": 5652,
+    "controller": {
+      "message": "RFantibody 75k raw target 90432; 36 arms; 157 backbones x 16 sequences; 7 GPUs x 3 workers",
+      "pid": 1703363,
+      "state": "GENERATING",
+      "updated_at": "2026-07-21T13:40:23.311341+00:00"
+    },
+    "controller_complete_marker": false,
+    "controller_process": {
+      "alive": true,
+      "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_rfantibody_75k_controller.sh",
+      "pgid": 1703362,
+      "pid": 1703363,
+      "ppid": 1,
+      "sid": 1703362
+    },
+    "errors": {
+      "failed_marker_count": 0,
+      "failed_markers": [],
+      "hard_signature_hit_count": 0,
+      "hard_signature_hits": [],
+      "log_files_scanned": 97
+    },
+    "freeze_summary_exists": false,
+    "freeze_target": 75000,
+    "matching_processes": [
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_rfantibody_75k_controller.sh",
+        "pgid": 1703362,
+        "pid": 1703363,
+        "ppid": 1,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719585,
+        "ppid": 1703363,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719588,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719589,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719590,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719591,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719592,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719594,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719595,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719597,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719598,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719600,
+        "ppid": 1719595,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719601,
+        "ppid": 1719591,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719603,
+        "ppid": 1719598,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719604,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_3_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719610,
+        "ppid": 1719600,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_4_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719612,
+        "ppid": 1719603,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719613,
+        "ppid": 1719589,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719615,
+        "ppid": 1719604,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_1_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719618,
+        "ppid": 1719613,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_5_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719620,
+        "ppid": 1719615,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719621,
+        "ppid": 1719590,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719623,
+        "ppid": 1719592,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719624,
+        "ppid": 1719597,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719625,
+        "ppid": 1719594,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719626,
+        "ppid": 1719588,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_4_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719633,
+        "ppid": 1719624,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_3_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719635,
+        "ppid": 1719625,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_1_worker_2.log",
+        "pgid": 1703362,
+        "pid": 1719636,
+        "ppid": 1719621,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719638,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719639,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719640,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719641,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719643,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719644,
+        "ppid": 1719640,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719645,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_2_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719647,
+        "ppid": 1719601,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719648,
+        "ppid": 1719585,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_6_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719650,
+        "ppid": 1719644,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719651,
+        "ppid": 1719639,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719652,
+        "ppid": 1719641,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719653,
+        "ppid": 1719643,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_5_worker_2.log",
+        "pgid": 1703362,
+        "pid": 1719660,
+        "ppid": 1719651,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_6_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719661,
+        "ppid": 1719652,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_7_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719662,
+        "ppid": 1719653,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_2_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719664,
+        "ppid": 1719623,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719665,
+        "ppid": 1719638,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_1_worker_0.log",
+        "pgid": 1703362,
+        "pid": 1719666,
+        "ppid": 1719626,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719675,
+        "ppid": 1719648,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+        "pgid": 1703362,
+        "pid": 1719676,
+        "ppid": 1719645,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_5_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719682,
+        "ppid": 1719665,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_7_worker_2.log",
+        "pgid": 1703362,
+        "pid": 1719688,
+        "ppid": 1719675,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "tee -a /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/logs/generation/gpu_7_worker_1.log",
+        "pgid": 1703362,
+        "pid": 1719705,
+        "ppid": 1719676,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P1_ekg_L 4",
+        "pgid": 1703362,
+        "pid": 1719819,
+        "ppid": 1719597,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P2_ekg_L 3",
+        "pgid": 1703362,
+        "pid": 1719869,
+        "ppid": 1719595,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P4_qrg_S 5",
+        "pgid": 1703362,
+        "pid": 1720012,
+        "ppid": 1719639,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P4_ekg_S 7",
+        "pgid": 1703362,
+        "pid": 1720034,
+        "ppid": 1719648,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P1_qkg_S 5",
+        "pgid": 1703362,
+        "pid": 1720039,
+        "ppid": 1719604,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "sh -c sed -n \"1,360p\" /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh; echo ===TOOLS===; grep -R \"protein_mpnn_run.py\" -n /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts /data/qlyu/software 2>/dev/null | head -30",
+        "pgid": 1792564,
+        "pid": 1792564,
+        "ppid": 1792550,
+        "sid": 1792564
+      },
+      {
+        "alive": true,
+        "cmd": "grep -R protein_mpnn_run.py -n /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts /data/qlyu/software",
+        "pgid": 1792564,
+        "pid": 1792569,
+        "ppid": 1792564,
+        "sid": 1792564
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P5_ekg_L 7",
+        "pgid": 1703362,
+        "pid": 2851013,
+        "ppid": 1719643,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_ekg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T43,T44,T45,T52,T54,T57,T60 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2851026,
+        "ppid": 2851013,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_ekg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T43,T44,T45,T52,T54,T57,T60] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2851556,
+        "ppid": 2851026,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python /data/qlyu/software/RFantibody/scripts/proteinmpnn_interface_design.py -pdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P1_ekg_L/tmp/pending_1719819 -outpdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P1_ekg_L/sequences -loop_string H1,H2,H3 -seqs_per_struct 16 -temperature 0.2 -checkpoint_path /data/qlyu/software/RFantibody/weights/ProteinMPNN_v48_noise_0.2.pt -omit_AAs CX -augment_eps 0 -checkpoint_name /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P1_ekg_L/tmp/mpnn_checkpoint_1719819.txt -deterministic",
+        "pgid": 1703362,
+        "pid": 2863293,
+        "ppid": 1719819,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P4_qkg_L 3",
+        "pgid": 1703362,
+        "pid": 2864550,
+        "ppid": 1719594,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qkg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T97,T99,T101,T102,T103,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2864563,
+        "ppid": 2864550,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qkg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T97,T99,T101,T102,T103,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2864991,
+        "ppid": 2864563,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python /data/qlyu/software/RFantibody/scripts/proteinmpnn_interface_design.py -pdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P2_ekg_L/tmp/pending_1719869 -outpdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P2_ekg_L/sequences -loop_string H1,H2,H3 -seqs_per_struct 16 -temperature 0.2 -checkpoint_path /data/qlyu/software/RFantibody/weights/ProteinMPNN_v48_noise_0.2.pt -omit_AAs CX -augment_eps 0 -checkpoint_name /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P2_ekg_L/tmp/mpnn_checkpoint_1719869.txt -deterministic",
+        "pgid": 1703362,
+        "pid": 2870407,
+        "ppid": 1719869,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P6_qrg_L 4",
+        "pgid": 1703362,
+        "pid": 2876026,
+        "ppid": 1719598,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qrg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_qrg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T57,T97,T101,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2876039,
+        "ppid": 2876026,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qrg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_qrg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T57,T97,T101,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2876524,
+        "ppid": 2876039,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P5_qkg_S 1",
+        "pgid": 1703362,
+        "pid": 2881316,
+        "ppid": 1719589,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_qkg_S/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:5-10 --hotspots T43,T44,T45,T52,T54,T57,T60 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2881329,
+        "ppid": 2881316,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_qkg_S/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:5-10] ppi.hotspot_res=[T43,T44,T45,T52,T54,T57,T60] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2881334,
+        "ppid": 2881329,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python /data/qlyu/software/RFantibody/scripts/proteinmpnn_interface_design.py -pdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_ekg_S/tmp/pending_1720034 -outpdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_ekg_S/sequences -loop_string H1,H2,H3 -seqs_per_struct 16 -temperature 0.2 -checkpoint_path /data/qlyu/software/RFantibody/weights/ProteinMPNN_v48_noise_0.2.pt -omit_AAs CX -augment_eps 0 -checkpoint_name /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_ekg_S/tmp/mpnn_checkpoint_1720034.txt -deterministic",
+        "pgid": 1703362,
+        "pid": 2889371,
+        "ppid": 1720034,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P5_ekg_S 6",
+        "pgid": 1703362,
+        "pid": 2889643,
+        "ppid": 1719640,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_ekg_S/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:5-10 --hotspots T43,T44,T45,T52,T54,T57,T60 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2889656,
+        "ppid": 2889643,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_ekg_S/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:5-10] ppi.hotspot_res=[T43,T44,T45,T52,T54,T57,T60] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2890056,
+        "ppid": 2889656,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P6_qkg_S 7",
+        "pgid": 1703362,
+        "pid": 2900552,
+        "ppid": 1719645,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_qkg_S/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:5-10 --hotspots T57,T97,T101,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2900565,
+        "ppid": 2900552,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_qkg_S/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:5-10] ppi.hotspot_res=[T57,T97,T101,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2901136,
+        "ppid": 2900565,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P6_qkg_L 1",
+        "pgid": 1703362,
+        "pid": 2904786,
+        "ppid": 1719590,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_qkg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T57,T97,T101,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2904799,
+        "ppid": 2904786,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_qkg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T57,T97,T101,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2904805,
+        "ppid": 2904799,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P6_ekg_L 6",
+        "pgid": 1703362,
+        "pid": 2913670,
+        "ppid": 1719641,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_ekg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T57,T97,T101,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2913683,
+        "ppid": 2913670,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_ekg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T57,T97,T101,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2914208,
+        "ppid": 2913683,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python /data/qlyu/software/RFantibody/scripts/proteinmpnn_interface_design.py -pdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P1_qkg_S/tmp/pending_1720039 -outpdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P1_qkg_S/sequences -loop_string H1,H2,H3 -seqs_per_struct 16 -temperature 0.2 -checkpoint_path /data/qlyu/software/RFantibody/weights/ProteinMPNN_v48_noise_0.2.pt -omit_AAs CX -augment_eps 0 -checkpoint_name /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P1_qkg_S/tmp/mpnn_checkpoint_1720039.txt -deterministic",
+        "pgid": 1703362,
+        "pid": 2916116,
+        "ppid": 1720039,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P4_ekg_L 1",
+        "pgid": 1703362,
+        "pid": 2917393,
+        "ppid": 1719588,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_ekg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T97,T99,T101,T102,T103,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2917407,
+        "ppid": 2917393,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_ekg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T97,T99,T101,T102,T103,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2917649,
+        "ppid": 2917407,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python /data/qlyu/software/RFantibody/scripts/proteinmpnn_interface_design.py -pdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qrg_S/tmp/pending_1720012 -outpdbdir /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qrg_S/sequences -loop_string H1,H2,H3 -seqs_per_struct 16 -temperature 0.2 -checkpoint_path /data/qlyu/software/RFantibody/weights/ProteinMPNN_v48_noise_0.2.pt -omit_AAs CX -augment_eps 0 -checkpoint_name /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qrg_S/tmp/mpnn_checkpoint_1720012.txt -deterministic",
+        "pgid": 1703362,
+        "pid": 2920397,
+        "ppid": 1720012,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P5_qkg_L 2",
+        "pgid": 1703362,
+        "pid": 2922874,
+        "ppid": 1719592,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_qkg_L/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:11-15 --hotspots T43,T44,T45,T52,T54,T57,T60 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2922887,
+        "ppid": 2922874,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P5_qkg_L/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:11-15] ppi.hotspot_res=[T43,T44,T45,T52,T54,T57,T60] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2923110,
+        "ppid": 2922887,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P4_qkg_S 2",
+        "pgid": 1703362,
+        "pid": 2963153,
+        "ppid": 1719591,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qkg_S/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:5-10 --hotspots T97,T99,T101,T102,T103,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 2963166,
+        "ppid": 2963153,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_qkg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P4_qkg_S/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:5-10] ppi.hotspot_res=[T97,T99,T101,T102,T103,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 2963827,
+        "ppid": 2963166,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/run_generation_arm.sh P6_ekg_S 5",
+        "pgid": 1703362,
+        "pid": 3036788,
+        "ppid": 1719638,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "/data/qlyu/anaconda3/envs/rfdiffusion2/bin/python -c from rfantibody.cli.inference import rfdiffusion; rfdiffusion.main(prog_name=\"rfdiffusion\") --target /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb --framework /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb --output /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_ekg_S/backbones/design --num-designs 157 --design-loops H1:7,H2:6,H3:5-10 --hotspots T57,T97,T101,T105,T106 --diffuser-t 50 --deterministic --no-trajectory",
+        "pgid": 1703362,
+        "pid": 3036801,
+        "ppid": 3036788,
+        "sid": 1703362
+      },
+      {
+        "alive": true,
+        "cmd": "python /data/qlyu/software/RFantibody/scripts/rfdiffusion_inference.py --config-name antibody antibody.target_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/pvrig_8x6b_chainT.pdb antibody.framework_pdb=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/inputs/scaffolds/h-NbBCII10_vhh_ekg.pdb inference.output_prefix=/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/generation/arms/P6_ekg_S/backbones/design inference.num_designs=157 antibody.design_loops=[H1:7,H2:6,H3:5-10] ppi.hotspot_res=[T57,T97,T101,T105,T106] inference.ckpt_override_path=/data/qlyu/software/RFantibody/weights/RFdiffusion_Ab.pt diffuser.T=50 inference.final_step=1 inference.deterministic=True inference.write_trajectory=False",
+        "pgid": 1703362,
+        "pid": 3037334,
+        "ppid": 3036801,
+        "sid": 1703362
+      }
+    ],
+    "raw_progress_pct": 55.9592,
+    "raw_target": 90432,
+    "ready_marker_exists": false,
+    "root": "/data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721",
+    "sequence_pdb_count": 50605,
+    "smoke_complete": true,
+    "timing": {
+      "controller_started_at": "2026-07-21T13:40:23.311341+00:00",
+      "elapsed_hours": 9.367,
+      "historical_rate_eta_hours": 7.372,
+      "historical_rate_eta_seconds": 26539.0,
+      "historical_raw_sequence_rate_per_sec": 1.5007
+    },
+    "worker_topology": {
+      "alive": 17,
+      "complete": 4,
+      "failed": 0,
+      "physical_gpus": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "slots_total": 21,
+      "workers": [
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 1,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719588,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 1,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719589,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 1,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719590,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 2
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 2,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719591,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 2,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719592,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": true,
+          "failed_marker": false,
+          "gpu": 2,
+          "process": {
+            "alive": false,
+            "cmd": null,
+            "pgid": null,
+            "pid": 1719593,
+            "ppid": null,
+            "sid": null
+          },
+          "slot": 2
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 3,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719594,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 3,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719595,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": true,
+          "failed_marker": false,
+          "gpu": 3,
+          "process": {
+            "alive": false,
+            "cmd": null,
+            "pgid": null,
+            "pid": 1719596,
+            "ppid": null,
+            "sid": null
+          },
+          "slot": 2
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 4,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719597,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 4,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719598,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": true,
+          "failed_marker": false,
+          "gpu": 4,
+          "process": {
+            "alive": false,
+            "cmd": null,
+            "pgid": null,
+            "pid": 1719599,
+            "ppid": null,
+            "sid": null
+          },
+          "slot": 2
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 5,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719604,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 5,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719638,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 5,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719639,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 2
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 6,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719640,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 6,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719641,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": true,
+          "failed_marker": false,
+          "gpu": 6,
+          "process": {
+            "alive": false,
+            "cmd": null,
+            "pgid": null,
+            "pid": 1719642,
+            "ppid": null,
+            "sid": null
+          },
+          "slot": 2
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 7,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719643,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 0
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 7,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719645,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 1
+        },
+        {
+          "complete_marker": false,
+          "failed_marker": false,
+          "gpu": 7,
+          "process": {
+            "alive": true,
+            "cmd": "bash /data1/qlyu/projects/pvrig_500k_rfantibody75k_v1_20260721/scripts/launch_rfantibody_multiworker_gpu.sh",
+            "pgid": 1703362,
+            "pid": 1719648,
+            "ppid": 1719585,
+            "sid": 1703362
+          },
+          "slot": 2
+        }
+      ],
+      "workers_per_gpu": 3
+    }
+  },
+  "schema": "node1_gpu1m_production_check.v1",
+  "warnings": [
+    "/data1 is df-reported 97% used even though 229.579 GiB remains; the watcher will stop at its 100 GiB free-space gate.",
+    "GPUs are shared with other processes; utilization is an instantaneous snapshot and ETA remains workload-stage dependent.",
+    "RF75 freeze and all downstream 150k campaigns are not yet COMPLETE; the strict final 1,000,000 objective is still in progress."
+  ]
+}

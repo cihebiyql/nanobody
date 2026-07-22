@@ -1,0 +1,28 @@
+{
+  "deepnano_binding_prior": {
+    "max": 0.5048294,
+    "mean": 0.1423442322777961,
+    "median": 0.13276011,
+    "min": 0.01685178,
+    "q05": 0.05309187045,
+    "q95": 0.265933829
+  },
+  "nanobind_binary_counts": {
+    "0": 4452,
+    "1": 7672
+  },
+  "nanobind_binding_prior": {
+    "max": 0.9226151704788208,
+    "mean": 0.4047366959077107,
+    "median": 0.39387246966362,
+    "min": 0.006903897039592266,
+    "q05": 0.07740959376096725,
+    "q95": 0.7687790960073471
+  },
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu700k_replacement_reserve12124_prefilter_v1_20260722/aggregated/finalize_11939795/binding_priors_uncorrected.tsv.gz",
+  "output_sha256": "c1b0d567f39e8e2fdaa75da3489e98b3d4f8e6dd21bd17d920f92b858bba761e",
+  "records": 12124,
+  "scientific_boundary": "weak binding priors; not Kd, IC50, or blocking evidence",
+  "status": "PASS",
+  "tasks": 4
+}

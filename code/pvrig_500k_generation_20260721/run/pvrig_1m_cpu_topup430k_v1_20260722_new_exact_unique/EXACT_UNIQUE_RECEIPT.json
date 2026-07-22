@@ -1,0 +1,28 @@
+{
+  "exact_duplicate_removed_count": 29819,
+  "exact_unique_count": 366648,
+  "excluded_prior_sequence_count": 394295,
+  "input_fast_qc_pass_count": 396467,
+  "new_exact_unique_count": 366648,
+  "note": "ANARCI/IMGT and CDR3-family controls remain required.",
+  "outputs": {
+    "exact_unique_fast_qc_pass.fasta.gz": "2274a1ae35c94e7c744f0ef1b3567e4b0525c3c151fbdd57dfc809ff0d032d3d",
+    "exact_unique_fast_qc_pass.tsv.gz": "931b2dc922a8805e9ef371371742afcea6efd2e693158918a8fa859630cc17e0"
+  },
+  "route_counts": {
+    "conservative_cdr_redesign": 235881,
+    "natural_cdr_donor": 87146,
+    "profile_diversified_exploration_control": 43621
+  },
+  "route_mode_counts": {
+    "conservative_cdr_redesign|H1H2H3": 107600,
+    "conservative_cdr_redesign|H1H3": 84492,
+    "conservative_cdr_redesign|H3": 43789,
+    "natural_cdr_donor|H1H2H3": 54815,
+    "natural_cdr_donor|H1H3": 32331,
+    "profile_diversified_exploration_control|H1H2H3": 9920,
+    "profile_diversified_exploration_control|H1H3": 15102,
+    "profile_diversified_exploration_control|H3": 18599
+  },
+  "status": "EXACT_UNIQUE_FAST_QC_FROZEN_NOT_FINAL_ANARCI"
+}

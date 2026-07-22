@@ -1,0 +1,22 @@
+{
+  "claim_boundary": "Versioned prepare/materialize adapter for label-free canonical10644 VHH monomer graphs; no production materialization, contact teacher access, candidate Docking pose access, or Docking result access.",
+  "files": {
+    "INPUT_CONTRACT.json": "6c0ee922c77304118bc7da5b641c838d1cee64249425dd713eb8b147d2fa719a",
+    "README_ZH.md": "95b081557c5342f3a2e5d4e2755fbc4b6ced08acf5298099f15f38d32e9f0271",
+    "launch_canonical10644_label_free_graph_v1.sh": "278cf9bf340f1b946672ca2c96853bd2d4528a144b86fa340b72c09d4172a610",
+    "src/build_canonical10644_label_free_graph_v1.py": "344df9d63ab33f1f6723a9cf58c04014ca295c2d4d247e01bf1f290e61ce4af1",
+    "tests/test_build_canonical10644_label_free_graph_v1.py": "0eb2fe55e8b632dd2852cc289dd0982ba1b36e6d456cae9fd131146c85f00df7"
+  },
+  "remaining_prerequisite": "Deliver and authority-freeze one unified 10644-row label-free structure manifest plus clean monomer PDB root.",
+  "schema_version": "pvrig_v2_11_canonical10644_label_free_graph_implementation_freeze_v1",
+  "status": "FROZEN_IMPLEMENTED_NOT_LAUNCHED",
+  "verification": {
+    "candidate_docking_pose_files_opened": 0,
+    "canonical10644_graph_materialization_started": false,
+    "contact_teacher_files_opened": 0,
+    "lightweight_production_contract_preflight": "PASS_10644_ROWS_AND_FIXED_TARGET_HASHES",
+    "python_compile": "PASS",
+    "shell_syntax": "PASS",
+    "unit_tests": "7/7 PASS"
+  }
+}

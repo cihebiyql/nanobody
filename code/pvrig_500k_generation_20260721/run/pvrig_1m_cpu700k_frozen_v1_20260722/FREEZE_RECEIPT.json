@@ -1,0 +1,24 @@
+{
+  "anarci_qc_status_counts": {
+    "PASS": 700000
+  },
+  "candidate_id_exact_unique": true,
+  "inputs": {
+    "combined_exact_unique_fast_qc_pass.tsv.gz": "e5cc1b7cf8ffb1b82552921b7a80bc50cd70e9e6ce872d7eaaf3569aceadc3d7",
+    "route_quota_exact_unique.tsv.gz": "b49dfe55e13245c30be3d8e9c4bf059ebf7a5dcf62302fcaee0eeba1e1d06b53"
+  },
+  "prefilter_id_set_exact_match": true,
+  "prefilters": {
+    "pvrig_prefilter_all_v2.tsv.gz": "36c04ccae3d2069ca4db516ed0d3d4d48a55511489ce3a78a38ccce1653dad20",
+    "pvrig_prefilter_cpu_topup305705_v1.tsv.gz": "a319252fe24b072dcc3d24c437268fee9d11b60de6886a7b127cf8beeeaae095"
+  },
+  "records": 700000,
+  "route_counts": {
+    "conservative_cdr_redesign": 400000,
+    "natural_cdr_donor": 200000,
+    "profile_diversified_exploration_control": 100000
+  },
+  "scientific_boundary": "sequence generation and computational prefilter; not measured binding, affinity, purity, expression, docking, or blocking evidence",
+  "sequence_exact_unique": true,
+  "status": "PASS"
+}
