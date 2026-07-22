@@ -1,0 +1,14 @@
+{
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "outputs": {
+    "V2_17_EXPANDED_UNION_TOP5_METRICS.json": "e2cd47add42e27766c11cb7ab96384dd9b2e41cc4e6e0f0f14fa00f9b5a0604e",
+    "V2_17_EXPANDED_UNION_TOP5_OOF_PREDICTIONS.tsv": "93e6952f8e082b563edbaaf4cc9fb1387871e2c004246248033fbd6e4417388a"
+  },
+  "schema_version": "pvrig_v2_17_expanded_union_top5_oof_v1",
+  "selected_method": "E0_L1",
+  "status": "PASS_V2_17_EXPANDED_UNION_TOP5_OOF",
+  "target_achieved_in_this_oof": false
+}

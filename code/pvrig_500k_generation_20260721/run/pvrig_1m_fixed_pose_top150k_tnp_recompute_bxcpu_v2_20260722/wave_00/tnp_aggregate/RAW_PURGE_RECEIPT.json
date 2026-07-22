@@ -1,0 +1,16 @@
+{
+  "aggregate_ready": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_fixed_pose_top150k_tnp_recompute_v2_20260722/wave_00/tnp_aggregate/READY.json",
+  "created_at": "2026-07-22T09:39:36.032624+00:00",
+  "expected_records": 40000,
+  "removed": [
+    {
+      "bytes": 5700967620,
+      "path": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_fixed_pose_top150k_nbb2_batched_v1_20260722/wave_00/results_11941243"
+    },
+    {
+      "bytes": 16123514,
+      "path": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_fixed_pose_top150k_nbb2_batched_v1_20260722/wave_00/tnp_results_11941326"
+    }
+  ],
+  "status": "PURGED_RECOMPUTED_RAW_AFTER_EXACT_ID_AGGREGATE"
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "pvrig_v2_15_raw_multimodal_top5_contract_v1",
+  "status": "FROZEN_BEFORE_V2_15_OOF_EXECUTION",
+  "objective": {
+    "primary_metric": "EF_true_top10_at_budget5",
+    "target": 5.0,
+    "truth": "R_dual_min_exact_min_of_R8_R9",
+    "claim_boundary": "computational_independent_dual_receptor_Docking_geometry_only"
+  },
+  "data": {
+    "expected_rows": 9849,
+    "expected_parents": 54,
+    "expected_folds": 5,
+    "expected_raw_numeric_features": 162,
+    "open_rows_excluded_before_value_parsing": 795
+  },
+  "input_bindings": {
+    "raw_multimodal_sha256": "5c46c393e5bf7c26e6089d318b88410f170a6c8556ae4910afd63f552fcdc8f6",
+    "assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "legacy_oof_sha256": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b",
+    "l1_oof_sha256": "d441a47e938a0c490cead10c80e6b71bd1a22abe9e22803ed1af43ec04f60669"
+  },
+  "hgb_classifier": {
+    "learning_rate": 0.04,
+    "max_iter": 240,
+    "max_leaf_nodes": 15,
+    "min_samples_leaf": 60,
+    "l2_regularization": 2.0
+  },
+  "extra_trees": {
+    "n_estimators": 500,
+    "max_depth": 10,
+    "min_samples_leaf": 15,
+    "max_features": 0.5,
+    "n_jobs": 8
+  },
+  "hgb_regressor": {
+    "learning_rate": 0.04,
+    "max_iter": 240,
+    "max_leaf_nodes": 15,
+    "min_samples_leaf": 60,
+    "l2_regularization": 2.0,
+    "loss": "absolute_error"
+  },
+  "input_access": {
+    "open_development_rows": 0,
+    "frozen_test_rows": 0
+  }
+}

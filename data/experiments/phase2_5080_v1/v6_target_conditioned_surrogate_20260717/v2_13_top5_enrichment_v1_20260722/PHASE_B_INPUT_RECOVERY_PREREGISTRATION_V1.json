@@ -1,0 +1,40 @@
+{
+  "schema_version": "pvrig_v2_13_phase_b_input_recovery_preregistration_v1",
+  "status": "FROZEN_OPERATIONAL_RECOVERY_AFTER_PHASE_A_UNSEAL_BEFORE_RECOVERY_EXECUTION",
+  "incident": {
+    "phase_a_status": "PASS_V2_13_TOP5_PHASE_A_COMPLETE",
+    "phase_b_failure": "selector_rc_1_missing_regular_file",
+    "missing_path": "/data1/qlyu/projects/pvrig_v2_13_top5_ensemble_v1_20260722/inputs/CLEAN_ATTENTION_TRAIN9849_OOF_PREDICTIONS.tsv",
+    "phase_b_training_started": false,
+    "phase_b_outputs_before_failure": [
+      "training/phase_b_multiseed/logs/phase_a_selection.log"
+    ]
+  },
+  "recovery": {
+    "copy_regular_files_not_symlinks": true,
+    "inputs": {
+      "CLEAN_ATTENTION_TRAIN9849_OOF_PREDICTIONS.tsv": {
+        "source": "/data1/qlyu/projects/pvrig_v2_12_clean_attention_inner_oof_stack_v1_20260722/training/oof_seed43_v1/OOF_AGGREGATE/CLEAN_ATTENTION_TRAIN9849_OOF_PREDICTIONS.tsv",
+        "sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da"
+      },
+      "TRAIN_INNER_OOF_PREDICTIONS.tsv": {
+        "source": "/data1/qlyu/projects/pvrig_v2_11_canonical10644_multimodal_fusion_v1_20260721/training/canonical10644_multimodal_v1/TRAIN_INNER_OOF_PREDICTIONS.tsv",
+        "sha256": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b"
+      }
+    },
+    "archive_failed_pretraining_attempt": "training/phase_b_multiseed_failed_missing_inputs_v1",
+    "archive_stale_downstream_terminals": true,
+    "wait_for_v2_14_terminal_before_phase_b_gpu_training": true,
+    "reason_for_wait": "keep simultaneous project GPU use at or below four GPUs",
+    "resume_original_frozen_launchers": [
+      "launchers/run_phase_b_node1_v1.sh",
+      "launchers/run_phase_c1_after_phase_b_node1_v1.sh",
+      "launchers/run_hard_negative_c1_after_phase_c1_node1_v1.sh"
+    ]
+  },
+  "scientific_contract_changes": false,
+  "input_access": {
+    "open_development_rows": 0,
+    "frozen_test_rows": 0
+  }
+}

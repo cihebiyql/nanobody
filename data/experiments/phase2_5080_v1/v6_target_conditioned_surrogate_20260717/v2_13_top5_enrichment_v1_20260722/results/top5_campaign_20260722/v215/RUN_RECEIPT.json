@@ -1,0 +1,15 @@
+{
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "outputs": {
+    "V2_15_FOLD_MODELS.pkl": "5a0f3a15e9b997388657dfcb5b312bf0868eacfe640ed2774fdd3de423542da6",
+    "V2_15_RAW_MULTIMODAL_TOP5_METRICS.json": "1b958e77e20a6b6f4a527ffdf0a631bbaa993dee61cf0faaee37ee83dca8bd6a",
+    "V2_15_RAW_MULTIMODAL_TOP5_OOF_PREDICTIONS.tsv": "c47576738cc13b544d554474cd162cdd17387fb5945e8306d9187dc11513e0e6"
+  },
+  "schema_version": "pvrig_v2_15_raw_multimodal_top5_oof_v1",
+  "selected_method": "G3_HGB_R8R9_RAW",
+  "status": "PASS_V2_15_RAW_MULTIMODAL_TOP5_OOF",
+  "target_achieved_in_this_oof": false
+}

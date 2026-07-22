@@ -1,0 +1,25 @@
+{
+  "schema_version": "pvrig_v2_18_pose_aux_training_implementation_freeze_v1_1",
+  "status": "FROZEN_BEFORE_STRICT_OOF_V1_1_EXECUTION",
+  "supersedes": "TRAINING_IMPLEMENTATION_FREEZE_V1.json",
+  "repair": {
+    "scope": "HGB compatibility only",
+    "old": "loss=huber (unsupported by installed sklearn)",
+    "new": "loss=squared_error",
+    "scientific_result_seen_before_repair": false
+  },
+  "files": {
+    "runner_sha256": "91a50f13445f874525bc0a28f58e874cc44aaced4c8167822c58a4c733b65908",
+    "runner_test_sha256": "bfb1b10a45977c35a6559b21cc1595115c3f38efb908805e8ec4d4256ceefbca",
+    "launcher_sha256": "01fb38b252f567cfb1ae37aa690f2c451a93e1f08473b50c123f5e78427c04f1"
+  },
+  "tests": {
+    "count": 6,
+    "status": "OK",
+    "sklearn": "1.6.1",
+    "explicit_supported_loss_regression": true
+  },
+  "inputs_and_all_other_hyperparameters": "identical_to_TRAINING_IMPLEMENTATION_FREEZE_V1.json",
+  "output": "/data1/qlyu/projects/pvrig_v2_18_pose_aux_crossfit_v1_20260722/training/strict_oof_v1_1",
+  "claim_boundary": "Development OOF evidence for computational Docking geometry only; no open-development or frozen-test access."
+}

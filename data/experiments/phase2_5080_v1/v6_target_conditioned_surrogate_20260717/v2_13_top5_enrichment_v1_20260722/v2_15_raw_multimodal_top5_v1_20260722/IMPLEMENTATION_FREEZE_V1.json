@@ -1,0 +1,21 @@
+{
+  "files": {
+    "CONTRACT_V1.json": "8fa18d23aa8bb9ce89cec5e4e293c0fe7f430cfaaf6772cce462e3f3965771ff",
+    "PLAN_ZH.md": "d2d56a8c65d22de3471073317a0694f3054aaafb6d72b394c125a6bd7bfb7974",
+    "TEST_RESULTS_V1.log": "61dedea81e8b4f43a7b57d65e410f6fdaf3f72296b9c19f0960ddb1c7aadd522",
+    "launch_node1_v1.sh": "ca30e2e13a83d84b3e8ec2242f4ea33c872826db411a06ade1fef37342e048dc",
+    "src/run_v215_raw_multimodal_top5_oof_v1.py": "f7b74b1d205559ceacebcd1a568788fbf4450458e77adf3b120c796e82fd03c7",
+    "tests/test_run_v215_raw_multimodal_top5_oof_v1.py": "7af077b25fa9635060852cfbc7b769532dae547ca19b09d83d2badbb7e74061d"
+  },
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "schema_version": "pvrig_v2_15_raw_multimodal_implementation_freeze_v1",
+  "status": "FROZEN_AFTER_LOCAL_TESTS_BEFORE_NODE1_OOF_EXECUTION",
+  "tests": {
+    "count": 2,
+    "log_sha256": "61dedea81e8b4f43a7b57d65e410f6fdaf3f72296b9c19f0960ddb1c7aadd522",
+    "status": "OK"
+  }
+}

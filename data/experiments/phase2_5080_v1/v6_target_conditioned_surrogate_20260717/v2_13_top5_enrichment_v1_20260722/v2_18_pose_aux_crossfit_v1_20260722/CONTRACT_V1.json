@@ -1,0 +1,36 @@
+{
+  "schema_version": "pvrig_v2_18_pose_aux_crossfit_contract_v1",
+  "status": "FROZEN_BEFORE_V2_18_EXECUTION",
+  "primary_metric": "whole_parent_oof_ef_at_5_percent_for_global_top10_percent_R_dual_min",
+  "baseline": {
+    "method": "V2_13_L1",
+    "ef5": 3.0828512885987585,
+    "hits_at5": 152
+  },
+  "targets": {
+    "promotion_ef5": 3.4,
+    "promotion_delta_ef5": 0.3,
+    "promotion_hits_at5": 168,
+    "goal_ef5": 5.0,
+    "goal_hits_at5": 247
+  },
+  "cross_fitting": {
+    "outer_folds": 5,
+    "inner_folds": 4,
+    "group": "parent_framework_cluster"
+  },
+  "input_firewall": {
+    "allow_label_free_dimensions": 162,
+    "forbid_ids_as_features": true,
+    "forbid_true_pose_aux_on_outer_test": true,
+    "open_development_rows": 0,
+    "frozen_test_rows": 0
+  },
+  "frozen_challengers": [
+    "A0_L1",
+    "A1_RIDGE_AUX",
+    "A2_HGB2_AUX",
+    "A3_RIDGE_AUX_UNCERTAINTY"
+  ],
+  "claim_boundary": "Computational independent dual-receptor Docking-geometry surrogate enrichment only; not binding, affinity, experimental blocking, expression, or purity."
+}

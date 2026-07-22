@@ -1,0 +1,9 @@
+{
+  "schema_version": "pvrig_v2_18_pose_aux_training_freeze_supersession_v1",
+  "status": "SUPERSEDED_AFTER_FAIL_CLOSED_BEFORE_SCIENTIFIC_RESULT",
+  "superseded": "TRAINING_IMPLEMENTATION_FREEZE_V1.json",
+  "failure": "sklearn HistGradientBoostingRegressor rejects loss=huber before the first outer-fold prediction was produced",
+  "scientific_metrics_produced": false,
+  "old_output_published": false,
+  "repair_boundary": "V1.1 changes only HGB loss from unsupported huber to supported squared_error and adds an executable regression test."
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "pvrig_v2_17_expanded_union_top5_contract_v1",
+  "status": "FROZEN_BEFORE_V2_17_OOF_EXECUTION",
+  "objective": {"primary_metric": "EF_true_top10_at_budget5", "target": 5.0},
+  "data": {"expected_rows": 9849, "expected_parents": 54, "expected_folds": 5, "expected_raw_numeric_features": 162, "open_rows_excluded_before_value_parsing": 795},
+  "input_bindings": {
+    "raw_multimodal_sha256": "5c46c393e5bf7c26e6089d318b88410f170a6c8556ae4910afd63f552fcdc8f6",
+    "assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "legacy_oof_sha256": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b",
+    "l1_oof_sha256": "d441a47e938a0c490cead10c80e6b71bd1a22abe9e22803ed1af43ec04f60669",
+    "g3_oof_sha256": "c47576738cc13b544d554474cd162cdd17387fb5945e8306d9187dc11513e0e6",
+    "n1_oof_sha256": "d4865c77056c7f55091ee3368883a28bf683808b4c8bfd84360026afad9f19da",
+    "n2_oof_sha256": "1514a745d7640c45890cb5d57cf19f1b093d4c37c783ac8cf6643bf8d34bc29b",
+    "n3_oof_sha256": "541cb19514125e4d2c21307cd3ff52b1da2ef00a005342e3777d439881784d66"
+  },
+  "hgb_classifier": {"learning_rate": 0.035, "max_iter": 280, "max_leaf_nodes": 15, "min_samples_leaf": 40, "l2_regularization": 3.0},
+  "extra_trees": {"n_estimators": 600, "max_depth": 12, "min_samples_leaf": 10, "max_features": 0.6, "n_jobs": 8},
+  "input_access": {"open_development_rows": 0, "frozen_test_rows": 0}
+}

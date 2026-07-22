@@ -1,0 +1,13 @@
+{
+  "id_set_exact_match": true,
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_fixed_pose_top150k_tnp_recompute_v2_20260722/aggregate/tnp_fixed_pose_top150k.tsv.gz",
+  "records": 150000,
+  "scientific_boundary": "TNP structure developability proxy; not measured expression or purity",
+  "sha256": "13b4f8b588b3ab46422a991c3f3e66286caeaa6404032a679a0ccba8006d8935",
+  "status": "PASS",
+  "status_counts": {
+    "PASS": 150000
+  },
+  "technical_na_is_not_negative": true,
+  "waves": 4
+}
