@@ -1,0 +1,28 @@
+{
+  "schema_version": "pvrig_v2_13_phase_b_direct_gpu0_recovery_preregistration_v1",
+  "status": "AUTHORIZED_BY_USER_BEFORE_DIRECT_RECOVERY_EXECUTION",
+  "reason": "The original Phase-B workers remained at the frozen 18 GiB GPU gate and produced zero fold outputs; the user explicitly requested direct launch.",
+  "scientific_protocol_changes": false,
+  "resource_schedule_change": {
+    "old": "three concurrent lanes on GPUs 3,4,5 after >=18 GiB gate",
+    "new": "one sequential lane on GPU0 without the conservative memory gate"
+  },
+  "invariants": {
+    "selected_variant": "L1",
+    "seeds": [917, 1931],
+    "folds_per_seed": [0, 1, 2, 3, 4],
+    "contracts": "existing frozen Phase-B contracts",
+    "model": "facebook esm2_t33_650M_UR50D frozen",
+    "training_code": "existing run_top5_clean_attention_fold_v1.py",
+    "output_root": "existing phase_b_multiseed root",
+    "open_development_access": 0,
+    "frozen_test_access": 0
+  },
+  "safety": {
+    "require_zero_existing_fold_results_before_launch": true,
+    "stop_old_waiting_workers_before_launch": true,
+    "never_run_old_and_recovery_workers_concurrently": true,
+    "fail_closed_on_any_cell_error": true
+  },
+  "claim_boundary": "Operational recovery only; no post-result scientific threshold, split, model, loss, or metric change."
+}

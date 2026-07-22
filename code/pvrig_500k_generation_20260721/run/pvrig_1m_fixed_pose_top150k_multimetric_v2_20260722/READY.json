@@ -1,0 +1,47 @@
+{
+  "coverage_field_policy": "model_coverage is preserved from the prestructure input for audit; multimetric_model_coverage is authoritative for this release",
+  "created_epoch": 1784728448.0422719,
+  "id_set_exact_match": true,
+  "input_sha256": {
+    "selection": "10d44846f23e5b15577cb8c8068382051a2178397e2eaf9a2b5e8f5b273a594b",
+    "structure": "2eb270e9daef19f3f6bd29e37cd49072dc21cbd49fd3c59db98110b23faecc59",
+    "tnp": "13b4f8b588b3ab46422a991c3f3e66286caeaa6404032a679a0ccba8006d8935"
+  },
+  "largest_parent_cluster_records": 30358,
+  "nbb2_status_counts": {
+    "SUCCESS": 150000
+  },
+  "output": "fixed_pose_top150k_multimetric.tsv.gz",
+  "output_sha256": "105bed3b7542a6f1b4d3bbf609101c7ed254be776ca2a3fdacc3c2cc695e88e0",
+  "parent_clusters": 9,
+  "records": 150000,
+  "scientific_boundaries": {
+    "binding_priors": "weak binding priors; not Kd, IC50, or blocking evidence",
+    "nbb2": "VHH monomer geometry prediction; not binding, affinity, docking, or blocking evidence",
+    "surrogate": "pending; no Docking-geometry prediction is present in this release",
+    "tnp": "structure developability proxy; not measured expression or purity"
+  },
+  "scoring_policy": "raw independent metrics plus transparent TNP review tier; no post-hoc composite score before a hash-bound Docking surrogate MODEL_READY release",
+  "sequence_sha256_exact_match": true,
+  "status": "READY_PENDING_DOCKING_SURROGATE",
+  "tnp_amber_flag_count_distribution": {
+    "0": 114740,
+    "1": 33001,
+    "2": 2208,
+    "3": 51
+  },
+  "tnp_red_flag_count_distribution": {
+    "0": 133411,
+    "1": 16375,
+    "2": 214
+  },
+  "tnp_review_tier_counts": {
+    "CLEAR": 133411,
+    "HIGH_RISK_REVIEW": 214,
+    "REVIEW": 16375
+  },
+  "tnp_status_counts": {
+    "PASS": 150000
+  },
+  "tnp_structure_provenance": "TNP used an ephemeral same-sequence same-NBB2-version recomputation; the durable archived PDB hash is retained separately and is not claimed to be the exact TNP input hash"
+}

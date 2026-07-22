@@ -1,0 +1,16 @@
+{
+  "archives": 32,
+  "created_epoch": 1784721877.2235157,
+  "output": "nbb2_top150k_manifest.tsv.gz",
+  "output_sha256": "2eb270e9daef19f3f6bd29e37cd49072dc21cbd49fd3c59db98110b23faecc59",
+  "records": 150000,
+  "scientific_boundary": "durable VHH monomer structure manifest; not binding, affinity, docking, or blocking evidence",
+  "status": "PASS",
+  "unique_candidate_ids": 150000,
+  "waves": [
+    "wave_00",
+    "wave_01",
+    "wave_02",
+    "wave_03"
+  ]
+}

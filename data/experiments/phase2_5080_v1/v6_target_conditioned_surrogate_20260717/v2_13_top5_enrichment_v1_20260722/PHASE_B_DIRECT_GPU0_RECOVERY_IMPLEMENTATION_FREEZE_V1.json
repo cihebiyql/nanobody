@@ -1,0 +1,19 @@
+{
+  "schema_version": "pvrig_v2_13_phase_b_direct_gpu0_recovery_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_DIRECT_RECOVERY_EXECUTION",
+  "preregistration_sha256": "8cef4b8d2bc3e7e79fc6c9fe3a8a912e25f956af3f54b95c0a5616208bf82325",
+  "launcher_sha256": "bc9042df9241bb56f660c85d9bd8725e7f87f6c1a6e972aa2330a138195f99a4",
+  "validation": {
+    "bash_n": "PASS",
+    "existing_fold_results_required": 0,
+    "old_gate_workers_must_be_stopped": true
+  },
+  "resource_schedule": {
+    "gpu": 0,
+    "concurrency": 1,
+    "gate": "user-authorized direct launch; no 18 GiB wait",
+    "job_order": ["917:0", "1931:0", "917:1", "1931:1", "917:2", "1931:2", "917:3", "1931:3", "917:4", "1931:4"]
+  },
+  "scientific_protocol_changes": false,
+  "claim_boundary": "Operational scheduling recovery only; all model/data/split/loss/seed/metric contracts remain frozen."
+}
