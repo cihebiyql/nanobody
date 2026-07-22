@@ -1,0 +1,12 @@
+{
+  "bytes": 17283718,
+  "created_epoch": 1784692882.9818075,
+  "files": 618,
+  "raw_target": 480000,
+  "smoke_evidence": {
+    "cx_fast_qc_pass": "0/32",
+    "cxn_fast_qc_pass": "30/32"
+  },
+  "status": "READY_FOR_BXCPU_FULL_AFTER_MATCHED_SMOKE",
+  "version": "v4_cdr_labels_all_omit_cxn"
+}

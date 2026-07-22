@@ -1,0 +1,28 @@
+{
+  "existing_cpu_records": 700000,
+  "final_exact_unique_candidate_ids": 1000000,
+  "final_exact_unique_sequences": 1000000,
+  "final_records": 1000000,
+  "fixed_pose_exact_unique_fast_qc_nonoverlap": 366092,
+  "fixed_pose_raw_records": 480000,
+  "fixed_pose_selected_records": 300000,
+  "outputs": {
+    "fixed_pose_cpu_raw_qc.tsv.gz": "0c384e0e238aefaa9c44855c35e9a8f05c34a6f4b9263e4788895d367e49d605",
+    "fixed_pose_cpu_selected300k.tsv.gz": "574f4be16e0a8c28cb8ed57e6ffa8ce43e17987cd728a562ed4cbada060540ed",
+    "screening_pool_exact1m.fasta.gz": "569f2026d2d98babd9310a4213ddc945510b08513328ea46e6694677bf9b8d23",
+    "screening_pool_exact1m.tsv.gz": "f86efcaa7273d66373b89f2d2b976acc0c255aa67da462184c772c82077ee273"
+  },
+  "overlap_existing_cpu700k": 0,
+  "scientific_boundary": "one-million sequence proposal pool for downstream screening; not structure-complete, binding, affinity, docking, or blocking evidence",
+  "status": "EXACT_1M_SEQUENCE_SCREENING_POOL_READY",
+  "top_failure_reasons": [
+    [
+      "new_or_worsened_hydrophobic_run_ge_5",
+      94519
+    ],
+    [
+      "positive_any_cdr_identity_ge_80pct",
+      43
+    ]
+  ]
+}

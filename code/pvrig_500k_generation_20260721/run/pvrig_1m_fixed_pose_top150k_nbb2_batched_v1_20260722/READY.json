@@ -1,0 +1,104 @@
+{
+  "max_concurrent_raw_records": 40000,
+  "records": 150000,
+  "scientific_boundary": "monomer structure prediction inputs; not binding, affinity, docking, purity, expression, or blocking",
+  "status": "READY_FOR_SEQUENTIAL_NBB2_WAVES",
+  "waves": [
+    {
+      "input_sha256": {
+        "task_000.fasta": "4f8637ef785ad1979b6759c3995e5e66b261ad68d5ab57fa96efbda761548767",
+        "task_001.fasta": "254fbf50b9a10910ee63b8e524236512fdb4c06b4a33c65e59d70c4c8d16c87f",
+        "task_002.fasta": "7cfe7183ec1d3980c529ce374f40b1dd551be8b06e9f93906bc16498392c3555",
+        "task_003.fasta": "1a859a16df84f066e076867a8226b4887a93ec9a70c06dad368cf7908ba2c635",
+        "task_004.fasta": "5336e48457f60a7490fe6c218976450dd8c8eb4950c3bda408978bff1114c55c",
+        "task_005.fasta": "268b06c00a93a487ec5e6b81e1cf05cb0f05204156f246ff6bb7db83c5f6cf43",
+        "task_006.fasta": "eb4563e70f87555f9093aed67339d1b8c087c81b81388801b9c42b8e60ccd529",
+        "task_007.fasta": "2c8975486773211aa007a7b486be922a0a8c8c974adde3c9369748080511a253"
+      },
+      "records": 40000,
+      "shard_counts": [
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000
+      ],
+      "wave": 0
+    },
+    {
+      "input_sha256": {
+        "task_000.fasta": "b21d0cea8d85579ba8b32768479794aa473c1f78ba769cfa3e643cd376e46dfd",
+        "task_001.fasta": "f3ece93e649aee1d1c46067a98dcb158719af1f6f3c1237d6a2c6abf68d8ef32",
+        "task_002.fasta": "349985943af19eb3de7a765c39d4cee37e4a65ff8d76fe33616c01d5c9ecf963",
+        "task_003.fasta": "662471ad17b24462ce3edeefff2666dac4eec55b77a8ab570edd25761e493961",
+        "task_004.fasta": "aa0c6b7036a04b15f48337229d3059c393ad7db23107b9065a70e5e6f27f7f40",
+        "task_005.fasta": "d360cd223cd2586dee32c55f454760f6e86b0d13e9394f6579da353c3e0e18d4",
+        "task_006.fasta": "fea442fc8d01ec4d9c42b23e9f8263b94e7802507fe0fdc0af9ab55480fc168b",
+        "task_007.fasta": "708a492060c00e0d4480a2b9ef117c88c72c182c76d6d88427d0bf4adb9dcbba"
+      },
+      "records": 40000,
+      "shard_counts": [
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000
+      ],
+      "wave": 1
+    },
+    {
+      "input_sha256": {
+        "task_000.fasta": "05fd5df02942c244cc4f5881e41a05a9d20c3e14cef010b88376d6f7596ba420",
+        "task_001.fasta": "b43c52d0defc4acd3effd0a3c2fb7a34ed2580ffa0795acd37cac7f4ff6c1d9e",
+        "task_002.fasta": "ad7f88eed0a260afb5cd44d2a60d401c1c4d091c3a1642fa8a8fc0d6d8efa718",
+        "task_003.fasta": "e09421b71f5fea8136442f6ae4fe7f9110cb37c3d97bb2d50162843e867b23cb",
+        "task_004.fasta": "d81ce12f728fbaf08c877938d5ea26a5bb206404956f2ba6b0234f2cece9c484",
+        "task_005.fasta": "9e6b16a2cc162c7e5e05fb13e1f5c218e6fdd0c69fb4460e0d38a5d49ee8a421",
+        "task_006.fasta": "b8e47e487c6e7d8013dc351499640b62dc6e9822d69844e644655b5cdb6c0dcb",
+        "task_007.fasta": "4e95a9b5e91a1d0305e04953dd0f8bd1ded76910efc0477df1a05878e8567235"
+      },
+      "records": 40000,
+      "shard_counts": [
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000,
+        5000
+      ],
+      "wave": 2
+    },
+    {
+      "input_sha256": {
+        "task_000.fasta": "06a4936f91aab1c07db9f5b39d5aaa77c40f6cb4fea9437a427a17706baf2203",
+        "task_001.fasta": "2ebce7a71df87b421e2340f573707a39b2b1ec9f9c7f1fc7f0675458495b0890",
+        "task_002.fasta": "5ae572edee54ae31c33870ccc5a3c943084333e5149596ab99638c877bcf8853",
+        "task_003.fasta": "604b081e4bdb96b6f60287b315bce03b40f46340648d32bea2c24f2d346b5a50",
+        "task_004.fasta": "60aa73aa5c4211be4f20506ad7332595b7d48dc449cc5d1ac2cae21168460b8f",
+        "task_005.fasta": "fe30a85b80f26d436837e4265ed4af71737e08f5020a163e9083b45caa297e9d",
+        "task_006.fasta": "e50e97fb00bd61842cd00acbb028a2360155383cdfe85fed4ac8d3617e9b378a",
+        "task_007.fasta": "48a523cf642ba8921d38d729a3f8fe3d67985ae731304a8d9bc3e51bca88471c"
+      },
+      "records": 30000,
+      "shard_counts": [
+        3750,
+        3750,
+        3750,
+        3750,
+        3750,
+        3750,
+        3750,
+        3750
+      ],
+      "wave": 3
+    }
+  ]
+}

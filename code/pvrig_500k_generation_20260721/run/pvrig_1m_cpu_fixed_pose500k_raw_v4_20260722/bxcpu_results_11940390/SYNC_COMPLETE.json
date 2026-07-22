@@ -1,0 +1,72 @@
+{
+  "created_epoch": 1784695155.2141366,
+  "job_id": "11940390",
+  "node1_root": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390",
+  "nodes": [
+    {
+      "created_epoch": 1784695039.418723,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_00/node_00_sequence_outputs.tar.gz",
+      "node": "node_00",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_00",
+      "sha256": "df1f0f33d8d3c6f454adb37612bacfb4facd76441d73f41541e13e5355760bac",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695057.0729969,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_01/node_01_sequence_outputs.tar.gz",
+      "node": "node_01",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_01",
+      "sha256": "4cc42554fbf5587779e3deb69f6c3aff304cda4c581b38d09a15706eb46375b5",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695071.2797048,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_02/node_02_sequence_outputs.tar.gz",
+      "node": "node_02",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_02",
+      "sha256": "3e5eebc4c46e1f14094f397ab2f78e0af211811a8b861bfca9ec4394eed8c42e",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695087.688734,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_03/node_03_sequence_outputs.tar.gz",
+      "node": "node_03",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_03",
+      "sha256": "23d4fb7d442bcbb642ad64758a16309d8082bc621a4220c6f1d7dcbf27977dd0",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695100.6949794,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_04/node_04_sequence_outputs.tar.gz",
+      "node": "node_04",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_04",
+      "sha256": "3c1546ce623a316a630d55eca02e182c8f3b54a7f998dbefe48f05ae4a601868",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695118.0128238,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_05/node_05_sequence_outputs.tar.gz",
+      "node": "node_05",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_05",
+      "sha256": "9aa88c896b1328dc158d70b2f4a2e3f8b154d574bfaa43b6922fac16312d1414",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695133.147784,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_06/node_06_sequence_outputs.tar.gz",
+      "node": "node_06",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_06",
+      "sha256": "a68915bc64b76e86f4b34bac63bd35dd308c261da7b7f6124a03051de377b97f",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    },
+    {
+      "created_epoch": 1784695149.9418898,
+      "local_archive": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_07/node_07_sequence_outputs.tar.gz",
+      "node": "node_07",
+      "node1_dir": "/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_11940390/node_07",
+      "sha256": "d09401802a0bba38564c0b85998fb99aadc158d8e6ce2411e33012858075deb7",
+      "status": "LOCAL_AND_NODE1_HASH_VERIFIED"
+    }
+  ],
+  "status": "ALL_8_NODES_LOCAL_AND_NODE1_HASH_VERIFIED"
+}

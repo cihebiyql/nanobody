@@ -3,9 +3,9 @@ set -Eeuo pipefail
 
 : "${JOB_ID:?JOB_ID is required}"
 BASE=${BASE:-/mnt/d/work/抗体/code/pvrig_500k_generation_20260721}
-LOCAL=${LOCAL:-$BASE/run/pvrig_1m_cpu_fixed_pose500k_raw_v3_20260722/bxcpu_results_${JOB_ID}}
-BX_ROOT=${BX_ROOT:-/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu_fixed_pose500k_raw_v3_20260722}
-NODE1_ROOT=${NODE1_ROOT:-/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v3_20260722/bxcpu_results_${JOB_ID}}
+LOCAL=${LOCAL:-$BASE/run/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_${JOB_ID}}
+BX_ROOT=${BX_ROOT:-/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu_fixed_pose500k_raw_v4_20260722}
+NODE1_ROOT=${NODE1_ROOT:-/data/qlyu/projects/pvrig_1m_cpu_fixed_pose500k_raw_v4_20260722/bxcpu_results_${JOB_ID}}
 POLL=${POLL:-20}
 NODE1_SSH=/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe
 
@@ -30,7 +30,7 @@ for index in {0..7}; do
   python3 - "$receipt" "$node" "$expected" "$archive" "$NODE1_ROOT/$node" <<'PY'
 import json,sys,time
 from pathlib import Path
-out,node,digest,archive,node1=Path(sys.argv[1]),*sys.argv[2:]
+out=Path(sys.argv[1]); node,digest,archive,node1=sys.argv[2:]
 out.write_text(json.dumps({'status':'LOCAL_AND_NODE1_HASH_VERIFIED','node':node,'sha256':digest,
  'local_archive':archive,'node1_dir':node1,'created_epoch':time.time()},indent=2,sort_keys=True)+'\n')
 PY

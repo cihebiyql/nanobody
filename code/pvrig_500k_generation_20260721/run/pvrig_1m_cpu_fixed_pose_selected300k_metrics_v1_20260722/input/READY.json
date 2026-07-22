@@ -1,0 +1,11 @@
+{
+  "exact_unique_ids": 300000,
+  "exact_unique_sequences": 300000,
+  "outputs": {
+    "fixed_pose_selected300k.fasta.gz": "159d0747beaea81654b4396c8d55f8ba2cfc4257a4d6f9cd335e41dc3cde5507",
+    "fixed_pose_selected300k_candidates.tsv.gz": "4809838923cec3ea591aeebaf8d799370af1c568465339d422234a5d6a588a5f"
+  },
+  "records": 300000,
+  "scientific_boundary": "inputs for computational prefilter proxies; not measured purity, expression, affinity, or blocking",
+  "status": "READY"
+}

@@ -1,0 +1,14 @@
+{
+  "created_epoch": 1784697500.180497,
+  "jobs": {
+    "abnativ": "11940491",
+    "anarci": "11940468",
+    "anarci_aggregate": "11940469",
+    "binding": "11940483",
+    "risk": "11940467",
+    "sapiens": "11940488"
+  },
+  "records": 300000,
+  "remote": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/pvrig1m_cpu_fixed_pose_selected300k_metrics_v1_20260722",
+  "status": "COMPLETED_SEQUENTIAL_QUOTA_SAFE"
+}

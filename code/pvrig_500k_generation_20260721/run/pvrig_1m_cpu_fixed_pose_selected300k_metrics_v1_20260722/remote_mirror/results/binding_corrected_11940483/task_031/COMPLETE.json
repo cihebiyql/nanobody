@@ -1,0 +1,9 @@
+{
+  "completed_epoch": 1784697197.8394125,
+  "deepnano_inference_semantics": "exact-length buckets; batch-composition invariant",
+  "deepnano_sha256": "094a318681e6075f76c378c3e42edcd60d9a16eecc56938646393c2e094ba8f7",
+  "nanobind_sha256": "9db27916246cb7d068146b0ca36fce2f31155d957b487d0f999d199cff4f8237",
+  "records": 9375,
+  "scientific_boundary": "weak binding priors; not Kd, IC50, or blocking evidence",
+  "status": "PASS"
+}

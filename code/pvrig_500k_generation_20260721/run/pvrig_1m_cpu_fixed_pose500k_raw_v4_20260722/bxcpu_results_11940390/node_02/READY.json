@@ -1,0 +1,8 @@
+{
+  "created_epoch": 1784695028.3974385,
+  "expected_records": 60032,
+  "node_index": 2,
+  "observed_records": 60032,
+  "status": "READY_FOR_SYNC",
+  "storage_policy": "sequence_only_no_threaded_pdb"
+}

@@ -1,0 +1,29 @@
+{
+  "bindings": {
+    "deployment_contract_sha256": "b00fa943c41bd9aa272b29f270751f60052fb881c3897a7fcc6436d0d5060cc1",
+    "evaluator_v1_1_sha256": "c25543b6d5255860100f7c8dd2bdc555e8d91364d4c4eb0c1a40d685a6df1958",
+    "runner_sha256": "239a8141c464bbc5e817322082b1dfb509aac2b917417e43d302883af70b5177",
+    "test_v1_1_sha256": "4c6c39bf92b3c70147619c91a4c6f6b773dcee95f208fea81f855b17040d96f7"
+  },
+  "frozen_policy": {
+    "ensemble": "mean R8 and R9 across all four frozen seeds then exact min",
+    "float32_truth_atol": 4e-08,
+    "frozen_test_access_count": 0,
+    "output_dir": "training/4seed_v1/EARLY_ENRICHMENT_V1_1",
+    "reject_above_atol": true
+  },
+  "observed_failure": {
+    "max_abs_diff": 2.979799995639354e-08,
+    "rows_per_seed": 795,
+    "values_above_1e_7_per_seed": 0,
+    "values_above_old_2e_8_per_seed": 665
+  },
+  "schema_version": "pvrig_v2_11_clean_attention_multiseed_postprocess_v1_1_freeze",
+  "scope": "Technical recovery only for IEEE-754 float32 target serialization; no retraining, prediction rewrite, target rewrite, seed selection, hyperparameter change, or metric change.",
+  "status": "FROZEN_BEFORE_V1_1_PRODUCTION_POSTPROCESS",
+  "supersedes_postprocess_only": "evaluate_multiseed_clean_attention_v1.py failed closed at 2e-8",
+  "verification": {
+    "local_unittest_count": 9,
+    "local_unittest_status": "PASS"
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "claim_boundary": "Open-development sequence plus label-free VHH monomer graph plus fixed public 8X6B/9E6Y target-graph approximation of independent dual-receptor computational Docking geometry; not binding, affinity, experimental blocking, Docking Gold, frozen-test, or submission evidence.",
+  "clean_attention_numeric_closure": {
+    "policy": "IEEE754_FLOAT32_SERIALIZATION_ONLY_NO_TARGET_OR_PREDICTION_REWRITE",
+    "seeds": {
+      "1931": {
+        "float32_truth_atol": 4e-08,
+        "max_prediction_exact_min_abs_diff": 0.0,
+        "max_receptor_truth_abs_diff": 2.979799995639354e-08,
+        "max_target_exact_min_abs_diff": 0.0
+      },
+      "3253": {
+        "float32_truth_atol": 4e-08,
+        "max_prediction_exact_min_abs_diff": 0.0,
+        "max_receptor_truth_abs_diff": 2.979799995639354e-08,
+        "max_target_exact_min_abs_diff": 0.0
+      },
+      "43": {
+        "float32_truth_atol": 4e-08,
+        "max_prediction_exact_min_abs_diff": 0.0,
+        "max_receptor_truth_abs_diff": 2.979799995639354e-08,
+        "max_target_exact_min_abs_diff": 0.0
+      },
+      "917": {
+        "float32_truth_atol": 4e-08,
+        "max_prediction_exact_min_abs_diff": 0.0,
+        "max_receptor_truth_abs_diff": 2.979799995639354e-08,
+        "max_target_exact_min_abs_diff": 0.0
+      }
+    }
+  },
+  "clean_attention_seed_stability": {
+    "candidate_R_dual_min_prediction_std": {
+      "max": 0.018112536124015047,
+      "mean": 0.008937105031484505,
+      "p95": 0.013741452421357703
+    },
+    "pairwise_seed_agreement": {
+      "1931__3253": {
+        "R_dual_min_prediction_spearman": 0.9770209884658995,
+        "top_budget_overlap": {
+          "0.05": {
+            "intersection": 29,
+            "jaccard": 0.5686274509803921,
+            "selected": 40
+          },
+          "0.1": {
+            "intersection": 61,
+            "jaccard": 0.6161616161616161,
+            "selected": 80
+          },
+          "0.2": {
+            "intersection": 125,
+            "jaccard": 0.6476683937823834,
+            "selected": 159
+          }
+        }
+      },
+      "43__1931": {
+        "R_dual_min_prediction_spearman": 0.9830278714088081,
+        "top_budget_overlap": {
+          "0.05": {
+            "intersection": 29,
+            "jaccard": 0.5686274509803921,
+            "selected": 40
+          },
+          "0.1": {
+            "intersection": 61,
+            "jaccard": 0.6161616161616161,
+            "selected": 80
+          },
+          "0.2": {
+            "intersection": 124,
+            "jaccard": 0.6391752577319587,
+            "selected": 159
+          }
+        }
+      },
+      "43__3253": {
+        "R_dual_min_prediction_spearman": 0.9820466762360814,
+        "top_budget_overlap": {
+          "0.05": {
+            "intersection": 25,
+            "jaccard": 0.45454545454545453,
+            "selected": 40
+          },
+          "0.1": {
+            "intersection": 54,
+            "jaccard": 0.5094339622641509,
+            "selected": 80
+          },
+          "0.2": {
+            "intersection": 136,
+            "jaccard": 0.7472527472527473,
+            "selected": 159
+          }
+        }
+      },
+      "43__917": {
+        "R_dual_min_prediction_spearman": 0.9760831945423927,
+        "top_budget_overlap": {
+          "0.05": {
+            "intersection": 27,
+            "jaccard": 0.5094339622641509,
+            "selected": 40
+          },
+          "0.1": {
+            "intersection": 62,
+            "jaccard": 0.6326530612244898,
+            "selected": 80
+          },
+          "0.2": {
+            "intersection": 133,
+            "jaccard": 0.7189189189189189,
+            "selected": 159
+          }
+        }
+      },
+      "917__1931": {
+        "R_dual_min_prediction_spearman": 0.966745944592604,
+        "top_budget_overlap": {
+          "0.05": {
+            "intersection": 26,
+            "jaccard": 0.48148148148148145,
+            "selected": 40
+          },
+          "0.1": {
+            "intersection": 59,
+            "jaccard": 0.5841584158415841,
+            "selected": 80
+          },
+          "0.2": {
+            "intersection": 113,
+            "jaccard": 0.551219512195122,
+            "selected": 159
+          }
+        }
+      },
+      "917__3253": {
+        "R_dual_min_prediction_spearman": 0.9776144839008225,
+        "top_budget_overlap": {
+          "0.05": {
+            "intersection": 28,
+            "jaccard": 0.5384615384615384,
+            "selected": 40
+          },
+          "0.1": {
+            "intersection": 63,
+            "jaccard": 0.6494845360824743,
+            "selected": 80
+          },
+          "0.2": {
+            "intersection": 131,
+            "jaccard": 0.7005347593582888,
+            "selected": 159
+          }
+        }
+      }
+    },
+    "seed_count": 4
+  },
+  "counts": {
+    "development": 795,
+    "development_parents": 10,
+    "seed_runs": 4,
+    "train": 9849,
+    "train_parents": 54
+  },
+  "input_sha256": {
+    "clean_attention_ensemble_metrics": "794b0fb3bf2a2a8a97d977bf076f8c711c8eee00d577173b9137e17d4175edda",
+    "prior_multimodal_metrics": "dcbcf876fbbf478372c047aa580abde9c6e71e57e2390d5fa01889969c24ef05"
+  },
+  "interpretation": {
+    "best_EF_true_top10_budget5": "S0_FULL9849_FROZEN_ENSEMBLE_BASE_ONLY",
+    "best_Rdual_mae": "B_CLEAN_TARGET_ATTENTION_4SEED_ENSEMBLE",
+    "best_Rdual_spearman": "S0_M2_C2_CONVEX",
+    "best_within_parent_macro_recall_top20": "B_CLEAN_TARGET_ATTENTION_4SEED_ENSEMBLE",
+    "recommended_role": "Complementary target-aware structure branch for a future leakage-safe cross-fitted portfolio; not a standalone replacement selected on open development."
+  },
+  "models": {
+    "B_CLEAN_TARGET_ATTENTION_4SEED_ENSEMBLE": {
+      "EF_true_top10_budget10": 2.7328125,
+      "EF_true_top10_budget5": 3.2296875,
+      "Rdual_mae": 0.03228258798113207,
+      "Rdual_rmse": 0.041048674320639876,
+      "Rdual_spearman": 0.6535874662568047,
+      "recall_true_top20_budget20": 0.4276729559748428,
+      "within_parent_macro_recall_top20": 0.3916946778711484
+    },
+    "C2_COARSE_POSE_PCA8": {
+      "EF_true_top10_budget10": 1.86328125,
+      "EF_true_top10_budget5": 2.9812499999999997,
+      "Rdual_mae": 0.037871682443167444,
+      "Rdual_rmse": 0.04784321446595183,
+      "Rdual_spearman": 0.6085176607814511,
+      "recall_true_top20_budget20": 0.389937106918239,
+      "within_parent_macro_recall_top20": 0.35512605042016804
+    },
+    "M2_C2_CONVEX": {
+      "EF_true_top10_budget10": 2.7328125,
+      "EF_true_top10_budget5": 2.7328125,
+      "Rdual_mae": 0.03372357941445503,
+      "Rdual_rmse": 0.04311956401460393,
+      "Rdual_spearman": 0.6629453526842424,
+      "recall_true_top20_budget20": 0.49056603773584906,
+      "within_parent_macro_recall_top20": 0.31726890756302517
+    },
+    "M2_STRUCTURE_ALPHA10": {
+      "EF_true_top10_budget10": 2.9812499999999997,
+      "EF_true_top10_budget5": 3.2296875,
+      "Rdual_mae": 0.0331534039495879,
+      "Rdual_rmse": 0.042553512932048704,
+      "Rdual_spearman": 0.6596806808626087,
+      "recall_true_top20_budget20": 0.4528301886792453,
+      "within_parent_macro_recall_top20": 0.32036414565826327
+    },
+    "S0_FULL9849_FROZEN_ENSEMBLE_BASE_ONLY": {
+      "EF_true_top10_budget10": 2.60859375,
+      "EF_true_top10_budget5": 3.7265625,
+      "Rdual_mae": 0.03343188505744235,
+      "Rdual_rmse": 0.0430570039320121,
+      "Rdual_spearman": 0.6396615461700881,
+      "recall_true_top20_budget20": 0.41509433962264153,
+      "within_parent_macro_recall_top20": 0.3009803921568627
+    },
+    "S0_M2_C2_CONVEX": {
+      "EF_true_top10_budget10": 2.7328125,
+      "EF_true_top10_budget5": 3.2296875,
+      "Rdual_mae": 0.03337311015797174,
+      "Rdual_rmse": 0.04283015268632385,
+      "Rdual_spearman": 0.664728590435663,
+      "recall_true_top20_budget20": 0.4716981132075472,
+      "within_parent_macro_recall_top20": 0.346078431372549
+    }
+  },
+  "schema_version": "pvrig_v2_11_clean_attention_vs_multimodal_open_development_v1",
+  "status": "PASS_DESCRIPTIVE_OPEN_DEVELOPMENT_COMPARISON"
+}

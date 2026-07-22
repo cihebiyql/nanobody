@@ -1,0 +1,100 @@
+{
+  "claim_boundary": "WHOLE_PARENT_OOF_ONLY_NOT_CDR3_OR_SEQUENCE_FAMILY_OOD; computational dual-receptor Docking-geometry surrogate only, not binding, Kd, experimental blocking, Docking Gold, or submission evidence.",
+  "data_contract": {
+    "candidate_assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "folds": 5,
+    "frozen_test_access_count": 0,
+    "open_development_access_count": 0,
+    "parents": 54,
+    "prepare_receipt_sha256": "682615eb74f21b778420d6dfed3e085796cf2ff95758a59a56ffc838753cbd0d",
+    "rows": 9849,
+    "seed": 43,
+    "teacher_sha256": "beb3205b998105b900c9d31207d7ff61b6b462f9188d58e5b896c985056c90f0"
+  },
+  "deployment": {
+    "cpu_threads_per_job": 1,
+    "gpu_order": [
+      3,
+      6,
+      5,
+      4,
+      3
+    ],
+    "minimum_gpu_free_memory_mib": 18000,
+    "node": "node1",
+    "root": "/data1/qlyu/projects/pvrig_v2_12_clean_attention_inner_oof_stack_v1_20260722",
+    "waves": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        4
+      ]
+    ]
+  },
+  "external_bindings": {
+    "esm2_model_safetensors": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "ortho_model": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521",
+    "ortho_trainer": "af93c39054a1a73568a68d498406fb3eddbffe1d688c93e16f59319148e285b0",
+    "target_graph_receipt_v2": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9",
+    "target_graphs_v2_pt": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc"
+  },
+  "file_hashes": {
+    "README_ZH.md": "2a3aa6e2219095166b4287e4e4d31ed96d2b382d19c8af7c0d80b7155c2bf52e",
+    "TEST_RESULTS.log": "4dc727fb518d657e8f031ad47aca46ddb6aa267629df0e77e8286c3f792b2340",
+    "launchers/monitor_node1_clean_attention_inner_oof_v1.sh": "b81d006901210d37a0ae7b31e0a9556178abd1f7f6e72629eac4639eed57e592",
+    "launchers/run_node1_clean_attention_inner_oof_v1.sh": "b2b6c6b43eb6d9aab501ccf8650876cfde4f77472fc6fe80e3d8547ab18a56cb",
+    "prepared/OOF_PREPARE_RECEIPT.json": "682615eb74f21b778420d6dfed3e085796cf2ff95758a59a56ffc838753cbd0d",
+    "prepared/candidate_fold_assignment.tsv": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "prepared/fold_0_contract.json": "3b4a8c3729dec42294b53b9499a86a848718bc6aa5d6577db71b01c0d4f6265b",
+    "prepared/fold_0_split.json": "33f99c6ce640f90bf60e4bada4c134619d1fa284154f99dd86e744467c786617",
+    "prepared/fold_1_contract.json": "eef20c533a422d697654b85aa8134a7a380ff7f13a8f17f64f97b826ad2216ad",
+    "prepared/fold_1_split.json": "cdfa29dfaaf65f41250fd0d05d62bb7dd156b3f5113c137b39fb3750a1c60d1e",
+    "prepared/fold_2_contract.json": "ffd25473c4ed440e8f4a4207f5bc155687bddc04f8c7c2fcd8dbc5476bc2db12",
+    "prepared/fold_2_split.json": "915eca5630a2d39e15f451446dd33192d8877508141af7442dd825f3a4a3608d",
+    "prepared/fold_3_contract.json": "006e34a1ed35cc2531b74747c1f103484c284410569af343532400a480e76e1a",
+    "prepared/fold_3_split.json": "85081812dc09e6437dee93514d9649d8f3efacde0ae416bb1663191941948b4b",
+    "prepared/fold_4_contract.json": "ca221a0fb6ec47ec1296a6e6939def48b04c2f348403f0fd102a2383ad77fe96",
+    "prepared/fold_4_split.json": "4ea0bb063463ade9729e79a94db2f096414c25cd04a6aa844a8dda6fa1f0417d",
+    "prepared/parent_fold_assignment.tsv": "e8b590db5a5940e617bf0c8e670251d177646a119277ac7f0c091bc37a5666d9",
+    "prepared/train9849_teacher.tsv": "beb3205b998105b900c9d31207d7ff61b6b462f9188d58e5b896c985056c90f0",
+    "src/collect_clean_attention_inner_oof_v1.py": "8cb1e95c96f3aadcb0838288f66ae32dadab82a356e24b8b3be9a6a679de24b2",
+    "src/materialize_train9849_graph_view_v1.py": "abc0a499a4991a3a3c16043dc50108211de0fa9e36f3f9281027430a4a7f2ed2",
+    "src/prepare_clean_attention_inner_oof_v1.py": "d3cab433ba227e4606133de24c6fe30749d1af63fad3f0b47745d66d512294da",
+    "src/run_clean_attention_inner_oof_fold_v1.py": "8471120e4175185270c6cfe638c1829bdb5496c5fdb44c74265e23fbfd286c28",
+    "tests/test_materialize_and_collect_v1.py": "325749606da7380a0290e6ce57d6e7ac41ac9f4d75aaf3ccbce15a6f2bc9dd18",
+    "tests/test_run_clean_attention_inner_oof_fold_v1.py": "3aa48579cbb0d8c395e2c9c54f8b16a0bf71262ea75a82d4f3dc5c198d3636ec"
+  },
+  "fixed_hyperparameters": {
+    "batch_size": 8,
+    "dropout": 0.25,
+    "epochs": 8,
+    "gradient_accumulation": 4,
+    "learning_rate": 0.0001,
+    "precision": "bf16",
+    "seed": 43,
+    "selection": "NONE_FIXED_EPOCH_ONLY",
+    "weight_decay": 0.02
+  },
+  "frozen_at": "2026-07-22T13:55:00+08:00",
+  "objective": "Generate one leakage-safe whole-parent OOF Clean-Attention prediction for each of the canonical train9849 candidates before training a meta-stack.",
+  "schema_version": "pvrig_v2_12_clean_attention_inner_oof_implementation_freeze_v1",
+  "status": "FROZEN_PRE_LAUNCH",
+  "verification": {
+    "bash_syntax": "PASS",
+    "fold_score_rows": [
+      1979,
+      1980,
+      1969,
+      2001,
+      1920
+    ],
+    "independent_prepare_closure": "PASS",
+    "python_compile": "PASS",
+    "test_status": "OK",
+    "tests": 8
+  }
+}

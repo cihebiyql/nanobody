@@ -1,0 +1,20 @@
+{
+  "design_mode": "H1,H2,H3",
+  "nodes": 8,
+  "omit_aas_counts": {
+    "CXN": 512
+  },
+  "pose_count": 99,
+  "raw_target": 480000,
+  "scientific_boundary": "fixed-pose target-conditioned proposal generation; not binding, docking, affinity, or blocking evidence",
+  "source_count": 11,
+  "status": "READY_FOR_BXCPU_SMOKE_THEN_FULL",
+  "storage_policy": "sequence_tsv_gz_only_no_threaded_pdb",
+  "tasks": 512,
+  "temperature_counts": {
+    "0.15": 128,
+    "0.2": 256,
+    "0.3": 128
+  },
+  "workers_per_node": 64
+}

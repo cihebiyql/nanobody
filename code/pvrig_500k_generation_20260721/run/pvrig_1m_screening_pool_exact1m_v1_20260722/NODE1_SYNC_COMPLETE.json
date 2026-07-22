@@ -1,0 +1,12 @@
+{
+  "created_epoch": 1784695939.9195392,
+  "node1_root": "/data/qlyu/projects/pvrig_1m_screening_pool_exact1m_v1_20260722",
+  "outputs": {
+    "fixed_pose_cpu_raw_qc.tsv.gz": "0c384e0e238aefaa9c44855c35e9a8f05c34a6f4b9263e4788895d367e49d605",
+    "fixed_pose_cpu_selected300k.tsv.gz": "574f4be16e0a8c28cb8ed57e6ffa8ce43e17987cd728a562ed4cbada060540ed",
+    "screening_pool_exact1m.fasta.gz": "569f2026d2d98babd9310a4213ddc945510b08513328ea46e6694677bf9b8d23",
+    "screening_pool_exact1m.tsv.gz": "f86efcaa7273d66373b89f2d2b976acc0c255aa67da462184c772c82077ee273"
+  },
+  "records": 1000000,
+  "status": "NODE1_EXACT1M_HASH_VERIFIED"
+}

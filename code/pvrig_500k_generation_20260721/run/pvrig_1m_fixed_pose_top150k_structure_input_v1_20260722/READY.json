@@ -1,0 +1,23 @@
+{
+  "hard_gate_pass": 267787,
+  "input_records": 300000,
+  "outputs": {
+    "fixed_pose300k_multimetric.tsv.gz": "09737aa8b864a9bf16415c33e46a6ab44dec55056d5ec5020021a1df79dd7851",
+    "fixed_pose_top150k_for_structure.fasta.gz": "ba06b0a751b846aa7bd378f3dea5d0477e9f2a95031e819c1491c1150f3a69a2",
+    "fixed_pose_top150k_for_structure.tsv.gz": "10d44846f23e5b15577cb8c8068382051a2178397e2eaf9a2b5e8f5b273a594b"
+  },
+  "production_subweights": {
+    "AbNatiV": 0.25,
+    "Sapiens": 0.2,
+    "developability_risk_proxy": 0.25,
+    "expression_purity_risk_proxy": 0.3
+  },
+  "scientific_boundary": "computational prestructure triage; purity/expression and affinity are proxies, not measurements",
+  "score_weights": {
+    "binding_consensus_weak_prior": 0.2,
+    "binding_disagreement_penalty": 0.05,
+    "production_proxy": 0.75
+  },
+  "selected_records": 150000,
+  "status": "READY_FOR_BATCHED_NBB2"
+}

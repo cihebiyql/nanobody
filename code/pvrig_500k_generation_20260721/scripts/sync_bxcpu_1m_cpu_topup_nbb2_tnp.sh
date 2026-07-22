@@ -12,6 +12,7 @@ POLL_SECONDS=${POLL_SECONDS:-60}
 PURGE_LOCAL_ARCHIVE_AFTER_NODE1_ACK=${PURGE_LOCAL_ARCHIVE_AFTER_NODE1_ACK:-1}
 PURGE_REMOTE_AFTER_NODE1_ACK=${PURGE_REMOTE_AFTER_NODE1_ACK:-1}
 REMOTE_PURGE_TOOL=${REMOTE_PURGE_TOOL:-}
+REMOTE_PYTHON=${REMOTE_PYTHON:-}
 
 mkdir -p "$LOCAL_ROOT/archives" "$LOCAL_ROOT/state" "$LOCAL_ROOT/aggregate"
 exec >>"$LOCAL_ROOT/sync.log" 2>&1
@@ -25,6 +26,9 @@ case "$REMOTE_CAMPAIGN" in
 esac
 if [[ -z "$REMOTE_PURGE_TOOL" ]]; then
   REMOTE_PURGE_TOOL="$(dirname "$(dirname "$REMOTE_CAMPAIGN")")/scripts/purge_bxcpu_nbb2_after_durable_sync.py"
+fi
+if [[ -z "$REMOTE_PYTHON" ]]; then
+  REMOTE_PYTHON="$(dirname "$(dirname "$REMOTE_CAMPAIGN")")/env/bin/python"
 fi
 
 while true; do
@@ -178,7 +182,7 @@ Path(out).write_text(json.dumps({
 },indent=2,sort_keys=True)+'\n')
 PY
     rsync -a --partial --append-verify "$durable_ack_local" "bxcpu:$durable_ack_remote"
-    ssh bxcpu "'$REMOTE_PURGE_TOOL' \
+    ssh bxcpu "'$REMOTE_PYTHON' '$REMOTE_PURGE_TOOL' \
       --campaign '$REMOTE_CAMPAIGN' \
       --nbb2-job-id '$nbb_job' \
       --tnp-job-id '$tnp_job' \

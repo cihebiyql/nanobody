@@ -1,0 +1,22 @@
+{
+  "arms": {
+    "cx": {
+      "pass": 0,
+      "reasons": {
+        "cdr_n_glyco_motif": 12,
+        "new_or_worsened_hydrophobic_run_ge_5": 32
+      },
+      "records": 32,
+      "unique": 32
+    },
+    "cxn": {
+      "pass": 30,
+      "reasons": {
+        "new_or_worsened_hydrophobic_run_ge_5": 2
+      },
+      "records": 32,
+      "unique": 32
+    }
+  },
+  "status": "PASS"
+}
