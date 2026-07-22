@@ -1,0 +1,58 @@
+{
+  "schema_version": "pvrig_v2_13_phase_b_promotion_contract_v1",
+  "status": "FROZEN_RESULT_BLIND_DURING_PHASE_A_TRAINING",
+  "frozen_before_phase_a_oof_metrics_access": true,
+  "baseline": {
+    "name": "V2_12_L0_CLEAN_ATTENTION_SEED43",
+    "oof_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+    "ef5": 2.2107288846,
+    "ef10": 1.9287381793,
+    "rdual_spearman": 0.5673736321,
+    "rdual_mae": 0.0354205284,
+    "fold_ef5": [1.8172635445, 4.1414141414, 2.1201408020, 2.3655977538, 4.1666666667]
+  },
+  "phase_a_candidate_gate": {
+    "minimum_pooled_ef5": 2.3212653288,
+    "minimum_ef10": 1.8323012703,
+    "minimum_rdual_spearman": 0.5373736321,
+    "maximum_rdual_mae": 0.0389625813,
+    "minimum_folds_with_ef5_delta_at_least_minus_0p50": 4,
+    "minimum_allowed_single_fold_ef5_delta": -1.0
+  },
+  "selection_order_descending": [
+    "pooled_ef5",
+    "binary_ndcg_true_top10_at_budget5",
+    "median_fold_ef5",
+    "worst_fold_ef5",
+    "rdual_spearman",
+    "negative_rdual_mae",
+    "negative_complexity_L1_before_L2_before_L3"
+  ],
+  "phase_b": {
+    "seeds": [43, 917, 1931],
+    "seed43_reuse_required": true,
+    "seed43_retraining_forbidden": true,
+    "new_seed_training": [917, 1931],
+    "folds": 5,
+    "primary_ensemble": "mean_R8_and_mean_R9_then_exact_min",
+    "mean_seed_rank_role": "secondary_phase_c_feature_only",
+    "bad_seed_exclusion_forbidden": true
+  },
+  "phase_c_gate": {
+    "ensemble_ef5_must_not_be_below_selected_seed43": true,
+    "minimum_ef10": 1.8323012703,
+    "minimum_rdual_spearman": 0.5373736321,
+    "maximum_rdual_mae": 0.0389625813,
+    "minimum_seeds_with_ef5_at_least_baseline_minus_0p20": 2,
+    "minimum_allowed_seed_ef5": 1.7107288846
+  },
+  "failure": {
+    "no_eligible_variant": "FAIL_NO_PHASE_A_VARIANT_ELIGIBLE",
+    "partial_seed_or_fold_publish_forbidden": true,
+    "threshold_relaxation_after_result_forbidden": true
+  },
+  "input_access": {
+    "open_development_allowed_for_selection": false,
+    "frozen_test_allowed": false
+  }
+}

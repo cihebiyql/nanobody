@@ -1,0 +1,15 @@
+{
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "outputs": {
+    "HARD_NEGATIVE_FOLD_MODELS.pkl": "3f55444f30b3a7b3460c82716e691c8645ac997b2db81882a5159070a7438eec",
+    "HARD_NEGATIVE_TOP5_METRICS.json": "d6e1f468922529a5b2d13cbdab895f2cd19dc3dfa26a91860e086a8b6362dfa9",
+    "HARD_NEGATIVE_TOP5_OOF_PREDICTIONS.tsv": "6d508a82f10d08e85797bb807cea3c038d523eafc076b7fad18cceda40494cfe"
+  },
+  "schema_version": "pvrig_v2_13_hard_negative_top5_reranker_v1",
+  "selected_method": "H0_EQUAL_RANK4",
+  "status": "PASS_HARD_NEGATIVE_TOP5_OOF",
+  "target_achieved_in_this_oof": false
+}

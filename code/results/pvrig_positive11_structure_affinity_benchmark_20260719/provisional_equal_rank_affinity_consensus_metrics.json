@@ -1,0 +1,45 @@
+{
+  "known_family_pairs": 5,
+  "n_known_kd": 10,
+  "pair_details": [
+    {
+      "child": "20H5",
+      "correct": true,
+      "experimental_direction": 1,
+      "parent": "PVRIG-20",
+      "predicted_direction": 1
+    },
+    {
+      "child": "30H2",
+      "correct": true,
+      "experimental_direction": -1,
+      "parent": "PVRIG-30",
+      "predicted_direction": -1
+    },
+    {
+      "child": "39H2",
+      "correct": false,
+      "experimental_direction": 1,
+      "parent": "PVRIG-39",
+      "predicted_direction": -1
+    },
+    {
+      "child": "39H4",
+      "correct": false,
+      "experimental_direction": 1,
+      "parent": "PVRIG-39",
+      "predicted_direction": -1
+    },
+    {
+      "child": "151H7",
+      "correct": true,
+      "experimental_direction": -1,
+      "parent": "PVRIG-151_HR151",
+      "predicted_direction": -1
+    }
+  ],
+  "pair_direction_correct": 3,
+  "pearson_on_rank_consensus": 0.7038684145737625,
+  "spearman": 0.4424242424242424,
+  "warning": "Exploratory n=10 equal-rank consensus; not validated Kd and not a hard gate."
+}

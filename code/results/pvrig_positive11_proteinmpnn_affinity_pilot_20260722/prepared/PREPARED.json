@@ -1,0 +1,11 @@
+{
+  "candidates": 11,
+  "chain_jsonl_sha256": "90d3690a8fba086b78be5181881d3e4a607167a7970ab15322e1cc25cfad573d",
+  "designed_chain": "B",
+  "fixed_chain": "A",
+  "manifest_sha256": "6c69f56353753654995d1651d7841321d0cf53fdab3757bb392f654b35df1276",
+  "parsed_jsonl_sha256": "c54c67f7bac85409767e3d99e44fff9b744b0934b22ec18c0dde212cbbf2a0dd",
+  "poses": 99,
+  "scientific_boundary": "complex-conditioned sequence likelihood; not predicted Kd",
+  "status": "READY"
+}

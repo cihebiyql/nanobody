@@ -1,0 +1,45 @@
+{
+  "files": {
+    "TEST_RESULTS_V2_14_LISTWISE_FULL_V1.log": "7032c6967b16ecdd69a9695759472fdc9dfd2085ecfe0b34069dd82cf1e1efe2",
+    "V2_14_LISTWISE_TOP5_CONTRACT_V1.json": "562400b972fd3f7d6218b189e85dd9e4ce75f10abc007f883710887a22b61e85",
+    "V2_14_LISTWISE_TOP5_PLAN_V1.md": "b9867d24601376fd0e55d5089d3ad5fca174edefec470c559186b9f0f7a5719a",
+    "V2_14_PROMOTION_CONTRACT_V1.json": "50fe7a696cfad25977110c0bf66def86446fa289b50564ca27d8fcd4c6f529f7",
+    "launchers/run_v214_listwise_after_v213_node1_v1.sh": "f295779a3af10ecec3e05233a00a29b2caa002b7a73839e35d5ff25fe4df91b7",
+    "src/collect_v214_listwise_oof_v1.py": "47414aa092871f6ba96e653e1e7d1124ff383cd2b78226673b6b98c949a49c68",
+    "src/run_top5_clean_attention_fold_v1.py": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "src/run_v214_listwise_fold_v1.py": "785c47b32b793d479551d1ea98dc42167336a8dc8f553dd5e7d02f7ba1fc720f",
+    "src/select_v214_variant_v1.py": "f3cba88932158b4f48ee671b8d1185d6b5971930f8a62d1061fe5437c3a64292",
+    "src/top5_listwise_losses_v1.py": "846c7b1f337e8a6a60bd8a06608dbad63d3ad320ba63700f65d4094525fdc9ee",
+    "tests/test_collect_v214_listwise_oof_v1.py": "d0e5a1b7605eea47f6112fea37581c682a1cbf22f6f1b27d6cb9a9ce0e6a0143",
+    "tests/test_run_v214_listwise_fold_v1.py": "9becf6b693b3a164a3bb3647d90246134229ffcbfc3dc59753a5cfbe0df25eb1",
+    "tests/test_select_v214_variant_v1.py": "e64081f53bbf7d797c7e144d6002ea809c1ffc87fda4459a28d5afbcb304ad0a",
+    "tests/test_top5_listwise_losses_v1.py": "509577ef9e6823c6c25d7f97772bb582fc1e0811623662c0db06ef58d1e1ae47"
+  },
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0,
+    "v2_13_phase_a_oof_metrics_accessed_before_freeze": false
+  },
+  "objective": "raise_whole_parent_OOF_EF5_toward_5",
+  "resource_plan": {
+    "batch_size": 32,
+    "gpu_lanes": {
+      "N1": 3,
+      "N2": 4,
+      "N3": 5
+    },
+    "gradient_accumulation": 1
+  },
+  "schema_version": "pvrig_v2_14_listwise_top5_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_V2_13_PHASE_A_OOF_UNSEAL",
+  "tests": {
+    "count": 7,
+    "log_sha256": "7032c6967b16ecdd69a9695759472fdc9dfd2085ecfe0b34069dd82cf1e1efe2",
+    "status": "OK"
+  },
+  "variants": [
+    "N1",
+    "N2",
+    "N3"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "input_bindings": {
+    "assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "b_oof_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+    "contract_sha256": "cd5ac1a7ecd678be90dbfc9e60fa74c97bec9fd168abac66f8baee665c8c605a",
+    "legacy_oof_sha256": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b"
+  },
+  "outputs": {
+    "NESTED_FOLD_MODELS.pkl": "e56231a8bc2ef1a5a6480917c5e118db58f96a59b62770db023c654c8c9154d6",
+    "NESTED_MULTIMODAL_TOP5_METRICS.json": "951137cdcd16f51a164af68e0debe28416bc3ff50ede0b61fe468cbae34ce168",
+    "NESTED_MULTIMODAL_TOP5_OOF_PREDICTIONS.tsv": "a30dd89639a99ddc4e3e00bd615e5c8b7987d5fd0f2fc6c145134fa2dacbacaa"
+  },
+  "schema_version": "pvrig_v2_13_nested_multimodal_top5_stack_v1",
+  "selected_method": "F0_EQUAL_RANK4",
+  "status": "PASS_NESTED_MULTIMODAL_TOP5_OOF",
+  "target_achieved_in_this_oof": false
+}

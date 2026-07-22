@@ -1,0 +1,57 @@
+{
+  "correction": "test_fixture_remote_path_resolution_and_launcher_freeze_reference_only",
+  "files": {
+    "PHASE_B_IMPLEMENTATION_FREEZE_V1_SUPERSEDED_PREPRODUCTION.json": "cb9782c2831608088351bd4e67e3f945a25c92ba89e5dba47219e2fcb39e3d67",
+    "PHASE_B_PROMOTION_CONTRACT_V1.json": "b0e81479a80f0d9cf7b3e62071322ae5f5e8d649dfeff791a678a21c39059fbb",
+    "PHASE_B_SELECTION_PREREGISTRATION_FREEZE_V1.json": "e8487f1da73d71a62ee07d3ef19cfeb806c753868ea46a29395c9e26289d19dd",
+    "TEST_RESULTS_PHASE_B_IMPLEMENTATION_V1_1.log": "b29b5d903f699491edf5dbdcf26bdf12f9c6ac5539d1d2902baee80cb2c16de4",
+    "TOP5_EXPERIMENT_CONTRACT_V1.json": "9447efde316b1d8ccdde4a30ec666a4fe2caa6c9804e49c71d69d9314e5313fe",
+    "launchers/monitor_phase_b_node1_v1.sh": "451572449e96a5071a5f027ff4a4a7466bc8e828c934a1ba73fb6c60e6cd4a68",
+    "launchers/run_phase_b_node1_v1.sh": "823bc274149c309f8bcbda1c2328936fdc5895b0367b48b0fcdb9321668ad416",
+    "src/aggregate_phase_b_3seed_v1.py": "4b1ebe4467eb397aa4fd3915529b4efd30693f831049d76c6c86ec32c3bf5d49",
+    "src/collect_top5_oof_seed_v1.py": "0386ba587b52fe8459696ae12fd8e4aedb8a9e0f273125911f656d55e7b83fc8",
+    "src/materialize_phase_b_seed_contracts_v1.py": "a277d516f77727cbd56d48d3e669e8165bdb5cb8bc2124fc3e80a25d89fc8053",
+    "src/run_top5_clean_attention_fold_v1.py": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "src/select_phase_a_variant_v1.py": "9c38cae0cf392ba3c1cbed35d84639eccf4add7b28d8a3a3f2d70fe875753dce",
+    "tests/test_aggregate_phase_b_3seed_v1.py": "b8f5d81ce3c4e08581e3779db3baadc125de0d27d9e0874aa0029fd0bba41adc",
+    "tests/test_collect_top5_oof_seed_v1.py": "b0b43864495e2ada925dc2475d945cb69d566b5e824dfbfbbf0e269703bfac47",
+    "tests/test_materialize_phase_b_seed_contracts_v1.py": "78a2568235671d7c5f8e4fdb1a4c1000e3bc293ebc1e125be8d6f57413257444",
+    "tests/test_run_top5_clean_attention_fold_v1.py": "2719dd15865c23cd7d7c0c383c77f856bd307b770e230a44afdcae5897f84c13",
+    "tests/test_select_phase_a_variant_v1.py": "627533c7b6f46fcaa1f1d6532def646f0ff16617de825a6fcc8c202e19899e75"
+  },
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0,
+    "phase_a_oof_metrics_accessed_before_freeze": false
+  },
+  "objective": "maximize_true_Docking_top10_recovery_at_budget5_percent",
+  "phase_b_design": {
+    "bad_seed_exclusion_forbidden": true,
+    "folds_per_new_seed": 5,
+    "new_seed_training": [
+      917,
+      1931
+    ],
+    "primary_ensemble": "mean_R8_and_mean_R9_then_exact_min",
+    "seed43_reused_not_retrained": true,
+    "seeds": [
+      43,
+      917,
+      1931
+    ],
+    "selected_variant": "result_blind_phase_a_contract"
+  },
+  "schema_version": "pvrig_v2_13_phase_b_implementation_freeze_v1_1",
+  "scientific_configuration_changed_from_v1": false,
+  "status": "FROZEN_AFTER_LOCAL_AND_REMOTE_PATH_TESTS_BEFORE_PHASE_A_OOF_UNSEAL",
+  "supersedes": "PHASE_B_IMPLEMENTATION_FREEZE_V1.json",
+  "tests": {
+    "count": 17,
+    "log_sha256": "b29b5d903f699491edf5dbdcf26bdf12f9c6ac5539d1d2902baee80cb2c16de4",
+    "shell_syntax": [
+      "launchers/run_phase_b_node1_v1.sh",
+      "launchers/monitor_phase_b_node1_v1.sh"
+    ],
+    "status": "OK"
+  }
+}

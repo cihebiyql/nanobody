@@ -1,0 +1,24 @@
+{
+  "files": {
+    "PHASE_C_MULTIMODAL_IMPLEMENTATION_FREEZE_V1.json": "6d362fd76e9f3ef9d70f77b34c44b5a3cd22a55a6ed60b2cf620b0f2a802e0a0",
+    "PHASE_C_MULTIMODAL_TOP5_CONTRACT_V1.json": "cd5ac1a7ecd678be90dbfc9e60fa74c97bec9fd168abac66f8baee665c8c605a",
+    "TEST_RESULTS_PHASE_C_AUTORUN_V1.log": "caf9b44c2b2f46fe7e851d9a6433c9ebdc3ecf05d88e60179534d1bcddc4b2b2",
+    "launchers/run_phase_c1_after_phase_b_node1_v1.sh": "121f1e885c310006913027eaac61361a796f7d07f138e836a962e453df20dcec",
+    "src/run_nested_multimodal_top5_stack_v1.py": "b3c0ae063a39cfc94ff4cd215388802aa78d37a2a784e6b5bba4bf7d1a3d74ea",
+    "tests/test_run_nested_multimodal_top5_stack_v1.py": "1c1e1fd6752598380d9a88e303fc6daed72156786922e59b9868e14bee3583e3"
+  },
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0,
+    "phase_a_oof_metrics_accessed_before_freeze": false
+  },
+  "schema_version": "pvrig_v2_13_phase_c_autorun_deployment_freeze_v1",
+  "scientific_configuration_change_from_phase_c_freeze": false,
+  "status": "FROZEN_BEFORE_PHASE_A_OOF_UNSEAL",
+  "tests": {
+    "count": 4,
+    "log_sha256": "caf9b44c2b2f46fe7e851d9a6433c9ebdc3ecf05d88e60179534d1bcddc4b2b2",
+    "shell_syntax": "PASS",
+    "status": "OK"
+  }
+}

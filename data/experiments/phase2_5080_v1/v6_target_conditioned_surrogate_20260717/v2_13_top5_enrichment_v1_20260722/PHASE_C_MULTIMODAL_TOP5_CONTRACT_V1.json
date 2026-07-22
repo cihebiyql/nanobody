@@ -1,0 +1,90 @@
+{
+  "b_modes_allowed": {
+    "clean_seed43": true,
+    "phase_b_3seed": true
+  },
+  "base_order": [
+    "S0",
+    "M2",
+    "C2",
+    "B"
+  ],
+  "claim_boundary": "Whole-parent OOF computational dual-receptor Docking-geometry meta-surrogate; not binding, affinity, experimental blocking, Docking Gold, or sealed-test evidence.",
+  "counts": {
+    "outer_folds": 5,
+    "parents": 54,
+    "rows": 9849
+  },
+  "hgb": {
+    "early_stopping": false,
+    "l2_regularization": 10.0,
+    "learning_rate": 0.05,
+    "max_depth": 2,
+    "max_iter": 128,
+    "min_samples_leaf": 256,
+    "random_state": 43
+  },
+  "inner_selection_objective": "mean_inner_fold_EF5_minus_0p5_times_std_then_mean_EF10_then_simplicity",
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "input_bindings": {
+    "assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "clean_b_oof_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+    "legacy_oof_sha256": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b",
+    "phase_b_implementation_freeze_sha256": "48f63e6428cf73aaa1cb4867bf91908e44c298e670ea892f9dc3b7c52dcb6cb9",
+    "phase_b_promotion_contract_sha256": "b0e81479a80f0d9cf7b3e62071322ae5f5e8d649dfeff791a678a21c39059fbb"
+  },
+  "logistic_c_grid": [
+    0.01,
+    0.1,
+    1.0
+  ],
+  "methods": [
+    "F0_EQUAL_RANK4",
+    "F1_NESTED_WEIGHTED_RANK4",
+    "F2_NESTED_POSITIVE_RIDGE4",
+    "F3_NESTED_LOGISTIC_TOP10",
+    "F4_SHALLOW_HGB_TOP10"
+  ],
+  "objective": "maximize_EF_true_Docking_top10_at_budget5_percent_toward_5",
+  "positive_ridge_alpha_grid": [
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+  ],
+  "promotion_gate": {
+    "maximum_ef10_decrement": 0.1,
+    "maximum_median_fold_ef5_decrement": 0.2,
+    "maximum_worst_fold_ef5_decrement": 0.5,
+    "minimum_ef5_increment": 0.1,
+    "minimum_folds_with_delta_at_least_minus_0p5": 4,
+    "minimum_single_fold_delta": -1.0
+  },
+  "rank_weight_grid": {
+    "maximum_each": 0.5,
+    "minimum_each": 0.1,
+    "sum": 1.0,
+    "values": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ]
+  },
+  "schema_version": "pvrig_v2_13_nested_multimodal_top5_contract_v1",
+  "selection_order": [
+    "pooled_EF5",
+    "binary_NDCG_top10_at_5",
+    "median_fold_EF5",
+    "worst_fold_EF5",
+    "EF10",
+    "Spearman",
+    "simplicity"
+  ],
+  "status": "FROZEN_BEFORE_META_OOF_EXECUTION"
+}

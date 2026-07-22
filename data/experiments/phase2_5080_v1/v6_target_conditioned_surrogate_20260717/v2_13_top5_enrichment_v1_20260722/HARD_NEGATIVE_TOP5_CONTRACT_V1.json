@@ -1,0 +1,82 @@
+{
+  "claim_boundary": "Whole-parent OOF computational dual-receptor Docking-geometry meta-surrogate; not binding, affinity, experimental blocking, Docking Gold, or sealed-test evidence.",
+  "expanded_features": {
+    "components": [
+      "19_core_multimodal",
+      "6_rank_products",
+      "6_rank_absolute_differences",
+      "3_rank_votes",
+      "2_tail_means"
+    ],
+    "contains_docking_pose_inputs": false,
+    "contains_ids": false,
+    "contains_parent_id": false,
+    "count": 36
+  },
+  "extra_trees": {
+    "bootstrap": false,
+    "max_depth": 8,
+    "max_features": 0.75,
+    "min_samples_leaf": 16,
+    "n_estimators": 512,
+    "n_jobs": 8,
+    "random_state": 43
+  },
+  "hgb": {
+    "early_stopping": false,
+    "l2_regularization": 10.0,
+    "learning_rate": 0.05,
+    "max_depth": 3,
+    "max_iter": 256,
+    "min_samples_leaf": 64,
+    "random_state": 43
+  },
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "input_bindings": {
+    "assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "clean_b_oof_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+    "legacy_oof_sha256": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b",
+    "phase_b_promotion_contract_sha256": "b0e81479a80f0d9cf7b3e62071322ae5f5e8d649dfeff791a678a21c39059fbb",
+    "signal_ceiling_diagnostic_sha256": "9037c14bee941b49a0107e6843b2c4c1f9e2ce427cddd0b793ec38434b2daeca"
+  },
+  "logistic": {
+    "C": 0.1,
+    "max_iter": 3000,
+    "penalty": "l2",
+    "random_state": 43
+  },
+  "methods": [
+    "H0_EQUAL_RANK4",
+    "H1_HGB_UNION10",
+    "H2_HGB_UNION20",
+    "H3_HGB_UNION30",
+    "H4_EXTRA_TREES_UNION20",
+    "H5_LOGISTIC_UNION20",
+    "H6_HGB20_RANK_BLEND"
+  ],
+  "objective": "rerank_label_free_multimodal_union_to_raise_EF5_toward_5",
+  "promotion_gate": {
+    "maximum_ef10_decrement": 0.1,
+    "minimum_ef5_increment": 0.1,
+    "minimum_folds_with_delta_at_least_minus_0p5": 4,
+    "minimum_single_fold_delta": -1.0
+  },
+  "rank_blend": {
+    "equal_rank4": 0.3,
+    "hgb20": 0.7
+  },
+  "schema_version": "pvrig_v2_13_hard_negative_top5_contract_v1",
+  "stage1": {
+    "membership": "candidate_is_in_top_fraction_of_any_S0_M2_C2_B",
+    "outside_pool": "deterministic_label_free_tail",
+    "union_fractions": [
+      0.1,
+      0.2,
+      0.3
+    ]
+  },
+  "status": "FROZEN_BEFORE_HARD_NEGATIVE_OOF"
+}

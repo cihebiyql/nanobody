@@ -1,0 +1,26 @@
+{
+  "files": {
+    "PHASE_C_MULTIMODAL_TOP5_CONTRACT_V1.json": "cd5ac1a7ecd678be90dbfc9e60fa74c97bec9fd168abac66f8baee665c8c605a",
+    "TEST_RESULTS_PHASE_C_MULTIMODAL_V1.log": "c6502de8f65a720a706c55d8f42a5c498ee905566fc0d577708816604c637a5c",
+    "TOP5_TO_5_EXECUTION_PLAN_V1.md": "8fa1ed90db21b03206c2d0b7c56d83e0f5e837878a41e6306db3b3b47600279b",
+    "src/run_nested_multimodal_top5_stack_v1.py": "b3c0ae063a39cfc94ff4cd215388802aa78d37a2a784e6b5bba4bf7d1a3d74ea",
+    "tests/test_run_nested_multimodal_top5_stack_v1.py": "1c1e1fd6752598380d9a88e303fc6daed72156786922e59b9868e14bee3583e3"
+  },
+  "frozen_test_rows_accessed": 0,
+  "methods_frozen": [
+    "F0_EQUAL_RANK4",
+    "F1_NESTED_WEIGHTED_RANK4",
+    "F2_NESTED_POSITIVE_RIDGE4",
+    "F3_NESTED_LOGISTIC_TOP10",
+    "F4_SHALLOW_HGB_TOP10"
+  ],
+  "open_development_rows_accessed_for_fit_or_selection": 0,
+  "phase_a_oof_metrics_accessed_before_freeze": false,
+  "schema_version": "pvrig_v2_13_phase_c_multimodal_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_C0_META_OOF_EXECUTION",
+  "tests": {
+    "count": 4,
+    "log_sha256": "c6502de8f65a720a706c55d8f42a5c498ee905566fc0d577708816604c637a5c",
+    "status": "OK"
+  }
+}

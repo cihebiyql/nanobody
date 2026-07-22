@@ -1,0 +1,22 @@
+{
+  "baseline_oof_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+  "files": {
+    "PHASE_B_PROMOTION_CONTRACT_V1.json": "b0e81479a80f0d9cf7b3e62071322ae5f5e8d649dfeff791a678a21c39059fbb",
+    "TEST_RESULTS_PHASE_B_SELECTION_V1.log": "fe13409995cff184c116e4524df54f7a8d57cdf19040b7bae0adb526d89ca551",
+    "src/select_phase_a_variant_v1.py": "9c38cae0cf392ba3c1cbed35d84639eccf4add7b28d8a3a3f2d70fe875753dce",
+    "tests/test_select_phase_a_variant_v1.py": "627533c7b6f46fcaa1f1d6532def646f0ff16617de825a6fcc8c202e19899e75"
+  },
+  "input_access": {
+    "frozen_test": 0,
+    "open_development_for_selection": 0
+  },
+  "phase_a_epoch_loss_progress_only_seen": true,
+  "phase_a_oof_metrics_accessed_before_freeze": false,
+  "schema_version": "pvrig_v2_13_phase_b_selection_preregistration_freeze_v1",
+  "status": "FROZEN_RESULT_BLIND_DURING_PHASE_A_TRAINING",
+  "tests": {
+    "count": 2,
+    "log_sha256": "fe13409995cff184c116e4524df54f7a8d57cdf19040b7bae0adb526d89ca551",
+    "status": "OK"
+  }
+}

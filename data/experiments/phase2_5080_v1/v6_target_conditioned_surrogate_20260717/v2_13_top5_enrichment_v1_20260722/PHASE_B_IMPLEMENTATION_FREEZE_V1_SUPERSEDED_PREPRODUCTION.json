@@ -1,0 +1,16 @@
+{
+  "schema_version": "pvrig_v2_13_phase_b_implementation_freeze_supersession_v1",
+  "status": "SUPERSEDED_PREPRODUCTION_REMOTE_TEST_PATH_ONLY",
+  "superseded_freeze": "PHASE_B_IMPLEMENTATION_FREEZE_V1.json",
+  "superseded_freeze_sha256": "be20de67ba374a9d0060ea8c28a1f601e185f2dc2cc26c137bc52db555ca0f89",
+  "production_phase_b_training_started_under_superseded_freeze": false,
+  "phase_a_oof_metrics_accessed": false,
+  "failure": {
+    "remote_python_tests_passed": 15,
+    "remote_python_tests_failed": 2,
+    "reason": "test_fixture_sibling_path_missing_pvrig_prefix_on_flat_node1_deployment",
+    "production_code_failure": false
+  },
+  "permitted_correction": "test_fixture_path_resolution_and_freeze_launcher_reference_only",
+  "scientific_configuration_change": false
+}

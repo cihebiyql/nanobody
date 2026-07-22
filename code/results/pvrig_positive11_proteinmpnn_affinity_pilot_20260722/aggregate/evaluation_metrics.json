@@ -1,0 +1,55 @@
+{
+  "aggregation": "median VHH-chain log-likelihood across 9 frozen HADDOCK poses",
+  "candidate_count": 11,
+  "model": "ProteinMPNN v_48_020",
+  "n_known_kd": 10,
+  "pearson_vs_pKd": -0.08247953979829793,
+  "pose_count": 99,
+  "scientific_boundary": "weak complex-conditioned affinity evidence; not predicted Kd",
+  "spearman_vs_pKd": -0.030303030303030304,
+  "status": "PASS",
+  "within_family_direction": {
+    "correct": 4,
+    "details": [
+      {
+        "a": "PVRIG-20",
+        "b": "20H5",
+        "family": 20,
+        "verdict": "wrong"
+      },
+      {
+        "a": "PVRIG-30",
+        "b": "30H2",
+        "family": 30,
+        "verdict": "correct"
+      },
+      {
+        "a": "PVRIG-39",
+        "b": "39H2",
+        "family": 39,
+        "verdict": "wrong"
+      },
+      {
+        "a": "PVRIG-39",
+        "b": "39H4",
+        "family": 39,
+        "verdict": "correct"
+      },
+      {
+        "a": "39H2",
+        "b": "39H4",
+        "family": 39,
+        "verdict": "correct"
+      },
+      {
+        "a": "PVRIG-151_HR151",
+        "b": "151H7",
+        "family": 151,
+        "verdict": "correct"
+      }
+    ],
+    "ties": 0,
+    "total": 6,
+    "wrong": 2
+  }
+}

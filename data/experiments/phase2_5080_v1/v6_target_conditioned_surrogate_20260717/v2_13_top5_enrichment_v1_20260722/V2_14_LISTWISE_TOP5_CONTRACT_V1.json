@@ -1,0 +1,121 @@
+{
+  "architecture": {
+    "backbone": "frozen_ESM2_650M",
+    "derived_output": "exact_min",
+    "direct_outputs": [
+      "R8",
+      "R9"
+    ],
+    "target_graphs": [
+      "8X6B",
+      "9E6Y"
+    ],
+    "vhh_graph": "label_free_monomer"
+  },
+  "balanced_batch": {
+    "effective_batch": 32,
+    "top_per_batch": 8,
+    "top_threshold": 0.9
+  },
+  "fixed_training": {
+    "batch_size": 32,
+    "dropout": 0.25,
+    "dual_weight": 0.5,
+    "epochs": 8,
+    "gradient_accumulation": 1,
+    "graph_hidden_dim": 128,
+    "huber_beta": 0.03,
+    "learning_rate": 0.0001,
+    "precision": "bf16",
+    "receptor_weight": 1.0,
+    "softmin_tau": 0.02,
+    "weight_decay": 0.02
+  },
+  "implementation_inputs": {
+    "base_runner_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "loss_module_sha256": "846c7b1f337e8a6a60bd8a06608dbad63d3ad320ba63700f65d4094525fdc9ee",
+    "plan_sha256": "b9867d24601376fd0e55d5089d3ad5fca174edefec470c559186b9f0f7a5719a"
+  },
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "input_firewall": [
+    "candidate_id",
+    "parent_id",
+    "campaign_id",
+    "M2",
+    "C2",
+    "Docking_pose",
+    "pose_derived_features"
+  ],
+  "objective": {
+    "primary": "EF_true_top10_at_budget5",
+    "target": 5.0
+  },
+  "sample_weighting": {
+    "top_center": 0.9,
+    "top_scale": 0.05,
+    "top_strength": 3.0
+  },
+  "schema_version": "pvrig_v2_14_listwise_top5_contract_v1",
+  "selection": {
+    "baseline": "V2_12_clean_attention_seed43",
+    "fold_stability": "same_as_V2_13",
+    "maximum_mae": 0.0389625813,
+    "minimum_EF10": 1.8323012703,
+    "minimum_EF5": 2.3212653288,
+    "minimum_spearman": 0.5373736321
+  },
+  "status": "FROZEN_BEFORE_V2_14_LAUNCH",
+  "variants": {
+    "N1": {
+      "false_positive_weight": 0.25,
+      "listmle_weight": 0.25,
+      "occupancy_weight": 0.1,
+      "pair_margin": 0.005,
+      "pair_rank_weight": 0.0,
+      "pair_temperature": 0.02,
+      "positive_percentile": 0.9,
+      "rank_temperature": 0.5,
+      "score_temperature": 0.1,
+      "soft_topk_weight": 0.0,
+      "top_center": 0.9,
+      "top_k": 4,
+      "top_scale": 0.05,
+      "top_strength": 3.0
+    },
+    "N2": {
+      "false_positive_weight": 0.25,
+      "listmle_weight": 0.0,
+      "occupancy_weight": 0.1,
+      "pair_margin": 0.005,
+      "pair_rank_weight": 0.0,
+      "pair_temperature": 0.02,
+      "positive_percentile": 0.9,
+      "rank_temperature": 0.5,
+      "score_temperature": 0.1,
+      "soft_topk_weight": 0.5,
+      "top_center": 0.9,
+      "top_k": 4,
+      "top_scale": 0.05,
+      "top_strength": 3.0
+    },
+    "N3": {
+      "false_positive_weight": 0.25,
+      "listmle_weight": 0.15,
+      "occupancy_weight": 0.1,
+      "pair_margin": 0.005,
+      "pair_rank_weight": 0.25,
+      "pair_temperature": 0.02,
+      "positive_percentile": 0.9,
+      "rank_temperature": 0.5,
+      "score_temperature": 0.1,
+      "soft_topk_weight": 0.3,
+      "top_center": 0.9,
+      "top_k": 4,
+      "top_scale": 0.05,
+      "top_strength": 3.0
+    }
+  }
+}
