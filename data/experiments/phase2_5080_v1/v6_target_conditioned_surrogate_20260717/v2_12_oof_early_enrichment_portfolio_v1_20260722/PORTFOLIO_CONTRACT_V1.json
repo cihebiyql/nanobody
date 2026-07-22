@@ -1,0 +1,48 @@
+{
+  "schema_version": "pvrig_v2_12_oof_early_enrichment_portfolio_contract_v1",
+  "status": "FROZEN_BEFORE_CLEAN_OOF_UNSEAL",
+  "base_models": [
+    "S0_MATCHED_ESM2_650M_PCA_ELASTICNET",
+    "M2_STRUCTURE_ALPHA10",
+    "C2_COARSE_POSE_PCA8",
+    "B_CLEAN_TARGET_ATTENTION"
+  ],
+  "clean_attention_seed": 43,
+  "fit_rows": 9849,
+  "open_development_rows": 795,
+  "continuous_heads": {
+    "CONVEX4_L2_0P01": {
+      "fallback": "M2",
+      "l2": 0.01,
+      "constraints": "all weights >= 0 and sum(weights) = 1"
+    },
+    "POSITIVE_RIDGE4_ALPHA1": {
+      "alpha": 1.0,
+      "positive_coefficients": true,
+      "separate_receptor_heads": true
+    }
+  },
+  "ranking_heads": {
+    "RANK_PERCENTILE_MEAN4": "label-free mean of four base percentile ranks",
+    "RANK_PERCENTILE_MIN4": "label-free minimum of four base percentile ranks",
+    "HGB_TOP10_CHALLENGER": {
+      "max_depth": 2,
+      "max_iter": 64,
+      "learning_rate": 0.05,
+      "min_samples_leaf": 128,
+      "l2_regularization": 5.0,
+      "class_weight": "balanced",
+      "random_state": 43
+    }
+  },
+  "selection_metrics": [
+    "EF_true_top10_at_budget5",
+    "recall_true_top10_at_budget5",
+    "EF_true_top10_at_budget10",
+    "Rdual_spearman",
+    "within_parent_top20_macro_recall"
+  ],
+  "development_used_for_fit_or_hyperparameter_selection": false,
+  "frozen_test_access_count": 0,
+  "claim_boundary": "Open-development computational dual-receptor Docking-geometry surrogate portfolio; not binding, affinity, experimental blocking, Docking Gold, sealed-test, or submission evidence."
+}

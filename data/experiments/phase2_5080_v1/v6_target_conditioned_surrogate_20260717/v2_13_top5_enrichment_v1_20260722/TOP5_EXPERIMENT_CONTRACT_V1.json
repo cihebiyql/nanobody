@@ -1,0 +1,83 @@
+{
+  "schema_version": "pvrig_v2_13_top5_enrichment_contract_v1",
+  "status": "FROZEN_BEFORE_PHASE_A_LAUNCH",
+  "objective": {
+    "primary_metric": "EF_true_top10_at_budget5",
+    "target": 5.0,
+    "truth": "R_dual_min_exact_min_of_R8_R9",
+    "claim_boundary": "computational_independent_dual_receptor_Docking_geometry_only"
+  },
+  "data": {
+    "fit_rows": 9849,
+    "parent_clusters": 54,
+    "outer_folds": 5,
+    "fold_assignment": "reuse_exact_v2_12_whole_parent_assignment",
+    "open_development_used_for_training_or_selection": false,
+    "frozen_test_access_allowed": false
+  },
+  "frozen_base": {
+    "backbone": "ESM2_t33_650M_UR50D_frozen",
+    "graph": "label_free_VHH_monomer_graph",
+    "targets": ["8X6B_fixed_public_graph", "9E6Y_fixed_public_graph"],
+    "direct_outputs": ["R_8X6B", "R_9E6Y"],
+    "derived_output": "exact_min_Rdual",
+    "epochs": 8,
+    "batch_size": 8,
+    "gradient_accumulation": 4,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.02,
+    "dropout": 0.25,
+    "huber_beta": 0.03,
+    "softmin_tau": 0.02
+  },
+  "phase_a_variants": {
+    "L1": {
+      "top_weight_strength": 3.0,
+      "top_weight_center": 0.85,
+      "top_weight_scale": 0.05,
+      "balanced_top_per_batch": 0,
+      "pair_rank_weight": 0.0,
+      "pair_margin": 0.005,
+      "pair_temperature": 0.02
+    },
+    "L2": {
+      "top_weight_strength": 3.0,
+      "top_weight_center": 0.85,
+      "top_weight_scale": 0.05,
+      "balanced_top_per_batch": 2,
+      "balanced_top_threshold": 0.90,
+      "pair_rank_weight": 0.25,
+      "pair_margin": 0.005,
+      "pair_temperature": 0.02
+    },
+    "L3": {
+      "top_weight_strength": 3.0,
+      "top_weight_center": 0.85,
+      "top_weight_scale": 0.05,
+      "balanced_top_per_batch": 2,
+      "balanced_top_threshold": 0.90,
+      "pair_rank_weight": 0.50,
+      "pair_margin": 0.005,
+      "pair_temperature": 0.02
+    }
+  },
+  "phase_a_deployment": {
+    "seed": 43,
+    "gpu_lane": {"L1": 3, "L2": 4, "L3": 5},
+    "cpu_threads_per_job": 1,
+    "minimum_free_gpu_memory_mib": 18000,
+    "maximum_launch_gpu_utilization_percent": 50,
+    "remote_root": "/data1/qlyu/projects/pvrig_v2_13_top5_ensemble_v1_20260722"
+  },
+  "phase_b_seeds": [43, 917, 1931],
+  "forbidden_model_inputs": [
+    "candidate_id",
+    "parent_id",
+    "campaign_id",
+    "teacher_source",
+    "M2_outputs",
+    "C2_outputs",
+    "Docking_pose",
+    "pose_derived_features"
+  ]
+}

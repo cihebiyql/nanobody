@@ -1,0 +1,20 @@
+{
+  "schema_version": "pvrig_v2_12_oof_portfolio_v1_1_correction_record",
+  "status": "V1_SUPERSEDED_BEFORE_ANY_MODEL_FIT_OR_DEVELOPMENT_RESULT",
+  "failed_version": "/data1/qlyu/projects/pvrig_v2_12_oof_early_enrichment_portfolio_v1_20260722",
+  "failure": "teacher_rows:10644",
+  "failure_stage": "input row-count validation before construction of fit matrices",
+  "failed_version_output_count": 0,
+  "scientific_change": false,
+  "correction": "Bind the already-frozen train9849_teacher.tsv instead of the canonical10644 outer table.",
+  "unchanged": [
+    "S0/M2/C2/B base predictions",
+    "continuous and ranking head definitions",
+    "all hyperparameters",
+    "all evaluation metrics",
+    "open-development cohort",
+    "frozen-test access remains zero"
+  ],
+  "clean_oof_was_unsealed_before_correction": true,
+  "open_development_portfolio_result_was_not_observed_before_correction": true
+}

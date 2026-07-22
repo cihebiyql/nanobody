@@ -1,0 +1,121 @@
+{
+  "access": {
+    "development_used_for_fit_or_selection": false,
+    "frozen_test_access_count": 0
+  },
+  "oof": {
+    "EF5_true_top10": 2.2107288845872675,
+    "Rdual_mae": 0.03542052842562697,
+    "Rdual_spearman": 0.5673736320554629,
+    "candidates": 9849,
+    "folds": 5,
+    "predictions_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+    "recall5_true_top10": 0.11065989847715736,
+    "rows": 9849,
+    "seed": 43,
+    "within_parent20": 0.3167898600418707
+  },
+  "open_development": {
+    "convex_weights": {
+      "B": 0.24661669496861574,
+      "C2": 0.25387970103988006,
+      "M2": 0.2510148228906031,
+      "S0": 0.24848878110090108
+    },
+    "models": {
+      "B": {
+        "EF10_true_top10": 2.7328125,
+        "EF5_true_top10": 3.2296875,
+        "Rdual_mae": 0.035378552927044025,
+        "Rdual_spearman": 0.6495269425773061,
+        "group": "bases",
+        "hits5_true_top10": 13,
+        "recall5_true_top10": 0.1625,
+        "within_parent20": 0.3478151260504202
+      },
+      "C2": {
+        "EF10_true_top10": 1.86328125,
+        "EF5_true_top10": 2.9812499999999997,
+        "Rdual_mae": 0.037871682443167444,
+        "Rdual_spearman": 0.6085176607814511,
+        "group": "bases",
+        "hits5_true_top10": 12,
+        "recall5_true_top10": 0.15,
+        "within_parent20": 0.35512605042016804
+      },
+      "CONVEX4_L2_0P01": {
+        "EF10_true_top10": 3.10546875,
+        "EF5_true_top10": 3.975,
+        "Rdual_mae": 0.03240074714210807,
+        "Rdual_spearman": 0.6565275643939005,
+        "group": "continuous_heads",
+        "hits5_true_top10": 16,
+        "recall5_true_top10": 0.2,
+        "within_parent20": 0.4032212885154062
+      },
+      "HGB_TOP10_CHALLENGER": {
+        "EF10_true_top10": 2.7328125,
+        "EF5_true_top10": 3.2296875,
+        "Rdual_mae": null,
+        "Rdual_spearman": 0.6309806880877724,
+        "group": "ranking_heads",
+        "hits5_true_top10": 13,
+        "recall5_true_top10": 0.1625,
+        "within_parent20": 0.28091036414565823
+      },
+      "M2": {
+        "EF10_true_top10": 2.9812499999999997,
+        "EF5_true_top10": 3.2296875,
+        "Rdual_mae": 0.0331534039495879,
+        "Rdual_spearman": 0.6596806808626087,
+        "group": "bases",
+        "hits5_true_top10": 13,
+        "recall5_true_top10": 0.1625,
+        "within_parent20": 0.32036414565826327
+      },
+      "POSITIVE_RIDGE4_ALPHA1": {
+        "EF10_true_top10": 2.9812499999999997,
+        "EF5_true_top10": 3.7265625,
+        "Rdual_mae": 0.03286554257237151,
+        "Rdual_spearman": 0.6558407741382641,
+        "group": "continuous_heads",
+        "hits5_true_top10": 15,
+        "recall5_true_top10": 0.1875,
+        "within_parent20": 0.3889355742296918
+      },
+      "RANK_PERCENTILE_MEAN4": {
+        "EF10_true_top10": 2.8570312499999995,
+        "EF5_true_top10": 3.975,
+        "Rdual_mae": null,
+        "Rdual_spearman": 0.6570328531066724,
+        "group": "ranking_heads",
+        "hits5_true_top10": 16,
+        "recall5_true_top10": 0.2,
+        "within_parent20": 0.37703081232492996
+      },
+      "RANK_PERCENTILE_MIN4": {
+        "EF10_true_top10": 2.60859375,
+        "EF5_true_top10": 3.4781249999999995,
+        "Rdual_mae": null,
+        "Rdual_spearman": 0.628123275266778,
+        "group": "ranking_heads",
+        "hits5_true_top10": 14,
+        "recall5_true_top10": 0.175,
+        "within_parent20": 0.33305322128851544
+      },
+      "S0": {
+        "EF10_true_top10": 2.484375,
+        "EF5_true_top10": 2.9812499999999997,
+        "Rdual_mae": 0.0343214883226617,
+        "Rdual_spearman": 0.6147644739547745,
+        "group": "bases",
+        "hits5_true_top10": 12,
+        "recall5_true_top10": 0.15,
+        "within_parent20": 0.3796498599439776
+      }
+    },
+    "rows": 795
+  },
+  "schema_version": "pvrig_v2_12_local_independent_terminal_verification_v1",
+  "status": "PASS_LOCAL_INDEPENDENT_OOF_AND_PORTFOLIO_VERIFICATION"
+}

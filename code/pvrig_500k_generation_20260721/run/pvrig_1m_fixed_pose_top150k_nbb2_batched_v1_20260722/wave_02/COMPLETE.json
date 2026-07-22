@@ -1,0 +1,72 @@
+{
+  "archives": [
+    {
+      "created_epoch": 1784704480.0338917,
+      "job_id": "11940712",
+      "node": "node_000",
+      "sha256": "9c354a3dff5ce21c78fbc0005cc525b593c123b5cc8d78364bfc4a9e76fa9aaf",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704548.8134856,
+      "job_id": "11940712",
+      "node": "node_001",
+      "sha256": "38c92ac3ecbc6eef19d28f35a2caf7285ff9d7f6d64aa732a9d7a9530fc41219",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704617.7821066,
+      "job_id": "11940712",
+      "node": "node_002",
+      "sha256": "b154f54122719452bfbb5b0bf4cdc8b462e026a2b9a5b28ac7646e5d6e896255",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704675.6634436,
+      "job_id": "11940712",
+      "node": "node_003",
+      "sha256": "e055ac7e5821e06dd448fe3e1a835e89bbc7c060a281ec52247a6775f564461f",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704731.0439763,
+      "job_id": "11940712",
+      "node": "node_004",
+      "sha256": "547ed37490c372eb64f58fa465035f05306ff8bdb84aed8437c480ecbfd8903b",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704811.4459357,
+      "job_id": "11940712",
+      "node": "node_005",
+      "sha256": "02aee68e95bea2c4408abeca860e4b1af84fb9bd49b416afa6e43e9f5fad1a42",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704891.8094273,
+      "job_id": "11940712",
+      "node": "node_006",
+      "sha256": "49744b7103bd943c26ab3ef5413cf4acb528e4146cf8c28d77b74ba99f9f6722",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    },
+    {
+      "created_epoch": 1784704961.8350756,
+      "job_id": "11940712",
+      "node": "node_007",
+      "sha256": "31e86d3875f919e648978ecc007b4ceee44037dd85f7ec09b06711348fd6018b",
+      "status": "LOCAL_AND_NODE1_ARCHIVE_HASH_VERIFIED",
+      "wave": "wave_02"
+    }
+  ],
+  "created_epoch": 1784704961.8777425,
+  "job_id": "11940712",
+  "status": "WAVE_8_NODES_LOCAL_AND_NODE1_HASH_VERIFIED",
+  "wave": "wave_02"
+}

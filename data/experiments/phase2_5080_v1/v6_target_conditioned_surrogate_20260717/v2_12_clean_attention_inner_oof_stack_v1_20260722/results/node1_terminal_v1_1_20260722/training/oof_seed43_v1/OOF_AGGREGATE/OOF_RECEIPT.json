@@ -1,0 +1,98 @@
+{
+  "claim_boundary": "Train9849 whole-parent inner-OOF sequence plus label-free VHH monomer graph plus fixed public 8X6B/9E6Y target-graph approximation of independent dual-receptor computational Docking geometry; whole-parent OOF only (not CDR3/sequence-family OOD), no open-development or frozen-test model fitting, and not binding, affinity, experimental blocking, Docking Gold, or submission evidence.",
+  "counts": {
+    "folds": 5,
+    "parents": 54,
+    "rows": 9849,
+    "seed": 43
+  },
+  "fold_audit": [
+    {
+      "fold_id": 0,
+      "parent_overlap": 0,
+      "score_parents": 10,
+      "score_rows": 1979,
+      "train_parents": 44,
+      "train_rows": 7870
+    },
+    {
+      "fold_id": 1,
+      "parent_overlap": 0,
+      "score_parents": 10,
+      "score_rows": 1980,
+      "train_parents": 44,
+      "train_rows": 7869
+    },
+    {
+      "fold_id": 2,
+      "parent_overlap": 0,
+      "score_parents": 10,
+      "score_rows": 1969,
+      "train_parents": 44,
+      "train_rows": 7880
+    },
+    {
+      "fold_id": 3,
+      "parent_overlap": 0,
+      "score_parents": 10,
+      "score_rows": 2001,
+      "train_parents": 44,
+      "train_rows": 7848
+    },
+    {
+      "fold_id": 4,
+      "parent_overlap": 0,
+      "score_parents": 14,
+      "score_rows": 1920,
+      "train_parents": 40,
+      "train_rows": 7929
+    }
+  ],
+  "input_access": {
+    "frozen_test_rows": 0,
+    "open_development_rows": 0
+  },
+  "inputs": {
+    "assignment_sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "folds": {
+      "0": {
+        "contract": "3b4a8c3729dec42294b53b9499a86a848718bc6aa5d6577db71b01c0d4f6265b",
+        "predictions": "f904f030a84e85db83666852a8d565b01db06943c44cf76350d2e9adfca9fc33",
+        "result": "fb1b09993307e52acdcb4df9f9e7050c321aeb540446f401b99ce62d4fca9dfd"
+      },
+      "1": {
+        "contract": "eef20c533a422d697654b85aa8134a7a380ff7f13a8f17f64f97b826ad2216ad",
+        "predictions": "ac14b0581dc87febf9fb41b21a468a2688637ba82919092d7d17e9723d3dd2c8",
+        "result": "168697aa12009ecd2bbdc579517d03189937a7d1667cafd0e4f94fa9af8a0b32"
+      },
+      "2": {
+        "contract": "ffd25473c4ed440e8f4a4207f5bc155687bddc04f8c7c2fcd8dbc5476bc2db12",
+        "predictions": "a53af560fe72ca61c41c46592024f2f86e5ffc5ff7d508d94a77e8d22c130a57",
+        "result": "ff27b1c39dd38d3c05edab75458fab7414519c249546c5d446002cb7e93a3ae6"
+      },
+      "3": {
+        "contract": "006e34a1ed35cc2531b74747c1f103484c284410569af343532400a480e76e1a",
+        "predictions": "3421bbca5ae82dd7cb5b88e42c05b25f3d78226dcabe7223c8481cbe4c53d47f",
+        "result": "fb2328275e280398675a6b82d7edf948ef8cccbb37c3dbd86218427d8b67de11"
+      },
+      "4": {
+        "contract": "ca221a0fb6ec47ec1296a6e6939def48b04c2f348403f0fd102a2383ad77fe96",
+        "predictions": "cd3f7b90de0676203f40cb279fe5fc41a4724da1b70987ddb4e6c4a0a07aa0c4",
+        "result": "936ea3559005e042d7d88cd78f4ae7eb9f3b2befe19e8023629d9302249962fa"
+      }
+    },
+    "teacher_sha256": "beb3205b998105b900c9d31207d7ff61b6b462f9188d58e5b896c985056c90f0"
+  },
+  "numeric_closure": {
+    "float32_atol": 4e-08,
+    "max_prediction_exact_min_abs_diff": 0.0,
+    "max_truth_abs_diff": 2.980199997892896e-08,
+    "max_truth_exact_min_abs_diff": 0.0
+  },
+  "outputs": {
+    "CLEAN_ATTENTION_TRAIN9849_OOF_PREDICTIONS.tsv": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+    "OOF_METRICS.json": "df50cd69d473b3bb0f3a103cb4497dda8f26e8663f3f06cf675cdc4008cf8352"
+  },
+  "schema_version": "pvrig_v2_12_clean_attention_inner_oof_collection_v1",
+  "status": "PASS_CLEAN_ATTENTION_TRAIN9849_WHOLE_PARENT_OOF"
+}

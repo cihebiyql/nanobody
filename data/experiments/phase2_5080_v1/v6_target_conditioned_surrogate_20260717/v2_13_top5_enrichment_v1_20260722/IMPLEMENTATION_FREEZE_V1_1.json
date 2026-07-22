@@ -1,0 +1,35 @@
+{
+  "files": {
+    "IMPLEMENTATION_FREEZE_V1_SUPERSEDED_PREPRODUCTION.json": "69df3fa5ed934b6855abb7f58f41aa2ad2280995ffc09040840803ab41c3dadc",
+    "PLAN_ZH.md": "a4955598cf5d1fa401cf42013e3ca0557cdf03cde6432d41248dc7770d63d4e1",
+    "REMOTE_TEST_PATH_CORRECTION_V1_1.json": "d4be23d5966f72c37f619fc10d82c41a2dbc42b2dbfb371edea7e4b3d2d953c6",
+    "TEST_RESULTS_PHASE_A_V1_1.log": "746dde2affc748fb2fae3fe6941883133a09e27b21dd9d54fa65462670444f86",
+    "TOP5_EXPERIMENT_CONTRACT_V1.json": "9447efde316b1d8ccdde4a30ec666a4fe2caa6c9804e49c71d69d9314e5313fe",
+    "launchers/monitor_phase_a_node1_v1.sh": "5b8044f7a47e91b22742baaf861506260201915c334b403b00a8ddce3924600f",
+    "launchers/run_phase_a_node1_v1.sh": "bf3817101cbf824e950d723ab756a38b20ce06ab59a1f07d81aa05dfd06f2d2c",
+    "src/collect_top5_clean_attention_oof_v1.py": "9b58de97a9357121ee9b686c12cbcc471799c2492c73aef02fd63908b797d033",
+    "src/run_top5_clean_attention_fold_v1.py": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "tests/test_collect_top5_clean_attention_oof_v1.py": "3b5f08f062dca07d801b4f683beb8d320f64865a49a76db9336a65ddc421b272",
+    "tests/test_run_top5_clean_attention_fold_v1.py": "2719dd15865c23cd7d7c0c383c77f856bd307b770e230a44afdcae5897f84c13"
+  },
+  "gpu_lanes": {
+    "L1": 3,
+    "L2": 4,
+    "L3": 5
+  },
+  "input_access": {
+    "frozen_test": 0,
+    "open_development_for_fit_or_selection": 0
+  },
+  "objective": "improve_EF_true_top10_at_budget5_toward_5",
+  "remote_root": "/data1/qlyu/projects/pvrig_v2_13_top5_ensemble_v1_20260722",
+  "schema_version": "pvrig_v2_13_top5_phase_a_implementation_freeze_v1_1",
+  "scientific_configuration_changed_from_v1": false,
+  "status": "FROZEN_AFTER_LOCAL_AND_REMOTE_PATH_TESTS_BEFORE_PRODUCTION_LAUNCH",
+  "supersedes": "IMPLEMENTATION_FREEZE_V1.json",
+  "tests": {
+    "count": 9,
+    "log_sha256": "746dde2affc748fb2fae3fe6941883133a09e27b21dd9d54fa65462670444f86",
+    "status": "OK"
+  }
+}

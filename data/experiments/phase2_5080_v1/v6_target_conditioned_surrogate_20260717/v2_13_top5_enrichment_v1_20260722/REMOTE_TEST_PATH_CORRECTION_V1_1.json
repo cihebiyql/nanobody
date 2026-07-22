@@ -1,0 +1,11 @@
+{
+  "schema_version": "pvrig_v2_13_remote_test_path_correction_v1_1",
+  "status": "CORRECTED_BEFORE_PRODUCTION_TRAINING",
+  "observed_failure": "remote tests assumed the repository-nested local package layout after deployment to a flat /data1 project root",
+  "scientific_configuration_changed": false,
+  "training_code_changed": false,
+  "loss_or_hyperparameter_changed": false,
+  "correction": "tests now resolve either the repository-local dependency layout or the frozen Node1 deployment paths",
+  "model_outputs_seen_before_correction": false,
+  "remote_training_started_before_correction": false
+}

@@ -1,0 +1,37 @@
+{
+  "base_models": [
+    "S0",
+    "M2",
+    "C2",
+    "B_CLEAN_TARGET_ATTENTION_seed43"
+  ],
+  "claim_boundary": "Open-development computational dual-receptor Docking-geometry surrogate portfolio; not binding, affinity, experimental blocking, Docking Gold, sealed-test, or submission evidence.",
+  "clean_oof_binding": "Bound at runtime only after PASS_V2_12_CLEAN_ATTENTION_INNER_OOF_AND_AGGREGATE; cannot be selected or modified by development results.",
+  "development_used_for_fit_or_selection": false,
+  "external_static_hashes": {
+    "clean_development_seed43": "f38e39310c9a8b31c46651319b3947b540b03f4f2370aaeaae7c8a5801ba4d52",
+    "legacy_development": "2e335f1f08ee4697e234a52d0fe17e818375ffe09f872a8eda8b34e5403c44f1",
+    "legacy_oof": "e1a5553e67b0f2d60a4c690756f4f2cbe81de53a669dc41cf6fee883f4d8847b",
+    "teacher": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3"
+  },
+  "file_hashes": {
+    "PLAN_ZH.md": "b07bdf587281d9422ac2ff4c3703b3d8f39436cef878f6dd30ab29c31c5f4dd1",
+    "PORTFOLIO_CONTRACT_V1.json": "2b650672892ea7a43eea2f6dc7f4a3dea687d24da4d2445adc3d9a444ca2a769",
+    "TEST_RESULTS.log": "29d6a6a77ded24d6247275e45ed9cb0ff153b97ff595cb8481ff39de8d0133b9",
+    "launchers/run_after_clean_oof_node1_v1.sh": "58656aa6442b96feafb39ccf84ba1a828d6aca297e33152750a8389c217ec936",
+    "src/run_oof_early_enrichment_portfolio_v1.py": "d050629113a70814267a792427f116c5a014048ecc39adf7539b5f3a7c891d58",
+    "tests/test_run_oof_early_enrichment_portfolio_v1.py": "d26b05141fef87a3a86d221773547afd238d8352f5c99f3bcf8c672d6fe81d4e"
+  },
+  "frozen_at": "2026-07-22T14:10:00+08:00",
+  "frozen_test_access_count": 0,
+  "meta_train_performance_reported_as_oof": false,
+  "objective": "Fit four-modal continuous and ranking heads on train9849 whole-parent base OOF predictions, then evaluate once on the already-open development795 cohort.",
+  "schema_version": "pvrig_v2_12_oof_early_enrichment_portfolio_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_CLEAN_OOF_UNSEAL",
+  "verification": {
+    "bash_syntax": "PASS",
+    "python_compile": "PASS",
+    "status": "OK",
+    "tests": 1
+  }
+}

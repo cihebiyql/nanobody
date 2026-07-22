@@ -1,0 +1,31 @@
+{
+  "clean_oof_sha256": "2e0096a04cbedf724553e1ed11f82f768a2db0687e55b4feb0d50f58658da3da",
+  "correction": "Use frozen train9849_teacher.tsv, SHA256 beb3205..., not the canonical10644 outer table.",
+  "development_result_observed_before_freeze": false,
+  "development_used_for_fit_or_selection": false,
+  "file_hashes": {
+    "PLAN_ZH.md": "b07bdf587281d9422ac2ff4c3703b3d8f39436cef878f6dd30ab29c31c5f4dd1",
+    "PORTFOLIO_CONTRACT_V1.json": "2b650672892ea7a43eea2f6dc7f4a3dea687d24da4d2445adc3d9a444ca2a769",
+    "TEST_RESULTS_V1_1.log": "e4d624a76fb07a55b6baad6dea4d4ec195eb4eb1a03543744b8ace7406c96ccd",
+    "V1_1_CORRECTION_RECORD.json": "2495457fbcc2bf2c9c409712f0930289d24e737e8ca6df37e5d82ffdbe3254c4",
+    "launchers/run_after_clean_oof_node1_v1_1.sh": "b7631a1a70b527af05c5cecdd90b6516e3fb687492f4d1d197b34f2c7263c39f",
+    "src/run_oof_early_enrichment_portfolio_v1.py": "d050629113a70814267a792427f116c5a014048ecc39adf7539b5f3a7c891d58",
+    "tests/test_launcher_binding_v1_1.py": "7db374b09d0ef96a2c77838a119458cb0b22feaed88b3439bd2d958d4ad8d77b",
+    "tests/test_run_oof_early_enrichment_portfolio_v1.py": "d26b05141fef87a3a86d221773547afd238d8352f5c99f3bcf8c672d6fe81d4e"
+  },
+  "frozen_at": "2026-07-22T14:51:00+08:00",
+  "frozen_test_access_count": 0,
+  "meta_train_performance_reported_as_oof": false,
+  "schema_version": "pvrig_v2_12_oof_early_enrichment_portfolio_implementation_freeze_v1_1",
+  "scientific_change": false,
+  "status": "FROZEN_AFTER_CLEAN_OOF_UNSEAL_BEFORE_OPEN_DEVELOPMENT_PORTFOLIO_EXECUTION",
+  "supersedes": "V1 failed at teacher_rows:10644 before fit matrices or development results",
+  "unchanged_models_hyperparameters_metrics": true,
+  "verification": {
+    "bash_syntax": "PASS",
+    "launcher_teacher_row_gate": 9849,
+    "python_compile": "PASS",
+    "status": "OK",
+    "tests": 2
+  }
+}

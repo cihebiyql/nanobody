@@ -1,0 +1,10 @@
+{
+  "schema_version": "pvrig_v2_13_top5_phase_a_freeze_supersession_v1",
+  "status": "SUPERSEDED_BEFORE_PRODUCTION_TRAINING",
+  "superseded": "IMPLEMENTATION_FREEZE_V1.json",
+  "replacement": "IMPLEMENTATION_FREEZE_V1_1.json",
+  "reason": "test-only local-versus-flat-Node1 dependency path resolution",
+  "scientific_configuration_changed": false,
+  "training_code_changed": false,
+  "model_outputs_seen": false
+}

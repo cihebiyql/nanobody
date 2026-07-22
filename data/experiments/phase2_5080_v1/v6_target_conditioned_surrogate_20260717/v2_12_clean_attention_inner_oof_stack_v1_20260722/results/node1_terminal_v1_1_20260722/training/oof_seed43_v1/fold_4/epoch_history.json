@@ -1,0 +1,93 @@
+{
+  "epochs": [
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 1,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.05534872687665836,
+      "scalar": 0.08082249950084294,
+      "softmin_dual": 0.05094754522677601,
+      "total": 0.08082249950084294
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 2,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.039718448927986524,
+      "scalar": 0.05736983756557287,
+      "softmin_dual": 0.0353027773170828,
+      "total": 0.05736983756557287
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 3,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.03954870395752932,
+      "scalar": 0.05698329858545725,
+      "softmin_dual": 0.03486918932908485,
+      "total": 0.05698329858545725
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 4,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.03816348575938103,
+      "scalar": 0.05511392220655727,
+      "softmin_dual": 0.03390087273076079,
+      "total": 0.05511392220655727
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 5,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.03688821281896033,
+      "scalar": 0.05324188855780859,
+      "softmin_dual": 0.03270735141268233,
+      "total": 0.05324188855780859
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 6,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.03567439392152723,
+      "scalar": 0.05160083145376355,
+      "softmin_dual": 0.03185287502457222,
+      "total": 0.05160083145376355
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 7,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.03553779255420405,
+      "scalar": 0.05144099027905125,
+      "softmin_dual": 0.03180639540081639,
+      "total": 0.05144099027905125
+    },
+    {
+      "batches": 992,
+      "contact": 0.0,
+      "epoch": 8,
+      "marginal_contact": 0.0,
+      "pair_contact": 0.0,
+      "receptor": 0.03539639347863774,
+      "scalar": 0.05125783977564424,
+      "softmin_dual": 0.031722892698223495,
+      "total": 0.05125783977564424
+    }
+  ],
+  "selection": "NONE_FIXED_EPOCH_ONLY"
+}

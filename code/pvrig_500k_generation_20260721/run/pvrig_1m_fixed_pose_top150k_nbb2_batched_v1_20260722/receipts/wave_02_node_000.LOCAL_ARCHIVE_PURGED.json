@@ -1,0 +1,10 @@
+{
+  "bytes": 195226343,
+  "created_epoch": 1784705093.925766,
+  "durable_node1_path": "/data/qlyu/projects/pvrig_1m_fixed_pose_top150k_nbb2_batched_v1_20260722/wave_02/archives_11940712/node_000.tar.gz",
+  "job_id": "11940712",
+  "node": "node_000",
+  "sha256": "9c354a3dff5ce21c78fbc0005cc525b593c123b5cc8d78364bfc4a9e76fa9aaf",
+  "status": "PURGED_AFTER_NODE1_WAVE_REVALIDATION",
+  "wave": "wave_02"
+}

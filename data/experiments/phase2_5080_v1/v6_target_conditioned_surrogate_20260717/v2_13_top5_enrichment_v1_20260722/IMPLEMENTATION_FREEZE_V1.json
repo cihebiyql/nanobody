@@ -1,0 +1,31 @@
+{
+  "files": {
+    "PLAN_ZH.md": "a4955598cf5d1fa401cf42013e3ca0557cdf03cde6432d41248dc7770d63d4e1",
+    "TEST_RESULTS_PHASE_A.log": "c385166993765129d3d859b77cf5f149c0111c00a847402e7c45cf36075aae89",
+    "TOP5_EXPERIMENT_CONTRACT_V1.json": "9447efde316b1d8ccdde4a30ec666a4fe2caa6c9804e49c71d69d9314e5313fe",
+    "launchers/monitor_phase_a_node1_v1.sh": "5b8044f7a47e91b22742baaf861506260201915c334b403b00a8ddce3924600f",
+    "launchers/run_phase_a_node1_v1.sh": "f3799e29ea4d69e0679111173dbe70c32d127c199bc4b00e86a996cecc5eb5c7",
+    "src/collect_top5_clean_attention_oof_v1.py": "9b58de97a9357121ee9b686c12cbcc471799c2492c73aef02fd63908b797d033",
+    "src/run_top5_clean_attention_fold_v1.py": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "tests/test_collect_top5_clean_attention_oof_v1.py": "92516bed1772ad7a47ecf7a7075944b8bb8b7110dedc6327895a1d9074bc0617",
+    "tests/test_run_top5_clean_attention_fold_v1.py": "45fa5224851dc4b04397769e3ca395c646b10ba700f05bfac1766cdeabe171cd"
+  },
+  "gpu_lanes": {
+    "L1": 3,
+    "L2": 4,
+    "L3": 5
+  },
+  "input_access": {
+    "frozen_test": 0,
+    "open_development_for_fit_or_selection": 0
+  },
+  "objective": "improve_EF_true_top10_at_budget5_toward_5",
+  "remote_root": "/data1/qlyu/projects/pvrig_v2_13_top5_ensemble_v1_20260722",
+  "schema_version": "pvrig_v2_13_top5_phase_a_implementation_freeze_v1",
+  "status": "FROZEN_AFTER_LOCAL_TESTS_BEFORE_REMOTE_LAUNCH",
+  "tests": {
+    "count": 9,
+    "log_sha256": "c385166993765129d3d859b77cf5f149c0111c00a847402e7c45cf36075aae89",
+    "status": "OK"
+  }
+}
