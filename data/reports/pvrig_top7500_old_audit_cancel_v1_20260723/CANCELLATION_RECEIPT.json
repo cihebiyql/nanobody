@@ -1,0 +1,16 @@
+{
+  "cancelled_job_id": "11942311",
+  "claim_boundary": "Scheduler hygiene only; corrected V2 terminal audit remains frozen and pending.",
+  "created_at_utc": "2026-07-23T01:15:36.318931+00:00",
+  "docking_jobs_changed": false,
+  "evidence_sha256": {
+    "CANCEL_AND_CORRECTED_QUEUE.txt": "ca3fd403fa061f3f976f77e2103030762b6f5c67406f913e7ea9efafe666ab15",
+    "OLD_AUDIT_JOB_BEFORE.txt": "b67a558d9c36467e4cbd9852d72b9aa35a826d80cf5f92c428ac6816a6a164db",
+    "REMOTE_SCRIPT_SHA256.txt": "9438a902ba653b429c824290e87a7e8695821cc5581a32aa0b035c41ac721f9f"
+  },
+  "reason": "V1 terminal counter recognizes FAILED_MAX_ATTEMPTS but not actual FAILED technical terminal statuses, so it would publish a false INCOMPLETE result.",
+  "retained_corrected_job_id": "11942669",
+  "schema_version": "pvrig_top7500_old_terminal_audit_cancellation_v1",
+  "scientific_data_changed": false,
+  "status": "PASS_OLD_FLAWED_AUDIT_CANCELLED_CORRECTED_V2_RETAINED"
+}

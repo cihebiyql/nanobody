@@ -1,0 +1,57 @@
+{
+  "bindings": {
+    "consumed_stage_a_approval_sha256": "801004a1b24e3e4410dd062d54659127c1f5ec2e4ee1aee45e5b2f721869e5af",
+    "evidence_sha256s_sha256": "1da9b9eac5a65315b6d5176023b132cbe2316873183bc3c6292764a21a27d5f0",
+    "implementation_freeze_sha256": "bd66829ad25d35981c96b65055ce3d3822edfcfeda6624a9d65fea1efedb2d3e",
+    "node1_deployment_receipt_sha256": "4290c1423a250a1e7aa1a9e6f98df292037c1aee674a9efb2b9ac4ec5647a706",
+    "node1_legacy_test_log_sha256": "4190b218d9d61c84c393e6730abd95fed900fb418297e47777e2530ca3d174ae",
+    "node1_preflight_launcher_log_sha256": "39faea7e6f4b3205ccfcd8fa6d02133bd2529c85ad202169ff660d5c06fb54b0",
+    "node1_preflight_launcher_rc_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  "claim_boundary": "Technical Node1 Stage-A failure evidence only. No scientific method was evaluated; no training occurred; no model-quality, enrichment, binding, blocking, Kd, Docking Gold, Top7500, or promotion claim is supported.",
+  "created_at": "2026-07-23T05:44:33+08:00",
+  "decision": {
+    "concrete_training_launcher_authorized": false,
+    "model_quality_or_promotion_claim_authorized": false,
+    "required_recovery_version": "V1.3.2 or later, with a new package path, new preregistration/supersession record, new implementation freeze, and new independent Stage-A approval",
+    "same_runtime_retry_authorized": false,
+    "same_version_retry_authorized": false,
+    "stage_b_finalizer_authorized": false,
+    "v1_3_1_stage_a_passed": false,
+    "v1_3_1_training_authorized": false
+  },
+  "minimal_recovery_boundary": {
+    "allowed_change": "repair Python 3.11-compatible legacy test invocation only, while preserving exact 13 test source hashes and intended 102-test count",
+    "data_split_or_candidate_access_changes_allowed": false,
+    "model_loss_optimizer_hyperparameter_changes_allowed": false,
+    "required_real_node1_evidence": [
+      "Python 3.11 exact legacy suite collects and passes 102 tests",
+      "V1.3.2 exact suite passes",
+      "combined total test count is frozen",
+      "fresh Stage-A runs exactly five materializations and five load-only validations",
+      "no optimizer/backward/training outputs"
+    ],
+    "scientific_method_changes_allowed": false
+  },
+  "observations": {
+    "active_v1_3_1_preflight_or_training_process_after_failure": false,
+    "backward_called": false,
+    "failing_phase": "first legacy test invocation before V1.3.1 tests and before materialization",
+    "launcher_return_code": 1,
+    "legacy_test_hash_checks_before_unittest": "PASS_13_FILES",
+    "load_only_validation_count": 0,
+    "module_not_found_errors": 13,
+    "node1_python_version": "3.11 (boltz environment; trace path /data1/qlyu/anaconda3/envs/boltz/lib/python3.11/unittest/loader.py)",
+    "optimizer_created": false,
+    "optimizer_steps": 0,
+    "root_cause": "legacy launcher passed absolute filesystem test paths to python -m unittest; Node1 Python 3.11 treated them as import module names and failed before collecting the intended 102 tests",
+    "shared_materialization_count": 0,
+    "training_output_created": false,
+    "training_started": false,
+    "unittest_failed_test_objects": 13,
+    "v1_3_1_test_suite_started": false
+  },
+  "reviewer": "/root/v220_final_training_critic",
+  "schema_version": "pvrig_v220_v1_3_1_independent_node1_stage_a_failure_review_v1",
+  "status": "FAIL_CLOSED_V1_3_1_STAGE_A_NODE1_PYTHON311_TEST_INVOCATION_NO_SAME_VERSION_RETRY"
+}

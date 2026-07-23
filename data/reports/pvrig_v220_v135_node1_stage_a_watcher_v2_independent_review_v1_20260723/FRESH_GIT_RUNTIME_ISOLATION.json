@@ -1,0 +1,28 @@
+{
+  "declared_unignored_files": [
+    "BASH_N_RESULTS.log",
+    "DEPLOYMENT_RECEIPT.json",
+    "LOCAL_PREFLIGHT_RESULTS.log",
+    "PLAN_ZH.md",
+    "SHA256SUMS",
+    "TEST_RESULTS.log",
+    "V1_WATCHER_REJECTION_AND_V2_SUPERSESSION.json",
+    "classify_node1_stage_a_state_v2.py",
+    "monitor_and_launch_stage_a_v2.sh",
+    "probe_node1_stage_a_state_v2.py",
+    "prove_remote_stage_a_artifacts_v2.py",
+    "remote_stage_a_entrypoint_v2.sh",
+    "start_node1_stage_a_watcher_v2.sh",
+    "test_node1_stage_a_watcher_v2.py",
+    "validate_node1_stage_a_receipt_v2.py",
+    "validate_node1_stage_a_session_v2.py",
+    "verify_frozen_package_v2.py"
+  ],
+  "runtime_samples_ignored": [
+    "runtime/WATCHER.log",
+    "runtime/WATCHER_STATUS.json",
+    "runtime/FROZEN_PACKAGE.tar",
+    "runtime/REMOTE_SNAPSHOT.json"
+  ],
+  "status": "PASS_DECLARED_EVIDENCE_UNIGNORED_RUNTIME_IGNORED"
+}

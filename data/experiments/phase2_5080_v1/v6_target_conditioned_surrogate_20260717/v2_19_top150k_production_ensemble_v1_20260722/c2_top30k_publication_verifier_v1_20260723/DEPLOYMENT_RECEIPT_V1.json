@@ -1,0 +1,15 @@
+{
+  "schema_version": "pvrig_v2_19_c2_top7500_publication_verifier_node1_deployment_v1",
+  "status": "PASS_DEPLOYED_WATCHER_RUNNING",
+  "deployed_at_utc": "2026-07-22T16:18:57Z",
+  "node": "node1",
+  "pid": 935077,
+  "runtime_root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722",
+  "package_root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722/code/c2_top30k_publication_verifier_v1_20260723",
+  "watcher_status_path": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722/status/C2_REFINED_TOP7500_PUBLICATION_VERIFIER_WATCHER.json",
+  "publication_status_path": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722/status/C2_REFINED_TOP7500_PUBLICATION_VERIFIED.json",
+  "observed_status": "WAITING_FOR_C2_REFINED_TOP7500_TERMINAL",
+  "node1_tests": "3 tests, OK",
+  "failure_policy": "FAIL_CLOSED_NO_AUTOMATIC_CLEANUP_OR_IN_PLACE_RETRY",
+  "claim_boundary": "Delivery-only recursive verification; no frozen score or ranking modification."
+}

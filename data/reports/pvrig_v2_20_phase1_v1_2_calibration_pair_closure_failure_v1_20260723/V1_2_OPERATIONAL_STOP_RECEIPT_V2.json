@@ -1,0 +1,131 @@
+{
+  "access_boundary": {
+    "aggregate_oof_opened_for_stop_decision": false,
+    "heldout_contact_labels_opened": false,
+    "open_development_or_frozen_prospective_test_opened": false,
+    "phase1b_authorized": false
+  },
+  "claim_boundary": "Operational stop after technical exact-hash pair-closure failure only; not a model-quality or promotion verdict.",
+  "created_at_local": "2026-07-23T04:45:11.264446+08:00",
+  "evidence": {
+    "fold0_launcher_log": {
+      "bytes": 1672,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/supervisor_v1_2/fold0_launcher.log",
+      "sha256": "9dc7f95d11413c531747d3905d3cc7413ad1144185c97d307a04f59d120c2326"
+    },
+    "fold0_launcher_rc": {
+      "bytes": 2,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/supervisor_v1_2/fold0_launcher.rc",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "fold4_watcher_status": {
+      "bytes": 38,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/supervisor_v1_2/fold4_watcher_status.json",
+      "sha256": "60b36535a3ad585c041ab44cb6c7b458083cbaa03e10a1cba2569c3a85c9e6c0"
+    },
+    "postprocess_interrupt_log": {
+      "bytes": 1124,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_postprocess_watcher_v1_20260723/supervisor_v1/watcher.log",
+      "sha256": "403d7f1b67c914f11e522d71b603ca9d735194f5798b7f19e8f056265e630fa0"
+    },
+    "postprocess_rc_file_present": false,
+    "postprocess_started": {
+      "bytes": 242,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_postprocess_watcher_v1_20260723/runtime_v1/STARTED.json",
+      "sha256": "c76c020ecca0b167b994683f47d213e169da97fbc6b56cd26ee4806fd5b7e889"
+    },
+    "postprocess_waiting_last_snapshot": {
+      "bytes": 200,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_postprocess_watcher_v1_20260723/runtime_v1/WAITING.json",
+      "sha256": "b33d7fc4be88cc1753f07e99de3f0cab75e3240d3be5f5f0c307250f9b8c866c"
+    }
+  },
+  "inventory": {
+    "aggregate_oof_artifacts": 0,
+    "arm_results": 5,
+    "calibration_artifacts": 8,
+    "calibration_paths_and_sha256": [
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_0/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "fed0ed936acf912ee66719e3fadeeb833a3d241c232c538d1292a14960aba1ac"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_1/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "3adaa0534fbd39959dc4f9abf0834ef556ce52cef92575ce9204a6390ddc58e8"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_2/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "3dbeed70d72175fe2401d9bb55d34ab2110636603f5c5036d91b8ac992983204"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_3/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "858782803569954c0be5d8a5b4507faf34d5706b152cf43f20bb84840e65310f"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_0/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "a59a57f8283dae9b55f187ce6d30b943aac099867bddbfe2200cc1faa09de7a2"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_1/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "328b0103025fabb651586e93d208e586de04581cf9cad89733a40a51e4ec0aa4"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_2/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "b7d96ca404c59995f285fed14b3b531bbda1e42b24f9a1422a33627ecc7a518f"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_3/CONTACT_WEIGHT_CALIBRATION.json",
+        "sha256": "8a3b745694554cee905dd7ed37c3e6db60ffa35480933a8fba9572031ee272f9"
+      }
+    ],
+    "pair_terminals": 0,
+    "result_paths_and_sha256": [
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_0/RESULT.json",
+        "sha256": "29d341d0f9ff4361049f79168fc942b2cbf3c6d21495352f6ead26f1b058258d"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_2/RESULT.json",
+        "sha256": "1b40778940a0c26d228f3555c0a0b8ea96b626adc6d6eec2859438d82d676869"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_0/RESULT.json",
+        "sha256": "4075fba7b9bd1b9417c425410e8295efe4ee59d9319c0df8615aaa9d122a2f42"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_1/RESULT.json",
+        "sha256": "c8c7da2da53f05879b3d4a28fc40573ed21537a0937ab117e4331f78cbee8a31"
+      },
+      {
+        "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_3/RESULT.json",
+        "sha256": "2d885f950cb9033ff4273f183dc34d6daf0a4f34ca04ac6472202f6947f3f891"
+      }
+    ]
+  },
+  "next_allowed_action": "Separately freeze and independently review V1.3 technical recovery; all ten arms must rerun fresh and V1.2 outputs are forbidden as inputs.",
+  "reason": {
+    "fold": 0,
+    "launcher_return_code": 1,
+    "launcher_tail": "AssertionError in frozen exact calibration SHA256 equality assertion after both fold0 arm results existed",
+    "pair_terminal_published": false
+  },
+  "schema_version": "pvrig_v220_phase1_v1_2_operational_stop_receipt_v2",
+  "shutdown": {
+    "files_deleted_or_overwritten_by_receipt_writer": false,
+    "fold1_3_partial_outputs_preserved": true,
+    "fold4_watcher_terminal": {
+      "status": "FAILED_FOLD0_NO_TERMINAL"
+    },
+    "v1_2_fold_training_live_argv": [],
+    "v1_2_fold_training_processes_remaining": 0,
+    "v1_2_postprocess_live_argv": [],
+    "v1_2_postprocess_watcher_processes_remaining": 0,
+    "v1_2_tmux_sessions_remaining": []
+  },
+  "status": "STOPPED_V220_V1_2_AFTER_UPSTREAM_TECHNICAL_PAIR_CLOSURE_FAILURE",
+  "supersession": {
+    "reason": "V1 process counts used pgrep -af and self-matched the inspection command. V2 enumerates /proc cmdline argv elements by exact script basename.",
+    "supersedes_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_v1_2_technical_failure_stop_receipt_20260723/V1_2_OPERATIONAL_STOP_RECEIPT.json",
+    "supersedes_sha256": "b1a1f60deef2af73859b3e6f7c951484dcbbf04037e1aaee2ce83401b462e0ba"
+  }
+}

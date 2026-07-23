@@ -1,0 +1,66 @@
+{
+  "authorization": {
+    "deployment_authorized": false,
+    "required_action": "supersede with a new version; do not edit, deploy, or train V1.3.4",
+    "same_version_repair_or_retry_allowed": false,
+    "stage_a_approved": false,
+    "training_authorized": false,
+    "training_started": false
+  },
+  "blocking_findings": [
+    {
+      "actual_sha256": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+      "bound_sha256": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+      "deterministic_effect": "sha256sum gate fails before Stage-A materialization",
+      "id": "V134_PREFLIGHT_LEGACY_LAUNCHER_HASH_STALE",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/launchers/run_phase1_preflight_node1_v1_3_4.sh"
+    },
+    {
+      "build_reads": "args.v1_3_4_test_log",
+      "deterministic_effect": "AttributeError if the receipt builder CLI is reached",
+      "id": "V134_PREFLIGHT_RECEIPT_ARGPARSE_DEST_MISMATCH",
+      "parser_destination": "v1_3_3_test_log",
+      "parser_flag": "--v1-3-3-test-log",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/src/build_v220_v1_3_4_preflight_receipt.py"
+    }
+  ],
+  "freeze": {
+    "all_implementation_hashes_exact": true,
+    "package_allowlist_exact": true,
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_4.json",
+    "sha256": "b4d2352399d3f652bccf16f34069bafedba815c3edd553dbed2758add9dfb0d3",
+    "sidecar_exact": true
+  },
+  "schema_version": "pvrig.v220.v1_3_4.independent_static_review.v1",
+  "scientific_semantics": {
+    "data_model_split_loss_optimizer_threshold_hyperparameters_changed": false,
+    "five_core_files": {
+      "launchers/run_shared_fold_materialization_once_v1_3_1.sh": {
+        "byte_identical": true,
+        "sha256": "83bc6e197cf31577d72ea8badcb494ef5e8a4743539e733f57d97aeafc3a395a"
+      },
+      "src/materialize_v220_shared_fold_calibration_v1_3_1.py": {
+        "byte_identical": true,
+        "sha256": "e72204c0d4ffe42ccefee415aa6608b7c271439176c7165fc8b36c5f93ba6d5a"
+      },
+      "src/run_v220_contact_shared_fold_v1_3_1.py": {
+        "byte_identical": true,
+        "sha256": "f00c004006f6c2f7fb8798d19342681da94ed61b0be0ea35ef165ecac6c3c4c2"
+      },
+      "src/v220_shared_calibration_artifact_v1.py": {
+        "byte_identical": true,
+        "sha256": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e"
+      },
+      "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py": {
+        "byte_identical": true,
+        "sha256": "aad5b9b6218e7676b27b23b203491b8e0581e1571394582ed56df9e455bb04dc"
+      }
+    },
+    "training_template_equal_after_version_only_normalization": true
+  },
+  "status": "FAIL_V1_3_4_STAGE_A_DEPLOYMENT_NOT_AUTHORIZED",
+  "test_coverage_gap": {
+    "frozen_new44_constructed_argparse_namespace_directly_and_did_not_test_cli_destination": true,
+    "frozen_new44_did_not_assert_bound_legacy_launcher_hash_equals_file": true
+  }
+}

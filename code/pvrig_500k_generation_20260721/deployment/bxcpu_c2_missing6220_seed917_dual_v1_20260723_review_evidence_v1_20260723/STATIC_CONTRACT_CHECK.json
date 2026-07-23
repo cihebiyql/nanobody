@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "compactor_exact_old_bytes": true,
+    "independent_launch_approval_absent": true,
+    "stage_contains_no_sbatch": true,
+    "stage_does_not_call_submit_script": true,
+    "submit_approval_binds_anchor_submit_worker_sha": true,
+    "submit_requires_approval_before_actual_sbatch": true,
+    "sync_old_logic_exact_after_campaign_substitution": true,
+    "worker_eight_shards": true,
+    "worker_exact_1555_per_shard": true,
+    "worker_no_overlap_reuse_gate": true
+  },
+  "claim_boundary": "Static source review only; no remote upload, scheduler submission, or Docking execution was performed.",
+  "new_compactor_sha256": "bb26f9eb282df07ddc409928385d31e8c1869bbcda995c243ee39d552e974a0d",
+  "new_sync_sha256": "51444d757c7c15e3187465d1c9a902d6fbbb95ecd1f7a9685a7ea7eca8d66fc6",
+  "old_compactor_sha256": "bb26f9eb282df07ddc409928385d31e8c1869bbcda995c243ee39d552e974a0d",
+  "old_sync_sha256": "713aade7f6bf048118b4932d7d219d99fda0b10ebdb0dfa9c09b7b189f9f5f32",
+  "schema_version": "pvrig.c2_missing6220.bxcpu_independent_static_review.v1",
+  "status": "PASS"
+}

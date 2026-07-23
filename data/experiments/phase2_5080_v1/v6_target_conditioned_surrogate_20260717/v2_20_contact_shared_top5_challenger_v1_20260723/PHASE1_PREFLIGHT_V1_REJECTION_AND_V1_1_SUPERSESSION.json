@@ -1,0 +1,28 @@
+{
+  "schema_version": "pvrig_v2_20_phase1_preflight_v1_rejection_v1_1_supersession",
+  "status": "V1_REJECTED_PREPRODUCTION_V1_1_SUPERSEDES_BEFORE_ANY_PREFLIGHT_OR_TRAINING",
+  "created_date_local": "2026-07-23",
+  "rejected_artifacts": {
+    "PREREGISTRATION_PHASE1_CORE_V1.json": "c68209fc79fbce5af89559009708ff3c1d102c695f2d790fe7ae9b068237e761",
+    "IMPLEMENTATION_FREEZE_PHASE1_PREFLIGHT_V1.json": "6dbbaaacf688df7f95c2dfc0bbbb8c3d66c9e140aa2ebd74725a1c7984043c9b"
+  },
+  "rejection_timing": "before Node1 deployment, B0 replay, initial-state materialization, C0 training, or C1 training",
+  "critic_verdict": "REJECT",
+  "reasons": [
+    "B0 replay key used metrics_sha256_corrected_before_freeze instead of metrics_sha256",
+    "scalar teacher SHA256 was copied incorrectly",
+    "target graph SHA256 was copied incorrectly",
+    "dynamic test discovery did not freeze the test source set or exact test count",
+    "pair validator expected a nonexistent backbone identity field",
+    "input bindings and downstream pairing/evaluator closure needed stronger enforcement"
+  ],
+  "replacement": {
+    "preregistration": "PREREGISTRATION_PHASE1_CORE_V1_1.json",
+    "preregistration_sha256": "e50eb1c5758b01f74efe215472f7f904424743132285a4f76cc5ab732ffdd6f4",
+    "preflight_test_launcher": "launchers/run_phase1_core_preflight_tests_v1_1.sh",
+    "pretraining_launcher": "launchers/run_phase1_core_pretraining_node1_v1_1.sh"
+  },
+  "V1_training_authorized": false,
+  "V1_outputs_usable": false,
+  "post_result_gate_change": false
+}

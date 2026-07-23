@@ -1,0 +1,82 @@
+{
+  "authorization": {
+    "deployment_authorized": false,
+    "independent_review_required": true,
+    "training_authorized": false
+  },
+  "claim_boundary": "Minimal technical causal-pair calibration lifecycle recovery only; no model-quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production-promotion claim.",
+  "created_date_local": "2026-07-23",
+  "failure_source": {
+    "diagnosis": "V1.2 independently recomputed floating calibration observations per arm, producing byte-distinct receipts despite identical selected lambda and conflict verdict.",
+    "frozen_pair_gate_to_preserve": "C0 calibration SHA256 must equal C1 calibration SHA256 exactly",
+    "v1_2_outputs_reusable": false
+  },
+  "frozen_calibration_contract": {
+    "contact_batches": 8,
+    "lambda_grid": [
+      0.00015625,
+      0.0003125,
+      0.000625,
+      0.00125,
+      0.0025
+    ],
+    "lambda_selection": "choose the smallest median shared-gradient ratio in [0.05,0.15], otherwise closest to 0.10",
+    "maximum_severe_conflict_batches": 2,
+    "pair_loss_coefficient": 0.5,
+    "severe_conflict_cosine_lt": -0.5,
+    "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER",
+    "target_median_ratio": 0.1,
+    "target_median_ratio_interval": [0.05, 0.15]
+  },
+  "minimum_change": {
+    "new": [
+      "one shared calibration materialization per fold before either arm optimizer",
+      "both arms hash-validate and byte-replay the same fold artifact",
+      "both arms are forbidden from recalibrating"
+    ],
+    "unchanged": [
+      "data",
+      "whole-parent splits",
+      "seed43 initial state",
+      "architecture",
+      "losses",
+      "optimizer and hyperparameters",
+      "lambda grid and selection semantics",
+      "conflict gate",
+      "metrics",
+      "bootstrap",
+      "core gates",
+      "claim boundary"
+    ]
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "open_development_access": false,
+    "prospective_or_frozen_test_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_checkpoint_history_prediction_or_calibration_input": false
+  },
+  "required_fail_closed_checks": [
+    "regular nonempty no-symlink shared artifact",
+    "expected SHA256 before and after arm run",
+    "fold and seed binding",
+    "all frozen input hashes",
+    "initial model-state hash and shared-parameter order",
+    "unchanged calibration semantic contract",
+    "zero optimizer/backward/training activity during materialization",
+    "exactly one materializer invocation per fold",
+    "zero arm-side calibrator invocation",
+    "exact C0/C1 calibration byte equality",
+    "fresh V1.3 output roots"
+  ],
+  "runs": {
+    "arms": ["C0", "C1"],
+    "epochs_per_arm": 8,
+    "folds": 5,
+    "seed": 43,
+    "total_training_runs": 10
+  },
+  "schema_version": "pvrig_v220_phase1_technical_recovery_v1_3_draft",
+  "status": "DRAFT_V1_3_DESIGN_AND_TESTS_ONLY_NOT_AUTHORIZED"
+}

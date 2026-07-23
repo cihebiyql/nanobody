@@ -1,0 +1,39 @@
+{
+  "authorization": {
+    "deployment_authorized": false,
+    "independent_review_required": true,
+    "node1_preflight_required": true,
+    "training_authorized": false
+  },
+  "claim_boundary": "V1.3 shared-calibration technical recovery implementation freeze only; no training or model-quality claim.",
+  "created_date_local": "2026-07-23",
+  "implementation_hashes": {
+    "DESIGN_V1_3_SHARED_CALIBRATION_RECOVERY.md": "228a5da9f561d8226145c38840e5b1f746f230a24ff7bc0c7d5331652b81326f",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3.json": "16e2b808da07b81d2744f50d4ef3658f0245c79641b19130c5b0f3cd82d4b652",
+    "launchers/run_design_tests_v1.sh": "8795620786bc3a43f9277b02b3ca46df4e3813d4657de495cc035dc997ddc3bc",
+    "src/materialize_v220_shared_fold_calibration_v1_3.py": "bb3ac28c26e164fd7a1c1415ea911f8de2d886c0446dfaec99911ed0074fb3e1",
+    "src/run_v220_contact_shared_fold_v1_3.py": "8c1457c049704462bf3eba3e853561010c894a9f19b9bf1e4f8fa2f60e1e30f1",
+    "src/v220_shared_calibration_artifact_v1.py": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e",
+    "tests/TEST_RESULTS_V1_3.log": "f6590a51d538ba18a3c596b099239e513314002dc91d993627805249d6c3d8fe",
+    "tests/test_v220_shared_calibration_artifact_v1.py": "5c926ed615dffa5d915dc1c3f06ccf3ff92937d07cd03fd36d74255eadc117e9"
+  },
+  "method_change": "Exactly one content-addressed calibration materialization per fold before either optimizer; both arms replay the same bytes and make zero true calibrator calls.",
+  "required_before_training": [
+    "bind the finalized Node1 fold-pair launcher in a separate final-training freeze",
+    "run prior 102 tests plus these 9 tests in one immutable Node1 log",
+    "run five separate-process materialize/load-only preflights with optimizer/backward/training false",
+    "independent review of exact launcher and all bound bytes",
+    "fresh V1.3 output root with no V1.2 training-output inputs"
+  ],
+  "schema_version": "pvrig_v220_phase1_technical_recovery_implementation_freeze_v1_3",
+  "status": "FROZEN_V1_3_IMPLEMENTATION_PENDING_INDEPENDENT_REVIEW_AND_NODE1_PREFLIGHT",
+  "test_evidence": {
+    "bash_syntax": "PASS",
+    "errors": 0,
+    "failures": 0,
+    "py_compile": "PASS",
+    "tests_run": 9
+  },
+  "training_started": false,
+  "v1_2_outputs_reused": false
+}

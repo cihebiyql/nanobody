@@ -1,0 +1,17 @@
+{
+  "log_path": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/PHASE0_MATERIALIZATION_V1_2.log",
+  "log_sha256": "8f6c592e83d4723092eea10a5d3745aff58a63d5d9a16570225eb3b6e8b0fddf",
+  "oof_training_authorized": false,
+  "release_path": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1_2",
+  "release_receipt_sha256": "71f62887713d76e2a524b6affc82f118bafdad82dcf16b731a426a5a0b54cead",
+  "return_code": 0,
+  "schema_version": "pvrig_v2_20_phase0_materialization_terminal_v1_2",
+  "sha256sums_sha256": "9d255dc4a5cbf83c013e6a419cb2790bbb4b1c99f2060fdb39c08df853fbdb7d",
+  "status": "PASS_PHASE0_TRAIN_ONLY_TEACHER",
+  "verification": {
+    "package": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1_2",
+    "receipt_sha256": "71f62887713d76e2a524b6affc82f118bafdad82dcf16b731a426a5a0b54cead",
+    "sha256sums_sha256": "9d255dc4a5cbf83c013e6a419cb2790bbb4b1c99f2060fdb39c08df853fbdb7d",
+    "status": "PASS_VERIFIED_TRAIN_ONLY_738_PACKAGE"
+  }
+}

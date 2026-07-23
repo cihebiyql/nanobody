@@ -1,0 +1,103 @@
+{
+  "allowed_after_independent_approval": [
+    "run exactly five fold-pair launcher invocations on folds 0..4",
+    "validate causal C0/C1 pairing",
+    "collect strict 9849-row whole-parent OOF predictions for C0 and C1",
+    "evaluate the frozen Phase1 core gate with 10000 whole-parent bootstraps seed 20260723"
+  ],
+  "authorization_condition": "A separate independent critic must approve this exact freeze and launcher bytes before the first C0/C1 optimizer step.",
+  "claim_boundary": "Computational dual-receptor Docking-geometry surrogate development only; not binding, Kd, experimental blocking, Docking Gold, expression, purity, or final submission evidence.",
+  "created_date_local": "2026-07-23",
+  "forbidden": [
+    "open-development access",
+    "frozen-test access",
+    "candidate/parent/campaign identifiers as neural inputs",
+    "M2 or C2 inputs",
+    "Docking pose-derived inputs",
+    "changing split, losses, hyperparameters, metrics, gates, or thresholds after results",
+    "excluding a fold/seed after observing results",
+    "Top7500 reordering before full promotion",
+    "production promotion from Phase1 core alone"
+  ],
+  "frozen_initial_state": {
+    "path_node1": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/pretraining_v1_1_layout_recovery_v1/V220_PHASE1_SEED43_HEAD_STATE.bin",
+    "receipt_path_node1": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/pretraining_v1_1_layout_recovery_v1/V220_PHASE1_SEED43_HEAD_STATE.bin.receipt.json",
+    "receipt_sha256": "0af6ca52a8bcbe81b528266a368e7a46e23b8171051d54e03df5732b398365cc",
+    "scope": "model.head only; frozen backbone is separately bound by artifact/runtime/shape hashes",
+    "sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "shared_across_all_ten_runs": true
+  },
+  "frozen_training_contract": {
+    "Rdual_inference": "exact min(pred_R8,pred_R9)",
+    "arms": [
+      "C0_zero_contact_loss_control",
+      "C1_calibrated_contact_auxiliary_loss"
+    ],
+    "batch_size": 8,
+    "contact_weight": "selected independently inside each outer-fit fold from the fixed preregistered grid; same receipt must match within paired C0/C1",
+    "dropout": 0.25,
+    "dual_weight": 0.5,
+    "epochs": 8,
+    "eval_batch_size": 16,
+    "folds": 5,
+    "gradient_accumulation": 4,
+    "gradient_clip": 1.0,
+    "graph_hidden_dim": 128,
+    "huber_beta": 0.03,
+    "learning_rate": 0.0001,
+    "precision": "bf16",
+    "receptor_weight": 1.0,
+    "runs": 10,
+    "seed": 43,
+    "selection": "NONE_FIXED_EPOCH_ONLY",
+    "softmin_tau": 0.02,
+    "top_weight_center": 0.85,
+    "top_weight_scale": 0.05,
+    "top_weight_strength": 3.0,
+    "weight_decay": 0.02
+  },
+  "implementation_hashes": {
+    "src/calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "src/collect_v220_contact_shared_oof_v1.py": "88a6ab691240669478ed41d7d41533f7fa7357b331651663644c69cf733079c4",
+    "src/evaluate_v220_oof_v1.py": "f8291ef73514428661becdce2e75921a2771106c95df7803c9e050ddcbf7a7bb",
+    "src/evaluate_v220_phase1_core_gate_v1.py": "741f663520d5d6213163ca6f65157f9132c22dd68cbcf0f2c531768476f4fb20",
+    "src/materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "src/run_v220_contact_shared_fold_v1.py": "12c39876602affbb0aa7e846a7684fcd3e457b65c5ce7420c87141d4dd00cf32",
+    "src/v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "src/validate_v220_paired_folds_v1.py": "b1c80c8f2488f6955d5062af35e3cc36738d09f499d361bd7ddca49dc8193939"
+  },
+  "launcher": {
+    "arm_order": "even folds C0 then C1; odd folds C1 then C0",
+    "folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "path": "launchers/run_phase1_core_fold_pair_node1_v1_1.sh",
+    "sha256": "3f0cb92e41988e4d2ac0374b7233f6fdd537822a19af80a441179b18110765c8",
+    "single_physical_gpu_required_per_fold_pair": true,
+    "unit": "one causally paired C0/C1 whole-parent fold"
+  },
+  "prerequisite_closure": {
+    "B0_replay_sha256": "df796c5ddd61251c209a6e2e4d3dd604f62c8d9fbe3fbf7b01ecb2142469dbea",
+    "node1_preflight_receipt_sha256": "657fde1be654e7306746f85188c03d7f0e5e26a31bad85e52afb28dcf60ae878",
+    "node1_preflight_status": "PASS_NODE1_99_TESTS_B0_REPLAY_AND_HEAD_ONLY_INITIAL_STATE_NO_TRAINING",
+    "node1_test_log_sha256": "920123970f286634ff73aa30b5b828091e0ff4054e2d480716872293dcc932c6",
+    "node1_tests_run": 99,
+    "preflight_freeze_sha256": "a6d53ba3222078fd332e517d93d2befa209b6395351157bb1a8396a9ccd1b3ba",
+    "preregistration_sha256": "e50eb1c5758b01f74efe215472f7f904424743132285a4f76cc5ab732ffdd6f4",
+    "pretraining_terminal_sha256": "42a344ec0e94cde1d9bc8964d92ad85809f7ada5c7da27c21b67ffd80d8e969c",
+    "pretraining_training_started": false
+  },
+  "required_post_training_evidence": [
+    "five PASS fold-pair terminals",
+    "PASS five-fold causal pairing receipt",
+    "C0 and C1 OOF receipts each with 9849 rows, 54 parents, five folds, zero held-out-parent contact reads",
+    "B0/C0/C1 frozen core-gate receipt",
+    "Phase1b ablations only if and only if the core gate passes"
+  ],
+  "schema_version": "pvrig_v220_phase1_core_final_training_implementation_freeze_v1_1",
+  "status": "FROZEN_FINAL_PHASE1_CORE_TRAINING_PROTOCOL_PENDING_INDEPENDENT_APPROVAL"
+}

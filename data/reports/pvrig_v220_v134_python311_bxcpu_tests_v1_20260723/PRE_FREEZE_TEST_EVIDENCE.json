@@ -1,0 +1,16 @@
+{
+  "logs": {
+    "PRE_FREEZE_BXCPU_146_TESTS.log": {
+      "bytes": 27082,
+      "sha256": "2c61b439578f49dea86feb047552770ead1a51068023011bb001b65c6a400c0f"
+    },
+    "PRE_FREEZE_LOCAL_44_TESTS.log": {
+      "bytes": 6039,
+      "sha256": "9ef50fe828843810e41084a37eb7f9285508bf9d6c275166e23efd50d468eef2"
+    }
+  },
+  "schema_version": "pvrig.v220.v1_3_4.pre_freeze_test_evidence.v1",
+  "status": "PASS_PRE_FREEZE_LOCAL44_AND_BXCPU_PYTHON31114_COMBINED146_NO_TRAINING",
+  "training_artifacts_created": 0,
+  "training_started": false
+}

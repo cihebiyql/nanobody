@@ -1,0 +1,18 @@
+{
+  "created_at_utc": "2026-07-22T17:16:28.780534+00:00",
+  "expected_rows": 150000,
+  "files": {
+    "M2_S0M2_RECOVERY_V2_FAILURE.json": "79a7aa88c543f670a0206b3e157d278d864f5ffa5207bbd0a00a8934b6138918",
+    "RECOVERY_PREREGISTRATION_V2.json": "6a2e7a83b95d0c245c98bcaf3db2731b71d75660967011b84c90e85ce9046e40",
+    "TEST_RESULTS_V2.log": "e0714edf487c1f469ad212d5f2beffa159d40293984dcfae83693fb4bd57c967",
+    "run_m2_s0m2_recovery_v2_1.sh": "a65f71fec5ec87efde704c1d17a6a385d749cd403dade9d04aac72217832b64d",
+    "validate_m2_s0m2_recovery_v2.py": "6e74b63c773088bd7ceec02e0e0c64a3594ec135537e684f8df5b01d499b3d60"
+  },
+  "only_change_from_v2": "Record and validate both invoked sys.executable and its observed realpath instead of incorrectly requiring the realpath to equal the symlink launcher path.",
+  "schema_version": "pvrig_top150k_m2_s0m2_recovery_implementation_freeze_v2_1",
+  "status": "FROZEN_AFTER_V2_PREFLIGHT_FAILURE_BEFORE_ANY_CANONICAL_OUTPUT",
+  "truth_access": {
+    "candidate_docking_pose_files_opened": 0,
+    "teacher_labels_opened": 0
+  }
+}

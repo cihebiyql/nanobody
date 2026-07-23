@@ -1,0 +1,51 @@
+{
+  "claim_boundary": "Authorizes final training freeze preparation only; does not itself authorize C0/C1 training.",
+  "dependency_hashes": {
+    "v213_runner_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "v25_model_sha256": "26a193e7f854cdbce586c2fa89df947f0bd7218c3c675733c1724e7e7ee3c521",
+    "v25_trainer_sha256": "af93c39054a1a73568a68d498406fb3eddbffe1d688c93e16f59319148e285b0"
+  },
+  "deployment_hashes": {
+    "preflight_freeze_sha256": "a6d53ba3222078fd332e517d93d2befa209b6395351157bb1a8396a9ccd1b3ba",
+    "preregistration_sha256": "e50eb1c5758b01f74efe215472f7f904424743132285a4f76cc5ab732ffdd6f4",
+    "pretraining_launcher_sha256": "a3b5dcda2f178e73be7a4d2e8c0a0df672af1d977a4823c425c4f6e9e42c115d",
+    "production_initial_state_materializer_sha256": "6b5942ceb97d7dd122e8d7a2e79712f7aaeb46ac3344a212698f5a4c4dcd5b53"
+  },
+  "failed_first_layout_attempt_retained": {
+    "log_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/NODE1_TEST_RESULTS_PHASE1_CORE_V1_1.log",
+    "log_sha256": "9afffffbed282cad3e69ac0aa2fa53e7a5818a3303278d506a36c85644f52968",
+    "reason": "Standalone deployment omitted frozen sibling V2.13/V2.5 test dependencies; fixed without source modification in layout_recovery_v1.",
+    "usable": false
+  },
+  "initial_state_contract": {
+    "checkpoint_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/pretraining_v1_1_layout_recovery_v1/V220_PHASE1_SEED43_HEAD_STATE.bin",
+    "checkpoint_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "initial_state_terminal_sha256": "1c08d409df728f378d024d11e2e2f2f46ba5ad29c3451dfa83d02fe56aa66f51",
+    "receipt_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/pretraining_v1_1_layout_recovery_v1/V220_PHASE1_SEED43_HEAD_STATE.bin.receipt.json",
+    "receipt_sha256": "0af6ca52a8bcbe81b528266a368e7a46e23b8171051d54e03df5732b398365cc",
+    "training_started": false
+  },
+  "node1_code_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/layout_recovery_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_20260723",
+  "node1_pretraining_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/pretraining_v1_1_layout_recovery_v1",
+  "node1_tests": {
+    "errors": 0,
+    "failures": 0,
+    "log_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/layout_recovery_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_20260723/NODE1_TEST_RESULTS_PHASE1_CORE_V1_1_LAYOUT_RECOVERY_V1.log",
+    "log_sha256": "920123970f286634ff73aa30b5b828091e0ff4054e2d480716872293dcc932c6",
+    "tests_run": 99
+  },
+  "pretraining": {
+    "B0_replay_sha256": "df796c5ddd61251c209a6e2e4d3dd604f62c8d9fbe3fbf7b01ecb2142469dbea",
+    "initial_state_receipt_sha256": "0af6ca52a8bcbe81b528266a368e7a46e23b8171051d54e03df5732b398365cc",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "initial_state_terminal_sha256": "1c08d409df728f378d024d11e2e2f2f46ba5ad29c3451dfa83d02fe56aa66f51",
+    "schema_version": "pvrig_v220_phase1_pretraining_terminal_v1_1",
+    "sha256sums_sha256": "52ddb7d1f2a23292565cb69c65fb10d8a2db48a1852086df275e0c20be62d71e",
+    "status": "PASS_B0_REPLAY_AND_INITIAL_STATE_MATERIALIZATION_NO_TRAINING",
+    "terminal_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/pretraining_v1_1_layout_recovery_v1/PRETRAINING_TERMINAL.json",
+    "terminal_sha256": "42a344ec0e94cde1d9bc8964d92ad85809f7ada5c7da27c21b67ffd80d8e969c",
+    "training_started": false
+  },
+  "schema_version": "pvrig_v220_node1_phase1_preflight_receipt_v1_1",
+  "status": "PASS_NODE1_99_TESTS_B0_REPLAY_AND_HEAD_ONLY_INITIAL_STATE_NO_TRAINING"
+}

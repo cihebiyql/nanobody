@@ -1,0 +1,67 @@
+{
+  "authorization": {
+    "preflight_deployment_authorized": false,
+    "preflight_independent_review_required": true,
+    "training_authorized": false,
+    "training_requires_successful_stage_a_and_separate_independent_approval": true
+  },
+  "claim_boundary": "Frozen-package test-fixture recovery only; not model quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production promotion.",
+  "created_date_local": "2026-07-23",
+  "frozen_scientific_method": {
+    "architecture_changed": false,
+    "data_changed": false,
+    "gates_changed": false,
+    "hyperparameters_changed": false,
+    "initial_state_changed": false,
+    "loss_changed": false,
+    "optimizer_changed": false,
+    "split_changed": false,
+    "v1_3_1_preregistration_sha256": "a5e66a98b155a7284740a22a4c08d765d69f259a1f31cc3a801c9bccc7539088"
+  },
+  "legacy_102_test_contract": {
+    "expected_count": 102,
+    "expected_top_level_test_files": 13,
+    "hash_each_test_file": true,
+    "invocation": "cd LEGACY_ROOT; python -m unittest <exact thirteen tests/*.py relative paths> -v",
+    "nested_discovery_allowed": false,
+    "python_bin": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "python_version": "Python 3.11.14"
+  },
+  "minimal_causal_change": {
+    "new": "FinalizationLifecycleTests.fixture excludes the exact production freeze and sidecar when constructing its synthetic frozen package; a nested regression executes the exact test launcher from a fully frozen package",
+    "old": "V1.3.2 copied the already-present production freeze and sidecar, then appended both names again, producing 21 allowlist entries with only 19 unique values",
+    "scope": "test fixture and technical test launcher/hash/count only"
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "open_development_or_frozen_prospective_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_or_rejected_v1_3_training_output_input": false
+  },
+  "preflight_contract": {
+    "combined_legacy_tests": 102,
+    "combined_tests": 146,
+    "folds": 5,
+    "new_v1_3_3_tests": 44,
+    "python311_exact_adapter_must_pass": true,
+    "training_code_path_allowed": false,
+    "training_started": false
+  },
+  "superseded_v1_3_1": {
+    "failure_diagnosis_sha256": "be3877c88f640fd136cca97b9b8a56d9882a3a008a270b13ccf12ff66ad8a370",
+    "failure_receipt_sha256": "d8ab1efe93079c02f7b8292fa1f19f4b88c370b771b1d7e2fc29b8f03884ead2",
+    "freeze_sha256": "bd66829ad25d35981c96b65055ce3d3822edfcfeda6624a9d65fea1efedb2d3e",
+    "same_version_retry_allowed": false,
+    "training_artifact_count": 0
+  },
+  "superseded_v1_3_2": {
+    "freeze_sha256": "882f60a34a1d6efda3b26236d056cc4e301a53bce2abb86b6b9ef3086a11f2ab",
+    "independent_rejection_sha256": "eaf1ba9e2a6d4c19fb2db605154bb1670d17211d28ddd325878bec769c4eecca",
+    "same_version_edit_or_retry_allowed": false,
+    "stage_a_deployed": false,
+    "training_started": false
+  },
+  "schema_version": "pvrig.v220.phase1_technical_recovery_v1_3_3.v1",
+  "status": "PREREGISTERED_V1_3_3_STAGE_A_ONLY_TRAINING_NOT_AUTHORIZED"
+}

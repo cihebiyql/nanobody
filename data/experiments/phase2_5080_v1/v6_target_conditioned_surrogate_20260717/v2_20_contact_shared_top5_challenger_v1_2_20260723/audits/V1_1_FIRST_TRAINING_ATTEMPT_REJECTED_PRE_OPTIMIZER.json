@@ -1,0 +1,20 @@
+{
+  "C1_started": false,
+  "attempted_arm": "C0",
+  "attempted_fold": 0,
+  "checkpoint_created": false,
+  "log_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/training_v1_1/logs/C0_fold_0.log",
+  "log_sha256": "0b30f9d193e8cecf548b4c4fe4fea05afe319e11b1d4778b9c5fdfc7f78b48f3",
+  "node1_attempt_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_1_20260723/training_v1_1",
+  "optimizer_created": false,
+  "optimizer_steps": 0,
+  "post_result_model_or_metric_change": false,
+  "predictions_created": false,
+  "remediation": "Preserve V1.1 unchanged; create V1.2 with seed43 enforced before any production model/backbone construction, regression test it, and rerun all preflight/freeze/review gates.",
+  "schema_version": "pvrig_v220_phase1_v1_1_first_training_attempt_rejection",
+  "seed": 43,
+  "status": "REJECTED_PRE_OPTIMIZER_BACKBONE_RUNTIME_BINDING_MISMATCH",
+  "technical_root_cause": "HF ESM2 pooler weights are absent from the pretrained checkpoint and are randomly initialized. V1.1 seeded only inside run_fold_core, after prepare_production_inputs had already constructed the backbone, so the pretraining and production runtime backbone hashes differed.",
+  "training_output_directory_created": false,
+  "usable_training_result": false
+}

@@ -1,0 +1,125 @@
+{
+  "authorization": {
+    "node1_stage_a_approved": false,
+    "node1_stage_a_completed": false,
+    "preflight_deployment_authorized": false,
+    "training_authorized": false,
+    "training_started": false
+  },
+  "claim_boundary": "V1.3.5 preflight hash-binding and receipt-builder CLI recovery freeze only; no model-quality, binding, Kd, experimental-blocking, Docking-Gold, Top7500, production-promotion, deployment, or training claim.",
+  "created_utc": "2026-07-23T00:32:30.303061+00:00",
+  "external_bindings": {
+    "exact_file_loader_sha256": "0cd9b79bc31c6ca3e4a62a1d5fbead6fffb26bcc4de3b2fa9f1b9b7a25fa1c7b",
+    "initial_receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "legacy_test_launcher_actual_sha256": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+    "model_safetensors_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "superseded_v1_3_4_freeze_sha256": "b4d2352399d3f652bccf16f34069bafedba815c3edd553dbed2758add9dfb0d3",
+    "superseded_v1_3_4_independent_failure_receipt_sha256": "8fd16547caf8b20a9d44331127d8a58808a3a41614538294d4bc44f21277a99e",
+    "upstream_calibrator_sha256": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "upstream_contact_teacher_store_sha256": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "upstream_paired_initial_state_sha256": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "upstream_v1_2_runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "v2_13_runner_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9"
+  },
+  "implementation_hashes": {
+    "DESIGN_V1_3_5_FROZEN_PACKAGE_TEST_RECOVERY.md": "3c6ba9fc79ba4d85bb28b0a60c6b2d8ee354be895221b2cf5b750879ce1e06bc",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_5.json": "574919e65f7079475c17294e297327ce311910ced12656e34640e1fa4a5b9562",
+    "V1_3_4_REJECTION_AND_V1_3_5_SUPERSESSION.json": "6334485015847052b103fa11837fb97743e931eb51fd8465351c395ae27adb55",
+    "launchers/run_combined_legacy_and_v1_3_5_tests.sh": "fc186c9686701ef0a9ef513669549aa1702b0c427d124b33efcf7892749717be",
+    "launchers/run_legacy_102_tests_python311_v1_3_4.sh": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_5.template.sh": "aca3731fe4801734e0cc5bd9b8310e67a8cd183db8fc664ba2493544c83ffb32",
+    "launchers/run_phase1_preflight_node1_v1_3_5.sh": "eaa521deb4243bff99b5e2a0189131ee63625fa7131298f8665abad2bcd21ada",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh": "83bc6e197cf31577d72ea8badcb494ef5e8a4743539e733f57d97aeafc3a395a",
+    "launchers/run_tests_v1_3_5.sh": "8ebffdc4410a6f1bd53c1f54eda040bafa6e088a0388b7685774679e6e35e813",
+    "src/build_v220_v1_3_5_preflight_receipt.py": "e5477e94a1c78c93b0a6138de3fd65603be93c00d2adbd008167e804daa663ce",
+    "src/finalize_v220_v1_3_5_training_authorization.py": "330cf9ca7e202f3088957902e6458401263598a758296c14fb9d904d989cd81f",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py": "e72204c0d4ffe42ccefee415aa6608b7c271439176c7165fc8b36c5f93ba6d5a",
+    "src/run_unittest_file_paths_v1_3_4.py": "0cd9b79bc31c6ca3e4a62a1d5fbead6fffb26bcc4de3b2fa9f1b9b7a25fa1c7b",
+    "src/run_v220_contact_shared_fold_v1_3_1.py": "f00c004006f6c2f7fb8798d19342681da94ed61b0be0ea35ef165ecac6c3c4c2",
+    "src/v220_shared_calibration_artifact_v1.py": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py": "aad5b9b6218e7676b27b23b203491b8e0581e1571394582ed56df9e455bb04dc",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py": "bc10d8d116404f37743244e32b2fca797e5cd196cffbaf4c9406ad66c71ae6df",
+    "tests/test_v220_v1_3_5_lifecycle.py": "d2de9a6371da782efef2f6267be11d0aa12a549fff7443b0d535f280dbf00c82"
+  },
+  "minimal_change": {
+    "cause": "V1.3.4 preflight bound a stale legacy launcher SHA and receipt-builder CLI destination did not match build().",
+    "data_model_split_loss_optimizer_threshold_hyperparameters_changed": false,
+    "exact_file_loader_changed": false,
+    "legacy_launcher_changed": false,
+    "repair": "bind actual legacy launcher SHA c3bae8a5...; align --v1-3-5-test-log with args.v1_3_5_test_log; add actual-file hash and real subprocess CLI parse/build regressions",
+    "scientific_code_changed": false
+  },
+  "node1_stage_a_pending": {
+    "five_fold_shared_calibration_materialize_load_only_required": true,
+    "independent_review_required": true,
+    "training_artifacts_allowed": false
+  },
+  "package_file_allowlist": [
+    "DESIGN_V1_3_5_FROZEN_PACKAGE_TEST_RECOVERY.md",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_5.json",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_5.json.sha256",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_5.json",
+    "V1_3_4_REJECTION_AND_V1_3_5_SUPERSESSION.json",
+    "launchers/run_combined_legacy_and_v1_3_5_tests.sh",
+    "launchers/run_legacy_102_tests_python311_v1_3_4.sh",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_5.template.sh",
+    "launchers/run_phase1_preflight_node1_v1_3_5.sh",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh",
+    "launchers/run_tests_v1_3_5.sh",
+    "src/build_v220_v1_3_5_preflight_receipt.py",
+    "src/finalize_v220_v1_3_5_training_authorization.py",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py",
+    "src/run_unittest_file_paths_v1_3_4.py",
+    "src/run_v220_contact_shared_fold_v1_3_1.py",
+    "src/v220_shared_calibration_artifact_v1.py",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py",
+    "tests/test_v220_v1_3_5_lifecycle.py"
+  ],
+  "pre_freeze_verification": {
+    "bxcpu_combined148_log_sha256": "b3b20ec2349206e69c86dde4f5e13d3854bbc91c59bcd51e0a3821554c63a61d",
+    "bxcpu_dependency_site_packages": "$HOME/pvrig_bxcpu_model_runtime_v1_20260721/env/lib/python3.11/site-packages",
+    "bxcpu_python_executable": "$HOME/.local/opt/haddock3-2025.11.0/bin/python",
+    "bxcpu_python_version": "Python 3.11.14",
+    "combined_tests": 148,
+    "legacy_tests": 102,
+    "local_new46_log_sha256": "560d58997d434feb9f0b36c128e4af504982be31fe3ed2431a8f1414778716a9",
+    "local_new_tests": 46,
+    "local_python_version": "Python 3.10.12",
+    "new_tests": 46,
+    "ok": true,
+    "training_started": false
+  },
+  "preflight_contract": {
+    "folds": 5,
+    "training_code_path_allowed": false,
+    "training_started": false
+  },
+  "required_post_freeze_verification": {
+    "exact_same_combined_launcher": "launchers/run_combined_legacy_and_v1_3_5_tests.sh",
+    "expected_tests": 148,
+    "must_run_on_bxcpu_python31114": true,
+    "package_mutation_after_run_allowed": false,
+    "sibling_evidence_only": true
+  },
+  "schema_version": "pvrig.v220.v1_3_5_implementation_freeze.v1",
+  "scientific_core_byte_identity": {
+    "sha256": {
+      "launchers/run_shared_fold_materialization_once_v1_3_1.sh": "83bc6e197cf31577d72ea8badcb494ef5e8a4743539e733f57d97aeafc3a395a",
+      "src/materialize_v220_shared_fold_calibration_v1_3_1.py": "e72204c0d4ffe42ccefee415aa6608b7c271439176c7165fc8b36c5f93ba6d5a",
+      "src/run_v220_contact_shared_fold_v1_3_1.py": "f00c004006f6c2f7fb8798d19342681da94ed61b0be0ea35ef165ecac6c3c4c2",
+      "src/v220_shared_calibration_artifact_v1.py": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e",
+      "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py": "aad5b9b6218e7676b27b23b203491b8e0581e1571394582ed56df9e455bb04dc"
+    },
+    "status": "PASS_FIVE_EXECUTION_CORE_FILES_BYTE_IDENTICAL_TO_V1_3_4_AND_V1_3_1"
+  },
+  "status": "FROZEN_V1_3_5_IMPLEMENTATION_PENDING_INDEPENDENT_REVIEW_AND_NODE1_PREFLIGHT",
+  "tests": {
+    "combined_tests_required": 148,
+    "legacy_tests": 102,
+    "new_tests": 46
+  },
+  "training_authorized": false,
+  "training_started": false
+}

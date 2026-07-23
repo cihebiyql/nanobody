@@ -1,0 +1,98 @@
+{
+  "authorization": {
+    "node1_stage_a_approved": false,
+    "node1_stage_a_completed": false,
+    "preflight_deployment_authorized": false,
+    "training_authorized": false,
+    "training_started": false
+  },
+  "claim_boundary": "V1.3.2 implementation freeze for a Stage-A no-training Python 3.11 technical recovery; no model-quality, binding, Kd, experimental-blocking, Docking-Gold, Top7500, or production-promotion claim.",
+  "created_local": "2026-07-23T06:15:25+08:00",
+  "created_utc": "2026-07-22T22:15:25Z",
+  "external_bindings": {
+    "initial_receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "model_safetensors_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "upstream_calibrator_sha256": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "upstream_contact_teacher_store_sha256": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "upstream_paired_initial_state_sha256": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "upstream_v1_2_runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "v2_13_runner_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9"
+  },
+  "implementation_hashes": {
+    "DESIGN_V1_3_2_PYTHON311_STAGE_A_RECOVERY.md": "62aa9e2916f53940c62959c5dfdfb12d021a24b09f186c6ef4a67df04794e8ba",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_2.json": "dd47d5efe75e0a4cab4709ea3bd4bc3b8f1036af761f37c6115d23af3423cb24",
+    "V1_3_1_STAGE_A_FAILURE_AND_V1_3_2_SUPERSESSION.json": "f894b1423d855bacc5eaba85d2cfa588998bc3227026debd9b2c0699ee95b106",
+    "launchers/run_combined_legacy_and_v1_3_2_tests.sh": "bfdbc8a09ae871f52c47a5bd8c0d6ec8dd09a8b217974f58b960c6879391d71a",
+    "launchers/run_legacy_102_tests_python311_v1_3_2.sh": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_2.template.sh": "20590f2b9e4b707d2d18b70faa55112500c511eeb2557fc469c6e6d4fcdd735d",
+    "launchers/run_phase1_preflight_node1_v1_3_2.sh": "c8e5ff7cd0adc40d14d45d1c8a4f7f25495faa7df584246188e1accd1e0248cf",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh": "83bc6e197cf31577d72ea8badcb494ef5e8a4743539e733f57d97aeafc3a395a",
+    "launchers/run_tests_v1_3_2.sh": "64c70a77848a12bfce51357ad9a286abc7ccf05a7b235b8d13976f9f815e2924",
+    "src/build_v220_v1_3_2_preflight_receipt.py": "d097be76a4c7612c19a4dce9455c6d3c925aef4a97338a450e83cce8a0f935e7",
+    "src/finalize_v220_v1_3_2_training_authorization.py": "3a5b8894d7fd904347646f5a07a7fcb4e766a6da4cddc615245fcd5f0760a5a6",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py": "e72204c0d4ffe42ccefee415aa6608b7c271439176c7165fc8b36c5f93ba6d5a",
+    "src/run_v220_contact_shared_fold_v1_3_1.py": "f00c004006f6c2f7fb8798d19342681da94ed61b0be0ea35ef165ecac6c3c4c2",
+    "src/v220_shared_calibration_artifact_v1.py": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py": "aad5b9b6218e7676b27b23b203491b8e0581e1571394582ed56df9e455bb04dc",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py": "84d2214843a47e3a7129611a2f03564fcca362ac10c4f3e689e2754eadb6ee5a",
+    "tests/test_v220_v1_3_2_lifecycle.py": "a598db664194a774908213d05c2250057284990d09ceb814548affc3eb0909e6"
+  },
+  "local_verification": {
+    "bash_n_all_launchers": true,
+    "git_diff_check_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "new_tests": 43,
+    "new_tests_log_sha256": "82aad308038875e5363a73c83ffc6ed98b651f7a307112b104ded9da246a0c33",
+    "new_tests_ok": true,
+    "py_compile_src_tests_external_cache": true,
+    "static_and_identity_checks_log_sha256": "b0888951003f4550546e19ca7347dad660435f010e05eb3ad9e384dcd572c23c",
+    "v1_3_1_core_five_byte_identical": true
+  },
+  "node1_stage_a_mandatory_pending_gates": {
+    "calibration_materialization_and_load_only": "five folds, exactly once materialization per fold, no training",
+    "exact_python_bin": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "exact_python_version": "Python 3.11.14",
+    "legacy_tests": 102,
+    "new_tests": 43,
+    "node1_python311_exact_102_plus_43_evidence_available": false,
+    "reason_pending": "Node1 campus-WLAN SSH proxy unavailable after 2026-07-23 06:06 local; external availability issue, not treated as passed evidence",
+    "training_artifacts_allowed": false
+  },
+  "package_file_allowlist": [
+    "DESIGN_V1_3_2_PYTHON311_STAGE_A_RECOVERY.md",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_2.json",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_2.json.sha256",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_2.json",
+    "V1_3_1_STAGE_A_FAILURE_AND_V1_3_2_SUPERSESSION.json",
+    "launchers/run_combined_legacy_and_v1_3_2_tests.sh",
+    "launchers/run_legacy_102_tests_python311_v1_3_2.sh",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_2.template.sh",
+    "launchers/run_phase1_preflight_node1_v1_3_2.sh",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh",
+    "launchers/run_tests_v1_3_2.sh",
+    "src/build_v220_v1_3_2_preflight_receipt.py",
+    "src/finalize_v220_v1_3_2_training_authorization.py",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py",
+    "src/run_v220_contact_shared_fold_v1_3_1.py",
+    "src/v220_shared_calibration_artifact_v1.py",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py",
+    "tests/test_v220_v1_3_2_lifecycle.py"
+  ],
+  "preflight_contract": {
+    "folds": 5,
+    "independent_stage_a_approval_must_be_external_sibling_evidence": true,
+    "node1_exact_legacy_102_and_new_43_required": true,
+    "package_root_must_remain_byte_immutable_after_freeze": true,
+    "training_code_path_allowed": false
+  },
+  "schema_version": "pvrig.v220.v1_3_2_implementation_freeze.v1",
+  "status": "FROZEN_V1_3_2_IMPLEMENTATION_PENDING_INDEPENDENT_REVIEW_AND_NODE1_PREFLIGHT",
+  "tests": {
+    "combined_tests_required_on_node1": 145,
+    "legacy_tests": 102,
+    "new_tests": 43
+  },
+  "training_authorized": false,
+  "training_started": false
+}

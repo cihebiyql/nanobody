@@ -1,0 +1,9 @@
+{
+  "claim_boundary": "C2-refined consensus of label-free computational Docking-geometry surrogates; not calibrated binding or experimental blocking probability.",
+  "local_directory": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/prepared/pvrig_top150k_c2_refined_top7500_v1_20260722",
+  "remote_run_receipt_sha256": "9fd41ba34c23901f57ab813d393b58176efccc6a89a19a72f4db8853b3d7c4d1",
+  "rows": 7500,
+  "schema_version": "pvrig_top150k_c2_refined_local_sync_receipt_v1",
+  "status": "PASS_LOCAL_REFINED_TOP7500_READY",
+  "synced_at_utc": "2026-07-22T21:00:34.189042+00:00"
+}

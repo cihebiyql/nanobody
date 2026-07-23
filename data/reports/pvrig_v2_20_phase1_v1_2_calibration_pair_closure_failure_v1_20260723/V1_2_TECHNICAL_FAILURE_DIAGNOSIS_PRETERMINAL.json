@@ -1,0 +1,272 @@
+{
+  "access_evidence": {
+    "aggregate_oof_table_opened_for_this_diagnosis": false,
+    "diagnostic_inputs_used": [
+      "CONTACT_WEIGHT_CALIBRATION.json for C0/C1 folds 0-3",
+      "artifact SHA256",
+      "pair terminal and aggregate OOF file existence only"
+    ],
+    "heldout_contact_labels_opened_for_this_diagnosis": false,
+    "monitoring_disclosure": "Before this failure was recognized, a routine log-tail command emitted the C0 fold0 metric block and prediction header. No aggregate OOF rows, held-out contact labels, open-development, sealed, quarantine, test32, or frozen prospective-test data were read; no observed metric is used in this technical recovery.",
+    "open_development_or_frozen_prospective_test_opened": false,
+    "training_firewall_evidence": "Each completed fold RESULT teacher_store_audit reports outer_score contact numeric integer/float parses as zero; Phase1b held-out contact evaluator does not exist or run."
+  },
+  "claim_boundary": "Technical causal-pair hash-closure diagnosis only; no model-quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or promotion claim.",
+  "created_at_local": "2026-07-23T04:40:27.397742+08:00",
+  "frozen_method_change": false,
+  "frozen_pair_predicate": {
+    "consequence": "all observed folds 0-3 have unequal calibration artifact SHA256, so exact pair closure will assert after both arm results exist",
+    "required": "results['C0']['calibration_sha256'] == results['C1']['calibration_sha256']",
+    "source": "run_phase1_core_fold_pair_node1_v1_2.sh"
+  },
+  "observed": {
+    "aggregate_oof_files": [],
+    "folds": [
+      {
+        "arms": {
+          "C0": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.364627123259203e-05,
+              "0.0003125": 6.729254246518407e-05,
+              "0.000625": 0.00013458508493036813,
+              "0.00125": 0.00026917016986073626,
+              "0.0025": 0.0005383403397214725
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_0/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "fed0ed936acf912ee66719e3fadeeb833a3d241c232c538d1292a14960aba1ac",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          },
+          "C1": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.365044501992864e-05,
+              "0.0003125": 6.730089003985728e-05,
+              "0.000625": 0.00013460178007971456,
+              "0.00125": 0.0002692035601594291,
+              "0.0025": 0.0005384071203188583
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_0/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "a59a57f8283dae9b55f187ce6d30b943aac099867bddbfe2200cc1faa09de7a2",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          }
+        },
+        "exact_sha256_equal": false,
+        "fold": 0,
+        "semantic_conflict_equal": true,
+        "semantic_lambda_equal": true
+      },
+      {
+        "arms": {
+          "C0": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.177535015720298e-05,
+              "0.0003125": 6.355070031440597e-05,
+              "0.000625": 0.00012710140062881193,
+              "0.00125": 0.00025420280125762387,
+              "0.0025": 0.0005084056025152477
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_1/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "3adaa0534fbd39959dc4f9abf0834ef556ce52cef92575ce9204a6390ddc58e8",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          },
+          "C1": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.1776663102303334e-05,
+              "0.0003125": 6.355332620460667e-05,
+              "0.000625": 0.00012710665240921334,
+              "0.00125": 0.00025421330481842667,
+              "0.0025": 0.0005084266096368533
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_1/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "328b0103025fabb651586e93d208e586de04581cf9cad89733a40a51e4ec0aa4",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          }
+        },
+        "exact_sha256_equal": false,
+        "fold": 1,
+        "semantic_conflict_equal": true,
+        "semantic_lambda_equal": true
+      },
+      {
+        "arms": {
+          "C0": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.161299059708429e-05,
+              "0.0003125": 6.322598119416858e-05,
+              "0.000625": 0.00012645196238833715,
+              "0.00125": 0.0002529039247766743,
+              "0.0025": 0.0005058078495533486
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_2/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "3dbeed70d72175fe2401d9bb55d34ab2110636603f5c5036d91b8ac992983204",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          },
+          "C1": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.1610205817847815e-05,
+              "0.0003125": 6.322041163569563e-05,
+              "0.000625": 0.00012644082327139126,
+              "0.00125": 0.0002528816465427825,
+              "0.0025": 0.000505763293085565
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_2/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "b7d96ca404c59995f285fed14b3b531bbda1e42b24f9a1422a33627ecc7a518f",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          }
+        },
+        "exact_sha256_equal": false,
+        "fold": 2,
+        "semantic_conflict_equal": true,
+        "semantic_lambda_equal": true
+      },
+      {
+        "arms": {
+          "C0": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.352749112773442e-05,
+              "0.0003125": 6.705498225546884e-05,
+              "0.000625": 0.00013410996451093768,
+              "0.00125": 0.00026821992902187537,
+              "0.0025": 0.0005364398580437507
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C0/fold_3/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "858782803569954c0be5d8a5b4507faf34d5706b152cf43f20bb84840e65310f",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          },
+          "C1": {
+            "contact_batch_count": 8,
+            "grid_median_scaled_ratios": {
+              "0.00015625": 3.3538991706124436e-05,
+              "0.0003125": 6.707798341224887e-05,
+              "0.000625": 0.00013415596682449775,
+              "0.00125": 0.0002683119336489955,
+              "0.0025": 0.000536623867297991
+            },
+            "lambda_grid": [
+              0.00015625,
+              0.0003125,
+              0.000625,
+              0.00125,
+              0.0025
+            ],
+            "model_state_sha256_after": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "model_state_sha256_before": "18592101886f16a464978c7e5c85ab3b2913ebbdcee0bd49a75e7b5afa3f83b5",
+            "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2/C1/fold_3/CONTACT_WEIGHT_CALIBRATION.json",
+            "selected_contact_weight": 0.0025,
+            "severe_conflict_batch_count": 0,
+            "sha256": "8a3b745694554cee905dd7ed37c3e6db60ffa35480933a8fba9572031ee272f9",
+            "shared_parameter_order_sha256": "a06fd6df19922104d6f6945cbe345ddf75001e817ffa851e1c4a4a7a3639c634",
+            "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER"
+          }
+        },
+        "exact_sha256_equal": false,
+        "fold": 3,
+        "semantic_conflict_equal": true,
+        "semantic_lambda_equal": true
+      }
+    ],
+    "node_time": "2026-07-23T04:40:28.243448+08:00",
+    "pair_terminals": [],
+    "training_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/training_v1_2"
+  },
+  "phase1b_authorized": false,
+  "required_action": "Do not patch or reuse V1.2. Wait for actual fold0 pair-closure failure, preserve logs, then supersede only with a separately frozen V1.3 technical recovery that materializes one shared calibration artifact per fold before either optimizer.",
+  "schema_version": "pvrig_v220_phase1_v1_2_calibration_pair_closure_failure_preterminal_v1",
+  "semantic_result": {
+    "all_observed_calibration_status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER",
+    "all_observed_conflict_count": 0,
+    "all_observed_selected_lambda": "0.0025",
+    "interpretation": "The semantic selection is stable, but independently recomputing floating gradient norms/cosines emits byte-distinct receipts. The frozen closure is byte-exact, not semantic-only."
+  },
+  "status": "FAILURE_PREDICATE_OBSERVED_AWAITING_ACTUAL_FOLD0_PAIR_CLOSURE"
+}

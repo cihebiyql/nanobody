@@ -1,0 +1,62 @@
+{
+  "authorization": {
+    "preflight_deployment_authorized": false,
+    "preflight_independent_review_required": true,
+    "training_authorized": false,
+    "training_requires_successful_stage_a_and_separate_independent_approval": true
+  },
+  "claim_boundary": "Python 3.11 Stage-A unittest-launcher recovery only; not model quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production promotion.",
+  "created_date_local": "2026-07-23",
+  "frozen_scientific_method": {
+    "architecture_changed": false,
+    "data_changed": false,
+    "gates_changed": false,
+    "hyperparameters_changed": false,
+    "initial_state_changed": false,
+    "loss_changed": false,
+    "optimizer_changed": false,
+    "split_changed": false,
+    "v1_3_1_preregistration_sha256": "a5e66a98b155a7284740a22a4c08d765d69f259a1f31cc3a801c9bccc7539088"
+  },
+  "legacy_102_test_contract": {
+    "expected_count": 102,
+    "expected_top_level_test_files": 13,
+    "hash_each_test_file": true,
+    "invocation": "cd LEGACY_ROOT; python -m unittest <exact thirteen tests/*.py relative paths> -v",
+    "nested_discovery_allowed": false,
+    "python_bin": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "python_version": "Python 3.11.14"
+  },
+  "minimal_causal_change": {
+    "legacy_launcher_new": "thirteen exact relative tests/*.py argv values after cd to LEGACY_ROOT",
+    "legacy_launcher_old": "thirteen absolute /data1/.../tests/test_*.py argv values interpreted as module names by Python 3.11",
+    "technical_suite_launcher_new": "two exact relative tests/*.py argv values after cd to V1.3.2 package root",
+    "technical_suite_launcher_old": "inherited absolute package-root test argv shape with the same Python 3.11 incompatibility",
+    "scope": "the two Stage-A unittest launchers only"
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "open_development_or_frozen_prospective_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_or_rejected_v1_3_training_output_input": false
+  },
+  "preflight_contract": {
+    "combined_legacy_tests": 102,
+    "combined_tests": 145,
+    "folds": 5,
+    "new_v1_3_2_tests": 43,
+    "python311_exact_adapter_must_pass": true,
+    "training_code_path_allowed": false,
+    "training_started": false
+  },
+  "superseded_v1_3_1": {
+    "failure_diagnosis_sha256": "be3877c88f640fd136cca97b9b8a56d9882a3a008a270b13ccf12ff66ad8a370",
+    "failure_receipt_sha256": "d8ab1efe93079c02f7b8292fa1f19f4b88c370b771b1d7e2fc29b8f03884ead2",
+    "freeze_sha256": "bd66829ad25d35981c96b65055ce3d3822edfcfeda6624a9d65fea1efedb2d3e",
+    "same_version_retry_allowed": false,
+    "training_artifact_count": 0
+  },
+  "schema_version": "pvrig.v220.phase1_technical_recovery_v1_3_2.v1",
+  "status": "PREREGISTERED_V1_3_2_STAGE_A_ONLY_TRAINING_NOT_AUTHORIZED"
+}

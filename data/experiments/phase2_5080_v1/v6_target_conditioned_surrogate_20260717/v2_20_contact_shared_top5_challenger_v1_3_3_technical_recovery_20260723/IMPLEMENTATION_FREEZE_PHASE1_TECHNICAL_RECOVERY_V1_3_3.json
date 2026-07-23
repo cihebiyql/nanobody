@@ -1,0 +1,105 @@
+{
+  "authorization": {
+    "node1_stage_a_approved": false,
+    "node1_stage_a_completed": false,
+    "preflight_deployment_authorized": false,
+    "training_authorized": false,
+    "training_started": false
+  },
+  "claim_boundary": "V1.3.3 implementation freeze for a frozen-package test-fixture recovery; no model-quality, binding, Kd, experimental-blocking, Docking-Gold, Top7500, or production-promotion claim.",
+  "created_local": "2026-07-23T06:29:35+08:00",
+  "created_utc": "2026-07-22T22:29:35Z",
+  "external_bindings": {
+    "initial_receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "model_safetensors_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "upstream_calibrator_sha256": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "upstream_contact_teacher_store_sha256": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "upstream_paired_initial_state_sha256": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "upstream_v1_2_runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "v2_13_runner_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "v1_3_2_independent_rejection_sha256": "eaf1ba9e2a6d4c19fb2db605154bb1670d17211d28ddd325878bec769c4eecca",
+    "v1_3_2_rejected_freeze_sha256": "882f60a34a1d6efda3b26236d056cc4e301a53bce2abb86b6b9ef3086a11f2ab"
+  },
+  "implementation_hashes": {
+    "DESIGN_V1_3_3_FROZEN_PACKAGE_TEST_RECOVERY.md": "e39932607810754c75b6978d945e471b3034d8b1513418e9f9b481eb5a102b52",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_3.json": "618b89c30643fafb4918abe16c51a036511064ade09f7abbc6dbf89899da2d45",
+    "V1_3_2_REJECTION_AND_V1_3_3_SUPERSESSION.json": "bd43c8d2d119d315d81b9a4996a3ace63b7115cf50102548b9c9f89f24df4155",
+    "launchers/run_combined_legacy_and_v1_3_3_tests.sh": "6ec52aa95e8c548981baed5ace2df43d0edb44dd6b9ffb7cd38b4e8428b2ad89",
+    "launchers/run_legacy_102_tests_python311_v1_3_3.sh": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_3.template.sh": "fee638d1f486dbb62a142d06061e1a1484aee1e4eb156f00dadd4c71f29e5a00",
+    "launchers/run_phase1_preflight_node1_v1_3_3.sh": "2c5f652366c9da522cfa56421419f60a902e3a68f1a5325b9a4f9dc37e83400b",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh": "83bc6e197cf31577d72ea8badcb494ef5e8a4743539e733f57d97aeafc3a395a",
+    "launchers/run_tests_v1_3_3.sh": "be964f9911f1ee88d6ac0dd70ce462ae73c33a70aaa5f29150177a70ca160eff",
+    "src/build_v220_v1_3_3_preflight_receipt.py": "02b59e03c622cce6d9884f27854c9603fd95d0b9621da1be0292f7ee81440cce",
+    "src/finalize_v220_v1_3_3_training_authorization.py": "192a3d17304ea702c73f3c2338fe29d20c17650b7e328dae97e0d5638f6fac57",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py": "e72204c0d4ffe42ccefee415aa6608b7c271439176c7165fc8b36c5f93ba6d5a",
+    "src/run_v220_contact_shared_fold_v1_3_1.py": "f00c004006f6c2f7fb8798d19342681da94ed61b0be0ea35ef165ecac6c3c4c2",
+    "src/v220_shared_calibration_artifact_v1.py": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py": "aad5b9b6218e7676b27b23b203491b8e0581e1571394582ed56df9e455bb04dc",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py": "097f345bdd0bac6b0799f5488012d2780d6f99cf6d61bc0e280f16b1b535533a",
+    "tests/test_v220_v1_3_3_lifecycle.py": "d0fc5bee3a97fa6b10dfc6115ea643ea264e1465a24e1863e43a35cd5928bfbc"
+  },
+  "package_file_allowlist": [
+    "DESIGN_V1_3_3_FROZEN_PACKAGE_TEST_RECOVERY.md",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_3.json",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_3.json.sha256",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_3.json",
+    "V1_3_2_REJECTION_AND_V1_3_3_SUPERSESSION.json",
+    "launchers/run_combined_legacy_and_v1_3_3_tests.sh",
+    "launchers/run_legacy_102_tests_python311_v1_3_3.sh",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_3.template.sh",
+    "launchers/run_phase1_preflight_node1_v1_3_3.sh",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh",
+    "launchers/run_tests_v1_3_3.sh",
+    "src/build_v220_v1_3_3_preflight_receipt.py",
+    "src/finalize_v220_v1_3_3_training_authorization.py",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py",
+    "src/run_v220_contact_shared_fold_v1_3_1.py",
+    "src/v220_shared_calibration_artifact_v1.py",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py",
+    "tests/test_v220_v1_3_3_lifecycle.py"
+  ],
+  "pre_freeze_verification": {
+    "fully_frozen_nested_regression_passed": true,
+    "new_tests": 44,
+    "new_tests_log_sha256": "204af5406d0faa34f9fdc265ba497af883e9ba96fd5765367cbfdd3823c9cdad",
+    "new_tests_ok": true,
+    "scientific_core_five_byte_identical_to_v1_3_2": true,
+    "static_checks_log_sha256": "b52fb06ad9bc3aa03c69f84b2aaaba4cbe8852c95c427c9500d6dfac876df88e"
+  },
+  "required_post_freeze_verification": {
+    "exact_same_launcher": "launchers/run_tests_v1_3_3.sh",
+    "expected_tests": 44,
+    "must_execute_before_independent_review": true,
+    "package_mutation_after_run_allowed": false,
+    "sibling_evidence_only": true
+  },
+  "node1_stage_a_mandatory_pending_gates": {
+    "calibration_materialization_and_load_only": "five folds, exactly once materialization per fold, no training",
+    "exact_python_bin": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "exact_python_version": "Python 3.11.14",
+    "legacy_tests": 102,
+    "new_tests": 44,
+    "node1_python311_exact_102_plus_44_evidence_available": false,
+    "reason_pending": "Node1 campus-WLAN SSH proxy unavailable; external availability issue, not treated as passed evidence",
+    "training_artifacts_allowed": false
+  },
+  "preflight_contract": {
+    "combined_tests_required_on_node1": 146,
+    "folds": 5,
+    "independent_stage_a_approval_must_be_external_sibling_evidence": true,
+    "package_root_must_remain_byte_immutable_after_freeze": true,
+    "training_code_path_allowed": false
+  },
+  "schema_version": "pvrig.v220.v1_3_3_implementation_freeze.v1",
+  "status": "FROZEN_V1_3_3_IMPLEMENTATION_PENDING_INDEPENDENT_REVIEW_AND_NODE1_PREFLIGHT",
+  "tests": {
+    "combined_tests_required_on_node1": 146,
+    "legacy_tests": 102,
+    "new_tests": 44
+  },
+  "training_authorized": false,
+  "training_started": false
+}

@@ -1,0 +1,28 @@
+{
+  "created_at_utc": "2026-07-22T17:13:59.500258+00:00",
+  "expected_rows": 150000,
+  "files": {
+    "IMPLEMENTATION_FREEZE_V1_SUPERSEDED_PREEXECUTION.json": "45c220e3d09c5fa6a5510310767e17d0e68c6e805e0d1c904e41888eac84541e",
+    "README_ZH.md": "73eb3378ee1d5f697bc598f1f8a3ad6fbfcb8d21e7afe72458d2c544340edec8",
+    "RECOVERY_PREREGISTRATION_V2.json": "6a2e7a83b95d0c245c98bcaf3db2731b71d75660967011b84c90e85ce9046e40",
+    "TEST_RESULTS_V2.log": "e0714edf487c1f469ad212d5f2beffa159d40293984dcfae83693fb4bd57c967",
+    "materialize_hardlink_mirror_v2.py": "f647c862146f9a309f1348c8b6ea0b5422354cb498de67438e3aee0a61ca8597",
+    "run_graph_l1_b_recovery_v2.sh": "79b3aa0711293c6a5b94beeb8e45de946f6c3a3df8e617a9263db6704ba4488f",
+    "run_m2_s0m2_recovery_v2.sh": "71669b1cbd0916153ab2d659048d5a4c2f9270544f2fda13d82b197e5764133e",
+    "test_recovery_v2.py": "f399545cf9626b0a5a82f06b9d2e33e8f5b491dcb91d5cbc40ab3b080e9422d9",
+    "validate_m2_s0m2_recovery_v2.py": "6e74b63c773088bd7ceec02e0e0c64a3594ec135537e684f8df5b01d499b3d60"
+  },
+  "original_launchers_modified": false,
+  "schema_version": "pvrig_top150k_downstream_recovery_implementation_freeze_v2",
+  "status": "FROZEN_BEFORE_RECOVERY_EXECUTION",
+  "test_contract": {
+    "command": "python3 -m unittest test_recovery_v2.py -v",
+    "log_sha256": "e0714edf487c1f469ad212d5f2beffa159d40293984dcfae83693fb4bd57c967",
+    "status": "OK",
+    "tests": 2
+  },
+  "truth_access": {
+    "candidate_docking_pose_files_opened": 0,
+    "teacher_labels_opened": 0
+  }
+}

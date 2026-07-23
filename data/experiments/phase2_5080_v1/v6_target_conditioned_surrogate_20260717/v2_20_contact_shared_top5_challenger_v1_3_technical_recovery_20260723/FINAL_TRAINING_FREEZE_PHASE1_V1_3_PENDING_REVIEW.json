@@ -1,0 +1,33 @@
+{
+  "authorization": {
+    "deployment_for_node1_preflight_authorized": false,
+    "independent_review_required": true,
+    "training_authorized": false
+  },
+  "claim_boundary": "Exact V1.3 launcher binding pending independent review; no deployment, training, model-quality or promotion claim.",
+  "created_date_local": "2026-07-23",
+  "exact_bindings": {
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3.json": "9468b6124b1bcd858b484e0a4ddfa4fe9ac595682d7697bee96be3d2f2f65819",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3.json": "16e2b808da07b81d2744f50d4ef3658f0245c79641b19130c5b0f3cd82d4b652",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3.sh": "c6270e2a336df376354dd1ca917df29170a83b11fbdf75be730c1783d45dc39e"
+  },
+  "fresh_execution_contract": {
+    "all_ten_arms_rerun": true,
+    "epochs_each": 8,
+    "folds": 5,
+    "shared_true_calibrator_invocations_total": 5,
+    "true_calibrator_invocations_inside_arms": 0,
+    "v1_2_training_outputs_reused": false
+  },
+  "required_next_steps": [
+    "independent exact-byte review",
+    "deploy only to a new versioned V1.3 code directory",
+    "Node1 combined prior-102 plus V1.3-9 test log",
+    "five separate-process calibration materialize/load-only preflights",
+    "new preflight receipt with optimizer/backward/training all false",
+    "second final authorization before any of the ten arm trainings"
+  ],
+  "schema_version": "pvrig_v220_phase1_v1_3_final_training_freeze_pending_review",
+  "status": "FROZEN_V1_3_FINAL_TRAINING_BYTES_PENDING_INDEPENDENT_REVIEW",
+  "training_started": false
+}

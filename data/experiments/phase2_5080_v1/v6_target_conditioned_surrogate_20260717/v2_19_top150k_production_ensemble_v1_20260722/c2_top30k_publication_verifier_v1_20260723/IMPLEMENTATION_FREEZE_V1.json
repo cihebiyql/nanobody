@@ -1,0 +1,23 @@
+{
+  "schema_version": "pvrig_v2_19_c2_top7500_publication_verifier_implementation_freeze_v1",
+  "status": "FROZEN_DELIVERY_ONLY_BEFORE_PUBLICATION_VERIFICATION",
+  "claim_boundary": "Recursive delivery verification only; frozen scoring, ranking and selection are not modified.",
+  "implementation_sha256": {
+    "PLAN_ZH.md": "0f8697e65dde33d3f1c1fe4b55f77c1e89a5d8f728a3b3ad85344e9b6fa8c7ee",
+    "PREREGISTRATION_V1.json": "eb016a0fc3256ea53b013e6e42833ede86622afb3b935e09575aa20cfaf9183b",
+    "verify_c2_refined_top7500_publication_v1.py": "045ab3552d016705ece7258bfb71e831af6bce0f1f0e79712bf5a32eac0e9384",
+    "test_verify_c2_refined_top7500_publication_v1.py": "5bad9dc586ca1002b95b135e143a471d962aa2b69adf47d2d49c662127a628aa",
+    "run_c2_refined_top7500_publication_verifier_watcher_node1_v1.sh": "a61f566554288b736f656926f13376dd34525dd4cfdb2a4ec03176afdb20b471",
+    "TEST_RESULTS_V1.log": "413036c2330f76a70d5e4340892c2802c230a1e5af48902ce6f41911756ad329"
+  },
+  "frozen_external_assets": {
+    "coarse_pose_features_v1.py": "a87cda436379e768755f05aa0006c7a7dae8dd445a08b75339fc5a2bd0dfa591",
+    "v2_19_multimodal_adapter": "e85730c752bc32602074d0171fd16c649cb26b34987917e9dd40ec14bdd69e4e",
+    "v2_11_model_artifact": "02f71b30e70a3afe326d1a6f9b8fffb5c05fb1249a9c75ac8887b3ffadf5395d",
+    "target_graph_cache": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108",
+    "target_8x6b": "03af8f415847b8b6b246e787ec1e8d3cae4f024aa7bff6393ca344e0d7b02bcd",
+    "target_9e6y": "a65a26f0a50c36765f29930cd425a566028d216864ce5d835595e6db5b3e334a"
+  },
+  "tests": "3 tests, OK",
+  "failure_policy": "FAIL_CLOSED_NO_AUTOMATIC_CLEANUP_OR_IN_PLACE_RETRY"
+}

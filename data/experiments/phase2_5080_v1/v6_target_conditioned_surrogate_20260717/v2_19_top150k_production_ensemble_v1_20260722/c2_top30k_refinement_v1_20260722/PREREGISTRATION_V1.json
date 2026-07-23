@@ -1,0 +1,37 @@
+{
+  "schema_version": "pvrig_v2_19_c2_top30k_refinement_preregistration_v1",
+  "status": "FROZEN_BEFORE_C2_TOP30K_SCORING",
+  "date": "2026-07-22",
+  "claim_boundary": "Label-free approximation of independent dual-receptor computational Docking geometry only; not binding, affinity, experimental blocking, calibrated probability, Docking Gold, or submission evidence.",
+  "stage1_rows": 30000,
+  "final_rows": 7500,
+  "c2": {
+    "pose_grid_per_receptor": 300,
+    "receptors": ["8X6B", "9E6Y"],
+    "raw_features": 36,
+    "model_features": 32,
+    "predeclared_exclusions": [
+      "8x6b__pose_count",
+      "9e6y__pose_count",
+      "8x6b__top20_score_entropy",
+      "9e6y__top20_score_entropy"
+    ]
+  },
+  "refined_score_weights": {
+    "four_model_preliminary": 0.80,
+    "S0_M2_C2_CONVEX": 0.15,
+    "M2_C2_CONVEX": 0.05
+  },
+  "selection_quotas": {
+    "consensus_exploitation": 6750,
+    "target_model_rescue": 500,
+    "parent_balanced_diversity": 250
+  },
+  "forbidden_inputs": [
+    "candidate Docking poses or scores",
+    "teacher R8/R9/Rdual values",
+    "experimental binding or blocking labels",
+    "sealed or frozen prospective truth",
+    "candidate-specific manual score changes"
+  ]
+}

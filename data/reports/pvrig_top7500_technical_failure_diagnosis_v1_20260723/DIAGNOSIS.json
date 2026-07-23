@@ -1,0 +1,158 @@
+{
+  "archives_examined": 12,
+  "claim_boundary": "Technical diagnosis only; frozen Docking protocol is unchanged.",
+  "classification_counts": {
+    "FLEXREF_OUTPUT_TOLERANCE": 12
+  },
+  "created_at_utc": "2026-07-23T01:18:15.845699+00:00",
+  "finding": "All currently terminal technical failures are receptor 8X6B HADDOCK flexref tolerance failures after two attempts; they remain TECHNICAL_NA and are not biological negatives.",
+  "protocol_change_authorized": false,
+  "rows": [
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0009__00839_8x6b_s917_fa59f2dd8457.tar.gz",
+      "archive_sha256": "9c289aefe3b7c3cb1aa94e4f37d2f191574035e7b8fc7de501e39313c8170245",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0029__00585_8x6b_s917_486c868f50d9.tar.gz",
+      "archive_sha256": "ccb99b2fdab20ab98bf125df54ef21979c2755f52091a97b94ad06c8b3b06159",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0100__00537_8x6b_s917_a12c408189b5.tar.gz",
+      "archive_sha256": "1ce4e6442664272912380176fa012a6cc7b171e819abf74f955b9f66d030b792",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "30.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0199__00217_8x6b_s917_c82754ab1ae6.tar.gz",
+      "archive_sha256": "b53e89443dd72edb590d42647e879488ed37d2ec7ed3c0b29b2d7bf3a1a17c4b",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0230__00229_8x6b_s1931_8f6b7228e268.tar.gz",
+      "archive_sha256": "347870872b1075879d1d1ff3cfd4856467ff25e6c07f577c9c03568b89bd26f2",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0264__00579_8x6b_s917_58a54df975ea.tar.gz",
+      "archive_sha256": "cfe40afee0d0340c00a0e21ef677177eecb682483b329c3590621b62ae6b74e1",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0329__00161_8x6b_s917_110badaffcbb.tar.gz",
+      "archive_sha256": "607ccd14145b2442ecb85e5dbdb057ee1c5d26c30192a51f42535adfc2492530",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0369__00341_8x6b_s917_eccf613cc5ae.tar.gz",
+      "archive_sha256": "54d1626b107573cbfd602c1ffbb3e4ba596d38c0958087b52bec2822ae5bc1e3",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0412__00106_8x6b_s917_ed1758ccce41.tar.gz",
+      "archive_sha256": "e34c6fdc95b3f938a53f960a0f2061594e3ca7687d1941937c51706ce9d71675",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0460__00155_8x6b_s917_647f529532f3.tar.gz",
+      "archive_sha256": "1f6dd220fbef0ac2a0faac18e20d92cc7c0f1764e040c734ab0b09a3e8303764",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0468__00864_8x6b_s917_dfea74800f46.tar.gz",
+      "archive_sha256": "620ebb9cdae452904e685c6cf676ccc7b0db94830318daaee3e16ec37419be72",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    },
+    {
+      "archive": "CANDIDATE_P1MCPUFP__CPUFP500K_0508__00483_8x6b_s917_0d9350fc0932.tar.gz",
+      "archive_sha256": "bcc6a6337fd1e7977bbe4b63b3d9f825e216655e43f2dcefe1a1a15646cb038f",
+      "attempt_logs": 2,
+      "classification": "FLEXREF_OUTPUT_TOLERANCE",
+      "patterns": [
+        [
+          "20.00",
+          "10.00"
+        ]
+      ]
+    }
+  ],
+  "schema_version": "pvrig_top7500_technical_failure_diagnosis_v1",
+  "status": "PASS_ALL_AVAILABLE_FAILURE_ARCHIVES_CLASSIFIED"
+}

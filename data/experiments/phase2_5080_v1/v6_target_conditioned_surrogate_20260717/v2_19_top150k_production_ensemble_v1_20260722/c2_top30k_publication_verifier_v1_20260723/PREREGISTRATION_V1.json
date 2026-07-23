@@ -1,0 +1,19 @@
+{
+  "schema_version": "pvrig_v2_19_c2_top7500_publication_verifier_preregistration_v1",
+  "status": "FROZEN_DELIVERY_ONLY_BEFORE_PUBLICATION_VERIFICATION",
+  "date": "2026-07-23",
+  "claim_boundary": "Delivery-only recursive closure of label-free computational Docking-geometry surrogate artifacts; no score, rank, model or candidate selection changes.",
+  "expected": {
+    "stage1_rows": 30000,
+    "shards": 32,
+    "raw_c2_features": 36,
+    "model_c2_features": 32,
+    "final_rows": 7500,
+    "channels": {
+      "C2_REFINED_CONSENSUS": 6750,
+      "TARGET_MODEL_C2_SUPPORTED_RESCUE": 500,
+      "PARENT_BALANCED_C2_DIVERSITY": 250
+    }
+  },
+  "failure_policy": "FAIL_CLOSED_NO_AUTOMATIC_CLEANUP_OR_IN_PLACE_RETRY"
+}

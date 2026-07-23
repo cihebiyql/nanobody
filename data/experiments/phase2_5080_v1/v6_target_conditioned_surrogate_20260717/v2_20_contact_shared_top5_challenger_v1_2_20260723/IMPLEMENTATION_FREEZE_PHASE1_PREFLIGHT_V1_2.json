@@ -1,0 +1,76 @@
+{
+  "allowed_actions": [
+    "deploy exact bytes to a fresh Node1 V1.2 root",
+    "rerun exact frozen 102 tests on Node1",
+    "run byte-exact B0 replay",
+    "materialize and externally close a new seed43 head-only initial state",
+    "run a cross-process backbone-binding load smoke before any optimizer construction",
+    "write immutable V1.2 pretraining terminal evidence"
+  ],
+  "created_date_local": "2026-07-23",
+  "forbidden_actions": [
+    "train C0",
+    "train C1",
+    "read open development",
+    "read frozen test",
+    "change data, split, architecture, loss, hyperparameters, metrics, gates, or thresholds",
+    "promote or inject V2.20 into Top7500"
+  ],
+  "frozen_test_sources": {
+    "tests/test_calibrate_v220_contact_weight_v1.py": "395c220b67e7b5b35f8e47876fe48069758c1ba918b615b9ef2022720b6657cf",
+    "tests/test_collect_v220_contact_shared_oof_v1.py": "20460edb51de4ab0b5ca3c4a165da5b4e8a2f25f71bcea307f3788568f017409",
+    "tests/test_evaluate_v220_phase1_core_gate_v1.py": "5dead1f038ed51f05e5a8e1b9731cffe6d550976145c038a0d23d51fecb1820d",
+    "tests/test_materialize_v220_paired_initial_state_v1.py": "e1b698cd699977373e0e29e122dce622400313b7f79a900cecda6361477a864c",
+    "tests/test_materialize_v220_production_initial_state_v1.py": "4caa937b89733aa9d0404307ba5f9f9f232de1b67cffd5440a5574303b1f614f",
+    "tests/test_materialize_v220_train_contact_teacher_v1.py": "39d9d88a598c602980593af17cbb7970881189e2cc3539c85b21c08b16c0cf10",
+    "tests/test_materialize_v220_train_contact_teacher_v1_1.py": "1e00a0406a47c0deaf7a461790d9dc7bfda5233bdf987ca9ab39adf68f77836a",
+    "tests/test_materialize_v220_train_contact_teacher_v1_2.py": "bee430e43c30301259100904aa9429a3e29e9cf1864bc5f1e9645c0a8a1dd51c",
+    "tests/test_run_v220_contact_shared_fold_v1.py": "9240728322aedc2daffaf99992e724d2c0bb53382e551c41490fba7b05552023",
+    "tests/test_v220_b0_replay_and_evaluator_v1.py": "67d3b895d3a65919248e9d8d9718e5c6d6f7194d28a5e6c4658b38f9986520bc",
+    "tests/test_v220_contact_teacher_store_v1.py": "0afd87119450ee58bd2fe55e85177f0edfec57a4cc79293486ae9589ecb8114e",
+    "tests/test_validate_v220_cross_process_initial_state_v1.py": "340409ac3508c6840c88ab77deb2c65b1346dc61b6f00aba518424905316fb13",
+    "tests/test_validate_v220_paired_folds_v1.py": "ec24ccdfe0acd011f1a1e086e94a313930b16b1e6b84f3451f85d9700796c0eb"
+  },
+  "implementation_hashes": {
+    "src/calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "src/collect_v220_contact_shared_oof_v1.py": "88a6ab691240669478ed41d7d41533f7fa7357b331651663644c69cf733079c4",
+    "src/evaluate_v220_oof_v1.py": "f8291ef73514428661becdce2e75921a2771106c95df7803c9e050ddcbf7a7bb",
+    "src/evaluate_v220_phase1_core_gate_v1.py": "741f663520d5d6213163ca6f65157f9132c22dd68cbcf0f2c531768476f4fb20",
+    "src/materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "src/materialize_v220_production_initial_state_v1.py": "6b5942ceb97d7dd122e8d7a2e79712f7aaeb46ac3344a212698f5a4c4dcd5b53",
+    "src/replay_v213_b0_oof_v1.py": "f680e77da6486ba65a353369082f2641471e19d0227c9822716d7b9a38b82e3e",
+    "src/run_v220_contact_shared_fold_v1.py": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "src/v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "src/validate_v220_cross_process_initial_state_v1.py": "515a9a817906e0f6319711e304b3bc50131b7710b0ca7172076f1fd4a680bf15",
+    "src/validate_v220_paired_folds_v1.py": "b1c80c8f2488f6955d5062af35e3cc36738d09f499d361bd7ddca49dc8193939"
+  },
+  "protocol_and_launchers": {
+    "PREREGISTRATION_PHASE1_CORE_V1_2.json": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c",
+    "launchers/run_phase1_core_preflight_tests_v1_2.sh": "592d424c103872f2dd15c56a1c6c57bfec2cac6523e6b2a0f8f4c52aaa453325",
+    "launchers/run_phase1_core_pretraining_node1_v1_2.sh": "51a17ee08e658ce57b48ac92b7cb503fe29f1baf5cdee6d0829a5c55fc1e673b",
+    "tests/TEST_RESULTS_PHASE1_CORE_V1_2.log": "1a4d4ed03654b78d72f1ea27a598401afff38bd5b378d6a875987807fcb3e234"
+  },
+  "required_before_final_training_freeze": [
+    "Node1 exact 102-test replay PASS",
+    "B0 byte-exact replay PASS",
+    "new initial checkpoint and receipt close",
+    "fresh second-process load_and_verify_initial_state PASS using the production runner before optimizer construction",
+    "new final launcher hardcodes V1.2 initial-state hashes",
+    "independent critic approval of exact final V1.2 training bytes"
+  ],
+  "schema_version": "pvrig_v220_phase1_preflight_implementation_freeze_v1_2",
+  "status": "FROZEN_PHASE1_PREFLIGHT_V1_2_ONLY_C0_C1_TRAINING_NOT_YET_AUTHORIZED",
+  "supersession": {
+    "record": "V1_1_TRAINING_ATTEMPT_REJECTION_AND_V1_2_SUPERSESSION.json",
+    "record_sha256": "3080b79195930c93401bf21737404047cc1ea492b546072ac1039317eba6aae7"
+  },
+  "technical_recovery_only": true,
+  "test_evidence": {
+    "dynamic_discovery": false,
+    "errors": 0,
+    "exact_test_files": 13,
+    "failures": 0,
+    "py_compile": "PASS",
+    "tests_run": 102
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "created_date_local": "2026-07-23",
+  "post_result_tuning": false,
+  "rejected_v1_1": {
+    "critic_approval_sha256": "90efa953693fbd6e0f0e6eb738f420fb4790c17a96c9494f64f473f6d07c1ddc",
+    "failure_receipt_sha256": "f67b2268e2e71799664dda0e2cabf17557d2454bc2934dd778cb916f94da41f9",
+    "final_training_freeze_sha256": "0146b3ffc38c5a1213487482198729c5e9de5e08d13621908a5ef3b3c964a86a",
+    "fold_pair_launcher_sha256": "3f0cb92e41988e4d2ac0374b7233f6fdd537822a19af80a441179b18110765c8",
+    "optimizer_created": false,
+    "optimizer_steps": 0,
+    "usable_training_outputs": false
+  },
+  "replacement": {
+    "preregistration": "PREREGISTRATION_PHASE1_CORE_V1_2.json",
+    "preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c"
+  },
+  "root_cause": "V1.1 constructed ESM2 before seed43 was applied; the checkpoint-missing unused HF pooler therefore changed the separately bound runtime backbone hash across processes.",
+  "schema_version": "pvrig_v220_phase1_v1_1_rejection_v1_2_supersession",
+  "status": "V1_1_REJECTED_PRE_OPTIMIZER_V1_2_TECHNICAL_RECOVERY_ONLY",
+  "unchanged": [
+    "data",
+    "split",
+    "model architecture",
+    "losses",
+    "hyperparameters",
+    "lambda grid",
+    "metrics",
+    "gates",
+    "B0 baseline",
+    "claim boundary"
+  ],
+  "v1_2_change": "Call seed_before_model_construction(args.seed) at the start of prepare_production_inputs and regression-test that it precedes base.load_backbone(args)."
+}

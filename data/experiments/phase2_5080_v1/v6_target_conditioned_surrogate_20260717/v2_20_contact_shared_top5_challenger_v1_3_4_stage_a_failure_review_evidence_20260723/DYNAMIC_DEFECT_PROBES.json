@@ -1,0 +1,27 @@
+{
+  "legacy_launcher_hash_probe": {
+    "actual_sha256": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+    "bound_sha256": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+    "equal": false,
+    "preflight_sha256_gate_would_pass": false
+  },
+  "receipt_cli_destination_probe": {
+    "build_reads_v1_3_4_test_log": true,
+    "build_would_raise_attribute_error": true,
+    "has_v1_3_3_test_log": true,
+    "has_v1_3_4_test_log": false,
+    "parsed_attribute_names": [
+      "expected_implementation_freeze_sha256",
+      "expected_new_tests",
+      "implementation_freeze",
+      "legacy_test_log",
+      "output_receipt",
+      "preregistration",
+      "runtime_root",
+      "training_sentinel",
+      "v1_3_3_test_log"
+    ]
+  },
+  "schema_version": "pvrig.v220.v1_3_4.independent_dynamic_defect_probes.v1",
+  "status": "PASS_PROBES_CONFIRM_TWO_BLOCKING_DEFECTS"
+}

@@ -1,0 +1,332 @@
+{
+  "B0_replay_gate": {
+    "aggregate_prediction_path": "TOP5_L1_TRAIN9849_OOF_PREDICTIONS.tsv",
+    "aggregate_prediction_sha256": "d441a47e938a0c490cead10c80e6b71bd1a22abe9e22803ed1af43ec04f60669",
+    "baseline": {
+      "EF_true_top10_at_budget5": 3.0828512885987585,
+      "Rdual_MAE": 0.036230982858158185,
+      "Rdual_Spearman": 0.5661935645078868,
+      "hits_at_budget5": 152,
+      "selected_at_budget5": 493
+    },
+    "metrics_sha256_corrected_before_freeze": "49b2f0c3fde3a139e5a09e8337e04aade35a3daaf2b2ed81b0118d58df42c73e",
+    "numeric_comparison": "exact serialized decimal string equality, not tolerance equality",
+    "receipt_sha256": "221c2b1b70710c7612777428026d8cfc943a94eab36881cf3755666d023458c0",
+    "required_before_C0_or_C1_training": true,
+    "required_before_training": true,
+    "row_by_row_exact_fields": [
+      "candidate_id",
+      "sequence_sha256",
+      "parent_id",
+      "fold_id",
+      "seed",
+      "true_R8",
+      "true_R9",
+      "true_Rdual",
+      "pred_R8",
+      "pred_R9",
+      "pred_Rdual"
+    ]
+  },
+  "aspirational_goal_not_a_gate": {
+    "metric": "EF_true_top10_at_budget5",
+    "target": 5.0
+  },
+  "claim_boundary": "Computational independent 8X6B/9E6Y Docking-geometry surrogate evidence only; not binding probability, Kd, experimental blocking, Docking Gold, expression, purity, or final submission evidence.",
+  "created_date_local": "2026-07-23",
+  "data": {
+    "contact_teacher": {
+      "authorization": "This new Phase1 freeze, not the Phase0 receipt, authorizes outer-fit-only training consumption after all Phase1 preflight gates pass.",
+      "candidates": 738,
+      "materialization_receipt_sha256": "71f62887713d76e2a524b6affc82f118bafdad82dcf16b731a426a5a0b54cead",
+      "parents": 53,
+      "path_node1": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1_2",
+      "sha256sums_sha256": "9d255dc4a5cbf83c013e6a419cb2790bbb4b1c99f2060fdb39c08df853fbdb7d",
+      "single_seed_rows": 0,
+      "sources": {
+        "V29": 305,
+        "V4D": 113,
+        "V4H": 320
+      },
+      "technical_failure_zero_imputations": 0,
+      "three_seed_weight": 1.0,
+      "two_seed_weight": 0.8
+    },
+    "esm2_650m": {
+      "frozen": true,
+      "model_identity_file": "model.safetensors",
+      "model_identity_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "path_node1": "/data/qlyu/.cache/huggingface/hub/models--facebook--esm2_t33_650M_UR50D/snapshots/08e4846e537177426273712802403f7ba8261b6c"
+    },
+    "fixed_target_graphs": {
+      "artifact_path_node1": "/data1/qlyu/projects/pvrig_v6_residue_v2_deployment_bundle_v1_20260718/inputs/base_target_graphs/target_graphs_v2.pt",
+      "artifact_sha256": "59461f9df2d044273f2ff5a375c69376db63bd3fe650564a31a5648f9ec0dfbc",
+      "receptors": [
+        "8x6b",
+        "9e6y"
+      ]
+    },
+    "label_free_graph_cache": {
+      "path_node1": "/data1/qlyu/projects/pvrig_v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/train9849_graph_view_v1/graph_cache",
+      "rows": 9849
+    },
+    "scalar_teacher": {
+      "derived_target": "exact_min(R_8X6B,R_9E6Y)",
+      "parents": 54,
+      "path_node1": "/data1/qlyu/projects/pvrig_v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/train9849_teacher.tsv",
+      "rows": 9849,
+      "sha256": "beb3205b4a7d68d25b5ec835573294402218bb3f46ce45feaac62f47d06690f0",
+      "targets": [
+        "R_8X6B",
+        "R_9E6Y"
+      ]
+    },
+    "whole_parent_folds": {
+      "assignment_path_node1": "/data1/qlyu/projects/pvrig_v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/candidate_fold_assignment.tsv",
+      "folds": 5,
+      "reuse_exact_v2_13_assignments": true,
+      "score_parent_contact_numeric_access_during_training": 0,
+      "seed": 43
+    }
+  },
+  "implementation_hashes_before_initial_state_materialization": {
+    "src/calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "src/collect_v220_contact_shared_oof_v1.py": "88a6ab691240669478ed41d7d41533f7fa7357b331651663644c69cf733079c4",
+    "src/evaluate_v220_oof_v1.py": "f8291ef73514428661becdce2e75921a2771106c95df7803c9e050ddcbf7a7bb",
+    "src/evaluate_v220_phase1_core_gate_v1.py": "721f7223555304189afdbc558050354b8ee3a38fbb41784dc64bc4c288e290bb",
+    "src/materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "src/materialize_v220_production_initial_state_v1.py": "32220b5671fddf4b46f07fa5e9aadcc27f7ee39fa11b1bbe9ed7aa1c9eb9d26a",
+    "src/replay_v213_b0_oof_v1.py": "f680e77da6486ba65a353369082f2641471e19d0227c9822716d7b9a38b82e3e",
+    "src/run_v220_contact_shared_fold_v1.py": "12c39876602affbb0aa7e846a7684fcd3e457b65c5ce7420c87141d4dd00cf32",
+    "src/v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "src/validate_v220_paired_folds_v1.py": "da51a7405ec75fb4cf446334efa5b38ec1f5a62e95db3f38698dc9fe2dec9e08"
+  },
+  "model": {
+    "contact_encoder_gradient": "shared",
+    "forbidden_inputs": [
+      "candidate_id",
+      "parent_id",
+      "campaign_id",
+      "contact availability",
+      "source",
+      "reliability tier",
+      "Docking pose",
+      "pose-derived scalar",
+      "M2",
+      "C2",
+      "true contact labels"
+    ],
+    "heads": {
+      "R_dual_inference": "exact min of the two direct outputs",
+      "attention_logits": "separate from contact logits",
+      "attention_temperature": "fixed 1.0 in the reused frozen V2.5 implementation; not learned and not conformer-specific",
+      "contact_feedback_into_scalar_head": false,
+      "contact_logits": "independent pair projection plus receptor-specific calibration bias",
+      "direct_scalar_outputs": [
+        "R_8X6B",
+        "R_9E6Y"
+      ],
+      "independent_R_dual_head": false
+    },
+    "inputs": [
+      "VHH sequence",
+      "label-free VHH monomer graph",
+      "fixed public 8X6B/9E6Y PVRIG graphs"
+    ],
+    "interpretation": "C1 tests whether auxiliary contact supervision regularizes shared target-conditioned encoders; contact summaries are not a direct scalar forward feature in this phase.",
+    "lane": "E_DECOUPLED_CONTACT"
+  },
+  "non_interference": {
+    "bad_fold_or_bad_seed_exclusion": false,
+    "frozen_test_access": false,
+    "open_development_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering_before_full_promotion": false
+  },
+  "objective": "Test whether outer-fit-only residue-contact weak supervision improves strict whole-parent OOF Top5 enrichment of a sequence plus label-free VHH graph plus fixed-PVRIG-graph surrogate over both the frozen V2.13 B0 and a causally paired zero-contact C0 control.",
+  "pairing_and_closure": {
+    "authoritative_float64_teacher_truth_used_in_fold_and_aggregate_outputs": true,
+    "external_checkpoint_and_receipt_sha_required": true,
+    "frozen_backbone_artifact_runtime_state_and_shape_contract_bound_separately": true,
+    "same_calibration_observations_and_selected_lambda_within_each_fold_pair": true,
+    "same_initial_state_across_all_ten_runs": true,
+    "same_optimizer_group_and_epoch_batch_hash_within_each_C0_C1_fold_pair": true,
+    "single_head_only_initial_state": true,
+    "strict_9849_row_54_parent_5fold_heldout_parent_aggregate_required": true
+  },
+  "phase1_core_evaluation": {
+    "all_required": {
+      "C1_EF5_gain_over_max_B0_C0": 0.1,
+      "C1_hits_gain_over_max_B0_C0": 5,
+      "C1_minus_B0_bootstrap_95ci_lower_gt": 0.0,
+      "C1_minus_C0_bootstrap_95ci_lower_gt": 0.0,
+      "at_least_four_fold_C1_minus_C0_EF5_gte": -0.25,
+      "maximum_C1_Rdual_MAE": 0.03985,
+      "minimum_C1_EF10": 2.5652,
+      "minimum_C1_Rdual_Spearman": 0.5362,
+      "minimum_single_fold_C1_minus_C0_EF5": -0.75
+    },
+    "bootstrap_seed": 20260723,
+    "fail_meaning": "Do not promote V2.20 and do not inject it into Top7500 ranking.",
+    "hotspot_mask_reason": "The reused implementation does not route hotspot_mask into scalar or pair logits, so a hotspot-shuffle degradation gate would be structurally invalid.",
+    "not_in_this_gate": [
+      "open development",
+      "frozen test",
+      "final production promotion",
+      "hotspot-mask shuffle"
+    ],
+    "pass_meaning": "Authorize Phase1b contact-label-shuffle, V4D-only, target-residue-permutation and conformer-swap ablations only.",
+    "primary": "EF_true_top10_at_budget5",
+    "whole_parent_bootstrap_replicates": 10000
+  },
+  "phase1b_if_and_only_if_core_passes": {
+    "production_promotion_before_phase1b": false,
+    "required": [
+      "contact-label shuffle five-fold retraining",
+      "V4D-only five-fold diagnostic",
+      "target residue embedding permutation",
+      "8X6B/9E6Y conformer swap",
+      "score-side held-out contact evaluation under a separately frozen no-training evaluator"
+    ]
+  },
+  "schema_version": "pvrig_v2_20_contact_shared_phase1_core_preregistration_v1",
+  "status": "FROZEN_PRETRAINING_PHASE1_CORE_PROTOCOL",
+  "strict_oof": {
+    "contact_labels_allowed_only_from_outer_fit_parents": true,
+    "fold_assignment": "reuse exact V2.13 whole-parent assignment",
+    "fold_bindings": [
+      {
+        "checkpoint_sha256": "b3fce82e3a8c0805a3a7790e85d32c787e0bb355d6987b2d76a3c6033d665d2d",
+        "contract_sha256": "3b4a8c3729dec42294b53b9499a86a848718bc6aa5d6577db71b01c0d4f6265b",
+        "fold": 0,
+        "history_sha256": "fa5ffd8bb863f6f4ae67b11615be3ce1794a0ec442fa2e4e82b7cb73500eaad7",
+        "prediction_sha256": "6c4d52150e3ca7f6caff4df3536e7a58c4409248e61c88809a8d0b3e46563dae",
+        "result_sha256": "3e037871fff4bcec46cad3a62342132fe8fad3306aae0fc4efdf92b20f4a6efe",
+        "score_parent_set_sha256": "51e235d311e19d1938c33843cf5d1a45435203936bd342439f62d701d9eeb61b",
+        "score_parents": 10,
+        "score_rows": 1979,
+        "split_id": "canonical_train9849_groupkfold5_fold0",
+        "split_sha256": "33f99c6ce640f90bf60e4bada4c134619d1fa284154f99dd86e744467c786617",
+        "train_parent_set_sha256": "34f5da06167c91e0f98c4fbc55367fa60f94ca9834535619ff8e2b53ea1fab11",
+        "train_parents": 44,
+        "train_rows": 7870
+      },
+      {
+        "checkpoint_sha256": "1f00875a180e6173f0c15b131c0eb94aecf62cd26b375921b0c50c812cfb7358",
+        "contract_sha256": "eef20c533a422d697654b85aa8134a7a380ff7f13a8f17f64f97b826ad2216ad",
+        "fold": 1,
+        "history_sha256": "738c342ffa96b859659687b554c6b8997217a22cd253c2554eb0047087ea8e6e",
+        "prediction_sha256": "fdcf034569ed42895df091d23ae0e5348e9a38ecb190cb379a916b1448c7ef3d",
+        "result_sha256": "de9dc9e40381d973ef844a0723952a771e4ffda340ee08f0539c3db392dffb70",
+        "score_parent_set_sha256": "b74dc833389e19a86b102484f262cb07e2863b4a36e5cba6c0f9a42fe0666cea",
+        "score_parents": 10,
+        "score_rows": 1980,
+        "split_id": "canonical_train9849_groupkfold5_fold1",
+        "split_sha256": "cdfa29dfaaf65f41250fd0d05d62bb7dd156b3f5113c137b39fb3750a1c60d1e",
+        "train_parent_set_sha256": "22b95b357001a44f504ac9e680fb0b76dc1fafb72f9580bf5898d8babca0e5b4",
+        "train_parents": 44,
+        "train_rows": 7869
+      },
+      {
+        "checkpoint_sha256": "9da2cb88161a228052ea1ae361b3db70714faf174da7366a1130215e26aa923e",
+        "contract_sha256": "ffd25473c4ed440e8f4a4207f5bc155687bddc04f8c7c2fcd8dbc5476bc2db12",
+        "fold": 2,
+        "history_sha256": "e0bd19c27abcaa3de95b0c5655d41934c5f6d102c46062b2acbcbe11f3d095c4",
+        "prediction_sha256": "3ec5663ab14695b9770d13e2a82681048198a5a2aeb6abcf5c045c0a0cc9643d",
+        "result_sha256": "c2615752345ac1395ea14c806f08f67b318fc86aabc94fe1d306d6f69f1046ca",
+        "score_parent_set_sha256": "a33793e5be351ba0099b89452fb4012198bf0accc9ce79a37f19fac2377c447f",
+        "score_parents": 10,
+        "score_rows": 1969,
+        "split_id": "canonical_train9849_groupkfold5_fold2",
+        "split_sha256": "915eca5630a2d39e15f451446dd33192d8877508141af7442dd825f3a4a3608d",
+        "train_parent_set_sha256": "ef4afd9a71bd532daada6482961721ded002bf1bc1fd281f9f42cdf60403767b",
+        "train_parents": 44,
+        "train_rows": 7880
+      },
+      {
+        "checkpoint_sha256": "03201b24b06c84bfc255db6599a24f6e032485f4daebec6f30e209a4becfbc3c",
+        "contract_sha256": "006e34a1ed35cc2531b74747c1f103484c284410569af343532400a480e76e1a",
+        "fold": 3,
+        "history_sha256": "e18a1b8c0ea6b81d45dbee95e48b8cf517d3de3c6234fd1b3bc36393d0cd41de",
+        "prediction_sha256": "e98fd8333da6f797c881f3f0f97be5a290c3c63f5bf38fcb2b814ee7b8dde3d3",
+        "result_sha256": "173d7950b9e8c90825998f973fbd3903f1e881d91c5e229fa0ebd9d0c8bfb71a",
+        "score_parent_set_sha256": "effd4703abd2fadabea22b96ff6ed374ec5a4c5f0afeeecae5279c5d2284712f",
+        "score_parents": 10,
+        "score_rows": 2001,
+        "split_id": "canonical_train9849_groupkfold5_fold3",
+        "split_sha256": "85081812dc09e6437dee93514d9649d8f3efacde0ae416bb1663191941948b4b",
+        "train_parent_set_sha256": "ebe6e2a9695cf057420ce2577f0922ea5c3a37fa4939fec500060eea19e5e704",
+        "train_parents": 44,
+        "train_rows": 7848
+      },
+      {
+        "checkpoint_sha256": "134dc40d7af804879135ca61d07e8f938eb7bbe42d2057c3e2fb16c409243523",
+        "contract_sha256": "ca221a0fb6ec47ec1296a6e6939def48b04c2f348403f0fd102a2383ad77fe96",
+        "fold": 4,
+        "history_sha256": "1181f2aedee6f0c9c20afb3a98da6feaab99838effa55d388efd5700be7e4a89",
+        "prediction_sha256": "fdd5c428573176db9e7b71236862b5fd85f69f2f95aa2afefe63a562b9380f25",
+        "result_sha256": "42e86310aa7369709a4cec6ba14e35a31a149990987d2b34aa71816a65813402",
+        "score_parent_set_sha256": "abb31a22bc734a294fd14a6a77dba728a94e04446081153ee0cd09462df3aa38",
+        "score_parents": 14,
+        "score_rows": 1920,
+        "split_id": "canonical_train9849_groupkfold5_fold4",
+        "split_sha256": "4ea0bb063463ade9729e79a94db2f096414c25cd04a6aa844a8dda6fa1f0417d",
+        "train_parent_set_sha256": "4b62f545824b19631e9b9cd9bf1e4a7a0fa7103a829c934d8f096b27c0a28d71",
+        "train_parents": 40,
+        "train_rows": 7929
+      }
+    ],
+    "folds": 5,
+    "parents": 54,
+    "pretrain_on_all_contact_candidates_before_oof": false,
+    "rows": 9849,
+    "seed_phase_1": 43
+  },
+  "supersession": {
+    "post_result_modification_forbidden": true,
+    "reason": "The draft was not training-authorized and contained a one-character B0 metrics hash typo plus requirements not implemented by the actual frozen backbone. This formal protocol corrects those issues before any C0/C1 training.",
+    "superseded_draft_sha256": "2dbb23039753d2cc15dd5962c575264869b3e7b22c7f2b00a514caca5f7a8765",
+    "supersedes_for_phase1_execution_only": "PREREGISTRATION_DRAFT_V2.json"
+  },
+  "training": {
+    "arms": {
+      "B0": "Frozen V2.13 L1 seed43 byte-exact replay only",
+      "C0": "New lane-E paired control with calibrated contact weights recorded but applied as zero",
+      "C1": "Same lane-E code, initial head state, optimizer groups and batch order as C0, with calibrated contact losses applied"
+    },
+    "batch_size": 8,
+    "checkpoint_selection": "fixed final epoch only",
+    "contact_loss": "lambda_marginal*balanced_soft_BCE_marginal + 0.5*lambda_marginal*balanced_soft_BCE_pair",
+    "dropout": 0.25,
+    "dual_weight": 0.5,
+    "early_stopping": false,
+    "epochs": 8,
+    "eval_batch_size": 16,
+    "folds_per_arm": 5,
+    "gradient_accumulation": 4,
+    "gradient_clip_norm": 1.0,
+    "graph_hidden_dim": 128,
+    "lambda_grid": [
+      0.00015625,
+      0.0003125,
+      0.000625,
+      0.00125,
+      0.0025
+    ],
+    "lambda_selection": "first eight deterministic outer-fit contact-eligible epoch0 batches; choose smallest median shared-gradient ratio in [0.05,0.15], else closest to 0.10",
+    "learning_rate": 0.0001,
+    "optimizer": "AdamW",
+    "precision": "bf16",
+    "prelaunch_conflict_gate": "fail before optimizer if more than two of eight scalar-contact shared-gradient cosines are below -0.50",
+    "receptor_weight": 1.0,
+    "runs": 10,
+    "seed": 43,
+    "smooth_l1_beta": 0.03,
+    "softmin_tau": 0.02,
+    "top_weight_center": 0.85,
+    "top_weight_scale": 0.05,
+    "top_weight_strength": 3.0,
+    "training_time_gradient_monitoring": "not performed; the frozen diagnostic is the pre-optimizer eight-batch calibration receipt",
+    "weight_decay": 0.02
+  }
+}

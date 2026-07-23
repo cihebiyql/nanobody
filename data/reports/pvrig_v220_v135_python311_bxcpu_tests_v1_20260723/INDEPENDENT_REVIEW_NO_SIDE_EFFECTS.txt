@@ -1,0 +1,16 @@
+REMOTE_REVIEW_ROOT=/publicfs04/fs04-al/home/als001821/.local/share/pvrig_v220_v135_independent_review_v1_20260723_0845
+TOP_LEVEL:
+PACKAGE_AFTER_SHA256SUMS
+PACKAGE_BEFORE_SHA256SUMS
+evidence
+payload.tar.gz
+v2_13_top5_enrichment_v1_20260722
+v2_20_contact_shared_top5_challenger_v1_2_20260723
+v2_20_contact_shared_top5_challenger_v1_3_5_technical_recovery_20260723
+v2_5_ortho_contact_pose_stack_v1_20260718
+SUSPICIOUS_RUNTIME_FILES:
+REVIEW_BOUND_LIVE_PROCESSES:
+PACKAGE_STABILITY:
+PASS_REMOTE_FROZEN_PACKAGE_UNCHANGED
+TEST_RC:
+0

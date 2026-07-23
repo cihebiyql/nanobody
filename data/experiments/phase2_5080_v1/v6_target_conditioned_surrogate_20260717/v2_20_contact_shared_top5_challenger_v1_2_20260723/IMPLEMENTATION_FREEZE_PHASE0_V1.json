@@ -1,0 +1,79 @@
+{
+  "ablation_contract_status": "FROZEN_FOR_FUTURE_OOF_BUT_OOF_NOT_AUTHORIZED",
+  "allowed_actions": [
+    "materialize_train_only_738_contact_teacher",
+    "verify_content_addressed_teacher_package"
+  ],
+  "artifacts": {
+    "draft_v2_plan_sha256": "849bb7e5572f3dddf4a3b50d83595fd1291091febb1baef10b71bc39b923921e",
+    "draft_v2_preregistration_sha256": "2dbb23039753d2cc15dd5962c575264869b3e7b22c7f2b00a514caca5f7a8765",
+    "materializer_path": "src/materialize_v220_train_contact_teacher_v1.py",
+    "materializer_sha256": "87b1e6f921aa617dbccc87004205840ef4f7b715f456516aec2d441a5e279e83",
+    "phase0_contract_path": "PHASE0_TEACHER_MATERIALIZATION_CONTRACT_V1.json",
+    "phase0_contract_sha256": "30f53d6cef08e3f92d2d5595a0b8d2cb042c07826beaf16607d7f5061f94eb35",
+    "single_immutable_pass_log_path": "audits/PHASE0_TEST_RESULTS_V1.log",
+    "single_immutable_pass_log_sha256": "0870ccdfcba5413c5280292526110f4504896580aafac5e187074e3cefe851b6",
+    "test_launcher_path": "launchers/run_phase0_14_tests_v1.sh",
+    "test_launcher_sha256": "b861de8101ca4bfb6ab0c39c14ff61fd9972bc81e77d5198d928c2f767e70dd4",
+    "tests_path": "tests/test_materialize_v220_train_contact_teacher_v1.py",
+    "tests_sha256": "39d9d88a598c602980593af17cbb7970881189e2cc3539c85b21c08b16c0cf10"
+  },
+  "created_date_local": "2026-07-23",
+  "critic_verdict": "APPROVE_PHASE0_TEACHER_MATERIALIZATION",
+  "expected_production": {
+    "candidates": 738,
+    "development_pose_files_stat_hashed_opened": 0,
+    "frozen_test_pose_files_stat_hashed_opened": 0,
+    "parents": 53,
+    "single_seed_candidates": 0,
+    "sources": {
+      "V29": 305,
+      "V4D": 113,
+      "V4H": 320
+    }
+  },
+  "forbidden_actions": [
+    "train_C0",
+    "train_C1",
+    "OOF_prediction",
+    "development_contact_materialization",
+    "development_pose_access",
+    "frozen_test_access"
+  ],
+  "gradient_contract": {
+    "g_contact": "gradient_shared(L_marginal + 0.5*L_pair) before lambda scaling",
+    "phase0_gradient_computation_count": 0
+  },
+  "input_hashes": {
+    "scalar_teacher": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+    "split_manifest": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+    "target_cache": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108",
+    "target_manifest": "c78c30beb4ad668e28f8bfe17872b9712e92fd5871748718a70714a5d5f0ce9d",
+    "target_receipt": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9",
+    "v29_job_results": "4d3a8c858de78683345c7bd7f3e9f06f801d55ce6953c776f22debbc84b9fd3c",
+    "v29_release_receipt": "2f5f9622802262ce67749ea0436653200e6dfbd077920b61c52b511fb63db8c6",
+    "v29_weaklabels": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4",
+    "v4d_marginal": "1f5906df603fdbaea166c992c93bb4ff1b95c22cccff80739cedbc892a6c6e8e",
+    "v4d_pair": "39b600e6979e72ef89237070b36a1f7afaecb4be5be4735d1650d55cd17811a8",
+    "v4d_receipt": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f",
+    "v4h_marginal": "7b79b07b7b052e518293ec98c5f4b5a79e4f5f0710950ae219a4205a8aff5a7f",
+    "v4h_pair": "9d27d2297822e978fe969bb645fee97a76ede544de902f6dfe6051c88a33ec92",
+    "v4h_receipt": "ef245ace9c7e2f8c6dbe15893c67689084d00e7720a1855fb88f900fe29b79be",
+    "v4h_state": "47fc2eb0ee6bae43369bf774d47c490874ceb6dbe04f0fbaece95cd61c8d33e5"
+  },
+  "oof_training_authorized": false,
+  "remote_output": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1",
+  "remote_root": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723",
+  "schema_version": "pvrig_v2_20_phase0_train_only_contact_teacher_implementation_freeze_v1",
+  "status": "FROZEN_PHASE0_TEACHER_MATERIALIZATION_ONLY_OOF_TRAINING_NOT_AUTHORIZED",
+  "test_evidence": {
+    "errors": 0,
+    "failures": 0,
+    "numpy_version": "1.26.4",
+    "python_version": "3.12.7",
+    "runtime_python": "/data/qlyu/anaconda3/bin/python",
+    "single_log_mode": true,
+    "status": "PASS",
+    "tests_run": 14
+  }
+}

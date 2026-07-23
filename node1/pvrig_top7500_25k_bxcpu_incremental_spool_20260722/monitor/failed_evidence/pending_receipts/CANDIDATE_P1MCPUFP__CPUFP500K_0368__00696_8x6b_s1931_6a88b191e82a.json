@@ -1,0 +1,35 @@
+{
+  "array_task": 4,
+  "collected_at_utc": "2026-07-23T01:55:53.328932+00:00",
+  "delivery_error": "RuntimeError('command failed rc=255: /mnt/c/WINDOWS/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=20 node1 python3 -c \\'from pathlib import Path; p=Path(\\'\"\\'\"\\'/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence\\'\"\\'\"\\'); print(\\'\"\\'\"\\'\\\\n\\'\"\\'\"\\'.join(sorted(x.stem.replace(\\'\"\\'\"\\'.tar\\'\"\\'\"\\',\\'\"\\'\"\\'\\'\"\\'\"\\') for x in p.glob(\\'\"\\'\"\\'*.tar.gz\\'\"\\'\"\\'))))\\': qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535')",
+  "diagnostic_tail": [
+    "[2026-07-23 09:39:16,518 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "raise RuntimeError(reason)",
+    "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 09:39:16,520 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 09:39:16,520 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+    "[2026-07-23 09:42:05,007 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "raise RuntimeError(reason)",
+    "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 09:42:05,008 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 09:42:05,008 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+  ],
+  "evidence_bytes": 3810437,
+  "evidence_sha256": "27d65640634a7780f4f28f03cfc0f5dcc87d0a52bab86d202dfb68a4aecafd27",
+  "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0368__00696_8x6b_s1931_6a88b191e82a",
+  "label": "NA_TECHNICAL_FAILURE",
+  "local_evidence": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/monitor/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0368__00696_8x6b_s1931_6a88b191e82a.tar.gz",
+  "node1_delivery": "PENDING_NODE1_UNREACHABLE",
+  "protocol_changed": false,
+  "schema_version": "pvrig_top7500_pending_technical_failure_v1",
+  "status": {
+    "attempts": 2,
+    "error": "HADDOCK3 exited with return code 1",
+    "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0368__00696_8x6b_s1931_6a88b191e82a",
+    "pid": 1719,
+    "return_code": 1,
+    "stage": "haddock",
+    "status": "FAILED",
+    "updated_at": "2026-07-23T01:42:05.232522+00:00"
+  }
+}

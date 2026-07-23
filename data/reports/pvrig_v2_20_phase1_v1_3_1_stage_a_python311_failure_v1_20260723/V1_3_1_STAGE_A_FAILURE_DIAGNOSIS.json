@@ -1,0 +1,48 @@
+{
+  "claim_boundary": "Technical Stage-A preflight failure only; no training or model-quality result.",
+  "deployment_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_1_stage_a_deployment_20260723",
+  "disposition": {
+    "scientific_method_change": false,
+    "successor": "V1.3.2 minimal Python3.11-compatible legacy-test invocation recovery",
+    "v1_3_1_must_not_be_retried": true,
+    "v1_3_1_status": "TERMINAL_TECHNICAL_FAILURE_NO_RETRY_SAME_VERSION"
+  },
+  "evidence": {
+    "LEGACY_102_TESTS.log": "4190b218d9d61c84c393e6730abd95fed900fb418297e47777e2530ca3d174ae",
+    "NODE1_REMOTE_FAILURE_SNAPSHOT.json": "78626bce5852e819effb3c8a804001b3c17cbc7b8433ff5ccb8ebe9ab6ac43f8",
+    "NODE1_STAGE_A_DEPLOYMENT_RECEIPT.json": "4290c1423a250a1e7aa1a9e6f98df292037c1aee674a9efb2b9ac4ec5647a706",
+    "PREFLIGHT_LAUNCHER.log": "39faea7e6f4b3205ccfcd8fa6d02133bd2529c85ad202169ff660d5c06fb54b0",
+    "PREFLIGHT_LAUNCHER.rc": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  "fail_closed": {
+    "backward_called": false,
+    "calibrator_invocations": 0,
+    "fold_materialization_started": false,
+    "live_process_count_after_failure": 0,
+    "load_only_started": false,
+    "optimizer_created": false,
+    "shared_calibration_dir_exists": false,
+    "training_artifact_count": 0,
+    "training_started": false,
+    "v1_3_1_new_tests_started": false
+  },
+  "failure": {
+    "cause": "Frozen V1.2 legacy launcher passed thirteen absolute test file paths to python -m unittest. Python 3.11 interpreted them as import module names and raised ModuleNotFoundError.",
+    "expected_legacy_tests_not_executed": 102,
+    "hash_validation_before_failure": "PASS_10_RUNTIME_BINDINGS",
+    "import_errors": 13,
+    "stage": "legacy_102_test_invocation_before_v1_3_1_tests_or_any_fold_materialization",
+    "unittest_loaded_failure_objects": 13
+  },
+  "frozen_package_sha256": "bd66829ad25d35981c96b65055ce3d3822edfcfeda6624a9d65fea1efedb2d3e",
+  "independent_stage_a_approval_sha256": "801004a1b24e3e4410dd062d54659127c1f5ec2e4ee1aee45e5b2f721869e5af",
+  "outer_launcher_rc": 1,
+  "package_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_1_technical_recovery_20260723",
+  "python": {
+    "path": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "version": "Python 3.11.14"
+  },
+  "runtime_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_1_preflight_runtime_20260723_0538",
+  "schema_version": "pvrig.v220.v1_3_1_stage_a_failure_diagnosis.v1",
+  "status": "FAIL_V1_3_1_STAGE_A_PYTHON311_LEGACY_UNITTEST_ABSOLUTE_PATH_INCOMPATIBILITY"
+}

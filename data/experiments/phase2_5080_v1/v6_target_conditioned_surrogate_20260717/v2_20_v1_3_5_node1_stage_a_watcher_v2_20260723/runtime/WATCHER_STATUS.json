@@ -1,0 +1,9 @@
+{
+  "claim_boundary": "Disconnect-resumable Stage-A package deployment and no-training preflight only.",
+  "detail": "SSH unavailable; watcher will resume and adopt exact remote package/session state",
+  "schema_version": "pvrig.v220.v1_3_5.node1_stage_a_watcher.v2",
+  "status": "WAITING_NODE1_CONNECTIVITY",
+  "training_authorized": false,
+  "training_started": false,
+  "updated_at_utc": "2026-07-23T02:03:25.952844+00:00"
+}

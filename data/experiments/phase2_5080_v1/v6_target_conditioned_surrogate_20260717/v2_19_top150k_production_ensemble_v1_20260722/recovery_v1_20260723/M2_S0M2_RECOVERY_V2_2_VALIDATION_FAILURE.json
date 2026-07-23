@@ -1,0 +1,11 @@
+{
+  "status": "FAIL_M2_S0M2_RECOVERY_V2_2_VALIDATOR_METADATA_CLASSIFICATION",
+  "stage": "terminal_validation_only",
+  "reason": "claim_boundary provenance metadata was incorrectly counted as a 127th numeric M2 feature",
+  "computed_outputs_preserved": true,
+  "m2_rows": 150000,
+  "m2_receipt_feature_count": 126,
+  "prediction_rows": 150000,
+  "canonical_terminal_published": false,
+  "superseded_by": "V2.3 validator and terminal-only publisher"
+}

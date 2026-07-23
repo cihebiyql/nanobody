@@ -1,0 +1,35 @@
+{
+  "authorization": {
+    "stage_a_only": true,
+    "training_authorized": false,
+    "training_started": false
+  },
+  "claim_boundary": "Stage-A technical no-training preflight watcher only; no training, EF5, Top7500, binding, or promotion claim.",
+  "created_at_utc": "2026-07-23T00:55:16.979497+00:00",
+  "files_sha256": {
+    "BASH_N_RESULTS.log": "b70d2707ba953049e81dd97bfbea44e7a45e632b801b442eb81892fec6b9904f",
+    "PLAN_ZH.md": "910e241a8ca66829696b46e652ee05cea02a5b6169c1095a0253b7965438f055",
+    "TEST_RESULTS.log": "10be8d45950ac8d5ba7a7046e415a9812a1d7e6ad050c35a26087be00105eaa4",
+    "monitor_and_launch_stage_a_v1_3_5.sh": "6c93cc4ef8a3edfe917cbd969944df92698c4e21627c73f2e14ce9513d7acb4c",
+    "start_node1_stage_a_watcher_v1_3_5.sh": "1e199db5609e51c3a2f2cda89e8096dd547e1ae51e69626c4c224cdb6a2f3ee4",
+    "test_node1_stage_a_watcher_v1_3_5.py": "d5f8645182579b0d32a3a5b9daf45212b8a7b0a1abbd29058f34ccd1fecd4e05"
+  },
+  "implementation_freeze_sha256": "07c8463689d6baa0da1ebd0c1d4440fc0315c8e8edb4e1b72415434567dc0804",
+  "independent_stage_a_approval_sha256": "91fc04f0cbe2441c76318eac20ba0f41b8525eca1a27bd24465a0963613c97c8",
+  "remote_paths": {
+    "evidence": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_stage_a_evidence_20260723",
+    "package": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_technical_recovery_20260723",
+    "runtime": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_preflight_runtime_20260723"
+  },
+  "remote_session": "v220_v135_stagea_preflight",
+  "schema_version": "pvrig.v220.v1_3_5.node1_stage_a_watcher.deployment.v1",
+  "status": "DEPLOYED_WAITING_NODE1_CONNECTIVITY",
+  "tmux_session": "pvrig-v220-v135-node1-stagea",
+  "verification": {
+    "bash_n_scripts": 2,
+    "local_prelaunch_hash_gate": "PASS",
+    "observed_status": "WAITING_NODE1_CONNECTIVITY",
+    "python_tests": 5,
+    "python_tests_status": "PASS"
+  }
+}

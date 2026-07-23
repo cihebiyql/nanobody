@@ -1,0 +1,70 @@
+{
+  "access_boundary": {
+    "open_development_rows_accessed": 0,
+    "read_only_train9849_rows": 9849,
+    "sealed_or_frozen_prospective_rows_accessed": 0,
+    "training_started": false
+  },
+  "current_v220_state": {
+    "five_fold_materialize_load_only_completed": false,
+    "fresh_c0_c1_training_completed": false,
+    "node1_exact_102_plus_44_completed": false,
+    "stage_a_only_approval_sha256": "9ffc4f48d880472eb6c1aef5af04cc668f656bd69b3108a7a1a9ac752cf7d499",
+    "stage_b_training_authorized": false,
+    "v1_3_3_freeze_sha256": "cafbe876e59df793711aeb578417778486223f81325d97ecf2062b5f0fc62519",
+    "valid_scientific_terminal_available": false
+  },
+  "dataset": {
+    "exact_top10_positive_count": 985,
+    "parent_size_max": 519,
+    "parent_size_median": 153.0,
+    "parent_size_min": 6,
+    "parents": 54,
+    "parents_with_fewer_than_20_rows": 5,
+    "parents_with_zero_global_top10_positives": 10,
+    "positive_count_per_parent_max": 92,
+    "positive_count_per_parent_median": 15.0,
+    "positive_count_per_parent_min": 0,
+    "rows": 9849
+  },
+  "ef5_math": {
+    "additional_ef_required": 1.926782055374224,
+    "additional_hits_required": 95,
+    "expanded_union_oracle_ef5": 7.017543064836648,
+    "expanded_union_oracle_positive_count": 346,
+    "l1_ef5": 3.0828512885987585,
+    "l1_hits": 152,
+    "l1_precision": 0.30831643002028397,
+    "l1_recall": 0.15431472081218275,
+    "positives": 985,
+    "prevalence": 0.10001015331505736,
+    "required_fraction_of_expanded_additional_positives_over_l1": 0.4896907216494845,
+    "required_fraction_of_union4_additional_positives_over_l1": 0.5491329479768786,
+    "selected": 493,
+    "target_exact_ef5": 5.0096333439729825,
+    "target_fraction_of_expanded_oracle_positives": 0.7138728323699421,
+    "target_fraction_of_union4_oracle_positives": 0.76,
+    "target_hits": 247,
+    "target_precision": 0.5010141987829615,
+    "target_recall": 0.25076142131979695,
+    "union4_oracle_ef5": 6.591622821017082,
+    "union4_oracle_positive_count": 325
+  },
+  "hashes": {
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/candidate_fold_assignment.tsv": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07",
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/train9849_teacher.tsv": "beb3205b998105b900c9d31207d7ff61b6b462f9188d58e5b896c985056c90f0",
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_13_top5_enrichment_v1_20260722/results/top5_campaign_20260722/status/V2_13_PHASE_A_TERMINAL.json": "fdacc02b392274bc4451bd5abdfb273657ac5da86859532dec200ee24d4b514c",
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_13_top5_enrichment_v1_20260722/results/top5_campaign_20260722/v217/V2_17_EXPANDED_UNION_TOP5_METRICS.json": "e2cd47add42e27766c11cb7ab96384dd9b2e41cc4e6e0f0f14fa00f9b5a0604e",
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_2_20260723/PREREGISTRATION_PHASE1_CORE_V1_2.json": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c",
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_21_ef5_targeted_multistage_v1_20260723/PLAN_ZH.md": "1c8371d007bb9cffafaf9199e3cc1a91f62a845c253784f557fa8f03706b23f9",
+    "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_21_ef5_targeted_multistage_v1_20260723/PREREGISTRATION_DRAFT.json": "4b81027b520f668e05c0f2132a28619fe4a8a11c6711d0d4ad99cfe803077e4e"
+  },
+  "l1_fold_ef5": [
+    1.8172635445362717,
+    4.141414141414141,
+    2.1201353637901863,
+    2.2670311807300134,
+    4.583333333333333
+  ],
+  "schema_version": "pvrig.v221.independent_plan_review_evidence.v1"
+}

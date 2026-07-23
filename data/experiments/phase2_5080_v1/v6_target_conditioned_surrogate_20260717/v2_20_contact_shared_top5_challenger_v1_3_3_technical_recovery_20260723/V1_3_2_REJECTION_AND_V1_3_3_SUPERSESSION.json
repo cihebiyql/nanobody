@@ -1,0 +1,19 @@
+{
+  "allowed_next_action": "independent review of a new exact-byte V1.3.3 Stage-A no-training freeze",
+  "causal_change": "fix only the frozen-package lifecycle test fixture and add an exact fully-frozen-package launcher regression",
+  "method_data_split_architecture_loss_optimizer_hyperparameters_gates_changed": false,
+  "new_version": "V1.3.3",
+  "old_version": "V1.3.2",
+  "old_version_freeze_sha256": "882f60a34a1d6efda3b26236d056cc4e301a53bce2abb86b6b9ef3086a11f2ab",
+  "old_version_independent_review_path": "../v2_20_contact_shared_top5_challenger_v1_3_2_stage_a_review_evidence_20260723/INDEPENDENT_FINAL_FREEZE_REVIEW_V1_3_2.eaf1ba9e2a6d4c19fb2db605154bb1670d17211d28ddd325878bec769c4eecca.json",
+  "old_version_independent_review_sha256": "eaf1ba9e2a6d4c19fb2db605154bb1670d17211d28ddd325878bec769c4eecca",
+  "old_version_review_decision": "REJECT_WITH_BLOCKERS",
+  "old_version_review_status": "REJECT_V220_V1_3_2_STAGE_A_PREFLIGHT_DEPLOYMENT_WITH_BLOCKERS",
+  "old_version_same_version_edit_or_retry_allowed": false,
+  "old_version_stage_a_deployed": false,
+  "old_version_training_started": false,
+  "schema_version": "pvrig.v220.v1_3_2_rejection_v1_3_3_supersession.v1",
+  "status": "V1_3_2_TERMINAL_REJECTED_SUPERSEDED_BY_V1_3_3_STAGE_A_ONLY",
+  "training_authorized": false,
+  "training_started": false
+}

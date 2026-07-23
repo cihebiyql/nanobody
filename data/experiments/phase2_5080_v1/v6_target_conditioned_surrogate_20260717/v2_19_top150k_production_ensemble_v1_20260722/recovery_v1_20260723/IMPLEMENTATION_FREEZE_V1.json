@@ -1,0 +1,20 @@
+{
+  "canonical_terminals": [
+    "M2_S0M2_TERMINAL.json",
+    "GRAPH_L1_B_TERMINAL.json"
+  ],
+  "created_at_utc": "2026-07-22T17:08:18.249328+00:00",
+  "expected_rows": 150000,
+  "files": {
+    "README_ZH.md": "73eb3378ee1d5f697bc598f1f8a3ad6fbfcb8d21e7afe72458d2c544340edec8",
+    "run_graph_l1_b_recovery_v1.sh": "dc0a9b06beaabfac043c52d2d94bb92d426020d3b6af3ceaaaf9fb4451e12f9c",
+    "run_m2_s0m2_recovery_v1.sh": "015140a494b7c911c0a98b71d5af3b455264bd52c443280fe77288938cd4607d"
+  },
+  "schema_version": "pvrig_top150k_downstream_recovery_implementation_freeze_v1",
+  "scope": "Operational recovery only: frozen Python environment for M2 and token-safe inode-verified hardlink mirror for label-free graph; no model, score, ranking, threshold, sequence, or truth change.",
+  "status": "FROZEN_BEFORE_RECOVERY_EXECUTION",
+  "truth_access": {
+    "candidate_docking_pose_files_opened": 0,
+    "teacher_labels_opened": 0
+  }
+}

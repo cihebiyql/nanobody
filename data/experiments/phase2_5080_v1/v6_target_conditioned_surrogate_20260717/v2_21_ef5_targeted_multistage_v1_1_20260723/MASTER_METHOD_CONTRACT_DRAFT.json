@@ -1,0 +1,121 @@
+{
+  "schema_version": "pvrig.v221.ef5_targeted.master_method.v1_1.draft",
+  "status": "DRAFT_MASTER_METHOD_NO_EXECUTION_AUTHORIZED",
+  "claim_boundary": "Independent dual-receptor computational Docking geometry surrogate only; not binding, Kd, experimental blocking, expression, purity, Docking Gold, or final submission truth.",
+  "activation_gate": {
+    "required_predecessor": "V2.20 V1.3.3 hash-bound valid scientific terminal",
+    "required_technical_closure": true,
+    "allowed_scientific_status": [
+      "PASS",
+      "FAIL"
+    ],
+    "current_status": "WAITING"
+  },
+  "metric": {
+    "rows": 9849,
+    "truth_positive_count": 985,
+    "prediction_budget_count": 493,
+    "tie_break": [
+      "score_desc",
+      "sequence_sha256_asc"
+    ],
+    "target_ef5": 5.0,
+    "target_hits": 247,
+    "reference_model": "L1",
+    "reference_hits": 152,
+    "reference_ef5": 3.0828512885987585
+  },
+  "base_models_in_order": [
+    "L1",
+    "B",
+    "M2",
+    "C2"
+  ],
+  "union": {
+    "per_model_fraction": 0.05,
+    "deduplicate_by": "row identity bound to sequence_sha256",
+    "oracle_truth_scope": "outer-fit/inner evidence only",
+    "outer_test_truth_forbidden": true
+  },
+  "cross_fitting": {
+    "outer_folds": 5,
+    "outer_group": "whole_parent_cluster",
+    "inner_folds": 4,
+    "inner_group": "whole_parent_cluster",
+    "global_base_oof_as_meta_train_forbidden": true,
+    "fit_only_cdf": true
+  },
+  "stages": [
+    "P1_CONTACT_CAUSAL",
+    "P2_MULTISEED_IF_P1_PASS",
+    "P3_STRICT_NESTED_COMPACT_STACK",
+    "P4_LAMBDARANK_IF_ALL_FIT_ONLY_UNION_ORACLE_EF5_GTE_5_5",
+    "TERMINAL_DEVELOPMENT_EVALUATION"
+  ],
+  "multiseed": {
+    "seeds": [
+      43,
+      917,
+      1931
+    ],
+    "lcb_alpha_inner_grid": [
+      0.0,
+      0.25,
+      0.5
+    ],
+    "minimum_delta_ef5": 0.2,
+    "minimum_hits_gain": 10,
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 20260723,
+    "bootstrap_group": "whole_parent_cluster"
+  },
+  "meta_challengers_in_order": [
+    "NONNEGATIVE_LINEAR_STACK",
+    "ELASTICNET_RESIDUAL",
+    "DEPTH_LIMITED_HGB_RESIDUAL"
+  ],
+  "rank_head": {
+    "role": "residual ranking evidence only",
+    "global_scalar_anchor_required": true,
+    "fit_only_union_oracle_gate": 5.5
+  },
+  "reliability": {
+    "role": "loss_weight_only",
+    "epsilon": 1e-06,
+    "raw_clip": [
+      0.5,
+      2.0
+    ],
+    "normalize_within_parent": true,
+    "inference_feature_forbidden": true,
+    "conditioned_sampling_forbidden": true
+  },
+  "development_claim_policy": {
+    "train9849_sequential_results_are_development_only": true,
+    "final_generalization_claim_requires_untouched_prospective_cohort": true,
+    "same_information_family_challenger_limit": 3,
+    "minimum_stable_hits_gain_to_continue_head_search": 10
+  },
+  "milestone_hits_non_promotional": [
+    162,
+    187,
+    212,
+    247
+  ],
+  "implementation": {
+    "protocol_module": "src/protocol_v1_1.py",
+    "synthetic_test_module": "tests/test_protocol_v1_1.py",
+    "test_count": 41,
+    "protocol_sha256": "b34d8d3d073a5dbd360bb5834132f25898b23b50491e26fe5c20d5b1092d2f24",
+    "tests_sha256": "2cf3ed51632c2a081c81487fa9abeee9a2822b421a64d06f196a69468278ab7d",
+    "preterminal_contracts": {
+      "whole_parent_outer_inner_disjoint_and_exact_coverage": true,
+      "fit_only_threshold_and_union_oracle_label_firewall": true,
+      "equal_parent_cap_and_zero_positive_negative_sentinel_fallback": true,
+      "contact_shuffle_preserves_vhh_and_target_marginals_and_density": true,
+      "target_permutation_and_dual_conformer_swap_mapping_closure": true,
+      "prospective_open_sealed_path_and_feature_access_forbidden": true,
+      "synthetic_only_no_real_or_sealed_labels_read": true
+    }
+  }
+}

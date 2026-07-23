@@ -1,0 +1,47 @@
+{
+  "bundle_sha256": "359a695f4d6d823ae7f0cf76abaf45e7665ec404bf4a38f5179d66abc86f6919",
+  "bxcpu_result_root": "$HOME/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722_bxcpu_results",
+  "claim_boundary": "Docking outputs are computational blocker-like geometry evidence, not measured binding, Kd, IC50, or experimental blocking.",
+  "local_spool_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722",
+  "node1_result_root": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k",
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "relay": {
+    "compact_archive_contains_full_job_result": true,
+    "hash_verify_before_remote_prune": true,
+    "technical_failures_are_na": true,
+    "tmux_sessions": [
+      "pvrig-top7500-result-sync-00",
+      "pvrig-top7500-result-sync-01",
+      "pvrig-top7500-result-sync-02",
+      "pvrig-top7500-result-sync-03"
+    ]
+  },
+  "schedule": {
+    "candidates": 7500,
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seed1931_jobs": 8000,
+    "seed3253_jobs": 2000,
+    "seed917_jobs": 15000,
+    "total_jobs": 25000
+  },
+  "schema_version": "pvrig_top7500_bxcpu_live_run_receipt_v1",
+  "slurm": {
+    "array_job_id": "11942310",
+    "audit_job_id": "11942311",
+    "concurrent_jobs_per_node": 16,
+    "cpus_per_node": 64,
+    "nodes": 8
+  },
+  "updated_at_utc": "2026-07-22T16:05:07.919144+00:00",
+  "verification_snapshot": {
+    "all_eight_array_tasks_running": true,
+    "bxcpu_result_root_size": "3.0G",
+    "bxcpu_success": 512,
+    "node1_batch_checksum": "PASS",
+    "node1_delivered_and_pruned": 160,
+    "node1_mirror_size": "1.7G"
+  }
+}

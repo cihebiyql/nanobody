@@ -1,0 +1,70 @@
+{
+  "access_boundary": {
+    "allowlist_frozen_before_first_pose": true,
+    "development_pose_files_stat_hashed_opened": 0,
+    "forbidden_pose_attempt_count": 0,
+    "frozen_test_pose_files_stat_hashed_opened": 0,
+    "quarantine_pose_files_stat_hashed_opened": 0,
+    "split_manifest_opened_first": true,
+    "train_pose_candidates_opened": 305,
+    "train_pose_files_opened": 10396,
+    "unknown_pose_files_stat_hashed_opened": 0
+  },
+  "claim_boundary": "Train-only residue-contact weak supervision derived from computational independent 8X6B/9E6Y Docking poses; not binding, affinity, experimental blocking, Docking Gold, or OOF model evidence.",
+  "counts": {
+    "candidate_receptor_groups": 1476,
+    "candidates": 738,
+    "dense_marginal_rows": 183102,
+    "development_candidates_emitted": 0,
+    "parents": 53,
+    "single_seed_candidates_emitted": 0,
+    "source_candidates": {
+      "V29": 305,
+      "V4D": 113,
+      "V4H": 320
+    },
+    "sparse_pair_rows": 403353,
+    "target_node_contract_rows": 211,
+    "technical_failed_seed_zero_imputations": 0,
+    "v29_train_pose_files": 10396
+  },
+  "frozen_implementation": {
+    "immutable_test_log_sha256": "994cf8977292e102e257fc01f845f3df90fe56ae07d13dd6ce50aedaca6bb88f",
+    "implementation_freeze_sha256": "5b9be7f579c1b9432ea9e7efa47f504a0d7d392003bc72b1f7bdabded696b4a5",
+    "launcher_sha256": "6feba53586773e42eb765b87aec00ed0e066ffc319553a45c1e790f5898ed03c",
+    "materializer_sha256": "44bb0727620a929524b3a8ef3c68791313554fa7158bdf1619e20fc1b66b43c0",
+    "phase0_contract_sha256": "4a1a522799fd91cf25a26f590b01a613291d9f53b04171c8c62c0b856a71319b",
+    "tests_sha256": "bee430e43c30301259100904aa9429a3e29e9cf1864bc5f1e9645c0a8a1dd51c"
+  },
+  "gradient_contract": {
+    "g_contact": "gradient_shared(L_marginal + 0.5*L_pair) before lambda scaling",
+    "phase0_gradient_computations": 0
+  },
+  "locally_mirrored_evidence": {
+    "access_audit_sha256": "39df03a86e55a4b910db74aaa49689c8bf68065c68c0ca90aa3811526daf939d",
+    "log_sha256": "8f6c592e83d4723092eea10a5d3745aff58a63d5d9a16570225eb3b6e8b0fddf",
+    "release_receipt_sha256": "71f62887713d76e2a524b6affc82f118bafdad82dcf16b731a426a5a0b54cead",
+    "release_sha256sums_sha256": "9d255dc4a5cbf83c013e6a419cb2790bbb4b1c99f2060fdb39c08df853fbdb7d",
+    "terminal_sha256": "42cc1f131b4e4135b5ff8b49c8f7819d7cfb7644dc3c8fd710710aa3238bbab1"
+  },
+  "node1": {
+    "launcher_pid": 1206724,
+    "release_path": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1_2",
+    "remote_root": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723",
+    "return_code": 0,
+    "terminal_status": "PASS_PHASE0_TRAIN_ONLY_TEACHER",
+    "verification_status": "PASS_VERIFIED_TRAIN_ONLY_738_PACKAGE"
+  },
+  "oof_training_authorized": false,
+  "output_row_counts": {
+    "target_node_position_baseline_contract.tsv": 211,
+    "train_candidate_receptor_group_audit.tsv.gz": 1476,
+    "train_contact_candidate_manifest.tsv": 738,
+    "train_dense_marginal_contact_teacher.tsv.gz": 183102,
+    "train_sparse_pair_contact_teacher.tsv.gz": 403353,
+    "v29_train_pose_sha256_manifest.tsv.gz": 10396
+  },
+  "recorded_at_utc": "2026-07-22T17:34:29.649193+00:00",
+  "schema_version": "pvrig_v2_20_phase0_train_contact_teacher_deployment_receipt_v1_2",
+  "status": "PASS_PHASE0_TRAIN_ONLY_TEACHER_DEPLOYED_AND_VERIFIED"
+}

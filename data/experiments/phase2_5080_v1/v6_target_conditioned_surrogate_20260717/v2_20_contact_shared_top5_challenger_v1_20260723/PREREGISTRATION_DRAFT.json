@@ -1,0 +1,242 @@
+{
+  "schema_version": "pvrig_v2_20_contact_shared_top5_challenger_preregistration_draft_v1",
+  "status": "DRAFT_NOT_FROZEN_NO_TRAINING_AUTHORIZED",
+  "created_date_local": "2026-07-23",
+  "claim_boundary": "Sequence plus label-free VHH monomer graph plus fixed public PVRIG target graphs, trained against computational independent dual-receptor Docking geometry and pose-derived residue-contact weak supervision only; not binding, affinity, experimental competition or blocking, expression, purity, Docking Gold, or final submission evidence.",
+  "non_interference": {
+    "modify_v2_13_phase_b_or_c1": false,
+    "reuse_or_relax_frozen_v2_13_thresholds": false,
+    "access_frozen_test": false,
+    "use_open_development_for_training_or_selection": false,
+    "launch_authorized_by_this_draft": false
+  },
+  "scalar_teacher": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_teacher.tsv",
+    "sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+    "split_manifest_path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_10_canonical10644_training_v1_20260721/prepared/primary_D1_canonical10644_split_manifest.json",
+    "split_manifest_sha256": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+    "fit_rows": 9849,
+    "fit_parents": 54,
+    "open_development_rows": 795,
+    "open_development_parents": 10,
+    "direct_targets": [
+      "R_8X6B",
+      "R_9E6Y"
+    ],
+    "derived_target_evaluation_and_inference": "exact_min(R_8X6B,R_9E6Y)"
+  },
+  "contact_inventory": {
+    "v4d": {
+      "package": "experiments/phase2_5080_v1/prepared/pvrig_v6_v4d_open226_contact_teacher_v2_20260718",
+      "raw_root": "/data/qlyu/projects/pvrig_v4_d_fullqc290_dual_redocking_20260715",
+      "package_candidates": 226,
+      "package_parents": 20,
+      "canonical_exact_match_candidates": 189,
+      "canonical_train_candidates": 113,
+      "canonical_development_candidates": 76,
+      "canonical_exact_match_three_seed_candidates": 189,
+      "pair_sha256": "39b600e6979e72ef89237070b36a1f7afaecb4be5be4735d1650d55cd17811a8",
+      "marginal_sha256": "1f5906df603fdbaea166c992c93bb4ff1b95c22cccff80739cedbc892a6c6e8e",
+      "pose_inventory_sha256": "32ea99b24277726328ba5303a532ba7cb053790588b5267beef85edf7265a042"
+    },
+    "v4h": {
+      "package": "experiments/phase2_5080_v1/prepared/pvrig_v4_h_adaptive_contact_teacher_v2_20260718",
+      "raw_root": "/data/qlyu/projects/pvrig_v4_h_research_dual_docking_v1_20260717",
+      "analyzable_candidates": 1281,
+      "package_parents": 11,
+      "canonical_exact_match_candidates": 1169,
+      "canonical_train_two_seed_candidates": 213,
+      "canonical_train_three_seed_candidates": 107,
+      "canonical_train_single_seed_candidates_low_tier_only": 849,
+      "pair_sha256": "9d27d2297822e978fe969bb645fee97a76ede544de902f6dfe6051c88a33ec92",
+      "marginal_sha256": "7b79b07b7b052e518293ec98c5f4b5a79e4f5f0710950ae219a4205a8aff5a7f",
+      "candidate_state_sha256": "47fc2eb0ee6bae43369bf774d47c490874ceb6dbe04f0fbaece95cd61c8d33e5"
+    },
+    "v29": {
+      "release_root": "/data1/qlyu/projects/pvrig_v29_canonical_training_release_v1_20260721",
+      "lab_pose_root": "/data/qlyu/projects/pvrig_v29_docking25k_v1_20260720/runs",
+      "release_receipt_sha256": "2f5f9622802262ce67749ea0436653200e6dfbd077920b61c52b511fb63db8c6",
+      "weaklabels_sha256": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4",
+      "job_results_sha256": "4d3a8c858de78683345c7bd7f3e9f06f801d55ce6953c776f22debbc84b9fd3c",
+      "top8_scores_sha256": "da82a28e5b477bc31a3d4fbb1db8a88ffefd501291d3ee721eb6465b5312db7a",
+      "successful_jobs": 24815,
+      "unique_physical_topk_poses": 196648,
+      "all_released_pose_pdb_hashes_blank": true,
+      "lab_jobs_with_all_selected_pose_files_present": 10240,
+      "lab_jobs_with_missing_selected_pose_files": 0,
+      "open_candidates_at_least_two_paired_local_seeds": 356,
+      "train_candidates_at_least_two_paired_local_seeds": 312,
+      "development_candidates_at_least_two_paired_local_seeds": 44,
+      "open_three_seed_candidates": 63,
+      "train_candidates_at_least_two_paired_local_seeds_including_seed917": 305,
+      "development_candidates_at_least_two_paired_local_seeds_including_seed917": 44,
+      "train_contact_only_1931_3253_excluded_from_primary": 7,
+      "non_lab_pose_sources_allowed_in_primary": false
+    },
+    "maximum_open_high_reliability": {
+      "candidates": 865,
+      "parents": 62,
+      "train_candidates": 745,
+      "train_three_seed": 275,
+      "train_two_seed": 470,
+      "development_candidates": 120,
+      "development_three_seed": 84,
+      "development_two_seed": 36
+    },
+    "primary_seed917_aligned": {
+      "train_candidates": 738,
+      "train_parents": 53,
+      "train_parent_without_high_reliability_contact": "C0052",
+      "sealed_development_candidates": 120,
+      "single_seed_v4h_candidates_in_primary": 0
+    }
+  },
+  "teacher_materialization_gates_before_freeze": {
+    "v29_pose_pdb_sha256_manifest_required": true,
+    "v29_pose_files_must_be_regular_nonempty": true,
+    "filter_split_and_status_before_opening_pose": true,
+    "frozen_test_pose_files_opened": 0,
+    "quarantine_pose_files_opened": 0,
+    "frozen_test_numeric_targets_parsed": 0,
+    "quarantine_numeric_targets_parsed": 0,
+    "contact_cutoff_angstrom": 4.5,
+    "top_k": 8,
+    "pose_rank_weight": "normalized_1_over_log2_rank_plus_1",
+    "seed_weighting": "equal_over_paired_successful_seeds",
+    "pair_variance": "population",
+    "uncertainty_weight": "1/(1+4*variance)",
+    "missing_pair_is_zero_only_after_valid_candidate_receptor_universe_closure": true,
+    "technical_failure_is_negative": false
+  },
+  "model_draft": {
+    "base": "V2.13_L1_clean_target_attention",
+    "backbone": "frozen_ESM2_t33_650M_UR50D_residue_states",
+    "vhh_structure": "label_free_VHH_monomer_graph",
+    "targets": [
+      "fixed_public_8X6B_graph",
+      "fixed_public_9E6Y_graph"
+    ],
+    "architecture": "shared_encoders_with_orthogonal_attention_and_contact_terminal_heads",
+    "attention_contact_last_logits_shared": false,
+    "contact_feedback_to_scalar": false,
+    "contact_encoder_gradient": "shared",
+    "direct_outputs": [
+      "R_8X6B",
+      "R_9E6Y"
+    ],
+    "independent_Rdual_head": false,
+    "derived_Rdual": "exact_min_at_evaluation_and_inference",
+    "training_softmin_tau": 0.02,
+    "forbidden_forward_inputs": [
+      "candidate_id",
+      "parent_id",
+      "campaign_id",
+      "teacher_source",
+      "contact_availability",
+      "seed_count",
+      "reliability_tier",
+      "Docking_pose",
+      "pose_derived_features",
+      "true_contact_targets",
+      "M2_outputs",
+      "C2_outputs"
+    ]
+  },
+  "loss_draft": {
+    "scalar": "reuse_exact_V2.13_L1_top_weighted_R8_R9_Huber_plus_softmin_auxiliary",
+    "contact_marginal": "uncertainty_weighted_soft_BCE",
+    "contact_pair": "uncertainty_weighted_soft_BCE_with_stratified_negative_sampling",
+    "pair_to_marginal_weight_ratio": 0.5,
+    "three_seed_tier_weight": 1.0,
+    "two_seed_tier_weight": 0.8,
+    "pair_positive_to_negative_ratio": "1:3",
+    "contact_loss_weight_selection": "prediction_metric_blind_preoptimizer_gradient_calibration",
+    "target_shared_encoder_contact_gradient_fraction": [
+      0.05,
+      0.15
+    ],
+    "fixed_exact_weight_pending_before_formal_freeze": true
+  },
+  "strict_oof": {
+    "rows": 9849,
+    "parents": 54,
+    "folds": 5,
+    "fold_assignment": "reuse_exact_V2.13_whole_parent_assignment",
+    "seed_phase_1": 43,
+    "contact_labels_allowed_only_from_outer_fit_parents": true,
+    "pretrain_on_all_contact_candidates_before_oof": false,
+    "open_development_used_for_selection": false,
+    "frozen_test_access_allowed": false
+  },
+  "baseline": {
+    "name": "V2.13_L1_seed43_strict_whole_parent_OOF",
+    "evidence_path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_13_top5_enrichment_v1_20260722/results/top5_campaign_20260722/status/V2_13_PHASE_A_TERMINAL.json",
+    "evidence_sha256": "fdacc02b392274bc4451bd5abdfb273657ac5da86859532dec200ee24d4b514c",
+    "ef5": 3.0828512885987585,
+    "hits_at_budget5": 152,
+    "selected_at_budget5": 493,
+    "precision_at_budget5": 0.30831643002028397,
+    "recall_at_budget5": 0.15431472081218275,
+    "rdual_spearman": 0.5661935645078868,
+    "rdual_mae": 0.036230982858158185
+  },
+  "metrics": {
+    "primary": "EF_true_top10_at_budget5",
+    "aspirational_target": 5.0,
+    "secondary": [
+      "hits_at_budget5",
+      "precision_at_budget5",
+      "recall_at_budget5",
+      "binary_ndcg_at_budget5",
+      "EF_true_top10_at_budget10",
+      "Rdual_Spearman",
+      "Rdual_MAE",
+      "five_fold_EF5",
+      "median_fold_EF5",
+      "worst_fold_EF5",
+      "parent_bootstrap_delta_EF5",
+      "contact_marginal_AUPRC",
+      "contact_pair_AUPRC",
+      "contact_Brier"
+    ],
+    "required_ablations": [
+      "hotspot_mask_shuffle",
+      "target_residue_permutation",
+      "8X6B_9E6Y_conformer_swap",
+      "contact_label_shuffle_within_fit_parents",
+      "non_contact_supervised_parent_C0052"
+    ]
+  },
+  "promotion_gate_draft_not_frozen": {
+    "pooled_ef5_strictly_above_baseline": true,
+    "pooled_ef5_target": 5.0,
+    "bootstrap_delta_ef5_95ci_lower_gt_zero": true,
+    "minimum_folds_with_ef5_delta_gte_minus_0p25": 4,
+    "minimum_allowed_single_fold_ef5_delta": -0.75,
+    "minimum_ef10": 2.5652,
+    "minimum_rdual_spearman": 0.5362,
+    "maximum_rdual_mae": 0.03985,
+    "threshold_relaxation_after_result_forbidden": true,
+    "bad_fold_or_seed_exclusion_forbidden": true
+  },
+  "phase_2_if_phase_1_promotes": {
+    "seeds": [
+      43,
+      917,
+      1931
+    ],
+    "bad_seed_exclusion_forbidden": true,
+    "ensemble": "mean_R8_and_mean_R9_then_exact_min",
+    "open_development_evaluation": "one_shot_after_model_prediction_and_gate_freeze",
+    "frozen_test": "remain_sealed"
+  },
+  "known_risks": [
+    "contact_and_scalar_targets_are_derived_from_the_same_computational_Docking_teacher",
+    "multi_seed_contact_availability_is_adaptively_acquired_and_not_random",
+    "v29_non_lab_pose_coordinates_are_not_mirrored_or_hash_closed",
+    "v29_lab_pose_coordinates_exist_but_are_not_yet_content_addressed_in_the_release",
+    "sparse_pair_tables_require_explicit_valid_universe_closure_before_zero_negative_generation",
+    "original_campaign_splits_must_not_override_current_canonical_whole_parent_folds",
+    "contact_loss_can_dominate_shared_encoder_without_gradient_calibration"
+  ]
+}

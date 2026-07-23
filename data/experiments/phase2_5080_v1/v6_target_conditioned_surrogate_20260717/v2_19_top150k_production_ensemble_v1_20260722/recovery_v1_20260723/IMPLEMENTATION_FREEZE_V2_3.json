@@ -1,0 +1,34 @@
+{
+  "change": "classify claim_boundary as provenance metadata and close producer receipt hashes",
+  "created_at_utc": "2026-07-22T17:34:01.756008+00:00",
+  "expected": {
+    "m2_features": 126,
+    "prediction_numeric_fields": 6,
+    "rows": 150000
+  },
+  "files": {
+    "M2_S0M2_RECOVERY_V2_2_VALIDATION_FAILURE.json": "e93af982b7d909124154186893ab5f1209fd18320b2873c11483689648e62299",
+    "TEST_VALIDATOR_V2_3.log": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658",
+    "publish_m2_s0m2_terminal_v2_3.sh": "da5ad147cfef8809ae5e18445cfaffe29e01a24daebd3cbacf46c5ea230c445b",
+    "test_validate_m2_s0m2_recovery_v2_3.py": "14ff4dbbeff64ff98cc713bfc8d6d22f1a6def36e4c03921b2fa1cfa4534426c",
+    "validate_m2_s0m2_recovery_v2_3.py": "591c1a71c8713029e1b1533c1eb360691193fe3a34b9a4c0bc7c111eaa12da17"
+  },
+  "prohibitions": [
+    "no M2 recomputation",
+    "no inference recomputation",
+    "no model or score changes",
+    "no threshold changes"
+  ],
+  "schema_version": "pvrig_top150k_m2_s0m2_terminal_validation_freeze_v2_3",
+  "scope": "terminal validation and publication only; reuses immutable completed 150K M2 and S0+M2 outputs",
+  "status": "FROZEN_BEFORE_V2_3_TERMINAL_VALIDATION",
+  "test": {
+    "log_sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658",
+    "status": "PASS",
+    "tests": 2
+  },
+  "truth_access": {
+    "candidate_docking_pose_files_opened": 0,
+    "teacher_labels_opened": 0
+  }
+}

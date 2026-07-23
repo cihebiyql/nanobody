@@ -1,0 +1,16 @@
+{
+  "activation_status": "WAITING_VALID_V2.20_SCIENTIFIC_TERMINAL",
+  "claim_boundary": "Protocol contract evidence only; no real/sealed label access, V2.21 model training, or scientific result.",
+  "created_at_utc": "2026-07-22T23:15:55.247434+00:00",
+  "files_sha256": {
+    "MASTER_METHOD_CONTRACT_DRAFT.json": "e3ae71de19a2878c9856411f7995db848c1ff42c23ef0b87fdf187e3e2e7bb01",
+    "PLAN_ZH.md": "e6664ba5289d27ac2481f5744224a3bd72417ad4c58eccf473dbd937de59c986",
+    "audits/PROTOCOL_V1_1_TEST_RESULTS.log": "397bc8817a84df8861f8da271d7633aeb86b92cd18db38c245713586d09546cb",
+    "src/protocol_v1_1.py": "b34d8d3d073a5dbd360bb5834132f25898b23b50491e26fe5c20d5b1092d2f24",
+    "tests/test_protocol_v1_1.py": "2cf3ed51632c2a081c81487fa9abeee9a2822b421a64d06f196a69468278ab7d"
+  },
+  "schema_version": "pvrig.v221.ef5_targeted.master_method.v1_1.preterminal_receipt",
+  "status": "PRETERMINAL_PROTOCOL_TESTED_NO_EXECUTION_AUTHORIZED",
+  "test_result": "41 tests OK",
+  "updated_at_utc": "2026-07-22T23:29:17.143160+00:00"
+}

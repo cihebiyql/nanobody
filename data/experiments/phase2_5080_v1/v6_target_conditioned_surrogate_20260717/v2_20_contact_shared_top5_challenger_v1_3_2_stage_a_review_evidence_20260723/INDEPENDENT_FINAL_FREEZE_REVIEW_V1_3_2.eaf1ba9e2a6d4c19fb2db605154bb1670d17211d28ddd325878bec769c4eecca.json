@@ -1,0 +1,79 @@
+{
+  "authorization": {
+    "arm_training_authorized": false,
+    "backward_authorized": false,
+    "finalizer_authorized": false,
+    "five_fold_materialize_load_only_authorized": false,
+    "node1_exact_102_plus_43_claim_authorized": false,
+    "node1_stage_a_deployment_authorized": false,
+    "optimizer_construction_authorized": false,
+    "training_authorized": false,
+    "training_started": false
+  },
+  "blocking_findings": [
+    {
+      "affected_tests": [
+        "FinalizationLifecycleTests.test_success_writes_only_launcher_and_false_started_authorization",
+        "FinalizationLifecycleTests.test_false_approval_rejected",
+        "FinalizationLifecycleTests.test_false_preflight_training_flag_rejected"
+      ],
+      "code": "FROZEN_TEST_SUITE_NOT_SELF_CONSISTENT_AFTER_FREEZE",
+      "consequence": "The mandatory exact V1.3.2 new-43 test gate cannot pass from the exact frozen package on Node1/Python3.11.14. Therefore an exact 102+43 PASS receipt is impossible for these bytes and Stage A cannot be approved.",
+      "deterministic_reproduction": {
+        "fixture_allowlist_length": 21,
+        "fixture_allowlist_unique": 19,
+        "fixture_duplicate_count": 2,
+        "production_freeze_already_present": true,
+        "production_sidecar_already_present": true
+      },
+      "evidence": "Running the exact frozen launchers/run_tests_v1_3_2.sh against the frozen package returns nonzero: Ran 43 tests; failures=2, errors=1.",
+      "root_cause": "FinalizationLifecycleTests.fixture copies ROOT after the production freeze and sidecar exist, includes both in implementation/package file enumeration, and then appends and overwrites the same two paths. The synthetic allowlist contains two duplicates and validate_package_closure fails with package_allowlist before the intended assertions.",
+      "severity": "BLOCKING"
+    }
+  ],
+  "claim_boundary": "Independent implementation/freeze review only. This rejection carries no model-quality, enrichment, binding, blocking, Kd, Docking Gold, Top7500, or production-promotion claim. No training occurred.",
+  "created_at": "2026-07-23T06:22:43+08:00",
+  "decision": "REJECT_WITH_BLOCKERS",
+  "evidence_hashes": {
+    "frozen_fixture_reproduction_log_sha256": "ad1fe54c7d40229f27ee56b649a1d62634507f5999408e0c329a1cb2f5106f9f",
+    "lifecycle_test_sha256": "a598db664194a774908213d05c2250057284990d09ceb814548affc3eb0909e6",
+    "local_exact_frozen_43_test_log_sha256": "2d8468e99d4e0e18bae36bdb36bfe4ef1520710759bce70b3e0931aa2d3cd8cb",
+    "run_tests_v1_3_2_sha256": "64c70a77848a12bfce51357ad9a286abc7ccf05a7b235b8d13976f9f815e2924",
+    "static_freeze_audit_log_sha256": "3a74f746793177ddcae1312b21a8809c08ac5b819d350768cb95a1fb6ebce97d",
+    "v1_3_1_core5_identity_tsv_sha256": "7f901c317db9c01c93cf6ee23cb43fb1443f56dfdc7d3d9603a800b569400b7d"
+  },
+  "implementation_freeze": {
+    "allowlisted_files": 19,
+    "extra_files": 0,
+    "hash_mismatches": 0,
+    "implementation_hashes_recomputed": 17,
+    "package_closure_passed": true,
+    "path": "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_2.json",
+    "sha256": "882f60a34a1d6efda3b26236d056cc4e301a53bce2abb86b6b9ef3086a11f2ab",
+    "sidecar_sha256": "656b023caf3d898f1259758181283570085a39733a3da2c4f8c505eef2d6a4a2",
+    "symlinks": 0
+  },
+  "package_path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_2_technical_recovery_20260723",
+  "positive_findings": {
+    "node1_exact_145_evidence_available_in_freeze": false,
+    "preflight_launcher_contains_arm_training_or_finalizer_invocation": false,
+    "scientific_core_five_files_byte_identical_to_v1_3_1": true,
+    "training_authorized_in_freeze": false,
+    "training_started_in_freeze": false
+  },
+  "required_successor_action": {
+    "minimal_repair": "Make the finalization test fixture construct its synthetic implementation allowlist independently of any already-present production freeze/sidecar, then add a regression that runs the exact test launcher from the fully frozen package.",
+    "new_version_required": "V1.3.3 or later",
+    "required_gates": [
+      "new immutable freeze and exact sidecar",
+      "fresh local post-freeze exact test run",
+      "fresh Node1 Python 3.11.14 exact legacy102 plus successor technical suite",
+      "separate independent Stage-A-only approval outside the frozen package",
+      "five-fold materialize/load-only with zero training"
+    ],
+    "same_version_edit_or_retry_allowed": false
+  },
+  "reviewer": "/root/v220_final_training_critic",
+  "schema_version": "pvrig.v220.v1_3_2_independent_final_freeze_review.v1",
+  "status": "REJECT_V220_V1_3_2_STAGE_A_PREFLIGHT_DEPLOYMENT_WITH_BLOCKERS"
+}

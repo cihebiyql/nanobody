@@ -1,0 +1,12 @@
+{
+  "schema_version": "pvrig_v2_19_top150k_production_ensemble_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_PRODUCTION_SCORING",
+  "source_manifest_sha256": "105bed3b7542a6f1b4d3bbf609101c7ed254be776ca2a3fdacc3c2cc695e88e0",
+  "preregistration_sha256": "b72794b7ffd2bbbdb16488ce18d7418937c13733ba46380ac34c760b51405f74",
+  "stage0_script_sha256": "88f05b81ed2f62b861b659792a6a8c79b7a72dd8846d4bb91cce39470e88367f",
+  "stage0_test_sha256": "f17092c8e67ed54080787444955c3503237a9e8808bed7a4cdc5d93af71dfce3",
+  "stage0_test_result": "2 tests; OK",
+  "runtime_root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722",
+  "immutable_output_policy": true,
+  "truth_access_allowed": false
+}

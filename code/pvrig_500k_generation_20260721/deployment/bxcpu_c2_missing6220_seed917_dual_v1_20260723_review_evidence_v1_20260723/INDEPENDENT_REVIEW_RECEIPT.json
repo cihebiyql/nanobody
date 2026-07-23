@@ -1,0 +1,108 @@
+{
+  "anchors": {
+    "deployment_receipt_sha256": "73488b245c7c02d1775be547b1e2ec0b651f49cd4fd5116540a475475f00ad9e",
+    "evidence_SHA256SUMS_sha256": "20fbb37a79419561103e5bbbbbbce3f421e68d4e706fe5aae037399861453105",
+    "package_SHA256SUMS_sha256": "1fab6235fdaf700c858cc6ba34af5501d21cc6fdf7fa894cf88794796fbc9927"
+  },
+  "authorization": {
+    "bxcpu_scheduler_submission": false,
+    "docking_started": false,
+    "docking_submission": false,
+    "immutable_no_submit_upload": true,
+    "independent_launch_approval_present": false,
+    "node1_handoff_seal": true,
+    "requires_new_post_anchor_review_before_submission": true
+  },
+  "claim_boundary": "Authorization ends after Node1 sealing and immutable no-submit upload. This receipt grants no scheduler, Docking, binding, affinity, or experimental-blocking claim.",
+  "created_at_utc": "2026-07-23T01:11:22.137392+00:00",
+  "decision_rationale": [
+    "Production counts and dual-receptor seed917 pair closure are hard-coded and fail closed.",
+    "The staging/upload script contains no scheduler submission command and does not call the submit script.",
+    "The separate submit script requires an external approval bound to exact frozen anchors, submit script, and worker script hashes.",
+    "The current placeholder anchors are rejected with exit code 65, so neither preflight nor launch can proceed prematurely.",
+    "Result pruning reuses the old 25k relay logic and occurs only after Node1 verifies the transferred archive hash and extracts successfully."
+  ],
+  "frozen_job_contract": {
+    "candidates": 6220,
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "jobs": 12440,
+    "jobs_per_candidate": 2,
+    "jobs_per_shard": 1555,
+    "overlap1280_reuse_authorized": false,
+    "seed": 917,
+    "shards": 8
+  },
+  "key_source_sha256": {
+    "DEPLOYMENT_RECEIPT.json": "73488b245c7c02d1775be547b1e2ec0b651f49cd4fd5116540a475475f00ad9e",
+    "SHA256SUMS": "1fab6235fdaf700c858cc6ba34af5501d21cc6fdf7fa894cf88794796fbc9927",
+    "bxcpu_c2_missing6220_eight_node_worker.sh": "9cbc3720c1800496c718967d319773d5ddc14676429504a0de9d3e9bd1e69bf5",
+    "compact_run_evidence.py": "bb26f9eb282df07ddc409928385d31e8c1869bbcda995c243ee39d552e974a0d",
+    "deployment_contract_v1.py": "62dc64ded7a703c3f4788c03dc615621006252c9c5b8da20b3e9913b1e2c0cc3",
+    "preflight_c2_missing6220_12440.sh": "749752ef433a90fee396c5c475557fcc5774cd56f9dfe6a70aaec2b83f8a2781",
+    "prepare_node1_bundle_v1.py": "d76411ffe84ddd944ce53012e8c05c56ccaf1a4d8cd19b392983c88af717d1a4",
+    "run_terminal_audit_v2.sh": "11bd30642820e97197655c5e38ab352c32e9803cd5c43b5f845ed9faf3e6e51b",
+    "stage_and_upload_no_submit_v1.sh": "3dbe0538957ef09b5d1968186cdb45362974fd6590ddeb6df1af2c148f23896b",
+    "start_c2_missing6220_results_sync_sharded.sh": "5c05ee27bf9b90ce98e939b33e29733435d592a70a4a30116f0d76475098a700",
+    "submit_c2_missing6220_12440_eight_nodes.sh": "ddb7d2e47445216120512b2e3258905a5bbe7d607d4aae24eae03a738e354234",
+    "sync_c2_missing6220_results_incremental.py": "51444d757c7c15e3187465d1c9a902d6fbbb95ecd1f7a9685a7ea7eca8d66fc6",
+    "technical_status_c2_missing6220_v2.py": "3fd173712be888dd0c958d654735fffa83cfd285e4a4de48c0c586a26e5b63cd",
+    "write_frozen_input_anchors_v1.py": "3f79939ee6fd38593185ecc822a24c43152775ca488c83390b8310d117f3ca3a"
+  },
+  "pending_production_anchors": [
+    "handoff_receipt_sha256",
+    "job_manifest_sha256",
+    "archive_sha256",
+    "archive_bytes",
+    "deployment_bundle_receipt_sha256",
+    "FROZEN_INPUT_ANCHORS.json",
+    "INDEPENDENT_LAUNCH_APPROVAL.json"
+  ],
+  "resource_contract": {
+    "array": "1-8%8",
+    "cores_per_docking_job": 4,
+    "cpus_per_task": 64,
+    "exclusive": true,
+    "memory": "230G",
+    "node_concurrency": 16,
+    "nodes_per_array_task": 1,
+    "partition": "amd_256q",
+    "walltime": "24:00:00"
+  },
+  "review_evidence_sha256": {
+    "BASH_N_RESULTS.log": "7d42976338fe6c596b47d365ffd7aadc6657d0a2a731eb6f6e8e32eba4d0dcd6",
+    "EVIDENCE_SHA256SUMS": "20fbb37a79419561103e5bbbbbbce3f421e68d4e706fe5aae037399861453105",
+    "FRESH_15_TESTS.log": "7f6bbab05e7eda390e7a5fd2c1cf20bed1aa0eb68196d22ee14b2b81bd895c36",
+    "PACKAGE_SHA256_CHECK.log": "ac165d796e998f8ac2e584e6a060709cff569ae0348f1fcf1efb31e76df7e03e",
+    "PENDING_PREFLIGHT.rc": "979b894f2d91bf199766571d58024f020d1a44a417da5f48e1fa1cdf554a14f5",
+    "PENDING_PREFLIGHT_STDERR.log": "2b6607b386e304ba7090f53318c7c0fd432346f62c9af2f20b04ac09d2886aa8",
+    "PENDING_PREFLIGHT_STDOUT.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "PY_COMPILE_RESULTS.log": "8543ee6ab16fc428056273e90b60063dff172399d711a0deb701ab38b16fd84b",
+    "STATIC_CONTRACT_CHECK.json": "a14f45a99713e8b6da7407616b26fc8794c6f6905bd83197db02b377b2ae678a"
+  },
+  "reviewed_package": "/mnt/d/work/\u6297\u4f53/code/pvrig_500k_generation_20260721/deployment/bxcpu_c2_missing6220_seed917_dual_v1_20260723",
+  "reviewer_scope": "Independent source/test/hash review; no remote execution and no Docking submission.",
+  "schema_version": "pvrig.c2_missing6220.bxcpu_independent_review_receipt.v1",
+  "status": "AUTHORIZED_NODE1_SEAL_AND_IMMUTABLE_NO_SUBMIT_UPLOAD_ONLY",
+  "technical_failure_semantics": {
+    "FAILED": "terminal technical NA, never biological negative",
+    "FAILED_MAX_ATTEMPTS": "terminal technical NA, never biological negative",
+    "RUNNING_MISSING_BAD_JSON": "non-terminal; fail closed",
+    "SUCCESS": "terminal success"
+  },
+  "verification": {
+    "bash_syntax": "PASS",
+    "compactor_exact_old_bytes": true,
+    "fresh_unittest_count": 15,
+    "fresh_unittests": "PASS",
+    "package_sha256_manifest": "PASS",
+    "pending_preflight_expected_rc": 65,
+    "pending_preflight_observed_rc": 65,
+    "pending_preflight_stderr": "sealed_input_anchors_missing",
+    "python_compile": "PASS",
+    "static_contract": "PASS",
+    "sync_old_logic_exact_after_campaign_substitution": true
+  }
+}

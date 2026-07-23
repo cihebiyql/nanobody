@@ -1,0 +1,48 @@
+{
+  "authorization": {
+    "deployment_authorized": false,
+    "independent_review_required": true,
+    "stage_a_authorized": false,
+    "training_authorized": false
+  },
+  "claim_boundary": "Technical regression and frozen-package verification only; no deployment, training, model-quality, Top5, binding, Kd, experimental-blocking, or Docking-Gold claim.",
+  "created_utc": "2026-07-23T00:35:02.028050+00:00",
+  "evidence_sha256": {
+    "BXCPU_POSTFREEZE_PYTHON31114_EXACT_148.log": "73ec8b535b01336d8bd20aa973921242080fbeef770da8dfe618b9133546b8ea",
+    "BXCPU_POSTFREEZE_PYTHON31114_EXACT_148.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "BXCPU_PYTHON31114_EXACT_148.log": "b3b20ec2349206e69c86dde4f5e13d3854bbc91c59bcd51e0a3821554c63a61d",
+    "BXCPU_PYTHON31114_EXACT_148.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "LOCAL_FROZEN_PACKAGE_SHA256SUMS": "7108a5a41b66b8493ccae780a22f892f4e409bb5a1e452287b35241a7459f132",
+    "LOCAL_FROZEN_PACKAGE_VALIDATION.txt": "cda1618a66d57ebce300308a41ecc30b422f6ae39ba0091d817fdd995ce11b07",
+    "LOCAL_NEW46_PYTHON310.log": "560d58997d434feb9f0b36c128e4af504982be31fe3ed2431a8f1414778716a9",
+    "LOCAL_NEW46_PYTHON310.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "LOCAL_REMOTE_PACKAGE_IDENTITY.txt": "60bb779add379c4e3c5887b3a15ee53f3904d18b6b4c5d547245a34c1617e4a3",
+    "PACKAGE_AFTER_SHA256SUMS": "fe42d54e44bf01f6ded6b3a9c45f48b2dcdab1f3e58934562e38b5f7828fd337",
+    "PACKAGE_BEFORE_SHA256SUMS": "fe42d54e44bf01f6ded6b3a9c45f48b2dcdab1f3e58934562e38b5f7828fd337",
+    "PACKAGE_UNCHANGED.txt": "60abfd17f29037f05e54e330518e2b1ec30cab9cd158086dd99dba113e7b3569",
+    "PYTHON_VERSION.txt": "8fa6fee68fb4ca8eda41d4db888f6a2a6b039d072f18375fa9df13d8912037d7",
+    "README_ZH.md": "7251700cad7a9a1ef98779a56b8d4ddb632eca4247a8cb26a3c743f668caabef"
+  },
+  "implementation_freeze_sha256": "07c8463689d6baa0da1ebd0c1d4440fc0315c8e8edb4e1b72415434567dc0804",
+  "package": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_5_technical_recovery_20260723",
+  "schema_version": "pvrig.v220.v1_3_5.python311_exact_tests_evidence.v1",
+  "status": "PASS_V1_3_5_EXACT_148_PENDING_INDEPENDENT_REVIEW",
+  "superseded_v1_3_4_failure_receipt_sha256": "8fd16547caf8b20a9d44331127d8a58808a3a41614538294d4bc44f21277a99e",
+  "verified": {
+    "bxcpu_combined_tests": 148,
+    "bxcpu_legacy_tests": 102,
+    "bxcpu_new_tests": 46,
+    "bxcpu_python_version": "Python 3.11.14",
+    "bxcpu_returncode": 0,
+    "data_model_split_loss_optimizer_threshold_hyperparameters_changed": false,
+    "deployment_started": false,
+    "legacy_launcher_bound_sha256": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+    "local_new_tests": 46,
+    "local_remote_package_identical": true,
+    "local_returncode": 0,
+    "postfreeze_package_bytes_unchanged": true,
+    "receipt_builder_real_cli_parse_build_regression": true,
+    "scientific_core_changed": false,
+    "training_started": false
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "authorization": {
+    "deployment_authorized": false,
+    "node1_preflight_via_bound_training_launcher_authorized": false,
+    "training_authorized": false
+  },
+  "claim_boundary": "Independent exact-byte review of the V1.3 pending final-training freeze and launcher only; no model-quality or scientific-performance claim.",
+  "created_date_local": "2026-07-23",
+  "evidence_bindings": {
+    "FINAL_TRAINING_FREEZE_PHASE1_V1_3_PENDING_REVIEW.json": "0405bddb450043f181b85081d0c85dde25a11523d8b1f82431a50bfe37646557",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3.json": "9468b6124b1bcd858b484e0a4ddfa4fe9ac595682d7697bee96be3d2f2f65819",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3.sh": "c6270e2a336df376354dd1ca917df29170a83b11fbdf75be730c1783d45dc39e"
+  },
+  "blocking_findings": [
+    {
+      "id": "B1_MATERIALIZATION_TERMINAL_PARENT_DIRECTORY_MISSING",
+      "severity": "BLOCKING",
+      "finding": "The launcher creates OUTPUT_ROOT/logs and OUTPUT_ROOT/shared_calibration, but not SHARED_DIR. Shell stdout redirection to SHARED_DIR/MATERIALIZATION_TERMINAL.json therefore fails before the materializer Python process can start.",
+      "launcher_lines": [
+        65,
+        67,
+        69,
+        82,
+        103
+      ],
+      "required_repair": "Atomically create the per-fold SHARED_DIR before redirection, then bind the repaired launcher in a new freeze. Prefer mkdir without -p for the per-fold directory so duplicate launch attempts fail closed."
+    },
+    {
+      "id": "B2_CONCURRENT_EXACT_ONCE_MATERIALIZATION_NOT_ENFORCED",
+      "severity": "BLOCKING",
+      "finding": "The shared artifact writer uses a check-then-write lifecycle followed by os.replace. Two concurrent processes for the same fold can both pass the absence check, both invoke the true calibrator, and then replace the same artifact, violating the frozen exactly-one true calibrator invocation contract.",
+      "required_repair": "Use an atomic per-fold reservation or lock before calibration, such as exclusive mkdir of SHARED_DIR, and add a concurrent duplicate-launch negative test."
+    },
+    {
+      "id": "B3_FINAL_TRAINING_AUTHORIZATION_NOT_RUNTIME_BOUND",
+      "severity": "BLOCKING",
+      "finding": "The launcher asserts that preregistration training_authorized is false, does not bind an independent approval or the required new Node1 combined-test and five-fold load-only preflight receipt, and then proceeds directly from materialization into arm training. This contradicts the pending final freeze requirement for a second final authorization before any arm training.",
+      "required_repair": "Separate preflight-only execution from training, produce the required immutable Node1 evidence, and bind an explicit final training authorization receipt in a newly frozen launcher before any of the ten arms can start."
+    }
+  ],
+  "reviewed_pass_items": [
+    "The implementation freeze SHA256 and all implementation hashes recorded inside it matched the reviewed bytes.",
+    "The materializer invokes the unchanged true calibrator exactly once in the non-concurrent reviewed code path and records optimizer_created=false, optimizer_steps=0, backward_called=false and training_started=false.",
+    "Each arm passes a SharedCalibrationReplay callback into the exact frozen V1.2 upstream runner; the arm wrapper contains no call to calibration.calibrate_contact_weight.",
+    "The exact frozen upstream runner applies marginal and pair contact weights as zero for C0 and as selected_lambda and 0.5 times selected_lambda for C1.",
+    "Both arm calibration outputs are required to hash to the same shared artifact SHA256, and the fold-pair terminal requires C0, C1 and shared calibration hashes to be equal.",
+    "The exact V1.2 upstream runner, seed-43 initial state, frozen ESM2 model, scalar contracts, teacher release, graph inputs, split behavior, architecture, losses, optimizer and production hyperparameters remain bound or reused unchanged.",
+    "No V1.2 checkpoint, epoch history, prediction, calibration receipt or partial training output is used as a V1.3 training input."
+  ],
+  "test_review": {
+    "fresh_local_result": "PASS",
+    "tests_run": 9,
+    "failures": 0,
+    "errors": 0,
+    "coverage_gap": "The nine tests validate the shared-artifact primitives and replay behavior, but the launcher receives only bash syntax validation. They do not execute a temporary-directory launcher smoke test and do not test concurrent duplicate materialization, so they did not detect B1 or B2."
+  },
+  "required_disposition": [
+    "Do not deploy launcher c6270e2a336df376354dd1ca917df29170a83b11fbdf75be730c1783d45dc39e.",
+    "Do not start V1.3 C0 or C1 training from final freeze 0405bddb450043f181b85081d0c85dde25a11523d8b1f82431a50bfe37646557.",
+    "Supersede the rejected final freeze with new exact bytes only after all three blockers and the stated test gaps are repaired.",
+    "Require a new independent review of the superseding final freeze."
+  ],
+  "review_status": "REJECT_FINAL_FREEZE_V1_3_BLOCKED_NO_DEPLOYMENT_NO_TRAINING",
+  "schema_version": "pvrig_v220_phase1_v1_3_independent_final_freeze_rejection_v1"
+}

@@ -1,0 +1,81 @@
+{
+  "archive_uploaded": false,
+  "claim_boundary": "Prepared and locally tested deployment/audit code only; no archive uploaded and no scheduler job submitted.",
+  "counts": {
+    "arrays": 8,
+    "candidates": 6220,
+    "jobs": 12440,
+    "jobs_per_array": 1555
+  },
+  "created_at_utc": "2026-07-23T00:15:57.727819+00:00",
+  "docking_started": false,
+  "frozen_protocol": {
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+    "seed": 917
+  },
+  "missing_required_production_anchors": [
+    "handoff_receipt_sha256",
+    "job_manifest_sha256",
+    "archive_sha256",
+    "archive_bytes",
+    "deployment_bundle_receipt_sha256",
+    "FROZEN_INPUT_ANCHORS.json",
+    "INDEPENDENT_LAUNCH_APPROVAL.json"
+  ],
+  "overlap1280_reuse_authorized": false,
+  "project": "pvrig_c2_only_missing6220_seed917_dual_handoff_v1_20260723",
+  "resources": {
+    "cores_per_docking_job": 4,
+    "cpus_per_task": 64,
+    "exclusive": true,
+    "memory": "230G",
+    "node_concurrency": 16,
+    "nodes_per_array_task": 1,
+    "partition": "amd_256q",
+    "walltime": "24:00:00"
+  },
+  "reuse_evidence": {
+    "exact_byte_identity": true,
+    "new_compact_run_evidence_sha256": "bb26f9eb282df07ddc409928385d31e8c1869bbcda995c243ee39d552e974a0d",
+    "old_compact_run_evidence_sha256": "bb26f9eb282df07ddc409928385d31e8c1869bbcda995c243ee39d552e974a0d"
+  },
+  "schema_version": "pvrig.c2_missing6220.bxcpu_deployment_package.v1",
+  "source_files_sha256": {
+    "PENDING_INPUT_ANCHORS.json": "3741a7300ad5ee6e52ad1c6fef2e7d6f9c78ed06917d8e55bf06f7eef0d92a64",
+    "PENDING_PREFLIGHT.rc": "979b894f2d91bf199766571d58024f020d1a44a417da5f48e1fa1cdf554a14f5",
+    "PENDING_PREFLIGHT_STDERR.log": "2b6607b386e304ba7090f53318c7c0fd432346f62c9af2f20b04ac09d2886aa8",
+    "PENDING_PREFLIGHT_STDOUT.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "PLAN_ZH.md": "d9ddfd7eeeebc174509adb2d219c0fbbe49c7f08424318a31cb6b1216eba150a",
+    "TEST_RESULTS.log": "59cf59f2ad1a6dcf0764685c27935510e32d3b61c210690f024b2741f67cbfdb",
+    "bxcpu_c2_missing6220_eight_node_worker.sh": "9cbc3720c1800496c718967d319773d5ddc14676429504a0de9d3e9bd1e69bf5",
+    "compact_run_evidence.py": "bb26f9eb282df07ddc409928385d31e8c1869bbcda995c243ee39d552e974a0d",
+    "deployment_contract_v1.py": "62dc64ded7a703c3f4788c03dc615621006252c9c5b8da20b3e9913b1e2c0cc3",
+    "preflight_c2_missing6220_12440.sh": "749752ef433a90fee396c5c475557fcc5774cd56f9dfe6a70aaec2b83f8a2781",
+    "prepare_node1_bundle_v1.py": "d76411ffe84ddd944ce53012e8c05c56ccaf1a4d8cd19b392983c88af717d1a4",
+    "run_terminal_audit_v2.sh": "11bd30642820e97197655c5e38ab352c32e9803cd5c43b5f845ed9faf3e6e51b",
+    "stage_and_upload_no_submit_v1.sh": "3dbe0538957ef09b5d1968186cdb45362974fd6590ddeb6df1af2c148f23896b",
+    "start_c2_missing6220_results_sync_sharded.sh": "5c05ee27bf9b90ce98e939b33e29733435d592a70a4a30116f0d76475098a700",
+    "submit_c2_missing6220_12440_eight_nodes.sh": "ddb7d2e47445216120512b2e3258905a5bbe7d607d4aae24eae03a738e354234",
+    "sync_c2_missing6220_results_incremental.py": "51444d757c7c15e3187465d1c9a902d6fbbb95ecd1f7a9685a7ea7eca8d66fc6",
+    "technical_status_c2_missing6220_v2.py": "3fd173712be888dd0c958d654735fffa83cfd285e4a4de48c0c586a26e5b63cd",
+    "test_deployment_contract_v1.py": "561bdc46e5746c1d2120b9f7f90214c4b613341b8752e69734f40302fbef1fef",
+    "test_prepare_node1_bundle_v1.py": "742d739e1ebe1cd5da101668972ee09df2391de66b674c20baf559ee8f035e89",
+    "test_static_deployment_v1.py": "471492e0a6017abc61960c647d47bd94be93ddaaaa2c11a7be2a0952fbdb3ed9",
+    "test_terminal_audit_v2.py": "5d7e6185beb10cb58af96b84079cf7cf33b538baaf69fb1796bd9ed9f2f1dd67",
+    "write_frozen_input_anchors_v1.py": "3f79939ee6fd38593185ecc822a24c43152775ca488c83390b8310d117f3ca3a"
+  },
+  "status": "PREPARED_TESTED_NOT_UPLOADED_NOT_SUBMITTED_WAITING_NODE1_HANDOFF_PASS",
+  "technical_failure_semantics": "FAILED and FAILED_MAX_ATTEMPTS are terminal technical NA, never biological negatives.",
+  "verification": {
+    "bash_syntax": "PASS",
+    "pending_preflight": "PASS_FAIL_CLOSED",
+    "pending_preflight_expected_rc": 65,
+    "python_compile": "PASS",
+    "synthetic_unittest_count": 15,
+    "synthetic_unittests": "PASS"
+  }
+}

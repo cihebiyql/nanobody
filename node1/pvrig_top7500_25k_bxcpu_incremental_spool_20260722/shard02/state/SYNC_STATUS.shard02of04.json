@@ -1,0 +1,16 @@
+{
+  "batch_size": 20,
+  "campaigns": [
+    {
+      "campaign": "top7500_25k",
+      "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+    }
+  ],
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard02",
+  "node1_root": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722",
+  "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+  "shard_count": 4,
+  "shard_index": 2,
+  "stable_age_seconds": 60,
+  "updated_at_utc": "2026-07-23T02:02:27.643358+00:00"
+}

@@ -1,0 +1,41 @@
+{
+  "created_at_utc": "2026-07-22T20:07:27.213216+00:00",
+  "external_dependencies": {
+    "generic_inference_module_sha256": "aca769af8c6cdd9c62facd7fa279de944357e61d003e8cd7befc39426074ff33",
+    "v213_base_module_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9"
+  },
+  "failure_policy": "Any byte drift invalidates this freeze. No remote launch is authorized by this artifact alone.",
+  "files": {
+    "PREREGISTRATION_V3.json": "66ca1a16eb551717c3c8853b5554b0f8cdc3558d1c3f95708235a32e798d0c8c",
+    "README_ZH.md": "3fef5e5e582ef024bfdf48a09b69427f4f2097e6bdb1c4e4653d4b17ca3faf13",
+    "TEST_RESULTS_V2_19_REGRESSION_VENV.log": "a6a881ec35848699376fe5a3f7653b4a3cfbfe1c7a34d3e1f4f0370ce1db9e09",
+    "TEST_RESULTS_V3.log": "7b968c869cd14f920ff617029db53d8270650a0f3210af0d172c239778fc8858",
+    "TEST_RESULTS_V3_VENV.log": "781c95ecd7e8baa11d3763fcc3b921099f506e611a2697d5f67b4ab711e24aaa",
+    "launchers/run_top150k_b_only_recovery_node1_v3.sh": "33bb3d469403062e3701100d1d433291b362e73ee7ecd01aa2bd4977403b6ce0",
+    "src/run_profiled_v211_b4_inference_v3.py": "c8284f98a9aa4066571fab0f4a323bd2cca826838c196e260d19a86d2be37e8e",
+    "src/validate_top150k_b_only_recovery_v3.py": "b19ff6287176d60f3be5238dd052e63f1177e156edd1499ede688c2b4ef466d3",
+    "tests/test_b_only_recovery_v3.py": "94039da9ca3b002c7afec77c7e014e8a88bf4013632b68f5048d9c05d72162c7"
+  },
+  "production_profile": {
+    "head_config_sha256": "75ee344219fa5c2c96fcad45bef758e60e6d34efb1921436fcd0c9f18ce2af3e",
+    "parameter_count": 1102764,
+    "seeds": [
+      43,
+      917,
+      1931,
+      3253
+    ],
+    "state_signature_sha256": "421030fba897bf1b3229be39630a9e1f83f7a3f159536a4b47c4df96f7068f34",
+    "tensor_count": 130
+  },
+  "schema_version": "pvrig_top150k_b_only_recovery_implementation_freeze_v3",
+  "scope": "Exact-profile V2.11 B4 schema compatibility recovery; reuse existing graph and L1; run B only; publish canonical terminal only after full validation.",
+  "status": "FROZEN_REVIEW_READY_NOT_REMOTE_EXECUTED",
+  "verification": {
+    "focused_tests": "20/20 PASS under system Python and phase2-5080 venv",
+    "python_compile": "PASS",
+    "remote_execution_started": false,
+    "shell_syntax": "PASS",
+    "v219_regression_tests": "28/28 PASS under phase2-5080 venv"
+  }
+}

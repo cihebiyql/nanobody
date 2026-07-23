@@ -1,0 +1,62 @@
+{
+  "authorization": {
+    "preflight_deployment_authorized": false,
+    "preflight_independent_review_required": true,
+    "training_authorized": false,
+    "training_requires_successful_stage_a_and_separate_independent_approval": true
+  },
+  "claim_boundary": "Frozen preflight-binding and receipt-builder CLI recovery only; not model quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production promotion.",
+  "created_date_local": "2026-07-23",
+  "frozen_scientific_method": {
+    "architecture_changed": false,
+    "data_changed": false,
+    "gates_changed": false,
+    "hyperparameters_changed": false,
+    "initial_state_changed": false,
+    "loss_changed": false,
+    "optimizer_changed": false,
+    "split_changed": false,
+    "v1_3_1_preregistration_sha256": "a5e66a98b155a7284740a22a4c08d765d69f259a1f31cc3a801c9bccc7539088"
+  },
+  "legacy_102_test_contract": {
+    "expected_count": 102,
+    "expected_top_level_test_files": 13,
+    "hash_each_test_file": true,
+    "invocation": "python HASH_BOUND_EXACT_FILE_RUNNER LEGACY_ROOT <exact thirteen tests/*.py relative paths> --verbosity 2",
+    "nested_discovery_allowed": false,
+    "python_bin": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "python_version": "Python 3.11.14",
+    "top_level_tests_package_import_allowed": false
+  },
+  "minimal_causal_change": {
+    "new": "V1.3.5 retains the exact V1.3.4 legacy launcher/loader bytes, binds the actual c3bae8a5... launcher SHA, and aligns --v1-3-5-test-log with args.v1_3_5_test_log; two new regressions exercise actual-file hash equality and the real CLI parse/build path.",
+    "old": "V1.3.4 froze the correct exact-file unittest adapter but its preflight bound a stale legacy-launcher SHA and the receipt builder parser exposed --v1-3-3-test-log while build() read args.v1_3_4_test_log.",
+    "scope": "preflight hash binding, receipt-builder CLI flag/destination, lifecycle version strings, regression tests, and hashes only"
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "open_development_or_frozen_prospective_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_or_rejected_v1_3_training_output_input": false
+  },
+  "preflight_contract": {
+    "combined_legacy_tests": 102,
+    "combined_tests": 148,
+    "folds": 5,
+    "new_v1_3_5_tests": 46,
+    "python311_exact_adapter_must_pass": true,
+    "training_code_path_allowed": false,
+    "training_started": false
+  },
+  "schema_version": "pvrig.v220.phase1_technical_recovery_v1_3_5.v1",
+  "status": "PREREGISTERED_V1_3_5_STAGE_A_ONLY_TRAINING_NOT_AUTHORIZED",
+  "superseded_v1_3_4": {
+    "failure": "Preflight bound stale legacy launcher SHA and receipt-builder CLI destination did not match build().",
+    "freeze_sha256": "b4d2352399d3f652bccf16f34069bafedba815c3edd553dbed2758add9dfb0d3",
+    "independent_failure_receipt_sha256": "8fd16547caf8b20a9d44331127d8a58808a3a41614538294d4bc44f21277a99e",
+    "same_version_edit_or_retry_allowed": false,
+    "training_artifact_count": 0,
+    "training_started": false
+  }
+}

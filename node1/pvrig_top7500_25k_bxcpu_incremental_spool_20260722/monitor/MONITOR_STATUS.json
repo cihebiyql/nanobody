@@ -1,0 +1,208 @@
+{
+  "alerts": [
+    "NODE1_CHECK_FAILED"
+  ],
+  "bxcpu": {
+    "archives_pending": 7611,
+    "bad_status_json": 0,
+    "queue": [
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_1",
+        "reason": "q2408",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_2",
+        "reason": "k1101",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_3",
+        "reason": "q2411",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_4",
+        "reason": "r2112",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_5",
+        "reason": "s2604",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_6",
+        "reason": "s2703",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_7",
+        "reason": "j1501",
+        "state": "RUNNING"
+      },
+      {
+        "elapsed": "10:05:00",
+        "job_id": "11942310_8",
+        "reason": "j1508",
+        "state": "RUNNING"
+      }
+    ],
+    "root_bytes": 7050563170,
+    "running_array_tasks": 8,
+    "status_counts": {
+      "FAILED": 13,
+      "SUCCESS": 20035
+    },
+    "stderr_summary": {
+      "known_jobacct_timeout_lines": 11,
+      "nonempty_files": [
+        {
+          "bytes": 132,
+          "file": "slurm-pvrig-top7500-25k-11942310_4.err",
+          "lines": 1
+        },
+        {
+          "bytes": 132,
+          "file": "slurm-pvrig-top7500-25k-11942310_7.err",
+          "lines": 1
+        },
+        {
+          "bytes": 1194,
+          "file": "slurm-pvrig-top7500-25k-11942310_8.err",
+          "lines": 9
+        }
+      ],
+      "unexpected_lines": []
+    }
+  },
+  "checked_at_utc": "2026-07-23T01:55:53.666185+00:00",
+  "node1": {
+    "error": "RuntimeError('command failed rc=255: /mnt/c/WINDOWS/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=20 node1 set -euo pipefail\\nR=/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k\\npython3 - \"$R\" <<\\'PY\\'\\nimport collections, json, pathlib, sys\\nr=pathlib.Path(sys.argv[1]); counts=collections.Counter(); bad=0\\nfor p in (r/\"status/jobs\").glob(\"*.json\"):\\n    try: counts[json.load(open(p)).get(\"status\", \"UNKNOWN\")]+=1\\n    except Exception: bad+=1\\nprint(json.dumps({\\n    \"status_counts\":dict(counts),\\n    \"bad_status_json\":bad,\\n    \"job_results\":len(list((r/\"results\").glob(\"*/job_result.json\"))),\\n    \"archives\":len(list((r/\"compressed_queue\").glob(\"*.tar.gz\"))),\\n    \"failed_evidence\":len(list((r/\"failed_evidence\").glob(\"*.tar.gz\"))),\\n    \"batch_receipts\":len(list((r/\"state/batches\").glob(\"*\"))),\\n}))\\nPY\\ndu -sb \"$R\" | awk \\'{print $1}\\'\\ndf -B1 --output=avail /data1 | tail -1\\n: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535')"
+  },
+  "progress": {
+    "failed": 13,
+    "failed_evidence": 0,
+    "last_progress_utc": "2026-07-23T01:55:53.666185+00:00",
+    "last_success_count": 20035,
+    "local_failed_evidence": 13,
+    "node1_archives": 0,
+    "pending_node1_delivery": 4,
+    "relay_lag": 20035,
+    "success": 20035,
+    "terminal": 20048
+  },
+  "relay": {
+    "all_sessions_running": true,
+    "shards": [
+      {
+        "index": 0,
+        "session_running": true,
+        "status": {
+          "batch_size": 20,
+          "campaigns": [
+            {
+              "campaign": "top7500_25k",
+              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+            }
+          ],
+          "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard00",
+          "node1_root": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722",
+          "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+          "shard_count": 4,
+          "shard_index": 0,
+          "stable_age_seconds": 60,
+          "updated_at_utc": "2026-07-23T01:54:53.500021+00:00"
+        },
+        "status_mtime_epoch": 1784771676.1373537
+      },
+      {
+        "index": 1,
+        "session_running": true,
+        "status": {
+          "batch_size": 20,
+          "campaigns": [
+            {
+              "campaign": "top7500_25k",
+              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+            }
+          ],
+          "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard01",
+          "node1_root": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722",
+          "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+          "shard_count": 4,
+          "shard_index": 1,
+          "stable_age_seconds": 60,
+          "updated_at_utc": "2026-07-23T01:54:53.532535+00:00"
+        },
+        "status_mtime_epoch": 1784771676.1742988
+      },
+      {
+        "index": 2,
+        "session_running": true,
+        "status": {
+          "batch_size": 20,
+          "campaigns": [
+            {
+              "campaign": "top7500_25k",
+              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+            }
+          ],
+          "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard02",
+          "node1_root": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722",
+          "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+          "shard_count": 4,
+          "shard_index": 2,
+          "stable_age_seconds": 60,
+          "updated_at_utc": "2026-07-23T01:55:12.010271+00:00"
+        },
+        "status_mtime_epoch": 1784771696.7049074
+      },
+      {
+        "index": 3,
+        "session_running": true,
+        "status": {
+          "batch_size": 20,
+          "campaigns": [
+            {
+              "campaign": "top7500_25k",
+              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+            }
+          ],
+          "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard03",
+          "node1_root": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722",
+          "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+          "shard_count": 4,
+          "shard_index": 3,
+          "stable_age_seconds": 60,
+          "updated_at_utc": "2026-07-23T01:55:08.703304+00:00"
+        },
+        "status_mtime_epoch": 1784771693.0298002
+      }
+    ]
+  },
+  "schema_version": "pvrig_top7500_live_health_v1",
+  "status": "ALERT",
+  "storage_projection": {
+    "average_bytes_per_archive": 0,
+    "final_reserve_bytes": 53687091200,
+    "free_space_drop_bytes_per_hour": 0,
+    "hours_until_projected_floor": null,
+    "node1_snapshot_current": false,
+    "projected_remaining_bytes": 0,
+    "projected_required_free_bytes": 53687091200,
+    "remaining_jobs_upper_bound": 4952
+  },
+  "target_jobs": 25000,
+  "warnings": [
+    "SLURM_JOBACCT_TIMEOUT_WARNINGS",
+    "TECHNICAL_FAILURES_PRESENT_AS_NA"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "created_at_utc": "2026-07-22T17:23:26.542631+00:00",
+  "equivalence_gate": {
+    "features": 126,
+    "max_abs_difference": 1e-08,
+    "must_pass_before_production": true,
+    "rows": 10644
+  },
+  "files": {
+    "M2_S0M2_RECOVERY_V2_1_FAILURE.json": "7e647ef6868a086359762a9c5c17fcabed4e00a3b133d95b2a39ce790aa12d1a",
+    "RECOVERY_PREREGISTRATION_V2.json": "6a2e7a83b95d0c245c98bcaf3db2731b71d75660967011b84c90e85ce9046e40",
+    "TEST_NORMALIZATION_V1.log": "b0c9daee06fa0f0a3571c112a11e960217022811894061f3bb37bc1c263b0147",
+    "normalize_m2_ca_monomers_v1.py": "0fce51d81a53f5e9729c924d117bc588dca1a75249c1915721e09e4cb19d84b1",
+    "run_m2_normalization_equivalence_v1.sh": "f3011686d98989246efb839ab84031aaf6c5afb2f140368185b8985098088878",
+    "run_m2_s0m2_recovery_v2_2.sh": "39eed0b8f73b147d130ac2d281be2d7729d231fe5759e758598904b9ffb87396",
+    "test_normalize_m2_ca_monomers_v1.py": "55f2bfb7eb738cbea0ebd7bbc18939117b44240e68ba43ca87d7050a438a6cb1",
+    "validate_m2_s0m2_recovery_v2.py": "6e74b63c773088bd7ceec02e0e0c64a3594ec135537e684f8df5b01d499b3d60"
+  },
+  "production_rows": 150000,
+  "schema_version": "pvrig_top150k_m2_s0m2_recovery_implementation_freeze_v2_2",
+  "semantic_contract": "Renumber NBB2 IMGT (resseq, insertion-code) CA records by file/sequence order to contiguous 1..L while preserving CA coordinates, B-factor confidence and CDR sequence-position ranges.",
+  "status": "FROZEN_BEFORE_FULL10644_EQUIVALENCE_AND_PRODUCTION",
+  "truth_access": {
+    "candidate_docking_pose_files_opened": 0,
+    "teacher_labels_opened": 0
+  }
+}

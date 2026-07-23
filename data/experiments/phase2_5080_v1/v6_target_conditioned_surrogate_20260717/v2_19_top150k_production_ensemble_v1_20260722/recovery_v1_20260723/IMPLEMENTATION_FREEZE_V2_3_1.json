@@ -1,0 +1,32 @@
+{
+  "created_at_utc": "2026-07-22T17:39:16.956293+00:00",
+  "expected": {
+    "m2_features": 126,
+    "prediction_numeric_fields": 6,
+    "rows": 150000
+  },
+  "files": {
+    "TEST_VALIDATOR_V2_3_1.log": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658",
+    "publish_m2_s0m2_terminal_v2_3_1.sh": "2551277dba80ecb9e19b0d229bfb42f8dbd08a55a821c08b9f286135bc645f92",
+    "test_validate_m2_s0m2_recovery_v2_3_1.py": "1ff72e64cc57804b447c1cde12499e5ae2a3709d8850893396d730414f4df5b7",
+    "validate_m2_s0m2_recovery_v2_3_1.py": "40e8de6cd11263bc7d1bd62bee5e8b05f31abe79a3aa2c9373dca32b97695b5f"
+  },
+  "preconditions": {
+    "four_model_terminal_absent": true,
+    "graph_terminal_absent": true,
+    "old_terminal_sha256": "436906f47411a7840b5f5db4580886de57b1c7a9246d4b07fbfc168f5d4ea8a1"
+  },
+  "reason": "independent review required fixed output hashes, exact training schema, and code self-check before terminal consumption",
+  "schema_version": "pvrig_top150k_m2_s0m2_terminal_validation_freeze_v2_3_1",
+  "scope": "stronger terminal validation only; no normalization, feature, inference, model, score, or threshold change",
+  "status": "FROZEN_BEFORE_V2_3_1_TERMINAL_SUPERSESSION",
+  "test": {
+    "log_sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658",
+    "status": "PASS",
+    "tests": 2
+  },
+  "truth_access": {
+    "candidate_docking_pose_files_opened": 0,
+    "teacher_labels_opened": 0
+  }
+}

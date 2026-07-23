@@ -1,0 +1,85 @@
+{
+  "authorization": {
+    "concrete_training_launcher_present_before_successful_preflight_and_approval": false,
+    "preflight_deployment_authorized": false,
+    "preflight_independent_review_required": true,
+    "training_authorized": false,
+    "training_requires_separate_final_authorization": true,
+    "unfinalized_template_must_exit": 86
+  },
+  "claim_boundary": "Minimal technical causal-pair calibration lifecycle recovery only; not model quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production promotion.",
+  "created_date_local": "2026-07-23",
+  "exact_once_contract": {
+    "artifact_overwrite_allowed": false,
+    "artifact_parent_must_equal_lock_directory": true,
+    "direct_materializer_invocation_without_helper_context": "fail before calibrator",
+    "failed_materialization_retry_same_version": false,
+    "helper_created_lock_receipt_and_environment_required_by_materializer": true,
+    "helper_hash_bound_by_preflight_and_final_training_launcher": true,
+    "lock": "atomic mkdir of the fold-specific shared directory",
+    "lock_directory_fold_binding_required": true,
+    "materializer_calls_per_fold": 1,
+    "second_or_concurrent_same_fold_launch": "fail before materializer invocation"
+  },
+  "frozen_calibration_contract": {
+    "contact_batches": 8,
+    "lambda_grid": [
+      0.00015625,
+      0.0003125,
+      0.000625,
+      0.00125,
+      0.0025
+    ],
+    "lambda_selection": "choose smallest median shared-gradient ratio in [0.05,0.15], otherwise closest to 0.10",
+    "maximum_severe_conflict_batches": 2,
+    "pair_loss_coefficient": 0.5,
+    "severe_conflict_cosine_lt": -0.5,
+    "target_median_ratio": 0.1
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "data_split_initialization_architecture_loss_hyperparameters_and_gates_unchanged": true,
+    "open_development_or_frozen_prospective_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_or_rejected_v1_3_training_output_input": false
+  },
+  "preflight_contract": {
+    "combined_legacy_tests": 102,
+    "combined_tests": 134,
+    "five_fold_materialize_and_load_only_are_separate_processes": true,
+    "folds": 5,
+    "load_only_receipt_and_training_output_must_be_disjoint": true,
+    "new_v1_3_1_tests": 32,
+    "per_fold": [
+      "separate-process shared calibration materialization",
+      "separate-process load-only validation for C0 and C1 labels",
+      "same artifact SHA256 for both labels",
+      "optimizer_created=false",
+      "optimizer_steps=0",
+      "backward_called=false",
+      "training_started=false"
+    ],
+    "training_code_path_allowed": false,
+    "training_output_rechecked_absent_after_receipt_write": true
+  },
+  "runs_after_final_authorization": {
+    "arms": [
+      "C0",
+      "C1"
+    ],
+    "epochs_per_arm": 8,
+    "folds": 5,
+    "seed": 43,
+    "total_fresh_training_runs": 10
+  },
+  "runtime_dynamic_module_bindings": {
+    "binding_scope": "launcher runtime checks plus artifact frozen_bindings plus arm/load-only validation",
+    "calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953"
+  },
+  "schema_version": "pvrig_v220_phase1_technical_recovery_v1_3_1",
+  "status": "FROZEN_V1_3_1_PROTOCOL_PREFLIGHT_ONLY_TRAINING_NOT_AUTHORIZED",
+  "supersession_record": "V1_3_REJECTION_AND_V1_3_1_SUPERSESSION.json"
+}

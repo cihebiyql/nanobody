@@ -1,0 +1,23 @@
+{
+  "schema_version": "pvrig_v2_19_c2_top30k_refinement_implementation_freeze_v1",
+  "status": "FROZEN_BEFORE_C2_TOP30K_SCORING",
+  "preregistration_sha256": "bcdf59054002eeaef2a9b6cfaac895a40d19b2bd2027c4ac02c93c260552fc8d",
+  "implementation_sha256": {
+    "build_top30k_c2_shards_v1.py": "6017001d63b8c6464f4f0bbfb919ee9897586637f470b6041f0c6483f512cdb7",
+    "merge_top30k_c2_features_v1.py": "49e746031412f2da969a54b24017d9cc6b903e1dbf64374625600ca6ec652f2e",
+    "run_top30k_v2_11_c2_adapter_v1.py": "a263568b2372ca0a34f017bce493cc2ae68e3ff8d6e47361fab8acb1d7b735aa",
+    "select_top7500_c2_refined_v1.py": "764c2e3e393598f535f8dc9d2bbb63baa6928b296aabed9406385d9c91988389",
+    "test_c2_top30k_refinement_v1.py": "d798b8079b9ecf56f80ee28ec52c371dd4f1a77ad43097fada1b515869a170ac",
+    "run_c2_top30k_refinement_watcher_node1_v1.sh": "c4b1d8b15589586e13b5e54e4ccb759531be6a0d743ae583964db351d028fb9c"
+  },
+  "frozen_external_assets": {
+    "coarse_pose_features_v1.py": "a87cda436379e768755f05aa0006c7a7dae8dd445a08b75339fc5a2bd0dfa591",
+    "v2_19_multimodal_adapter": "e85730c752bc32602074d0171fd16c649cb26b34987917e9dd40ec14bdd69e4e",
+    "v2_11_model_artifact": "02f71b30e70a3afe326d1a6f9b8fffb5c05fb1249a9c75ac8887b3ffadf5395d",
+    "target_graph_cache": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108",
+    "target_8x6b": "03af8f415847b8b6b246e787ec1e8d3cae4f024aa7bff6393ca344e0d7b02bcd",
+    "target_9e6y": "a65a26f0a50c36765f29930cd425a566028d216864ce5d835595e6db5b3e334a"
+  },
+  "local_tests": "3 tests, OK",
+  "claim_boundary": "Label-free computational Docking-geometry surrogate only."
+}

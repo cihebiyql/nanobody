@@ -1,0 +1,49 @@
+{
+  "schema_version": "pvrig_v2_19_top150k_production_ensemble_preregistration_v1",
+  "status": "FROZEN_BEFORE_SURROGATE_SCORING",
+  "date": "2026-07-22",
+  "claim_boundary": "Label-free approximation of independent dual-receptor computational Docking geometry only; not binding, affinity, experimental blocking, calibrated probability, Docking Gold, or final submission evidence.",
+  "source": {
+    "manifest": "/data/qlyu/projects/pvrig_1m_fixed_pose_top150k_multimetric_v2_20260722/fixed_pose_top150k_multimetric.tsv.gz",
+    "manifest_sha256": "105bed3b7542a6f1b4d3bbf609101c7ed254be776ca2a3fdacc3c2cc695e88e0",
+    "rows": 150000,
+    "parents": 9,
+    "pdb_archives": 32,
+    "pdb_hash_closed_rows": 150000
+  },
+  "runtime_root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722",
+  "primary_target": "R_dual_exact_min",
+  "base_models": {
+    "L1_clean_attention_5fold": 0.50,
+    "M2_monomer_126d": 0.20,
+    "S0_esm2_650m": 0.15,
+    "B_clean_attention_4seed": 0.15
+  },
+  "stage1_pool": {
+    "fraction": 0.20,
+    "rows": 30000,
+    "additional_model": "C2_dual_target_coarse_pose"
+  },
+  "final_selection": {
+    "rows": 7500,
+    "fraction": 0.05,
+    "quotas": {
+      "consensus_exploitation": 6750,
+      "target_model_rescue": 500,
+      "diversity_disagreement": 250
+    }
+  },
+  "forbidden_inputs": [
+    "Docking truth for any of the 150000 candidates",
+    "experimental binding or blocking labels",
+    "sealed/frozen prospective truth",
+    "candidate-specific manual score changes"
+  ],
+  "uncertainty_outputs": [
+    "L1_fold_std",
+    "B_seed_std",
+    "base_model_rank_spread",
+    "model_support_count",
+    "high_confidence_core_flag"
+  ]
+}

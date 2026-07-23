@@ -1,0 +1,22 @@
+{
+  "claim_boundary": "Watcher transport/lifecycle recovery only; no change to frozen scientific package and no training authorization.",
+  "created_utc": "2026-07-23T01:10:00Z",
+  "status": "REJECT_V1_WATCHER_SUPERSEDED_BY_V2_BEFORE_REMOTE_ACTION",
+  "supersession_reasons": [
+    "V1 could exit after an SSH disconnect following remote tmux creation and lacked a deterministic adoption state machine.",
+    "V1 treated launcher rc=0 plus an unvalidated cat of the receipt as PASS; it did not verify the sidecar, content-addressed copy, schema, tests, folds, or no-training fields."
+  ],
+  "training_authorized": false,
+  "training_started": false,
+  "v1_deployment_receipt_sha256": "4d748c1666e26572b47bf61a815258d760d59f403ebc15dc8c2e7e63d98f319c",
+  "v1_local_tmux_stopped_before_v2_implementation": true,
+  "v1_monitor_sha256": "6c93cc4ef8a3edfe917cbd969944df92698c4e21627c73f2e14ce9513d7acb4c",
+  "v1_remote_action_started": false,
+  "v2_required_repairs": {
+    "atomic_remote_staging_then_rename": true,
+    "disconnect_recovery_and_exact_session_adoption": true,
+    "fail_closed_ambiguous_remote_state": true,
+    "local_receipt_schema_and_no_training_validation": true,
+    "remote_regular_non_symlink_artifact_proof": true
+  }
+}

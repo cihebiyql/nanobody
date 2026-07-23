@@ -1,0 +1,14 @@
+{
+  "schema_version": "pvrig_top7500_subagent_patrol_v1",
+  "agent_id": "019f8c52-f887-77b1-abb4-ff02a01e5933",
+  "nickname": "Aristotle",
+  "agent_type": "explore",
+  "interval_seconds": 1800,
+  "started_at_utc": "2026-07-23T00:14:46.692044+00:00",
+  "scope": "read_only_health_patrol_until_final_audit",
+  "continuation_submission_id": "019f8c53-ae67-7b71-8545-022c0b441fac",
+  "state": "RUNNING_30MIN_LOOP",
+  "last_baseline_success": 16707,
+  "last_baseline_failed": 11,
+  "updated_at_utc": "2026-07-23T00:15:28.958924+00:00"
+}

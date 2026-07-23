@@ -1,0 +1,9 @@
+{
+  "canonical_outputs_created": 0,
+  "created_at_utc": "2026-07-22T17:23:26.529111+00:00",
+  "executed_freeze_sha256": "d00d1b19367d78a9e3d96ae63fe6247bc1b4cde25b482db6b4dc0068d8a571c8",
+  "reason": "Frozen legacy M2 extractor rejects IMGT insertion codes in NBB2 monomers. It stopped during feature extraction before creating canonical M2 or prediction outputs.",
+  "replacement": "CA-only sequence-order renumbering validated against all 10,644 legacy training examples before production.",
+  "schema_version": "pvrig_top150k_m2_s0m2_recovery_v2_1_failure",
+  "status": "FAIL_M2_INSERTION_CODE_INCOMPATIBILITY"
+}

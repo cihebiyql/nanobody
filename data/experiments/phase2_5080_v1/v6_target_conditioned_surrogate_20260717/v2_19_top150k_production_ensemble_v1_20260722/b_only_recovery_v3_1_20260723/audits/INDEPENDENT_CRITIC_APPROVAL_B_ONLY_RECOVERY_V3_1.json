@@ -1,0 +1,55 @@
+{
+  "claim_boundary": "Computational dual-receptor Docking-geometry surrogate evidence only; not binding probability, affinity, experimental blocking, Docking Gold, expression, purity, or final submission evidence.",
+  "created_at_utc": "2026-07-22T20:21:27.334575+00:00",
+  "failure_boundary": [
+    "Any change to the reviewed freeze, any reviewed file, either external dependency, checkpoint/result bytes, Graph/L1 inputs, schema profile, score/rank logic, thresholds, or publication gates invalidates this approval.",
+    "This approval does not authorize L1 recomputation, training, truth/teacher/Docking/contact access, downstream C2 reranking, Top7500 publication, or production promotion beyond the canonical Graph/L1/B terminal.",
+    "Partial B output or any failed gate must not publish the canonical terminal."
+  ],
+  "reviewed_external_dependency_hashes": {
+    "generic_inference_module_sha256": "aca769af8c6cdd9c62facd7fa279de944357e61d003e8cd7befc39426074ff33",
+    "v213_base_module_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9"
+  },
+  "reviewed_file_hashes": {
+    "PREREGISTRATION_V3_1.json": "cbd5843d1786433e01ec9077341592bfbb1ba9bf4ba48e14117f6982d1de3c0f",
+    "README_ZH.md": "0f678e103f0a2e5272e4dff638d8251d47028aeadd8f9e2235bbb0cd542f6a51",
+    "TEST_RESULTS_V2_19_REGRESSION_V3_1_VENV.log": "6645ae5d35f84ff6fb1c3d7dedb02ec9aa84de5cf514f48e59425f135761769d",
+    "TEST_RESULTS_V3_1.log": "9a7ea035d1751df7b41121203865011d44aeaa7ace52b8cc07d43ac39ec24536",
+    "TEST_RESULTS_V3_1_VENV.log": "64d00d6d0aaab0f90308702e920f1bbaa524be4dc4cc367d7a9a8e80aed7b5bc",
+    "launchers/run_top150k_b_only_recovery_node1_v3_1.sh": "905ac819471fbb0a8eb8cc2987f7ea5ee8e562436a7d590c68269fb0616db399",
+    "src/run_profiled_v211_b4_inference_v3_1.py": "ca492d726db02b67247e76029239d809477729a88d9a2ddae167965b276c4a0a",
+    "src/validate_top150k_b_only_recovery_v3_1.py": "b6b862ffd09d07a7fa9fe1eae784553306bc8a8c838103ccf193f40dd80ec30c",
+    "tests/test_b_only_recovery_v3_1.py": "e2e7e36eb17d9407b946dc93b3e3764d8f9bdbc94978ea93165d0bb024ee2dc9"
+  },
+  "reviewed_freeze": {
+    "freeze_status": "FROZEN_REVIEW_READY_NOT_REMOTE_EXECUTED",
+    "path": "IMPLEMENTATION_FREEZE_V3_1.json",
+    "sha256": "6136f7596bb1ef37f065c03cccd0b63ae7d8cd52c1d00ff04ac75c26bb36ddd0"
+  },
+  "reviewer": "independent Codex native critic /root/v220_final_training_critic",
+  "schema_version": "pvrig_top150k_b_only_recovery_independent_critic_approval_v3_1",
+  "scope": "Approve remote execution of the exact frozen Top150K V3.1 B-only four-seed inference recovery and terminal validation/publication only.",
+  "status": "APPROVE_EXACT_FROZEN_BYTES_FOR_TOP150K_B_ONLY_RECOVERY_V3_1",
+  "test_evidence": {
+    "extra_truth_or_numeric_header_fail_test": true,
+    "focused_phase2_5080_venv": "23/23 PASS (frozen log)",
+    "focused_system_python": "23/23 PASS (frozen log)",
+    "fresh_independent_phase2_5080_venv": "23/23 PASS",
+    "graph_cache_mutation_fail_test": true,
+    "graph_manifest_mutation_fail_test": true,
+    "launcher_shell_syntax": "PASS",
+    "v2_19_regression_phase2_5080_venv": "28/28 PASS (frozen log)"
+  },
+  "verified_closures": {
+    "b_only_execution": "Existing Graph and L1 are reused byte-exactly; launcher invokes only four-seed B inference and does not invoke L1 inference or training.",
+    "checkpoint_profile": "Exactly seeds 43, 917, 1931, 3253 with frozen checkpoint/result hashes, schema, lane, split, BASE variant, head config, state signature, tensor count, parameter count, frozen-test=0, and contact-disabled profile.",
+    "graph_preflight_to_publish": "graph_cache_receipt_v2.json, graph_cache_v2.npz, and graph_manifest_v2.tsv are regular non-symlink files; cache and manifest SHA256 must match receipt.outputs at preflight and publish; all three preflight hashes must remain byte-identical.",
+    "input_access_firewall": "No teacher, truth, Docking pose, contact supervision, candidate ID, or parent ID is forwarded as a model input.",
+    "numeric_and_geometry": "All prediction numeric fields are finite; each checkpoint R_dual_min and ensemble exact-min are definitionally closed.",
+    "old_failure_evidence": "The prior V2 schema rejection log is required and byte-bound before B; its bytes must remain unchanged through publish.",
+    "prediction_header": "The ordered prediction header must exactly equal the frozen checkpoint-count-specific header; extra truth, label, or numeric columns are rejected.",
+    "prediction_rows": "Exactly 150000 rows; manifest and prediction candidate_id, sequence_sha256, sequence, parent_framework_cluster, and order are identical.",
+    "publication": "All gates run before publication; versioned and canonical terminal writes are atomic per file and refuse existing targets; failure leaves canonical terminal absent.",
+    "schema_allowlist": "The V2.11 schema is added only after exact four-checkpoint/result profile validation and is restored in finally."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "audit_v2_job_id": "11942669",
+  "claim_boundary": "Audit-only recovery. No frozen Docking jobs were changed or resubmitted.",
+  "created_at_utc": "2026-07-22T23:08:08.543289+00:00",
+  "dependency": "afterany:11942310_*",
+  "files_sha256": {
+    "README_ZH.md": "043e649db5718d7baa9bcb881adee94e296e80c5586c0581d49087553f60157c",
+    "SHA256SUMS": "6406bf6a8e2d33c22371ca3d61961b2ff67cff367876023b1c1d3b66ac267559",
+    "run_terminal_audit_v2.sh": "25cc0e372b302f7111dd5626582620a44b36eda017bfe893c78e548f36ba151c",
+    "technical_status_top7500_25k_v2.py": "86c3514344fc637ae0926dddd19dd40fd863df858008969143825c6f02288033",
+    "test_technical_status_top7500_25k_v2.py": "5561dfe567e4dab27b63b021cd5fa8f4c3318be19c109bd5a9a67c1677184444"
+  },
+  "old_campaign_array_job_id": "11942310",
+  "output": "/publicfs04/fs04-al/home/als001821/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722_bxcpu_results/reports_v2/TECHNICAL_COMPLETION_V2.json",
+  "remote_code_root": "/publicfs04/fs04-al/home/als001821/.local/share/bxcpu_top7500_25k_terminal_audit_v2_20260723",
+  "remote_tests": "4 tests OK with haddock3 Python 3.11.14",
+  "schema_version": "pvrig_top7500_25k_terminal_audit_v2_deployment_receipt_v1",
+  "status": "DEPLOYED_PENDING_DEPENDENCY"
+}

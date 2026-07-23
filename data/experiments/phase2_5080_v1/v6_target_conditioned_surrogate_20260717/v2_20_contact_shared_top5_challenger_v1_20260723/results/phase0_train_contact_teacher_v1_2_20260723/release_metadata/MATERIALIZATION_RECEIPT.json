@@ -1,0 +1,137 @@
+{
+  "access_boundary": {
+    "allowlist_frozen_before_first_pose": true,
+    "development_pose_files_stat_hashed_opened": 0,
+    "development_pose_paths_resolved": 0,
+    "event_order_prefix": [
+      "split_manifest_open",
+      "metadata_open:scalar_teacher",
+      "train_allowlist_frozen"
+    ],
+    "forbidden_pose_attempt_count": 0,
+    "forbidden_pose_attempts": [],
+    "frozen_test_pose_files_stat_hashed_opened": 0,
+    "frozen_test_pose_paths_resolved": 0,
+    "metadata_opens": {
+      "phase0_contract": 1,
+      "scalar_teacher": 1,
+      "stream:v29_job_results": 1,
+      "stream:v29_weaklabels": 1,
+      "stream:v4d_marginal": 1,
+      "stream:v4d_pair": 1,
+      "stream:v4h_marginal": 1,
+      "stream:v4h_pair": 1,
+      "stream:v4h_state": 1,
+      "target_cache": 1,
+      "target_manifest": 1,
+      "target_receipt": 1,
+      "v29_job_results": 1,
+      "v29_release_receipt": 1,
+      "v29_weaklabels": 1,
+      "v4d_marginal": 1,
+      "v4d_pair": 1,
+      "v4d_receipt": 1,
+      "v4h_marginal": 1,
+      "v4h_pair": 1,
+      "v4h_receipt": 1,
+      "v4h_state": 1
+    },
+    "nonallowlisted_source_rows_skipped_before_numeric_payload_parse": {
+      "v29_job_results": 7650,
+      "v29_weaklabels": 3062,
+      "v4d_marginal": 27348,
+      "v4d_pair": 64058,
+      "v4h_marginal": 237386,
+      "v4h_pair": 351769,
+      "v4h_state": 151
+    },
+    "pose_access_inventory_sha256": "f0dd74126da7f0f67c81d1900d211e30f85d4d4ae857eb503aaaef966d569883",
+    "quarantine_pose_files_stat_hashed_opened": 0,
+    "quarantine_pose_paths_resolved": 0,
+    "schema_version": "pvrig_v2_20_phase0_train_only_contact_teacher_v1_2_access_audit",
+    "split_manifest_opened_first": true,
+    "status": "PASS_SPLIT_BEFORE_ACCESS_TRAIN_ONLY",
+    "train_pose_candidates_opened": 305,
+    "train_pose_files_opened": 10396,
+    "unknown_pose_files_stat_hashed_opened": 0
+  },
+  "claim_boundary": "Train-only residue-contact weak supervision derived from computational independent 8X6B/9E6Y Docking poses; not binding, affinity, experimental blocking, Docking Gold, or OOF model evidence.",
+  "counts": {
+    "candidate_receptor_groups": 1476,
+    "candidates": 738,
+    "dense_marginal_rows": 183102,
+    "development_candidates_emitted": 0,
+    "parents": 53,
+    "single_seed_candidates_emitted": 0,
+    "source_candidates": {
+      "V29": 305,
+      "V4D": 113,
+      "V4H": 320
+    },
+    "sparse_pair_rows": 403353,
+    "target_node_contract_rows": 211,
+    "technical_failed_seed_zero_imputations": 0,
+    "v29_train_pose_files": 10396
+  },
+  "gradient_calibration_future_contract": {
+    "g_contact": "gradient_shared(L_marginal + 0.5*L_pair) before lambda scaling",
+    "phase0_gradient_computations": 0
+  },
+  "implementation": {
+    "freeze_status": "FROZEN_PHASE0_TEACHER_MATERIALIZATION_ONLY_OOF_TRAINING_NOT_AUTHORIZED",
+    "implementation_freeze_sha256": "5b9be7f579c1b9432ea9e7efa47f504a0d7d392003bc72b1f7bdabded696b4a5",
+    "materializer_path": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/src/materialize_v220_train_contact_teacher_v1_2.py",
+    "materializer_sha256": "44bb0727620a929524b3a8ef3c68791313554fa7158bdf1619e20fc1b66b43c0",
+    "phase0_contract_sha256": "4a1a522799fd91cf25a26f590b01a613291d9f53b04171c8c62c0b856a71319b"
+  },
+  "inputs": {
+    "hashes": {
+      "scalar_teacher": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+      "split_manifest": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed",
+      "target_cache": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108",
+      "target_manifest": "c78c30beb4ad668e28f8bfe17872b9712e92fd5871748718a70714a5d5f0ce9d",
+      "target_receipt": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9",
+      "v29_job_results": "4d3a8c858de78683345c7bd7f3e9f06f801d55ce6953c776f22debbc84b9fd3c",
+      "v29_release_receipt": "2f5f9622802262ce67749ea0436653200e6dfbd077920b61c52b511fb63db8c6",
+      "v29_weaklabels": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4",
+      "v4d_marginal": "1f5906df603fdbaea166c992c93bb4ff1b95c22cccff80739cedbc892a6c6e8e",
+      "v4d_pair": "39b600e6979e72ef89237070b36a1f7afaecb4be5be4735d1650d55cd17811a8",
+      "v4d_receipt": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f",
+      "v4h_marginal": "7b79b07b7b052e518293ec98c5f4b5a79e4f5f0710950ae219a4205a8aff5a7f",
+      "v4h_pair": "9d27d2297822e978fe969bb645fee97a76ede544de902f6dfe6051c88a33ec92",
+      "v4h_receipt": "ef245ace9c7e2f8c6dbe15893c67689084d00e7720a1855fb88f900fe29b79be",
+      "v4h_state": "47fc2eb0ee6bae43369bf774d47c490874ceb6dbe04f0fbaece95cd61c8d33e5"
+    }
+  },
+  "oof_training_authorized": false,
+  "output_row_counts": {
+    "target_node_position_baseline_contract.tsv": 211,
+    "train_candidate_receptor_group_audit.tsv.gz": 1476,
+    "train_contact_candidate_manifest.tsv": 738,
+    "train_dense_marginal_contact_teacher.tsv.gz": 183102,
+    "train_sparse_pair_contact_teacher.tsv.gz": 403353,
+    "v29_train_pose_sha256_manifest.tsv.gz": 10396
+  },
+  "outputs": {
+    "ACCESS_AUDIT.json": "39df03a86e55a4b910db74aaa49689c8bf68065c68c0ca90aa3811526daf939d",
+    "target_node_position_baseline_contract.tsv": "b3d128e1e53ca0d416f1522069801d2dcf74069388c6710a3d586f275e86baed",
+    "train_candidate_receptor_group_audit.tsv.gz": "315e1dd1fc2966c74c968255cd6d8637208bef026fb07b11eb0f3124ed7ce09d",
+    "train_contact_candidate_manifest.tsv": "78121b854e3dfe5d9bcebafb846f65ce6996b7c39159d2abeca2e2c88775284e",
+    "train_dense_marginal_contact_teacher.tsv.gz": "f28e0f524d61448a2ed72b24ce488dff2a769907399ceda0e12378ceb7ef69cc",
+    "train_sparse_pair_contact_teacher.tsv.gz": "817bf4518d0a9a0281a312c9de24b5e85df2648f987a1ecb7ab0f0c5742ade92",
+    "v29_train_pose_sha256_manifest.tsv.gz": "d116dc6f1af34e5cf1abbcc59ea0c0b5061f0103de9f3b9ed1495531f7d93eb0"
+  },
+  "schema_version": "pvrig_v2_20_phase0_train_only_contact_teacher_v1_2_receipt",
+  "split_audit": {
+    "score_identity_rows_seen_without_numeric_parse": 795,
+    "train_parents": 54,
+    "train_rows": 9849
+  },
+  "status": "PASS_TRAIN_ONLY_738_CONTACT_TEACHER_MATERIALIZED_V1_2",
+  "target_node_position_baseline_contract": {
+    "fit_scope": "outer_fit_parents_only",
+    "marginal_key": "receptor|vhh_region|vhh_sequence_index",
+    "pair_key": "receptor|vhh_region|vhh_sequence_index|pvrig_node_index",
+    "score_or_development_labels_used": false
+  }
+}

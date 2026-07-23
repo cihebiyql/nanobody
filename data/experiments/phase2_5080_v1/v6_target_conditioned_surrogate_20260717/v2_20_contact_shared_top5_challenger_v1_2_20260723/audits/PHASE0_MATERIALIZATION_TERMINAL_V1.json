@@ -1,0 +1,12 @@
+{
+  "log_path": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/PHASE0_MATERIALIZATION_V1.log",
+  "log_sha256": "0a18c98a88b189feb61775a3c5a559299de8c4f4075af3489fbedb348fdedf09",
+  "oof_training_authorized": false,
+  "release_path": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1",
+  "release_receipt_sha256": "",
+  "return_code": 1,
+  "schema_version": "pvrig_v2_20_phase0_materialization_terminal_v1",
+  "sha256sums_sha256": "",
+  "status": "FAILED_PHASE0_TRAIN_ONLY_TEACHER",
+  "verification": {}
+}

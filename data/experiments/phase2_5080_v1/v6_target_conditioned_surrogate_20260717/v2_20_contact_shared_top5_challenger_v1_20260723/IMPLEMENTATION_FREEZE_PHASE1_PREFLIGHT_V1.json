@@ -1,0 +1,49 @@
+{
+  "schema_version": "pvrig_v2_20_phase1_preflight_implementation_freeze_v1",
+  "status": "FROZEN_PHASE1_PREFLIGHT_ONLY_C0_C1_TRAINING_NOT_YET_AUTHORIZED",
+  "created_date_local": "2026-07-23",
+  "allowed_actions": [
+    "rerun the frozen 96-test suite on Node1",
+    "run byte-exact B0 replay",
+    "materialize and externally close the single seed43 head-only initial state",
+    "write immutable pretraining terminal evidence"
+  ],
+  "forbidden_actions": [
+    "train C0",
+    "train C1",
+    "read open development",
+    "read frozen test",
+    "change Phase1 metrics or gates",
+    "promote or inject V2.20 into Top7500"
+  ],
+  "artifacts": {
+    "PREREGISTRATION_PHASE1_CORE_V1.json": "c68209fc79fbce5af89559009708ff3c1d102c695f2d790fe7ae9b068237e761",
+    "src/run_v220_contact_shared_fold_v1.py": "12c39876602affbb0aa7e846a7684fcd3e457b65c5ce7420c87141d4dd00cf32",
+    "src/materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "src/materialize_v220_production_initial_state_v1.py": "32220b5671fddf4b46f07fa5e9aadcc27f7ee39fa11b1bbe9ed7aa1c9eb9d26a",
+    "src/calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "src/v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "src/replay_v213_b0_oof_v1.py": "f680e77da6486ba65a353369082f2641471e19d0227c9822716d7b9a38b82e3e",
+    "src/collect_v220_contact_shared_oof_v1.py": "88a6ab691240669478ed41d7d41533f7fa7357b331651663644c69cf733079c4",
+    "src/validate_v220_paired_folds_v1.py": "da51a7405ec75fb4cf446334efa5b38ec1f5a62e95db3f38698dc9fe2dec9e08",
+    "src/evaluate_v220_oof_v1.py": "f8291ef73514428661becdce2e75921a2771106c95df7803c9e050ddcbf7a7bb",
+    "src/evaluate_v220_phase1_core_gate_v1.py": "721f7223555304189afdbc558050354b8ee3a38fbb41784dc64bc4c288e290bb",
+    "launchers/run_phase1_core_preflight_tests_v1.sh": "963f83d6db9ff496ce634195b902a114a748edb324216048887e8f3d7c094f4b",
+    "launchers/run_phase1_core_pretraining_node1_v1.sh": "999c1d1bf7174699222ce73e574d793f4c2525027679f0cdbc125bf5b1dba3b1",
+    "tests/TEST_RESULTS_PHASE1_CORE_V1.log": "3cc35d242000138ba09e0244b973afa436ceabbe006b0b9451861be25a40bcaa"
+  },
+  "test_evidence": {
+    "tests_run": 96,
+    "failures": 0,
+    "errors": 0,
+    "py_compile": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "required_before_final_training_freeze": [
+    "Node1 96-test replay PASS",
+    "B0 byte-exact replay PASS using corrected pre-result metrics hash",
+    "head-only initial state terminal PASS",
+    "initial checkpoint and receipt hashes externally frozen into final launcher",
+    "independent critic approval of the final training launcher and freeze"
+  ]
+}

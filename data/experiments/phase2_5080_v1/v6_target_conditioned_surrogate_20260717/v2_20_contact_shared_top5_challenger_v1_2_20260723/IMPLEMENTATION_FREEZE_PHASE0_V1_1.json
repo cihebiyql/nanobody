@@ -1,0 +1,66 @@
+{
+  "allowed_actions": [
+    "materialize_train_only_738_contact_teacher",
+    "verify_content_addressed_teacher_package"
+  ],
+  "artifacts": {
+    "materializer_path": "src/materialize_v220_train_contact_teacher_v1_1.py",
+    "materializer_sha256": "b8a3572c159c6c8fb65485f2b29462b64bfabeb96b23776d5ab681e2fe3c722d",
+    "phase0_contract_path": "PHASE0_TEACHER_MATERIALIZATION_CONTRACT_V1_1.json",
+    "phase0_contract_sha256": "b56a927c0b85cf9f4f371b28bba6506c32f2abb0598ca87b65ea544448107f2f",
+    "single_immutable_pass_log_path": "audits/PHASE0_TEST_RESULTS_V1_1.log",
+    "single_immutable_pass_log_sha256": "89b7b95ae29692ec8f89b04d4698b8c8311ae88d5197b5e80b61bb44acd01ef5",
+    "test_launcher_path": "launchers/run_phase0_14_tests_v1_1.sh",
+    "test_launcher_sha256": "566eb8599f48c006222bf4b8054b9bacbd300eda618b16de160b998fb0b44e88",
+    "tests_path": "tests/test_materialize_v220_train_contact_teacher_v1_1.py",
+    "tests_sha256": "1e00a0406a47c0deaf7a461790d9dc7bfda5233bdf987ca9ab39adf68f77836a"
+  },
+  "created_date_local": "2026-07-23",
+  "critic_verdict": "APPROVE_PHASE0_TEACHER_MATERIALIZATION",
+  "forbidden_actions": [
+    "train_C0",
+    "train_C1",
+    "OOF_prediction",
+    "development_contact_materialization",
+    "development_pose_access",
+    "frozen_test_access"
+  ],
+  "gradient_contract": {
+    "g_contact": "gradient_shared(L_marginal + 0.5*L_pair) before lambda scaling",
+    "phase0_gradient_computation_count": 0
+  },
+  "oof_training_authorized": false,
+  "production_contract": {
+    "V29_selected_pose_count_max": 8,
+    "V29_selected_pose_count_min": 4,
+    "candidates": 738,
+    "development_pose_files_stat_hashed_opened": 0,
+    "parents": 53,
+    "pose_rank_weight": "normalize 1/log2(rank+1) over actual selected models",
+    "single_seed_candidates": 0,
+    "sources": {
+      "V29": 305,
+      "V4D": 113,
+      "V4H": 320
+    }
+  },
+  "remote_output": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723/release/train_contact_teacher_v1_1",
+  "remote_root": "/data1/qlyu/projects/pvrig_v2_20_phase0_train_contact_teacher_v1_20260723",
+  "schema_version": "pvrig_v2_20_phase0_train_only_contact_teacher_implementation_freeze_v1_1",
+  "status": "FROZEN_PHASE0_TEACHER_MATERIALIZATION_ONLY_OOF_TRAINING_NOT_AUTHORIZED",
+  "supersedes": {
+    "implementation_freeze": "IMPLEMENTATION_FREEZE_PHASE0_V1.json",
+    "supersession_record": "V1_FAILURE_AND_V1_1_SUPERSESSION.json",
+    "supersession_record_sha256": "285f819ddc76af3d04c5d016e25f851d5a726f4c37eba4d492bc0cc6d919ce77"
+  },
+  "test_evidence": {
+    "errors": 0,
+    "failures": 0,
+    "numpy_version": "1.26.4",
+    "python_version": "3.12.7",
+    "runtime_python": "/data/qlyu/anaconda3/bin/python",
+    "single_log_mode": true,
+    "status": "PASS",
+    "tests_run": 14
+  }
+}

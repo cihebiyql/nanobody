@@ -1,0 +1,57 @@
+{
+  "schema_version": "pvrig_top150k_b_only_recovery_preregistration_v3",
+  "status": "FROZEN_BEFORE_REMOTE_EXECUTION",
+  "scope": "Technical B-only recovery for the exact four V2.11 full10644 clean-attention checkpoints after the generic V2.19 adapter rejected their schema before inference.",
+  "expected_rows": 150000,
+  "existing_inputs": {
+    "graph": "reuse byte-exact; do not regenerate",
+    "L1": "reuse byte-exact 5-fold PASS output; do not recompute",
+    "failed_v2_log": "must contain checkpoint_schema_invalid:pvrig_v2_11_full10644_clean_attention_runner_v1 and is hash-bound before B starts"
+  },
+  "b_profile": {
+    "schema_version": "pvrig_v2_11_full10644_clean_attention_runner_v1",
+    "lane": "B_CLEAN_TARGET_ATTENTION",
+    "split_id": "v29_canonical_release_v1_joint_cdr3_D1",
+    "seeds": [43, 917, 1931, 3253],
+    "checkpoint_sha256": [
+      "0a09ca095cda3eb0ba75582f9a0dcbfa2fd2e3007fe6733020b7a79b897c7723",
+      "642984c4b2e07016fd1698b43fbb8851ce6f77fc6fd279e7eab9c9142746e9ca",
+      "0e8ab9b9b0d6ce07bd2fa12ed3118577c883a491e9b275ea672c2050bac311a5",
+      "6a5ccdb459d0aa7d3126122ebfb2919228a0c1c529382fb1db4d40ab179e662f"
+    ],
+    "result_sha256": [
+      "b5ffcfb10cf5e8bd578bc8db8cd975d09bf617c2dc96dba120fdc69461c79d20",
+      "a798823bf23f59a1513e6c0ff8b114559846b3c8ee3785a4d5dea75f4a3863ee",
+      "0b6455224f80dc802576fa0bbb5ca050d4bf4fa16e727b92795df75152f7539f",
+      "56f72a20f9cef1844c280a87ba4db59679a71e374268b520514787e197f817d2"
+    ],
+    "head_config_sha256": "75ee344219fa5c2c96fcad45bef758e60e6d34efb1921436fcd0c9f18ce2af3e",
+    "state_signature_sha256": "421030fba897bf1b3229be39630a9e1f83f7a3f159536a4b47c4df96f7068f34",
+    "tensor_count": 130,
+    "parameter_count": 1102764,
+    "variant": "BASE",
+    "contact_supervision_enabled": false,
+    "frozen_test_access_count": 0
+  },
+  "execution": {
+    "only_stage_run": "B 4-seed inference",
+    "gpu": 7,
+    "batch_size": 64,
+    "precision": "bf16",
+    "uncertainty_penalty": 1.0,
+    "expected_backbone_forward_batches": 2344,
+    "expected_head_forward_batches": 9376
+  },
+  "publication_gates": [
+    "150000 manifest/output identity rows in exact order",
+    "all numeric predictions finite",
+    "per-checkpoint and ensemble exact-min closure",
+    "B receipt closes exact four checkpoint hashes/seeds/schema/split",
+    "input firewall reports zero truth/teacher/Docking/contact access",
+    "graph and L1 hashes remain identical to preflight",
+    "canonical GRAPH_L1_B_TERMINAL.json is absent until all gates pass"
+  ],
+  "failure_policy": "fail closed; never alter schema profile, model, score, rank, threshold, graph, L1, or old V2 evidence; do not publish terminal on partial B",
+  "claim_boundary": "Computational dual-receptor Docking-geometry surrogate only; not binding probability, affinity, experimental blocking, Docking Gold, or submission evidence."
+}
+

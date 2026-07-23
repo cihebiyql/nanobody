@@ -1,0 +1,19 @@
+{
+  "claim_boundary": "Technical no-training compatibility failure only; no model or scientific result was produced.",
+  "created_at_utc": "2026-07-22T23:45:49.517775+00:00",
+  "evidence": {
+    "legacy_launcher_sha256": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+    "log_path": "/mnt/d/work/\u6297\u4f53/data/reports/pvrig_v220_v133_python311_bxcpu_tests_v1_20260723/REMOTE_146_TESTS.log",
+    "log_sha256": "a5a5a679b249f95c7530937272b6359416edfe824ab5951288a7973bc9fe8863",
+    "new_test_launcher_sha256": "be964f9911f1ee88d6ac0dd70ce462ae73c33a70aaa5f29150177a70ca160eff"
+  },
+  "failure": "unittest path arguments resolve through an unrelated installed tests package; 13 legacy files became ModuleNotFoundError before test execution",
+  "python": "Python 3.11.14",
+  "remote_host_class": "bxcpu",
+  "required_recovery": "new version V1.3.4; do not edit frozen V1.3.3; use exact file-path import/discovery immune to tests-package shadowing for both 102 and 44 tests",
+  "return_code": 1,
+  "schema_version": "pvrig.v220.v1_3_3.bxcpu_python311_failure.v1",
+  "scientific_training_started": false,
+  "status": "FAIL_V1_3_3_BXCPU_PYTHON311_TEST_IMPORT_COLLISION",
+  "v1_3_3_deployment_authorized_after_failure": false
+}

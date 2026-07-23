@@ -1,0 +1,104 @@
+{
+  "claim_boundary": "Authorizes final V1.2 training freeze preparation only; not C0/C1 by itself.",
+  "cross_process_validation": {
+    "arm": "C0",
+    "backbone_binding": {
+      "all_parameters_frozen": true,
+      "artifact_identity_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "module_type": "transformers.models.esm.modeling_esm.EsmModel",
+      "parameter_tensors": 535,
+      "runtime_state_sha256": "7831111c87ebae6c510d4cf1910932fc9b8bea15c005c722d885e675880e24ca",
+      "serialized_in_checkpoint": false,
+      "state_contract_sha256": "d8073d75c66ca4b840e857a81cb0265b3a37482de6875be002b3f3d43ddd445d",
+      "state_tensors": 568
+    },
+    "backward_called": false,
+    "fold_id": 0,
+    "head_hashes": {
+      "backbone_identity_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+      "backbone_runtime_state_sha256": "7831111c87ebae6c510d4cf1910932fc9b8bea15c005c722d885e675880e24ca",
+      "backbone_state_contract_sha256": "d8073d75c66ca4b840e857a81cb0265b3a37482de6875be002b3f3d43ddd445d",
+      "contact_state_sha256": "92f856f8b3e229c499d8b0967e552cc68d7aab4ce727c8be37e809f832203ac5",
+      "full_state_sha256": "ab9ef9892060e791efa94259cb9780af7d5408f8045389d24f0fc7ee3f3bbe80",
+      "head_parameter_order_sha256": "b8673607d354aebdef3c30572baf99c41733a2acbc1c9b63a778cfdb26f51945",
+      "head_state_sha256": "ab9ef9892060e791efa94259cb9780af7d5408f8045389d24f0fc7ee3f3bbe80",
+      "parameter_order_sha256": "b8673607d354aebdef3c30572baf99c41733a2acbc1c9b63a778cfdb26f51945",
+      "role_parameter_order_sha256": {
+        "attention_scalar": "024473e7e0a1d116344c8b894b56c9333aeba031de2a559d0c43a9c137d9abf8",
+        "contact": "b96c869093968f77b06256cb0d4ecf49dd89085a422e35e10ec431b6624a75de",
+        "shared_encoder": "4530a74c6a2ba6bdc433d5503fceee535cdbcf76fc34de8b41bb70c73af6b991"
+      },
+      "scalar_state_sha256": "58be8ae1da659361e21fcd83487798c41cc196649348fe9dc9f67d3d65ed025e",
+      "shared_state_sha256": "d5f4417cdf5254f4bd9679050ba0098fe59d89962a8800a8859358dd1649054e"
+    },
+    "initial_state_receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "input_bindings": {
+      "graph_bundle_sha256": {
+        "MATERIALIZATION_RECEIPT.json": "ea94c54b4ce86cdf3b02f2180940527330b7b829c1d645770eac5fb737cf305d",
+        "PREPARE_RECEIPT.json": "fdc87a7362f968bc6af29b14ad0ac55d8b5000fed757f7b2654200fe7bc41e34",
+        "canonical10644_label_free_graph_input_manifest_v1.tsv": "a61bbdf9908f9559a002c363b0b54e622afbf8a4187a5857660e9bf75e8dc71f",
+        "graph_cache_receipt_v2.json": "a5aa942a419a480fc06076ed131fe8fde8ddb6037e8c2aa1b0a02964033497c4",
+        "graph_cache_v2.npz": "6605323342c2e64cc75157d7d6cbb484b72a8ef70e0d5d3f5aaf7817a707e696",
+        "graph_manifest_v2.tsv": "b2cb5a3655975215a7a72b5154c27fb206761c690b708aa97ba99cd8a8d8d70a"
+      },
+      "scalar_contract_sha256": "3b4a8c3729dec42294b53b9499a86a848718bc6aa5d6577db71b01c0d4f6265b",
+      "split_manifest_sha256": "33f99c6ce640f90bf60e4bada4c134619d1fa284154f99dd86e744467c786617",
+      "target_graph_receipt_sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9",
+      "target_graph_sha256": "59461f9d48e5995acd902ba8524caad5c779a3c8b54a5deee121f9c3be6adfbc",
+      "teacher_package_receipt_sha256": "71f62887713d76e2a524b6affc82f118bafdad82dcf16b731a426a5a0b54cead",
+      "training_table_sha256": "beb3205b998105b900c9d31207d7ff61b6b462f9188d58e5b896c985056c90f0"
+    },
+    "optimizer_created": false,
+    "optimizer_steps": 0,
+    "paired_helper_sha256": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c",
+    "runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "schema_version": "pvrig.v220.cross_process_initial_state_validation.v1",
+    "seed": 43,
+    "status": "PASS_V220_CROSS_PROCESS_INITIAL_STATE_AND_BACKBONE_BINDING",
+    "terminal_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2/CROSS_PROCESS_INITIAL_STATE_TERMINAL.json",
+    "terminal_sha256": "de1fe107afa0609bd9795bf1ebcba81778b12b9f1acd7ea86471b4506be7824a",
+    "training_started": false,
+    "unused_output_dir_created": false
+  },
+  "deployment_hashes": {
+    "cross_process_validator_sha256": "515a9a817906e0f6319711e304b3bc50131b7710b0ca7172076f1fd4a680bf15",
+    "preflight_freeze_sha256": "02bbd9011ed0ee38128b3cd704a9b4c1d737147c6dfca932b00d2ac60286d4a8",
+    "preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c",
+    "pretraining_launcher_sha256": "51a17ee08e658ce57b48ac92b7cb503fe29f1baf5cdee6d0829a5c55fc1e673b",
+    "runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116"
+  },
+  "initial_state_contract": {
+    "checkpoint_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2/V220_PHASE1_SEED43_HEAD_STATE.bin",
+    "checkpoint_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "receipt_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2/V220_PHASE1_SEED43_HEAD_STATE.bin.receipt.json",
+    "receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "training_started": false
+  },
+  "node1_code_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/layout_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_2_20260723",
+  "node1_pretraining_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2",
+  "node1_tests": {
+    "errors": 0,
+    "failures": 0,
+    "log_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/layout_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_2_20260723/NODE1_TEST_RESULTS_PHASE1_CORE_V1_2.log",
+    "log_sha256": "84c1c4a57fd4fb858efe7330494c427bdb2a19a5752cb4df68af8681b9c6b377",
+    "tests_run": 102
+  },
+  "pretraining": {
+    "B0_replay_sha256": "e260cdf2f56b96bd558235bb6af9e5f87cfe47099f45e41a0d084d89319fe7f3",
+    "cross_process_initial_state_terminal_sha256": "de1fe107afa0609bd9795bf1ebcba81778b12b9f1acd7ea86471b4506be7824a",
+    "cross_process_load_verified": true,
+    "initial_state_receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "initial_state_terminal_sha256": "cd2a1c99c1bb126b1038c0d6764ea8e1a7ac10c9576162cc9e58965071bd119b",
+    "schema_version": "pvrig_v220_phase1_pretraining_terminal_v1_2",
+    "sha256sums_sha256": "28fe470b57442940b5404b92b103e1c899a2ab87518594af0bbb9897fde1895d",
+    "status": "PASS_B0_REPLAY_AND_INITIAL_STATE_MATERIALIZATION_NO_TRAINING",
+    "terminal_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2/PRETRAINING_TERMINAL.json",
+    "terminal_sha256": "8e568bf30bc3c942a716b8748030e80475fc2f57401fb61a1103cdb13f6fb7a9",
+    "training_started": false
+  },
+  "schema_version": "pvrig_v220_node1_phase1_preflight_receipt_v1_2",
+  "status": "PASS_NODE1_102_TESTS_B0_NEW_INITIAL_AND_CROSS_PROCESS_LOAD_NO_TRAINING"
+}

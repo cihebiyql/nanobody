@@ -1,0 +1,159 @@
+{
+  "authorization_lifecycle": {
+    "current_concrete_training_launcher_exists": false,
+    "final_launcher_requires_expected_final_authorization_sha256": true,
+    "finalizer_creates_optimizer": false,
+    "finalizer_runs_training": false,
+    "independent_approval_required": true,
+    "only_unfinalized_template_exists": true,
+    "separate_final_authorization_required": true,
+    "successful_five_fold_preflight_required": true,
+    "unfinalized_template_exit_code": 86
+  },
+  "backward_called": false,
+  "claim_boundary": "Technical shared-calibration lifecycle recovery only; no model-quality, binding, blocking, Kd, Docking Gold, Top7500, or production-promotion claim.",
+  "created_date_local": "2026-07-23",
+  "deployment_authorized": false,
+  "exact_once_contract": {
+    "artifact_parent_equals_lock_dir": true,
+    "atomic_mkdir_fold_lock": true,
+    "direct_helper_bypass_rejected": true,
+    "failed_lock_retry_same_version": false,
+    "fold_path_bound": true,
+    "helper_lock_receipt_and_environment_required": true,
+    "helper_sha_bound": true,
+    "second_or_concurrent_exit_code": 73
+  },
+  "external_bindings": {
+    "calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "esm2_model_safetensors_sha256": "a08adabb949fa67ad3c14b509d04fd60368b35007b0095e3358f81200c4f4db0",
+    "initial_state_receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "initial_state_sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "legacy_102_test_launcher_sha256": "592d424c103872f2dd15c56a1c6c57bfec2cac6523e6b2a0f8f4c52aaa453325",
+    "materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "upstream_v1_2_runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "v213_runner_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9",
+    "v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953"
+  },
+  "freshness": {
+    "all_ten_arms_must_rerun": true,
+    "v1_2_or_rejected_v1_3_training_outputs_allowed_as_inputs": false,
+    "v1_2_seed43_head_initial_state_allowed": true
+  },
+  "implementation_hashes": {
+    "DESIGN_V1_3_1_SHARED_CALIBRATION_LIFECYCLE.md": "be98c6ac8de930eac67c02a19b6d2979d8ca500d7d46deebc51944817a12cd0f",
+    "PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_1.json": "a5e66a98b155a7284740a22a4c08d765d69f259a1f31cc3a801c9bccc7539088",
+    "V1_3_REJECTION_AND_V1_3_1_SUPERSESSION.json": "e360a6ff9b8caee37d9fac69922b71f701d8b5af9a82de966b3101fa8b6997ab",
+    "launchers/run_combined_legacy_and_v1_3_1_tests.sh": "c4852fbffcf4d930639bbf92c72d3ea761491b6fcef44b0a8b29f213f55d546a",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3_1.template.sh": "3b56dd207b3052649271f5457285924b12234ab91c820c13afd72f92bd4c1a30",
+    "launchers/run_phase1_preflight_node1_v1_3_1.sh": "0ba23007abacf073e54612d165eed1687d2f8cc8e2b83c648c7b1f99c3a0e357",
+    "launchers/run_shared_fold_materialization_once_v1_3_1.sh": "83bc6e197cf31577d72ea8badcb494ef5e8a4743539e733f57d97aeafc3a395a",
+    "launchers/run_tests_v1_3_1.sh": "abc739397df2cec1ed3eacbfc3c08394cacab2bcb57150394df4b0580357e7b9",
+    "src/build_v220_v1_3_1_preflight_receipt.py": "91efc448e10e3af56b81fbdf4e6aba399f4f574dba693b141b57355391bd04c0",
+    "src/finalize_v220_v1_3_1_training_authorization.py": "5d6be9086733bf5445fafce1a094b45403b137c533d3995703737de2d8a2ad9a",
+    "src/materialize_v220_shared_fold_calibration_v1_3_1.py": "e72204c0d4ffe42ccefee415aa6608b7c271439176c7165fc8b36c5f93ba6d5a",
+    "src/run_v220_contact_shared_fold_v1_3_1.py": "f00c004006f6c2f7fb8798d19342681da94ed61b0be0ea35ef165ecac6c3c4c2",
+    "src/v220_shared_calibration_artifact_v1.py": "2bf29d87ee82bea984dff4d01495b787b9feb4adcd11b22e4bd6d504cdf5d84e",
+    "src/validate_v220_shared_fold_calibration_load_only_v1_3_1.py": "aad5b9b6218e7676b27b23b203491b8e0581e1571394582ed56df9e455bb04dc",
+    "tests/TEST_RESULTS_V1_3_1.log": "0053c0f540ece8fc285de5c1d6fa35027b57481e4544f2245ef9468c66a36d1f",
+    "tests/test_v220_shared_calibration_artifact_v1_3_1.py": "436092c381f5509a931eb2113cc096238cbede9b6a79774dd307eb92fcbae1e5",
+    "tests/test_v220_v1_3_1_lifecycle.py": "48948f9ba76584cef2b951ff36e5c6826dc6cf8c335e32f49c465be17868bccc"
+  },
+  "optimizer_created": false,
+  "preflight_contract": {
+    "backward_called": false,
+    "content_addressed_receipt_required": true,
+    "folds": 5,
+    "load_only_receipt_training_output_disjoint": true,
+    "optimizer_created": false,
+    "optimizer_steps": 0,
+    "run_fold_core_called": false,
+    "separate_process_load_only_validations": 5,
+    "separate_process_materializations": 5,
+    "training_code_path_allowed": false,
+    "training_output_created": false,
+    "training_started": false,
+    "true_calibrator_calls_per_fold": 1
+  },
+  "preflight_deployment_authorized": false,
+  "schema_version": "pvrig_v220_phase1_v1_3_1_technical_recovery_implementation_freeze_v1",
+  "stage_a_preflight_deployment_lifecycle": {
+    "allowed_only_after_independent_stage_a_approval": [
+      "deploy exact frozen package to a new versioned Node1 path",
+      "run exact combined 134 tests",
+      "run exactly five separate-process calibration materializations",
+      "run exactly five separate-process load-only validations",
+      "publish content-addressed no-training preflight receipt"
+    ],
+    "current_status": "PENDING_INDEPENDENT_PREFLIGHT_DEPLOYMENT_APPROVAL",
+    "currently_forbidden": [
+      "Node1 deployment",
+      "five-fold real calibration preflight",
+      "optimizer construction",
+      "training"
+    ],
+    "still_forbidden_after_stage_a_approval": [
+      "optimizer construction",
+      "arm training",
+      "open-development access",
+      "sealed/frozen prospective access",
+      "Phase1b",
+      "Top7500 reordering"
+    ]
+  },
+  "stage_b_final_training_lifecycle": {
+    "current_status": "NOT_AUTHORIZED_AND_NO_CONCRETE_TRAINING_LAUNCHER",
+    "forbidden_until_all_prerequisites_pass": [
+      "optimizer construction",
+      "all arm training",
+      "Phase1b",
+      "Top7500 reordering",
+      "open-development access",
+      "sealed/frozen prospective access"
+    ],
+    "prerequisites": [
+      "successful exact-byte Stage A preflight receipt",
+      "independent approval binding that receipt and this implementation freeze",
+      "finalizer-generated concrete launcher",
+      "final authorization with training_authorized=true"
+    ]
+  },
+  "status": "FROZEN_V1_3_1_IMPLEMENTATION_PENDING_INDEPENDENT_REVIEW_AND_NODE1_PREFLIGHT",
+  "superseded_pre_review_freeze": {
+    "deployed": false,
+    "preflight_started": false,
+    "reason": "Authorization wording incorrectly prohibited the Stage A preflight needed by Stage B; superseded before deployment or execution.",
+    "sha256": "12548d1e6a895760d8e37ec9dcd2af7221e74accd3f2414270b863e37de0889b",
+    "training_started": false
+  },
+  "tests": {
+    "cold_atime_regression_included": true,
+    "combined_tests": 134,
+    "legacy_tests": 102,
+    "new_tests": 32,
+    "repeated_new_suite_runs_observed": 4,
+    "status": "PASS_COMBINED_V220_LEGACY_102_PLUS_V1_3_1_32_TOTAL_134_NO_TRAINING",
+    "test_log": "tests/TEST_RESULTS_V1_3_1.log",
+    "test_log_sha256": "0053c0f540ece8fc285de5c1d6fa35027b57481e4544f2245ef9468c66a36d1f"
+  },
+  "training_authorized": false,
+  "training_started": false,
+  "unchanged_from_v1_2": [
+    "data",
+    "whole-parent split",
+    "seed43 head-only initial state",
+    "ESM2 backbone",
+    "model architecture",
+    "losses",
+    "optimizer",
+    "batch order",
+    "epochs",
+    "hyperparameters",
+    "lambda grid and selection",
+    "severe-conflict gate",
+    "metrics",
+    "bootstrap",
+    "core gates",
+    "claim boundary"
+  ]
+}

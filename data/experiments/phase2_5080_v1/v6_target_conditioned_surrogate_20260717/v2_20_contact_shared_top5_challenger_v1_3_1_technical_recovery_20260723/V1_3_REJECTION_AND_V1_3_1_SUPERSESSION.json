@@ -1,0 +1,20 @@
+{
+  "claim_boundary": "Preproduction technical rejection and supersession only; no training or model-quality result.",
+  "created_date_local": "2026-07-23",
+  "deployed": false,
+  "rejected_exact_bindings": {
+    "FINAL_TRAINING_FREEZE_PHASE1_V1_3_PENDING_REVIEW.json": "0405bddb450043f181b85081d0c85dde25a11523d8b1f82431a50bfe37646557",
+    "IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3.json": "9468b6124b1bcd858b484e0a4ddfa4fe9ac595682d7697bee96be3d2f2f65819",
+    "launchers/run_phase1_core_fold_pair_node1_v1_3.sh": "c6270e2a336df376354dd1ca917df29170a83b11fbdf75be730c1783d45dc39e"
+  },
+  "rejection_reasons": [
+    "The launcher redirected stdout to $SHARED_DIR/MATERIALIZATION_TERMINAL.json before creating $SHARED_DIR, so the shell would fail with ENOENT before Python materialization started.",
+    "mkdir -p of only the parent did not provide an atomic same-fold exact-once lock.",
+    "The training launcher could proceed while the bound preregistration explicitly had training_authorized=false and did not bind a completed V1.3 preflight receipt plus independent approval receipt.",
+    "Validation used bash syntax only and lacked a real temporary-directory launcher runtime smoke covering directory creation and redirection."
+  ],
+  "schema_version": "pvrig_v220_v1_3_rejection_and_v1_3_1_supersession_v1",
+  "status": "REJECTED_V1_3_PREPRODUCTION_NEVER_DEPLOY_OR_TRAIN",
+  "superseded_by": "V1.3.1 separate versioned design/test/freeze package",
+  "training_started": false
+}

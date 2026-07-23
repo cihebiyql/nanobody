@@ -1,0 +1,9 @@
+{
+  "canonical_outputs_created": 0,
+  "created_at_utc": "2026-07-22T17:16:28.776985+00:00",
+  "executed_freeze_sha256": "3c682ca2f6be94e83a6812ba3e33ae1ad4eec53d96cd85e7715e66e734f15cd9",
+  "reason": "The frozen launcher path is a symlink to the boltz Python realpath. Imports and versions passed; the preflight intentionally stopped before any canonical output directory was created.",
+  "replacement": "run_m2_s0m2_recovery_v2_1.sh",
+  "schema_version": "pvrig_top150k_m2_s0m2_recovery_v2_failure",
+  "status": "FAIL_PREFLIGHT_REALPATH_EXPECTATION"
+}

@@ -1,0 +1,37 @@
+{
+  "failure_boundary": {
+    "candidate_set_or_split_changed": false,
+    "development_pose_files_stat_hashed_opened": 0,
+    "frozen_test_pose_files_stat_hashed_opened": 0,
+    "release_created": false
+  },
+  "failure_reason": "V1.1 incorrectly required selected_model_count == fixed_top8_count. Frozen upstream semantics are fixed_top8_count=min(selected_model_count,8).",
+  "oof_training_authorized": false,
+  "schema_version": "pvrig_v2_20_phase0_materializer_v1_1_failure_and_v1_2_supersession",
+  "status": "V1_1_FAILED_CLEANLY_V1_2_FROZEN_REPLACEMENT_REQUIRED",
+  "unchanged": [
+    "train allowlist",
+    "738 candidates",
+    "53 parents",
+    "source counts",
+    "seed917 rule",
+    "rank-weight normalization",
+    "4.5A cutoff",
+    "split-before-access",
+    "zero development pose access"
+  ],
+  "v1_1": {
+    "implementation_freeze_sha256": "0ec60d77a0afb4e8f31e0ca1991e8d16a5082127fc8aa4d713e84996e9fb78b5",
+    "materializer_sha256": "b8a3572c159c6c8fb65485f2b29462b64bfabeb96b23776d5ab681e2fe3c722d",
+    "production_log_sha256": "72b86c241f33346f06ba3f22c453c977e8b80f4fd6560ef9c705d8ad680cca12",
+    "release_receipt_sha256": "",
+    "terminal_sha256": "ef09ed676026952eb60def610a3017b425b1535f3cfcc8d8c85a37be2244caf4",
+    "terminal_status": "FAILED_PHASE0_TRAIN_ONLY_TEACHER",
+    "test_log_sha256": "89b7b95ae29692ec8f89b04d4698b8c8311ae88d5197b5e80b61bb44acd01ef5"
+  },
+  "v1_2_change_only": [
+    "require selected_model_count>=4",
+    "require fixed_top8_count=min(selected_model_count,8)",
+    "require top8_model_ids length=fixed_top8_count"
+  ]
+}

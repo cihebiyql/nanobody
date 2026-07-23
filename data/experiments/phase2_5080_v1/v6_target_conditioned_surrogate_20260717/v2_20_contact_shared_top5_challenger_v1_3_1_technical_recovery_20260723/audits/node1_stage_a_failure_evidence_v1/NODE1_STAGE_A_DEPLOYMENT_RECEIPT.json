@@ -1,0 +1,15 @@
+{
+  "allowed_next_action": "exact 134 tests plus five-fold materialize/load-only preflight only",
+  "claim_boundary": "Technical Stage-A no-training deployment evidence only; not model quality or Docking truth.",
+  "created_at_utc": "2026-07-22T21:37:12.505703+00:00",
+  "implementation_hash_entries_verified": 17,
+  "implementation_hash_mismatches": 0,
+  "independent_stage_a_approval_sha256": "801004a1b24e3e4410dd062d54659127c1f5ec2e4ee1aee45e5b2f721869e5af",
+  "local_freeze_sha256": "bd66829ad25d35981c96b65055ce3d3822edfcfeda6624a9d65fea1efedb2d3e",
+  "node1_package_root": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_1_technical_recovery_20260723",
+  "optimizer_created": false,
+  "schema_version": "pvrig_v220_v1_3_1_node1_stage_a_deployment_v1",
+  "status": "PASS_NODE1_EXACT_FROZEN_PACKAGE_DEPLOYED_STAGE_A_ONLY",
+  "training_authorized": false,
+  "training_started": false
+}

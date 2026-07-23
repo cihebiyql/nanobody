@@ -1,0 +1,19 @@
+{
+  "forbidden_occurrences": {
+    "finalize_v220_v1_3_5_training_authorization.py": 0,
+    "run_fold_core(": 0,
+    "run_phase1_core_fold_pair_node1_v1_3_5.template.sh": 0,
+    "sbatch": 0,
+    "srun ": 0
+  },
+  "production_files": [
+    "monitor_and_launch_stage_a_v2.sh",
+    "remote_stage_a_entrypoint_v2.sh",
+    "start_node1_stage_a_watcher_v2.sh"
+  ],
+  "sbatch_authorized": false,
+  "sole_remote_workload": "./launchers/run_phase1_preflight_node1_v1_3_5.sh",
+  "status": "PASS_EXECUTABLE_STAGE_A_ONLY_NO_TRAINING_NO_SCHEDULER",
+  "training_authorized": false,
+  "training_started": false
+}

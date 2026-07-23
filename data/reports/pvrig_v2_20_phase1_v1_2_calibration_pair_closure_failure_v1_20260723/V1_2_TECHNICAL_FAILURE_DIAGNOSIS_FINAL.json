@@ -1,0 +1,45 @@
+{
+  "access_boundary": {
+    "aggregate_oof_opened_for_stop_decision": false,
+    "heldout_contact_labels_opened": false,
+    "open_development_or_frozen_prospective_test_opened": false,
+    "phase1b_authorized": false
+  },
+  "actual_failure_evidence": {
+    "aggregate_oof_artifacts": 0,
+    "arm_results_preserved": 5,
+    "calibration_artifacts_preserved": 8,
+    "fold0_launcher_rc": 1,
+    "fold0_launcher_tail": "AssertionError in frozen exact calibration SHA256 equality assertion after both fold0 arm results existed",
+    "fold4_watcher_status": {
+      "status": "FAILED_FOLD0_NO_TERMINAL"
+    },
+    "pair_terminals": 0
+  },
+  "claim_boundary": "Technical training-protocol failure only; no model-quality, OOF-performance, binding, Kd, experimental blocking, Docking Gold, Top7500, or promotion verdict.",
+  "created_at_local": "2026-07-23T04:45:39.811572+08:00",
+  "monitoring_disclosure": "Before root-cause identification, routine log monitoring displayed one C0 fold metric block. No aggregate OOF rows, held-out contact labels, open-development, sealed, quarantine, test32, or frozen prospective-test data were used. The V1.3 repair changes only artifact lifecycle and preserves every method and gate.",
+  "operational_stop_receipt": {
+    "local_path": "reports/pvrig_v2_20_phase1_v1_2_calibration_pair_closure_failure_v1_20260723/V1_2_OPERATIONAL_STOP_RECEIPT_V2.json",
+    "local_sha256": "9f0332bfd12c455e4046405ac492c6fc3527b89cd916ca23c6b6b7cf237fbcad",
+    "remote_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_v1_2_technical_failure_stop_receipt_20260723/V1_2_OPERATIONAL_STOP_RECEIPT_V2.json",
+    "remote_sha256": "9f0332bfd12c455e4046405ac492c6fc3527b89cd916ca23c6b6b7cf237fbcad"
+  },
+  "root_cause": "C0 and C1 independently repeated the same floating GPU gradient calibration. All observed folds selected lambda=0.0025 with zero severe conflicts, but gradient norm/cosine decimals differed, producing different JSON bytes and SHA256. The frozen pair terminal requires exact calibration SHA equality.",
+  "schema_version": "pvrig_v220_phase1_v1_2_calibration_pair_closure_failure_final_v1",
+  "shutdown": {
+    "files_deleted_or_overwritten_by_receipt_writer": false,
+    "fold1_3_partial_outputs_preserved": true,
+    "fold4_watcher_terminal": {
+      "status": "FAILED_FOLD0_NO_TERMINAL"
+    },
+    "v1_2_fold_training_live_argv": [],
+    "v1_2_fold_training_processes_remaining": 0,
+    "v1_2_postprocess_live_argv": [],
+    "v1_2_postprocess_watcher_processes_remaining": 0,
+    "v1_2_tmux_sessions_remaining": []
+  },
+  "status": "FAIL_V1_2_EXACT_SHARED_CALIBRATION_PAIR_CLOSURE",
+  "v1_2_disposition": "Frozen failed attempt. Never patch, resume, pool, select from, or reuse any V1.2 fold output.",
+  "v1_3_minimum_recovery": "Materialize one shared content-addressed calibration artifact per fold before either arm optimizer; both fresh C0/C1 runs validate and replay the exact same bytes; rerun all ten arms from original seed43 initial state."
+}

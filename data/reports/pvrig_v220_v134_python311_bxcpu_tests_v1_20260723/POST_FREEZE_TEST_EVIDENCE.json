@@ -1,0 +1,47 @@
+{
+  "claim_boundary": "Technical unittest import compatibility only; no model-quality or scientific result claim.",
+  "implementation_freeze": {
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_4.json",
+    "sha256": "b4d2352399d3f652bccf16f34069bafedba815c3edd553dbed2758add9dfb0d3"
+  },
+  "invariants": {
+    "exact_file_loader_used": true,
+    "installed_tests_package_shadow_bypassed": true,
+    "package_bytes_unchanged_after_post_freeze_tests": true,
+    "training_artifacts_created": 0,
+    "training_started": false,
+    "unittest_discovery_used": false
+  },
+  "logs": {
+    "POST_FREEZE_BXCPU_146_TESTS.log": {
+      "bytes": 27082,
+      "sha256": "6ca422e2570b896d7e1996e500d325ad72acc357718c653ca4c4d49cae237905"
+    },
+    "POST_FREEZE_LOCAL_44_TESTS.log": {
+      "bytes": 6039,
+      "sha256": "c5037801408073ffbf47763171de7b864b17d785bfe64c927a660650573a4c6a"
+    },
+    "PRE_FREEZE_BXCPU_146_TESTS.log": {
+      "bytes": 27082,
+      "sha256": "2c61b439578f49dea86feb047552770ead1a51068023011bb001b65c6a400c0f"
+    },
+    "PRE_FREEZE_LOCAL_44_TESTS.log": {
+      "bytes": 6039,
+      "sha256": "9ef50fe828843810e41084a37eb7f9285508bf9d6c275166e23efd50d468eef2"
+    }
+  },
+  "remote": {
+    "combined_tests": 146,
+    "dependency_site_packages": "$HOME/pvrig_bxcpu_model_runtime_v1_20260721/env/lib/python3.11/site-packages",
+    "host": "bxcpu",
+    "hostname": "ln402",
+    "legacy_tests": 102,
+    "new_tests": 44,
+    "python_executable": "$HOME/.local/opt/haddock3-2025.11.0/bin/python",
+    "python_version": "Python 3.11.14",
+    "root": "$HOME/.local/share/pvrig_v220_v134_bxcpu_postfreeze_v1_20260723"
+  },
+  "schema_version": "pvrig.v220.v1_3_4.post_freeze_bxcpu_python31114_test_evidence.v1",
+  "stage_a_review_readiness": "READY_FOR_INDEPENDENT_STAGE_A_REVIEW_NOT_TRAINING_AUTHORIZATION",
+  "status": "PASS_FROZEN_PACKAGE_BXCPU_PYTHON31114_LEGACY102_PLUS_NEW44_NO_TRAINING"
+}

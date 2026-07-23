@@ -1,0 +1,33 @@
+{
+  "array_task": 8,
+  "collected_at_utc": "2026-07-22T21:21:39.580054+00:00",
+  "diagnostic_tail": [
+    "[2026-07-23 05:18:02,759 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "raise RuntimeError(reason)",
+    "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 05:18:02,760 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 05:18:02,760 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+    "[2026-07-23 05:20:47,420 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "raise RuntimeError(reason)",
+    "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 05:20:47,421 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 05:20:47,421 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+  ],
+  "evidence_bytes": 3810885,
+  "evidence_sha256": "54d1626b107573cbfd602c1ffbb3e4ba596d38c0958087b52bec2822ae5bc1e3",
+  "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0369__00341_8x6b_s917_eccf613cc5ae",
+  "label": "NA_TECHNICAL_FAILURE",
+  "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0369__00341_8x6b_s917_eccf613cc5ae.tar.gz",
+  "protocol_changed": false,
+  "schema_version": "pvrig_top7500_technical_failure_receipt_v1",
+  "status": {
+    "attempts": 2,
+    "error": "HADDOCK3 exited with return code 1",
+    "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0369__00341_8x6b_s917_eccf613cc5ae",
+    "pid": 12161,
+    "return_code": 1,
+    "stage": "haddock",
+    "status": "FAILED",
+    "updated_at": "2026-07-22T21:20:47.565581+00:00"
+  }
+}

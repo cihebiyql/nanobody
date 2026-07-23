@@ -1,0 +1,22 @@
+{
+  "created_date_local": "2026-07-23",
+  "invalidation": "Any change to bound code, initial state, receipt, launcher, preregistration, split, hyperparameters, losses, metrics or gates invalidates this approval.",
+  "review_evidence": [
+    "Node1 exact 99 tests PASS (99/0/0)",
+    "V2.13 B0 byte-exact replay PASS with no open/frozen/quarantine rows",
+    "head-only initial state and receipt hashes match, training_started=false",
+    "all eight bound implementation files match between local freeze and Node1 deployment",
+    "five whole-parent folds times paired C0/C1, fixed hyperparameters and outputs verified",
+    "fail-before-training launcher smoke passed all runtime hash gates and stopped before training"
+  ],
+  "reviewed_hashes": {
+    "final_training_freeze_sha256": "0146b3ffc38c5a1213487482198729c5e9de5e08d13621908a5ef3b3c964a86a",
+    "fold_pair_launcher_sha256": "3f0cb92e41988e4d2ac0374b7233f6fdd537822a19af80a441179b18110765c8",
+    "node1_preflight_receipt_sha256": "657fde1be654e7306746f85188c03d7f0e5e26a31bad85e52afb28dcf60ae878",
+    "preregistration_sha256": "e50eb1c5758b01f74efe215472f7f904424743132285a4f76cc5ab732ffdd6f4"
+  },
+  "reviewer": "independent Codex native critic /root/v220_final_training_critic",
+  "schema_version": "pvrig_v220_phase1_core_training_independent_critic_approval_v1_1",
+  "scope": "Approve exact frozen bytes for Phase1 C0/C1 core training, pairing validation, strict OOF collection and frozen core-gate evaluation only.",
+  "status": "APPROVE_EXACT_FROZEN_BYTES_FOR_FIRST_C0_C1_OPTIMIZER_STEP"
+}

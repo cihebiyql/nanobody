@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+  <name>ECUST-dorm-web</name>
+  <SSIDConfig><SSID><hex>45435553542D646F726D2D776562</hex><name>ECUST-dorm-web</name></SSID></SSIDConfig>
+  <connectionType>ESS</connectionType><connectionMode>manual</connectionMode>
+  <MSM><security><authEncryption><authentication>open</authentication><encryption>none</encryption><useOneX>false</useOneX></authEncryption></security></MSM>
+  <MacRandomization xmlns="http://www.microsoft.com/networking/WLAN/profile/v3"><enableRandomization>false</enableRandomization></MacRandomization>
+</WLANProfile>

@@ -1,0 +1,351 @@
+{
+  "claim_boundary": "Computational independent dual-receptor 8X6B/9E6Y Docking-geometry surrogate evidence only; not binding, Kd, experimental blocking, expression, purity, Docking Gold, or final submission truth.",
+  "common_incremental_gate": {
+    "bootstrap_95ci_lower_gt": 0.0,
+    "bootstrap_seed": "PENDING_BEFORE_IMPLEMENTATION_FREEZE",
+    "maximum_relative_ef10_drop": 0.05,
+    "maximum_relative_mae_worsening": 0.1,
+    "maximum_spearman_drop": 0.03,
+    "minimum_delta_ef5": 0.2,
+    "minimum_folds_with_delta_gte_minus_0p25": 4,
+    "minimum_hits_gain": 10,
+    "minimum_single_fold_delta": -0.75,
+    "paired_whole_parent_bootstrap_replicates": 10000,
+    "reference": "strongest causally valid stage reference"
+  },
+  "conditional_stage_graph": {
+    "FAIL_BRANCH_PRIORITY": [
+      "F1_UNDERPOWERED_CONTACT_LOSS",
+      "F2_CONTACT_LEARNABLE_SCALAR_PATH_INEFFECTIVE",
+      "F3_CONTACT_NOT_LEARNABLE_OR_TARGET_BLIND",
+      "F4_FOLD_SOURCE_RELIABILITY_INSTABILITY",
+      "F5_SCALAR_IMPROVES_TOP5_DOES_NOT"
+    ],
+    "PASS_BRANCH": [
+      "P1_CONTACT_CAUSAL",
+      "P2_MULTISEED",
+      "P3_STRICT_NESTED_COMPACT_STACK",
+      "P4_PARENT_BALANCED_LAMBDALOSS"
+    ],
+    "single_fail_branch_only": true,
+    "technical_fail_or_no_terminal": "NO_V221_STAGE_AUTHORIZED"
+  },
+  "created_date_local": "2026-07-23",
+  "data_firewall": {
+    "allowed": [
+      "exact train9849 scalar rows",
+      "exact frozen 54-parent five-fold assignment",
+      "outer-fit-only contact labels after P1 authorization",
+      "label-free VHH sequence and monomer graph",
+      "fixed public 8X6B and 9E6Y target graphs",
+      "outer-fit-derived reliability estimates",
+      "strictly nested base-model predictions"
+    ],
+    "forbidden_inputs": [
+      "candidate_id",
+      "parent_id",
+      "campaign_id",
+      "teacher_source",
+      "contact availability",
+      "reliability tier as a model feature",
+      "true Docking pose or pose-derived scalar as inference input",
+      "global OOF rows as outer-meta training features",
+      "open development rows",
+      "sealed prospective rows",
+      "frozen prospective rows"
+    ],
+    "outer_test_parent_access_during_fit": 0,
+    "outer_test_rank_normalization": false,
+    "score_calibration": "outer_train_empirical_CDF_only",
+    "split_before_access": true
+  },
+  "execution_authority": {
+    "allowed_scientific_terminal_statuses": [
+      "PASS",
+      "FAIL"
+    ],
+    "authorized_now": false,
+    "implementation_exists": false,
+    "on_missing_terminal_or_technical_fail": "STOP_V221_UNSTARTED",
+    "on_scientific_fail": "APPLY_FROZEN_F1_TO_F5_ROOT_CAUSE_PRIORITY_AND_ENTER_EXACTLY_ONE_FAIL_BRANCH",
+    "on_scientific_pass": "ENTER_PASS_BRANCH_P1_TO_P4",
+    "required_prior_technical_closure": "PASS_ALL_FIVE_PAIRS_OOF_COLLECTION_EVALUATOR_AND_FROZEN_CORE_GATE_EXECUTION",
+    "required_prior_terminal_class": "VALID_V220_V1_3_SCIENTIFIC_TERMINAL",
+    "required_v1_3_terminal_path": "PENDING_BEFORE_IMPLEMENTATION_FREEZE",
+    "required_v1_3_terminal_sha256": "PENDING_BEFORE_IMPLEMENTATION_FREEZE",
+    "retroactive_v220_or_v13_reinterpretation_allowed": false,
+    "training_authorized": false,
+    "v1_3_must_not_change_v220_lambda_grid": true
+  },
+  "fail_branch_root_cause_classifier": {
+    "F1_UNDERPOWERED_CONTACT_LOSS": {
+      "definition": [
+        "all fold calibration receipts used fallback or grid maximum",
+        "all achieved median shared-gradient ratios are below 10% of the frozen target lower bound"
+      ],
+      "method_contract": [
+        "new preregistration and implementation freeze required",
+        "one outer-fit-only immutable calibration receipt shared by C0/C1 per fold",
+        "target shared-gradient ratio 0.05",
+        "new weight grid, conflict gate and upper bound frozen before execution",
+        "fresh 5 folds times 2 arms; no V1.3 OOF reuse"
+      ],
+      "next_method": "V2.21-A corrected contact-ratio method",
+      "requires_scientific_status": "FAIL"
+    },
+    "F2_CONTACT_LEARNABLE_SCALAR_PATH_INEFFECTIVE": {
+      "allowed_predicted_summaries": [
+        "hotspot_mass",
+        "off_interface_mass",
+        "interface_specificity",
+        "CDR1_mass",
+        "CDR2_mass",
+        "CDR3_mass",
+        "contact_entropy",
+        "conformer_gap"
+      ],
+      "definition": [
+        "heldout-parent contact evaluator significantly exceeds position-only baseline",
+        "C1 does not pass EF5/hits incremental gate versus C0"
+      ],
+      "next_method": "V2.21-B stop-gradient predicted-contact-summary late fusion",
+      "requires_scientific_status": "FAIL",
+      "true_contact_as_scalar_inference_input": false
+    },
+    "F3_CONTACT_NOT_LEARNABLE_OR_TARGET_BLIND": {
+      "contact_addon_in_P2_P3_P4_allowed": false,
+      "definition": "heldout contact does not exceed position-only, or target permutation/contact-label shuffle does not significantly degrade contact evidence",
+      "next_method": "STOP_CONTACT_TUNING_AND_ACQUIRE_NEW_INDEPENDENT_MULTISEED_CONTACT_TEACHER",
+      "requires_scientific_status": "FAIL"
+    },
+    "F4_FOLD_SOURCE_RELIABILITY_INSTABILITY": {
+      "definition": "pooled direction is positive but fold stability or frozen source/reliability-stratum stability fails",
+      "next_method": "V2.21-C outer-fit-only reliability-weighted method",
+      "requires_scientific_status": "FAIL",
+      "source_or_reliability_as_model_input": false
+    },
+    "F5_SCALAR_IMPROVES_TOP5_DOES_NOT": {
+      "definition": "Rdual Spearman or MAE improves but EF5/hits incremental gate fails",
+      "next_method": "V2.21-D separate parent-balanced LambdaLoss Top-K rank head",
+      "ranking_logit_may_claim_Rdual": false,
+      "requires_scientific_status": "FAIL"
+    },
+    "priority_rule": "Evaluate F1 through F5 in fixed order and stop at the first fully satisfied definition; no favorable post-hoc relabeling."
+  },
+  "fixed_stage_order": [
+    "P1_CONTACT_CAUSAL",
+    "P2_MULTISEED",
+    "P3_STRICT_NESTED_COMPACT_STACK",
+    "P4_PARENT_BALANCED_LAMBDALOSS"
+  ],
+  "forbidden": [
+    "start before a hash-bound V1.3 valid scientific terminal with complete pair/OOF/evaluator closure",
+    "start after V1.3 technical failure, missing terminal, invalid terminal, or incomplete closure",
+    "modify V2.20 or V1.3 frozen method",
+    "change thresholds after results",
+    "drop bad fold/seed/parent/source",
+    "select best sensitivity-grid result",
+    "read prospective data",
+    "inject or reorder Top7500 before full freeze and independent approval",
+    "choose more than one V1.3 scientific-FAIL root-cause branch after seeing results"
+  ],
+  "frozen_reference_bindings": {
+    "train9849_teacher": {
+      "parents": 54,
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/train9849_teacher.tsv",
+      "rows": 9849,
+      "sha256": "beb3205b998105b900c9d31207d7ff61b6b462f9188d58e5b896c985056c90f0"
+    },
+    "v213_l1_reference": {
+      "ef5": 3.0828512885987585,
+      "hits": 152,
+      "rdual_mae": 0.036230982858158185,
+      "rdual_spearman": 0.5661935645078868,
+      "selected": 493
+    },
+    "v220_v1_2_preregistration": {
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_2_20260723/PREREGISTRATION_PHASE1_CORE_V1_2.json",
+      "reference_only": true,
+      "sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c"
+    },
+    "whole_parent_assignment": {
+      "folds": 5,
+      "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_12_clean_attention_inner_oof_stack_v1_20260722/prepared/candidate_fold_assignment.tsv",
+      "seed": 43,
+      "sha256": "2314caa2eb2ba2b1ad67937befaef68a49eeb0abb77133ec8cfc94a2f6eaba07"
+    }
+  },
+  "implementation_freeze_requirements": [
+    "bind V1.3 valid scientific terminal PASS-or-FAIL schema/path/hash/status plus pair/OOF/evaluator closure",
+    "bind all base training code and nested split contracts",
+    "bind contact evaluator, bootstrap, reliability estimator, LambdaLoss and slate sampler hashes",
+    "tests for split-before-access and zero outer-test-parent fit access",
+    "tests for inner base retraining and no global-OOF meta leakage",
+    "tests for outer-train CDF calibration and parent caps",
+    "independent critic approval of exact bytes",
+    "tests for deterministic F1-to-F5 first-match root-cause classification and no multi-branch execution"
+  ],
+  "objective": {
+    "outer_folds": 5,
+    "parents": 54,
+    "positives": 985,
+    "primary_metric": "EF_true_global_top10_at_budget5",
+    "rows": 9849,
+    "selected_at_budget5": 493,
+    "terminal_target_ef5": 5.0,
+    "terminal_target_hits": 247,
+    "terminal_target_precision": 0.5,
+    "terminal_target_recall": 0.25,
+    "training_auroc_is_primary": false,
+    "truth": "R_dual_min_exact_min_R8_R9"
+  },
+  "plan_sha256": "1c8371d007bb9cffafaf9199e3cc1a91f62a845c253784f557fa8f03706b23f9",
+  "reliability_weighting": {
+    "fit_scope": "outer-fit only",
+    "formula": "clip((median_sigma2 + eps)/(sigma2 + eps), 0.5, 2.0)",
+    "model_input": false,
+    "multiply_frozen_sample_weight": true,
+    "multiseed_variance": "candidate receptor-specific empirical variance",
+    "normalize_mean_one_within_parent": true,
+    "single_seed_variance": "outer-fit multiseed variance 75th percentile"
+  },
+  "schema_version": "pvrig_v221_ef5_targeted_multistage_preregistration_draft_v1",
+  "sequential_stopping": {
+    "failure_definition": "no >=10 hit gain with paired-parent bootstrap CI lower >0",
+    "on_stop": "acquire new independent multi-seed Docking/contact teacher instead of tuning more heads or losses",
+    "order": [
+      "P1",
+      "P2",
+      "P3-linear",
+      "P3-ElasticNet",
+      "P3-HGB",
+      "P4-T1",
+      "P4-T2"
+    ],
+    "same_information_family_max_failed_preregistered_challengers": 3
+  },
+  "stages": {
+    "P1_CONTACT_CAUSAL": {
+      "experiments": [
+        "contact-label shuffle paired five-fold retraining",
+        "V4D-only diagnostic",
+        "target-residue embedding permutation",
+        "8X6B/9E6Y conformer swap",
+        "heldout-parent contact evaluator"
+      ],
+      "gates": {
+        "conformer_swap_min_relative_receptor_mae_worsening": 0.02,
+        "shuffle_max_fraction_of_true_contact_ef5_gain": 0.5,
+        "shuffle_vs_C0_bootstrap_ci_lower_lte": 0.0,
+        "target_permutation_min_absolute_ef5_drop": 0.1,
+        "target_permutation_min_relative_contact_metric_drop": 0.1,
+        "true_contact_vs_position_only_bootstrap_ci_lower_gt": 0.0
+      },
+      "on_fail": "STOP_NO_CONTACT_PROMOTION_NO_P2",
+      "requires": "V1.3 valid scientific terminal with scientific PASS"
+    },
+    "P2_MULTISEED": {
+      "aggregation": "mean R8 and mean R9 then exact min",
+      "bad_seed_exclusion": false,
+      "lcb_alpha_grid": [
+        0.0,
+        0.25,
+        0.5
+      ],
+      "lcb_selection": "inner whole-parent CV only",
+      "on_no_promotion": "P3 may proceed without P2 ensemble or uncertainty features",
+      "seeds": [
+        43,
+        917,
+        1931
+      ],
+      "uncertainty_outputs": [
+        "seed_std",
+        "receptor_gap",
+        "top5_rank_agreement"
+      ]
+    },
+    "P3_STRICT_NESTED_COMPACT_STACK": {
+      "P4_authorization_requires_union_oracle_ef5_gte": 5.5,
+      "allowed_features": [
+        "base R8/R9/exact-min/receptor-gap",
+        "outer-train CDF percentiles",
+        "rank mean/std/min/max",
+        "model disagreement",
+        "promoted seed uncertainty",
+        "promoted predicted contact summaries"
+      ],
+      "base_models": [
+        "L1",
+        "B",
+        "M2",
+        "C2"
+      ],
+      "base_retraining_required_inside_each_outer_fold": true,
+      "challenger_order": [
+        "equal-rank reference",
+        "non-negative linear rank stack",
+        "ElasticNet",
+        "shallow HGB only after a linear challenger passes"
+      ],
+      "compact_feature_dimension_range": [
+        24,
+        40
+      ],
+      "forbidden_features": [
+        "126D M2 raw",
+        "36D C2 raw",
+        "128D latent",
+        "IDs",
+        "source/campaign",
+        "true pose-derived fields"
+      ],
+      "global_oof_as_meta_train_forbidden": true,
+      "inner_folds_per_outer": 4,
+      "optional_contact_addon_requires_P1_pass": true,
+      "outer_folds": 5
+    },
+    "P4_PARENT_BALANCED_LAMBDALOSS": {
+      "arms": [
+        "T0 scalar/reference rank head",
+        "T1 plus LambdaLoss or ApproxNDCG@13",
+        "T2 plus low-weight PairLogit"
+      ],
+      "cutoff_k": 13,
+      "equal_parent_cap": true,
+      "hard_negative_mix": {
+        "global_base_union_false_positive": 0.25,
+        "same_parent": 0.5,
+        "same_reliability_and_cdr3_length_stratum": 0.25
+      },
+      "old_batch32_topk4_softtopk_reuse": false,
+      "ranking_head_separate_from_scalar_heads": true,
+      "relevance": "outer-fit global Rdual Top10 only",
+      "slate_size": 256,
+      "zero_positive_parent_policy": "few highest-score negative sentinels only"
+    }
+  },
+  "status": "DRAFT_ONLY_NO_IMPLEMENTATION_NO_TRAINING_AUTHORIZED",
+  "v12_technical_finding": {
+    "fallback_to_closest_target_all": true,
+    "folds_checked": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "formal_recovery": "V1.3 fresh 10-arm rerun with one immutable shared calibration receipt per fold",
+    "frozen_target_ratio_interval": [
+      0.05,
+      0.15
+    ],
+    "observed_max_grid_ratio_range": [
+      0.000505,
+      0.000538
+    ],
+    "old_oof_reuse_allowed": false,
+    "selected_lambda_all": 0.0025,
+    "severe_conflict_batch_count_all": 0,
+    "status": "FAIL_EXACT_C0_C1_CALIBRATION_RECEIPT_HASH_PAIRING"
+  }
+}

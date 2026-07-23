@@ -1,0 +1,14 @@
+{
+  "archive_bytes": null,
+  "archive_sha256": null,
+  "claim_boundary": "Placeholder only. It grants neither upload completion nor Docking launch authority.",
+  "deployment_bundle_receipt_sha256": null,
+  "docking_started": false,
+  "handoff_receipt_sha256": null,
+  "job_manifest_sha256": null,
+  "overlap1280_reuse_authorized": false,
+  "required_candidates": 6220,
+  "required_jobs": 12440,
+  "schema_version": "pvrig.c2_missing6220.bxcpu_input_anchors.v1",
+  "status": "WAITING_NODE1_HANDOFF_PASS"
+}

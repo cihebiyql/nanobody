@@ -1,0 +1,45 @@
+{
+  "created_at_utc": "2026-07-22T20:18:31.644135+00:00",
+  "external_dependencies": {
+    "generic_inference_module_sha256": "aca769af8c6cdd9c62facd7fa279de944357e61d003e8cd7befc39426074ff33",
+    "v213_base_module_sha256": "76f63369838995c10be0e7969ba36ae09fe9d0ed5d619ddbc233118d4d2a32a9"
+  },
+  "failure_policy": "Any byte drift invalidates this freeze. Await independent approval before remote launch.",
+  "files": {
+    "PREREGISTRATION_V3_1.json": "cbd5843d1786433e01ec9077341592bfbb1ba9bf4ba48e14117f6982d1de3c0f",
+    "README_ZH.md": "0f678e103f0a2e5272e4dff638d8251d47028aeadd8f9e2235bbb0cd542f6a51",
+    "TEST_RESULTS_V2_19_REGRESSION_V3_1_VENV.log": "6645ae5d35f84ff6fb1c3d7dedb02ec9aa84de5cf514f48e59425f135761769d",
+    "TEST_RESULTS_V3_1.log": "9a7ea035d1751df7b41121203865011d44aeaa7ace52b8cc07d43ac39ec24536",
+    "TEST_RESULTS_V3_1_VENV.log": "64d00d6d0aaab0f90308702e920f1bbaa524be4dc4cc367d7a9a8e80aed7b5bc",
+    "launchers/run_top150k_b_only_recovery_node1_v3_1.sh": "905ac819471fbb0a8eb8cc2987f7ea5ee8e562436a7d590c68269fb0616db399",
+    "src/run_profiled_v211_b4_inference_v3_1.py": "ca492d726db02b67247e76029239d809477729a88d9a2ddae167965b276c4a0a",
+    "src/validate_top150k_b_only_recovery_v3_1.py": "b6b862ffd09d07a7fa9fe1eae784553306bc8a8c838103ccf193f40dd80ec30c",
+    "tests/test_b_only_recovery_v3_1.py": "e2e7e36eb17d9407b946dc93b3e3764d8f9bdbc94978ea93165d0bb024ee2dc9"
+  },
+  "production_profile": {
+    "head_config_sha256": "75ee344219fa5c2c96fcad45bef758e60e6d34efb1921436fcd0c9f18ce2af3e",
+    "parameter_count": 1102764,
+    "seeds": [
+      43,
+      917,
+      1931,
+      3253
+    ],
+    "state_signature_sha256": "421030fba897bf1b3229be39630a9e1f83f7a3f159536a4b47c4df96f7068f34",
+    "tensor_count": 130
+  },
+  "schema_version": "pvrig_top150k_b_only_recovery_implementation_freeze_v3_1",
+  "scope": "Exact-profile V2.11 B4 recovery with byte-closed graph receipt/cache/manifest, byte-reused L1, exact prediction header allowlist, and atomic terminal publication.",
+  "status": "FROZEN_REVIEW_READY_NOT_REMOTE_EXECUTED",
+  "supersedes": "V3 rejected by independent review and stopped before B output/terminal.",
+  "verification": {
+    "extra_truth_or_numeric_header_fail_test": true,
+    "focused_tests": "23/23 PASS under system Python and phase2-5080 venv",
+    "graph_cache_mutation_fail_test": true,
+    "graph_manifest_mutation_fail_test": true,
+    "python_compile": "PASS",
+    "remote_execution_started": false,
+    "shell_syntax": "PASS",
+    "v219_regression_tests": "28/28 PASS under phase2-5080 venv"
+  }
+}

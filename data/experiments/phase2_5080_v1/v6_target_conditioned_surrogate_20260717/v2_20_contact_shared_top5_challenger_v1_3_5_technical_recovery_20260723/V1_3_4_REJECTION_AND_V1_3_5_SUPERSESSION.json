@@ -1,0 +1,27 @@
+{
+  "claim_boundary": "Technical preflight-binding and CLI evidence only; no scientific or model-performance claim.",
+  "rejected_version": {
+    "actual_legacy_launcher_sha256": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+    "bound_legacy_launcher_sha256": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+    "implementation_freeze_sha256": "b4d2352399d3f652bccf16f34069bafedba815c3edd553dbed2758add9dfb0d3",
+    "independent_failure_receipt_sha256": "8fd16547caf8b20a9d44331127d8a58808a3a41614538294d4bc44f21277a99e",
+    "observed": "Independent review found a deterministic preflight SHA failure and an argparse destination mismatch before Stage-A could complete.",
+    "package": "v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723",
+    "same_version_retry_allowed": false,
+    "training_artifacts_created": 0,
+    "training_started": false
+  },
+  "replacement_version": {
+    "only_authorized_changes": [
+      "bind the actual frozen V1.3.4 legacy launcher SHA",
+      "align the V1.3.5 receipt-builder CLI flag and destination",
+      "add end-to-end regressions for both defects",
+      "update lifecycle names, counts, and hashes"
+    ],
+    "package": "v2_20_contact_shared_top5_challenger_v1_3_5_technical_recovery_20260723",
+    "scientific_change_authorized": false,
+    "training_authorized": false
+  },
+  "schema_version": "pvrig.v220.v1_3_4_rejection_and_v1_3_5_supersession.v1",
+  "status": "V1_3_4_REJECTED_NO_TRAINING_V1_3_5_NEW_VERSION_REQUIRED"
+}

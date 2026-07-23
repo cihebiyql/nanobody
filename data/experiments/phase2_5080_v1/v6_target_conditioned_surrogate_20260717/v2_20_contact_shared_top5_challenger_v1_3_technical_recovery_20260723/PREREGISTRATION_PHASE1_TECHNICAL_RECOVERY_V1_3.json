@@ -1,0 +1,89 @@
+{
+  "authorization": {
+    "deployment_authorized": false,
+    "independent_review_required": true,
+    "node1_preflight_required": true,
+    "training_authorized": false
+  },
+  "claim_boundary": "Minimal technical causal-pair calibration lifecycle recovery only; no model-quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production-promotion claim.",
+  "created_date_local": "2026-07-23",
+  "failure_evidence": {
+    "local_diagnosis_sha256": "b4bcb7e0d5a03073c135243a21e8b928afa860b2a2be6c7b5ae5f2a64bc02453",
+    "operational_stop_receipt_sha256": "9f0332bfd12c455e4046405ac492c6fc3527b89cd916ca23c6b6b7cf237fbcad",
+    "pair_terminals_published": 0,
+    "v1_2_fold0_launcher_return_code": 1,
+    "v1_2_status": "FAIL_V1_2_EXACT_SHARED_CALIBRATION_PAIR_CLOSURE"
+  },
+  "frozen_calibration_contract": {
+    "contact_batches": 8,
+    "lambda_grid": [
+      0.00015625,
+      0.0003125,
+      0.000625,
+      0.00125,
+      0.0025
+    ],
+    "lambda_selection": "choose the smallest median shared-gradient ratio in [0.05,0.15], otherwise closest to 0.10",
+    "maximum_severe_conflict_batches": 2,
+    "pair_loss_coefficient": 0.5,
+    "severe_conflict_cosine_lt": -0.5,
+    "status": "PASS_CONTACT_WEIGHT_CALIBRATED_NO_OPTIMIZER",
+    "target_median_ratio": 0.1,
+    "target_median_ratio_interval": [0.05, 0.15]
+  },
+  "minimum_change": {
+    "new": [
+      "one shared calibration materialization per fold before either arm optimizer",
+      "both arms hash-validate and byte-replay the same fold artifact",
+      "both arms are forbidden from invoking the true calibrator"
+    ],
+    "unchanged": [
+      "9849 scalar rows and 54 whole-parent clusters",
+      "738 train-only contact candidates",
+      "five whole-parent splits",
+      "seed43 head-only initial state",
+      "frozen ESM2-650M and architecture",
+      "losses, optimizer and hyperparameters",
+      "lambda grid and selection semantics",
+      "pre-optimizer conflict gate",
+      "B0 replay, metrics, bootstrap and all core gates",
+      "claim boundary"
+    ]
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "bad_fold_or_seed_exclusion": false,
+    "open_development_access": false,
+    "prospective_or_frozen_test_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_checkpoint_history_prediction_or_calibration_input": false
+  },
+  "required_fail_closed_checks": [
+    "shared artifact is regular, nonempty, no-symlink and stable during read",
+    "shared artifact expected SHA256 before and after each arm",
+    "fold, seed and all frozen input bindings match",
+    "initial model-state hash and shared-parameter order match",
+    "unchanged calibration semantic contract passes",
+    "zero optimizer, backward and training activity during materialization",
+    "exactly one true calibrator invocation per fold",
+    "zero true calibrator invocation inside either arm",
+    "exact C0/C1/shared calibration byte equality",
+    "fresh V1.3 output directories and no V1.2 training-output inputs"
+  ],
+  "runs": {
+    "arms": ["C0", "C1"],
+    "epochs_per_arm": 8,
+    "folds": 5,
+    "seed": 43,
+    "total_training_runs": 10
+  },
+  "schema_version": "pvrig_v220_phase1_technical_recovery_v1_3",
+  "status": "FROZEN_V1_3_TECHNICAL_RECOVERY_PENDING_INDEPENDENT_REVIEW",
+  "upstream_exact_bindings": {
+    "v1_2_calibrator_sha256": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "v1_2_fold_runner_sha256": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "v1_2_pair_launcher_sha256": "a9180fea7b4e823d9033a7e25eba969e1f2fae4ff2d0fb9bdeca7797946c648c",
+    "v1_2_preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c"
+  }
+}

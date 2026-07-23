@@ -1,0 +1,8 @@
+{
+  "created_at_utc": "2026-07-22T17:13:59.486431+00:00",
+  "reason": "Independent review required atomic partial hardlink publication, all-row pre/post hash and inode validation, environment closure, and explicit output validators. V1 was deployed but never executed.",
+  "replacement": "IMPLEMENTATION_FREEZE_V2.json",
+  "schema_version": "pvrig_top150k_downstream_recovery_v1_supersession",
+  "status": "SUPERSEDED_BEFORE_EXECUTION",
+  "superseded_freeze_sha256": "f578a2d59b822692b9ecd284811ca8afd8bfecd89285084d45f61306c68f3454"
+}

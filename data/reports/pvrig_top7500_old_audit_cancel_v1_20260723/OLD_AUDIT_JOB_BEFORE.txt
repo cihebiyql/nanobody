@@ -1,0 +1,30 @@
+JobId=11942311 JobName=pvrig-top7500-audit
+   UserId=als001821(1016380) GroupId=als001821(1016380) MCS_label=N/A
+   Priority=1999 Nice=0 Account=bscc-al QOS=normal WCKey=*
+   JobState=PENDING Reason=Dependency Dependency=afterany:11942310_*(unfulfilled)
+   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   DerivedExitCode=0:0
+   RunTime=00:00:00 TimeLimit=01:00:00 TimeMin=N/A
+   SubmitTime=2026-07-22T23:50:18 EligibleTime=Unknown
+   AccrueTime=Unknown
+   StartTime=Unknown EndTime=Unknown Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-07-22T23:50:18 Scheduler=Main
+   Partition=amd_256q AllocNode:Sid=iln402.para.bscc:12718
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=
+   NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=1,mem=4G,node=1,billing=1
+   AllocTRES=(null)
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryNode=4G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=NO Contiguous=0 Licenses=(null) Network=(null)
+   Command=/publicfs04/fs04-al/home/als001821/.local/share/bxcpu_top7500_25k_v1_20260722/technical_status_after_shards.sh
+   WorkDir=/publicfs04/fs04-al/home/als001821/.local/share/bxcpu_top7500_25k_v1_20260722
+   StdErr=/publicfs04/fs04-al/home/als001821/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722_bxcpu_results/slurm-pvrig-top7500-audit-11942311.err
+   StdIn=/dev/null
+   StdOut=/publicfs04/fs04-al/home/als001821/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722_bxcpu_results/slurm-pvrig-top7500-audit-11942311.out
+   Power=
+   TresPerTask=cpu:1
+   
+

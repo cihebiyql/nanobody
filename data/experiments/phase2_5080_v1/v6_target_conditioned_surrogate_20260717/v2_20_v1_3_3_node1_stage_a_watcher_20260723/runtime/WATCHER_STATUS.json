@@ -1,0 +1,9 @@
+{
+  "claim_boundary": "Stage-A technical no-training monitor only.",
+  "detail": "bxcpu Python 3.11.14 reproduced tests-package import collision; V1.3.3 remains frozen and requires new V1.3.4 recovery",
+  "schema_version": "pvrig.v220.v1_3_3.node1_stage_a_watcher.v1",
+  "status": "STOPPED_KNOWN_PYTHON311_TEST_IMPORT_FAILURE",
+  "training_authorized": false,
+  "training_started": false,
+  "updated_at_utc": "2026-07-22T23:45:49.569830+00:00"
+}

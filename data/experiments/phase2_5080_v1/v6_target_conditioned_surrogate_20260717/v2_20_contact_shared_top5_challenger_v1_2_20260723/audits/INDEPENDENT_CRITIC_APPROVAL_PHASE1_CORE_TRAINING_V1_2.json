@@ -1,0 +1,21 @@
+{
+  "created_date_local": "2026-07-23",
+  "forbidden": [
+    "open/frozen access",
+    "bad fold exclusion",
+    "method or threshold changes",
+    "Top7500 injection",
+    "production promotion from Phase1 core"
+  ],
+  "invalidation": "Any bound-byte change invalidates this approval.",
+  "reviewed_hashes": {
+    "final_training_freeze_sha256": "dc2d64588c7bc211ea6ede4385befddd9e9df9765faadde679f59e3f6769faff",
+    "launcher_sha256": "a9180fea7b4e823d9033a7e25eba969e1f2fae4ff2d0fb9bdeca7797946c648c",
+    "node1_preflight_receipt_sha256": "ea6c218f3e0f14ffbdd1f2dcbf27190b1859b2d17da02ef6f89b8397b8c97455",
+    "preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c"
+  },
+  "reviewer": "independent Codex native critic /root/v220_v12_recovery_critic",
+  "schema_version": "pvrig_v220_phase1_core_v1_2_independent_training_approval",
+  "scope": "Exactly five whole-parent folds times paired C0/C1 under the frozen contract, followed by pairing, strict OOF and frozen core-gate evidence.",
+  "status": "APPROVE_EXACT_FROZEN_BYTES_FOR_FIRST_C0_C1_OPTIMIZER_STEP"
+}

@@ -1,0 +1,91 @@
+{
+  "cdr3_context": {
+    "new_internal_cdr3_duplicate_rows_beyond_first": 1850,
+    "new_rows_whose_exact_cdr3_not_seen_in_old": 5545,
+    "new_rows_whose_exact_cdr3_seen_in_old": 1955,
+    "new_unique_cdr3": 5650,
+    "old_unique_anarci_cdr3": 5619,
+    "unique_cdr3_overlap": 1163
+  },
+  "comparison_definition": {
+    "duplicate_vs_previous": "exact candidate_id/full amino-acid sequence/sequence_sha256 overlap",
+    "internal_duplicate": "repeated exact value within C2 list",
+    "new_vs_previous": "candidate absent from frozen priority Top7500"
+  },
+  "counts": {
+    "dropped_from_old_candidate_ids": 6220,
+    "exact_candidate_id_overlap": 1280,
+    "exact_sequence_overlap": 1280,
+    "exact_sequence_sha256_overlap": 1280,
+    "id_sequence_mismatch": 0,
+    "jaccard_candidate_ids": 0.09329446064139942,
+    "new_fraction_of_new": 0.8293333333333334,
+    "new_rows": 7500,
+    "new_vs_old_candidate_ids": 6220,
+    "old_rows": 7500,
+    "overlap_fraction_of_new": 0.17066666666666666,
+    "union_candidate_ids": 13720
+  },
+  "created_at_utc": "2026-07-23T01:47:26.384455+00:00",
+  "current_docking_reuse_by_old_repeat_sentinel": {
+    "1000": {
+      "c2_core_overlap": 62,
+      "c2_overlap": 126,
+      "old_sentinel_count": 1000
+    },
+    "4000": {
+      "c2_core_overlap": 330,
+      "c2_overlap": 583,
+      "old_sentinel_count": 4000
+    }
+  },
+  "high_confidence_core": {
+    "count": 4468,
+    "new_vs_old": 3720,
+    "overlap_old": 748
+  },
+  "internal_c2_exact_duplicates": {
+    "candidate_id": {
+      "duplicate_rows_beyond_first": 0,
+      "max_multiplicity": 1,
+      "unique": 7500,
+      "values_with_multiplicity_gt1": 0
+    },
+    "sequence": {
+      "duplicate_rows_beyond_first": 0,
+      "max_multiplicity": 1,
+      "unique": 7500,
+      "values_with_multiplicity_gt1": 0
+    },
+    "sequence_sha256": {
+      "duplicate_rows_beyond_first": 0,
+      "max_multiplicity": 1,
+      "unique": 7500,
+      "values_with_multiplicity_gt1": 0
+    }
+  },
+  "schema_version": "pvrig_c2_refined_top7500_overlap_vs_priority_v1",
+  "selection_channels": {
+    "C2_REFINED_CONSENSUS": {
+      "count": 6750,
+      "new_vs_old": 5554,
+      "overlap_old": 1196
+    },
+    "PARENT_BALANCED_C2_DIVERSITY": {
+      "count": 250,
+      "new_vs_old": 226,
+      "overlap_old": 24
+    },
+    "TARGET_MODEL_C2_SUPPORTED_RESCUE": {
+      "count": 500,
+      "new_vs_old": 440,
+      "overlap_old": 60
+    }
+  },
+  "sources": {
+    "new_c2_refined_top7500_tsv": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_top150k_c2_refined_top7500_v1_20260723/c2_refined_top7500_docking_handoff_v1/TOP7500_C2_REFINED.tsv",
+    "new_c2_refined_top7500_tsv_sha256": "c0d31cf751f3398eeec0b7b738a5cff44df9efc8918a6dc30991fa148ae82d3f",
+    "old_priority_top7500_tsv": "/tmp/pvrig_top7500_compare_20260723/TOP7500_DOCKING_CANDIDATES.tsv",
+    "old_priority_top7500_tsv_sha256": "9cb0a9462e57f6a008e0062d3fe466d92558d15ec86d58db8fe9798ca8b2853c"
+  }
+}

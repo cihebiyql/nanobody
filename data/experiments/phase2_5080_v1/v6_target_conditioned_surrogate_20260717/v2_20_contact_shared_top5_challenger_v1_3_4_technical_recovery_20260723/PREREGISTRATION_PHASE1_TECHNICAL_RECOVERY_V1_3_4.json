@@ -1,0 +1,62 @@
+{
+  "authorization": {
+    "preflight_deployment_authorized": false,
+    "preflight_independent_review_required": true,
+    "training_authorized": false,
+    "training_requires_successful_stage_a_and_separate_independent_approval": true
+  },
+  "claim_boundary": "Frozen-package unittest import recovery only; not model quality, binding, Kd, experimental blocking, Docking Gold, Top7500, or production promotion.",
+  "created_date_local": "2026-07-23",
+  "frozen_scientific_method": {
+    "architecture_changed": false,
+    "data_changed": false,
+    "gates_changed": false,
+    "hyperparameters_changed": false,
+    "initial_state_changed": false,
+    "loss_changed": false,
+    "optimizer_changed": false,
+    "split_changed": false,
+    "v1_3_1_preregistration_sha256": "a5e66a98b155a7284740a22a4c08d765d69f259a1f31cc3a801c9bccc7539088"
+  },
+  "legacy_102_test_contract": {
+    "expected_count": 102,
+    "expected_top_level_test_files": 13,
+    "hash_each_test_file": true,
+    "invocation": "python HASH_BOUND_EXACT_FILE_RUNNER LEGACY_ROOT <exact thirteen tests/*.py relative paths> --verbosity 2",
+    "nested_discovery_allowed": false,
+    "python_bin": "/data1/qlyu/software/envs/pvrig-v6-tc/bin/python",
+    "python_version": "Python 3.11.14",
+    "top_level_tests_package_import_allowed": false
+  },
+  "minimal_causal_change": {
+    "new": "V1.3.4 loads only the exact allowlisted regular test files with `importlib.util.spec_from_file_location` under private module names, then calls `unittest.TestLoader.loadTestsFromModule`; both legacy102 and new44 launchers use the same hash-bound adapter.",
+    "old": "V1.3.3 invoked exact relative test paths through `python -m unittest`; Python 3.11.14 converted them to `tests.*` imports, which were captured by an unrelated installed top-level `tests` package on bxcpu.",
+    "scope": "test import/discovery adapter, lifecycle version strings, test assertions, and hashes only"
+  },
+  "non_interference": {
+    "all_ten_arms_must_rerun": true,
+    "open_development_or_frozen_prospective_access": false,
+    "threshold_change_after_results": false,
+    "top7500_reordering": false,
+    "v1_2_or_rejected_v1_3_training_output_input": false
+  },
+  "preflight_contract": {
+    "combined_legacy_tests": 102,
+    "combined_tests": 146,
+    "folds": 5,
+    "new_v1_3_4_tests": 44,
+    "python311_exact_adapter_must_pass": true,
+    "training_code_path_allowed": false,
+    "training_started": false
+  },
+  "schema_version": "pvrig.v220.phase1_technical_recovery_v1_3_4.v1",
+  "status": "PREREGISTERED_V1_3_4_STAGE_A_ONLY_TRAINING_NOT_AUTHORIZED",
+  "superseded_v1_3_3": {
+    "bxcpu_failure_log_sha256": "a5a5a679b249f95c7530937272b6359416edfe824ab5951288a7973bc9fe8863",
+    "failure": "Python 3.11.14 installed tests package shadowed the repository tests namespace; 13/13 legacy modules failed import before any test body.",
+    "freeze_sha256": "cafbe876e59df793711aeb578417778486223f81325d97ecf2062b5f0fc62519",
+    "same_version_edit_or_retry_allowed": false,
+    "training_artifact_count": 0,
+    "training_started": false
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "ablation_contract": {
+    "conformer_swap": {
+      "mode": "inference_perturbation_on_frozen_C1_no_retraining"
+    },
+    "contact_label_shuffle": {
+      "eligible_stratum": "at_least_2_candidates_and_at_least_2_distinct_payload_hashes",
+      "invalid_if_movement_gate_fails": true,
+      "minimum_eligible_fraction_each_source": 0.5,
+      "minimum_eligible_fraction_pooled": 0.7,
+      "mode": "full_five_fold_retraining_from_C1_paired_initialization",
+      "permutation": "deterministic_derangement_of_candidate_level_contact_payloads_within_each_eligible_stratum",
+      "required_movement_rate_eligible": 1.0,
+      "seed": 20260723,
+      "strata": [
+        "outer_fit_only",
+        "teacher_source",
+        "parent_framework_cluster",
+        "receptor"
+      ]
+    },
+    "hotspot_mask_shuffle": {
+      "mode": "inference_perturbation_on_frozen_C1_no_retraining",
+      "preserve_positive_count": true,
+      "seed": 20260723
+    },
+    "target_residue_embedding_permutation": {
+      "mode": "inference_perturbation_on_frozen_C1_no_retraining",
+      "seed": 20260723
+    }
+  },
+  "authority": {
+    "allowed_phases": [
+      "PHASE_I_IMPLEMENTATION",
+      "PHASE_II_TEST_AND_FREEZE",
+      "PHASE_III_TRAIN_ONLY_TEACHER_MATERIALIZATION"
+    ],
+    "critic_verdict": "APPROVE_PHASE0_TEACHER_MATERIALIZATION",
+    "oof_training_authorized": false
+  },
+  "claim_boundary": "Train-only content-addressed residue-contact weak supervision derived from computational independent 8X6B/9E6Y Docking poses; not binding, affinity, experimental blocking, Docking Gold, or OOF model evidence.",
+  "contact_definition": {
+    "contact_cutoff_angstrom": 4.5,
+    "pair_variance": "population",
+    "pose_rank_weight": "normalize(1/log2(rank+1))",
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seed_weighting": "equal_over_observed_paired_successful_seeds",
+    "sparse_absence": "zero_only_after_valid_candidate_receptor_residue_target_pose_and_seed_closure",
+    "technical_failure": "masked_NA_never_negative",
+    "top_k": 8,
+    "uncertainty_weight": "1/(1+4*variance)"
+  },
+  "created_date_local": "2026-07-23",
+  "expected_train_teacher": {
+    "candidates": 738,
+    "development_candidates": 0,
+    "parents": 53,
+    "seed_rule": "seed917_included_multiseed_for_V29",
+    "single_seed_candidates": 0,
+    "sources": {
+      "V29": 305,
+      "V4D": 113,
+      "V4H": 320
+    }
+  },
+  "gradient_calibration_contract": {
+    "g_contact_exact": "gradient_over_shared_parameters_of_(L_marginal + 0.5 * L_pair)_before_lambda_scaling",
+    "pcgrad": false,
+    "phase0_computes_gradients": false,
+    "ratio": "lambda_marginal * norm(g_contact) / norm(g_scalar)"
+  },
+  "outputs": [
+    "train_contact_candidate_manifest.tsv",
+    "train_sparse_pair_contact_teacher.tsv.gz",
+    "train_dense_marginal_contact_teacher.tsv.gz",
+    "train_candidate_receptor_group_audit.tsv.gz",
+    "v29_train_pose_sha256_manifest.tsv.gz",
+    "target_node_position_baseline_contract.tsv",
+    "ACCESS_AUDIT.json",
+    "MATERIALIZATION_RECEIPT.json",
+    "SHA256SUMS"
+  ],
+  "post_result_changes_allowed": false,
+  "required_tests": 14,
+  "schema_version": "pvrig_v2_20_phase0_train_only_contact_teacher_materialization_contract_v1",
+  "source_hashes": {
+    "v29_job_results": "4d3a8c858de78683345c7bd7f3e9f06f801d55ce6953c776f22debbc84b9fd3c",
+    "v29_release_receipt": "2f5f9622802262ce67749ea0436653200e6dfbd077920b61c52b511fb63db8c6",
+    "v29_weaklabels": "2ffd88625a50b757f5a291a7bbea99632a39db636e8dba570dea890ea95945d4",
+    "v4d_marginal": "1f5906df603fdbaea166c992c93bb4ff1b95c22cccff80739cedbc892a6c6e8e",
+    "v4d_pair": "39b600e6979e72ef89237070b36a1f7afaecb4be5be4735d1650d55cd17811a8",
+    "v4d_receipt": "60502c7ef6931b02beaccd77c805c073e7689a485150ad1c0c3d0541980c1f5f",
+    "v4h_marginal": "7b79b07b7b052e518293ec98c5f4b5a79e4f5f0710950ae219a4205a8aff5a7f",
+    "v4h_pair": "9d27d2297822e978fe969bb645fee97a76ede544de902f6dfe6051c88a33ec92",
+    "v4h_receipt": "ef245ace9c7e2f8c6dbe15893c67689084d00e7720a1855fb88f900fe29b79be",
+    "v4h_state": "47fc2eb0ee6bae43369bf774d47c490874ceb6dbe04f0fbaece95cd61c8d33e5"
+  },
+  "split_first": {
+    "candidate_specific_operations_forbidden_before_allowlist": [
+      "resolve",
+      "stat",
+      "lstat",
+      "exists",
+      "glob",
+      "hash",
+      "open",
+      "decompress",
+      "parse"
+    ],
+    "development_pose_resolve_stat_hash_open_allowed": false,
+    "frozen_or_quarantine_pose_resolve_stat_hash_open_allowed": false,
+    "operation_order": [
+      "open_and_validate_split_manifest",
+      "stream_identity_only_scalar_teacher",
+      "freeze_train_allowlist",
+      "open_noncoordinate_source_metadata",
+      "resolve_train_allowlisted_pose_paths",
+      "stat_hash_open_train_allowlisted_poses"
+    ],
+    "scalar_teacher_sha256": "46bc32276a574e21bb92d7e6672b18aa68323c778b4f65d2415a384144ab95c3",
+    "split_manifest_sha256": "9dc416dcf8694f321a5432ba8574f0229c03527af14926fcf2f43ee4211f07ed"
+  },
+  "status": "FROZEN_PHASE0_TEACHER_MATERIALIZATION_ONLY_OOF_TRAINING_NOT_AUTHORIZED",
+  "target_graph": {
+    "cache_sha256": "b3081b7e91a5492f7765a721d9114dcb11f8ae095f40bfbcdcc3fe2b36edc108",
+    "manifest_sha256": "c78c30beb4ad668e28f8bfe17872b9712e92fd5871748718a70714a5d5f0ce9d",
+    "node_counts": {
+      "8x6b": 103,
+      "9e6y": 108
+    },
+    "receipt_sha256": "b1823387b70375517b65848d873ff0e875396125ca5882ea384fabfcbd8880a9"
+  },
+  "target_node_position_baseline_contract": {
+    "features_forbidden": [
+      "sequence_embedding",
+      "graph_embedding",
+      "teacher_source",
+      "candidate_id",
+      "parent_id",
+      "contact_availability"
+    ],
+    "fit_data": "outer_fit_parents_only",
+    "marginal_baseline_key": [
+      "receptor",
+      "vhh_region",
+      "vhh_sequence_index"
+    ],
+    "pair_baseline_key": [
+      "receptor",
+      "vhh_region",
+      "vhh_sequence_index",
+      "pvrig_node_index"
+    ],
+    "score_parent_or_development_labels_allowed": false,
+    "smoothing": "Beta(1,1) posterior mean at exact key, back off to receptor x target-node then receptor global"
+  }
+}

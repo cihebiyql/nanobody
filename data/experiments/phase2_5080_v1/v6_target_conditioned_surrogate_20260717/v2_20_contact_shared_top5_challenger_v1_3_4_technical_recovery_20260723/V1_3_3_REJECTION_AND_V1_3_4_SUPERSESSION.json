@@ -1,0 +1,23 @@
+{
+  "claim_boundary": "Technical test-import evidence only; no scientific or model-performance claim.",
+  "rejected_version": {
+    "bxcpu_python_version": "Python 3.11.14",
+    "combined_launcher_returncode": 1,
+    "failure_log_sha256": "a5a5a679b249f95c7530937272b6359416edfe824ab5951288a7973bc9fe8863",
+    "implementation_freeze_sha256": "cafbe876e59df793711aeb578417778486223f81325d97ecf2062b5f0fc62519",
+    "observed": "Ran 13 tests; FAILED(errors=13); every error was ModuleNotFoundError for tests.<frozen legacy module>.",
+    "package": "v2_20_contact_shared_top5_challenger_v1_3_3_technical_recovery_20260723",
+    "root_cause": "`python -m unittest tests/file.py` imported through the unrelated installed top-level tests package instead of the repository path.",
+    "same_version_retry_allowed": false,
+    "training_artifacts_created": 0,
+    "training_started": false
+  },
+  "replacement_version": {
+    "only_authorized_change": "hash-bound exact-file unittest loading plus lifecycle naming/tests/hashes",
+    "package": "v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723",
+    "scientific_change_authorized": false,
+    "training_authorized": false
+  },
+  "schema_version": "pvrig.v220.v1_3_3_rejection_and_v1_3_4_supersession.v1",
+  "status": "V1_3_3_REJECTED_NO_TRAINING_V1_3_4_NEW_VERSION_REQUIRED"
+}

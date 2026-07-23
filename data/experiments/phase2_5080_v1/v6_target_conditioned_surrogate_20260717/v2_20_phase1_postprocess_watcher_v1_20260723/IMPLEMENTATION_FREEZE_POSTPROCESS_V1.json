@@ -1,0 +1,87 @@
+{
+  "allowed_after_independent_approval": [
+    "deploy exact bytes to /data1/qlyu/projects/pvrig_v2_20_phase1_postprocess_watcher_v1_20260723/code",
+    "run the fixed nine-test launcher on Node1",
+    "launch exactly one watcher to /data1/qlyu/projects/pvrig_v2_20_phase1_postprocess_watcher_v1_20260723/runtime_v1",
+    "wait for all five frozen V1.2 pair terminals and execute the frozen postprocess chain"
+  ],
+  "authorization_condition": "A separate independent review of these exact bytes is required before deployment or launch.",
+  "claim_boundary": "Computational dual-receptor Docking-geometry surrogate training evidence only; not binding, Kd, experimental blocking, Docking Gold, Top7500 ranking, or production promotion.",
+  "created_date_local": "2026-07-23",
+  "deployment_state": {
+    "deployed": false,
+    "runtime_created": false,
+    "watcher_started": false
+  },
+  "execution_contract": {
+    "C0_oof_counts": {
+      "folds": 5,
+      "parents": 54,
+      "rows": 9849,
+      "seed": 43
+    },
+    "C1_oof_counts": {
+      "folds": 5,
+      "parents": 54,
+      "rows": 9849,
+      "seed": 43
+    },
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 20260723,
+    "gate_source": "unchanged V2.20 V1.2 preregistration and frozen core-gate CLI",
+    "individual_evaluations": [
+      "C0",
+      "C1"
+    ],
+    "pairing_validation": "PASS_V220_C0_C1_FIVE_FOLD_CAUSAL_PAIRING",
+    "required_pair_terminal_status": "PASS_V220_C0_C1_FOLD_PAIR",
+    "required_pair_terminals": 5
+  },
+  "forbidden": [
+    "modify V2.20 training code, data, split, architecture, loss, hyperparameters, metrics, gates, or thresholds",
+    "read open-development or frozen-test data",
+    "exclude any fold after observing results",
+    "publish Phase1b authorization unless every frozen core gate passes",
+    "inject into or reorder Top7500",
+    "production promotion",
+    "start before independent review"
+  ],
+  "implementation_hashes": {
+    "PREREGISTRATION_POSTPROCESS_V1.json": "168a12f29de587e4c0d245da6a923143b6726c47de40e80ea1daecff900cca3a",
+    "launchers/run_postprocess_tests_v1.sh": "f13a3d20b9658c70e90efeb486b40009f16a85301a469e24b67966f5c2a5441d",
+    "launchers/run_v220_phase1_postprocess_watcher_node1_v1.sh": "c80539eb7daf781354ac53f15f70777ce770b52d314b40cb555cff59cdf658f4",
+    "src/run_v220_phase1_postprocess_watcher_v1.py": "df3ffbfd1c211eda247375e6edd94acc523e0703da6652f8eecfdb6292929016",
+    "tests/TEST_RESULTS_POSTPROCESS_V1.log": "f5422380e6b1af3fa02d7c79ad814dbfd40aea15bbd060e91611ec6c83695cb7",
+    "tests/test_run_v220_phase1_postprocess_watcher_v1.py": "d224508b83e7c8dbe654c45c5079b89afe41041b2170ca48c9411b3b23a5c48a"
+  },
+  "schema_version": "pvrig_v220_phase1_postprocess_implementation_freeze_v1",
+  "scope": "Independent post-training watcher only; no training-code or frozen-method modification.",
+  "status": "FROZEN_V220_PHASE1_POSTPROCESS_WATCHER_PENDING_INDEPENDENT_REVIEW",
+  "terminal_contract": {
+    "core_fail": "FAIL_NO_V220_PHASE1_CORE_PROMOTION",
+    "core_pass": "PASS_V220_PHASE1B_AUTHORIZED_BY_FROZEN_CORE_GATE_ONLY",
+    "core_pass_authorizes": "Phase1b ablations only",
+    "exception": "FAILED_V220_PHASE1_POSTPROCESS_NO_PASS_PUBLISHED",
+    "production_promoted": false,
+    "top7500_injected": false
+  },
+  "test_evidence": {
+    "bash_syntax": "PASS",
+    "dynamic_discovery": false,
+    "errors": 0,
+    "exact_test_files": 1,
+    "failures": 0,
+    "py_compile": "PASS",
+    "tests_run": 10
+  },
+  "upstream_exact_bindings": {
+    "Node1_preflight_receipt_sha256": "ea6c218f3e0f14ffbdd1f2dcbf27190b1859b2d17da02ef6f89b8397b8c97455",
+    "V2.20_V1.2_final_training_freeze_sha256": "dc2d64588c7bc211ea6ede4385befddd9e9df9765faadde679f59e3f6769faff",
+    "V2.20_V1.2_final_training_launcher_sha256": "a9180fea7b4e823d9033a7e25eba969e1f2fae4ff2d0fb9bdeca7797946c648c",
+    "V2.20_V1.2_preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c",
+    "collector_cli_sha256": "88a6ab691240669478ed41d7d41533f7fa7357b331651663644c69cf733079c4",
+    "core_gate_cli_sha256": "741f663520d5d6213163ca6f65157f9132c22dd68cbcf0f2c531768476f4fb20",
+    "evaluator_cli_sha256": "f8291ef73514428661becdce2e75921a2771106c95df7803c9e050ddcbf7a7bb",
+    "pairing_cli_sha256": "b1c80c8f2488f6955d5062af35e3cc36738d09f499d361bd7ddca49dc8193939"
+  }
+}

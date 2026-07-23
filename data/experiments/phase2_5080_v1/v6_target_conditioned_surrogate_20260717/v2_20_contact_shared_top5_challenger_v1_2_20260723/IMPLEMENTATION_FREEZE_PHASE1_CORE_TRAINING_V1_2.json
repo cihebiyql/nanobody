@@ -1,0 +1,125 @@
+{
+  "allowed_after_independent_approval": [
+    "run exactly five fold-pair launcher invocations",
+    "validate C0/C1 pairing",
+    "collect strict 9849-row OOF for C0/C1",
+    "evaluate frozen core gate with 10000 whole-parent bootstraps seed 20260723"
+  ],
+  "authorization_condition": "Independent critic approval of these exact bytes is required before the first optimizer step.",
+  "claim_boundary": "Computational dual-receptor Docking-geometry surrogate development only; not binding, Kd, experimental blocking, Docking Gold, expression, purity, or final submission evidence.",
+  "created_date_local": "2026-07-23",
+  "forbidden": [
+    "open-development or frozen-test access",
+    "M2/C2/pose-derived inputs",
+    "changing any data, split, architecture, loss, hyperparameter, metric, gate or threshold",
+    "excluding observed bad folds/seeds",
+    "Top7500 reordering before full promotion",
+    "production promotion from Phase1 core alone",
+    "candidate_id, parent_id, or campaign_id as neural inputs"
+  ],
+  "frozen_initial_state": {
+    "path_node1": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2/V220_PHASE1_SEED43_HEAD_STATE.bin",
+    "receipt_path_node1": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_2_20260723/pretraining_v1_2/V220_PHASE1_SEED43_HEAD_STATE.bin.receipt.json",
+    "receipt_sha256": "a3bd507edc70fbed2b62e64db82671a1e81849df3d203df1fc3256f705f9aa5f",
+    "scope": "model.head only; frozen backbone separately bound",
+    "sha256": "3139cf661a7358ea89e508ac0d27f0810fc239e6f662e976e250f7029b45e807",
+    "shared_across_all_ten_runs": true
+  },
+  "frozen_training_contract": {
+    "Rdual_inference": "exact min(pred_R8,pred_R9)",
+    "arms": [
+      "C0_zero_contact_loss_control",
+      "C1_calibrated_contact_auxiliary_loss"
+    ],
+    "batch_size": 8,
+    "contact_weight": "outer-fit-only fixed grid calibration; identical receipt required within pair",
+    "dropout": 0.25,
+    "dual_weight": 0.5,
+    "epochs": 8,
+    "eval_batch_size": 16,
+    "folds": 5,
+    "gradient_accumulation": 4,
+    "gradient_clip": 1.0,
+    "graph_hidden_dim": 128,
+    "huber_beta": 0.03,
+    "learning_rate": 0.0001,
+    "precision": "bf16",
+    "receptor_weight": 1.0,
+    "runs": 10,
+    "seed": 43,
+    "selection": "NONE_FIXED_EPOCH_ONLY",
+    "softmin_tau": 0.02,
+    "top_weight_center": 0.85,
+    "top_weight_scale": 0.05,
+    "top_weight_strength": 3.0,
+    "weight_decay": 0.02
+  },
+  "implementation_hashes": {
+    "src/calibrate_v220_contact_weight_v1.py": "b0b5e6719324fa8376bc33512c9e76805ef768ae1917081f8d2f83a6c9f858e8",
+    "src/collect_v220_contact_shared_oof_v1.py": "88a6ab691240669478ed41d7d41533f7fa7357b331651663644c69cf733079c4",
+    "src/evaluate_v220_oof_v1.py": "f8291ef73514428661becdce2e75921a2771106c95df7803c9e050ddcbf7a7bb",
+    "src/evaluate_v220_phase1_core_gate_v1.py": "741f663520d5d6213163ca6f65157f9132c22dd68cbcf0f2c531768476f4fb20",
+    "src/materialize_v220_paired_initial_state_v1.py": "9be8bd8572b297a2b075965775e04c2f066b2ca534738f6f3a8535fd97e988ec",
+    "src/run_v220_contact_shared_fold_v1.py": "da7a9e28dc818fc20fdaedf35b14da46e4db407c618bd5ce41e1db0ca8b22116",
+    "src/v220_contact_teacher_store_v1.py": "cb6a20cfe752f237f6afb865bb1c2440b4f3b219634b7d8ca59800f2ec5f0953",
+    "src/validate_v220_cross_process_initial_state_v1.py": "515a9a817906e0f6319711e304b3bc50131b7710b0ca7172076f1fd4a680bf15",
+    "src/validate_v220_paired_folds_v1.py": "b1c80c8f2488f6955d5062af35e3cc36738d09f499d361bd7ddca49dc8193939"
+  },
+  "launcher": {
+    "arm_order": "even C0 then C1; odd C1 then C0",
+    "folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "path": "launchers/run_phase1_core_fold_pair_node1_v1_2.sh",
+    "sha256": "a9180fea7b4e823d9033a7e25eba969e1f2fae4ff2d0fb9bdeca7797946c648c",
+    "single_physical_gpu_required": true,
+    "unit": "one paired C0/C1 whole-parent fold"
+  },
+  "only_v1_2_change": "seed43 before production model/backbone construction; independently verified cross-process runtime binding",
+  "prerequisite_closure": {
+    "B0_replay_sha256": "e260cdf2f56b96bd558235bb6af9e5f87cfe47099f45e41a0d084d89319fe7f3",
+    "cross_process_backward_called": false,
+    "cross_process_optimizer_created": false,
+    "cross_process_optimizer_steps": 0,
+    "cross_process_status": "PASS_V220_CROSS_PROCESS_INITIAL_STATE_AND_BACKBONE_BINDING",
+    "cross_process_terminal_sha256": "de1fe107afa0609bd9795bf1ebcba81778b12b9f1acd7ea86471b4506be7824a",
+    "node1_preflight_receipt_sha256": "ea6c218f3e0f14ffbdd1f2dcbf27190b1859b2d17da02ef6f89b8397b8c97455",
+    "node1_preflight_status": "PASS_NODE1_102_TESTS_B0_NEW_INITIAL_AND_CROSS_PROCESS_LOAD_NO_TRAINING",
+    "node1_test_log_sha256": "84c1c4a57fd4fb858efe7330494c427bdb2a19a5752cb4df68af8681b9c6b377",
+    "node1_tests_run": 102,
+    "preflight_freeze_sha256": "02bbd9011ed0ee38128b3cd704a9b4c1d737147c6dfca932b00d2ac60286d4a8",
+    "preregistration_sha256": "3a42b7a53d599413085255c67d4fab84014d25abeeb3c8bd28bbf5be7341c07c",
+    "pretraining_terminal_sha256": "8e568bf30bc3c942a716b8748030e80475fc2f57401fb61a1103cdb13f6fb7a9",
+    "training_started": false
+  },
+  "required_post_training_evidence": [
+    "five PASS fold-pair terminals",
+    "PASS five-fold causal pairing receipt",
+    "C0 and C1 OOF receipts each with 9849 rows, 54 parents, five folds, and zero held-out-parent contact reads",
+    "B0/C0/C1 frozen core-gate receipt",
+    "Phase1b ablations only if and only if the core gate passes"
+  ],
+  "schema_version": "pvrig_v220_phase1_core_final_training_implementation_freeze_v1_2",
+  "status": "FROZEN_FINAL_PHASE1_CORE_V1_2_TRAINING_PROTOCOL_PENDING_INDEPENDENT_APPROVAL",
+  "supersession": {
+    "record": "V1_1_TRAINING_ATTEMPT_REJECTION_AND_V1_2_SUPERSESSION.json",
+    "record_sha256": "3080b79195930c93401bf21737404047cc1ea492b546072ac1039317eba6aae7"
+  },
+  "technical_recovery_only": true,
+  "unchanged_from_v1_1_method": [
+    "data",
+    "whole-parent split",
+    "model architecture",
+    "losses",
+    "hyperparameters",
+    "contact lambda grid",
+    "metrics",
+    "gates",
+    "B0 baseline",
+    "claim boundary"
+  ]
+}

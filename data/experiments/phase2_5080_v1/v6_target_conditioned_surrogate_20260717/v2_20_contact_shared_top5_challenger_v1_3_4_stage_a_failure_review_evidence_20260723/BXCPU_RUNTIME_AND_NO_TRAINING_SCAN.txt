@@ -1,0 +1,10 @@
+hostname=ln402
+python=Python 3.11.14
+site_packages=/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/env/lib/python3.11/site-packages
+training_artifact_count=0
+training_started=false
+a33f627cad8d1a8d67d1d5ae739a00ec8683256de54f867375fea516d645110d  input.tar.gz
+60b8eee1db3338762506fed2c160873855263a24f82347cde4568e9eb25deadb  v213.tar.gz
+1110e11e3c0118c3255b9f33171de5444f0f9f3f490e2770d15fd06073d0b903  more_deps.tar.gz
+38b17dafc47f31a1135e8e3ce308fa721cb29cd34cfbbf06cef86332c6661943  EXACT_146_FINAL.log
+9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  EXACT_146_FINAL.rc

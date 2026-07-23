@@ -1,0 +1,17 @@
+{
+  "allowed_next_action": "independent review of exact-byte V1.3.2 Stage-A no-training package",
+  "causal_change": "replace Python3.11-incompatible absolute unittest file argv with exact hash-bound relative file argv",
+  "failure_diagnosis_sha256": "be3877c88f640fd136cca97b9b8a56d9882a3a008a270b13ccf12ff66ad8a370",
+  "failure_receipt_sha256": "d8ab1efe93079c02f7b8292fa1f19f4b88c370b771b1d7e2fc29b8f03884ead2",
+  "legacy_102_failure_log_sha256": "4190b218d9d61c84c393e6730abd95fed900fb418297e47777e2530ca3d174ae",
+  "method_data_split_loss_optimizer_hyperparameters_gates_changed": false,
+  "new_version": "V1.3.2",
+  "old_version": "V1.3.1",
+  "old_version_freeze_sha256": "bd66829ad25d35981c96b65055ce3d3822edfcfeda6624a9d65fea1efedb2d3e",
+  "old_version_same_version_retry_allowed": false,
+  "old_version_training_artifact_count": 0,
+  "schema_version": "pvrig.v220.v1_3_1_failure_v1_3_2_supersession.v1",
+  "status": "V1_3_1_TERMINAL_FAIL_CLOSED_SUPERSEDED_BY_V1_3_2_STAGE_A_ONLY",
+  "training_authorized": false,
+  "training_started": false
+}

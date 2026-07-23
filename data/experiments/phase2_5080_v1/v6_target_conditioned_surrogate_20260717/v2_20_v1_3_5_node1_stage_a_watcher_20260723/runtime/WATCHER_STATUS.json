@@ -1,0 +1,9 @@
+{
+  "claim_boundary": "Stage-A technical no-training deployment/preflight monitor only.",
+  "detail": "campus-WLAN SSH proxy unavailable; exact package remains local and immutable",
+  "schema_version": "pvrig.v220.v1_3_5.node1_stage_a_watcher.v1",
+  "status": "WAITING_NODE1_CONNECTIVITY",
+  "training_authorized": false,
+  "training_started": false,
+  "updated_at_utc": "2026-07-23T01:01:00.560435+00:00"
+}

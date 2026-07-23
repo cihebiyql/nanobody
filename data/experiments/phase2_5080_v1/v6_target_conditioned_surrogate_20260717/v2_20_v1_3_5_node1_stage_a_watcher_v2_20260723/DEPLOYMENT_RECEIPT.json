@@ -1,0 +1,60 @@
+{
+  "approval": {
+    "path": "reports/pvrig_v220_v135_python311_bxcpu_tests_v1_20260723/INDEPENDENT_STAGE_A_APPROVAL_V1_3_5.json",
+    "scope": "Stage-A preflight only",
+    "sha256": "91fc04f0cbe2441c76318eac20ba0f41b8525eca1a27bd24465a0963613c97c8"
+  },
+  "claim_boundary": "Watcher V2 implementation/test/local-preflight readiness only. No Node1 remote action and no training authorization.",
+  "created_utc": "2026-07-23T01:24:01.129077+00:00",
+  "file_sha256": {
+    "BASH_N_RESULTS.log": "68f146446aa8aabf50eda92d283832d7dbb3878088bb359ec68bd0a51b6877c6",
+    "LOCAL_PREFLIGHT_RESULTS.log": "465ec65752cba34c11c341f5218337128bb85774f2452187e03761fd03b7b000",
+    "PLAN_ZH.md": "9913d34f14c8ada8531acc1930a910a2a342f069caa80844e50458e28d177699",
+    "TEST_RESULTS.log": "3efe337cd19812b115ee64c93df16e5b87dcdbd23d69f75a82b0d7cf5e39084f",
+    "V1_WATCHER_REJECTION_AND_V2_SUPERSESSION.json": "ad07e8b4c01a63a2ad28cba50305e7ba31c89c4ebc3439eec27f63a51703d388",
+    "classify_node1_stage_a_state_v2.py": "1dec734295ff9357d2e756538282d01ba6d1b4fcd9234dcb5c01ef3f6800d77b",
+    "monitor_and_launch_stage_a_v2.sh": "66704aed71805d0f099d501b77a9ee464452f15d6e4464c13069b73ac3b3bae4",
+    "probe_node1_stage_a_state_v2.py": "b336a5da40c67539f3f7b2fd5dc0adba50ff8e87d1d77562c2521bf7bd3fcd27",
+    "prove_remote_stage_a_artifacts_v2.py": "1cbe835de5a5b95ce366cc791173a00203ca7d0119a985a79ac168ff1a07359f",
+    "remote_stage_a_entrypoint_v2.sh": "ce47f7889c30ce314410d8569e9b54f15978532fb693027a652d7c6bb04c9080",
+    "start_node1_stage_a_watcher_v2.sh": "cebd65550ec93a891b780b0721004668d3f736f1da054c17cf339e8740cd4db2",
+    "test_node1_stage_a_watcher_v2.py": "5a8bd9741dbaae7d9661334bb3c2b130d9647f7197994f8807626a6804bfa56d",
+    "validate_node1_stage_a_receipt_v2.py": "590d577df6b7a6c0562882f676840ee0917dca872777c60e03391c1b3aaa4074",
+    "validate_node1_stage_a_session_v2.py": "afebe18a77676ab58207333c20ccbfeb0eb4f20fa3a4572218b48adfd6d82886",
+    "verify_frozen_package_v2.py": "b1c2123967fa0fc4b2e1b6e1d33122ecf9054f071b3b15798e5678416e21e225"
+  },
+  "frozen_package": {
+    "implementation_freeze_sha256": "07c8463689d6baa0da1ebd0c1d4440fc0315c8e8edb4e1b72415434567dc0804",
+    "path": "experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_5_technical_recovery_20260723",
+    "preregistration_sha256": "574919e65f7079475c17294e297327ce311910ced12656e34640e1fa4a5b9562"
+  },
+  "remote_action_started": false,
+  "remote_identity": {
+    "evidence": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_stage_a_evidence_v2_20260723",
+    "package": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_technical_recovery_watcher_v2_20260723",
+    "runtime": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_preflight_runtime_v2_20260723",
+    "tmux": "v220_v135_stagea_preflight_v2"
+  },
+  "schema_version": "pvrig.v220.v1_3_5.node1_stage_a_watcher_deployment_receipt.v2",
+  "status": "PASS_V2_WATCHER_IMPLEMENTATION_READY_NOT_STARTED",
+  "training_authorized": false,
+  "training_started": false,
+  "v1": {
+    "remote_action_started": false,
+    "status": "REJECTED_SUPERSEDED_BEFORE_REMOTE_ACTION"
+  },
+  "verification": {
+    "ambiguous_state_fail_closed_tests_ok": true,
+    "bash_syntax_files": 3,
+    "bash_syntax_ok": true,
+    "disconnect_adoption_state_tests_ok": true,
+    "exact_tmux_session_command_adoption_test_ok": true,
+    "local_preflight_only_ok": true,
+    "mutated_and_symlink_receipt_rejected": true,
+    "python_compile_files": 7,
+    "python_compile_ok": true,
+    "unit_tests_ok": true,
+    "unit_tests_run": 11,
+    "valid_receipt_remote_and_local_validation_test_ok": true
+  }
+}

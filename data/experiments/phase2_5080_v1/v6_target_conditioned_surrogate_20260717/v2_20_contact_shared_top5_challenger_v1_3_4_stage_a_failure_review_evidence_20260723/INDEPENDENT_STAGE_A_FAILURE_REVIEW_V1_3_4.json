@@ -1,0 +1,76 @@
+{
+  "blocking_findings": [
+    {
+      "actual_sha256": "c3bae8a57009bb05106c74c3fc0e6d4d614c198e96cea6ad25633a455e5b73e6",
+      "bound_sha256": "e7659f2c81e4b1ef8d736d50b4a87943a0fb5b491a42003a2ff46ca8bc26fbf1",
+      "deterministic_effect": "sha256sum gate fails before Stage-A materialization",
+      "id": "V134_PREFLIGHT_LEGACY_LAUNCHER_HASH_STALE",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/launchers/run_phase1_preflight_node1_v1_3_4.sh"
+    },
+    {
+      "build_reads": "args.v1_3_4_test_log",
+      "deterministic_effect": "AttributeError if the receipt builder CLI is reached",
+      "id": "V134_PREFLIGHT_RECEIPT_ARGPARSE_DEST_MISMATCH",
+      "parser_destination": "v1_3_3_test_log",
+      "parser_flag": "--v1-3-3-test-log",
+      "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/src/build_v220_v1_3_4_preflight_receipt.py"
+    }
+  ],
+  "claim_boundary": "Independent frozen-package, exact-test-loader, and Stage-A deployment-readiness review only; no model-quality, Top5, binding, Kd, experimental-blocking, Docking-Gold, or production-promotion claim.",
+  "coverage_gaps": {
+    "frozen_new44_constructed_argparse_namespace_directly_and_did_not_test_cli_destination": true,
+    "frozen_new44_did_not_assert_bound_legacy_launcher_hash_equals_file": true
+  },
+  "created_utc": "2026-07-23T00:19:18.692352+00:00",
+  "disposition": {
+    "deployment_authorized": false,
+    "required_next_version_changes": [
+      "bind the actual frozen V1.3.4 legacy launcher SHA in preflight",
+      "make receipt-builder CLI flag/destination match args.v1_3_4_test_log",
+      "add end-to-end regression tests for both frozen bindings",
+      "freeze a new version and obtain a new independent review"
+    ],
+    "same_version_edit_or_retry_allowed": false,
+    "stage_a_approved": false,
+    "training_authorized": false,
+    "v1_3_4_must_never_be_deployed_or_trained": true
+  },
+  "evidence_sha256": {
+    "BXCPU_PYTHON31114_EXACT_146.log": "38b17dafc47f31a1135e8e3ce308fa721cb29cd34cfbbf06cef86332c6661943",
+    "BXCPU_PYTHON31114_EXACT_146.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "BXCPU_RUNTIME_AND_NO_TRAINING_SCAN.txt": "40e368f6080c76a1f4a6557aa6822c5af7e801b7e1dcb792e83fb40d16a838ad",
+    "DYNAMIC_DEFECT_PROBES.json": "97df9c2625fcbade362c47a948cbbea06c19d8f59a2bf072aa479d50cd89f0a1",
+    "LOCAL_LEGACY102_EXACT_FILE_PYTHON310.log": "f2f901c5b7caeb83f5d4f4ef8aefc30c02e200796b3869b8494b18781b2fa1a7",
+    "LOCAL_LEGACY102_EXACT_FILE_PYTHON310.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "LOCAL_NEW44_PYTHON310.log": "afd427da29f5249e4b06726b0da62a1b19c7c55af9bfd04463624dc6be341d88",
+    "LOCAL_NEW44_PYTHON310.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "LOCAL_RUNTIME_AND_NO_TRAINING_SCAN.txt": "e5235d8d82b4d1ac8ad82ee6d6436dce5af275f9bc8c14ad6ab5fafe2b8e765b",
+    "README_ZH.md": "8bb0082e8e6c8a80b14ca437e5297c8794237f6cfdd3c7383b7754449551ff96",
+    "STATIC_REVIEW_EVIDENCE.json": "31535e366e8043da509c2e8d9882c79cae6ce676156bedfebe7ea92b50daabe2",
+    "STATIC_REVIEW_RUN.log": "6b6261c805f03dda11eafb852b5d421936f4b0297fe61eef58d8634467ddadbf",
+    "verify_v134_frozen_package_review.py": "65df22ff535f724b0f188ce7222446fb05cc85e95f47851975acb0d87fb6568b"
+  },
+  "reviewed_package": {
+    "freeze_sidecar_exact": true,
+    "implementation_freeze_path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723/IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_4.json",
+    "implementation_freeze_sha256": "b4d2352399d3f652bccf16f34069bafedba815c3edd553dbed2758add9dfb0d3",
+    "package_closure_exact": true,
+    "path": "/mnt/d/work/\u6297\u4f53/data/experiments/phase2_5080_v1/v6_target_conditioned_surrogate_20260717/v2_20_contact_shared_top5_challenger_v1_3_4_technical_recovery_20260723"
+  },
+  "schema_version": "pvrig.v220.v1_3_4.independent_stage_a_failure_review.v1",
+  "status": "FAIL_V1_3_4_STAGE_A_DEPLOYMENT_NOT_AUTHORIZED",
+  "verified_passes": {
+    "bxcpu_combined_exact_tests": 146,
+    "bxcpu_combined_returncode": 0,
+    "bxcpu_host": "ln401/ln402 login endpoint",
+    "bxcpu_python": "Python 3.11.14",
+    "data_model_split_loss_optimizer_threshold_hyperparameters_changed": false,
+    "five_scientific_core_files_byte_identical_to_v1_3_3_and_v1_3_1": true,
+    "local_legacy_exact_file_tests": 102,
+    "local_new_tests": 44,
+    "local_python": "Python 3.10.12",
+    "training_artifact_count": 0,
+    "training_started": false,
+    "training_template_version_normalized_identical_to_v1_3_3": true
+  }
+}

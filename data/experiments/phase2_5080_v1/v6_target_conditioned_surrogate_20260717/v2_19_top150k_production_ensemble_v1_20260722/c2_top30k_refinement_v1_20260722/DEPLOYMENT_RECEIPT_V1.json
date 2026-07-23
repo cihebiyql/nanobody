@@ -1,0 +1,13 @@
+{
+  "schema_version": "pvrig_v2_19_c2_top30k_refinement_node1_deployment_v1",
+  "status": "PASS_DEPLOYED_WATCHER_RUNNING",
+  "deployed_at": "2026-07-22T15:51:33Z",
+  "node": "node1",
+  "pid": 867322,
+  "runtime_root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722",
+  "package_root": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722/code/c2_top30k_refinement_v1_20260722",
+  "status_path": "/data1/qlyu/projects/pvrig_1m_fixed_pose_top150k_surrogate_ensemble_v1_20260722/status/C2_TOP30K_REFINEMENT_WATCHER.json",
+  "observed_status": "WAITING_FOR_FOUR_MODEL_PRELIMINARY",
+  "node1_tests": "3 tests in 0.117s, OK",
+  "claim_boundary": "The watcher is deployed and alive; final C2-refined Top7500 is not claimed complete until the terminal receipt exists."
+}
