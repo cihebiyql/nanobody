@@ -1,0 +1,18 @@
+{
+  "batch_size": 40,
+  "campaigns": [
+    {
+      "batch": 0,
+      "campaign": "c2_new4220_seed42_3047",
+      "delivered": 0,
+      "pruned": 0
+    }
+  ],
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new4220_seed42_3047_bxcpu_incremental_spool_20260723/shard01",
+  "node1_root": "/data1/qlyu/projects/pvrig_c2_new4220_seed42_3047_docking_results_v1_20260723",
+  "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+  "shard_count": 4,
+  "shard_index": 1,
+  "stable_age_seconds": 180,
+  "updated_at_utc": "2026-07-23T14:04:33.047616+00:00"
+}

@@ -2,8 +2,10 @@
   "batch_size": 20,
   "campaigns": [
     {
+      "batch": 0,
       "campaign": "top7500_25k",
-      "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n')"
+      "delivered": 6232,
+      "pruned": 6232
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard00",
@@ -12,5 +14,5 @@
   "shard_count": 4,
   "shard_index": 0,
   "stable_age_seconds": 60,
-  "updated_at_utc": "2026-07-23T06:00:42.752693+00:00"
+  "updated_at_utc": "2026-07-23T14:03:27.957939+00:00"
 }

@@ -2,14 +2,16 @@
   "batch_size": 40,
   "campaigns": [
     {
-      "batch": 40,
+      "batch": 0,
       "campaign": "c2_new4220",
-      "delivered": 306,
-      "pruned": 306
+      "delivered": 4148,
+      "pruned": 4148
     },
     {
+      "batch": 1,
       "campaign": "c2_new2000",
-      "error": "RuntimeError('Node1 metadata sync failed for c2_new2000/reports: command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\nrsync: connection unexpectedly closed (0 bytes received so far) [sender]\\nrsync error: unexplained error (code 255) at io.c(232) [sender=3.2.7]\\n')"
+      "delivered": 78,
+      "pruned": 78
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard00",
@@ -18,5 +20,5 @@
   "shard_count": 4,
   "shard_index": 0,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-07-23T06:02:03.069168+00:00"
+  "updated_at_utc": "2026-07-23T14:03:07.052745+00:00"
 }

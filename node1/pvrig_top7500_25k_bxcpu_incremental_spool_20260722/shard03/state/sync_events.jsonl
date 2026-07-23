@@ -2892,3 +2892,853 @@
 {"campaign": "top7500_25k", "cycle_seconds": 133.622, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T05:57:54.461532+00:00"}
 {"campaign": "top7500_25k", "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n')", "message": "campaign cycle failed", "time": "2026-07-23T06:01:34.495415+00:00"}
 {"campaigns": [{"campaign": "top7500_25k", "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n')"}], "message": "sync cycle complete", "time": "2026-07-23T06:01:34.499974+00:00"}
+{"campaign": "top7500_25k", "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n')", "message": "campaign cycle failed", "time": "2026-07-23T06:04:29.761906+00:00"}
+{"campaigns": [{"campaign": "top7500_25k", "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n')"}], "message": "sync cycle complete", "time": "2026-07-23T06:04:29.767603+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.959, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.959, "time": "2026-07-23T06:05:49.900169+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 80.833, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 12.874, "time": "2026-07-23T06:06:06.368713+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 80.834, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:06:06.369875+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 275.088, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 194.253, "time": "2026-07-23T06:09:42.137848+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 309.633, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 34.546, "time": "2026-07-23T06:10:20.251490+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4298, "pruned": 4298}], "message": "sync cycle complete", "time": "2026-07-23T06:10:49.505405+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 104.735, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 104.735, "time": "2026-07-23T06:12:50.018490+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 115.922, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 11.187, "time": "2026-07-23T06:13:04.793385+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 115.923, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:13:04.794578+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 315.873, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 199.95, "time": "2026-07-23T06:16:46.262961+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 318.913, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.04, "time": "2026-07-23T06:16:49.303333+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4318, "pruned": 4318}], "message": "sync cycle complete", "time": "2026-07-23T06:16:52.453868+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 156.356, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 156.356, "time": "2026-07-23T06:19:51.756255+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 172.999, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 16.643, "time": "2026-07-23T06:20:08.399355+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 173.001, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:20:08.400584+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 287.408, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 114.408, "time": "2026-07-23T06:22:17.149455+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 291.113, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.705, "time": "2026-07-23T06:22:20.854595+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4338, "pruned": 4338}], "message": "sync cycle complete", "time": "2026-07-23T06:22:22.985378+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 189.183, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 189.183, "time": "2026-07-23T06:25:58.694329+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 202.029, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 12.846, "time": "2026-07-23T06:26:15.126518+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 202.031, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:26:15.127756+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 296.445, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 94.414, "time": "2026-07-23T06:27:56.716789+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 300.21, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.765, "time": "2026-07-23T06:28:04.065094+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4358, "pruned": 4358}], "message": "sync cycle complete", "time": "2026-07-23T06:28:05.620693+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 178.215, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 178.215, "time": "2026-07-23T06:31:26.777581+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 194.135, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 15.92, "time": "2026-07-23T06:31:46.307693+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 194.136, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:31:46.308914+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 287.601, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 93.465, "time": "2026-07-23T06:33:30.534320+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 290.234, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.633, "time": "2026-07-23T06:33:33.167027+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4378, "pruned": 4378}], "message": "sync cycle complete", "time": "2026-07-23T06:33:36.146122+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 154.664, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 154.664, "time": "2026-07-23T06:36:33.722438+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 165.396, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.732, "time": "2026-07-23T06:36:44.453978+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 165.397, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:36:44.455414+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 264.633, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 99.236, "time": "2026-07-23T06:38:34.457252+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 267.21, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.577, "time": "2026-07-23T06:38:37.034066+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4398, "pruned": 4398}], "message": "sync cycle complete", "time": "2026-07-23T06:38:40.054415+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 181.903, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 181.903, "time": "2026-07-23T06:42:08.499159+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 192.389, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.486, "time": "2026-07-23T06:42:22.572336+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 192.39, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:42:22.573454+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 262.472, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 70.082, "time": "2026-07-23T06:43:39.835867+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 273.259, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 10.787, "time": "2026-07-23T06:43:50.623171+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4418, "pruned": 4418}], "message": "sync cycle complete", "time": "2026-07-23T06:43:59.987446+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 172.286, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 172.286, "time": "2026-07-23T06:47:18.793448+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 183.818, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 11.532, "time": "2026-07-23T06:47:30.325100+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 183.819, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:47:30.326437+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 277.559, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 93.74, "time": "2026-07-23T06:49:14.823589+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 281.354, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.795, "time": "2026-07-23T06:49:18.619052+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4438, "pruned": 4438}], "message": "sync cycle complete", "time": "2026-07-23T06:49:21.674128+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 172.348, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 172.348, "time": "2026-07-23T06:52:40.526643+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 183.428, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 11.08, "time": "2026-07-23T06:52:51.606255+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 183.429, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:52:51.607254+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 271.505, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 88.076, "time": "2026-07-23T06:54:30.446127+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 275.866, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 4.362, "time": "2026-07-23T06:54:34.807942+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4458, "pruned": 4458}], "message": "sync cycle complete", "time": "2026-07-23T06:54:37.690390+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 172.611, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 172.611, "time": "2026-07-23T06:57:56.827310+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 184.613, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 12.002, "time": "2026-07-23T06:58:08.829515+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 184.615, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T06:58:08.830795+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 263.583, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 78.968, "time": "2026-07-23T06:59:34.971264+00:00"}
+{"campaign": "top7500_25k", "error": "RuntimeError('bxcpu prune command failed rc=255: kex_exchange_identification: Connection closed by remote host\\nConnection closed by 198.18.0.17 port 22')", "message": "campaign cycle failed", "time": "2026-07-23T06:59:47.970006+00:00"}
+{"campaigns": [{"campaign": "top7500_25k", "error": "RuntimeError('bxcpu prune command failed rc=255: kex_exchange_identification: Connection closed by remote host\\nConnection closed by 198.18.0.17 port 22')"}], "message": "sync cycle complete", "time": "2026-07-23T06:59:47.973435+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 157.953, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 157.953, "time": "2026-07-23T07:02:48.904187+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 171.026, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 13.073, "time": "2026-07-23T07:03:01.976702+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 171.027, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T07:03:01.978235+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 278.203, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 107.176, "time": "2026-07-23T07:05:03.501407+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 282.234, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 4.031, "time": "2026-07-23T07:05:07.532090+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4498, "pruned": 4498}], "message": "sync cycle complete", "time": "2026-07-23T07:05:09.989862+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 200.85, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 200.85, "time": "2026-07-23T07:08:57.316068+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 210.852, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.003, "time": "2026-07-23T07:09:07.318773+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 210.853, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:09:07.319869+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 299.237, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 88.383, "time": "2026-07-23T07:10:46.506657+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 303.37, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 4.133, "time": "2026-07-23T07:10:50.639812+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4518, "pruned": 4518}], "message": "sync cycle complete", "time": "2026-07-23T07:10:53.921829+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 180.008, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 180.008, "time": "2026-07-23T07:14:20.411225+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 195.893, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 15.886, "time": "2026-07-23T07:14:39.905666+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 195.894, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:14:39.906596+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 287.676, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 91.782, "time": "2026-07-23T07:16:18.880814+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 290.892, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.217, "time": "2026-07-23T07:16:25.685803+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4538, "pruned": 4538}], "message": "sync cycle complete", "time": "2026-07-23T07:16:28.872682+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 169.934, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 169.934, "time": "2026-07-23T07:19:41.745147+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 182.06, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 12.126, "time": "2026-07-23T07:19:53.871547+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 182.062, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T07:19:53.873347+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 276.188, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 94.125, "time": "2026-07-23T07:21:38.744583+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 279.705, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.518, "time": "2026-07-23T07:21:42.262283+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4558, "pruned": 4558}], "message": "sync cycle complete", "time": "2026-07-23T07:21:43.927685+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 183.413, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 183.413, "time": "2026-07-23T07:25:15.556003+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 194.376, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.963, "time": "2026-07-23T07:25:26.519277+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 194.378, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:25:26.520461+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 278.444, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 84.067, "time": "2026-07-23T07:27:01.369587+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 282.319, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.875, "time": "2026-07-23T07:27:05.244251+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4578, "pruned": 4578}], "message": "sync cycle complete", "time": "2026-07-23T07:27:08.574616+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 166.904, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 166.904, "time": "2026-07-23T07:30:18.394608+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 176.649, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.745, "time": "2026-07-23T07:30:31.725959+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 176.65, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:30:31.727365+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 285.596, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 108.945, "time": "2026-07-23T07:32:31.462261+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 290.068, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 4.472, "time": "2026-07-23T07:32:35.934031+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4598, "pruned": 4598}], "message": "sync cycle complete", "time": "2026-07-23T07:32:37.729375+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 103.428, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 103.428, "time": "2026-07-23T07:34:40.502187+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 117.354, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 13.926, "time": "2026-07-23T07:34:54.427764+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 117.355, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:34:54.429107+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 283.297, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 165.942, "time": "2026-07-23T07:37:58.284651+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 286.521, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.224, "time": "2026-07-23T07:38:01.508717+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4618, "pruned": 4618}], "message": "sync cycle complete", "time": "2026-07-23T07:38:04.508971+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.531, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.531, "time": "2026-07-23T07:39:31.819978+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.602, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 11.071, "time": "2026-07-23T07:39:42.891082+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.603, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:39:42.892214+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 283.052, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 200.449, "time": "2026-07-23T07:43:24.849884+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 286.31, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.258, "time": "2026-07-23T07:43:28.108233+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4638, "pruned": 4638}], "message": "sync cycle complete", "time": "2026-07-23T07:43:33.206609+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.967, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.967, "time": "2026-07-23T07:44:58.366504+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.026, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.059, "time": "2026-07-23T07:45:06.425860+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.027, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:45:06.426829+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 280.996, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 199.969, "time": "2026-07-23T07:48:47.922364+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 283.041, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.045, "time": "2026-07-23T07:48:49.967414+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4658, "pruned": 4658}], "message": "sync cycle complete", "time": "2026-07-23T07:48:56.663247+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.047, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.047, "time": "2026-07-23T07:50:15.881875+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.031, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.984, "time": "2026-07-23T07:50:26.865638+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.032, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:50:26.866952+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 290.091, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 212.058, "time": "2026-07-23T07:54:24.052288+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 302.345, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 12.254, "time": "2026-07-23T07:54:36.306701+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4678, "pruned": 4678}], "message": "sync cycle complete", "time": "2026-07-23T07:54:54.928664+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.509, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 75.509, "time": "2026-07-23T07:56:22.597032+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.334, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.825, "time": "2026-07-23T07:56:31.421749+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.335, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T07:56:31.422813+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 311.696, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 227.361, "time": "2026-07-23T08:00:43.912681+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 322.366, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 10.67, "time": "2026-07-23T08:00:58.175168+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4698, "pruned": 4698}], "message": "sync cycle complete", "time": "2026-07-23T08:01:04.787558+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 111.28, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 111.28, "time": "2026-07-23T08:03:11.805824+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 120.59, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.31, "time": "2026-07-23T08:03:24.730131+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 120.591, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:03:24.731091+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 299.314, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 178.723, "time": "2026-07-23T08:06:41.382803+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 311.088, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 11.774, "time": "2026-07-23T08:06:56.743776+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4718, "pruned": 4718}], "message": "sync cycle complete", "time": "2026-07-23T08:06:58.988278+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.861, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 87.861, "time": "2026-07-23T08:08:42.590991+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 95.924, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.063, "time": "2026-07-23T08:08:50.654313+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 95.925, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:08:50.655482+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 261.703, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 165.778, "time": "2026-07-23T08:11:54.373495+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 271.783, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 10.08, "time": "2026-07-23T08:12:04.453558+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4738, "pruned": 4738}], "message": "sync cycle complete", "time": "2026-07-23T08:12:19.258105+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 126.042, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 126.042, "time": "2026-07-23T08:14:44.665618+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 133.715, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.673, "time": "2026-07-23T08:14:52.338613+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 133.716, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:14:52.339839+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 293.384, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 159.668, "time": "2026-07-23T08:17:49.925633+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 296.359, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.975, "time": "2026-07-23T08:17:52.900964+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4758, "pruned": 4758}], "message": "sync cycle complete", "time": "2026-07-23T08:17:56.624908+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 80.437, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 80.437, "time": "2026-07-23T08:19:32.827137+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.063, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.627, "time": "2026-07-23T08:19:43.453625+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.065, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:19:43.454976+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 148.823, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 57.758, "time": "2026-07-23T08:20:48.381210+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 151.203, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.38, "time": "2026-07-23T08:20:50.761387+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4778, "pruned": 4778}], "message": "sync cycle complete", "time": "2026-07-23T08:20:52.336248+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.841, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 74.841, "time": "2026-07-23T08:22:22.964904+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.068, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.226, "time": "2026-07-23T08:22:32.191277+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.069, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:22:32.192253+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 102.594, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 18.526, "time": "2026-07-23T08:22:50.718072+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 106.432, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.838, "time": "2026-07-23T08:22:54.555817+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4798, "pruned": 4798}], "message": "sync cycle complete", "time": "2026-07-23T08:22:59.634173+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.227, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.227, "time": "2026-07-23T08:24:24.054149+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.524, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.297, "time": "2026-07-23T08:24:33.351587+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.525, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:24:33.352892+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 101.391, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 19.866, "time": "2026-07-23T08:24:56.791218+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 104.092, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.701, "time": "2026-07-23T08:24:59.492383+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4818, "pruned": 4818}], "message": "sync cycle complete", "time": "2026-07-23T08:25:00.967309+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.655, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.655, "time": "2026-07-23T08:26:20.792296+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.944, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.288, "time": "2026-07-23T08:26:33.705842+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.946, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T08:26:33.707942+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 96.419, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 19.473, "time": "2026-07-23T08:26:53.181070+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 101.423, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 5.004, "time": "2026-07-23T08:26:58.185493+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4838, "pruned": 4838}], "message": "sync cycle complete", "time": "2026-07-23T08:26:59.757948+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.516, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.516, "time": "2026-07-23T08:28:23.997516+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.598, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 10.082, "time": "2026-07-23T08:28:34.079585+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.6, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:28:34.080970+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.856, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.257, "time": "2026-07-23T08:28:47.337791+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 95.267, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.411, "time": "2026-07-23T08:28:50.748337+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4858, "pruned": 4858}], "message": "sync cycle complete", "time": "2026-07-23T08:28:59.454731+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.207, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.207, "time": "2026-07-23T08:30:18.838037+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.882, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.675, "time": "2026-07-23T08:30:27.513176+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.883, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:30:27.514197+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 95.063, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 19.18, "time": "2026-07-23T08:30:50.309359+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 97.601, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.538, "time": "2026-07-23T08:30:52.847036+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4878, "pruned": 4878}], "message": "sync cycle complete", "time": "2026-07-23T08:30:55.720841+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.647, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.647, "time": "2026-07-23T08:32:15.523064+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.614, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.967, "time": "2026-07-23T08:32:24.490195+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.615, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:32:24.491388+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.617, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.003, "time": "2026-07-23T08:32:40.080838+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.903, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.286, "time": "2026-07-23T08:32:42.366508+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4898, "pruned": 4898}], "message": "sync cycle complete", "time": "2026-07-23T08:32:43.922480+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.368, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.368, "time": "2026-07-23T08:34:01.486763+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.014, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.646, "time": "2026-07-23T08:34:10.133082+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.015, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:34:10.134241+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.812, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.796, "time": "2026-07-23T08:34:27.486116+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.932, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.121, "time": "2026-07-23T08:34:29.607000+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4918, "pruned": 4918}], "message": "sync cycle complete", "time": "2026-07-23T08:34:31.532172+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.207, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.207, "time": "2026-07-23T08:35:49.951875+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.896, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 12.689, "time": "2026-07-23T08:36:02.641001+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.897, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:36:02.642381+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.713, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.815, "time": "2026-07-23T08:36:19.043739+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 94.374, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.661, "time": "2026-07-23T08:36:21.704986+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4938, "pruned": 4938}], "message": "sync cycle complete", "time": "2026-07-23T08:36:23.181852+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.838, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.838, "time": "2026-07-23T08:37:44.198968+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.545, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.707, "time": "2026-07-23T08:37:57.444523+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.546, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:37:57.445712+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.181, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.635, "time": "2026-07-23T08:38:11.080472+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 94.529, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.348, "time": "2026-07-23T08:38:13.428854+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4958, "pruned": 4958}], "message": "sync cycle complete", "time": "2026-07-23T08:38:14.985483+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.23, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.23, "time": "2026-07-23T08:39:34.411824+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.929, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.699, "time": "2026-07-23T08:39:46.716410+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.93, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:39:46.717379+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.585, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.655, "time": "2026-07-23T08:39:59.372501+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 93.8, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 5.215, "time": "2026-07-23T08:40:04.587493+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4978, "pruned": 4978}], "message": "sync cycle complete", "time": "2026-07-23T08:40:06.718880+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.159, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.159, "time": "2026-07-23T08:41:25.037098+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.063, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.905, "time": "2026-07-23T08:41:38.534112+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.065, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T08:41:38.535631+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.875, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.81, "time": "2026-07-23T08:41:51.345677+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.431, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.556, "time": "2026-07-23T08:41:53.901661+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 4998, "pruned": 4998}], "message": "sync cycle complete", "time": "2026-07-23T08:41:55.390839+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.129, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.129, "time": "2026-07-23T08:43:18.278803+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.798, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.669, "time": "2026-07-23T08:43:25.947872+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.799, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:43:25.948871+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.335, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.536, "time": "2026-07-23T08:43:38.484411+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.492, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.157, "time": "2026-07-23T08:43:41.641063+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5018, "pruned": 5018}], "message": "sync cycle complete", "time": "2026-07-23T08:43:43.175368+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.746, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.746, "time": "2026-07-23T08:45:04.704150+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.788, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.042, "time": "2026-07-23T08:45:12.745940+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.789, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:45:12.747188+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.252, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.462, "time": "2026-07-23T08:45:25.209661+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.375, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.123, "time": "2026-07-23T08:45:27.333051+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5038, "pruned": 5038}], "message": "sync cycle complete", "time": "2026-07-23T08:45:28.936956+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.629, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.629, "time": "2026-07-23T08:46:46.729973+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.281, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.652, "time": "2026-07-23T08:46:58.961572+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.282, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:46:58.962875+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.036, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.754, "time": "2026-07-23T08:47:12.716432+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.396, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.36, "time": "2026-07-23T08:47:15.076048+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5058, "pruned": 5058}], "message": "sync cycle complete", "time": "2026-07-23T08:47:16.552168+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.181, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.181, "time": "2026-07-23T08:48:34.930859+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.6, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 9.419, "time": "2026-07-23T08:48:47.936524+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.601, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:48:47.937789+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.344, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 14.744, "time": "2026-07-23T08:49:02.681337+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 94.376, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 4.031, "time": "2026-07-23T08:49:06.712471+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5078, "pruned": 5078}], "message": "sync cycle complete", "time": "2026-07-23T08:49:08.338545+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.1, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.1, "time": "2026-07-23T08:50:29.176144+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.562, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.462, "time": "2026-07-23T08:50:36.637724+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.563, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:50:36.639093+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.093, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.53, "time": "2026-07-23T08:50:50.169048+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.2, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.107, "time": "2026-07-23T08:50:52.276456+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5098, "pruned": 5098}], "message": "sync cycle complete", "time": "2026-07-23T08:50:54.730526+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.385, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.385, "time": "2026-07-23T08:52:18.981021+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.599, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.214, "time": "2026-07-23T08:52:27.194561+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.6, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:52:27.195842+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.611, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 14.011, "time": "2026-07-23T08:52:41.206564+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.69, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.079, "time": "2026-07-23T08:52:43.286001+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5118, "pruned": 5118}], "message": "sync cycle complete", "time": "2026-07-23T08:52:44.785596+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.733, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.733, "time": "2026-07-23T08:54:09.239120+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.517, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.784, "time": "2026-07-23T08:54:17.023495+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.518, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:54:17.024538+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.768, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.25, "time": "2026-07-23T08:54:30.275008+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 95.782, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 6.013, "time": "2026-07-23T08:54:39.858021+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5138, "pruned": 5138}], "message": "sync cycle complete", "time": "2026-07-23T08:54:41.322671+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.916, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.916, "time": "2026-07-23T08:55:59.418609+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.31, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.394, "time": "2026-07-23T08:56:06.812754+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.312, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T08:56:06.814780+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.596, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.284, "time": "2026-07-23T08:56:20.099015+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.404, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.807, "time": "2026-07-23T08:56:26.490077+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5158, "pruned": 5158}], "message": "sync cycle complete", "time": "2026-07-23T08:56:28.061609+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.507, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.507, "time": "2026-07-23T08:57:45.768540+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.255, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.748, "time": "2026-07-23T08:57:54.516474+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.256, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:57:54.517650+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.57, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.314, "time": "2026-07-23T08:58:06.832018+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.793, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.223, "time": "2026-07-23T08:58:09.054702+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5178, "pruned": 5178}], "message": "sync cycle complete", "time": "2026-07-23T08:58:14.208827+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.695, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.695, "time": "2026-07-23T08:59:33.085980+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.015, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.321, "time": "2026-07-23T08:59:41.406603+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.017, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T08:59:41.407720+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.47, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.453, "time": "2026-07-23T08:59:53.860715+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.637, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.168, "time": "2026-07-23T08:59:57.028403+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5198, "pruned": 5198}], "message": "sync cycle complete", "time": "2026-07-23T09:00:02.424709+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 62.886, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 62.886, "time": "2026-07-23T09:01:17.474557+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.594, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.707, "time": "2026-07-23T09:01:25.182042+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.595, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:01:25.183211+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.546, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 11.951, "time": "2026-07-23T09:01:37.134547+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.47, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.923, "time": "2026-07-23T09:01:40.057872+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5218, "pruned": 5218}], "message": "sync cycle complete", "time": "2026-07-23T09:01:41.703041+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.947, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.947, "time": "2026-07-23T09:03:02.460134+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.545, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.598, "time": "2026-07-23T09:03:11.057652+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.546, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:03:11.058710+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.365, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.819, "time": "2026-07-23T09:03:23.877799+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.718, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.353, "time": "2026-07-23T09:03:26.230745+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5238, "pruned": 5238}], "message": "sync cycle complete", "time": "2026-07-23T09:03:27.797267+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.36, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.36, "time": "2026-07-23T09:04:49.926384+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.172, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.812, "time": "2026-07-23T09:04:57.738846+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.173, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:04:57.740020+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.156, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 11.983, "time": "2026-07-23T09:05:09.723005+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.543, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.386, "time": "2026-07-23T09:05:12.109248+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5258, "pruned": 5258}], "message": "sync cycle complete", "time": "2026-07-23T09:05:13.646832+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.882, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.882, "time": "2026-07-23T09:06:31.709391+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.63, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.748, "time": "2026-07-23T09:06:43.038300+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.631, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:06:43.039755+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.619, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.987, "time": "2026-07-23T09:06:56.027080+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.088, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.47, "time": "2026-07-23T09:06:59.496694+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5278, "pruned": 5278}], "message": "sync cycle complete", "time": "2026-07-23T09:07:01.485099+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.249, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.249, "time": "2026-07-23T09:08:27.505312+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 79.129, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 8.88, "time": "2026-07-23T09:08:36.384938+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 79.13, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:08:36.386027+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.741, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.612, "time": "2026-07-23T09:08:49.997625+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 95.539, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.798, "time": "2026-07-23T09:08:52.795576+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5298, "pruned": 5298}], "message": "sync cycle complete", "time": "2026-07-23T09:08:54.393649+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.273, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.273, "time": "2026-07-23T09:10:18.433606+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.142, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.868, "time": "2026-07-23T09:10:26.301953+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.143, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:10:26.302975+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.08, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.938, "time": "2026-07-23T09:10:40.240704+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.369, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.288, "time": "2026-07-23T09:10:42.528978+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5318, "pruned": 5318}], "message": "sync cycle complete", "time": "2026-07-23T09:10:47.989835+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.755, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.755, "time": "2026-07-23T09:12:05.921528+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.232, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.478, "time": "2026-07-23T09:12:12.399231+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.233, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:12:12.400243+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.603, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 17.37, "time": "2026-07-23T09:12:29.770402+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.902, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.298, "time": "2026-07-23T09:12:35.659107+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5338, "pruned": 5338}], "message": "sync cycle complete", "time": "2026-07-23T09:12:37.187707+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.266, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.266, "time": "2026-07-23T09:13:53.658732+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.472, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.206, "time": "2026-07-23T09:14:00.864977+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.473, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:14:00.865993+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.869, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.395, "time": "2026-07-23T09:14:13.261493+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.143, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 4.274, "time": "2026-07-23T09:14:17.535957+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5358, "pruned": 5358}], "message": "sync cycle complete", "time": "2026-07-23T09:14:23.127920+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.412, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.412, "time": "2026-07-23T09:15:40.714675+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.122, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.71, "time": "2026-07-23T09:15:47.424334+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.123, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:15:47.425254+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.857, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.734, "time": "2026-07-23T09:16:01.159462+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.039, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.182, "time": "2026-07-23T09:16:04.341583+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5378, "pruned": 5378}], "message": "sync cycle complete", "time": "2026-07-23T09:16:09.509614+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.645, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.645, "time": "2026-07-23T09:17:26.350527+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.204, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.558, "time": "2026-07-23T09:17:32.908915+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.205, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:17:32.910251+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.36, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.155, "time": "2026-07-23T09:17:46.065118+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.781, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.421, "time": "2026-07-23T09:17:48.486574+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5398, "pruned": 5398}], "message": "sync cycle complete", "time": "2026-07-23T09:17:50.162465+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.422, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.422, "time": "2026-07-23T09:19:10.346042+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.998, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.576, "time": "2026-07-23T09:19:16.921914+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.999, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:19:16.923387+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.329, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.33, "time": "2026-07-23T09:19:30.253788+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.021, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.691, "time": "2026-07-23T09:19:32.944827+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5418, "pruned": 5418}], "message": "sync cycle complete", "time": "2026-07-23T09:19:34.384633+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.433, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.433, "time": "2026-07-23T09:20:51.001252+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.784, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.352, "time": "2026-07-23T09:21:00.913751+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.785, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:21:00.914748+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.355, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.57, "time": "2026-07-23T09:21:14.484641+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.772, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.417, "time": "2026-07-23T09:21:17.901567+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5438, "pruned": 5438}], "message": "sync cycle complete", "time": "2026-07-23T09:21:19.429380+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.461, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.461, "time": "2026-07-23T09:22:39.073265+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.446, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.985, "time": "2026-07-23T09:22:49.638951+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.447, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:22:49.640050+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.6, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.153, "time": "2026-07-23T09:23:02.792941+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.095, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.495, "time": "2026-07-23T09:23:05.288134+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5458, "pruned": 5458}], "message": "sync cycle complete", "time": "2026-07-23T09:23:06.872566+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 63.885, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 63.885, "time": "2026-07-23T09:24:22.955382+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.043, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.159, "time": "2026-07-23T09:24:32.701362+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.044, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:24:32.702513+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.333, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.289, "time": "2026-07-23T09:24:45.991290+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.129, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.796, "time": "2026-07-23T09:24:48.787296+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5478, "pruned": 5478}], "message": "sync cycle complete", "time": "2026-07-23T09:24:50.385637+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.668, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.668, "time": "2026-07-23T09:26:11.233183+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.64, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.972, "time": "2026-07-23T09:26:17.205012+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.641, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:26:17.206020+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.134, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.493, "time": "2026-07-23T09:26:35.978964+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.402, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.269, "time": "2026-07-23T09:26:38.247722+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5498, "pruned": 5498}], "message": "sync cycle complete", "time": "2026-07-23T09:26:39.785158+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.401, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.401, "time": "2026-07-23T09:27:57.357871+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.796, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.395, "time": "2026-07-23T09:28:03.752587+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.797, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:28:03.753675+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.967, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 14.17, "time": "2026-07-23T09:28:17.923807+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.928, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.961, "time": "2026-07-23T09:28:25.454539+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5518, "pruned": 5518}], "message": "sync cycle complete", "time": "2026-07-23T09:28:27.055219+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.493, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.493, "time": "2026-07-23T09:29:47.751311+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.107, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.614, "time": "2026-07-23T09:29:54.365200+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.108, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:29:54.366374+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.991, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.882, "time": "2026-07-23T09:30:11.833881+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 91.668, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.677, "time": "2026-07-23T09:30:14.511008+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5538, "pruned": 5538}], "message": "sync cycle complete", "time": "2026-07-23T09:30:16.118376+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.248, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.248, "time": "2026-07-23T09:31:35.547056+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.293, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.045, "time": "2026-07-23T09:31:41.591744+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.294, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:31:41.592855+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.798, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.504, "time": "2026-07-23T09:31:58.682645+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.121, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 5.323, "time": "2026-07-23T09:32:04.005767+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5558, "pruned": 5558}], "message": "sync cycle complete", "time": "2026-07-23T09:32:05.585070+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.59, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.59, "time": "2026-07-23T09:33:23.330509+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.541, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.951, "time": "2026-07-23T09:33:30.281910+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.542, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:33:30.283025+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.431, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.888, "time": "2026-07-23T09:33:46.763836+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.796, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.366, "time": "2026-07-23T09:33:49.129396+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5578, "pruned": 5578}], "message": "sync cycle complete", "time": "2026-07-23T09:33:50.695558+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.096, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.096, "time": "2026-07-23T09:35:09.994248+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.746, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.65, "time": "2026-07-23T09:35:16.643938+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.747, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:35:16.644995+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.664, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.916, "time": "2026-07-23T09:35:33.138163+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.552, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 1.888, "time": "2026-07-23T09:35:35.026193+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5598, "pruned": 5598}], "message": "sync cycle complete", "time": "2026-07-23T09:35:36.521876+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.568, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.568, "time": "2026-07-23T09:36:54.268841+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.481, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.913, "time": "2026-07-23T09:37:00.182113+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.482, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:37:00.183033+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.36, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.878, "time": "2026-07-23T09:37:14.060812+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.646, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.286, "time": "2026-07-23T09:37:16.347162+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5618, "pruned": 5618}], "message": "sync cycle complete", "time": "2026-07-23T09:37:21.497085+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.854, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.854, "time": "2026-07-23T09:38:38.556070+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.746, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.891, "time": "2026-07-23T09:38:44.447392+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.747, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:38:44.448522+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.615, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 14.868, "time": "2026-07-23T09:38:59.316943+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.836, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.221, "time": "2026-07-23T09:39:01.537679+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5638, "pruned": 5638}], "message": "sync cycle complete", "time": "2026-07-23T09:39:03.018206+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.972, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.972, "time": "2026-07-23T09:40:24.760144+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.864, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.893, "time": "2026-07-23T09:40:30.652922+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.866, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:40:30.654402+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.069, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 14.203, "time": "2026-07-23T09:40:44.857637+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.053, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.984, "time": "2026-07-23T09:40:47.841521+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5658, "pruned": 5658}], "message": "sync cycle complete", "time": "2026-07-23T09:40:49.401859+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.507, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.507, "time": "2026-07-23T09:42:10.641519+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.653, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.146, "time": "2026-07-23T09:42:15.787877+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.655, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T09:42:15.789475+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.301, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 19.646, "time": "2026-07-23T09:42:35.435480+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 93.294, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.993, "time": "2026-07-23T09:42:38.428481+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5678, "pruned": 5678}], "message": "sync cycle complete", "time": "2026-07-23T09:42:43.470308+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.846, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.846, "time": "2026-07-23T09:44:02.489987+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.261, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.415, "time": "2026-07-23T09:44:07.904711+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.263, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:44:07.906019+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.602, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.34, "time": "2026-07-23T09:44:21.245779+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.003, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.401, "time": "2026-07-23T09:44:23.646536+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5698, "pruned": 5698}], "message": "sync cycle complete", "time": "2026-07-23T09:44:25.342673+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.229, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.229, "time": "2026-07-23T09:45:46.359260+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.721, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.493, "time": "2026-07-23T09:45:50.851866+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.723, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:45:50.853205+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.025, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.302, "time": "2026-07-23T09:46:04.155226+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.355, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.33, "time": "2026-07-23T09:46:07.485531+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5718, "pruned": 5718}], "message": "sync cycle complete", "time": "2026-07-23T09:46:09.176934+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.508, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.508, "time": "2026-07-23T09:47:30.451959+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.683, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.175, "time": "2026-07-23T09:47:35.626727+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.684, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:47:35.627969+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.337, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.653, "time": "2026-07-23T09:47:48.280595+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.39, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.053, "time": "2026-07-23T09:47:51.333930+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5738, "pruned": 5738}], "message": "sync cycle complete", "time": "2026-07-23T09:47:52.866988+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.422, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.422, "time": "2026-07-23T09:49:12.468491+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 80.675, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 13.252, "time": "2026-07-23T09:49:29.306519+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 80.676, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T09:49:29.308050+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.368, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 11.692, "time": "2026-07-23T09:49:41.000143+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 94.564, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.196, "time": "2026-07-23T09:49:43.196380+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5758, "pruned": 5758}], "message": "sync cycle complete", "time": "2026-07-23T09:49:44.747079+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.282, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.282, "time": "2026-07-23T09:51:05.803415+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.502, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 6.219, "time": "2026-07-23T09:51:12.022635+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.503, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:51:12.023905+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.403, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.9, "time": "2026-07-23T09:51:25.924304+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.394, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 1.991, "time": "2026-07-23T09:51:27.915225+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5778, "pruned": 5778}], "message": "sync cycle complete", "time": "2026-07-23T09:51:29.478351+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 63.918, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 63.918, "time": "2026-07-23T09:52:45.541077+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.528, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.61, "time": "2026-07-23T09:52:53.769727+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.529, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:52:53.770997+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.423, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.894, "time": "2026-07-23T09:53:06.664784+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.895, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.472, "time": "2026-07-23T09:53:09.136960+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5798, "pruned": 5798}], "message": "sync cycle complete", "time": "2026-07-23T09:53:10.648725+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.664, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.664, "time": "2026-07-23T09:54:29.467106+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.951, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.287, "time": "2026-07-23T09:54:33.753766+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.952, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:54:33.754838+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.297, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.345, "time": "2026-07-23T09:54:49.703794+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.463, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.166, "time": "2026-07-23T09:54:51.870243+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5818, "pruned": 5818}], "message": "sync cycle complete", "time": "2026-07-23T09:54:53.605099+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.915, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.915, "time": "2026-07-23T09:56:10.703137+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.83, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.915, "time": "2026-07-23T09:56:15.618360+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.832, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:56:15.619849+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.384, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.552, "time": "2026-07-23T09:56:31.732228+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.903, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.52, "time": "2026-07-23T09:56:34.251802+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5838, "pruned": 5838}], "message": "sync cycle complete", "time": "2026-07-23T09:56:35.754703+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.093, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.093, "time": "2026-07-23T09:57:52.037696+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.715, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.621, "time": "2026-07-23T09:57:56.659067+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.716, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:57:56.660235+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.336, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.62, "time": "2026-07-23T09:58:09.280336+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.335, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.999, "time": "2026-07-23T09:58:15.881134+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5858, "pruned": 5858}], "message": "sync cycle complete", "time": "2026-07-23T09:58:17.354512+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.111, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.111, "time": "2026-07-23T09:59:34.644840+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.541, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.43, "time": "2026-07-23T09:59:39.074553+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.542, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T09:59:39.075628+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.967, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 15.425, "time": "2026-07-23T09:59:54.500892+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.349, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.382, "time": "2026-07-23T09:59:56.882918+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5878, "pruned": 5878}], "message": "sync cycle complete", "time": "2026-07-23T10:00:02.265107+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.42, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.42, "time": "2026-07-23T10:01:24.883672+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 77.697, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 7.277, "time": "2026-07-23T10:01:32.160852+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 77.698, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:01:32.162106+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 90.424, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.726, "time": "2026-07-23T10:01:44.888339+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.847, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.422, "time": "2026-07-23T10:01:50.876405+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5898, "pruned": 5898}], "message": "sync cycle complete", "time": "2026-07-23T10:01:52.388632+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.802, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.802, "time": "2026-07-23T10:03:16.395297+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.06, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.258, "time": "2026-07-23T10:03:20.653517+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.061, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:03:20.654748+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.834, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 11.773, "time": "2026-07-23T10:03:32.427775+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.983, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.149, "time": "2026-07-23T10:03:38.157704+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5918, "pruned": 5918}], "message": "sync cycle complete", "time": "2026-07-23T10:03:39.767716+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.279, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.279, "time": "2026-07-23T10:05:05.202023+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 77.278, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.999, "time": "2026-07-23T10:05:09.201161+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 77.279, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:05:09.202128+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.877, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.598, "time": "2026-07-23T10:05:25.386291+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 93.196, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.32, "time": "2026-07-23T10:05:28.706208+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5938, "pruned": 5938}], "message": "sync cycle complete", "time": "2026-07-23T10:05:30.298614+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.754, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.754, "time": "2026-07-23T10:06:48.236456+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.193, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.439, "time": "2026-07-23T10:06:52.675418+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.194, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:06:52.676503+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.181, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 11.987, "time": "2026-07-23T10:07:04.663903+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.343, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.162, "time": "2026-07-23T10:07:06.825937+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5958, "pruned": 5958}], "message": "sync cycle complete", "time": "2026-07-23T10:07:08.420110+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 63.565, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 63.565, "time": "2026-07-23T10:08:27.744138+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.372, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 5.807, "time": "2026-07-23T10:08:33.550960+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.374, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T10:08:33.552951+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.954, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.58, "time": "2026-07-23T10:08:47.132866+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.577, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 3.623, "time": "2026-07-23T10:08:50.756041+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5978, "pruned": 5978}], "message": "sync cycle complete", "time": "2026-07-23T10:08:52.534893+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 63.596, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 63.596, "time": "2026-07-23T10:10:11.919922+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.364, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.768, "time": "2026-07-23T10:10:15.688262+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.366, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:10:15.689465+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.263, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 15.897, "time": "2026-07-23T10:10:31.586675+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.62, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.358, "time": "2026-07-23T10:10:33.944353+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 5998, "pruned": 5998}], "message": "sync cycle complete", "time": "2026-07-23T10:10:35.417021+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.559, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.559, "time": "2026-07-23T10:11:54.139005+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.019, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.46, "time": "2026-07-23T10:12:01.259873+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.02, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:12:01.260807+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.314, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.294, "time": "2026-07-23T10:12:14.554820+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.534, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.22, "time": "2026-07-23T10:12:16.775010+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6018, "pruned": 6018}], "message": "sync cycle complete", "time": "2026-07-23T10:12:18.334659+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.216, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.216, "time": "2026-07-23T10:13:34.681684+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.085, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.869, "time": "2026-07-23T10:13:39.550593+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.087, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T10:13:39.552857+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 82.831, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.743, "time": "2026-07-23T10:13:56.905783+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 89.039, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 6.208, "time": "2026-07-23T10:14:03.114161+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6038, "pruned": 6038}], "message": "sync cycle complete", "time": "2026-07-23T10:14:04.687209+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.069, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.069, "time": "2026-07-23T10:15:21.907834+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.476, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.407, "time": "2026-07-23T10:15:25.315107+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.478, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:15:25.316492+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.95, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 15.472, "time": "2026-07-23T10:15:44.395399+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.542, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.592, "time": "2026-07-23T10:15:46.987778+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6058, "pruned": 6058}], "message": "sync cycle complete", "time": "2026-07-23T10:15:48.631726+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.798, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 75.798, "time": "2026-07-23T10:17:16.609801+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 79.074, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.276, "time": "2026-07-23T10:17:23.473786+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 79.076, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.002, "time": "2026-07-23T10:17:23.475714+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 92.252, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.176, "time": "2026-07-23T10:17:36.651608+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 94.92, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.668, "time": "2026-07-23T10:17:39.319703+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6078, "pruned": 6078}], "message": "sync cycle complete", "time": "2026-07-23T10:17:40.959984+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 79.338, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 79.338, "time": "2026-07-23T10:19:16.057344+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.855, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 4.517, "time": "2026-07-23T10:19:20.574083+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 83.857, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:19:20.575570+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 98.351, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 14.494, "time": "2026-07-23T10:19:35.069575+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 100.677, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.326, "time": "2026-07-23T10:19:37.395640+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6098, "pruned": 6098}], "message": "sync cycle complete", "time": "2026-07-23T10:19:39.137832+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.307, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.307, "time": "2026-07-23T10:21:04.215562+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.455, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.147, "time": "2026-07-23T10:21:07.362955+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.455, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:21:07.363842+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.321, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.865, "time": "2026-07-23T10:21:21.229105+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.641, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.321, "time": "2026-07-23T10:21:23.549677+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6118, "pruned": 6118}], "message": "sync cycle complete", "time": "2026-07-23T10:21:25.181177+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.353, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.353, "time": "2026-07-23T10:22:51.293381+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.199, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 2.846, "time": "2026-07-23T10:22:54.139443+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.2, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:22:54.140702+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.184, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 12.984, "time": "2026-07-23T10:23:07.124637+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.298, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.114, "time": "2026-07-23T10:23:09.238717+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6138, "pruned": 6138}], "message": "sync cycle complete", "time": "2026-07-23T10:23:10.847859+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.332, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.332, "time": "2026-07-23T10:24:35.944671+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.725, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.393, "time": "2026-07-23T10:24:39.338023+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.727, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:24:39.339467+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.604, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 13.877, "time": "2026-07-23T10:24:53.216950+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.969, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.365, "time": "2026-07-23T10:24:55.582270+00:00"}
+{"campaigns": [{"batch": 20, "campaign": "top7500_25k", "delivered": 6158, "pruned": 6158}], "message": "sync cycle complete", "time": "2026-07-23T10:24:57.214326+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.887, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.887, "time": "2026-07-23T10:26:23.845197+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.431, "message": "campaign stage timing", "stage": "fetch_tar_stream", "stage_seconds": 3.544, "time": "2026-07-23T10:26:27.389146+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.433, "message": "campaign stage timing", "stage": "archive_extract", "stage_seconds": 0.001, "time": "2026-07-23T10:26:27.390370+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 85.916, "message": "campaign stage timing", "stage": "relay_archive_to_node1", "stage_seconds": 11.483, "time": "2026-07-23T10:26:38.873660+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 88.81, "message": "campaign stage timing", "stage": "remote_prune", "stage_seconds": 2.894, "time": "2026-07-23T10:26:41.767266+00:00"}
+{"campaigns": [{"batch": 10, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:26:43.552401+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.188, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.188, "time": "2026-07-23T10:28:09.528049+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:28:09.654241+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.687, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.687, "time": "2026-07-23T10:29:29.519009+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:29:29.650726+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.883, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.883, "time": "2026-07-23T10:30:50.714644+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:30:50.836340+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.414, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.414, "time": "2026-07-23T10:32:12.404419+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:32:12.536240+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.03, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.03, "time": "2026-07-23T10:33:35.328898+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:33:35.462097+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.888, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.888, "time": "2026-07-23T10:34:54.550791+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:34:54.669265+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.104, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.104, "time": "2026-07-23T10:36:12.951220+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:36:13.062894+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.836, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.836, "time": "2026-07-23T10:37:32.053549+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:37:32.179439+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.946, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.946, "time": "2026-07-23T10:38:52.917378+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:38:53.047185+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.28, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.28, "time": "2026-07-23T10:40:11.503045+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:40:11.625035+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.25, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.25, "time": "2026-07-23T10:41:30.030119+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:41:30.150287+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.738, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.738, "time": "2026-07-23T10:42:50.084618+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:42:50.207736+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 65.226, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 65.226, "time": "2026-07-23T10:44:07.614787+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:44:07.741534+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.078, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.078, "time": "2026-07-23T10:45:29.586729+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:45:29.707570+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 64.461, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 64.461, "time": "2026-07-23T10:46:46.322470+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:46:46.455483+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.856, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.856, "time": "2026-07-23T10:48:05.517601+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:48:05.641047+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.155, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.155, "time": "2026-07-23T10:49:24.964916+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:49:25.093486+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.716, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.716, "time": "2026-07-23T10:50:54.579192+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:50:54.753290+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.234, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 76.234, "time": "2026-07-23T10:52:23.144949+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:52:23.277295+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.05, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.05, "time": "2026-07-23T10:53:49.092261+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:53:49.227183+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.068, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.068, "time": "2026-07-23T10:55:10.493515+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:55:10.632195+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.811, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.811, "time": "2026-07-23T10:56:31.579337+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:56:31.711853+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.226, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.226, "time": "2026-07-23T10:57:55.136043+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:57:58.958463+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.399, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.399, "time": "2026-07-23T10:59:23.504548+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T10:59:23.667512+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.168, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.168, "time": "2026-07-23T11:00:45.985456+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:00:46.143357+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.107, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.107, "time": "2026-07-23T11:02:11.013340+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:02:11.147406+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.257, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.257, "time": "2026-07-23T11:03:33.585104+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:03:33.728280+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.438, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.438, "time": "2026-07-23T11:04:56.357868+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:04:56.512630+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.669, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 74.669, "time": "2026-07-23T11:06:26.979935+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:06:27.129477+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.592, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.592, "time": "2026-07-23T11:07:51.897751+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:07:52.038588+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.97, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 84.97, "time": "2026-07-23T11:09:32.732554+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:09:32.974686+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 107.876, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 107.876, "time": "2026-07-23T11:11:36.641260+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:11:36.863971+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 117.691, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 117.691, "time": "2026-07-23T11:13:53.914883+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:13:54.084805+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 114.894, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 114.894, "time": "2026-07-23T11:16:08.325642+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:16:08.538321+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 110.508, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 110.508, "time": "2026-07-23T11:18:14.842025+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:18:15.005732+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 106.556, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 106.556, "time": "2026-07-23T11:20:19.789374+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:20:20.032336+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 107.107, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 107.107, "time": "2026-07-23T11:22:20.957563+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:22:21.122389+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 107.249, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 107.249, "time": "2026-07-23T11:24:25.089237+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:24:25.258303+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 125.29, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 125.29, "time": "2026-07-23T11:26:47.273256+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:26:47.461374+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 126.798, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 126.798, "time": "2026-07-23T11:29:11.049817+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:29:11.243645+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 156.062, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 156.062, "time": "2026-07-23T11:32:07.008564+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:32:07.308951+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 135.593, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 135.593, "time": "2026-07-23T11:34:39.653373+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:34:39.852562+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 126.661, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 126.661, "time": "2026-07-23T11:37:03.281797+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:37:03.487712+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 118.798, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 118.798, "time": "2026-07-23T11:39:19.033977+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:39:19.210811+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 123.88, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 123.88, "time": "2026-07-23T11:41:39.860683+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:41:40.065431+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 107.732, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 107.732, "time": "2026-07-23T11:43:44.540361+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:43:44.696570+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 116.169, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 116.169, "time": "2026-07-23T11:45:54.659442+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:45:54.843082+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 107.033, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 107.033, "time": "2026-07-23T11:48:00.035210+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:48:00.225120+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 106.909, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 106.909, "time": "2026-07-23T11:50:00.935352+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:50:01.093809+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 106.283, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 106.283, "time": "2026-07-23T11:52:01.189648+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:52:01.393112+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 119.317, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 119.317, "time": "2026-07-23T11:54:17.456300+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:54:17.621247+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 109.043, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 109.043, "time": "2026-07-23T11:56:23.412117+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:56:23.595903+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 101.14, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 101.14, "time": "2026-07-23T11:58:18.524473+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T11:58:18.710730+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 97.226, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 97.226, "time": "2026-07-23T12:00:09.775282+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:00:09.936460+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 122.052, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 122.052, "time": "2026-07-23T12:02:28.735063+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:02:28.937189+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 123.266, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 123.266, "time": "2026-07-23T12:04:48.921694+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:04:49.142903+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 116.467, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 116.467, "time": "2026-07-23T12:07:02.382889+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:07:02.559196+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 115.317, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 115.317, "time": "2026-07-23T12:09:14.626655+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:09:14.765729+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.334, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 76.334, "time": "2026-07-23T12:10:41.928763+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:10:42.064544+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.569, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 74.569, "time": "2026-07-23T12:12:10.462622+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:12:10.598843+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.216, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.216, "time": "2026-07-23T12:13:34.701295+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:13:34.848030+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.658, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.658, "time": "2026-07-23T12:15:01.372870+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:15:01.517408+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.606, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.606, "time": "2026-07-23T12:16:25.955367+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:16:26.091689+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.709, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.709, "time": "2026-07-23T12:17:48.696693+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:17:48.831012+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.14, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.14, "time": "2026-07-23T12:19:15.787954+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:19:15.938362+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.325, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.325, "time": "2026-07-23T12:20:40.131222+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:20:40.271526+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.557, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 74.557, "time": "2026-07-23T12:22:08.614877+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:22:08.750841+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.326, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.326, "time": "2026-07-23T12:23:33.034610+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:23:33.181321+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.642, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 74.642, "time": "2026-07-23T12:25:01.571975+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:25:01.709595+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 77.65, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 77.65, "time": "2026-07-23T12:26:30.261192+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:26:30.399496+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.721, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.721, "time": "2026-07-23T12:27:54.897620+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:27:55.035852+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.8, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.8, "time": "2026-07-23T12:29:19.738309+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:29:19.868210+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.409, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.409, "time": "2026-07-23T12:30:42.158465+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:30:42.288535+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.73, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.73, "time": "2026-07-23T12:32:07.823929+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:32:07.958165+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.15, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.15, "time": "2026-07-23T12:33:29.982954+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:33:30.117561+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.542, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.542, "time": "2026-07-23T12:34:50.531571+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:34:50.676783+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.802, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.802, "time": "2026-07-23T12:36:16.266349+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:36:16.406468+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.969, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.969, "time": "2026-07-23T12:37:37.283124+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:37:37.420675+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.234, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.234, "time": "2026-07-23T12:39:01.437136+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:39:01.582959+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.464, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.464, "time": "2026-07-23T12:40:25.950370+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:40:26.076030+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.979, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.979, "time": "2026-07-23T12:41:47.923726+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:41:48.052928+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.21, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.21, "time": "2026-07-23T12:43:12.531439+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:43:12.668057+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.555, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.555, "time": "2026-07-23T12:44:39.022805+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:44:39.161103+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.422, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.422, "time": "2026-07-23T12:46:00.465684+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:46:00.598508+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.085, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.085, "time": "2026-07-23T12:47:22.529345+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:47:22.692133+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.833, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 75.833, "time": "2026-07-23T12:48:52.362543+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:48:52.509729+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.887, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.887, "time": "2026-07-23T12:50:14.294798+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:50:14.445331+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.929, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.929, "time": "2026-07-23T12:51:39.170598+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:51:39.298955+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.899, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.899, "time": "2026-07-23T12:52:59.080660+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:52:59.230832+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.122, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 78.122, "time": "2026-07-23T12:54:28.220683+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:54:28.355984+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.451, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.451, "time": "2026-07-23T12:55:52.620626+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:55:52.753742+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.13, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.13, "time": "2026-07-23T12:57:13.736808+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:57:13.875619+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.549, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.549, "time": "2026-07-23T12:58:38.253407+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T12:58:38.398950+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 75.019, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 75.019, "time": "2026-07-23T13:00:04.299615+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:00:04.439123+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.967, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.967, "time": "2026-07-23T13:01:25.256728+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:01:25.390908+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.423, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.423, "time": "2026-07-23T13:02:49.642994+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:02:49.782134+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.357, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.357, "time": "2026-07-23T13:04:11.008899+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:04:11.142679+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.28, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.28, "time": "2026-07-23T13:05:34.296724+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:05:34.444402+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.547, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.547, "time": "2026-07-23T13:06:58.801804+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:06:58.939909+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.822, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.822, "time": "2026-07-23T13:08:20.638837+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:08:20.770224+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.837, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.837, "time": "2026-07-23T13:09:43.458248+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:09:43.582976+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.509, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.509, "time": "2026-07-23T13:11:07.902204+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:11:08.043742+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.674, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.674, "time": "2026-07-23T13:12:32.595124+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:12:32.736232+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 81.099, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 81.099, "time": "2026-07-23T13:14:07.663548+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:14:07.795479+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 74.975, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 74.975, "time": "2026-07-23T13:15:33.649753+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:15:33.783709+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.46, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.46, "time": "2026-07-23T13:16:58.062972+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:16:58.200314+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.138, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.138, "time": "2026-07-23T13:18:20.216016+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:18:20.345140+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.462, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.462, "time": "2026-07-23T13:19:45.592703+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:19:45.729363+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.544, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.544, "time": "2026-07-23T13:21:09.143896+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:21:09.273864+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 72.905, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.905, "time": "2026-07-23T13:22:33.082569+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:22:33.221784+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.335, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.335, "time": "2026-07-23T13:23:56.341734+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:23:56.469609+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.467, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.467, "time": "2026-07-23T13:25:15.885101+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:25:16.032416+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.042, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.042, "time": "2026-07-23T13:26:36.895605+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:26:37.044673+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.429, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.429, "time": "2026-07-23T13:27:59.306023+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:27:59.434901+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.552, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.552, "time": "2026-07-23T13:29:19.841928+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:29:19.989849+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.522, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.522, "time": "2026-07-23T13:30:37.406559+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:30:37.552122+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.469, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.469, "time": "2026-07-23T13:31:55.898543+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:31:56.033361+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.279, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.279, "time": "2026-07-23T13:33:16.126947+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:33:16.269571+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.188, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.188, "time": "2026-07-23T13:34:37.319587+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:34:37.455671+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.569, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.569, "time": "2026-07-23T13:35:57.139201+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:35:57.272062+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 78.794, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 78.794, "time": "2026-07-23T13:37:31.814031+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:37:31.962917+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 71.522, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 71.522, "time": "2026-07-23T13:38:55.680960+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:38:55.812249+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 84.673, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 84.673, "time": "2026-07-23T13:40:36.230856+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:40:36.374832+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.453, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.453, "time": "2026-07-23T13:41:56.029201+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:41:56.171660+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.717, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.717, "time": "2026-07-23T13:43:22.653777+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:43:22.834806+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.251, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.251, "time": "2026-07-23T13:44:44.263140+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:44:44.392677+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 68.295, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 68.295, "time": "2026-07-23T13:46:04.843649+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:46:04.976233+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.343, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 76.343, "time": "2026-07-23T13:47:37.098234+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:47:37.222891+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 86.0, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 86.0, "time": "2026-07-23T13:49:15.394277+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:49:15.578498+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 70.194, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 70.194, "time": "2026-07-23T13:50:41.553177+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:50:41.689265+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 87.497, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 87.497, "time": "2026-07-23T13:52:24.958040+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:52:25.089622+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 69.233, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 69.233, "time": "2026-07-23T13:53:46.470246+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:53:46.592912+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 94.608, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 94.608, "time": "2026-07-23T13:55:36.989737+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:55:37.125534+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 93.303, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 93.303, "time": "2026-07-23T13:57:26.171191+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:57:26.308787+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 67.582, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.582, "time": "2026-07-23T13:58:46.064508+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T13:58:46.211546+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 66.546, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 66.546, "time": "2026-07-23T14:00:08.545748+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T14:00:08.677733+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 73.657, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.657, "time": "2026-07-23T14:01:34.485780+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T14:01:34.641804+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 76.607, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 76.607, "time": "2026-07-23T14:03:07.038310+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T14:03:07.179067+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 79.139, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 79.139, "time": "2026-07-23T14:04:38.487759+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6168, "pruned": 6168}], "message": "sync cycle complete", "time": "2026-07-23T14:04:38.630991+00:00"}

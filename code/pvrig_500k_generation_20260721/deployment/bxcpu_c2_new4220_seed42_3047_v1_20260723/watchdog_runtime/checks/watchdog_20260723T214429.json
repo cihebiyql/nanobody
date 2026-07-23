@@ -1,0 +1,89 @@
+{
+  "actions": [],
+  "alerts": [],
+  "bxcpu": {
+    "actions": [],
+    "current": {
+      "array_active": true,
+      "audit_state": "PENDING",
+      "batch_2000": {
+        "invalid": 0,
+        "success": 132,
+        "technical_na": 0
+      },
+      "batch_4220": {
+        "invalid": 0,
+        "success": 16563,
+        "technical_na": 9
+      },
+      "expected": 24880,
+      "terminal": 16704
+    },
+    "dry_run": false,
+    "extra_seed42_3047": {
+      "array_job_id": null,
+      "array_state": "MISSING",
+      "audit_job_id": null,
+      "audit_state": "MISSING",
+      "expected": 16880,
+      "invalid": 0,
+      "preflight_job_id": "11944468",
+      "preflight_state": "PENDING",
+      "success": 0,
+      "technical_na": 0,
+      "terminal": 0
+    },
+    "generated_at_utc": "2026-07-23T13:44:25.994548+00:00",
+    "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
+    "storage": {
+      "current_archive_bytes": 212123302,
+      "current_result_bytes": 206542798,
+      "extra_archive_bytes": 143026389,
+      "extra_result_bytes": 9866,
+      "filesystem_free_bytes": 4907118691876864
+    }
+  },
+  "errors": [],
+  "generated_at_utc": "2026-07-23T13:44:22.314140+00:00",
+  "interval_seconds": 1800,
+  "local": {
+    "filesystem_free_bytes": 83489263616,
+    "filesystem_total_bytes": 2048075829248,
+    "sync_paused_low_disk": false
+  },
+  "node1": {
+    "filesystem_free_bytes": 124779016192,
+    "filesystem_total_bytes": 7620712947712,
+    "project_bytes": {
+      "current_results": 15331375979,
+      "extra_results": 34442,
+      "rfantibody": 9774802508
+    }
+  },
+  "schema_version": "pvrig.all_docking.watchdog_30m.v1",
+  "status": "PASS",
+  "sync": {
+    "current": {
+      "active_after_repair": [
+        "pvrig-c2-new6220-sync-00",
+        "pvrig-c2-new6220-sync-01",
+        "pvrig-c2-new6220-sync-02",
+        "pvrig-c2-new6220-sync-03"
+      ],
+      "latest_log_age_seconds": 26.92659282684326,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    },
+    "extra_seed42_3047": {
+      "active_after_repair": [
+        "pvrig-c2-s42-3047-sync-00",
+        "pvrig-c2-s42-3047-sync-01",
+        "pvrig-c2-s42-3047-sync-02",
+        "pvrig-c2-s42-3047-sync-03"
+      ],
+      "latest_log_age_seconds": 25.934295654296875,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    }
+  }
+}
