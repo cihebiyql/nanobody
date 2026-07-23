@@ -1,0 +1,20 @@
+{
+  "batch_size": 40,
+  "campaigns": [
+    {
+      "campaign": "c2_new4220",
+      "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\nrsync: connection unexpectedly closed (0 bytes received so far) [sender]\\nrsync error: unexplained error (code 255) at io.c(232) [sender=3.2.7]\\n')"
+    },
+    {
+      "campaign": "c2_new2000",
+      "error": "RuntimeError('command failed after 4 attempts rc=255: ssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n')"
+    }
+  ],
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard02",
+  "node1_root": "/data1/qlyu/projects/pvrig_c2_new6220_dualreceptor_2seed_docking_results_v1_20260723",
+  "schema_version": "pvrig_bxcpu_incremental_sync_status_v1",
+  "shard_count": 4,
+  "shard_index": 2,
+  "stable_age_seconds": 180,
+  "updated_at_utc": "2026-07-23T06:03:11.434564+00:00"
+}

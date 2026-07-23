@@ -1,0 +1,11 @@
+{
+  "combined_tests_run": 148,
+  "fold_count": 5,
+  "implementation_freeze_sha256": "07c8463689d6baa0da1ebd0c1d4440fc0315c8e8edb4e1b72415434567dc0804",
+  "preregistration_sha256": "574919e65f7079475c17294e297327ce311910ced12656e34640e1fa4a5b9562",
+  "schema_version": "pvrig.v220.v1_3_5.node1_stage_a_return_validation.v2",
+  "source_receipt_sha256": "b80d244f047bba6f47969eda8f4fe3c29255e7573730ce76dc6d196f3b4107fd",
+  "status": "PASS_VALIDATED_NODE1_STAGE_A_RECEIPT_NO_TRAINING",
+  "training_authorized": false,
+  "training_started": false
+}

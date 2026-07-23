@@ -1,0 +1,21 @@
+{
+  "schema_version": "pvrig.c2_new6220.bxcpu_failed_attempt.v1",
+  "status": "FAILED_BEFORE_DOCKING_DISPATCH",
+  "array_job_id": "11943265",
+  "audit_job_id": "11943271",
+  "failed_array_tasks": 8,
+  "array_exit_code": "38:0",
+  "root_cause": "dispatch shard files used CRLF; awk preserved a trailing carriage return in every job_id",
+  "observed_error": "job_id <id>\\r matched 0 rows",
+  "status_json_created": 0,
+  "docking_results_created": 0,
+  "scientific_labels_created": 0,
+  "safe_to_retry": true,
+  "remediation": [
+    "emit dispatch shards with LF line endings",
+    "reject carriage returns in preflight and worker gates",
+    "strip a terminal carriage return defensively in the worker",
+    "run the smoke test through the dispatch shard rather than directly from the package manifest"
+  ],
+  "technical_failure_semantics": "deployment failure; not a biological negative label"
+}

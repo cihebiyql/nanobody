@@ -1,0 +1,33 @@
+{
+  "array_task": 4,
+  "collected_at_utc": "2026-07-23T03:08:47.681986+00:00",
+  "diagnostic_tail": [
+    "[2026-07-23 08:19:28,273 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "raise RuntimeError(reason)",
+    "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 08:19:28,274 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 08:19:28,274 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+    "[2026-07-23 08:22:17,334 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "raise RuntimeError(reason)",
+    "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 08:22:17,336 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+    "[2026-07-23 08:22:17,336 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+  ],
+  "evidence_bytes": 3930583,
+  "evidence_sha256": "347870872b1075879d1d1ff3cfd4856467ff25e6c07f577c9c03568b89bd26f2",
+  "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0230__00229_8x6b_s1931_8f6b7228e268",
+  "label": "NA_TECHNICAL_FAILURE",
+  "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0230__00229_8x6b_s1931_8f6b7228e268.tar.gz",
+  "protocol_changed": false,
+  "schema_version": "pvrig_top7500_technical_failure_receipt_v1",
+  "status": {
+    "attempts": 2,
+    "error": "HADDOCK3 exited with return code 1",
+    "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0230__00229_8x6b_s1931_8f6b7228e268",
+    "pid": 30304,
+    "return_code": 1,
+    "stage": "haddock",
+    "status": "FAILED",
+    "updated_at": "2026-07-23T00:22:17.528546+00:00"
+  }
+}

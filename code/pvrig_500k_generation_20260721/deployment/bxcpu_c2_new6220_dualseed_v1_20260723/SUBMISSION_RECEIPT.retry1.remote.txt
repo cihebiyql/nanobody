@@ -1,0 +1,12 @@
+status=SUBMITTED_RETRY1_AFTER_CRLF_FIX
+preflight_job_id=11943282
+array_job_id=11943288
+audit_job_id=11943297
+predecessor_array_job_id=11942310
+failed_attempt_array_job_id=11943265
+expected_jobs=24880
+expected_candidates=6220
+archive_sha256=29a83793b8d0e0ecedb86b3bd4f83a90efad7516300d433a3bf3499e66f535cf
+anchors_sha256=8a81274c9ca8c723b914be0d04c18ebb0dfd821597211c304c8e710ed40dd80e
+result_root=/publicfs04/fs04-al/home/als001821/pvrig_c2_new6220_dualreceptor_2seed_v1_20260723_bxcpu_results
+submitted_at=2026-07-23T05:08:24Z

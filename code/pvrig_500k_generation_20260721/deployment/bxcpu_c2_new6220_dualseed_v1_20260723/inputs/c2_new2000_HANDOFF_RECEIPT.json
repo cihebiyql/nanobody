@@ -1,0 +1,120 @@
+{
+  "claim_boundary": "Computational Docking geometry only; not binding, Kd, IC50, expression, purity, or experimental blocking.",
+  "counts": {
+    "candidates": 2000,
+    "jobs": 8000,
+    "jobs_by_seed_conformation": {
+      "seed1931_8x6b": 2000,
+      "seed1931_9e6y": 2000,
+      "seed917_8x6b": 2000,
+      "seed917_9e6y": 2000
+    },
+    "unique_job_hashes": 8000,
+    "unique_monomer_hashes": 2000,
+    "unique_sequence_hashes": 2000
+  },
+  "created_at": "2026-07-23T10:39:07+08:00",
+  "docking_started": false,
+  "launch_authority": "NONE: package materialization only; no scheduler or HADDOCK execution was started.",
+  "outputs": {
+    "candidate_manifest": {
+      "path": "inputs/C2_NEW2000_WITH_STRUCTURES.tsv",
+      "sha256": "740ad4522db0e9957ccf031f7349c1d2c85c59d30b369010362eb54be4423bbe"
+    },
+    "job_manifest": {
+      "path": "manifests/docking_jobs.tsv",
+      "sha256": "c3e1a76e13e872b34c68e6d76b3f83cde05f99f13de192051152b4e09fc15094"
+    },
+    "ordered_candidate_sequence_monomer_sha256": "39cd1d68dfd1d7fa85978ceaa53f6772d2ffa2557b1ff324c1f573b365d093d7"
+  },
+  "package_id": "c2_new2000_dualreceptor_2seed",
+  "package_version": "pvrig_c2_new_split4220_2000_dualreceptor_2seed_handoff_v2",
+  "portable_support_files": [
+    {
+      "bytes": 340443,
+      "path": "inputs/source/8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+    },
+    {
+      "bytes": 197883,
+      "path": "inputs/source/9E6Y.pdb",
+      "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+    },
+    {
+      "bytes": 5558,
+      "path": "inputs/source/PVRIG_hotspot_set_v1.csv",
+      "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+    },
+    {
+      "bytes": 2797,
+      "path": "reports/reference_normalization_summary.json",
+      "sha256": "7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3"
+    },
+    {
+      "bytes": 3241,
+      "path": "scripts/status.py",
+      "sha256": "3911523d71a06167ff3b9d780abf183cc0295c73f27cb32cda855f5771e1231c"
+    },
+    {
+      "bytes": 9152,
+      "path": "scripts/run_controller.py",
+      "sha256": "682aa8eb41d517c648b27194886c44d1a4a1096a63ce574cc65ff909e31546af"
+    },
+    {
+      "bytes": 40588,
+      "path": "scripts/aggregate_results.py",
+      "sha256": "986f52841cb4eaafb9a33b930e6a58be1651d13b3eaf9c2dc956af57c28aef6a"
+    },
+    {
+      "bytes": 20981,
+      "path": "scripts/analyze_p2_p3_p4_enrichment.py",
+      "sha256": "6bc70f34b1e2c43df1267f3baa15cc41a3e1c1b14b8f2dbeec9e02e1f26f02b3"
+    },
+    {
+      "bytes": 9776,
+      "path": "scripts/validate_protocol.py",
+      "sha256": "387787a5e19f428c00a6b7f2f305d8eca61b34a4c39c5942867c2a1638b4f09c",
+      "source": "portable_support/validate_protocol.py"
+    },
+    {
+      "bytes": 6585,
+      "path": "scripts/aggregate_external_candidate_results.py",
+      "sha256": "941cfb1018a7126957c23a5d1940c932eaa6b31d3ae2d71363fc94b36855810b",
+      "source": "portable_support/aggregate_external_candidate_results.py"
+    }
+  ],
+  "production": true,
+  "protocol": {
+    "air_anchor_count": 12,
+    "cfg_hashes": {
+      "1931": {
+        "8x6b": "8d155f3264b4c86acac8ae8440abe8ba0d594abd9a2426bacee386236c0f90b1",
+        "9e6y": "01f3b4c1875617df9d1e097e16d943cb988d7d25af3ca57335d167dec8e42c73"
+      },
+      "917": {
+        "8x6b": "e163c08b04a1b3315589b17ab3b439ddd791224da6419154a3697161f79d5e88",
+        "9e6y": "981649a809b861fc99c1838d4ab62144e10441485ae8b665eff412435f2b577e"
+      }
+    },
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+    "seeds": [
+      917,
+      1931
+    ],
+    "technical_failure_semantics": "NA_not_negative"
+  },
+  "schema_version": 2,
+  "source": {
+    "candidate_input_file": "C2_NEW2000_WITH_STRUCTURES.tsv",
+    "candidate_input_sha256": "fc7b11b24aade75d16c0136dd72a80443d3e49851f6f59d0103e7ad1f306ecf8",
+    "split_receipt_sha256": "79464558b02ff8ebe987359352cb8591e4735edeb5edf03bd07b30e15ced5cc1",
+    "structure_gate_receipt_sha256": "e15e3bb3d631413f2ce397190995e7a71c0212edd965435775a404974bc6fc32",
+    "template_lock_sha256": "19f0025ac06cd4e4396b672847823746544da0fc718ecdc458d7106de4baf0e2",
+    "template_root": "/data1/qlyu/projects/pvrig_top7500_c2_gap_recovery_v1_20260723/template_v3/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722"
+  },
+  "status": "READY_FOR_EXTERNAL_DOCKING_SUBMISSION"
+}

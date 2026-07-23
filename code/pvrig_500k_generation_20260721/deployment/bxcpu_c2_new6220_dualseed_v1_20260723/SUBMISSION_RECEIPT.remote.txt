@@ -1,0 +1,11 @@
+status=SUBMITTED_DEPENDENT_AFTER_TOP7500
+preflight_job_id=11943255
+array_job_id=11943265
+audit_job_id=11943271
+predecessor_array_job_id=11942310
+expected_jobs=24880
+expected_candidates=6220
+archive_sha256=29a83793b8d0e0ecedb86b3bd4f83a90efad7516300d433a3bf3499e66f535cf
+anchors_sha256=b47b7398a742d6e2c8fb781e619567d275e29d8c9b8b254337482f0cd8e9a916
+result_root=/publicfs04/fs04-al/home/als001821/pvrig_c2_new6220_dualreceptor_2seed_v1_20260723_bxcpu_results
+submitted_at=2026-07-23T04:56:25Z

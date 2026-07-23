@@ -1,103 +1,28 @@
 {
   "alerts": [
-    "NODE1_CHECK_FAILED"
+    "ARRAY_TASK_COUNT_NOT_8",
+    "BXCPU_CHECK_FAILED",
+    "NODE1_CHECK_FAILED",
+    "NO_DOCKING_PROGRESS_FOR_20MIN"
   ],
   "bxcpu": {
-    "archives_pending": 7611,
-    "bad_status_json": 0,
-    "queue": [
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_1",
-        "reason": "q2408",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_2",
-        "reason": "k1101",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_3",
-        "reason": "q2411",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_4",
-        "reason": "r2112",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_5",
-        "reason": "s2604",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_6",
-        "reason": "s2703",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_7",
-        "reason": "j1501",
-        "state": "RUNNING"
-      },
-      {
-        "elapsed": "10:05:00",
-        "job_id": "11942310_8",
-        "reason": "j1508",
-        "state": "RUNNING"
-      }
-    ],
-    "root_bytes": 7050563170,
-    "running_array_tasks": 8,
-    "status_counts": {
-      "FAILED": 13,
-      "SUCCESS": 20035
-    },
-    "stderr_summary": {
-      "known_jobacct_timeout_lines": 11,
-      "nonempty_files": [
-        {
-          "bytes": 132,
-          "file": "slurm-pvrig-top7500-25k-11942310_4.err",
-          "lines": 1
-        },
-        {
-          "bytes": 132,
-          "file": "slurm-pvrig-top7500-25k-11942310_7.err",
-          "lines": 1
-        },
-        {
-          "bytes": 1194,
-          "file": "slurm-pvrig-top7500-25k-11942310_8.err",
-          "lines": 9
-        }
-      ],
-      "unexpected_lines": []
-    }
+    "error": "RuntimeError('command failed rc=255: /mnt/c/WINDOWS/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=20 bxcpu set -euo pipefail\\nR=\"$HOME/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722_bxcpu_results\"\\npython3 - \"$R\" <<\\'PY\\'\\nimport collections, json, os, pathlib, sys\\nr=pathlib.Path(sys.argv[1]); counts=collections.Counter(); bad=0\\ndef tree_bytes(root):\\n    total=0\\n    for directory, _, files in os.walk(str(root)):\\n        for name in files:\\n            try: total+=(pathlib.Path(directory)/name).stat().st_size\\n            except (FileNotFoundError, OSError): pass\\n    return total\\nfor p in (r/\"status/jobs\").glob(\"*.json\"):\\n    try: counts[json.load(open(p)).get(\"status\", \"UNKNOWN\")]+=1\\n    except Exception: bad+=1\\nstderr_nonempty=[]; known_jobacct_timeout_lines=0; unexpected_stderr=[]\\nfor p in sorted(r.glob(\"slurm-pvrig-top7500-25k-11942310_*.err\")):\\n    try: lines=[line.strip() for line in p.read_text(errors=\"replace\").splitlines() if line.strip()]\\n    except (FileNotFoundError, OSError): continue\\n    if not lines: continue\\n    stderr_nonempty.append({\"file\":p.name, \"bytes\":p.stat().st_size, \"lines\":len(lines)})\\n    for line in lines:\\n        if (\\n            \"_handle_stat_jobacct\" in line\\n            and \"more than MessageTimeout\" in line\\n            and \"result won\\'t be delivered\" in line\\n        ):\\n            known_jobacct_timeout_lines+=1\\n        elif len(unexpected_stderr) < 20:\\n            unexpected_stderr.append({\"file\":p.name, \"line\":line[:1000]})\\nprint(json.dumps({\\n    \"status_counts\":dict(counts),\\n    \"bad_status_json\":bad,\\n    \"archives_pending\":len(list((r/\"compressed_queue\").glob(\"*.tar.gz\"))),\\n    \"root_bytes\":tree_bytes(r),\\n    \"stderr_summary\":{\\n        \"nonempty_files\":stderr_nonempty,\\n        \"known_jobacct_timeout_lines\":known_jobacct_timeout_lines,\\n        \"unexpected_lines\":unexpected_stderr,\\n    },\\n}))\\nPY\\necho __QUEUE__\\nsqueue -h -j 11942310,11942311 -o \"%i|%T|%M|%R\"\\n: Connection closed by 198.18.0.17 port 22')"
   },
-  "checked_at_utc": "2026-07-23T01:55:53.666185+00:00",
+  "checked_at_utc": "2026-07-23T05:59:26.976645+00:00",
   "node1": {
-    "error": "RuntimeError('command failed rc=255: /mnt/c/WINDOWS/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=20 node1 set -euo pipefail\\nR=/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k\\npython3 - \"$R\" <<\\'PY\\'\\nimport collections, json, pathlib, sys\\nr=pathlib.Path(sys.argv[1]); counts=collections.Counter(); bad=0\\nfor p in (r/\"status/jobs\").glob(\"*.json\"):\\n    try: counts[json.load(open(p)).get(\"status\", \"UNKNOWN\")]+=1\\n    except Exception: bad+=1\\nprint(json.dumps({\\n    \"status_counts\":dict(counts),\\n    \"bad_status_json\":bad,\\n    \"job_results\":len(list((r/\"results\").glob(\"*/job_result.json\"))),\\n    \"archives\":len(list((r/\"compressed_queue\").glob(\"*.tar.gz\"))),\\n    \"failed_evidence\":len(list((r/\"failed_evidence\").glob(\"*.tar.gz\"))),\\n    \"batch_receipts\":len(list((r/\"state/batches\").glob(\"*\"))),\\n}))\\nPY\\ndu -sb \"$R\" | awk \\'{print $1}\\'\\ndf -B1 --output=avail /data1 | tail -1\\n: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535')"
+    "error": "RuntimeError('command failed rc=255: /mnt/c/WINDOWS/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=20 node1 set -euo pipefail\\nR=/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k\\npython3 - \"$R\" <<\\'PY\\'\\nimport collections, json, pathlib, sys\\nr=pathlib.Path(sys.argv[1]); counts=collections.Counter(); bad=0\\nfor p in (r/\"status/jobs\").glob(\"*.json\"):\\n    try: counts[json.load(open(p)).get(\"status\", \"UNKNOWN\")]+=1\\n    except Exception: bad+=1\\nprint(json.dumps({\\n    \"status_counts\":dict(counts),\\n    \"bad_status_json\":bad,\\n    \"job_results\":len(list((r/\"results\").glob(\"*/job_result.json\"))),\\n    \"archives\":len(list((r/\"compressed_queue\").glob(\"*.tar.gz\"))),\\n    \"failed_evidence\":len(list((r/\"failed_evidence\").glob(\"*.tar.gz\"))),\\n    \"batch_receipts\":len(list((r/\"state/batches\").glob(\"*\"))),\\n}))\\nPY\\ndu -sb \"$R\" | awk \\'{print $1}\\'\\ndf -B1 --output=avail /data1 | tail -1\\n: Connection timed out during banner exchange\\nConnection to UNKNOWN port 65535 timed out\\nssh: connect to host 172.21.43.18 port 322: Connection timed out')"
   },
   "progress": {
-    "failed": 13,
+    "failed": 0,
     "failed_evidence": 0,
-    "last_progress_utc": "2026-07-23T01:55:53.666185+00:00",
-    "last_success_count": 20035,
-    "local_failed_evidence": 13,
+    "last_progress_utc": "2026-07-23T05:24:48.040830+00:00",
+    "last_success_count": 0,
+    "local_failed_evidence": 15,
     "node1_archives": 0,
-    "pending_node1_delivery": 4,
-    "relay_lag": 20035,
-    "success": 20035,
-    "terminal": 20048
+    "pending_node1_delivery": 0,
+    "relay_lag": 0,
+    "success": 0,
+    "terminal": 0
   },
   "relay": {
     "all_sessions_running": true,
@@ -109,8 +34,10 @@
           "batch_size": 20,
           "campaigns": [
             {
+              "batch": 20,
               "campaign": "top7500_25k",
-              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+              "delivered": 4308,
+              "pruned": 4308
             }
           ],
           "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard00",
@@ -119,9 +46,9 @@
           "shard_count": 4,
           "shard_index": 0,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T01:54:53.500021+00:00"
+          "updated_at_utc": "2026-07-23T05:57:47.257486+00:00"
         },
-        "status_mtime_epoch": 1784771676.1373537
+        "status_mtime_epoch": 1784786249.9224317
       },
       {
         "index": 1,
@@ -130,8 +57,10 @@
           "batch_size": 20,
           "campaigns": [
             {
+              "batch": 20,
               "campaign": "top7500_25k",
-              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+              "delivered": 4358,
+              "pruned": 4358
             }
           ],
           "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard01",
@@ -140,9 +69,9 @@
           "shard_count": 4,
           "shard_index": 1,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T01:54:53.532535+00:00"
+          "updated_at_utc": "2026-07-23T05:57:53.409346+00:00"
         },
-        "status_mtime_epoch": 1784771676.1742988
+        "status_mtime_epoch": 1784786256.758183
       },
       {
         "index": 2,
@@ -151,8 +80,10 @@
           "batch_size": 20,
           "campaigns": [
             {
+              "batch": 20,
               "campaign": "top7500_25k",
-              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+              "delivered": 4369,
+              "pruned": 4369
             }
           ],
           "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard02",
@@ -161,9 +92,9 @@
           "shard_count": 4,
           "shard_index": 2,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T01:55:12.010271+00:00"
+          "updated_at_utc": "2026-07-23T05:57:45.657747+00:00"
         },
-        "status_mtime_epoch": 1784771696.7049074
+        "status_mtime_epoch": 1784786248.1458755
       },
       {
         "index": 3,
@@ -172,8 +103,10 @@
           "batch_size": 20,
           "campaigns": [
             {
+              "batch": 20,
               "campaign": "top7500_25k",
-              "error": "RuntimeError('command failed after 4 attempts rc=255: qlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n')"
+              "delivered": 4278,
+              "pruned": 4278
             }
           ],
           "local_root": "/mnt/d/work/抗体/node1/pvrig_top7500_25k_bxcpu_incremental_spool_20260722/shard03",
@@ -182,9 +115,9 @@
           "shard_count": 4,
           "shard_index": 3,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T01:55:08.703304+00:00"
+          "updated_at_utc": "2026-07-23T05:55:21.431066+00:00"
         },
-        "status_mtime_epoch": 1784771693.0298002
+        "status_mtime_epoch": 1784786103.894413
       }
     ]
   },
@@ -198,11 +131,8 @@
     "node1_snapshot_current": false,
     "projected_remaining_bytes": 0,
     "projected_required_free_bytes": 53687091200,
-    "remaining_jobs_upper_bound": 4952
+    "remaining_jobs_upper_bound": 25000
   },
   "target_jobs": 25000,
-  "warnings": [
-    "SLURM_JOBACCT_TIMEOUT_WARNINGS",
-    "TECHNICAL_FAILURES_PRESENT_AS_NA"
-  ]
+  "warnings": []
 }

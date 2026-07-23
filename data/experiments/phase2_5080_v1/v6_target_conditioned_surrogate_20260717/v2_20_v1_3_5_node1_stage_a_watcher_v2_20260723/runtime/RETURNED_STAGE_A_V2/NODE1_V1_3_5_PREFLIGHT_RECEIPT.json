@@ -1,0 +1,107 @@
+{
+  "backward_called": false,
+  "calibrator_invocations_total": 5,
+  "claim_boundary": "Five-fold shared-calibration materialize/load-only preflight; no optimizer, backward, run_fold_core or training.",
+  "fold_count": 5,
+  "folds": {
+    "0": {
+      "backward_called": false,
+      "calibrator_invocations": 1,
+      "load_only_receipt_sha256": "4d21dc999b32241a43bd70702b522b2333c0e344d58cbe7b4370914692d6a04a",
+      "materialization_terminal_sha256": "9e1de95844f99b95f5ae93f777674bc379779d073a126e9e87c4aac54dcd18be",
+      "optimizer_created": false,
+      "optimizer_steps": 0,
+      "run_fold_core_called": false,
+      "same_bytes_for_both_arms": true,
+      "shared_calibration_sha256": "e7514f38b5f3357c43d524a962c69fa7770dc16e1daef9ec0afdb414ff31b269",
+      "training_output_created": false,
+      "training_started": false
+    },
+    "1": {
+      "backward_called": false,
+      "calibrator_invocations": 1,
+      "load_only_receipt_sha256": "4e4b87a2872ec0582f06d371c78ba81a45921971423bdadfd41c446ef80da22f",
+      "materialization_terminal_sha256": "da566b364225faadbd0007e7c5af08e5de4b9582c1b4e1294549e3abbe5be030",
+      "optimizer_created": false,
+      "optimizer_steps": 0,
+      "run_fold_core_called": false,
+      "same_bytes_for_both_arms": true,
+      "shared_calibration_sha256": "6166d7d2aa3cc0367b6aa3df35b193ee613fcb3af4d1dffcee146f7d9bb1dbf5",
+      "training_output_created": false,
+      "training_started": false
+    },
+    "2": {
+      "backward_called": false,
+      "calibrator_invocations": 1,
+      "load_only_receipt_sha256": "bc9a8a105b90254d04b48e4052fc7bfb3c4f97436ee41e792e94c332d9f9942b",
+      "materialization_terminal_sha256": "11475bf2fe7a50aff44468832e11d4c038454a911dbd33f0ecea657b6f1c8cba",
+      "optimizer_created": false,
+      "optimizer_steps": 0,
+      "run_fold_core_called": false,
+      "same_bytes_for_both_arms": true,
+      "shared_calibration_sha256": "a0ac334335afd6837b2bdeb18e1111e4729c235316398728d37af2440a81751b",
+      "training_output_created": false,
+      "training_started": false
+    },
+    "3": {
+      "backward_called": false,
+      "calibrator_invocations": 1,
+      "load_only_receipt_sha256": "bc5caeb6bbbb2164f2c118b8be8852cf0e459cc1a1dd6c880eeed2a7d3452061",
+      "materialization_terminal_sha256": "90e71622db03b475a9be24013bf180de3722c56cdf4334b4d1fd5aa69c9b1e7f",
+      "optimizer_created": false,
+      "optimizer_steps": 0,
+      "run_fold_core_called": false,
+      "same_bytes_for_both_arms": true,
+      "shared_calibration_sha256": "ba71bdb6457308a0c3e80c868bc9a819c3f9cf4c30eec7f3364e1155739ef53a",
+      "training_output_created": false,
+      "training_started": false
+    },
+    "4": {
+      "backward_called": false,
+      "calibrator_invocations": 1,
+      "load_only_receipt_sha256": "08d0e7a37e6997e8c7084ba2a715ad6154798a4936f640a870f8272238336fac",
+      "materialization_terminal_sha256": "2c426615a7ee39b8efa58d2fb262cd2e1dd050a680746b308272d190626cc448",
+      "optimizer_created": false,
+      "optimizer_steps": 0,
+      "run_fold_core_called": false,
+      "same_bytes_for_both_arms": true,
+      "shared_calibration_sha256": "ea5e221bd0474dfb7246b33574a06d11c3fea88b312b47bf7130bcabbc3f371f",
+      "training_output_created": false,
+      "training_started": false
+    }
+  },
+  "implementation_freeze": {
+    "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_technical_recovery_watcher_v2_20260723/IMPLEMENTATION_FREEZE_PHASE1_TECHNICAL_RECOVERY_V1_3_5.json",
+    "sha256": "07c8463689d6baa0da1ebd0c1d4440fc0315c8e8edb4e1b72415434567dc0804"
+  },
+  "optimizer_created": false,
+  "optimizer_steps": 0,
+  "preregistration": {
+    "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_technical_recovery_watcher_v2_20260723/PREREGISTRATION_PHASE1_TECHNICAL_RECOVERY_V1_3_5.json",
+    "sha256": "574919e65f7079475c17294e297327ce311910ced12656e34640e1fa4a5b9562"
+  },
+  "run_fold_core_called": false,
+  "schema_version": "pvrig.v220.v1_3_5_node1_preflight_receipt.v1",
+  "status": "PASS_NODE1_V220_V1_3_5_FIVE_FOLD_SHARED_CALIBRATION_LOAD_ONLY_NO_TRAINING",
+  "tests": {
+    "combined_tests_run": 148,
+    "legacy": {
+      "compatibility_marker": "PASS_LEGACY_102_PYTHON311_COMPATIBLE python=Python 3.11.14",
+      "ok": true,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_preflight_runtime_v2_20260723/logs/LEGACY_102_TESTS.log",
+      "python_version": "Python 3.11.14",
+      "sha256": "7df2f1f8405d86f85d7d8b53682ffa49d6d4384efc25637e9e23a0068b6a1590",
+      "tests_run": 102
+    },
+    "v1_3_5": {
+      "ok": true,
+      "path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_preflight_runtime_v2_20260723/logs/V1_3_5_TESTS.log",
+      "sha256": "bfae49ac887013b6633afa0122c6c6ad1ed46efcb5dfc79dfbaf18c33fbd4d42",
+      "tests_run": 46
+    }
+  },
+  "training_output_created": false,
+  "training_sentinel_exists": false,
+  "training_sentinel_path": "/data1/qlyu/projects/pvrig_v2_20_phase1_core_oof_v1_3_5_preflight_runtime_v2_20260723/training_output_forbidden",
+  "training_started": false
+}

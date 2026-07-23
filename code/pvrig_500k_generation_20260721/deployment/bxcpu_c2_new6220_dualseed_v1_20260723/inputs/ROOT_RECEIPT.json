@@ -1,0 +1,32 @@
+{
+  "claim_boundary": "Computational Docking geometry only; not binding, Kd, IC50, expression, purity, or experimental blocking.",
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "counts": {
+    "batch_2000_candidates": 2000,
+    "batch_2000_jobs": 8000,
+    "batch_4220_candidates": 4220,
+    "batch_4220_jobs": 16880,
+    "total_candidates": 6220,
+    "total_jobs": 24880
+  },
+  "created_at": "2026-07-23T10:39:07+08:00",
+  "docking_started": false,
+  "outputs": {
+    "batch_2000": "c2_new2000_dualreceptor_2seed_handoff_v2",
+    "batch_4220": "c2_new4220_dualreceptor_2seed_handoff_v2",
+    "split_release": "split_release"
+  },
+  "package_receipt_sha256": {
+    "batch_2000": "a7fba5f4651008222ce819abe50165a63028a0097b0cd68c9b4f9bc5b245a68e",
+    "batch_4220": "1bee3b42dcdac281faa781e5dff67a2b0f2bff9c116a0b9295d7957a748ebd96"
+  },
+  "schema_version": "pvrig.c2_new6220.split_handoffs.v2",
+  "seeds": [
+    917,
+    1931
+  ],
+  "status": "READY_TWO_INDEPENDENT_HANDOFFS"
+}

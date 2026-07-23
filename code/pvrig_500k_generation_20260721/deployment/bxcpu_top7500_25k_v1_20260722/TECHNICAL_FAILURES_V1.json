@@ -48,6 +48,28 @@
     {
       "attempts": 2,
       "diagnostic_tail": [
+        "[2026-07-23 11:08:53,470 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:08:53,472 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:08:53,472 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+        "[2026-07-23 11:11:45,993 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:11:45,995 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:11:45,995 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+      ],
+      "error": "HADDOCK3 exited with return code 1",
+      "evidence_sha256": "6574b2fb4362d9aad888ea9db0d9e09ea7129495e1e2fc7343378cbfef4a589c",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0065__00349_8x6b_s1931_944f60521844",
+      "label": "NA_TECHNICAL_FAILURE",
+      "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0065__00349_8x6b_s1931_944f60521844.tar.gz",
+      "protocol_changed": false,
+      "stage": "haddock"
+    },
+    {
+      "attempts": 2,
+      "diagnostic_tail": [
         "[2026-07-23 01:13:20,771 libutil ERROR] 30.00% of output was not generated for this module and tolerance was set to 10.00%.",
         "raise RuntimeError(reason)",
         "RuntimeError: 30.00% of output was not generated for this module and tolerance was set to 10.00%.",
@@ -70,6 +92,50 @@
     {
       "attempts": 2,
       "diagnostic_tail": [
+        "[2026-07-23 11:06:26,183 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:06:26,184 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:06:26,184 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+        "[2026-07-23 11:09:15,911 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:09:15,912 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 11:09:15,912 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+      ],
+      "error": "HADDOCK3 exited with return code 1",
+      "evidence_sha256": "f868837cb201031d5002d0b40b8a3936f11379ebf95719083f294bf26ab11003",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0171__00664_8x6b_s1931_55c3694008c6",
+      "label": "NA_TECHNICAL_FAILURE",
+      "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0171__00664_8x6b_s1931_55c3694008c6.tar.gz",
+      "protocol_changed": false,
+      "stage": "haddock"
+    },
+    {
+      "attempts": 2,
+      "diagnostic_tail": [
+        "[2026-07-23 08:19:28,273 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 08:19:28,274 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 08:19:28,274 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+        "[2026-07-23 08:22:17,334 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 08:22:17,336 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 08:22:17,336 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+      ],
+      "error": "HADDOCK3 exited with return code 1",
+      "evidence_sha256": "347870872b1075879d1d1ff3cfd4856467ff25e6c07f577c9c03568b89bd26f2",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0230__00229_8x6b_s1931_8f6b7228e268",
+      "label": "NA_TECHNICAL_FAILURE",
+      "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0230__00229_8x6b_s1931_8f6b7228e268.tar.gz",
+      "protocol_changed": false,
+      "stage": "haddock"
+    },
+    {
+      "attempts": 2,
+      "diagnostic_tail": [
         "[2026-07-23 05:16:59,170 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
         "raise RuntimeError(reason)",
         "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
@@ -86,6 +152,50 @@
       "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0264__00579_8x6b_s917_58a54df975ea",
       "label": "NA_TECHNICAL_FAILURE",
       "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0264__00579_8x6b_s917_58a54df975ea.tar.gz",
+      "protocol_changed": false,
+      "stage": "haddock"
+    },
+    {
+      "attempts": 2,
+      "diagnostic_tail": [
+        "[2026-07-23 06:10:12,547 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 06:10:12,552 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 06:10:12,552 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+        "[2026-07-23 06:13:02,900 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 06:13:02,901 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 06:13:02,901 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+      ],
+      "error": "HADDOCK3 exited with return code 1",
+      "evidence_sha256": "607ccd14145b2442ecb85e5dbdb057ee1c5d26c30192a51f42535adfc2492530",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0329__00161_8x6b_s917_110badaffcbb",
+      "label": "NA_TECHNICAL_FAILURE",
+      "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0329__00161_8x6b_s917_110badaffcbb.tar.gz",
+      "protocol_changed": false,
+      "stage": "haddock"
+    },
+    {
+      "attempts": 2,
+      "diagnostic_tail": [
+        "[2026-07-23 09:39:16,518 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 09:39:16,520 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 09:39:16,520 libutil ERROR] An error has occurred, see log file. And contact the developers if needed.",
+        "[2026-07-23 09:42:05,007 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "raise RuntimeError(reason)",
+        "RuntimeError: 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 09:42:05,008 libutil ERROR] 20.00% of output was not generated for this module and tolerance was set to 10.00%.",
+        "[2026-07-23 09:42:05,008 libutil ERROR] An error has occurred, see log file. And contact the developers if needed."
+      ],
+      "error": "HADDOCK3 exited with return code 1",
+      "evidence_sha256": "27d65640634a7780f4f28f03cfc0f5dcc87d0a52bab86d202dfb68a4aecafd27",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0368__00696_8x6b_s1931_6a88b191e82a",
+      "label": "NA_TECHNICAL_FAILURE",
+      "node1_evidence": "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_docking_results_v1_20260722/top7500_25k/failed_evidence/CANDIDATE_P1MCPUFP__CPUFP500K_0368__00696_8x6b_s1931_6a88b191e82a.tar.gz",
       "protocol_changed": false,
       "stage": "haddock"
     },
@@ -192,5 +302,5 @@
   ],
   "protocol_changed": false,
   "schema_version": "pvrig_top7500_technical_failures_v1",
-  "updated_at_utc": "2026-07-22T21:45:23.644653+00:00"
+  "updated_at_utc": "2026-07-23T05:24:45.157002+00:00"
 }
