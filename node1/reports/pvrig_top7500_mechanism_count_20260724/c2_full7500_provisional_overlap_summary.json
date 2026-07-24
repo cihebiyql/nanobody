@@ -1,0 +1,27 @@
+{
+  "provisional_c2_full7500_using_old_overlap1280": {
+    "candidate_count": 7500,
+    "new_exact_campaign_candidates": 6220,
+    "borrowed_overlap_candidates": 1280,
+    "counts": {
+      "stage1_any_strict_dual_reference_job": 7460,
+      "stage1_any_broad_dual_reference_job": 7500,
+      "stage2_any_seed_dual_conformation_strict": 7434,
+      "stage2_any_seed_dual_conformation_broad": 7499,
+      "stage3_two_seed_dual_conformation_strict": 6683,
+      "stage3_two_seed_dual_conformation_broad": 6791
+    },
+    "eligible_two_seed_candidates": 6791
+  },
+  "overlap1280_descriptive_old_results": {
+    "counts": {
+      "stage1_any_strict_dual_reference_job": 1275,
+      "stage1_any_broad_dual_reference_job": 1280,
+      "stage2_any_seed_dual_conformation_strict": 1272,
+      "stage2_any_seed_dual_conformation_broad": 1279,
+      "stage3_two_seed_dual_conformation_strict": 572,
+      "stage3_two_seed_dual_conformation_broad": 583
+    },
+    "eligible_two_seed_candidates": 583
+  }
+}

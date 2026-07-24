@@ -1,0 +1,25 @@
+{
+  "claim_boundary": "Technical Docking completion only; technical failures are NA, not biological negatives.",
+  "generated_at_utc": "2026-07-24T04:07:20.484829+00:00",
+  "node1_delivery_verified": true,
+  "status": "BXCPU_CAMPAIGNS_COMPLETE_SYNC_VERIFIED",
+  "stopped_completed_sync_process_groups": [
+    937096,
+    937104,
+    937112,
+    937121,
+    937134,
+    937144,
+    937154,
+    937165,
+    967825,
+    967832,
+    967839,
+    967846,
+    1395569,
+    4075964
+  ],
+  "success_jobs": 66720,
+  "technical_na_jobs": 40,
+  "total_expected_jobs": 66760
+}

@@ -1,0 +1,31 @@
+{
+  "campaigns": {
+    "old_top7500": {
+      "archive_count": 24985,
+      "candidate_count": 7500,
+      "counts": {
+        "stage1_any_broad_dual_reference_job": 7497,
+        "stage1_any_strict_dual_reference_job": 3830,
+        "stage2_any_seed_dual_conformation_broad": 7483,
+        "stage2_any_seed_dual_conformation_strict": 3579,
+        "stage3_two_seed_dual_conformation_broad": 3988,
+        "stage3_two_seed_dual_conformation_strict": 1923
+      },
+      "eligible_two_seed_candidates": 3992,
+      "job_count": 24985,
+      "parse_error_count": 0,
+      "seed_coverage": {
+        "0": 5,
+        "1": 3503,
+        "2": 2994,
+        "3": 998
+      }
+    }
+  },
+  "rules": {
+    "A": "hotspot>=14,total>=500,cdr3>=100,cdr3_fraction>=0.15",
+    "B": "total>=500 and (hotspot>=14 or cdr3>=50), or total>=300 and hotspot>=10 and cdr3>=50",
+    "dual_conformation": "same candidate and seed passes both independently docked conformations",
+    "dual_reference": "same pose passes both 8x6b and 9e6y overlay scores"
+  }
+}

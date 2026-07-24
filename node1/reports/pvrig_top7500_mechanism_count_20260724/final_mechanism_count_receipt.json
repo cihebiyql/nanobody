@@ -1,0 +1,68 @@
+{
+  "schema_version": "pvrig.two_top7500.blocker_mechanism_count.v1",
+  "rules": {
+    "strict_A": {
+      "hotspot_overlap_min": 14,
+      "total_vhh_pvrl2_residue_pair_occlusion_min": 500,
+      "cdr3_pvrl2_residue_pair_occlusion_min": 100,
+      "cdr3_occlusion_fraction_min": 0.15
+    },
+    "broad_AB": "strict A or BLOCKER_PLAUSIBLE_B",
+    "stage1": "at least one job has a pose passing both 8x6b and 9e6y reference-overlay scores",
+    "stage2": "within one seed, both independently docked conformations pass stage1",
+    "stage3": "at least two seeds pass stage2"
+  },
+  "old_top7500": {
+    "candidates": 7500,
+    "successful_jobs_parsed": 24985,
+    "parse_errors": 0,
+    "stage1_strict_A": 3830,
+    "stage1_broad_AB": 7497,
+    "stage2_strict_A": 3579,
+    "stage2_broad_AB": 7483,
+    "two_seed_evaluable_candidates": 3992,
+    "stage3_strict_A": 1923,
+    "stage3_broad_AB": 3988
+  },
+  "c2_new6220_exact_new_docking": {
+    "candidates": 6220,
+    "successful_jobs_parsed": 24868,
+    "parse_errors": 0,
+    "stage1_strict_A": 6185,
+    "stage1_broad_AB": 6220,
+    "stage2_strict_A": 6162,
+    "stage2_broad_AB": 6220,
+    "two_seed_evaluable_candidates": 6208,
+    "stage3_strict_A": 6111,
+    "stage3_broad_AB": 6208
+  },
+  "c2_new4220_four_seed_recheck": {
+    "candidates": 4220,
+    "strict_at_least_two_seeds": 4179,
+    "strict_at_least_three_seeds": 4172,
+    "strict_all_four_seeds": 4119,
+    "broad_at_least_two_seeds": 4220,
+    "broad_at_least_three_seeds": 4219,
+    "broad_all_four_seeds": 4199
+  },
+  "c2_full7500_provisional_with_old_overlap1280": {
+    "candidates": 7500,
+    "exact_new_docking_candidates": 6220,
+    "descriptive_old_overlap_candidates": 1280,
+    "stage1_strict_A": 7460,
+    "stage1_broad_AB": 7500,
+    "stage2_strict_A": 7434,
+    "stage2_broad_AB": 7499,
+    "two_seed_evaluable_candidates": 6791,
+    "stage3_strict_A": 6683,
+    "stage3_broad_AB": 6791,
+    "reuse_status": "PENDING_EXACT_MONOMER_AND_JOB_HASH_CLOSURE"
+  },
+  "validation": {
+    "explicit_json_sampled_jobs": 800,
+    "explicit_json_vs_fast_parser_mismatches": 0,
+    "candidate_sets_unique_and_disjoint": true,
+    "technical_NA_treated_as_missing_not_negative": true
+  },
+  "claim_boundary": "Computational blocker-like geometry and repeatability only; not measured binding, Kd, IC50, expression, purity, or experimental blocking."
+}

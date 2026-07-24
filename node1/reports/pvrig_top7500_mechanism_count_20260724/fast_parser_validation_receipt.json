@@ -1,0 +1,20 @@
+{
+  "checked_job_archives": 800,
+  "checked_pose_reference_pairs": 7985,
+  "campaigns_sampled": [
+    "old_top7500",
+    "c2_new2000_seed917_1931",
+    "c2_new4220_seed917_1931",
+    "c2_new4220_seed42_3047"
+  ],
+  "explicit_json_vs_fast_parser_mismatches": 0,
+  "observed_reference_order": [
+    "8x6b",
+    "9e6y"
+  ],
+  "sampling_seed": 20260724,
+  "semantic_check": {
+    "total_occlusion_field": "vhh_pvrl2_occlusion.residue_pair_count",
+    "definition": "unique VHH-PVRL2 residue-pair count at the configured occlusion cutoff"
+  }
+}

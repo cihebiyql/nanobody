@@ -1,0 +1,187 @@
+{
+  "all_failures_exhausted_two_attempts": true,
+  "all_failures_have_successful_any_sibling": true,
+  "all_failures_have_successful_other_receptor_same_seed": true,
+  "campaign": "c2_new4220_seed42_3047",
+  "claim_boundary": "Computational Docking technical completion and pose-generation evidence only; not binding, Kd, IC50, expression, purity, or experimental blocking.",
+  "expected_jobs": 16880,
+  "failed_jobs": [
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0281__00612_8x6b_s42_1f0026fb550a",
+      "receptor": "8x6b",
+      "seed": "42",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0298__00393_8x6b_s3047_26af09a46a14",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0302__00659_8x6b_s3047_a3281fcdd0db",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0281__00074_8x6b_s3047_ed86cec39ffe",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0200__00683_8x6b_s3047_1604623c536f",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0007__00635_8x6b_s3047_bce8d0641e64",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0487__00879_8x6b_s42_89014132503c",
+      "receptor": "8x6b",
+      "seed": "42",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0305__00344_8x6b_s42_f1ad103f250a",
+      "receptor": "8x6b",
+      "seed": "42",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0188__00126_8x6b_s42_2a4ceece95ab",
+      "receptor": "8x6b",
+      "seed": "42",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0009__00389_8x6b_s3047_3ed58297beae",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0204__00210_8x6b_s42_497d5da7d94d",
+      "receptor": "8x6b",
+      "seed": "42",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0086__00351_8x6b_s3047_a9bafe5fe5bd",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    },
+    {
+      "attempts": 2,
+      "error": "HADDOCK3 exited with return code 1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0485__00795_8x6b_s3047_623e1ddd2297",
+      "receptor": "8x6b",
+      "seed": "3047",
+      "stage": "haddock",
+      "status": "FAILED",
+      "successful_any_sibling": true,
+      "successful_other_receptor_same_seed": true,
+      "successful_same_receptor_other_seed": true
+    }
+  ],
+  "failure_counts_by_receptor": {
+    "8x6b": 13
+  },
+  "failure_counts_by_seed": {
+    "3047": 8,
+    "42": 5
+  },
+  "generated_at_utc": "2026-07-24T04:03:57.766899+00:00",
+  "observed_status_json": 16880,
+  "pending_jobs": 0,
+  "root": "/publicfs04/fs04-al/home/als001821/pvrig_c2_new4220_seed42_3047_v1_20260723_bxcpu_results",
+  "schema_version": "pvrig.bxcpu_campaign_closeout.v1",
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "status_counts": {
+    "FAILED": 13,
+    "SUCCESS": 16867
+  },
+  "success_jobs": 16867,
+  "technical_failure_semantics": "NA_not_negative",
+  "technical_na_jobs": 13,
+  "terminal_jobs": 16880
+}

@@ -1,0 +1,44 @@
+{
+  "c2_new6220_initial": {
+    "candidate_count": 6220,
+    "counts": {
+      "stage1_any_strict_dual_reference_job": 6185,
+      "stage1_any_broad_dual_reference_job": 6220,
+      "stage2_any_seed_dual_conformation_strict": 6162,
+      "stage2_any_seed_dual_conformation_broad": 6220,
+      "stage3_two_seed_dual_conformation_strict": 6111,
+      "stage3_two_seed_dual_conformation_broad": 6208
+    },
+    "eligible_two_seed_candidates": 6208,
+    "seed_coverage": {
+      "1": 12,
+      "2": 6208
+    }
+  },
+  "c2_new4220_four_seed": {
+    "candidate_count": 4220,
+    "complete_seed_coverage": {
+      "2": 1,
+      "3": 20,
+      "4": 4199
+    },
+    "strict_seed_pass_distribution": {
+      "0": 35,
+      "1": 6,
+      "2": 7,
+      "3": 53,
+      "4": 4119
+    },
+    "broad_seed_pass_distribution": {
+      "2": 1,
+      "3": 20,
+      "4": 4199
+    },
+    "strict_at_least_2_seeds": 4179,
+    "strict_at_least_3_seeds": 4172,
+    "strict_all_4_seeds": 4119,
+    "broad_at_least_2_seeds": 4220,
+    "broad_at_least_3_seeds": 4219,
+    "broad_all_4_seeds": 4199
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "campaigns": {
+    "c2_new2000": {
+      "archive_count": 7997,
+      "candidate_count": 2000,
+      "counts": {
+        "stage1_any_broad_dual_reference_job": 2000,
+        "stage1_any_strict_dual_reference_job": 1991,
+        "stage2_any_seed_dual_conformation_broad": 2000,
+        "stage2_any_seed_dual_conformation_strict": 1980,
+        "stage3_two_seed_dual_conformation_broad": 1997,
+        "stage3_two_seed_dual_conformation_strict": 1965
+      },
+      "eligible_two_seed_candidates": 1997,
+      "job_count": 7997,
+      "parse_error_count": 0,
+      "seed_coverage": {
+        "1": 3,
+        "2": 1997
+      }
+    },
+    "c2_new4220_seed42_3047": {
+      "archive_count": 16867,
+      "candidate_count": 4220,
+      "counts": {
+        "stage1_any_broad_dual_reference_job": 4220,
+        "stage1_any_strict_dual_reference_job": 4194,
+        "stage2_any_seed_dual_conformation_broad": 4220,
+        "stage2_any_seed_dual_conformation_strict": 4180,
+        "stage3_two_seed_dual_conformation_broad": 4207,
+        "stage3_two_seed_dual_conformation_strict": 4147
+      },
+      "eligible_two_seed_candidates": 4207,
+      "job_count": 16867,
+      "parse_error_count": 0,
+      "seed_coverage": {
+        "1": 13,
+        "2": 4207
+      }
+    },
+    "c2_new4220_seed917_1931": {
+      "archive_count": 16871,
+      "candidate_count": 4220,
+      "counts": {
+        "stage1_any_broad_dual_reference_job": 4220,
+        "stage1_any_strict_dual_reference_job": 4194,
+        "stage2_any_seed_dual_conformation_broad": 4220,
+        "stage2_any_seed_dual_conformation_strict": 4182,
+        "stage3_two_seed_dual_conformation_broad": 4211,
+        "stage3_two_seed_dual_conformation_strict": 4146
+      },
+      "eligible_two_seed_candidates": 4211,
+      "job_count": 16871,
+      "parse_error_count": 0,
+      "seed_coverage": {
+        "1": 9,
+        "2": 4211
+      }
+    },
+    "old_top7500": {
+      "archive_count": 24985,
+      "candidate_count": 7393,
+      "counts": {
+        "stage1_any_broad_dual_reference_job": 7390,
+        "stage1_any_strict_dual_reference_job": 3727,
+        "stage2_any_seed_dual_conformation_broad": 7376,
+        "stage2_any_seed_dual_conformation_strict": 3476,
+        "stage3_two_seed_dual_conformation_broad": 3918,
+        "stage3_two_seed_dual_conformation_strict": 1869
+      },
+      "eligible_two_seed_candidates": 3922,
+      "job_count": 24601,
+      "parse_error_count": 384,
+      "seed_coverage": {
+        "0": 5,
+        "1": 3466,
+        "2": 2939,
+        "3": 983
+      }
+    }
+  },
+  "rules": {
+    "A": "hotspot>=14,total>=500,cdr3>=100,cdr3_fraction>=0.15",
+    "B": "total>=500 and (hotspot>=14 or cdr3>=50), or total>=300 and hotspot>=10 and cdr3>=50",
+    "dual_conformation": "same candidate and seed passes both independently docked conformations",
+    "dual_reference": "same pose passes both 8x6b and 9e6y overlay scores"
+  }
+}

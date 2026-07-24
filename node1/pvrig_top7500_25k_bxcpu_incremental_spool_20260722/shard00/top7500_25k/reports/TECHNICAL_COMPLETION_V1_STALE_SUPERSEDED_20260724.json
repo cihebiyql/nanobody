@@ -1,0 +1,13 @@
+{
+  "claim_boundary": "Technical Docking completion only; not biological blocking evidence.",
+  "expected_jobs": 25000,
+  "schema_version": "pvrig_top7500_25k_technical_status_v1",
+  "state_counts": {
+    "FAILED": 10,
+    "MISSING": 11032,
+    "SUCCESS": 13958
+  },
+  "status": "INCOMPLETE",
+  "terminal_jobs": 13958,
+  "updated_epoch": 1784760597.5873423
+}

@@ -4833,3 +4833,5 @@
 {"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6232, "pruned": 6232}], "message": "sync cycle complete", "time": "2026-07-24T04:03:13.815039+00:00"}
 {"campaign": "top7500_25k", "cycle_seconds": 93.562, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 93.562, "time": "2026-07-24T04:05:03.145135+00:00"}
 {"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6232, "pruned": 6232}], "message": "sync cycle complete", "time": "2026-07-24T04:05:03.309974+00:00"}
+{"campaign": "top7500_25k", "cycle_seconds": 98.705, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 98.705, "time": "2026-07-24T04:06:57.782329+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "top7500_25k", "delivered": 6232, "pruned": 6232}], "message": "sync cycle complete", "time": "2026-07-24T04:06:57.938604+00:00"}
