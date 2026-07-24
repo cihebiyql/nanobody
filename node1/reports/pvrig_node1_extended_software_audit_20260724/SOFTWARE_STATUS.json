@@ -1,0 +1,144 @@
+{
+  "schema_version": "pvrig.node1.extended_software_audit.v1",
+  "date": "2026-07-24",
+  "exact_xfold_found": false,
+  "likely_user_intent": "FoldX",
+  "tools": {
+    "FoldX": {
+      "version": "5.1",
+      "entry": "/data/qlyu/software/foldx/foldx",
+      "installed": true,
+      "smoke_pass": true,
+      "pvrig_vhh_batch_found": false
+    },
+    "Rosetta": {
+      "version": "3.15_bundle",
+      "entry_root": "/data/qlyu/software/rosetta_3.15_bundle/extracted/rosetta.binary.ubuntu.release-408/main/source/bin",
+      "executables": [
+        "rosetta_scripts.static.linuxgccrelease",
+        "relax.static.linuxgccrelease",
+        "score_jd2.static.linuxgccrelease",
+        "InterfaceAnalyzer.static.linuxgccrelease"
+      ],
+      "installed": true,
+      "smoke_pass": true,
+      "pvrig_vhh_batch_found": false
+    },
+    "PRODIGY": {
+      "version": "2.4.0",
+      "entry": "/data/qlyu/software/bin/prodigy",
+      "installed": true,
+      "smoke_pass": true,
+      "pvrig_vhh_batch_found": false
+    },
+    "GROMACS": {
+      "version": "2024.4",
+      "entry": "/data/qlyu/software/gromacs-2024.4-cuda/bin/gmx",
+      "cuda": true,
+      "installed": true,
+      "version_probe_pass": true,
+      "pvrig_md_found": false
+    },
+    "OpenMM": {
+      "version": "8.4",
+      "conda_env": "openmm",
+      "platforms": [
+        "Reference",
+        "CPU",
+        "CUDA",
+        "OpenCL"
+      ],
+      "import_pass": true,
+      "nbb2_refine_smoke": true,
+      "pvrig_complex_md_found": false
+    },
+    "gmx_MMPBSA": {
+      "version": "1.6.3",
+      "conda_env": "gmx_mmpbsa",
+      "ambertools_basis": "AmberTools 20",
+      "cli_pass": true,
+      "pvrig_result_found": false
+    },
+    "IgFold": {
+      "entry": "/data/qlyu/software/vhh_eval_tools/bin/igfold-predict",
+      "smoke_pdb": "/data/qlyu/software/vhh_eval_tools/tests/final_igfold/vhh_smoke_igfold.pdb",
+      "smoke_pass": true
+    },
+    "NanoNet": {
+      "entry": "/data/qlyu/software/vhh_eval_tools/bin/nanonet-predict",
+      "smoke_pdb": "/data/qlyu/software/vhh_eval_tools/tests/final_nanonet/vhh_smoke_nanonet_backbone_cb.pdb",
+      "smoke_pass": true
+    },
+    "ColabFold": {
+      "version": "1.5.3",
+      "entry": "/data/qlyu/anaconda3/envs/colabfold/bin/colabfold_batch",
+      "help_pass": true,
+      "pvrig_result_found": false
+    },
+    "AlphaFold3": {
+      "package_version": "3.0.1",
+      "script": "/data/qlyu/software/alphafold3/run_alphafold.py",
+      "package_present": true,
+      "model_parameter_closure_verified": false,
+      "pvrig_result_found": false
+    }
+  },
+  "new_smoke": {
+    "root": "/data/qlyu/projects/pvrig_tool_capability_smoke_20260724",
+    "input": {
+      "name": "8X6B.pdb",
+      "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+      "semantics": "native PVRIG-PVRL2 control, not a VHH-PVRIG complex"
+    },
+    "PRODIGY": {
+      "return_code": 0,
+      "elapsed_seconds": 17,
+      "contacts": 84,
+      "predicted_affinity_kcal_mol": -9.8,
+      "predicted_kd_M": 7e-08
+    },
+    "FoldX": {
+      "repair_return_code": 0,
+      "analyse_return_code": 0,
+      "repair_elapsed_seconds": 120,
+      "analyse_elapsed_seconds": 2,
+      "interaction_energy": -20.5719,
+      "interface_residues": 46
+    },
+    "Rosetta_score_jd2": {
+      "return_code": 0,
+      "elapsed_seconds": 28,
+      "total_score": 379.929
+    },
+    "Rosetta_InterfaceAnalyzer": {
+      "return_code": 0,
+      "elapsed_seconds": 17,
+      "dG_cross": -39.822,
+      "dSASA_int_A2": 1841.015,
+      "shape_complementarity": 0.747,
+      "interface_residues": 81,
+      "interface_hbonds": 3,
+      "delta_unsatisfied_hbonds": 16
+    }
+  },
+  "existing_cross_structure_smoke": {
+    "root": "/data/qlyu/software/vhh_eval_tools/tests/vhh_screen_smoke_20260707_180843",
+    "igfold_coverage": 1.0,
+    "nanonet_coverage": 1.0,
+    "nanobodybuilder2_coverage": 1.0,
+    "fr_rmsd_igfold_vs_nanobodybuilder2_A": 0.645,
+    "L4_structure_stability": "PASS"
+  },
+  "recommended_scope": {
+    "quick_energy_rescore": 448,
+    "relax_and_interface_analysis": 100,
+    "md_and_mmpbsa": "10-20",
+    "new_1473_route_prerequisite": "complete calibrated multiseed dual-conformation docking first"
+  },
+  "scientific_boundaries": {
+    "cross_tool_energy": "use calibrated within-tool ranks; do not directly sum raw energies from different software",
+    "md": "stability and contact persistence evidence, not experimental blocking",
+    "mmpbsa": "relative ranking proxy, not experimental Kd",
+    "smoke": "proves executable path and output fields, not a validated VHH threshold"
+  }
+}

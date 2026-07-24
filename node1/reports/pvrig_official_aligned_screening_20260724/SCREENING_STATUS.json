@@ -1,0 +1,96 @@
+{
+  "schema_version": "pvrig.official_aligned_screening.20260724.v1",
+  "created_at_local": "2026-07-24T14:33:22+08:00",
+  "official": {
+    "page": "https://www.bioshanghaiweek.com/2026/SICBC?lan=cn&section=5",
+    "deadline": "2026-07-26T18:00:00+08:00",
+    "submission_sequences": 50,
+    "typical_experimental_selection_per_team_max": 10,
+    "initial_screen_weights": {
+      "single_concentration_BLI": 0.7,
+      "expression_yield": 0.2,
+      "purity": 0.1
+    },
+    "rescreen_weights": {
+      "Kd_rank": 0.5,
+      "IC50_rank": 0.5
+    },
+    "cdr_identity_rule": "each corresponding CDR identity to known positives should be <0.80 using ANARCI/IMGT plus MUSCLE/Hamming identity"
+  },
+  "existing_docked_route": {
+    "old_top7500_strict_two_seed": 1923,
+    "c2_four_seed_all_strict": 4119,
+    "strict_total_disjoint": 6042,
+    "proposed_internal_core_thresholds": {
+      "tnp_review_tier": "CLEAR",
+      "abnativ_status": "PASS",
+      "abnativ_vhh_score_min": 0.7,
+      "sapiens_mean_self_probability_min": 0.7,
+      "expression_purity_risk_proxy_partial_min": 85,
+      "cys_count": 2,
+      "nglyc_motif_count": 0,
+      "hydrophobic_5_count": 0,
+      "max_positive_cdr_identity_max": 0.75,
+      "binding_consensus_weak_prior_min": 0.6783883333333334,
+      "old_surrogate_high_support": "A_HIGH_AGREEMENT",
+      "c2_surrogate_high_support": "high_confidence_core_flag=true"
+    },
+    "core_counts": {
+      "old_top7500": 103,
+      "c2_four_seed": 345,
+      "total": 448
+    },
+    "core_parent_bias": {
+      "old_top7500": {
+        "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 62,
+        "positive_pose_source_case02_pos_04_PVRIG-38": 32,
+        "positive_pose_source_case02_pos_10_151H7": 9
+      },
+      "c2_four_seed": {
+        "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 208,
+        "positive_pose_source_case02_pos_10_151H7": 137
+      }
+    }
+  },
+  "new_300k_route": {
+    "sequence_records": 300000,
+    "sequence_hardpass": 299870,
+    "structure_primary": 100000,
+    "structure_reserve": 20000,
+    "nbb2_success": 100000,
+    "tnp_retry": {
+      "job_id": "11945644",
+      "aggregate_job_id": "11945645",
+      "status": "PASS",
+      "records": 100000,
+      "sha256": "98819acdd9ce81077a4d00d37a5c7a98eedc70551fe9fb18c7d2769260902266",
+      "node1_status_sync": "PENDING"
+    },
+    "waterfall": {
+      "primary": 100000,
+      "tnp_no_red": 91727,
+      "standard_developability": 95045,
+      "tnp_no_red_and_standard": 86998,
+      "high_weak_binding_prior_consensus": 2390,
+      "tnp_standard_high_weak_prior": 2011,
+      "plus_expression_purity_proxy_ge_80": 1889,
+      "plus_abnativ_ge_0_70_and_sapiens_ge_0_70": 1808,
+      "plus_no_nglyc_and_instability_le_40": 1473
+    },
+    "docking_status": "NOT_COMPLETE_FOR_THIS_100K_ROUTE"
+  },
+  "recommended_portfolio": {
+    "exploitation": 30,
+    "parent_mechanism_diversity": 10,
+    "model_disagreement_rescue": 5,
+    "structural_diversity_reserve": 5,
+    "top10_core": 7,
+    "top10_independent_parent_or_mechanism": 3
+  },
+  "scientific_boundaries": {
+    "purity_models": "developability and expression/purity risk proxies; not measured SDS-PAGE or HPLC purity",
+    "binding_models": "weak binding priors; not BLI response, Kd, IC50, or experimental binding",
+    "docking": "blocker-like geometry and repeatability; not experimental blocking",
+    "technical_na": "missing technical evidence, not a biological negative"
+  }
+}

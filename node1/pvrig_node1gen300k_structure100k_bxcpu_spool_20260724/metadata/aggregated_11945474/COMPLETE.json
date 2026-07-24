@@ -1,0 +1,58 @@
+{
+  "archive_checks": [
+    {
+      "archive": "node_000.tar.gz",
+      "bytes": 486372727,
+      "sha256": "6ae7fc938fd9b0dcf02a8ab87715079cbc6dd36b5917481b878228738a26ea53"
+    },
+    {
+      "archive": "node_001.tar.gz",
+      "bytes": 486395462,
+      "sha256": "ec43def84c558a888937f6a97641bf089ca2aa40cf66e840db04e9307a1673ae"
+    },
+    {
+      "archive": "node_002.tar.gz",
+      "bytes": 486411068,
+      "sha256": "f71674b4781ad98e17583d2f37a08d98a7bbf5baa6e0bb90b1997d8e7011a7fb"
+    },
+    {
+      "archive": "node_003.tar.gz",
+      "bytes": 486524631,
+      "sha256": "04607dca23cf1522580ecaffb0a7017f6ab133a6085202770328ba1582d93413"
+    },
+    {
+      "archive": "node_004.tar.gz",
+      "bytes": 486350805,
+      "sha256": "d733d7e358c8e76e99662fd7e6193a724858fe141dc4c63a5897b47d01d52e76"
+    },
+    {
+      "archive": "node_005.tar.gz",
+      "bytes": 486201552,
+      "sha256": "24485f76bbf4f193199c89b5a90c323439f63ded911bb7f3b0f93275a18aec91"
+    },
+    {
+      "archive": "node_006.tar.gz",
+      "bytes": 486515663,
+      "sha256": "b1a794f9d51e0d2af39618254e4f8cda06a6662854af64d24b4a0dd67ec634f3"
+    },
+    {
+      "archive": "node_007.tar.gz",
+      "bytes": 486448074,
+      "sha256": "954a35f9b4ae0f18408d421b6d4906e0843a25ed54d05d0e40587768955602eb"
+    }
+  ],
+  "expected_records": 100000,
+  "manifest": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/node1_generated300k_structure100k_v1/aggregated_11945474/nbb2_manifest.tsv.gz",
+  "manifest_sha256": "57fbe7ffcc336f32deaaa79db0581d22c574fe31da7404fd327e43513b3c76f5",
+  "partial_file_count": 0,
+  "records": 100000,
+  "scientific_boundary": "VHH monomer prediction and technical QC; not binding, affinity, docking, or blocking evidence",
+  "shards": 8,
+  "status": "PASS",
+  "status_counts": {
+    "SUCCESS": 100000
+  },
+  "technical_failure_reasons": {},
+  "technical_na_is_not_negative": true,
+  "verified_success_pdbs": 100000
+}

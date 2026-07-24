@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "contract": "/mnt/d/work/抗体/node1/reports/pvrig_positive_control_calibration_20260724/CALIBRATION_CONTRACT.json",
+  "contract_sha256": "23ccb7d0ea9d4f8f137fbec902bc46bcdad22cae912a7b6d827f80c28a0365cc",
+  "positive_manifest_rows": 66,
+  "destructive_control_manifest_rows": 84,
+  "observed_method_rows": 7
+}

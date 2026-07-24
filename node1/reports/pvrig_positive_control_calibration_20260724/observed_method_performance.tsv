@@ -1,0 +1,8 @@
+method	metric	positive_entity_count	destructive_entity_count	positive_median	destructive_median	entity_level_auc_positive_over_destructive
+V3_docking_geometry	strict_a_job_fraction	11	14	0.6666666666666666	0.3333333333333333	0.5714285714285714
+V3_docking_geometry	model_strict_a_fraction	11	14	0.5	0.30000000000000004	0.6363636363636364
+V3_docking_geometry	minimum_hotspot_overlap	11	14	17.333333333333332	16.833333333333332	0.6785714285714286
+V3_docking_geometry	minimum_total_occlusion	11	14	642.0	654.75	0.44155844155844154
+V3_docking_geometry	minimum_cdr3_occlusion	11	14	107.16666666666667	98.5	0.6461038961038961
+V3_docking_geometry	minimum_cdr3_fraction	11	14	0.16612133333333334	0.15788991666666669	0.6233766233766234
+V3_docking_geometry	negative_haddock_score	11	14	76.11705	75.5138575	0.4675324675324675

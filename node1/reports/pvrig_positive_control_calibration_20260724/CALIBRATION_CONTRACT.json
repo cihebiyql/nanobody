@@ -1,0 +1,289 @@
+{
+  "contract_id": "pvrig_positive_control_energy_md_calibration_v1_20260724",
+  "status": "READY_FOR_STATIC_EXTENSION_MD_TOPOLOGY_SMOKE_PENDING",
+  "objective": "Calibrate late-stage computational evidence against known PVRIG VHH positives without equating scores to experimental Kd or IC50.",
+  "official_alignment": {
+    "target": "PVRIG extracellular domain at the PVRL2 interface",
+    "initial_screen_score": {
+      "BLI_single_concentration": 0.7,
+      "expression_yield": 0.2,
+      "purity": 0.1
+    },
+    "rescreen_score": {
+      "BLI_Kd_rank": 0.5,
+      "competition_ELISA_IC50_rank": 0.5
+    },
+    "cdr_identity_rule": "each VHH CDR should be below 0.80 to known positives",
+    "interpretation": "Computational binding and blocking lanes are internal ranking priors only; wet-lab BLI and competition ELISA remain decisive."
+  },
+  "frozen_evidence": {
+    "positive_panel": [
+      {
+        "molecule_name": "PVRIG-151_HR151",
+        "family": "151",
+        "blocking_ic50_nm": "0.37",
+        "kd_m": "2.00E-10",
+        "experimental_role": "official_positive_and_original_best_blocker"
+      },
+      {
+        "molecule_name": "PVRIG-20",
+        "family": "20",
+        "blocking_ic50_nm": "1.18",
+        "kd_m": "2.36E-10",
+        "experimental_role": "original_positive_control"
+      },
+      {
+        "molecule_name": "PVRIG-30",
+        "family": "30",
+        "blocking_ic50_nm": "1.11",
+        "kd_m": "7.23E-10",
+        "experimental_role": "original_positive_control"
+      },
+      {
+        "molecule_name": "PVRIG-38",
+        "family": "38",
+        "blocking_ic50_nm": "0.93",
+        "kd_m": "2.17E-09",
+        "experimental_role": "original_positive_control"
+      },
+      {
+        "molecule_name": "PVRIG-39",
+        "family": "39",
+        "blocking_ic50_nm": "0.76",
+        "kd_m": "6.96E-10",
+        "experimental_role": "original_positive_control"
+      },
+      {
+        "molecule_name": "20H5",
+        "family": "20",
+        "blocking_ic50_nm": null,
+        "kd_m": "6.98E-11",
+        "experimental_role": "humanized_highest_affinity_single_arm"
+      },
+      {
+        "molecule_name": "30H2",
+        "family": "30",
+        "blocking_ic50_nm": null,
+        "kd_m": "1.92E-09",
+        "experimental_role": "humanized_bispecific_arm_calibration"
+      },
+      {
+        "molecule_name": "39H2",
+        "family": "39",
+        "blocking_ic50_nm": null,
+        "kd_m": "6.92E-10",
+        "experimental_role": "humanized_subnanomolar_bispecific_arm_calibration"
+      },
+      {
+        "molecule_name": "39H4",
+        "family": "39",
+        "blocking_ic50_nm": null,
+        "kd_m": "4.82E-10",
+        "experimental_role": "humanized_subnanomolar_affinity_control"
+      },
+      {
+        "molecule_name": "151H7",
+        "family": "151",
+        "blocking_ic50_nm": null,
+        "kd_m": "1.20E-09",
+        "experimental_role": "humanized_151_bispecific_arm_calibration"
+      },
+      {
+        "molecule_name": "151H8",
+        "family": "151",
+        "blocking_ic50_nm": null,
+        "kd_m": null,
+        "experimental_role": "humanized_151_bispecific_arm_sequence_control"
+      }
+    ],
+    "positive_count": 11,
+    "positive_with_kd": 10,
+    "positive_with_blocking_ic50": 5,
+    "old_affinity_pose_count": 99,
+    "v3_positive_jobs": 66,
+    "v3_destructive_control_jobs": 84,
+    "v3_total_jobs": 1050,
+    "v3_successful_jobs": 1049,
+    "v3_geometry_discrimination": {
+      "strict_a_job_fraction": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 0.6666666666666666,
+        "destructive_median": 0.3333333333333333,
+        "entity_level_auc_positive_over_destructive": 0.5714285714285714
+      },
+      "model_strict_a_fraction": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 0.5,
+        "destructive_median": 0.30000000000000004,
+        "entity_level_auc_positive_over_destructive": 0.6363636363636364
+      },
+      "minimum_hotspot_overlap": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 17.333333333333332,
+        "destructive_median": 16.833333333333332,
+        "entity_level_auc_positive_over_destructive": 0.6785714285714286
+      },
+      "minimum_total_occlusion": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 642.0,
+        "destructive_median": 654.75,
+        "entity_level_auc_positive_over_destructive": 0.44155844155844154
+      },
+      "minimum_cdr3_occlusion": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 107.16666666666667,
+        "destructive_median": 98.5,
+        "entity_level_auc_positive_over_destructive": 0.6461038961038961
+      },
+      "minimum_cdr3_fraction": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 0.16612133333333334,
+        "destructive_median": 0.15788991666666669,
+        "entity_level_auc_positive_over_destructive": 0.6233766233766234
+      },
+      "negative_haddock_score": {
+        "positive_entity_count": 11,
+        "destructive_entity_count": 14,
+        "positive_median": 76.11705,
+        "destructive_median": 75.5138575,
+        "entity_level_auc_positive_over_destructive": 0.4675324675324675
+      }
+    }
+  },
+  "observed_method_decisions": {
+    "PRODIGY": {
+      "role": "weak_pose_dependent_prior_only",
+      "spearman_vs_experimental_pKd": 0.3100318272768329,
+      "median_absolute_pKd_error": 2.630120358438134,
+      "hard_gate": false
+    },
+    "FoldX_AnalyseComplex": {
+      "role": "not_for_cross_candidate_absolute_affinity",
+      "spearman_vs_experimental_pKd": 0.23636363636363636,
+      "hard_gate": false
+    },
+    "FoldX_fixed_pose_ddG": {
+      "role": "same_parent_diagnostic_only",
+      "direction_correct": 2,
+      "direction_total": 5,
+      "hard_gate": false
+    },
+    "Graphinity": {
+      "role": "rejected_for_current_multi_mutation_ranking",
+      "direction_correct": 1,
+      "direction_total": 4,
+      "hard_gate": false
+    },
+    "Rosetta_InterfaceAnalyzer": {
+      "role": "pending_same_panel_positive_control_extension",
+      "hard_gate": false
+    },
+    "MD_MMGBSA": {
+      "role": "pending_paired_positive_control_calibration",
+      "hard_gate": false
+    }
+  },
+  "calibration_design": {
+    "positive_only_limitation": "Positive-only data define a positive envelope but cannot estimate specificity or a false-positive rate.",
+    "control_boundary": "The alanine mutants are computational perturbation controls, not experimentally confirmed non-binders/non-blockers.",
+    "cross_validation": "leave_one_family_out over 20/30/38/39/151 families",
+    "replication": {
+      "docking": "2 receptor conformations x 3 docking seeds",
+      "MD": "3 independent velocity seeds per selected complex"
+    }
+  },
+  "static_extension": {
+    "panel": "66 positive jobs + 84 destructive-control jobs",
+    "tools": [
+      "PRODIGY",
+      "FoldX AnalyseComplex",
+      "Rosetta InterfaceAnalyzer"
+    ],
+    "metrics": [
+      "PRODIGY contact count and predicted deltaG as rank-only values",
+      "FoldX interaction energy and clash/interface terms",
+      "Rosetta interface dG, dSASA, shape complementarity, H-bonds, buried unsatisfied H-bonds and packstat"
+    ],
+    "method_acceptance": {
+      "entity_level_auc_minimum": 0.7,
+      "preferred_auc": 0.8,
+      "known_positive_recall_minimum": 0.8,
+      "maximum_control_false_positive_rate": 0.3,
+      "leave_one_family_out_direction_consistency_minimum": 0.7,
+      "rule": "A method failing these criteria remains descriptive and must not become a hard gate."
+    }
+  },
+  "md_pilot": {
+    "stage_A_pairs": [
+      {
+        "pair_id": "P20_F99A",
+        "positive": "CTRL_PATENT_002_case02_pos_02_PVRIG-20",
+        "control": "CTRL_MUTANT_003_mut_03_PVRIG-20_cdr3_arom_F99A"
+      },
+      {
+        "pair_id": "P30_W100A",
+        "positive": "CTRL_PATENT_003_case02_pos_03_PVRIG-30",
+        "control": "CTRL_MUTANT_009_mut_09_PVRIG-30_cdr3_arom_W100A"
+      },
+      {
+        "pair_id": "P38_F100A",
+        "positive": "CTRL_PATENT_004_case02_pos_04_PVRIG-38",
+        "control": "CTRL_MUTANT_014_mut_14_PVRIG-38_cdr3_arom_F100A"
+      },
+      {
+        "pair_id": "P39_F99A",
+        "positive": "CTRL_PATENT_005_case02_pos_05_PVRIG-39",
+        "control": "CTRL_MUTANT_019_mut_19_PVRIG-39_cdr3_arom_F99A"
+      }
+    ],
+    "official_anchor": "CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151",
+    "pose_negative": "Use a lower-support HR151 pose as a pose-stability control; do not label it a biological negative.",
+    "primary_engine": "GROMACS 2024.4 CUDA",
+    "cross_engine_sentinel": "OpenMM 8.4 CUDA on HR151 and one paired control",
+    "force_field": "CHARMM36m",
+    "water": "TIP3P",
+    "salt": "0.15 M NaCl",
+    "time_step_fs": 2,
+    "stage_A": "topology/minimization + 3 x 2 ns per system",
+    "stage_B": "only if stage A is stable: 3 x 10-20 ns per retained system",
+    "analysis_metrics": [
+      "interface backbone RMSD",
+      "VHH CDR3 RMSF",
+      "PVRIG hotspot-contact occupancy",
+      "PVRL2-interface occlusion persistence after reference overlay",
+      "interface hydrogen-bond and salt-bridge occupancy",
+      "interface SASA",
+      "gmx_MMPBSA median and IQR from equilibrated snapshots"
+    ],
+    "trajectory_quality_gates": {
+      "completed_replicates": "3/3",
+      "no_broken_topology_or_periodic_boundary_artifact": true,
+      "equilibration_window_fixed_before_label_analysis": true,
+      "report_median_and_interquartile_range": true
+    },
+    "method_acceptance": {
+      "paired_direction_correct_minimum": "3/4 stage-A pairs",
+      "known_positive_recall_minimum": 0.8,
+      "entity_level_auc_minimum": 0.7,
+      "seed_direction_agreement_minimum": "2/3",
+      "rule": "Do not promote MD/MMGBSA to ranking until the frozen paired panel passes; never convert MMGBSA to experimental Kd."
+    }
+  },
+  "production_policy": {
+    "large_scale": "Sequence/developability and docking remain the scalable front end; static energy is applied to hundreds, MD only to roughly 20-50 finalists.",
+    "final_internal_ranking": "Keep developability/expression-purity proxy, binding prior, blocking geometry and MD stability as separate evidence lanes.",
+    "known_positive_leakage": "All exact/near known positives remain calibration or exclusion controls and are never submitted as novel candidates."
+  },
+  "input_hashes": {
+    "/mnt/d/work/抗体/机制/data/literature/PVRIG_case02_success_validation_series.csv": "3bbdd41199739447d08556cb9e4580bbe181d049c6779151093fffaae358a6ae",
+    "/mnt/d/work/抗体/code/results/pvrig_positive11_structure_affinity_benchmark_20260719/final_evaluation_metrics.json": "6dc59c78b1a372fe16029f283dce7803d7ccb3e184b5c57a836122c7a947d3da",
+    "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/job_results.tsv": "e4aedbd2fdc1d95f485fc1cd7827d8db49a3580263e6a64467fae597cf2161ab",
+    "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/EVALUATOR_STABLE.json": "31684c8f293bf0118251ead9b4e1da5f17d5b2dc8c2f10233c1fa76c1cbf4267"
+  }
+}
