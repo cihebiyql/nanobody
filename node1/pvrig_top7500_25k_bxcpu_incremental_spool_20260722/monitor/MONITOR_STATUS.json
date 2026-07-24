@@ -47,13 +47,13 @@
       "unexpected_lines": []
     }
   },
-  "checked_at_utc": "2026-07-23T13:52:20.364715+00:00",
+  "checked_at_utc": "2026-07-24T03:50:41.597586+00:00",
   "node1": {
     "archives": 24985,
     "bad_status_json": 0,
     "batch_receipts": 3952,
     "failed_evidence": 15,
-    "free_bytes": 124444004352,
+    "free_bytes": 71658778624,
     "job_results": 24985,
     "result_root_bytes": 26408569135,
     "status_counts": {
@@ -95,9 +95,9 @@
           "shard_count": 4,
           "shard_index": 0,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T13:51:12.582664+00:00"
+          "updated_at_utc": "2026-07-24T03:49:28.027276+00:00"
         },
-        "status_mtime_epoch": 1784814651.369043
+        "status_mtime_epoch": 1784864941.8204286
       },
       {
         "index": 1,
@@ -118,9 +118,9 @@
           "shard_count": 4,
           "shard_index": 1,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T13:51:46.991583+00:00"
+          "updated_at_utc": "2026-07-24T03:49:19.122557+00:00"
         },
-        "status_mtime_epoch": 1784814685.598151
+        "status_mtime_epoch": 1784864935.905028
       },
       {
         "index": 2,
@@ -141,9 +141,9 @@
           "shard_count": 4,
           "shard_index": 2,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T13:51:15.226727+00:00"
+          "updated_at_utc": "2026-07-24T03:49:51.122230+00:00"
         },
-        "status_mtime_epoch": 1784814654.3065517
+        "status_mtime_epoch": 1784864967.4818554
       },
       {
         "index": 3,
@@ -164,9 +164,9 @@
           "shard_count": 4,
           "shard_index": 3,
           "stable_age_seconds": 60,
-          "updated_at_utc": "2026-07-23T13:52:25.086285+00:00"
+          "updated_at_utc": "2026-07-24T03:50:40.266222+00:00"
         },
-        "status_mtime_epoch": 1784814723.9339724
+        "status_mtime_epoch": 1784865014.1166704
       }
     ]
   },
@@ -175,8 +175,8 @@
   "storage_projection": {
     "average_bytes_per_archive": 1056976,
     "final_reserve_bytes": 53687091200,
-    "free_space_drop_bytes_per_hour": 2403531753,
-    "hours_until_projected_floor": 29.438726177334043,
+    "free_space_drop_bytes_per_hour": 1651908209,
+    "hours_until_projected_floor": 10.879349908852753,
     "node1_snapshot_current": true,
     "projected_remaining_bytes": 0,
     "projected_required_free_bytes": 53687091200,

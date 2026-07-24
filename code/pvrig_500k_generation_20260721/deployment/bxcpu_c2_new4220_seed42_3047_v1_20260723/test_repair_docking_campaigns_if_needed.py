@@ -48,6 +48,37 @@ class RepairDecisionTests(unittest.TestCase):
                 _, actions = TARGET.maybe_repair_current(dry_run=True)
             self.assertEqual(actions, [])
 
+    def test_completed_current_campaign_with_failed_audit_gets_audit_only_repair(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            status_4220 = root / "batch_4220/status/jobs"
+            status_2000 = root / "batch_2000/status/jobs"
+            status_4220.mkdir(parents=True)
+            status_2000.mkdir(parents=True)
+            for index in range(16880):
+                (status_4220 / f"a{index}.json").write_text(
+                    json.dumps({"status": "SUCCESS"})
+                )
+            for index in range(8000):
+                (status_2000 / f"b{index}.json").write_text(
+                    json.dumps({"status": "SUCCESS"})
+                )
+            with (
+                mock.patch.object(TARGET, "CURRENT_ROOT", root),
+                mock.patch.object(TARGET, "CURRENT_DEPLOY", root / "deploy"),
+                mock.patch.object(TARGET, "state", return_value="FAILED"),
+                mock.patch.object(TARGET, "active_for", return_value=False),
+                mock.patch.object(TARGET, "active_named", return_value=False),
+                mock.patch.object(TARGET, "current_exports", return_value="ALL,TEST=1"),
+            ):
+                snapshot, actions = TARGET.maybe_repair_current(dry_run=True)
+            self.assertEqual(snapshot["terminal"], 24880)
+            self.assertEqual(len(actions), 1)
+            self.assertEqual(actions[0]["status"], "DRY_RUN_AUDIT_REPAIR")
+            self.assertEqual(actions[0]["campaign"], "pvrig-c2new-r1-audit-only")
+
     def test_failed_extra_preflight_is_replaced_without_docking_duplication(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

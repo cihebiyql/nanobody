@@ -1,0 +1,17 @@
+{
+  "claim_boundary": "Computational Docking geometry only; not binding, Kd, IC50, purity, expression, or experimental blocking.",
+  "expected_jobs": 16880,
+  "generated_at_utc": "2026-07-24T03:48:33.491240+00:00",
+  "invalid_success_examples": [],
+  "pending_jobs": 0,
+  "schema_version": "pvrig.c2_new4220.seed42_3047.technical_audit.v1",
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "status_states": {
+    "FAILED": 13,
+    "SUCCESS": 16867
+  },
+  "technical_failure_semantics": "NA_not_negative",
+  "technical_na": 13,
+  "terminal_jobs": 16880,
+  "valid_success": 16867
+}

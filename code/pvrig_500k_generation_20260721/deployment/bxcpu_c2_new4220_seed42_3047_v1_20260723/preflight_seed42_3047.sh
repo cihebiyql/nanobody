@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 umask 027
+trap 'rc=$?; printf "PREFLIGHT_FAILED line=%s command=%q rc=%s\n" "$LINENO" "$BASH_COMMAND" "$rc" >&2; exit "$rc"' ERR
 
 CAMPAIGN=pvrig_c2_new4220_seed42_3047_v1_20260723
 PACKAGE_NAME=c2_new4220_dualreceptor_seed42_3047_handoff_v1
@@ -34,10 +35,29 @@ export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_MAX_TH
 "$LOCAL_ENV/bin/python" -c 'import numpy; assert numpy.__version__ == "2.0.1"'
 MANIFEST="$LOCAL_PROJECT/manifests/docking_jobs.tsv"
 [[ $(sha256sum "$MANIFEST" | awk '{print $1}') == "$EXPECTED_MANIFEST_SHA256" ]]
-"$LOCAL_ENV/bin/python" "$LOCAL_PROJECT/scripts/validate_protocol.py" \
-    --protocol "$LOCAL_PROJECT/config/protocol_spec.json" \
-    --jobs "$MANIFEST" --out "$WORK_BASE/validation.json" \
-    --expected-total-jobs 16880 >/dev/null
+# The frozen handoff inherited the base validator's 917/1931 constant even
+# though this follow-on manifest and receipt are explicitly seed 42/3047.
+# Load the frozen validator implementation without modifying the archive, then
+# bind the expected seed set for this campaign before evaluating all gates.
+"$LOCAL_ENV/bin/python" - \
+    "$LOCAL_PROJECT/scripts/validate_protocol.py" \
+    "$LOCAL_PROJECT/config/protocol_spec.json" \
+    "$MANIFEST" "$WORK_BASE/validation.json" <<'PY_VALIDATE'
+import importlib.util
+import pathlib
+import sys
+
+validator_path, protocol_path, jobs_path, output_path = map(pathlib.Path, sys.argv[1:])
+spec = importlib.util.spec_from_file_location("frozen_validator", validator_path)
+assert spec and spec.loader
+validator = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(validator)
+validator.EXPECTED_SEEDS = {"42", "3047"}
+payload = validator.evaluate(protocol_path, jobs_path, output_path, 16880)
+assert payload["status"] == validator.PASS, payload
+assert payload["job_count"] == 16880
+print("PASS_SEED42_3047_PROTOCOL_AND_LINEAGE")
+PY_VALIDATE
 
 SMOKE_JOB=$(awk -F'\t' 'NR==2{gsub(/\r$/, "", $1);print $1}' "$LOCAL_PROJECT/manifests/smoke_jobs.tsv")
 PVRIG_PROJECT_ROOT="$LOCAL_PROJECT" PVRIG_LOCAL_SCRATCH_ROOT="$LOCAL_SCRATCH/$SMOKE_JOB" \

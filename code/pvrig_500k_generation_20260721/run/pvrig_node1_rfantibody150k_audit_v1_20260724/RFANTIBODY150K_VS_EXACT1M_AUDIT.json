@@ -1,0 +1,9 @@
+{
+  "master_fasta_sha256": "569f2026d2d98babd9310a4213ddc945510b08513328ea46e6694677bf9b8d23",
+  "master_records": 1000000,
+  "new_vs_master": 150000,
+  "overlap_with_master": 0,
+  "rf_exact_unique": 150000,
+  "rf_fasta_sha256": "01b00b3bdf19f06cf7fb83a8ad3e33ac79298ae79b4a3e06ef1809678b8f91d7",
+  "rf_records": 150000
+}

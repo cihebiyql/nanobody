@@ -1,0 +1,50 @@
+{
+  "claim_boundary": "Computational Docking geometry only; not binding, Kd, IC50, expression, purity, or experimental blocking.",
+  "current_campaign": {
+    "audit_repair_job_id": "11944854",
+    "audit_repair_state": "COMPLETED",
+    "expected_jobs": 24880,
+    "technical_na": 12,
+    "terminal_jobs": 24880,
+    "valid_success": 24868
+  },
+  "extra_campaign": {
+    "array_job_id": "11944867",
+    "array_state": "RUNNING",
+    "audit_job_id": "11944875",
+    "audit_state": "PENDING",
+    "expected_jobs": 16880,
+    "preflight_job_id": "11944866",
+    "preflight_receipt_status": "PASS_ARCHIVE_PROTOCOL_RUNTIME_AND_ONE_JOB_SMOKE",
+    "preflight_state": "COMPLETED",
+    "receptors": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seeds": [
+      42,
+      3047
+    ]
+  },
+  "generated_at_utc": "2026-07-23T18:54:41.864584+00:00",
+  "recovered_success_evidence": [
+    {
+      "archive_sha256": "f4fae0e2299bd74afec7d9a22e5b7b5eec606f2519bdb6dc460d29b70b925eb1",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0018__00686_9e6y_s1931_e0788f87a9d4",
+      "job_result_sha256": "f84dd5577710e81c913a07ce02854ab5c972148dc3939383500d96a3525aceee"
+    },
+    {
+      "archive_sha256": "b122d7ac4b89ee69e2964b60d9086beb871b9710561af0248060225e8df5393c",
+      "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0164__00899_9e6y_s1931_cac0d2047bf0",
+      "job_result_sha256": "c4045da2295c67b5ae6a91eb57a16db99b8dbc9255a47a1bcaea56a8ace9d3a6"
+    }
+  ],
+  "repairs": [
+    "restored_two_hash_verified_success_archives_and_job_results_from_node1",
+    "submitted_audit_only_repair_and_redepended_preflight",
+    "parameterized_frozen_validator_for_seeds_42_3047",
+    "enabled_bounded_post_delivery_resume_stub_reconciliation"
+  ],
+  "schema_version": "pvrig.docking_transition_repair.v1",
+  "status": "PASS_CURRENT_AUDIT_RECOVERED_AND_EXTRA_ARRAY_RUNNING"
+}

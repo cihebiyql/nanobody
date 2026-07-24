@@ -53,6 +53,9 @@ NODE1_SSH = os.environ.get(
     "/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe",
 )
 BATCH_SIZE = int(os.environ.get("PVRIG_BXCPU_SYNC_BATCH_SIZE", "5"))
+STUB_RECONCILE_BATCH_SIZE = int(
+    os.environ.get("PVRIG_BXCPU_SYNC_STUB_RECONCILE_BATCH_SIZE", "250")
+)
 STABLE_AGE_SECONDS = int(os.environ.get("PVRIG_BXCPU_SYNC_STABLE_AGE_SECONDS", "600"))
 POLL_SECONDS = int(os.environ.get("PVRIG_BXCPU_SYNC_POLL_SECONDS", "60"))
 MIN_LOCAL_FREE_BYTES = int(os.environ.get("PVRIG_BXCPU_SYNC_MIN_LOCAL_FREE_GIB", "5")) * 1024**3
@@ -579,11 +582,15 @@ def campaign_cycle(name: str, config: dict[str, object]) -> dict[str, object]:
     local_campaign.mkdir(parents=True, exist_ok=True)
     delivered_path = LOCAL_ROOT / "state" / f"{name}{SHARD_TAG}.delivered_job_ids.txt"
     pruned_path = LOCAL_ROOT / "state" / f"{name}{SHARD_TAG}.pruned_job_ids.txt"
+    reconciled_path = (
+        LOCAL_ROOT / "state" / f"{name}{SHARD_TAG}.reconciled_stub_job_ids.txt"
+    )
     sync_metadata(name, str(config["remote"]), local_campaign)
     sync_small_metadata_to_node1(name, local_campaign)
     timed("metadata")
     delivered = load_delivered(delivered_path)
     pruned = load_delivered(pruned_path)
+    reconciled = load_delivered(reconciled_path)
     prune_backlog = sorted(delivered - pruned)[:BATCH_SIZE]
     if prune_backlog:
         newly_pruned = prune_bxcpu_verified_payload(
@@ -591,12 +598,24 @@ def campaign_cycle(name: str, config: dict[str, object]) -> dict[str, object]:
         )
         append_unique(pruned_path, newly_pruned)
         pruned.update(newly_pruned)
+    # A separate delayed pass closes rare races with independent remote
+    # compactors: every SUCCESS already hash-verified on Node1 is normalized to
+    # a durable bxcpu resume stub with offloaded_to_node1=true.  Keep its own
+    # checkpoint so this remains bounded and does not repeatedly scan all jobs.
+    reconcile_backlog = sorted(delivered - reconciled)[:STUB_RECONCILE_BATCH_SIZE]
+    if reconcile_backlog:
+        newly_reconciled = prune_bxcpu_verified_payload(
+            name, str(config["remote"]), reconcile_backlog
+        )
+        append_unique(reconciled_path, newly_reconciled)
+        reconciled.update(newly_reconciled)
     jobs = eligible_jobs(local_campaign, delivered)
     if not jobs:
         return {
             "campaign": name,
             "delivered": len(delivered),
             "pruned": len(pruned),
+            "reconciled_stubs": len(reconciled),
             "batch": 0,
         }
     if shutil.disk_usage(LOCAL_ROOT).free < MIN_LOCAL_FREE_BYTES:
@@ -646,6 +665,7 @@ def campaign_cycle(name: str, config: dict[str, object]) -> dict[str, object]:
         "campaign": name,
         "delivered": len(delivered) + len(valid_jobs),
         "pruned": len(pruned),
+        "reconciled_stubs": len(reconciled),
         "batch": len(valid_jobs),
     }
 

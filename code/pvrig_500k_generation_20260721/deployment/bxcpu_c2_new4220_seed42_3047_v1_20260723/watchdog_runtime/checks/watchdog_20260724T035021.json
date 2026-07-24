@@ -1,0 +1,128 @@
+{
+  "actions": [],
+  "alerts": [
+    {
+      "age_seconds": 5700.088405370712,
+      "campaign": "current",
+      "issue": "DOCKING_PROGRESS_STALE",
+      "severity": "warning"
+    }
+  ],
+  "bxcpu": {
+    "actions": [],
+    "current": {
+      "array_active": true,
+      "array_job_id": "11943288",
+      "audit_job_id": "11944854",
+      "audit_state": "COMPLETED",
+      "batch_2000": {
+        "invalid": 0,
+        "success": 7997,
+        "technical_na": 3
+      },
+      "batch_4220": {
+        "invalid": 0,
+        "success": 16871,
+        "technical_na": 9
+      },
+      "expected": 24880,
+      "latest_status_age_seconds": 5700.088405370712,
+      "terminal": 24880
+    },
+    "dry_run": false,
+    "extra_seed42_3047": {
+      "array_job_id": "11944867",
+      "array_state": "RUNNING",
+      "audit_job_id": "11944875",
+      "audit_state": "PENDING",
+      "expected": 16880,
+      "invalid": 0,
+      "latest_status_age_seconds": 11.07365083694458,
+      "preflight_job_id": "11944866",
+      "preflight_state": "COMPLETED",
+      "success": 1936,
+      "technical_na": 0,
+      "terminal": 1936
+    },
+    "generated_at_utc": "2026-07-23T19:50:17.438217+00:00",
+    "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
+    "storage": {
+      "current_archive_bytes": 212123302,
+      "current_result_bytes": 58570526,
+      "extra_archive_bytes": 143026389,
+      "extra_result_bytes": 121562486,
+      "filesystem_free_bytes": 4906737870045184,
+      "filesystem_type": "gpfs",
+      "known_campaign_bytes": 535282703,
+      "known_campaign_soft_limit_bytes": 68719476736,
+      "quota_probe_available": false,
+      "quota_probe_text": ""
+    }
+  },
+  "completion": {
+    "all_complete": false,
+    "current_bxcpu_terminal": true,
+    "current_node1_success_results_closed": true,
+    "current_node1_sync_status_closed": true,
+    "extra_bxcpu_terminal": false,
+    "extra_node1_success_results_closed": false,
+    "extra_node1_sync_status_closed": false
+  },
+  "errors": [],
+  "generated_at_utc": "2026-07-23T19:50:01.021764+00:00",
+  "interval_seconds": 1800,
+  "local": {
+    "filesystem_free_bytes": 83436462080,
+    "filesystem_total_bytes": 2048075829248,
+    "sync_paused_low_disk": false
+  },
+  "node1": {
+    "filesystem_free_bytes": 109769072640,
+    "filesystem_total_bytes": 7620712947712,
+    "project_bytes": {
+      "current_results": 23029396331,
+      "extra_results": 1655196226,
+      "rfantibody": 15202723207
+    },
+    "sync_counts": {
+      "current_2000": {
+        "result_files": 7997,
+        "status_files": 8000
+      },
+      "current_4220": {
+        "result_files": 16871,
+        "status_files": 16880
+      },
+      "extra_seed42_3047": {
+        "result_files": 1808,
+        "status_files": 1920
+      }
+    }
+  },
+  "schema_version": "pvrig.all_docking.watchdog_30m.v1",
+  "status": "PASS_WITH_ACTIONS_OR_WARNINGS",
+  "sync": {
+    "current": {
+      "active_after_repair": [
+        "pvrig-c2-new6220-sync-00",
+        "pvrig-c2-new6220-sync-01",
+        "pvrig-c2-new6220-sync-02",
+        "pvrig-c2-new6220-sync-03"
+      ],
+      "latest_log_age_seconds": 45.09475660324097,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    },
+    "extra_seed42_3047": {
+      "active_after_repair": [
+        "pvrig-c2-s42-3047-sync-00",
+        "pvrig-c2-s42-3047-sync-01",
+        "pvrig-c2-s42-3047-sync-02",
+        "pvrig-c2-s42-3047-sync-03"
+      ],
+      "latest_log_age_seconds": 31.35716438293457,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    }
+  }
+}

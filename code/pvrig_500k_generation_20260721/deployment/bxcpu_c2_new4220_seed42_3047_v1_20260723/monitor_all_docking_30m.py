@@ -271,6 +271,14 @@ def main() -> int:
     for key in ("current", "extra_seed42_3047"):
         campaign = bxcpu.get(key, {}) if isinstance(bxcpu, dict) else {}
         age = campaign.get("latest_status_age_seconds")
+        expected = int(campaign.get("expected", -1))
+        terminal = int(campaign.get("terminal", -2))
+        if (
+            expected >= 0
+            and terminal == expected
+            and campaign.get("audit_state") == "COMPLETED"
+        ):
+            continue
         active = campaign.get("array_active") or campaign.get("array_state") in {
             "RUNNING",
             "PENDING",

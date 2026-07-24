@@ -68,7 +68,9 @@ def active_for(job_id: str | None) -> bool:
     if not job_id:
         return False
     result = run(["squeue", "-h", "-j", job_id, "-o", "%i|%T"], check=False)
-    return any(line.strip() for line in result.stdout.splitlines())
+    return result.returncode == 0 and any(
+        line.strip() for line in result.stdout.splitlines()
+    )
 
 
 def active_named(fragment: str) -> bool:
@@ -254,13 +256,63 @@ def submit_resume_array(
     return payload
 
 
+def submit_audit_only(
+    *,
+    campaign: str,
+    publish: Path,
+    audit_script: Path,
+    export: str,
+    dry_run: bool,
+) -> dict[str, Any]:
+    round_no = next_round(publish, campaign)
+    tag = f"{campaign}-repair{round_no}"
+    audit = submit(
+        [
+            "sbatch",
+            "--parsable",
+            "--partition=amd_256q",
+            f"--job-name={tag}",
+            "--nodes=1",
+            "--ntasks=1",
+            "--cpus-per-task=1",
+            "--mem=4G",
+            "--time=01:00:00",
+            f"--output={publish}/slurm-%x-%j.out",
+            f"--error={publish}/slurm-%x-%j.err",
+            f"--export={export}",
+            str(audit_script),
+        ],
+        dry_run,
+    )
+    payload = {
+        "status": "DRY_RUN_AUDIT_REPAIR" if dry_run else "AUDIT_REPAIR_SUBMITTED",
+        "campaign": campaign,
+        "round": round_no,
+        "audit_job_id": audit,
+        "created_at_utc": now(),
+    }
+    if not dry_run:
+        atomic_json(
+            publish / f"markers/watchdog_repairs/{campaign}_round_{round_no:02d}.json",
+            payload,
+        )
+    return payload
+
+
 def maybe_repair_current(dry_run: bool) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     a = status_count(CURRENT_ROOT / "batch_4220/status/jobs")
     b = status_count(CURRENT_ROOT / "batch_2000/status/jobs")
     terminal = sum(a[:2]) + sum(b[:2])
     repair = latest_repair(CURRENT_ROOT, "pvrig-c2new-r1")
+    audit_repair = latest_repair(CURRENT_ROOT, "pvrig-c2new-r1-audit-only")
     effective_array = str(repair["array_job_id"]) if repair else CURRENT_ARRAY
-    effective_audit = str(repair["audit_job_id"]) if repair else CURRENT_AUDIT
+    effective_audit = (
+        str(audit_repair["audit_job_id"])
+        if audit_repair
+        else str(repair["audit_job_id"])
+        if repair
+        else CURRENT_AUDIT
+    )
     audit_state = state(effective_audit)
     snapshot = {
         "terminal": terminal,
@@ -300,6 +352,40 @@ def maybe_repair_current(dry_run: bool) -> tuple[dict[str, Any], list[dict[str, 
                 actions.append(
                     {
                         "status": "EXTRA_PREFLIGHT_REDEPENDENCED_ON_REPAIR_AUDIT",
+                        "preflight_job_id": preflight,
+                        "repair_audit_job_id": action["audit_job_id"],
+                    }
+                )
+    elif (
+        terminal == 24880
+        and audit_state in TERMINAL_STATES - {"COMPLETED"}
+        and not active_named("pvrig-c2new-r1-audit-only-repair")
+    ):
+        action = submit_audit_only(
+            campaign="pvrig-c2new-r1-audit-only",
+            publish=CURRENT_ROOT,
+            audit_script=CURRENT_DEPLOY / "run_terminal_audit.sh",
+            export=current_exports(),
+            dry_run=dry_run,
+        )
+        actions.append(action)
+        if not dry_run:
+            preflight = read_id(EXTRA_ROOT / "markers/PREFLIGHT_JOB_ID")
+            override = EXTRA_ROOT / "markers/CURRENT_AUDIT_OVERRIDE_ID"
+            override.parent.mkdir(parents=True, exist_ok=True)
+            override.write_text(str(action["audit_job_id"]) + "\n")
+            if preflight and state(preflight) == "PENDING":
+                run(
+                    [
+                        "scontrol",
+                        "update",
+                        f"JobId={preflight}",
+                        f"Dependency=afterok:{action['audit_job_id']}",
+                    ]
+                )
+                actions.append(
+                    {
+                        "status": "EXTRA_PREFLIGHT_REDEPENDENCED_ON_AUDIT_ONLY_REPAIR",
                         "preflight_job_id": preflight,
                         "repair_audit_job_id": action["audit_job_id"],
                     }

@@ -1,0 +1,51 @@
+{
+  "alerts": [],
+  "bxcpu": {
+    "array_job_id": "11944867",
+    "array_state": "COMPLETED",
+    "audit_job_id": "11944875",
+    "audit_state": "COMPLETED",
+    "compressed_queue_archives": 8,
+    "expected": 16880,
+    "filesystem_free_bytes": 4908753069539328,
+    "filesystem_total_bytes": 4964008503279616,
+    "host": "ln402",
+    "job_results": 16867,
+    "latest_status_age_seconds": 196.07970261573792,
+    "probe_status": "PASS",
+    "status_counts": {
+      "FAILED": 13,
+      "SUCCESS": 16867
+    },
+    "terminal": 16880,
+    "terminal_fraction": 1.0
+  },
+  "complete": true,
+  "generated_at_utc": "2026-07-24T03:51:29.116073+00:00",
+  "interval_seconds": 1800,
+  "node1": {
+    "controller": {
+      "message": "150000 exact-unique fast-QC fixed-pose candidates frozen; ANARCI still required",
+      "pid": 3252584,
+      "state": "COMPLETE",
+      "updated_at": "2026-07-24T00:34:20.803898+00:00"
+    },
+    "controller_alive": false,
+    "data1_free_bytes": 71655940096,
+    "data1_total_bytes": 7620712947712,
+    "docking_sync_result_files": 16859,
+    "docking_sync_status_files": 16880,
+    "error_lines": 0,
+    "generation_expected": 237600,
+    "generation_fraction": 1.0,
+    "generation_outputs": 237600,
+    "host": "node1",
+    "pose_checkpoints": 99,
+    "pose_expected": 99,
+    "probe_status": "PASS",
+    "worker_expected": 21,
+    "workers_complete": 21
+  },
+  "schema_version": "pvrig.node1_bxcpu.combined_monitor.v1",
+  "status": "PASS"
+}

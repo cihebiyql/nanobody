@@ -1,0 +1,12 @@
+status=SUBMITTED_DEPENDENT_ON_CURRENT_TERMINAL_AUDIT
+predecessor_audit_job_id=11944854
+preflight_job_id=11944866
+array_job_id=11944867
+audit_job_id=11944875
+expected_candidates=4220
+expected_jobs=16880
+seeds=42,3047
+archive_sha256=b5afb17360a03c539e02dae064e87f8b70de597179823a891f1f8a0a79ac4061
+manifest_sha256=60290622ab842f7c888912c828a2a48068a208ba370b666a32b121a8c7266aa5
+result_root=/publicfs04/fs04-al/home/als001821/pvrig_c2_new4220_seed42_3047_v1_20260723_bxcpu_results
+submitted_at=2026-07-23T18:49:38Z

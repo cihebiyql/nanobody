@@ -19,6 +19,11 @@ def main():
     parser.add_argument('--pairs', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--batch-size', type=int, default=32)
+    parser.add_argument(
+        '--device',
+        default='cpu',
+        help='Torch device (for example cpu, cuda, or cuda:0).',
+    )
     args = parser.parse_args()
     sys.path.insert(0, str(args.deepnano_root))
     from models.models import DeepNano_seq
@@ -27,7 +32,9 @@ def main():
     with args.pairs.open(newline='') as handle:
         pairs = list(csv.DictReader(handle, delimiter='\t'))
     id1, id2 = list(pairs[0])[:2]
-    device = torch.device('cpu')
+    device = torch.device(args.device)
+    if device.type == 'cuda' and not torch.cuda.is_available():
+        raise RuntimeError(f'CUDA device requested but CUDA is unavailable: {args.device}')
     esm = args.deepnano_root / 'models/esm2_t6_8M_UR50D'
     model = DeepNano_seq(pretrained_model=str(esm), hidden_size=320, finetune=0).to(device)
     checkpoint = args.deepnano_root / 'output/checkpoint/DeepNano_seq(esm2_t6_8M_UR50D)_SabdabData_finetune1_TF0_best.model'

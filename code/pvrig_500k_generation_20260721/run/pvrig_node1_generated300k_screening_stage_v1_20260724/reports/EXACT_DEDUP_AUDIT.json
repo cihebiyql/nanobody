@@ -1,0 +1,19 @@
+{
+  "combined_exact_unique": 300000,
+  "combined_fasta_records": 300000,
+  "combined_fasta_sha256": "ec4d8e9158aaadd79c78e58f0da3f497b24e6cceefe9ab3a7e53da80fb60a072",
+  "combined_new_vs_existing_exact1m": 297450,
+  "fixed_pose_overlap_existing_exact1m": 2550,
+  "fixed_pose_records": 150000,
+  "fixed_pose_unique": 150000,
+  "input_sha256": {
+    "fixed_pose_candidates_frozen150k.fasta.gz": "0f3f4150d1c62605b265b11be89839fd0c43b10e56157724d5dd7240e95aac6f",
+    "rfantibody_candidates_150k.fasta": "01b00b3bdf19f06cf7fb83a8ad3e33ac79298ae79b4a3e06ef1809678b8f91d7",
+    "screening_pool_exact1m.fasta.gz": "569f2026d2d98babd9310a4213ddc945510b08513328ea46e6694677bf9b8d23"
+  },
+  "rf_fixed_pose_overlap": 0,
+  "rf_overlap_existing_exact1m": 0,
+  "rf_records": 150000,
+  "rf_unique": 150000,
+  "status": "PASS"
+}

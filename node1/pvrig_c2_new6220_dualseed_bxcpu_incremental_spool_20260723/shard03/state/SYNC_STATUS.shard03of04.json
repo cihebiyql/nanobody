@@ -4,14 +4,16 @@
     {
       "batch": 0,
       "campaign": "c2_new4220",
-      "delivered": 4122,
-      "pruned": 4122
+      "delivered": 4128,
+      "pruned": 4128,
+      "reconciled_stubs": 4128
     },
     {
-      "batch": 6,
+      "batch": 0,
       "campaign": "c2_new2000",
-      "delivered": 73,
-      "pruned": 73
+      "delivered": 1997,
+      "pruned": 1997,
+      "reconciled_stubs": 1997
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard03",
@@ -20,5 +22,5 @@
   "shard_count": 4,
   "shard_index": 3,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-07-23T14:03:18.091090+00:00"
+  "updated_at_utc": "2026-07-24T04:05:20.179930+00:00"
 }
