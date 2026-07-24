@@ -1,0 +1,56 @@
+{
+  "archive_sha256": "9c2990785f2f3c66a617256f7c0ba401997b4ec0eb35d488ce4be141d7522255",
+  "expected_candidates": 5000,
+  "expected_jobs": 40000,
+  "expected_jobs_per_shard": 5000,
+  "expected_shards": 8,
+  "generated_at_utc": "2026-07-24T10:02:19.452230+00:00",
+  "manifest_sha256": "4b5037d840784148e86451bb85881d815e20e39b73b8a23974d23bcbaf285251",
+  "node_layout": {
+    "concurrent_jobs_per_node": 16,
+    "cpus_per_job": 4,
+    "cpus_per_node": 64,
+    "nodes": 8
+  },
+  "package_validation": {
+    "candidate_field": "entity_id",
+    "candidates": 5000,
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "jobs": 40000,
+    "seeds": [
+      "1931",
+      "3047",
+      "42",
+      "917"
+    ],
+    "shard_sha256": {
+      "shard_00.tsv": "7da89f80b25fb743aef5c56dd1a352e17672240c0963f1c8886c99204dc4d8d4",
+      "shard_01.tsv": "6fd1ba5aa7d6ed1cd3a285d0048a653a3cfe97f296fbf0cfa548753d49be275f",
+      "shard_02.tsv": "951cba80c7cfa6dee8169f519f84a55ac515bff5d4280884a17c33ccc7008175",
+      "shard_03.tsv": "1f16a96c25b5c70a488bf32d988b25527aae1589eb14229f10092276e45b0b6c",
+      "shard_04.tsv": "1550fac1054eee7703bd496e41d8835494da81b928101dff514dd0c60d2635f1",
+      "shard_05.tsv": "7e81fe25ce880554cee3001cda22f364b1790d390d07b61ddaf861b406e127db",
+      "shard_06.tsv": "da49e6ca96ec53b933ad345cf939b08af2ffe3006f94269acbbdf9d5d625055d",
+      "shard_07.tsv": "f52fdc7af8d2506f8e28189a358107e7804917a00a86f12ad8b0132c95226e60"
+    },
+    "shards": 8
+  },
+  "ready_sha256": "3bd638aee51eab71816b4dadcc7eb2af655bbdb5226bc62095f5aa6d31589fcb",
+  "receipt_sha256": "9f1963c78563306b657e922d3bdd5a777d19881a93f8bb7dac2d17adf7f5a569",
+  "runtime": {
+    "haddock": "2025.11.0",
+    "numpy": "2.0.1"
+  },
+  "schema_version": "pvrig.top5000_multimodal_4seed.bxcpu_preflight.v1",
+  "slurm_array_validation": "accepted_dependency_gated_array_plus_static_8x64_layout; no duplicate sbatch --test-only",
+  "smoke_job_id": "CANDIDATE_NODE1GEN_111735_source_rfantibody_source_id_PVRIG_RFAb_v2_P5_qkg_L_bb291_mpn02_arm_P5_qkg_L_backbone_P5_qkg_L_bb291_status_NEEDS_RF2_AND_DOCKING_8x6b_s917_38a82c4e399d",
+  "smoke_validation": {
+    "compact_bytes": 982895,
+    "job_id": "CANDIDATE_NODE1GEN_111735_source_rfantibody_source_id_PVRIG_RFAb_v2_P5_qkg_L_bb291_mpn02_arm_P5_qkg_L_backbone_P5_qkg_L_bb291_status_NEEDS_RF2_AND_DOCKING_8x6b_s917_38a82c4e399d",
+    "status": "SUCCESS"
+  },
+  "status": "PASS_RUNTIME_PACKAGE_8_SHARDS_AND_ONE_JOB_SMOKE"
+}

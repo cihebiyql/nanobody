@@ -29,7 +29,14 @@ PY
   esac
   sleep 60
 done
+if [[ ! -x "$ROOT/scripts/analyze_md_stage_a.py" ]]; then
+  printf '{"state":"BLOCKED","reason":"ANALYSIS_SCRIPT_MISSING"}\n' \
+    > "$ROOT/status/MD_ANALYSIS_STATUS.json.tmp"
+  mv "$ROOT/status/MD_ANALYSIS_STATUS.json.tmp" "$ROOT/status/MD_ANALYSIS_STATUS.json"
+  exit 1
+fi
 python3 "$ROOT/scripts/analyze_md_stage_a.py" "$ROOT" \
   >"$ROOT/logs/md_analysis.stdout.log" 2>"$ROOT/logs/md_analysis.stderr.log"
-cp "$ROOT/reports/MD_STAGE_A_CALIBRATION_RECEIPT.json" "$ROOT/status/MD_ANALYSIS_STATUS.json"
+cp "$ROOT/reports/MD_STAGE_A_CALIBRATION_RECEIPT.json" "$ROOT/status/MD_ANALYSIS_STATUS.json.tmp"
+mv "$ROOT/status/MD_ANALYSIS_STATUS.json.tmp" "$ROOT/status/MD_ANALYSIS_STATUS.json"
 echo "watcher_complete=$(date -Is)" >> "$LOG"

@@ -1,0 +1,16 @@
+pair_id	metric	expected_positive_direction	seed_direction_fraction	paired_seed_delta_median	passes_2_of_3
+P30_W100A	vhh_rmsd_nm_mean	low	0.3333333333333333	0.10913784950495048	False
+P30_W100A	complex_rmsd_nm_mean	low	0.3333333333333333	0.01745858217821783	False
+P30_W100A	min_distance_nm_mean	low	0	0.0013099445544554333	False
+P30_W100A	contacts_045nm_mean	high	0.6666666666666666	144.6138613861387	True
+P30_W100A	interface_hbonds_mean	high	0.3333333333333333	-1.8712871287128712	False
+P38_F100A	vhh_rmsd_nm_mean	low	0.3333333333333333	0.009102986138613822	False
+P38_F100A	complex_rmsd_nm_mean	low	0.6666666666666666	-0.034040842574257435	True
+P38_F100A	min_distance_nm_mean	low	0	0.009360768316831691	False
+P38_F100A	contacts_045nm_mean	high	0.3333333333333333	-87.03960396039611	False
+P38_F100A	interface_hbonds_mean	high	0.6666666666666666	0.12871287128712883	True
+P39_F99A	vhh_rmsd_nm_mean	low	0.6666666666666666	-0.3654993435643564	True
+P39_F99A	complex_rmsd_nm_mean	low	0.6666666666666666	-0.11804092376237624	True
+P39_F99A	min_distance_nm_mean	low	0.3333333333333333	0.0051215732673267345	False
+P39_F99A	contacts_045nm_mean	high	0.6666666666666666	504.1089108910891	True
+P39_F99A	interface_hbonds_mean	high	0.6666666666666666	2.3168316831683167	True

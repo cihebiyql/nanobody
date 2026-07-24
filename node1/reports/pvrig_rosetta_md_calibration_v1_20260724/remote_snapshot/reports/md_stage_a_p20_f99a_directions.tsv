@@ -1,0 +1,6 @@
+metric	expected_positive_direction	seed_direction_fraction	paired_seed_delta_median	passes_2_of_3
+vhh_rmsd_nm_mean	low	0.3333333333333333	0.07510732277227716	False
+complex_rmsd_nm_mean	low	0.6666666666666666	-0.028173500000000018	True
+min_distance_nm_mean	low	0.6666666666666666	-0.0012384762376237701	True
+contacts_045nm_mean	high	0.6666666666666666	83.33663366336623	True
+interface_hbonds_mean	high	0.6666666666666666	0.9603960396039604	True

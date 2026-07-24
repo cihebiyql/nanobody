@@ -1,0 +1,6 @@
+metric	families_total	families_passing_2_of_3	family_direction_fraction	accepted_secondary_metric
+vhh_rmsd_nm_mean	4	2	0.5	False
+complex_rmsd_nm_mean	4	3	0.75	True
+min_distance_nm_mean	4	1	0.25	False
+contacts_045nm_mean	4	3	0.75	True
+interface_hbonds_mean	4	3	0.75	True

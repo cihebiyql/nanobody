@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-07-24T11:05:12.892211+00:00",
+  "state": "MD_EXPANSION_ANALYSIS_COMPLETE",
+  "expansion_trajectories": 18,
+  "combined_pairs": [
+    "P20_F99A",
+    "P30_W100A",
+    "P38_F100A",
+    "P39_F99A"
+  ],
+  "accepted_secondary_metrics": [
+    "complex_rmsd_nm_mean",
+    "contacts_045nm_mean",
+    "interface_hbonds_mean"
+  ],
+  "pair_interface_metrics_passing": {
+    "P20_F99A": 3,
+    "P30_W100A": 1,
+    "P38_F100A": 1,
+    "P39_F99A": 2
+  },
+  "four_family_gate": "FAIL",
+  "decision": "MD_DESCRIPTIVE_ONLY",
+  "evidence_boundary": "Short MD remains a secondary computational stability signal, not affinity or blocking proof."
+}

@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
-  "snapshot_at": "2026-07-24T17:55:30+08:00",
-  "state": "RUNNING_DURABLE",
+  "schema_version": 2,
+  "snapshot_at": "2026-07-24T19:17:59+08:00",
+  "state": "CALIBRATION_COMPLETE_MD_DESCRIPTIVE_ONLY",
   "node": "node1",
   "remote_root": "/data/qlyu/projects/pvrig_rosetta_md_calibration_v1_20260724",
   "chain_contract": {
@@ -20,14 +20,19 @@
     "entities_destructive": 14,
     "matched_job_pairs": 84,
     "accepted_metrics": [],
-    "decision": "ROSETTA_DESCRIPTIVE_ONLY",
-    "controller_pid": 1595968
+    "decision": "ROSETTA_DESCRIPTIVE_ONLY"
   },
   "gromacs_topology_minimization": {
-    "state": "TOPOLOGY_AND_MINIMIZATION_COMPLETE",
-    "systems_total": 3,
-    "systems_complete": 3,
-    "systems_failed": 0,
+    "pilot": {
+      "systems_total": 3,
+      "systems_complete": 3,
+      "systems_failed": 0
+    },
+    "expansion": {
+      "systems_total": 6,
+      "systems_complete": 6,
+      "systems_failed": 0
+    },
     "force_field": "CHARMM36m February 2026 GROMACS port",
     "water_model": "TIP3P",
     "salt_molar": 0.15
@@ -37,10 +42,6 @@
     "system": "HR151_positive",
     "openmm_version": "8.4",
     "platform": "OpenCL",
-    "force_fields": [
-      "charmm36.xml",
-      "charmm36/water.xml"
-    ],
     "atom_count": 46855,
     "initial_potential_kj_mol": -198319.21743974602,
     "final_potential_kj_mol": -783050.8408155902,
@@ -48,58 +49,96 @@
     "cuda_attempt": "FAILED_CUDA_ERROR_UNSUPPORTED_PTX_VERSION_222_ARCHIVED"
   },
   "gromacs_md_stage_a": {
-    "state": "RUNNING",
+    "state": "MD_STAGE_A_ANALYSIS_COMPLETE",
     "systems": 3,
     "seeds_per_system": 3,
     "trajectories_total": 9,
     "production_ns_each": 2,
-    "complete": 3,
+    "complete": 9,
     "failed": 0,
-    "running": [
-      {
-        "system_id": "HR151_positive",
-        "seed": 1931,
-        "gpu": 0,
-        "fraction": 0.553
-      },
-      {
-        "system_id": "P20_F99A_positive",
-        "seed": 1931,
-        "gpu": 1,
-        "fraction": 0.226
-      },
-      {
-        "system_id": "P20_F99A_destructive",
-        "seed": 1931,
-        "gpu": 2,
-        "fraction": 0.121
-      }
+    "analysis_window_ns": "1.0-2.0",
+    "hr151_median_receptor_fitted_vhh_rmsd_nm": 0.34187327227722775,
+    "interface_metrics_passing_2_of_3": 3,
+    "stage_a_direction_gate": "PASS",
+    "decision": "ELIGIBLE_TO_EXPAND_P30_P38_P39"
+  },
+  "gromacs_md_expansion": {
+    "state": "MD_EXPANSION_ANALYSIS_COMPLETE",
+    "systems": 6,
+    "seeds_per_system": 3,
+    "trajectories_total": 18,
+    "production_ns_each": 2,
+    "complete": 18,
+    "failed": 0,
+    "invalid_complete": 0,
+    "actual_error_count": 0,
+    "analysis_window_ns": "1.0-2.0",
+    "combined_pairs": [
+      "P20_F99A",
+      "P30_W100A",
+      "P38_F100A",
+      "P39_F99A"
     ],
-    "pending": 3,
-    "controller_pid": 1670360,
-    "analysis_watcher_pid": 1709798,
-    "eta_minutes": "20-25",
-    "automatic_next_step": "analyze last 1 ns for receptor-fitted VHH RMSD, complex RMSD, interface minimum distance, 0.45 nm contacts, and interface hydrogen bonds"
+    "accepted_secondary_metrics": [
+      "complex_rmsd_nm_mean",
+      "contacts_045nm_mean",
+      "interface_hbonds_mean"
+    ],
+    "pair_interface_metrics_passing": {
+      "P20_F99A": 3,
+      "P30_W100A": 1,
+      "P38_F100A": 1,
+      "P39_F99A": 2
+    },
+    "four_family_gate": "FAIL",
+    "decision": "MD_DESCRIPTIVE_ONLY"
+  },
+  "analysis_correction": {
+    "issue": "Initial VHH RMSD used group order 3 then 2, which fitted VHH and measured receptor instead of fitting receptor and measuring VHH.",
+    "fix": "Changed group order to 2 then 3, verified interface.ndx groups explicitly, constrained analysis to 1.0-2.0 ns, and reran all 27 trajectories.",
+    "impact": "Corrected HR151 median receptor-fitted VHH RMSD from 0.4479985396039604 to 0.34187327227722775; four-family gate and final decision were unchanged.",
+    "pre_fix_archive": "remote_snapshot/reports/pre_fix_vhh_rmsd_group_swap_20260724"
+  },
+  "process_hardening": {
+    "manifest_duplicate_key_rejection": true,
+    "gpu_id_validation": true,
+    "atomic_pid_file": true,
+    "atomic_complete_and_failed_markers": true,
+    "strict_complete_output_validation": true,
+    "invalid_complete_is_alert": true,
+    "structured_chain_failure_receipt": true,
+    "completed_output_no_overwrite_regression": "PASS"
   },
   "resources": {
-    "data_free_bytes": 18188331909120,
+    "data_free_bytes": 18066282905600,
     "data1_free_bytes": 62190116864,
-    "gpu_0_2_utilization_percent": "61-71",
-    "gpu_0_2_memory_mib": "443-453",
     "write_target": "/data/qlyu/projects",
-    "data1_write_policy": "AVOID"
+    "data1_write_policy": "AVOID",
+    "gpu_calibration_jobs_active": 0
   },
   "integrity": {
-    "rosetta_manifest_sha256": "27bf446790d65555f6d0db23711ef7377e2d6d9085221fe4386e604d74739c11",
-    "md_stage_a_manifest_sha256": "30655b26e9f87049cb84deebd42acc8a2e55f57028c1b58413cd26db9cd57486",
-    "md_production_manifest_sha256": "5ac9d1d0561a9ce2252b7adfe946b116d5f2b851bec25e8d2fd65b25ccf38dea",
-    "charmm36_archive_sha256": "c2b0c70e21cced150528ee25d205e5bd3367a5e55e85c2ff0403911980528151"
+    "md_expansion_systems_manifest_sha256": "32114998a0e5dac244a3ac7d60b3ead66346ba9cd9fa1d7beb9febee73cfe5f5",
+    "md_expansion_production_manifest_sha256": "f92daa01419f8b4ba08efbea9619367dce6b16a59969c28f32714c1a15ba2802",
+    "md_stage_a_receipt_sha256": "fe26030f6a304fb687e6dfdfd9ea33b8d9d5b86e67696a9eeedfc4fe3bff2eff",
+    "md_expansion_receipt_sha256": "df8b6507f61f440cb13e1047aeaf8ce183e70076690eace2eae7c804b8201e82",
+    "md_expansion_seed_metrics_sha256": "3ff5b816282ccbef5fdbddbe1ce2f99ae02ffb014537b8a0b9e9e207ac98ea64",
+    "md_expansion_pair_directions_sha256": "880f892c0647e7d3d61a924556022add22e3f7d9647614ef83f4cb03e07c01bc",
+    "md_four_family_summary_sha256": "a386428d07e987c941a50be0e5dba400a7a8d0148316777d04dcde2f54aa0702"
   },
-  "safety": {
-    "no_existing_v3_results_overwritten": true,
-    "project_scoped_force_field": true,
-    "controller_locks_enabled": true,
-    "complete_markers_enabled": true,
-    "failed_attempts_archived": true
+  "evidence_boundary": {
+    "rosetta": "descriptive computational feature only",
+    "short_md": "descriptive computational stability signal only",
+    "not_proven": [
+      "experimental affinity",
+      "experimental blocking",
+      "BLI response",
+      "Kd",
+      "IC50"
+    ]
+  },
+  "next_calibration": {
+    "status": "DESIGN_REQUIRED_BEFORE_MORE_MD",
+    "reason": "P30_W100A and P38_F100A are not stable destructive controls across seeds and do not share a strictly matched initial pose with their positive counterpart.",
+    "recommended_design": "Build same-pose Ala mutants, use 6 paired seeds and 10 ns production, report mutation-site contact occupancy and paired effect-size confidence intervals."
   }
 }
