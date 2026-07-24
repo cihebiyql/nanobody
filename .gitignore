@@ -8,6 +8,15 @@
 !README.md
 !PROJECT_PROGRESS.md
 
+# Keep the lightweight Node1 PVRIG production-screening metric specification
+# and deployment receipt visible; runtime Docking outputs remain ignored.
+!node1/
+node1/*
+!node1/PVRIG_VHH_PRODUCTION_SCREENING_METRICS_PLAN_20260724.md
+!node1/competition_qc/
+node1/competition_qc/*
+!node1/competition_qc/node1_p0_metrics_deployment_receipt_20260724.json
+
 # Keep the lightweight submission-release contract test visible to Git/CI.
 !data/
 data/*

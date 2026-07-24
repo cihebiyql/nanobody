@@ -1,0 +1,37 @@
+{
+  "claim_boundary": "Candidate identity, sequence and panel-membership freeze only; no binding, affinity or experimental blocking claim.",
+  "counts": {
+    "c2_only": 6220,
+    "c2_refined": 7500,
+    "old_only": 6220,
+    "old_priority": 7500,
+    "overlap": 1280,
+    "union": 13720
+  },
+  "inputs": {
+    "c2_refined": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_top150k_c2_refined_top7500_v1_20260723/c2_refined_top7500_docking_handoff_v1/TOP7500_C2_REFINED.tsv",
+      "sha256": "c0d31cf751f3398eeec0b7b738a5cff44df9efc8918a6dc30991fa148ae82d3f"
+    },
+    "old_priority": {
+      "path": "/mnt/d/work/抗体/data/experiments/phase2_5080_v1/prepared/pvrig_old_priority_top7500_seed917_scalar_teacher_v1_20260723/inputs/old_priority_top7500_candidates.tsv",
+      "sha256": "9cb0a9462e57f6a008e0062d3fe466d92558d15ec86d58db8fe9798ca8b2853c"
+    }
+  },
+  "outputs": {
+    "C2_REFINED_TOP7500.fasta": {
+      "sha256": "b75207de7c0dc21007e450eb8fec7553e84b0e8cc71666273f525f1644af4288"
+    },
+    "OLD_PRIORITY_TOP7500.fasta": {
+      "sha256": "026782388ae62368588baaa3062863d0c982eb5d266c03accab2eb155cd862fc"
+    },
+    "TOP7500_UNION_13720.fasta": {
+      "sha256": "5ec26f16bbd0fb8355cc4b44cdbcfc8e0f17938be695a15ab391da7561c01ef0"
+    },
+    "TOP7500_UNION_13720_MEMBERSHIP.tsv": {
+      "sha256": "0bd179252687171d7c4a1f0fd06b48fd2546a5eba2b244f089526fa184ee1d6a"
+    }
+  },
+  "schema_version": "pvrig.top7500.dualpanel.scope.v1",
+  "status": "PASS_FROZEN_TWO_TOP7500_UNION"
+}

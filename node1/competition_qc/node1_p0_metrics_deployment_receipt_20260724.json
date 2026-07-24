@@ -1,0 +1,17 @@
+{
+  "backup": "/data/qlyu/software/vhh_eval_tools/backups/p0_metrics_20260724_212333",
+  "claim_boundary": "P0 software and smoke deployment only; no experimental binder/blocker claim.",
+  "deployed_sha256": {
+    "PVRIG_VHH_PRODUCTION_SCREENING_METRICS_PLAN_20260724.md": "af711afdaea48222d032f8110b2ffaa2165d1b0fe94261371cf99d5a968bd034",
+    "vhh_competition_qc.py": "dfa90511220f63838aebde971b874c84c2638717667e7ce5892e1532531a7416",
+    "vhh_large_scale_screen.py": "8d90ac941c70097d301b694b3f4813562508a8aa9c8e6b83137da2a33e2b8c03"
+  },
+  "evidence": "/data/qlyu/software/vhh_eval_tools/tests/p0_metrics_20260724_212333",
+  "required_fields_missing": [],
+  "schema_version": "pvrig.vhh_qc_p0_metrics_deployment.v1",
+  "smoke_hard_fail": 2,
+  "smoke_rows": 3,
+  "stage": "/data/qlyu/software/vhh_eval_tools/deployments/p0_metrics_20260724_211823",
+  "status": "PASS",
+  "unit_tests_passed": 18
+}

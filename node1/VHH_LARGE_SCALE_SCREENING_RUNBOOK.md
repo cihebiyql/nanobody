@@ -1,5 +1,9 @@
 # PVRIG VHH 大规模最终阳性筛选 Runbook
 
+> 2026-07-24 指标升级：生产排名、缺失值、多 seed/双构象共识和
+> 表达/纯度拆分见
+> `PVRIG_VHH_PRODUCTION_SCREENING_METRICS_PLAN_20260724.md`。
+
 更新时间：2026-07-19
 
 ## 一句话结论

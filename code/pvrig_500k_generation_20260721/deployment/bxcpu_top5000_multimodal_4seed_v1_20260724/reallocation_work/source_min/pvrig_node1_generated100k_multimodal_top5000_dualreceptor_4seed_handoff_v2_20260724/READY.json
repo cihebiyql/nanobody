@@ -1,0 +1,15 @@
+{
+  "candidates": 5000,
+  "created_at": "2026-07-24T16:52:00+08:00",
+  "docking_started": false,
+  "handoff_receipt_sha256": "9f1963c78563306b657e922d3bdd5a777d19881a93f8bb7dac2d17adf7f5a569",
+  "job_manifest_sha256": "4b5037d840784148e86451bb85881d815e20e39b73b8a23974d23bcbaf285251",
+  "jobs": 40000,
+  "package_version": "pvrig_top5000_dualreceptor_4seed_handoff_v2_20260724",
+  "production": true,
+  "runtime_compatibility": "IMGT_INSERTION_CODES_SUPPORTED",
+  "schema_version": "pvrig.handoff.ready.v2",
+  "shard_receipt_sha256": "4f13253e7844eb45d77c051331ca5a3ab11e4888c72d2048ff4df366223fbd10",
+  "shards": 8,
+  "status": "READY_FOR_EXTERNAL_DOCKING_SUBMISSION"
+}

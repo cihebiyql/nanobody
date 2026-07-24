@@ -21,6 +21,55 @@ def read_tsv(path: Path) -> list[dict[str, str]]:
 
 
 class LargeScaleCascadeTests(unittest.TestCase):
+    def test_load_summary_aggregates_raw_dual_receptor_multiseed_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "job_results.tsv"
+            fields = [
+                "entity_id",
+                "state",
+                "conformation",
+                "seed",
+                "representative_pair_label",
+                "model_pair_consensus_fraction",
+                "model_native_cross_support_agreement_fraction",
+                "native_hotspot_overlap",
+                "cross_hotspot_overlap",
+                "native_total_occlusion",
+                "cross_total_occlusion",
+                "native_cdr3_occlusion",
+                "cross_cdr3_occlusion",
+                "native_cdr3_fraction",
+                "cross_cdr3_fraction",
+            ]
+            with path.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields, delimiter="\t")
+                writer.writeheader()
+                for conformation in ("8x6b", "9e6y"):
+                    for seed in ("42", "3047"):
+                        writer.writerow(
+                            {
+                                "entity_id": "candidate_a",
+                                "state": "SUCCESS",
+                                "conformation": conformation,
+                                "seed": seed,
+                                "representative_pair_label": "STRICT_A",
+                                "model_pair_consensus_fraction": "0.8",
+                                "model_native_cross_support_agreement_fraction": "1.0",
+                                "native_hotspot_overlap": "16",
+                                "cross_hotspot_overlap": "15",
+                                "native_total_occlusion": "620",
+                                "cross_total_occlusion": "580",
+                                "native_cdr3_occlusion": "140",
+                                "cross_cdr3_occlusion": "120",
+                                "native_cdr3_fraction": "0.22",
+                                "cross_cdr3_fraction": "0.19",
+                            }
+                        )
+            summary = cascade.load_summary(path)["candidate_a"]
+        self.assertEqual(summary["blocker_class"], "CONSENSUS_BLOCKER_LIKE_A")
+        self.assertEqual(summary["minimum_successful_seeds_per_conformation"], "2")
+        self.assertEqual(summary["docking_evidence_status"], "MULTISEED_DUAL_REFERENCE")
+
     def make_fake_qc(self, root: Path) -> Path:
         script = root / "fake_qc.py"
         script.write_text(
@@ -186,6 +235,8 @@ class LargeScaleCascadeTests(unittest.TestCase):
             },
         }
         cascade.annotate_binder(rows, summary)
+        self.assertEqual(rows[0]["external_binder_score"], "99.000000")
+        self.assertEqual(rows[1]["external_binder_score"], "40.000000")
         rows.sort(key=cascade.merged_sort_key)
         self.assertEqual(rows[0]["candidate_id"], "pass")
         self.assertEqual(rows[1]["candidate_id"], "hard")

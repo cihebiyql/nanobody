@@ -48,6 +48,27 @@ export PVRIG_TOP5000_AUDIT_OUTPUT="$PVRIG_TOP5000_PUBLISH_ROOT/reports/TECHNICAL
 `READY_FOR_EXTERNAL_DOCKING_SUBMISSION`，且必须声明
 `docking_started=false`。这些 status 和内部相对路径也可通过环境变量覆盖。
 
+## 可选候选排除
+
+worker 默认不排除候选，每个原始 shard 必须选择全部 5,000 jobs。启用候选排除时：
+
+```bash
+export PVRIG_TOP5000_EXCLUDED_CANDIDATES_PATH="$HOME/excluded_candidates.tsv"
+export PVRIG_TOP5000_EXCLUDED_CANDIDATES_SHA256="$(sha256sum \
+  "$PVRIG_TOP5000_EXCLUDED_CANDIDATES_PATH" | awk '{print $1}')"
+export PVRIG_TOP5000_EXPECTED_JOBS_PER_SHARD=3000
+```
+
+排除清单可为每行一个 candidate ID，或包含 `candidate_id`/`entity_id` 列的 TSV。
+重复 ID 会集合去重。worker 对清单执行非 symlink 普通文件和 SHA256 校验，然后按
+原始 shard TSV 的 `entity_id` 跳过完整候选；每个原始 5,000-job shard 必须精确
+剩余 3,000 jobs，否则 fail-closed。未设置排除路径时
+`PVRIG_TOP5000_EXPECTED_JOBS_PER_SHARD` 默认且必须为 5,000；设置路径时默认且必须
+为 3,000。路径与 SHA256 必须同时提供。
+
+该开关只改变 worker assignment，不改变原始 40k manifest、8×5000 package
+preflight 或现有 40k technical-audit 口径。
+
 ## 提交链
 
 在 bxcpu 上运行：

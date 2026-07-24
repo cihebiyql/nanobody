@@ -1,5 +1,9 @@
 # PVRIG 比赛 VHH 提交前 QC / 筛选体系升级方案
 
+> 当前生产化实施状态与新版评分字段已迁移到
+> `PVRIG_VHH_PRODUCTION_SCREENING_METRICS_PLAN_20260724.md`。本文保留原始
+> Gate 设计和比赛依据，新文档作为 2026-07-24 起的执行规范。
+
 更新时间：2026-07-08  
 本地目录：`/mnt/d/work/抗体/node1`  
 远端：`node1`，用户：`qlyu`  

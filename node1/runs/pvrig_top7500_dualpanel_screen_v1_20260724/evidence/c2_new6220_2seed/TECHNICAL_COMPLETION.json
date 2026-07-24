@@ -1,0 +1,48 @@
+{
+  "claim_boundary": "Computational Docking geometry only; not binding, Kd, IC50, expression, purity, or experimental blocking.",
+  "expected_jobs": 24880,
+  "generated_at_utc": "2026-07-23T18:32:37.166522+00:00",
+  "packages": {
+    "c2_new2000": {
+      "expected_jobs": 8000,
+      "invalid_success_examples": [],
+      "manifest": "/publicfs04/fs04-al/home/als001821/.local/share/bxcpu_c2_new6220_dualseed_v1_20260723/inputs/c2_new2000_docking_jobs.tsv",
+      "manifest_sha256": "c3e1a76e13e872b34c68e6d76b3f83cde05f99f13de192051152b4e09fc15094",
+      "missing_examples": [],
+      "package_key": "c2_new2000",
+      "pending_jobs": 0,
+      "status": "COMPLETE_WITH_TECHNICAL_NA",
+      "status_states": {
+        "FAILED": 3,
+        "SUCCESS": 7997
+      },
+      "technical_na": 3,
+      "terminal_jobs": 8000,
+      "valid_success": 7997
+    },
+    "c2_new4220": {
+      "expected_jobs": 16880,
+      "invalid_success_examples": [],
+      "manifest": "/publicfs04/fs04-al/home/als001821/.local/share/bxcpu_c2_new6220_dualseed_v1_20260723/inputs/c2_new4220_docking_jobs.tsv",
+      "manifest_sha256": "d846fd4f3118985794b00747790bdff0f58513324a6bf000ff7a6982d91818b8",
+      "missing_examples": [],
+      "package_key": "c2_new4220",
+      "pending_jobs": 0,
+      "status": "COMPLETE_WITH_TECHNICAL_NA",
+      "status_states": {
+        "FAILED": 9,
+        "SUCCESS": 16871
+      },
+      "technical_na": 9,
+      "terminal_jobs": 16880,
+      "valid_success": 16871
+    }
+  },
+  "pending_jobs": 0,
+  "schema_version": "pvrig.c2_new6220.bxcpu_technical_audit.v1",
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "technical_failure_semantics": "NA_not_negative",
+  "technical_na": 12,
+  "terminal_jobs": 24880,
+  "valid_success": 24868
+}

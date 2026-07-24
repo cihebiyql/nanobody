@@ -1,0 +1,95 @@
+{
+  "base_protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
+  "candidate_panel": {
+    "expected_count": 7500,
+    "monomer_source": "NanoBodyBuilder2/ImmuneBuilder-1.2 independently predicted VHH monomers",
+    "panel_id": "priority_s0_stage0_top7500_v1",
+    "selection_source": "TOP7500_DOCKING_PRIORITY_ORDER.tsv"
+  },
+  "controls": {
+    "included": false,
+    "note": "This handoff is candidate-only; do not claim the 47-control evaluator gate from this package."
+  },
+  "docking": {
+    "engine": "HADDOCK3",
+    "expected_candidate_jobs_exhaustive": 45000,
+    "expected_candidate_jobs_recommended": 25000,
+    "expected_smoke_jobs": 2,
+    "flexref_tolerance": 10,
+    "module_seed_fields": [
+      "topoaa.iniseed",
+      "rigidbody.iniseed",
+      "flexref.iniseed",
+      "emref.iniseed"
+    ],
+    "ncores": 4,
+    "npart": 2,
+    "randremoval": true,
+    "recommended_schedule": {
+      "seed_1931_stratified_sentinel": 4000,
+      "seed_3253_nested_stratified_sentinel": 1000,
+      "seed_917_all_candidates": 7500
+    },
+    "rigidbody_tolerance": 5,
+    "sampling": 40,
+    "seeds": [
+      917,
+      1931,
+      3253
+    ],
+    "seletop_select": 10,
+    "seletopclusts_top_models": 4,
+    "smoke_candidate_id": "set_by_handoff_manifest",
+    "smoke_seed": 917,
+    "validated_engine_version": "2025.11.0"
+  },
+  "evidence_boundary": "independent_dual_conformation_guided_docking_geometry_proxy_not_binding_affinity_or_functional_blocking_proof",
+  "interface": {
+    "air_anchor_count": 12,
+    "holdout_count": 11,
+    "soft_hint_rows_excluded": true,
+    "source": "inputs/source/PVRIG_hotspot_set_v1.csv",
+    "split_algorithm": "sort_alignment_col_then_even_index_anchor",
+    "unique_interface_residue_count": 23
+  },
+  "protocol_id": "pvrig_top7500_dualreceptor_multiseed_handoff_v3_20260722",
+  "references": {
+    "conformations": {
+      "8x6b": {
+        "normalized_receptor_pdb": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+        "normalized_reference_pdb": "inputs/normalized/8x6b_TL_reference.pdb",
+        "receptor_number_offset": 38,
+        "source_ligand_chain": "A",
+        "source_pdb": "inputs/source/8X6B.pdb",
+        "source_receptor_chain": "B"
+      },
+      "9e6y": {
+        "normalized_receptor_pdb": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+        "normalized_reference_pdb": "inputs/normalized/9e6y_TL_reference.pdb",
+        "receptor_number_offset": 40,
+        "source_ligand_chain": "D",
+        "source_pdb": "inputs/source/9E6Y.pdb",
+        "source_receptor_chain": "A"
+      }
+    },
+    "ligand_chain": "L",
+    "numbering": "UniProt_Q6DKI7",
+    "receptor_chain": "T"
+  },
+  "schema_version": 1,
+  "scoring": {
+    "atom_records": "standard_amino_acid_ATOM_only",
+    "clash_cutoff_a": 2.5,
+    "legacy_blocker_like_a_thresholds_are_compatibility_references_only": true,
+    "pvrig_vhh_contact_cutoff_a": 4.5,
+    "pvrl2_occlusion_cutoff_a": 4.5,
+    "score_matrix": "dock_8x6b_to_8x6b_and_9e6y_plus_dock_9e6y_to_9e6y_and_8x6b"
+  },
+  "stability_gate": {
+    "calibration_controls_applied": false,
+    "independent_runs_for_both_conformations": true,
+    "minimum_successful_seeds_for_repeated_candidates": 2,
+    "technical_failure_semantics": "NA_not_negative"
+  },
+  "status": "HANDOFF_LOCKED"
+}

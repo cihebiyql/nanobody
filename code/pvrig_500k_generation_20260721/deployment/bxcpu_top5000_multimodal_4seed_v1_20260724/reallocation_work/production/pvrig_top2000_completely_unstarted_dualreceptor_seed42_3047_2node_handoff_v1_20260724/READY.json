@@ -1,0 +1,26 @@
+{
+  "candidates": 2000,
+  "candidates_per_node": 1000,
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "created_at": "2026-07-24T21:05:00+08:00",
+  "docking_plan_sha256": "bf1f865f8d8631c000f5973210fca0e7d82f65d561fe390dbe80ae24100efd54",
+  "docking_started": false,
+  "handoff_receipt_sha256": "0a8883bb3277cac39c470e3bde12a300d98737ffb7d9b5c7b76922610885d91d",
+  "job_manifest_sha256": "40f0adb8c388e44ff92d9a20431bbe304e885df9c1a7b3a23c383a197d14b947",
+  "jobs": 8000,
+  "jobs_per_node": 4000,
+  "node_receipt_sha256": "f9688ddf8cc02f40de311bedbf2111d80b14d297eada0ecb7c2aa101555a06f4",
+  "nodes": 2,
+  "package_version": "pvrig_top5000_unstarted_seed42_3047_two_node_handoff_v1_20260724",
+  "schema_version": "pvrig.handoff.ready.v1",
+  "seeds": [
+    42,
+    3047
+  ],
+  "selection_sha256": "f7a0a8fdf63176b8ecf9ccbdb0601ed399560b52564d479bfa332d8baf3bcdae",
+  "started_job_overlap": 0,
+  "status": "READY_FOR_EXTERNAL_DOCKING_SUBMISSION"
+}

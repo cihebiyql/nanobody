@@ -1,0 +1,56 @@
+{
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "created_at": "2026-07-24T21:05:00+08:00",
+  "dispatch": [
+    {
+      "candidates": 1000,
+      "jobs": 4000,
+      "manifest": "manifests/nodes_exact_2/node_00.tsv",
+      "manifest_sha256": "d38e95c4526259cb16c2002ac4836b55b502a89630f401f803cd217c2e3d8715",
+      "node_index": 0,
+      "source_shards": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "candidates": 1000,
+      "jobs": 4000,
+      "manifest": "manifests/nodes_exact_2/node_01.tsv",
+      "manifest_sha256": "c10065b861d5fb5b33dff97efd5023907e47d4385b48345c772952300809ab00",
+      "node_index": 1,
+      "source_shards": [
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "docking_started": false,
+  "preserve_source_job_id_and_job_hash": true,
+  "resource_intent": {
+    "candidates_per_node": 1000,
+    "jobs_per_candidate": 4,
+    "jobs_per_node": 4000,
+    "nodes": 2
+  },
+  "schema_version": "pvrig.top5000.seed42_3047.two_node_plan.v1",
+  "seeds": [
+    42,
+    3047
+  ],
+  "selection": {
+    "eligibility": "candidate is in frozen UNSTARTED_CANDIDATES and none of its eight source jobs is in frozen STARTED_JOB_IDS",
+    "ordering": "ascending release_rank then candidate_id",
+    "selected_per_source_shard": 250,
+    "source_shards": 8
+  },
+  "started_job_overlap": 0,
+  "status": "READY_2_NODES_1000_CANDIDATES_4000_JOBS_EACH"
+}

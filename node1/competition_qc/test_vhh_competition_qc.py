@@ -12,6 +12,116 @@ import vhh_competition_qc as qc
 
 
 class CompetitionQCRegressionTests(unittest.TestCase):
+    def test_missing_binding_and_blocking_evidence_are_not_neutral_scores(self) -> None:
+        self.assertIsNone(qc.score_binding({}))
+        self.assertIsNone(qc.score_blocking({}))
+
+    def test_binding_score_is_independent_from_blocker_class(self) -> None:
+        self.assertIsNone(qc.score_binding({"blocker_class": "CONSENSUS_BLOCKER_LIKE_A"}))
+        self.assertEqual(qc.score_binding({"binding_prior_consensus": "0.82"}), 82.0)
+
+    def test_expression_and_purity_are_separate_proxies(self) -> None:
+        row = {
+            "pI": "7.2",
+            "charge_pH7_4": "1.0",
+            "instability_index": "28",
+            "abnativ_vhh_score": "0.85",
+            "gravy": "0.35",
+            "hydrophobic_5_count": "1",
+            "cys_count": "2",
+            "polyreactivity_proxy": "high",
+        }
+        expression = qc.score_expression(row)
+        purity = qc.score_purity(row)
+        self.assertGreater(expression, purity)
+        self.assertLess(purity, 50.0)
+
+    def test_dual_reference_multiseed_jobs_form_strict_consensus(self) -> None:
+        rows = []
+        for conformation in ("8x6b", "9e6y"):
+            for seed in ("42", "3047"):
+                rows.append(
+                    {
+                        "entity_id": "candidate_a",
+                        "state": "SUCCESS",
+                        "conformation": conformation,
+                        "seed": seed,
+                        "representative_pair_label": "STRICT_A",
+                        "model_pair_consensus_fraction": "0.75",
+                        "model_native_cross_support_agreement_fraction": "1.0",
+                        "model_strict_a_fraction": "0.75",
+                        "native_hotspot_overlap": "16",
+                        "cross_hotspot_overlap": "15",
+                        "native_total_occlusion": "620",
+                        "cross_total_occlusion": "580",
+                        "native_cdr3_occlusion": "140",
+                        "cross_cdr3_occlusion": "120",
+                        "native_cdr3_fraction": "0.22",
+                        "cross_cdr3_fraction": "0.19",
+                    }
+                )
+        summary = qc.aggregate_docking_rows(rows)["candidate_a"]
+        self.assertEqual(summary["blocker_class"], "CONSENSUS_BLOCKER_LIKE_A")
+        self.assertEqual(summary["successful_docking_job_count"], "4")
+        self.assertEqual(summary["dual_conformation_coverage"], "1.000000")
+        self.assertEqual(summary["strict_a_job_fraction"], "1.000000")
+        self.assertGreater(qc.score_blocking(summary), 80.0)
+        self.assertGreater(qc.score_pose_robustness(summary), 80.0)
+
+    def test_partial_raw_docking_cannot_inherit_high_confidence_class(self) -> None:
+        rows = [
+            {
+                "entity_id": "candidate_partial",
+                "state": "SUCCESS",
+                "conformation": "8x6b",
+                "seed": "42",
+                "blocker_class": "CONSENSUS_BLOCKER_LIKE_A",
+                "representative_pair_label": "STRICT_A",
+                "native_hotspot_overlap": "16",
+                "cross_hotspot_overlap": "15",
+                "native_total_occlusion": "620",
+                "cross_total_occlusion": "580",
+                "native_cdr3_occlusion": "140",
+                "cross_cdr3_occlusion": "120",
+                "native_cdr3_fraction": "0.22",
+                "cross_cdr3_fraction": "0.19",
+            }
+        ]
+        summary = qc.aggregate_docking_rows(rows)["candidate_partial"]
+        self.assertEqual(summary["blocker_class"], "EVIDENCE_INFERENCE_ONLY_E")
+        self.assertEqual(summary["docking_evidence_status"], "PARTIAL_DOCKING_EVIDENCE")
+
+    def test_duplicate_conformation_seed_rows_fail_closed(self) -> None:
+        rows = []
+        for conformation in ("8x6b", "9e6y"):
+            for seed in ("42", "3047"):
+                row = {
+                    "entity_id": "candidate_duplicate",
+                    "state": "SUCCESS",
+                    "conformation": conformation,
+                    "seed": seed,
+                    "representative_pair_label": "STRICT_A",
+                }
+                rows.extend([row, dict(row)] if conformation == "8x6b" and seed == "42" else [row])
+        summary = qc.aggregate_docking_rows(rows)["candidate_duplicate"]
+        self.assertEqual(summary["duplicate_conformation_seed_jobs"], "1")
+        self.assertNotEqual(summary["blocker_class"], "CONSENSUS_BLOCKER_LIKE_A")
+        self.assertEqual(summary["docking_evidence_status"], "PARTIAL_DOCKING_EVIDENCE")
+
+    def test_zero_production_score_does_not_fall_back_to_sequence_priority(self) -> None:
+        status, score = qc.production_rank_score(
+            binding_score=60.0,
+            blocking_score=0.0,
+            pose_robustness_score=0.0,
+            developability_score=0.0,
+            expression_score=0.0,
+            purity_score=0.0,
+            structure_score=0.0,
+            docking_consensus_complete=True,
+        )
+        self.assertEqual(status, "PRODUCTION_RANK_READY")
+        self.assertEqual(score, 6.0)
+
     def test_parse_fasta_normalizes_and_deduplicates_ids(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             fasta = Path(tmp) / "input.fasta"

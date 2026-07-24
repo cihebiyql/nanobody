@@ -1,0 +1,157 @@
+{
+  "authoritative_job_count": 40000,
+  "authoritative_unique_job_hashes": 40000,
+  "candidate_units_split_across_shards": 0,
+  "exact_hash_set_closure": true,
+  "job_count": 40000,
+  "schema_version": "pvrig.top5000.exact_closure_shards.v1",
+  "shard_count": 8,
+  "shards": [
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "863c1f3576ffe72087d16ee519979fe0a524e6c9b22acf8061856c98ff7950e7",
+      "path": "manifests/shards_exact_8/shard_00.tsv",
+      "sha256": "7da89f80b25fb743aef5c56dd1a352e17672240c0963f1c8886c99204dc4d8d4",
+      "shard": 0
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "4cc2aeb6255b18b69e06ec64e9c69375e91cee596702025d9af6d96e3977f326",
+      "path": "manifests/shards_exact_8/shard_01.tsv",
+      "sha256": "6fd1ba5aa7d6ed1cd3a285d0048a653a3cfe97f296fbf0cfa548753d49be275f",
+      "shard": 1
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "918f549aa068164c1b4dab7d656bdbaaad274607364f0e3f90cbfaea355fb733",
+      "path": "manifests/shards_exact_8/shard_02.tsv",
+      "sha256": "951cba80c7cfa6dee8169f519f84a55ac515bff5d4280884a17c33ccc7008175",
+      "shard": 2
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "1e71a28df9ed1d4c7a36d90c9416a05cce5d7683b7779757a7fa176e2fe5dcdb",
+      "path": "manifests/shards_exact_8/shard_03.tsv",
+      "sha256": "1f16a96c25b5c70a488bf32d988b25527aae1589eb14229f10092276e45b0b6c",
+      "shard": 3
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "70b292472e01e947541c1267897b0126fda88002ee92eca6d2a28c250da67278",
+      "path": "manifests/shards_exact_8/shard_04.tsv",
+      "sha256": "1550fac1054eee7703bd496e41d8835494da81b928101dff514dd0c60d2635f1",
+      "shard": 4
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "f9db7e0ce07b42661aa827f6c18c2c8cfb31fcc27da9b9bb6ddae73d307564f5",
+      "path": "manifests/shards_exact_8/shard_05.tsv",
+      "sha256": "7e81fe25ce880554cee3001cda22f364b1790d390d07b61ddaf861b406e127db",
+      "shard": 5
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "04876e2c6ecf8f4a1144c84567e57c60574f436f1da41e12e6977dc9518369b2",
+      "path": "manifests/shards_exact_8/shard_06.tsv",
+      "sha256": "da49e6ca96ec53b933ad345cf939b08af2ffe3006f94269acbbdf9d5d625055d",
+      "shard": 6
+    },
+    {
+      "candidates": 625,
+      "jobs": 5000,
+      "jobs_by_seed_conformation": {
+        "seed1931_8x6b": 625,
+        "seed1931_9e6y": 625,
+        "seed3047_8x6b": 625,
+        "seed3047_9e6y": 625,
+        "seed42_8x6b": 625,
+        "seed42_9e6y": 625,
+        "seed917_8x6b": 625,
+        "seed917_9e6y": 625
+      },
+      "ordered_job_hashes_sha256": "a2a29af6cd685f14ca009ca2af35cfb4ed52eba82d0e6a7554d9feb85e1ab3c2",
+      "path": "manifests/shards_exact_8/shard_07.tsv",
+      "sha256": "f52fdc7af8d2506f8e28189a358107e7804917a00a86f12ad8b0132c95226e60",
+      "shard": 7
+    }
+  ],
+  "status": "PASS_EXACT_CLOSURE_BALANCED",
+  "unique_job_hashes": 40000
+}

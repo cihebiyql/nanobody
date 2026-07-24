@@ -1,0 +1,97 @@
+{
+  "status": "PASS_EXACT_2000_COMPLETELY_UNSTARTED_SELECTED_AND_RELEASED",
+  "selection_rule": "for each original source shard, select the 250 completely-unstarted candidates with the lowest release_rank; ties by candidate_id",
+  "source_candidate_count": 5000,
+  "frozen_started_candidates": 634,
+  "frozen_unstarted_candidates": 4366,
+  "selected_candidates": 2000,
+  "selected_per_original_shard": 250,
+  "remaining_current_candidates": 3000,
+  "selected_original_source_jobs_excluded_from_current": 16000,
+  "external_handoff_seeds": [
+    42,
+    3047
+  ],
+  "external_receptors": [
+    "8x6b",
+    "9e6y"
+  ],
+  "external_handoff_jobs": 8000,
+  "external_nodes": 2,
+  "candidates_per_external_node": 1000,
+  "jobs_per_external_node": 4000,
+  "selected_started_candidate_overlap": 0,
+  "selected_started_job_overlap": 0,
+  "snapshot_sha256": {
+    "SNAPSHOT.json": "0165e5a037242df20af9c47d0057c1939ed2145e0f0fb12d1abd380d4ca2a1d4",
+    "STARTED_CANDIDATES.txt": "cc1bb061b4d776261ea297b96ab272c3b3eb5f8a11cb7ecdbb4aad6b5bab1725",
+    "STARTED_JOB_IDS.txt": "38b7ac2a850c1227018f5edc4d1538923db580d8f54b8356b02fdb9b9e481e29",
+    "UNSTARTED_CANDIDATES.txt": "e5ad32fea19cd2d51d8e5e6dd2ad82acbce7676973cb4bb253f2d1b9a757ab6c"
+  },
+  "source_shards": {
+    "00": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 545,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "01": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 549,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "02": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 547,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "03": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 547,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "04": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 545,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "05": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 545,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "06": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 545,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    },
+    "07": {
+      "candidates": 625,
+      "jobs": 5000,
+      "unstarted_candidates": 543,
+      "selected": 250,
+      "remaining": 375,
+      "remaining_jobs": 3000
+    }
+  }
+}

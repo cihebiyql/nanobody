@@ -1,0 +1,26 @@
+{
+  "status": "PASS_READY_FOR_EXTERNAL_DOCKING_HANDOFF_NO_DOCKING_STARTED",
+  "package_directory_name": "pvrig_top2000_completely_unstarted_dualreceptor_seed42_3047_2node_handoff_v1_20260724",
+  "archive": "pvrig_top2000_completely_unstarted_dualreceptor_seed42_3047_2node_handoff_v1_20260724.tar.zst",
+  "archive_sha256": "64adb03c6165de8c943fabed7eb896e6ed12ce7c4e6f0d893c0ec7a15088df54",
+  "archive_bytes": 59227400,
+  "unpacked_bytes": 352636263,
+  "candidates": 2000,
+  "jobs": 8000,
+  "nodes": 2,
+  "candidates_per_node": 1000,
+  "jobs_per_node": 4000,
+  "seeds": [
+    42,
+    3047
+  ],
+  "receptors": [
+    "8x6b",
+    "9e6y"
+  ],
+  "completely_unstarted_at_frozen_boundary": true,
+  "started_candidate_overlap": 0,
+  "started_job_overlap": 0,
+  "current_bxcpu_exclusion_sha256": "83f1a073732037191fafec97fa816567e045d0a473f4efb6d9048ed60b47df7d",
+  "scientific_boundary": "computational docking handoff only; not binding, Kd, IC50, expression, purity, or experimental blocking evidence"
+}

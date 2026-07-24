@@ -1,0 +1,36 @@
+{
+  "candidate_units_split_across_nodes": 0,
+  "nodes": [
+    {
+      "candidates": 1000,
+      "jobs": 4000,
+      "manifest": "manifests/nodes_exact_2/node_00.tsv",
+      "manifest_sha256": "d38e95c4526259cb16c2002ac4836b55b502a89630f401f803cd217c2e3d8715",
+      "node_index": 0,
+      "source_shards": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "candidates": 1000,
+      "jobs": 4000,
+      "manifest": "manifests/nodes_exact_2/node_01.tsv",
+      "manifest_sha256": "c10065b861d5fb5b33dff97efd5023907e47d4385b48345c772952300809ab00",
+      "node_index": 1,
+      "source_shards": [
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "schema_version": "pvrig.top5000.two_node_exact_dispatch.v1",
+  "started_job_overlap": 0,
+  "status": "PASS_EXACT_2_NODE_CLOSURE",
+  "total_candidates": 2000,
+  "total_jobs": 8000
+}

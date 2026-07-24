@@ -1,0 +1,20 @@
+{
+  "all_expected_jobs_terminal": true,
+  "bad_json_job_ids": [],
+  "claim_boundary": "Technical completion of the frozen old priority/S0-selected 25k Docking campaign only; FAILED states are technical NA, never biological negatives; this campaign is not an overall prospective evaluation of the later C2-refined Top7500 panel.",
+  "expected_jobs": 25000,
+  "manifest_count_ok": true,
+  "manifest_sha256": "2b1d8f4c595d181c747ba1044d07e45d0be1da2b8260a9d35ab1c24c524be661",
+  "missing_job_ids": [],
+  "required_expected_jobs": 25000,
+  "schema_version": "pvrig_top7500_25k_technical_status_v2",
+  "state_counts": {
+    "FAILED": 15,
+    "SUCCESS": 24985
+  },
+  "status": "COMPLETE_WITH_TECHNICAL_NA",
+  "success_jobs": 24985,
+  "technical_na_jobs": 15,
+  "terminal_jobs": 25000,
+  "updated_at_utc": "2026-07-23T04:57:27.201628+00:00"
+}

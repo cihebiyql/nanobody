@@ -355,40 +355,22 @@ def run_chunk_stage(args: argparse.Namespace, *, fast: bool) -> list[dict[str, o
 def load_summary(path: Path | None) -> dict[str, dict[str, str]]:
     if path is None or not path.exists():
         return {}
-    rows = qc.read_csv_auto(path)
-    output: dict[str, dict[str, str]] = {}
-    for row in rows:
-        candidate_id = (
-            row.get("candidate_id")
-            or row.get("id")
-            or row.get("name")
-            or row.get("fasta_id")
-            or row.get("molecule_name")
-        )
-        if candidate_id:
-            output[candidate_id] = row
-    return output
+    return qc.aggregate_docking_rows(qc.read_csv_auto(path))
 
 
 def binder_score(row: dict[str, str]) -> float:
-    for key in [
-        "binding_prior_consensus",
-        "binder_score",
-        "DeepNano_score",
-        "deepnano_score",
-        "binding_score",
-        "score",
-    ]:
-        if str(row.get(key, "")).strip():
-            return qc.parse_float(row[key], default=0.0)
-    return 0.0
+    score = qc.score_binding(row)
+    return 0.0 if score is None else score
 
 
 def merged_sort_key(row: dict[str, str]) -> tuple[bool, float, float, str]:
     return (
         row.get("hard_fail") == "True",
         -qc.parse_float(row.get("external_binder_score"), default=0.0),
-        -qc.parse_float(row.get("final_score"), default=0.0),
+        -qc.parse_float(
+            row.get("sequence_priority_score") or row.get("final_score"),
+            default=0.0,
+        ),
         row.get("candidate_id", ""),
     )
 
@@ -576,14 +558,82 @@ def finalize(args: argparse.Namespace) -> list[dict[str, str]]:
             or "NOT_RUN"
         )
         merged = dict(row)
+        combined_evidence = dict(row)
+        combined_evidence.update(evidence)
+        binding_score = qc.score_binding(combined_evidence)
+        blocking_score = qc.score_blocking(combined_evidence)
+        pose_robustness_score = qc.score_pose_robustness(combined_evidence)
+        developability_score = qc.optional_float(row.get("developability_score"))
+        legacy_expression_purity = qc.optional_float(row.get("expression_purity_risk_score"))
+        expression_score = qc.optional_float(row.get("expression_score"))
+        purity_score = qc.optional_float(row.get("purity_aggregation_score"))
+        expression_purity_source = "SPLIT_COMPONENTS"
+        if expression_score is None and legacy_expression_purity is not None:
+            expression_score = legacy_expression_purity
+            expression_purity_source = "LEGACY_COMBINED_PROXY"
+        if purity_score is None and legacy_expression_purity is not None:
+            purity_score = legacy_expression_purity
+            expression_purity_source = "LEGACY_COMBINED_PROXY"
+        structure_score = qc.optional_float(row.get("structure_score"))
+        sequence_components = [
+            developability_score,
+            expression_score,
+            purity_score,
+            structure_score,
+        ]
+        if any(value is None for value in sequence_components):
+            ranking_status, production_final_score = "NEEDS_SEQUENCE_QC_COMPONENTS", None
+        else:
+            ranking_status, production_final_score = qc.production_rank_score(
+                binding_score=binding_score,
+                blocking_score=blocking_score,
+                pose_robustness_score=pose_robustness_score,
+                developability_score=developability_score,
+                expression_score=expression_score,
+                purity_score=purity_score,
+                structure_score=structure_score,
+                docking_consensus_complete=(
+                    evidence.get("docking_evidence_status") == "MULTISEED_DUAL_REFERENCE"
+                ),
+            )
         merged["blocker_class"] = blocker_class
         merged["final_blocker_label"] = final_blocker_label(blocker_class)
-        merged["docking_evidence_status"] = "IMPORTED" if evidence else "MISSING"
+        merged["docking_evidence_status"] = (
+            evidence.get("docking_evidence_status") or "IMPORTED"
+            if evidence
+            else "MISSING"
+        )
+        merged["binding_entry_score"] = qc.format_optional_score(binding_score)
+        merged["binding_entry_status"] = (
+            "NOT_RUN"
+            if binding_score is None
+            else "PASS"
+            if binding_score >= 60.0
+            else "FAIL"
+        )
+        merged["blocking_consensus_score"] = qc.format_optional_score(blocking_score)
+        merged["pose_robustness_score"] = qc.format_optional_score(pose_robustness_score)
+        merged["expression_purity_score_source"] = expression_purity_source
+        merged["ranking_status"] = ranking_status
+        merged["production_final_score"] = qc.format_optional_score(production_final_score)
         for key in [
             "hotspot_overlap_count",
             "total_vhh_pvrl2_residue_pair_occlusion",
             "cdr3_pvrl2_residue_pair_occlusion",
             "cdr3_occlusion_fraction",
+            "docking_job_count",
+            "successful_docking_job_count",
+            "valid_docking_job_fraction",
+            "docking_conformation_count",
+            "dual_conformation_coverage",
+            "docking_seed_count",
+            "minimum_successful_seeds_per_conformation",
+            "seed_consistency_fraction",
+            "strict_a_job_fraction",
+            "supported_ab_job_fraction",
+            "pose_pair_consensus_fraction",
+            "dual_reference_agreement_fraction",
+            "model_strict_a_fraction",
         ]:
             if key in evidence:
                 merged[key] = evidence[key]
@@ -599,6 +649,7 @@ def finalize(args: argparse.Namespace) -> list[dict[str, str]]:
     final_rows.sort(
         key=lambda row: (
             priority.get(row["final_blocker_label"], 99),
+            -qc.parse_float(row.get("production_final_score"), default=-1.0),
             qc.parse_int(row.get("geometry_rank"), default=10**9),
         )
     )

@@ -1,0 +1,185 @@
+{
+  "claim_boundary": "Portable computational docking handoff only; no remote mutation, biological validation, or experimental blocking claim.",
+  "counts": {
+    "candidates_per_node": 1000,
+    "excluded_candidates": 3000,
+    "jobs_per_node": 4000,
+    "nodes": 2,
+    "selected_candidates": 2000,
+    "selected_jobs": 8000,
+    "selected_per_source_shard": 250,
+    "source_candidates": 5000,
+    "source_jobs": 40000,
+    "source_shards": 8,
+    "started_job_overlap": 0
+  },
+  "created_at": "2026-07-24T21:05:00+08:00",
+  "docking_started": false,
+  "frozen_authorities": {
+    "started_job_ids_count": 5072,
+    "started_job_ids_normalized_sha256": "38b7ac2a850c1227018f5edc4d1538923db580d8f54b8356b02fdb9b9e481e29",
+    "started_job_ids_source_sha256": "38b7ac2a850c1227018f5edc4d1538923db580d8f54b8356b02fdb9b9e481e29",
+    "unstarted_candidates_count": 4366,
+    "unstarted_candidates_normalized_sha256": "e5ad32fea19cd2d51d8e5e6dd2ad82acbce7676973cb4bb253f2d1b9a757ab6c",
+    "unstarted_candidates_source_sha256": "e5ad32fea19cd2d51d8e5e6dd2ad82acbce7676973cb4bb253f2d1b9a757ab6c"
+  },
+  "invariants": {
+    "eight_source_shards_each_contribute_250": true,
+    "lowest_release_rank_selection_is_deterministic": true,
+    "selected_candidates_are_fully_unstarted": true,
+    "selected_job_started_overlap_zero": true,
+    "source_job_id_and_job_hash_preserved": true,
+    "source_package_unmodified": true,
+    "two_nodes_exact_1000_candidates_4000_jobs_each": true
+  },
+  "outputs": {
+    "docking_plan": {
+      "path": "DOCKING_PLAN.json",
+      "sha256": "bf1f865f8d8631c000f5973210fca0e7d82f65d561fe390dbe80ae24100efd54"
+    },
+    "exclusion": {
+      "path": "selection/EXCLUDED_CANDIDATES.tsv",
+      "rows": 3000,
+      "sha256": "d4c761c85290007f9222024fbd8029d94235563b5ae8614df579d306b6c1db0f"
+    },
+    "job_manifest": {
+      "path": "manifests/docking_jobs.tsv",
+      "rows": 8000,
+      "sha256": "40f0adb8c388e44ff92d9a20431bbe304e885df9c1a7b3a23c383a197d14b947"
+    },
+    "node_receipt": {
+      "path": "manifests/nodes_exact_2/NODE_RECEIPT.json",
+      "sha256": "f9688ddf8cc02f40de311bedbf2111d80b14d297eada0ecb7c2aa101555a06f4"
+    },
+    "selected_candidate_manifest": {
+      "path": "inputs/selected_candidates.tsv",
+      "rows": 2000,
+      "sha256": "e5d39dfb9aa62cc082742cb8a4e7c3c9425e14222ae3040462133ee324230a61"
+    },
+    "selection": {
+      "path": "selection/SELECTED_CANDIDATES.tsv",
+      "rows": 2000,
+      "sha256": "f7a0a8fdf63176b8ecf9ccbdb0601ed399560b52564d479bfa332d8baf3bcdae"
+    }
+  },
+  "package_version": "pvrig_top5000_unstarted_seed42_3047_two_node_handoff_v1_20260724",
+  "portable_resources": {
+    "config": {
+      "file_count": 3
+    },
+    "inputs_normalized": {
+      "file_count": 5
+    },
+    "inputs_source": {
+      "file_count": 3
+    },
+    "scripts": {
+      "file_count": 8
+    }
+  },
+  "protocol": {
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "seeds": [
+      42,
+      3047
+    ],
+    "source_job_hash_preserved": true,
+    "source_job_id_preserved": true,
+    "two_seed_cfg_lock_sha256": "40403bc3d1108d5506df944d210e313701d6441aff8cb7fc834f7611772bb45b"
+  },
+  "schema_version": "pvrig.top5000.unstarted_seed42_3047.two_node_handoff.v1",
+  "selection_by_source_shard": [
+    {
+      "frozen_unstarted_candidates": "545",
+      "fully_unstarted_eligible_candidates": "545",
+      "node_index": "0",
+      "rank_cutoff": "2633",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "0",
+      "started_conflict_candidates": "80"
+    },
+    {
+      "frozen_unstarted_candidates": "549",
+      "fully_unstarted_eligible_candidates": "549",
+      "node_index": "0",
+      "rank_cutoff": "2602",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "1",
+      "started_conflict_candidates": "76"
+    },
+    {
+      "frozen_unstarted_candidates": "547",
+      "fully_unstarted_eligible_candidates": "547",
+      "node_index": "0",
+      "rank_cutoff": "2619",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "2",
+      "started_conflict_candidates": "78"
+    },
+    {
+      "frozen_unstarted_candidates": "547",
+      "fully_unstarted_eligible_candidates": "547",
+      "node_index": "0",
+      "rank_cutoff": "2620",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "3",
+      "started_conflict_candidates": "78"
+    },
+    {
+      "frozen_unstarted_candidates": "545",
+      "fully_unstarted_eligible_candidates": "545",
+      "node_index": "1",
+      "rank_cutoff": "2637",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "4",
+      "started_conflict_candidates": "80"
+    },
+    {
+      "frozen_unstarted_candidates": "545",
+      "fully_unstarted_eligible_candidates": "545",
+      "node_index": "1",
+      "rank_cutoff": "2638",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "5",
+      "started_conflict_candidates": "80"
+    },
+    {
+      "frozen_unstarted_candidates": "545",
+      "fully_unstarted_eligible_candidates": "545",
+      "node_index": "1",
+      "rank_cutoff": "2639",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "6",
+      "started_conflict_candidates": "80"
+    },
+    {
+      "frozen_unstarted_candidates": "543",
+      "fully_unstarted_eligible_candidates": "543",
+      "node_index": "1",
+      "rank_cutoff": "2656",
+      "selected_candidates": "250",
+      "source_candidates": "625",
+      "source_shard": "7",
+      "started_conflict_candidates": "82"
+    }
+  ],
+  "source_package": {
+    "candidate_manifest_sha256": "15a9fb904731c85bc09ccad2de94db0e2acff85d4ce8c2b01668c67a0974e3b2",
+    "handoff_receipt_sha256": "9f1963c78563306b657e922d3bdd5a777d19881a93f8bb7dac2d17adf7f5a569",
+    "job_manifest_sha256": "4b5037d840784148e86451bb85881d815e20e39b73b8a23974d23bcbaf285251",
+    "package_version": "pvrig_top5000_dualreceptor_4seed_handoff_v2_20260724",
+    "ready_sha256": "3bd638aee51eab71816b4dadcc7eb2af655bbdb5226bc62095f5aa6d31589fcb",
+    "sha256sums_sha256": "4a04d43aa41636e0c7e7556e2e72c0fb250748cfe58c43239821126ec08c49ec"
+  },
+  "status": "READY_FOR_EXTERNAL_DOCKING_SUBMISSION"
+}

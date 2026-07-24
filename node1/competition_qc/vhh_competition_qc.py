@@ -16,6 +16,7 @@ import math
 import os
 import re
 import shutil
+import statistics
 import subprocess
 import sys
 import time
@@ -942,8 +943,17 @@ def quick_sequence_identity(a: str, b: str) -> float:
 def load_docking_summary(path: Path | None) -> dict[str, dict[str, str]]:
     if path is None or not path.exists():
         return {}
-    rows = read_csv_auto(path)
-    by_id = {}
+    return aggregate_docking_rows(read_csv_auto(path))
+
+
+def aggregate_docking_rows(rows: list[dict[str, str]]) -> dict[str, dict[str, str]]:
+    """Normalize candidate summaries or aggregate raw multi-job docking rows.
+
+    Raw V3 job results contain one row per receptor conformation and seed.
+    Candidate-level summaries contain one row per sequence.  This function
+    accepts both without treating technical failures as biological negatives.
+    """
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
         candidate_id = (
             row.get("candidate_id")
@@ -951,16 +961,206 @@ def load_docking_summary(path: Path | None) -> dict[str, dict[str, str]]:
             or row.get("name")
             or row.get("fasta_id")
             or row.get("molecule_name")
+            or row.get("entity_id")
         )
         if candidate_id:
-            if not row.get("blocker_class") and row.get("top_model_consensus_class"):
-                row["blocker_class"] = row["top_model_consensus_class"]
-            if not row.get("hotspot_overlap_count") and row.get("top_8x6b_hotspot"):
-                row["hotspot_overlap_count"] = row["top_8x6b_hotspot"]
-            if not row.get("total_vhh_pvrl2_residue_pair_occlusion") and row.get("top_8x6b_total_occlusion"):
-                row["total_vhh_pvrl2_residue_pair_occlusion"] = row["top_8x6b_total_occlusion"]
-            by_id[candidate_id] = row
-    return by_id
+            grouped[candidate_id].append(dict(row))
+
+    output: dict[str, dict[str, str]] = {}
+    success_states = {"SUCCESS", "PASS", "COMPLETE", "COMPLETED"}
+    supported_labels = {"STRICT_A", "SUPPORTED_AB"}
+    for candidate_id, candidate_rows in grouped.items():
+        merged: dict[str, str] = {}
+        for source in candidate_rows:
+            for key, value in source.items():
+                if str(value).strip() and not str(merged.get(key, "")).strip():
+                    merged[key] = str(value)
+        merged["candidate_id"] = candidate_id
+        if not merged.get("blocker_class") and merged.get("top_model_consensus_class"):
+            merged["blocker_class"] = merged["top_model_consensus_class"]
+        if not merged.get("hotspot_overlap_count") and merged.get("top_8x6b_hotspot"):
+            merged["hotspot_overlap_count"] = merged["top_8x6b_hotspot"]
+        if (
+            not merged.get("total_vhh_pvrl2_residue_pair_occlusion")
+            and merged.get("top_8x6b_total_occlusion")
+        ):
+            merged["total_vhh_pvrl2_residue_pair_occlusion"] = merged["top_8x6b_total_occlusion"]
+
+        is_job_table = any(
+            any(
+                key in row
+                for key in ("state", "representative_pair_label", "native_class", "cross_class")
+            )
+            for row in candidate_rows
+        )
+        if not is_job_table:
+            output[candidate_id] = merged
+            continue
+
+        successful = [
+            row
+            for row in candidate_rows
+            if str(row.get("state", "")).upper() in success_states
+        ]
+        merged["docking_job_count"] = str(len(candidate_rows))
+        merged["successful_docking_job_count"] = str(len(successful))
+        merged["valid_docking_job_fraction"] = format_fraction(
+            len(successful) / len(candidate_rows) if candidate_rows else None
+        )
+        if not successful:
+            merged["docking_evidence_status"] = "TECHNICAL_NA"
+            output[candidate_id] = merged
+            continue
+
+        expected_conformations = {"8x6b", "9e6y"}
+        consensus_by_key: dict[tuple[str, str], dict[str, str]] = {}
+        duplicate_jobs = 0
+        malformed_jobs = 0
+        unexpected_conformations = 0
+        for row in successful:
+            conformation = str(
+                row.get("conformation") or row.get("dock_conformation") or ""
+            ).lower()
+            seed = str(row.get("seed", "")).strip()
+            if not conformation or not seed:
+                malformed_jobs += 1
+                continue
+            if conformation not in expected_conformations:
+                unexpected_conformations += 1
+                continue
+            key = (conformation, seed)
+            if key in consensus_by_key:
+                duplicate_jobs += 1
+                continue
+            consensus_by_key[key] = row
+        consensus_rows = list(consensus_by_key.values())
+        merged["duplicate_conformation_seed_jobs"] = str(duplicate_jobs)
+        merged["malformed_conformation_seed_jobs"] = str(malformed_jobs)
+        merged["unexpected_conformation_jobs"] = str(unexpected_conformations)
+
+        labels = [
+            str(row.get("representative_pair_label", "")).upper()
+            for row in consensus_rows
+        ]
+        if not labels:
+            merged["blocker_class"] = "EVIDENCE_INFERENCE_ONLY_E"
+            merged["docking_evidence_status"] = "PARTIAL_DOCKING_EVIDENCE"
+            output[candidate_id] = merged
+            continue
+        strict_fraction = sum(label == "STRICT_A" for label in labels) / len(labels)
+        supported_fraction = sum(label in supported_labels for label in labels) / len(labels)
+        merged["strict_a_job_fraction"] = format_fraction(strict_fraction)
+        merged["supported_ab_job_fraction"] = format_fraction(supported_fraction)
+
+        conformations = {
+            str(row.get("conformation") or row.get("dock_conformation") or "").lower()
+            for row in consensus_rows
+            if str(row.get("conformation") or row.get("dock_conformation") or "").strip()
+        }
+        merged["docking_conformation_count"] = str(len(conformations))
+        merged["dual_conformation_coverage"] = format_fraction(min(1.0, len(conformations) / 2.0))
+        seeds = {
+            str(row.get("seed", ""))
+            for row in consensus_rows
+            if str(row.get("seed", "")).strip()
+        }
+        merged["docking_seed_count"] = str(len(seeds))
+
+        per_conformation_seed_counts = []
+        per_conformation_consistency = []
+        for conformation in sorted(conformations):
+            conformation_rows = [
+                row
+                for row in consensus_rows
+                if str(row.get("conformation") or row.get("dock_conformation") or "").lower()
+                == conformation
+            ]
+            conformation_labels = [
+                str(row.get("representative_pair_label", "")).upper()
+                for row in conformation_rows
+                if str(row.get("representative_pair_label", "")).strip()
+            ]
+            per_conformation_seed_counts.append(
+                len({str(row.get("seed", "")) for row in conformation_rows if row.get("seed")})
+            )
+            if conformation_labels:
+                label_counts = {label: conformation_labels.count(label) for label in set(conformation_labels)}
+                per_conformation_consistency.append(max(label_counts.values()) / len(conformation_labels))
+        minimum_seeds = min(per_conformation_seed_counts) if per_conformation_seed_counts else 0
+        merged["minimum_successful_seeds_per_conformation"] = str(minimum_seeds)
+        merged["seed_consistency_fraction"] = format_fraction(
+            statistics.fmean(per_conformation_consistency) if per_conformation_consistency else None
+        )
+
+        metric_aliases = {
+            "hotspot_overlap_count": ("native_hotspot_overlap", "cross_hotspot_overlap"),
+            "total_vhh_pvrl2_residue_pair_occlusion": (
+                "native_total_occlusion",
+                "cross_total_occlusion",
+            ),
+            "cdr3_pvrl2_residue_pair_occlusion": (
+                "native_cdr3_occlusion",
+                "cross_cdr3_occlusion",
+            ),
+            "cdr3_occlusion_fraction": ("native_cdr3_fraction", "cross_cdr3_fraction"),
+        }
+        for output_key, pair in metric_aliases.items():
+            conservative_values = []
+            per_conformation_values: dict[str, list[float]] = defaultdict(list)
+            for row in consensus_rows:
+                pair_values = [
+                    optional_float(row.get(key))
+                    for key in pair
+                    if optional_float(row.get(key)) is not None
+                ]
+                if pair_values:
+                    conformation = str(
+                        row.get("conformation") or row.get("dock_conformation") or ""
+                    ).lower()
+                    per_conformation_values[conformation].append(min(pair_values))
+            if expected_conformations <= set(per_conformation_values):
+                conservative_values = [
+                    statistics.median(per_conformation_values[conformation])
+                    for conformation in sorted(expected_conformations)
+                ]
+                merged[output_key] = f"{min(conservative_values):.6f}"
+
+        mean_fields = {
+            "pose_pair_consensus_fraction": "model_pair_consensus_fraction",
+            "dual_reference_agreement_fraction": (
+                "model_native_cross_support_agreement_fraction"
+            ),
+            "model_strict_a_fraction": "model_strict_a_fraction",
+        }
+        for output_key, source_key in mean_fields.items():
+            values = [
+                value
+                for row in consensus_rows
+                if (value := optional_float(row.get(source_key))) is not None
+            ]
+            if values:
+                merged[output_key] = format_fraction(statistics.fmean(values))
+
+        complete_consensus = (
+            conformations == expected_conformations
+            and minimum_seeds >= 2
+            and duplicate_jobs == 0
+            and malformed_jobs == 0
+            and unexpected_conformations == 0
+        )
+        if complete_consensus and strict_fraction >= 0.5:
+            merged["blocker_class"] = "CONSENSUS_BLOCKER_LIKE_A"
+        elif complete_consensus and supported_fraction >= 0.5:
+            merged["blocker_class"] = "BLOCKER_PLAUSIBLE_B"
+        else:
+            merged["blocker_class"] = "EVIDENCE_INFERENCE_ONLY_E"
+        merged["docking_evidence_status"] = (
+            "MULTISEED_DUAL_REFERENCE"
+            if complete_consensus
+            else "PARTIAL_DOCKING_EVIDENCE"
+        )
+        output[candidate_id] = merged
+    return output
 
 
 def build_portfolio(
@@ -988,29 +1188,58 @@ def build_portfolio(
         docking = docking_rows.get(candidate_id, {})
 
         developability_score = score_developability(candidate)
-        expression_score = score_expression_purity(candidate)
+        expression_score = score_expression(candidate)
+        purity_score = score_purity(candidate)
+        expression_purity_score = score_expression_purity(candidate)
         structure_score = score_structure(candidate)
         novelty_score = parse_float(novelty.get("novelty_score"), default=50.0)
         diversity_score = parse_float(team.get("diversity_score"), default=100.0)
         binding_score = score_binding(docking)
         blocking_score = score_blocking(docking)
+        pose_robustness_score = score_pose_robustness(docking)
+        sequence_priority_score = (
+            0.35 * developability_score
+            + 0.25 * expression_score
+            + 0.20 * purity_score
+            + 0.20 * structure_score
+        )
+        ranking_status, production_final_score = production_rank_score(
+            binding_score=binding_score,
+            blocking_score=blocking_score,
+            pose_robustness_score=pose_robustness_score,
+            developability_score=developability_score,
+            expression_score=expression_score,
+            purity_score=purity_score,
+            structure_score=structure_score,
+            docking_consensus_complete=(
+                docking.get("docking_evidence_status") == "MULTISEED_DUAL_REFERENCE"
+            ),
+        )
         final_score = (
-            0.20 * binding_score
-            + 0.20 * blocking_score
-            + 0.20 * developability_score
-            + 0.15 * expression_score
-            + 0.10 * structure_score
-            + 0.10 * novelty_score
-            + 0.05 * diversity_score
+            production_final_score
+            if production_final_score is not None
+            else sequence_priority_score
         )
         hard_fail, recommendation, reasons = classify_candidate(
             candidate=candidate,
             official=official,
             novelty=novelty,
             developability_score=developability_score,
-            expression_score=expression_score,
+            expression_score=expression_purity_score,
             structure_score=structure_score,
             gate_policy=args.gate_policy,
+        )
+        if hard_fail:
+            ranking_status = "HARD_FAIL"
+        initial_screen_proxy = (
+            None
+            if binding_score is None
+            else 0.70 * binding_score + 0.20 * expression_score + 0.10 * purity_score
+        )
+        rescreen_proxy = (
+            None
+            if binding_score is None or blocking_score is None
+            else 0.50 * binding_score + 0.50 * blocking_score
         )
         row = {
             "candidate_id": candidate_id,
@@ -1064,24 +1293,57 @@ def build_portfolio(
             ),
             "structure_quality_flag": candidate.get("L4_structure_stability", ""),
             "FR_RMSD_cross_tool": candidate.get("fr_rmsd_igfold_vs_nanobodybuilder2", ""),
-            "binding_score": f"{binding_score:.2f}",
+            "binding_score": format_optional_score(binding_score),
+            "binding_evidence_status": "AVAILABLE" if binding_score is not None else "NOT_RUN",
             "PVRIG_interface_contact_score": docking.get("hotspot_overlap_count", ""),
-            "PVRL2_competition_score": f"{blocking_score:.2f}",
+            "PVRL2_competition_score": format_optional_score(blocking_score),
+            "blocking_evidence_status": "AVAILABLE" if blocking_score is not None else "NOT_RUN",
+            "pose_robustness_score": format_optional_score(pose_robustness_score),
+            "docking_evidence_status": docking.get("docking_evidence_status", "NOT_RUN"),
+            "strict_a_job_fraction": docking.get("strict_a_job_fraction", ""),
+            "supported_ab_job_fraction": docking.get("supported_ab_job_fraction", ""),
+            "valid_docking_job_fraction": docking.get("valid_docking_job_fraction", ""),
+            "dual_conformation_coverage": docking.get("dual_conformation_coverage", ""),
+            "seed_consistency_fraction": docking.get("seed_consistency_fraction", ""),
+            "pose_pair_consensus_fraction": docking.get("pose_pair_consensus_fraction", ""),
+            "dual_reference_agreement_fraction": docking.get(
+                "dual_reference_agreement_fraction", ""
+            ),
             "blocker_class": docking.get("blocker_class") or docking.get("class") or "NOT_RUN",
             "developability_score": f"{developability_score:.2f}",
-            "expression_purity_risk_score": f"{expression_score:.2f}",
+            "expression_score": f"{expression_score:.2f}",
+            "purity_aggregation_score": f"{purity_score:.2f}",
+            "expression_purity_risk_score": f"{expression_purity_score:.2f}",
             "structure_score": f"{structure_score:.2f}",
             "novelty_score": f"{novelty_score:.2f}",
             "diversity_score": f"{diversity_score:.2f}",
-            "initial_screen_proxy_score": f"{0.70 * binding_score + 0.20 * expression_score + 0.10 * expression_score:.2f}",
-            "rescreen_proxy_score": f"{0.50 * binding_score + 0.50 * blocking_score:.2f}",
+            "sequence_priority_score": f"{sequence_priority_score:.2f}",
+            "initial_screen_proxy_score": format_optional_score(initial_screen_proxy),
+            "rescreen_proxy_score": format_optional_score(rescreen_proxy),
+            "ranking_status": ranking_status,
+            "production_final_score": format_optional_score(production_final_score),
             "hard_fail": str(hard_fail),
             "recommendation": recommendation,
             "reason_summary": ";".join(reasons),
             "final_score": f"{final_score:.2f}",
         }
         portfolio.append(row)
-    portfolio.sort(key=lambda row: (row["hard_fail"] == "True", -parse_float(row["final_score"]), row["candidate_id"]))
+    status_priority = {
+        "PRODUCTION_RANK_READY": 0,
+        "NEEDS_REPEAT_DOCKING": 1,
+        "NEEDS_DOCKING_CONSENSUS": 2,
+        "NEEDS_BINDING_EVIDENCE": 3,
+        "BINDING_GATE_FAILED": 4,
+        "HARD_FAIL": 5,
+    }
+    portfolio.sort(
+        key=lambda row: (
+            row["hard_fail"] == "True",
+            status_priority.get(row.get("ranking_status", ""), 99),
+            -parse_float(row["final_score"]),
+            row["candidate_id"],
+        )
+    )
     for rank, row in enumerate(portfolio, start=1):
         row["rank"] = str(rank)
     return portfolio
@@ -1216,11 +1478,10 @@ def score_developability(row: dict[str, str]) -> float:
     return clamp(score)
 
 
-def score_expression_purity(row: dict[str, str]) -> float:
+def score_expression(row: dict[str, str]) -> float:
     score = 100.0
     p_i = parse_float(row.get("pI"), default=7.0)
     charge = abs(parse_float(row.get("charge_pH7_4"), default=0.0))
-    gravy = parse_float(row.get("gravy"), default=-0.2)
     instability = parse_float(row.get("instability_index"), default=30.0)
     if p_i < 4.5 or p_i > 10.5:
         score -= 35
@@ -1230,16 +1491,31 @@ def score_expression_purity(row: dict[str, str]) -> float:
         score -= 30
     elif charge > 8:
         score -= 12
-    if gravy > 0.2:
-        score -= 20
-    elif gravy > 0.0:
-        score -= 8
     if instability > 50:
         score -= 15
     elif instability > 40:
         score -= 8
+    if parse_int(row.get("cys_count")) != 2:
+        score -= 20
+    abnativ = parse_float(row.get("abnativ_vhh_score"), default=0.7)
+    if abnativ < 0.55:
+        score -= 25
+    elif abnativ < 0.70:
+        score -= 10
+    sapiens_mutations = parse_int(row.get("sapiens_num_suggested_mutations"), default=0)
+    score -= min(15, sapiens_mutations * 1.5)
+    return clamp(score)
+
+
+def score_purity(row: dict[str, str]) -> float:
+    score = 100.0
+    gravy = parse_float(row.get("gravy"), default=-0.2)
+    if gravy > 0.2:
+        score -= 25
+    elif gravy > 0.0:
+        score -= 10
     if parse_int(row.get("hydrophobic_5_count")) > 0:
-        score -= 35
+        score -= 40
     if parse_int(row.get("cys_count")) != 2:
         score -= 20
     if row.get("polyreactivity_proxy") == "high":
@@ -1249,6 +1525,11 @@ def score_expression_purity(row: dict[str, str]) -> float:
     for key in ["tnp_PSH_flag", "tnp_PPC_flag", "tnp_PNC_flag"]:
         score -= flag_penalty(row.get(key, "")) * 1.2
     return clamp(score)
+
+
+def score_expression_purity(row: dict[str, str]) -> float:
+    """Backward-compatible combined proxy; new outputs keep both components."""
+    return 0.6 * score_expression(row) + 0.4 * score_purity(row)
 
 
 def score_structure(row: dict[str, str]) -> float:
@@ -1264,41 +1545,130 @@ def score_structure(row: dict[str, str]) -> float:
     return 60.0
 
 
-def score_binding(docking: dict[str, str]) -> float:
-    for key in ["binding_score", "PVRIG_binding_score", "score"]:
-        if key in docking and str(docking[key]).strip():
-            return clamp(parse_float(docking[key], default=50.0))
-    blocker_class = docking.get("blocker_class") or docking.get("class") or ""
-    if "BLOCKER_LIKE_A" in blocker_class:
-        return 90.0
-    if "BLOCKER_PLAUSIBLE_B" in blocker_class or "SINGLE_BASELINE" in blocker_class:
-        return 80.0
-    if "BINDER_LIKE_C" in blocker_class:
-        return 70.0
-    if "EVIDENCE" in blocker_class:
-        return 40.0
-    return 50.0
+def score_binding(docking: dict[str, str]) -> float | None:
+    """Return an independent binding prior or None.
+
+    Blocker class is deliberately not converted into a binding score because
+    doing so double-counts the same docking evidence in both ranking lanes.
+    """
+    for key in [
+        "binding_score",
+        "PVRIG_binding_score",
+        "binding_entry_score",
+        "binding_prior_consensus",
+        "external_binder_score",
+        "binder_score",
+        "DeepNano_score",
+        "deepnano_score",
+        "score",
+    ]:
+        value = optional_float(docking.get(key))
+        if value is not None:
+            if 0.0 <= value <= 1.0:
+                value *= 100.0
+            return clamp(value)
+    return None
 
 
-def score_blocking(docking: dict[str, str]) -> float:
-    for key in ["blocking_score", "PVRL2_competition_score"]:
-        if key in docking and str(docking[key]).strip():
-            return clamp(parse_float(docking[key], default=50.0))
-    blocker_class = docking.get("blocker_class") or docking.get("class") or ""
-    if "BLOCKER_LIKE_A" in blocker_class:
-        return 100.0
-    if "SINGLE_BASELINE" in blocker_class:
-        return 75.0
-    if "BLOCKER_PLAUSIBLE_B" in blocker_class:
-        return 70.0
-    if "BINDER_LIKE_C" in blocker_class:
-        return 25.0
-    if "EVIDENCE" in blocker_class:
-        return 30.0
-    total = parse_float(docking.get("total_vhh_pvrl2_residue_pair_occlusion"), default=math.nan)
-    if not math.isnan(total):
-        return clamp(total / 500.0 * 100.0)
-    return 50.0
+def score_pose_robustness(docking: dict[str, str]) -> float | None:
+    explicit = optional_float(docking.get("pose_robustness_score"))
+    if explicit is not None:
+        return clamp(explicit * 100.0 if 0.0 <= explicit <= 1.0 else explicit)
+    values = []
+    for key in [
+        "valid_docking_job_fraction",
+        "dual_conformation_coverage",
+        "seed_consistency_fraction",
+        "pose_pair_consensus_fraction",
+        "dual_reference_agreement_fraction",
+    ]:
+        value = optional_float(docking.get(key))
+        if value is not None:
+            values.append(clamp(value * 100.0 if 0.0 <= value <= 1.0 else value))
+    if not values:
+        return None
+    return statistics.fmean(values)
+
+
+def score_blocking(docking: dict[str, str]) -> float | None:
+    for key in ["blocking_consensus_score", "blocking_score", "PVRL2_competition_score"]:
+        value = optional_float(docking.get(key))
+        if value is not None:
+            if 0.0 <= value <= 1.0:
+                value *= 100.0
+            return clamp(value)
+
+    geometry_specs = [
+        (("hotspot_overlap_count", "native_hotspot_overlap", "hotspot_overlap"), 14.0),
+        (
+            (
+                "total_vhh_pvrl2_residue_pair_occlusion",
+                "native_total_occlusion",
+                "total_occlusion",
+            ),
+            500.0,
+        ),
+        (
+            (
+                "cdr3_pvrl2_residue_pair_occlusion",
+                "native_cdr3_occlusion",
+                "cdr3_occlusion",
+            ),
+            100.0,
+        ),
+        (("cdr3_occlusion_fraction", "native_cdr3_fraction", "cdr3_fraction"), 0.15),
+    ]
+    geometry = []
+    for keys, threshold in geometry_specs:
+        value = next(
+            (
+                parsed
+                for key in keys
+                if (parsed := optional_float(docking.get(key))) is not None
+            ),
+            None,
+        )
+        if value is not None:
+            geometry.append(clamp(value / threshold * 100.0))
+    if not geometry:
+        return None
+    geometry_score = statistics.fmean(geometry)
+    robustness = score_pose_robustness(docking)
+    if robustness is None:
+        return 0.70 * geometry_score
+    return 0.70 * geometry_score + 0.30 * robustness
+
+
+def production_rank_score(
+    *,
+    binding_score: float | None,
+    blocking_score: float | None,
+    pose_robustness_score: float | None,
+    developability_score: float,
+    expression_score: float,
+    purity_score: float,
+    structure_score: float,
+    docking_consensus_complete: bool,
+    binding_threshold: float = 60.0,
+) -> tuple[str, float | None]:
+    if binding_score is None:
+        return "NEEDS_BINDING_EVIDENCE", None
+    if binding_score < binding_threshold:
+        return "BINDING_GATE_FAILED", None
+    if blocking_score is None:
+        return "NEEDS_DOCKING_CONSENSUS", None
+    if pose_robustness_score is None or not docking_consensus_complete:
+        return "NEEDS_REPEAT_DOCKING", None
+    score = (
+        0.40 * blocking_score
+        + 0.20 * pose_robustness_score
+        + 0.10 * binding_score
+        + 0.10 * developability_score
+        + 0.075 * expression_score
+        + 0.075 * purity_score
+        + 0.05 * structure_score
+    )
+    return "PRODUCTION_RANK_READY", clamp(score)
 
 
 def flag_penalty(value: str) -> float:
@@ -1323,6 +1693,24 @@ def parse_float(value: object, default: float = 0.0) -> float:
         return float(value)
     except (TypeError, ValueError):
         return default
+
+
+def optional_float(value: object) -> float | None:
+    try:
+        if value is None or str(value).strip() == "":
+            return None
+        parsed = float(value)
+        return None if math.isnan(parsed) else parsed
+    except (TypeError, ValueError):
+        return None
+
+
+def format_optional_score(value: float | None) -> str:
+    return "" if value is None else f"{value:.2f}"
+
+
+def format_fraction(value: float | None) -> str:
+    return "" if value is None else f"{clamp(value, 0.0, 1.0):.6f}"
 
 
 def parse_int(value: object, default: int = 0) -> int:

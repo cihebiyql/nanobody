@@ -1,0 +1,70 @@
+{
+  "base_protocol_core_sha256": "e027143c22712b43d973709b278519a0cf414a9de182e094ea0cd8470d8295b8",
+  "base_protocol_id": "pvrig_v3_dual_conformation_redocking_20260714",
+  "files": [
+    {
+      "bytes": 3282,
+      "path": "config/protocol_spec.json",
+      "sha256": "6cc7f7ce876c73885a164fbc10939592ef6d42a026e1300f20dadf96a90ccae9"
+    },
+    {
+      "bytes": 2983,
+      "path": "config/blocker_judgment_rules_v2.json",
+      "sha256": "60424c514d0e1c4f32bfec28631b969ed511c89babb4a73dcecf504e1e6a16a5"
+    },
+    {
+      "bytes": 61075,
+      "path": "inputs/normalized/8x6b_pvrig_receptor.pdb",
+      "sha256": "31b530edf01fe9b8f354935cc6140d863ba78faf50f93cf5303d0223c2a94e5a"
+    },
+    {
+      "bytes": 63840,
+      "path": "inputs/normalized/9e6y_pvrig_receptor.pdb",
+      "sha256": "c850363e92aa0ed00266b0f49ecea364bc661a768b2ac3ebe90cc8946b6f64c6"
+    },
+    {
+      "bytes": 137152,
+      "path": "inputs/normalized/8x6b_TL_reference.pdb",
+      "sha256": "80c9e36c63ba9fa8f28f606ad5864d9eb8c50b9b228424e1db5cdfc1bc6725b0"
+    },
+    {
+      "bytes": 142998,
+      "path": "inputs/normalized/9e6y_TL_reference.pdb",
+      "sha256": "01f13b5899624cb8c0450c458fbe055cae706804a78a0f7997940b787e6f2744"
+    },
+    {
+      "bytes": 1716,
+      "path": "inputs/normalized/interface_hotspots_uniprot.tsv",
+      "sha256": "dacb4f3fbf8aeaea17885ebfe0a548857a52f5ac863429e648af55ea196a7d44"
+    },
+    {
+      "bytes": 2797,
+      "path": "reports/reference_normalization_summary.json",
+      "sha256": "7fa190ed91a1bbafcdcc21f6cd74f0345b43b3a3e6e8379c3bf3f1810abeb1c3"
+    },
+    {
+      "bytes": 2802,
+      "path": "scripts/common.py",
+      "sha256": "479cff3f2215f45952009d54869462cd90937cca56e15ddaf6af54a418f16d4a"
+    },
+    {
+      "bytes": 16321,
+      "path": "scripts/build_docking_jobs.py",
+      "sha256": "639627b8b5be6acb27e124e1f8f69ad2c7d2762af1c20651a7c912ab982f55e4"
+    },
+    {
+      "bytes": 17002,
+      "path": "scripts/run_job.py",
+      "sha256": "9957e6dc80db2345737576d65606601064725c09b654518b1df76427e48a3d0a"
+    },
+    {
+      "bytes": 15197,
+      "path": "scripts/score_pose.py",
+      "sha256": "979f9c48ce0be744f9b1ab53b854d43b3444d576755a7b293c2c11553b30d6b9"
+    }
+  ],
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "protocol_id": "pvrig_top7500_dualreceptor_multiseed_handoff_v3_20260722",
+  "schema_version": 1,
+  "status": "CORE_LOCKED"
+}

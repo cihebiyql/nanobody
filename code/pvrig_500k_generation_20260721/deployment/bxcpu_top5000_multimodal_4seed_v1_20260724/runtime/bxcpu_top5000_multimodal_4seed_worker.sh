@@ -23,12 +23,26 @@ EXPECTED_ARCHIVE_SHA256="${PVRIG_TOP5000_ARCHIVE_SHA256:?archive SHA256 is requi
 EXPECTED_MANIFEST_SHA256="${PVRIG_TOP5000_MANIFEST_SHA256:?manifest SHA256 is required}"
 EXPECTED_READY_SHA256="${PVRIG_TOP5000_READY_SHA256:?READY SHA256 is required}"
 EXPECTED_RECEIPT_SHA256="${PVRIG_TOP5000_RECEIPT_SHA256:?receipt SHA256 is required}"
+EXCLUDED_CANDIDATES_PATH="${PVRIG_TOP5000_EXCLUDED_CANDIDATES_PATH:-}"
+EXCLUDED_CANDIDATES_SHA256="${PVRIG_TOP5000_EXCLUDED_CANDIDATES_SHA256:-}"
 
 SHARD_INDEX="${SLURM_ARRAY_TASK_ID:-1}"
 SHARD_COUNT=8
 JOBS_PER_SHARD=5000
 JOB_CPUS=4
 NODE_CONCURRENCY="${PVRIG_TOP5000_NODE_CONCURRENCY:-16}"
+if [[ -n "$EXCLUDED_CANDIDATES_PATH" ]]; then
+    EXCLUSION_ENABLED=1
+    MODE_JOBS_PER_SHARD=3000
+    [[ -n "$EXCLUDED_CANDIDATES_SHA256" ]] ||
+        pvrig_die "excluded-candidate path requires its SHA256"
+else
+    EXCLUSION_ENABLED=0
+    MODE_JOBS_PER_SHARD=5000
+    [[ -z "$EXCLUDED_CANDIDATES_SHA256" ]] ||
+        pvrig_die "excluded-candidate SHA256 requires its path"
+fi
+EXPECTED_JOBS_PER_SHARD="${PVRIG_TOP5000_EXPECTED_JOBS_PER_SHARD:-$MODE_JOBS_PER_SHARD}"
 
 [[ "$SHARD_INDEX" =~ ^[1-8]$ ]] || pvrig_die "shard index must be 1..8"
 [[ "$NODE_CONCURRENCY" == 16 ]] ||
@@ -36,6 +50,10 @@ NODE_CONCURRENCY="${PVRIG_TOP5000_NODE_CONCURRENCY:-16}"
 [[ "$((NODE_CONCURRENCY * JOB_CPUS))" == 64 ]] ||
     pvrig_die "worker concurrency must consume 64 CPUs as 16x4"
 [[ "${SLURM_CPUS_ON_NODE:-64}" == 64 ]] || pvrig_die "expected 64 allocated CPUs"
+[[ "$EXPECTED_JOBS_PER_SHARD" =~ ^[0-9]+$ ]] ||
+    pvrig_die "expected jobs per shard must be an integer"
+[[ "$EXPECTED_JOBS_PER_SHARD" == "$MODE_JOBS_PER_SHARD" ]] ||
+    pvrig_die "expected jobs per shard must be $MODE_JOBS_PER_SHARD in this mode"
 for name in \
     EXPECTED_ARCHIVE_SHA256 \
     EXPECTED_MANIFEST_SHA256 \
@@ -46,6 +64,13 @@ done
 pvrig_check_sha256 "$BUNDLE_ARCHIVE" "$EXPECTED_ARCHIVE_SHA256" archive
 pvrig_check_sha256 "$EXTERNAL_MANIFEST" "$EXPECTED_MANIFEST_SHA256" manifest
 pvrig_check_sha256 "$READY_PATH" "$EXPECTED_READY_SHA256" READY
+if [[ "$EXCLUSION_ENABLED" == 1 ]]; then
+    pvrig_require_sha256 EXCLUDED_CANDIDATES_SHA256
+    pvrig_check_sha256 \
+        "$EXCLUDED_CANDIDATES_PATH" \
+        "$EXCLUDED_CANDIDATES_SHA256" \
+        "excluded-candidate list"
+fi
 
 WORK_BASE="${SLURM_TMPDIR:-/tmp}/${USER}/${PROJECT_NAME}/${SLURM_ARRAY_JOB_ID:-manual}_${SHARD_INDEX}"
 LOCAL_SCRATCH="$WORK_BASE/job-scratch"
@@ -86,15 +111,35 @@ pvrig_check_sha256 \
     --receipt-sha256 "$EXPECTED_RECEIPT_SHA256" \
     --receipt-status "$RECEIPT_STATUS" \
     --shard-dir-relative "$SHARD_DIR_RELATIVE" >/dev/null
+mkdir -p \
+    "$LOCAL_PROJECT/status/jobs" \
+    "$LOCAL_PROJECT/results" \
+    "$LOCAL_PROJECT/runs"
 
 SHARD_ZERO=$((SHARD_INDEX - 1))
 SHARD_MANIFEST=$(printf '%s/%s/shard_%02d.tsv' \
     "$LOCAL_PROJECT" "$SHARD_DIR_RELATIVE" "$SHARD_ZERO")
-mapfile -t JOB_IDS < <(
-    awk -F $'\t' 'NR>1{gsub(/\r$/, "", $1); print $1}' "$SHARD_MANIFEST"
+SELECTED_JOB_IDS="$WORK_BASE/selected_job_ids.txt"
+SELECT_ARGS=(
+    select-shard-jobs
+    --shard "$SHARD_MANIFEST"
+    --expected-original-jobs "$JOBS_PER_SHARD"
+    --expected-selected-jobs "$EXPECTED_JOBS_PER_SHARD"
 )
-[[ ${#JOB_IDS[@]} -eq "$JOBS_PER_SHARD" ]] ||
-    pvrig_die "shard has ${#JOB_IDS[@]} jobs, expected $JOBS_PER_SHARD"
+if [[ "$EXCLUSION_ENABLED" == 1 ]]; then
+    SELECT_ARGS+=(
+        --excluded-candidates "$EXCLUDED_CANDIDATES_PATH"
+        --excluded-candidates-sha256 "$EXCLUDED_CANDIDATES_SHA256"
+    )
+fi
+if ! "$LOCAL_ENV/bin/python" "$DEPLOY_ROOT/runtime_contract.py" \
+    "${SELECT_ARGS[@]}" >"$SELECTED_JOB_IDS"; then
+    pvrig_die "failed to select exact shard jobs"
+fi
+mapfile -t JOB_IDS <"$SELECTED_JOB_IDS"
+[[ ${#JOB_IDS[@]} -eq "$EXPECTED_JOBS_PER_SHARD" ]] ||
+    pvrig_die \
+        "shard has ${#JOB_IDS[@]} selected jobs, expected $EXPECTED_JOBS_PER_SHARD"
 
 published_success() {
     local job_id=$1
@@ -206,10 +251,12 @@ done
 [[ ${#pids[@]} -eq 0 ]] || drain_batch
 
 marker="$PUBLISH_ROOT/markers/top5000_multimodal_shard_${SHARD_INDEX}.done"
-printf 'array_job=%s shard=%s assigned=%s skipped=%s failures=%s completed_at=%s\n' \
+printf 'array_job=%s shard=%s original_assigned=%s assigned=%s exclusion_enabled=%s skipped=%s failures=%s completed_at=%s\n' \
     "${SLURM_ARRAY_JOB_ID:-manual}" \
     "$SHARD_INDEX" \
+    "$JOBS_PER_SHARD" \
     "${#JOB_IDS[@]}" \
+    "$EXCLUSION_ENABLED" \
     "$skipped" \
     "$failures" \
     "$(date -u +%FT%TZ)" | pvrig_atomic_write_stdin "$marker"

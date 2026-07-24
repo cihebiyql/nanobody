@@ -1,0 +1,147 @@
+{
+  "cfg_hashes": {
+    "1931": {
+      "8x6b": "8d155f3264b4c86acac8ae8440abe8ba0d594abd9a2426bacee386236c0f90b1",
+      "9e6y": "01f3b4c1875617df9d1e097e16d943cb988d7d25af3ca57335d167dec8e42c73"
+    },
+    "3047": {
+      "8x6b": "21918201f2d7d8fd86e7fbe3003003c516ebb4de914b20d6f1f82a78554f6225",
+      "9e6y": "036faa08876ef5dc8e4331507bf042bf828faae3f3cf5a5fd358a89d5fb215da"
+    },
+    "42": {
+      "8x6b": "6e3411303a8196b0e07523e8d66724b2c6a9380dca7a347caa47b5632620a2a8",
+      "9e6y": "7b597e4976340689606e650f7a864d1c028938e4a1d0c4201b7092f53302813a"
+    },
+    "917": {
+      "8x6b": "e163c08b04a1b3315589b17ab3b439ddd791224da6419154a3697161f79d5e88",
+      "9e6y": "981649a809b861fc99c1838d4ab62144e10441485ae8b665eff412435f2b577e"
+    }
+  },
+  "cfg_payloads": {
+    "1931": {
+      "8x6b": {
+        "conformation": "8x6b",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 1931,
+        "select": 10,
+        "top_models": 4
+      },
+      "9e6y": {
+        "conformation": "9e6y",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 1931,
+        "select": 10,
+        "top_models": 4
+      }
+    },
+    "3047": {
+      "8x6b": {
+        "conformation": "8x6b",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 3047,
+        "select": 10,
+        "top_models": 4
+      },
+      "9e6y": {
+        "conformation": "9e6y",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 3047,
+        "select": 10,
+        "top_models": 4
+      }
+    },
+    "42": {
+      "8x6b": {
+        "conformation": "8x6b",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 42,
+        "select": 10,
+        "top_models": 4
+      },
+      "9e6y": {
+        "conformation": "9e6y",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 42,
+        "select": 10,
+        "top_models": 4
+      }
+    },
+    "917": {
+      "8x6b": {
+        "conformation": "8x6b",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 917,
+        "select": 10,
+        "top_models": 4
+      },
+      "9e6y": {
+        "conformation": "9e6y",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 917,
+        "select": 10,
+        "top_models": 4
+      }
+    }
+  },
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.four_seed_cfg_lock.v1",
+  "seeds": [
+    917,
+    1931,
+    42,
+    3047
+  ],
+  "status": "LOCKED"
+}

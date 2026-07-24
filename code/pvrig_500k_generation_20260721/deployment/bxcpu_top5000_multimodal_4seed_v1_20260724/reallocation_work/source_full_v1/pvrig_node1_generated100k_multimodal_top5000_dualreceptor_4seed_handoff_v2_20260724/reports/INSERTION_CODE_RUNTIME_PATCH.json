@@ -1,0 +1,52 @@
+{
+  "coordinates_changed": false,
+  "created_at_utc": "2026-07-24T09:42:24.635499+00:00",
+  "first_smoke_insertion_tokens": [
+    "111A",
+    "112B",
+    "112A"
+  ],
+  "first_smoke_job_id": "CANDIDATE_NODE1GEN_111735_source_rfantibody_source_id_PVRIG_RFAb_v2_P5_qkg_L_bb291_mpn02_arm_P5_qkg_L_backbone_P5_qkg_L_bb291_status_NEEDS_RF2_AND_DOCKING_8x6b_s917_38a82c4e399d",
+  "job_count": 40000,
+  "job_manifest_changed": false,
+  "manifest_sha256": "4b5037d840784148e86451bb85881d815e20e39b73b8a23974d23bcbaf285251",
+  "output_root": "/data1/qlyu/projects/pvrig_node1_generated100k_multimodal_top5000_dualreceptor_4seed_handoff_v2_20260724",
+  "patched_files": {
+    "scripts/build_docking_jobs.py.provenance_comment": {
+      "after_sha256": "7210f0ce78f5e03223bfe480ea78440a4f46520df1f2f80d4eb8cc7d45285cb7",
+      "before_sha256": "ff1389ede5eb394d9a8e312728f661a1619c6bba69f246ec357b53f76f62f95e"
+    },
+    "scripts/build_docking_jobs.py.render_from_job": {
+      "after_sha256": "589a9c644ebc698dfacea943778141278786d738de1ab0c3510ea78816fbee12",
+      "before_sha256": "7210f0ce78f5e03223bfe480ea78440a4f46520df1f2f80d4eb8cc7d45285cb7"
+    },
+    "scripts/build_docking_jobs.py.render_type": {
+      "after_sha256": "ff1389ede5eb394d9a8e312728f661a1619c6bba69f246ec357b53f76f62f95e",
+      "before_sha256": "639627b8b5be6acb27e124e1f8f69ad2c7d2762af1c20651a7c912ab982f55e4"
+    },
+    "scripts/run_job.py.requested_residues": {
+      "after_sha256": "6d849275fd0f0a1d63ce41c2820124ba20c878d0187bd9b490622136bdff6b94",
+      "before_sha256": "c08813d27220da64777f480de072fb0dc951e577c00e9793a66a0e227cf43ec5"
+    },
+    "scripts/run_job.py.residue_identity": {
+      "after_sha256": "c08813d27220da64777f480de072fb0dc951e577c00e9793a66a0e227cf43ec5",
+      "before_sha256": "7cf7512bdd08e0e807a85cac8af51359da722846a18632894be169d16f68b0c5"
+    },
+    "scripts/run_job.py.residue_set": {
+      "after_sha256": "7cf7512bdd08e0e807a85cac8af51359da722846a18632894be169d16f68b0c5",
+      "before_sha256": "7972c098b94ec5952ff53a4c02f9682702b6021f9c7a96bdc7217d0e1441af48"
+    },
+    "scripts/run_job.py.return_type": {
+      "after_sha256": "7972c098b94ec5952ff53a4c02f9682702b6021f9c7a96bdc7217d0e1441af48",
+      "before_sha256": "9957e6dc80db2345737576d65606601064725c09b654518b1df76427e48a3d0a"
+    }
+  },
+  "protocol_core_changed": false,
+  "ready_sha256": "3bd638aee51eab71816b4dadcc7eb2af655bbdb5226bc62095f5aa6d31589fcb",
+  "receipt_sha256": "9f1963c78563306b657e922d3bdd5a777d19881a93f8bb7dac2d17adf7f5a569",
+  "schema_version": "pvrig.insertion_code_runtime_patch.v1",
+  "source_ready_sha256": "6e7e40d5d6008e9b53fb3b0566c4fe0c0602befbe1adbf478a7b6b418f64d399",
+  "source_receipt_sha256": "7125678b821e21b266674f0d0e790e7fc6a3a942963e14128b231b68fe496314",
+  "source_root": "/data1/qlyu/projects/pvrig_node1_generated100k_multimodal_top5000_dualreceptor_4seed_handoff_v1_20260724",
+  "status": "PASS_INSERTION_AWARE_RUNTIME_PATCH"
+}

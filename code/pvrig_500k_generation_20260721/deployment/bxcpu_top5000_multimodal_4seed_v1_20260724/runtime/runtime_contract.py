@@ -62,6 +62,109 @@ def read_tsv(path: pathlib.Path) -> tuple[list[str], list[dict[str, str]]]:
     return fields, rows
 
 
+def read_excluded_candidate_ids(
+    path: pathlib.Path, expected_sha256: str
+) -> set[str]:
+    if (
+        len(expected_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in expected_sha256)
+    ):
+        raise RuntimeError("excluded-candidate SHA256 must be lowercase hexadecimal")
+    if not path.is_file() or path.is_symlink():
+        raise RuntimeError(f"missing or unsafe excluded-candidate list: {path}")
+    if sha256(path) != expected_sha256:
+        raise RuntimeError("excluded-candidate list SHA256 mismatch")
+    text = path.read_text()
+    if "\r" in text:
+        raise RuntimeError("CRLF is not allowed in excluded-candidate list")
+    rows = [
+        line.split("\t")
+        for line in text.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    if not rows:
+        raise RuntimeError("excluded-candidate list is empty")
+    header_names = {"candidate_id", "entity_id"}
+    header = [value.strip() for value in rows[0]]
+    header_columns = [
+        index for index, value in enumerate(header) if value in header_names
+    ]
+    if header_columns:
+        if len(header_columns) != 1:
+            raise RuntimeError(
+                "excluded-candidate TSV must have exactly one candidate identity column"
+            )
+        column = header_columns[0]
+        data_rows = rows[1:]
+        if any(len(row) <= column for row in data_rows):
+            raise RuntimeError("excluded-candidate TSV contains a short row")
+        values = [row[column].strip() for row in data_rows]
+    else:
+        if any(len(row) != 1 for row in rows):
+            raise RuntimeError(
+                "headerless excluded-candidate list must contain one ID per line"
+            )
+        values = [row[0].strip() for row in rows]
+    if any(not value for value in values):
+        raise RuntimeError("excluded-candidate list contains an empty ID")
+    excluded = set(values)
+    if not excluded:
+        raise RuntimeError("excluded-candidate list contains no candidate IDs")
+    return excluded
+
+
+def select_shard_job_ids(
+    shard_path: pathlib.Path,
+    expected_original_jobs: int,
+    expected_selected_jobs: int,
+    excluded_candidates_path: pathlib.Path | None = None,
+    excluded_candidates_sha256: str | None = None,
+) -> list[str]:
+    fields, rows = read_tsv(shard_path)
+    required = {"job_id", "entity_id"}
+    missing = sorted(required - set(fields))
+    if missing:
+        raise RuntimeError(f"shard fields missing: {missing}")
+    if len(rows) != expected_original_jobs:
+        raise RuntimeError(
+            f"{shard_path.name} has {len(rows)} original jobs, "
+            f"expected {expected_original_jobs}"
+        )
+    original_job_ids = [row["job_id"].strip() for row in rows]
+    if any(not job_id for job_id in original_job_ids):
+        raise RuntimeError("shard contains an empty job_id")
+    if len(set(original_job_ids)) != len(original_job_ids):
+        raise RuntimeError("shard contains duplicate job_id values")
+    if any(not row["entity_id"].strip() for row in rows):
+        raise RuntimeError("shard contains an empty entity_id")
+
+    if excluded_candidates_path is None:
+        if excluded_candidates_sha256 is not None:
+            raise RuntimeError(
+                "excluded-candidate SHA256 was supplied without a list path"
+            )
+        excluded: set[str] = set()
+    else:
+        if excluded_candidates_sha256 is None:
+            raise RuntimeError(
+                "excluded-candidate list path requires its SHA256"
+            )
+        excluded = read_excluded_candidate_ids(
+            excluded_candidates_path, excluded_candidates_sha256
+        )
+    selected = [
+        row["job_id"].strip()
+        for row in rows
+        if row["entity_id"].strip() not in excluded
+    ]
+    if len(selected) != expected_selected_jobs:
+        raise RuntimeError(
+            f"{shard_path.name} has {len(selected)} selected jobs after "
+            f"candidate exclusion, expected {expected_selected_jobs}"
+        )
+    return selected
+
+
 def _candidate_field(fields: Iterable[str]) -> str:
     available = set(fields)
     for name in CANDIDATE_FIELDS:
@@ -527,6 +630,13 @@ def build_parser() -> argparse.ArgumentParser:
     smoke.add_argument("--compact", type=pathlib.Path, required=True)
     smoke.add_argument("--job-id", required=True)
 
+    select = subparsers.add_parser("select-shard-jobs")
+    select.add_argument("--shard", type=pathlib.Path, required=True)
+    select.add_argument("--expected-original-jobs", type=int, required=True)
+    select.add_argument("--expected-selected-jobs", type=int, required=True)
+    select.add_argument("--excluded-candidates", type=pathlib.Path)
+    select.add_argument("--excluded-candidates-sha256")
+
     audit = subparsers.add_parser("audit")
     audit.add_argument("--result-root", type=pathlib.Path, required=True)
     audit.add_argument("--manifest", type=pathlib.Path, required=True)
@@ -569,6 +679,17 @@ def main() -> int:
         )
     elif args.command == "check-smoke":
         payload = check_smoke(args.status, args.result, args.compact, args.job_id)
+    elif args.command == "select-shard-jobs":
+        job_ids = select_shard_job_ids(
+            args.shard,
+            args.expected_original_jobs,
+            args.expected_selected_jobs,
+            args.excluded_candidates,
+            args.excluded_candidates_sha256,
+        )
+        for job_id in job_ids:
+            print(job_id)
+        return 0
     else:
         payload = audit_results(
             args.result_root, args.manifest, args.manifest_sha256, args.output

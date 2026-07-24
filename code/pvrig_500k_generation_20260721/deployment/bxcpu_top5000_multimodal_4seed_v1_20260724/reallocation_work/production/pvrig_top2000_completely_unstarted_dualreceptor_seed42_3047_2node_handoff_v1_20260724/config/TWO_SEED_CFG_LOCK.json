@@ -1,0 +1,82 @@
+{
+  "cfg_hashes": {
+    "3047": {
+      "8x6b": "21918201f2d7d8fd86e7fbe3003003c516ebb4de914b20d6f1f82a78554f6225",
+      "9e6y": "036faa08876ef5dc8e4331507bf042bf828faae3f3cf5a5fd358a89d5fb215da"
+    },
+    "42": {
+      "8x6b": "6e3411303a8196b0e07523e8d66724b2c6a9380dca7a347caa47b5632620a2a8",
+      "9e6y": "7b597e4976340689606e650f7a864d1c028938e4a1d0c4201b7092f53302813a"
+    }
+  },
+  "cfg_payloads": {
+    "3047": {
+      "8x6b": {
+        "conformation": "8x6b",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 3047,
+        "select": 10,
+        "top_models": 4
+      },
+      "9e6y": {
+        "conformation": "9e6y",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 3047,
+        "select": 10,
+        "top_models": 4
+      }
+    },
+    "42": {
+      "8x6b": {
+        "conformation": "8x6b",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 42,
+        "select": 10,
+        "top_models": 4
+      },
+      "9e6y": {
+        "conformation": "9e6y",
+        "flexref_tolerance": 10,
+        "ncores": 4,
+        "npart": 2,
+        "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+        "randremoval": true,
+        "rigidbody_tolerance": 5,
+        "sampling": 40,
+        "seed": 42,
+        "select": 10,
+        "top_models": 4
+      }
+    }
+  },
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.two_seed_cfg_lock.v1",
+  "seeds": [
+    42,
+    3047
+  ],
+  "source_four_seed_cfg_lock_sha256": "3ad02c79616081984b7013cc3078903ab37e26d64d8db38a36ff779652f7cac0",
+  "status": "LOCKED"
+}

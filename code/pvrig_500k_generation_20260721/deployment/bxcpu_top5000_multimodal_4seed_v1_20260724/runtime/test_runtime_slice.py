@@ -136,6 +136,76 @@ class RuntimeContractSyntheticTests(unittest.TestCase):
             self.assertEqual(observed["jobs"], 40000)
 
 
+class ShardExclusionSyntheticTests(unittest.TestCase):
+    def write_shard(self, root: pathlib.Path) -> tuple[pathlib.Path, list[str]]:
+        shard = root / "shard_00.tsv"
+        candidates = [f"candidate_{index:04d}" for index in range(625)]
+        with shard.open("w") as handle:
+            handle.write("job_id\tentity_id\tseed\tconformation\n")
+            for candidate in candidates:
+                for seed in (917, 1931, 42, 3047):
+                    for conformation in ("8x6b", "9e6y"):
+                        handle.write(
+                            f"{candidate}__s{seed}__{conformation}\t"
+                            f"{candidate}\t{seed}\t{conformation}\n"
+                        )
+        return shard, candidates
+
+    def test_default_mode_keeps_exactly_5000_jobs(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            shard, _ = self.write_shard(pathlib.Path(temporary))
+            selected = contract.select_shard_job_ids(shard, 5000, 5000)
+            self.assertEqual(len(selected), 5000)
+            self.assertEqual(len(set(selected)), 5000)
+
+    def test_exclusion_sha_dedup_and_entity_id_filter_leave_3000(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            shard, candidates = self.write_shard(root)
+            excluded_candidates = candidates[:250]
+            exclusions = root / "excluded_candidates.tsv"
+            exclusions.write_text(
+                "entity_id\treason\n"
+                + "".join(
+                    f"{candidate}\tvalidated_exclusion\n"
+                    for candidate in excluded_candidates
+                )
+                + "".join(
+                    f"{candidate}\tduplicate_input_row\n"
+                    for candidate in excluded_candidates[:25]
+                )
+            )
+            selected = contract.select_shard_job_ids(
+                shard,
+                5000,
+                3000,
+                exclusions,
+                contract.sha256(exclusions),
+            )
+            self.assertEqual(len(selected), 3000)
+            self.assertEqual(len(set(selected)), 3000)
+            self.assertTrue(
+                all(
+                    not any(
+                        job_id.startswith(f"{candidate}__")
+                        for candidate in excluded_candidates
+                    )
+                    for job_id in selected
+                )
+            )
+
+    def test_exclusion_sha_mismatch_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            shard, candidates = self.write_shard(root)
+            exclusions = root / "excluded_candidates.txt"
+            exclusions.write_text("\n".join(candidates[:250]) + "\n")
+            with self.assertRaisesRegex(RuntimeError, "SHA256 mismatch"):
+                contract.select_shard_job_ids(
+                    shard, 5000, 3000, exclusions, "0" * 64
+                )
+
+
 class EvidenceAndPruneSyntheticTests(unittest.TestCase):
     def make_success_project(
         self, root: pathlib.Path, job_id: str
@@ -308,6 +378,15 @@ class StaticContractTests(unittest.TestCase):
         self.assertIn("NODE_CONCURRENCY", worker)
         self.assertIn("JOB_CPUS=4", worker)
         self.assertIn("JOBS_PER_SHARD=5000", worker)
+        self.assertIn("PVRIG_TOP5000_EXCLUDED_CANDIDATES_PATH", worker)
+        self.assertIn("PVRIG_TOP5000_EXCLUDED_CANDIDATES_SHA256", worker)
+        self.assertIn("PVRIG_TOP5000_EXPECTED_JOBS_PER_SHARD", worker)
+        self.assertIn("select-shard-jobs", worker)
+        self.assertIn("--expected-selected-jobs", worker)
+        self.assertIn("--excluded-candidates-sha256", worker)
+        self.assertIn('"$LOCAL_PROJECT/status/jobs"', worker)
+        self.assertIn('"$LOCAL_PROJECT/results"', worker)
+        self.assertIn('"$LOCAL_PROJECT/runs"', worker)
         self.assertIn(
             "pvrig_top5000_dualreceptor_4seed_handoff_v1_20260724", worker
         )

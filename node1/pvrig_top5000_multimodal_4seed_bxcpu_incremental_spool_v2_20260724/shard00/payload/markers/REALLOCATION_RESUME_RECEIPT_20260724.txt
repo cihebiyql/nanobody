@@ -1,0 +1,14 @@
+status=SUBMITTED_REALLOCATION_RESUME
+array_job_id=11946706
+source_candidates=5000
+excluded_completely_unstarted_candidates=2000
+remaining_candidates=3000
+source_jobs=40000
+excluded_source_jobs=16000
+remaining_jobs=24000
+source_shards=8
+expected_jobs_per_shard=3000
+exclusion_path=/publicfs04/fs04-al/home/als001821/pvrig_top5000_reallocation_selection_v1_20260724/EXCLUDED_CANDIDATES_2000.txt
+exclusion_sha256=83f1a073732037191fafec97fa816567e045d0a473f4efb6d9048ed60b47df7d
+frozen_snapshot_path=/publicfs04/fs04-al/home/als001821/pvrig_top5000_reallocation_snapshot_20260724
+submitted_at=2026-07-24T12:58:29Z
