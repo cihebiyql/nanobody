@@ -1,0 +1,99 @@
+{
+  "status": "PASS_POSITIVE_BASELINE_AND_CONTROL_EXPANSION_READY",
+  "generated_at_utc": "2026-07-24T08:48:32.667098+00:00",
+  "positive11": {
+    "entities": 11,
+    "technical_standard_aa_pass": 11,
+    "L1_numbering_pass": 11,
+    "nbb2_present": 11,
+    "official_validator_pass_as_candidates": 0,
+    "expected_leakage_exclusions": 11,
+    "V3_robust_AB": 11,
+    "V3_robust_strict_A": 5,
+    "known_Kd": 10,
+    "known_blocking_IC50": 5
+  },
+  "positive_developability_counterexamples": {
+    "L2_not_PASS": 7,
+    "TNP_PNC_red": 2,
+    "Sapiens_below_0_70": 3,
+    "Cys_not_equal_2": 10,
+    "hydrophobic_5mer_present": 1
+  },
+  "control36": {
+    "entities": 36,
+    "old_consensus_rows": 357,
+    "exact_positive_leakage": 7,
+    "near_positive_leakage": 29
+  },
+  "control47": {
+    "entities": 47,
+    "jobs_expected": 282,
+    "jobs_successful": 282,
+    "positive_controls": 18,
+    "positive_robust_AB": 18,
+    "destructive_controls": 14,
+    "destructive_robust_strict_A": 4,
+    "perturbation_controls": 15,
+    "V3_evaluator_status": "PASS"
+  },
+  "expansion": {
+    "core448_rows": 448,
+    "strict6042_rows": 6042,
+    "strict6042_conservative_developability_pass": 4976,
+    "core448_fresh_numbering": {
+      "stage": "FRESH_ANARCI_COMPLETE",
+      "rows": 448,
+      "anarci_rows": 448,
+      "anarci_row_present": 448,
+      "heavy_chain_rows": 448,
+      "cdr1_matches": 448,
+      "cdr2_matches": 437,
+      "cdr3_matches": 448,
+      "all_cdr_matches": 437,
+      "numbering_review_rows": 11,
+      "status": "PASS_WITH_CDR_BOUNDARY_REVIEW",
+      "anarci_sha256": "dd2ef506002a29a414282fa60ccb6ada639531ace194d30f27529ddefa46d664",
+      "audit_sha256": "9b28f5c1df7277865ff488829c6c5598f3885f88434ddb2e355fcb7bc92be27d",
+      "next_action": "Run official ab-data-validator and complete public/local positive CDR library novelty audit in a new output directory. Quarantine rows in core11_numbering_review.tsv until official CDR extraction and identity are recomputed."
+    }
+  },
+  "warnings": [
+    "Known positives are expected to fail competition novelty and must not be called biological negatives.",
+    "Cys=2, TNP-all-green, L2-VHH-like PASS and Sapiens>=0.70 are not individually valid blocker hard gates.",
+    "V3 A/B support has high positive recall but no destructive-control specificity.",
+    "Strict-A has insufficient positive recall and remains rank-only.",
+    "The 36 perturbation controls are not experimentally confirmed negatives.",
+    "The 448 and 6042 pools are computationally screened, not experimentally validated binders/blockers."
+  ],
+  "fresh_numbering": {
+    "path": "/mnt/d/work/抗体/node1/reports/pvrig_positive_first_screen_calibration_v1_20260724/fresh_numbering/positive11_anarci_H.csv",
+    "rows": 11,
+    "heavy_chain_rows": 11,
+    "sha256": "c786f7b2dcedc6cd383f9b70a3d82788b6a2c0189be0a9da5347bd8d4ae44cfc",
+    "status": "PASS"
+  },
+  "input_hashes": {
+    "/mnt/d/work/抗体/机制/data/literature/PVRIG_case02_success_validation_series.csv": "3bbdd41199739447d08556cb9e4580bbe181d049c6779151093fffaae358a6ae",
+    "/mnt/d/work/抗体/reports/qc_positive_metric_ranges/pvrig_11_success_positives.fasta": "32a237011710a29ca5c410e6433b2c42d8a9e2d51b2ad423012bb18ce5ad598b",
+    "/mnt/d/work/抗体/reports/qc_positive_metric_ranges/pvrig_positive_qc_per_sequence_metrics.csv": "3f95640b45bc76374d77a877fb2c3590c2d97816ef1a604a226a94acfb1b073b",
+    "/mnt/d/work/抗体/reports/qc_positive_metric_ranges/node1_pvrig_11_positive_qc/official_failed_reasons.csv": "90c3b1b38a3ba71946fb2e1f37176f3abd3a61f08670c26638b072a208983a50",
+    "/mnt/d/work/抗体/docking/calibration/patent_success_validation/batch_consensus_summary.csv": "31930968fd1cc83c48254d7ad0bf4128b3b90b5fdd8540e3803fbc8ee6894cfa",
+    "/mnt/d/work/抗体/docking/calibration/patent_success_validation/batch_status.csv": "987740a13a1324bb54fb6472d12e07e2605e29f6df14497fa4c8191096dd8ee6",
+    "/mnt/d/work/抗体/code/results/pvrig_positive11_binding_prior_20260719/positive11_joined.tsv": "6310702cb9d1e7318faf4c358a7f96f262259c486c027a59631007cdefbaa300",
+    "/mnt/d/work/抗体/code/results/pvrig_positive11_structure_affinity_benchmark_20260719/candidate_level_affinity_summary.tsv": "a9e85815e71a399763c0ea8ada63cd7cf796407fd6a1ca4e8b35c4d23dbeb4d0",
+    "/mnt/d/work/抗体/code/results/pvrig_positive11_structure_affinity_benchmark_20260719/final_method_comparison.tsv": "151029f3e1072c06572d42ec343e2026435f667f60dd9941c3cf6b95aa5b139a",
+    "/mnt/d/work/抗体/docking/calibration/mutant_validation_panel/mutant_panel.csv": "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248",
+    "/mnt/d/work/抗体/docking/calibration/mutant_validation_panel/mutant_panel_status.csv": "6c4c20907ee1e84373ca638fc09fd2454de1e4c3f2e97925e2b166ce765db1cc",
+    "/mnt/d/work/抗体/docking/calibration/mutant_validation_panel/mutant_panel_sequence_leakage.csv": "d71bd4c17cd3438dd82528f42cadc12a7619875553879b5d62b490b1afd2c038",
+    "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/inputs/calibration_controls_47.tsv": "aae6aa56a31ef0fc459a532c69666e448438b3bea89fd8f7e9221af6ecc441fd",
+    "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/job_results.tsv": "e4aedbd2fdc1d95f485fc1cd7827d8db49a3580263e6a64467fae597cf2161ab",
+    "/mnt/d/work/抗体/pvrig_v3_dual_conformation_redocking_20260714/reports/EVALUATOR_STABLE.json": "31684c8f293bf0118251ead9b4e1da5f17d5b2dc8c2f10233c1fa76c1cbf4267",
+    "/mnt/d/work/抗体/node1/reports/pvrig_finalist_screening_standard_v1_20260724/dry_run/strict6042_standard_dry_run.tsv": "44d2397ea3d3150467224c5039373183a48de111c65e9de8d82e62a1c62ceb0c",
+    "/mnt/d/work/抗体/node1/reports/pvrig_finalist_screening_standard_v1_20260724/dry_run/core448_candidates.tsv": "742fa1dcd136a598d2a74749cf42cde14bdfdd22f7b887265fed72d5619913f3"
+  },
+  "official_page_snapshot": {
+    "path": "/tmp/sicbc_section5_20260724.txt",
+    "sha256": "46370ff7263a272ab6c4e97927b55fcc1d624b6c040191285ed15df7993aecc3"
+  }
+}

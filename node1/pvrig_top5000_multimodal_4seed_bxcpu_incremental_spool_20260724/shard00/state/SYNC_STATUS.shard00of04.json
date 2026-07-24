@@ -1,0 +1,22 @@
+{
+  "batch_size": 60,
+  "bxcpu_result_root": "/publicfs04/fs04-al/home/als001821/pvrig_top5000_dualreceptor_4seed_handoff_v1_20260724_bxcpu_results",
+  "expected_jobs": 40000,
+  "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_top5000_multimodal_4seed_bxcpu_incremental_spool_20260724/shard00",
+  "max_local_spool_bytes": 4294967296,
+  "minimum_local_free_bytes": 10737418240,
+  "node1_result_root": "/data/qlyu/projects/pvrig_node1_generated100k_multimodal_top5000_4seed_docking_results_v1_20260724",
+  "schema_version": "pvrig.top5000_multimodal_4seed.incremental_sync.v1",
+  "stable_age_seconds": 90,
+  "summary": {
+    "batch": 0,
+    "delivered": 0,
+    "expected_jobs": 40000,
+    "max_spool_bytes": 4294967296,
+    "pruned": 0,
+    "spool_bytes": 9402
+  },
+  "sync_shard_count": 4,
+  "sync_shard_index": 0,
+  "updated_at_utc": "2026-07-24T09:40:19.099455+00:00"
+}

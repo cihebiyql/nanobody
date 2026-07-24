@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "standard": "pvrig.finalist_screening.v1.20260724",
+  "strict_candidate_count": 6042,
+  "core_candidate_count": 448,
+  "strict_sets_disjoint": true,
+  "multimetric_join_missing": 0,
+  "core_parent_counts": {
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 270,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 32,
+    "positive_pose_source_case02_pos_10_151H7": 146
+  },
+  "core_cdr3_diversity": {
+    "cluster_count": 43,
+    "largest_cluster_size": 144,
+    "multi_member_cluster_count": 12,
+    "exact_cdr3_duplicate_group_count": 30,
+    "exact_cdr3_duplicate_candidate_count": 88
+  },
+  "input_hashes": {
+    "/mnt/d/work/抗体/node1/reports/pvrig_top7500_mechanism_count_20260724/old_top7500_candidate_summary.tsv": "192f4979ec8c92880c0e72e343f081db18d8a4d67baedf028e789df9f5858ec6",
+    "/mnt/d/work/抗体/node1/reports/pvrig_top7500_mechanism_count_20260724/c2_new4220_four_seed_candidate_summary.tsv": "d57685bda82c26ae763fe62ccc722bfe05b769878ee9664b6064d71173c76a7c",
+    "/mnt/d/work/抗体/code/pvrig_500k_generation_20260721/run/pvrig_1m_fixed_pose_top150k_multimetric_v2_20260722/fixed_pose_top150k_multimetric.tsv.gz": "105bed3b7542a6f1b4d3bbf609101c7ed254be776ca2a3fdacc3c2cc695e88e0",
+    "/mnt/d/work/抗体/node1/reports/pvrig_finalist_screening_standard_v1_20260724/surrogate_high_support_snapshot.tsv": "a10b743dce408f717baca46ab8ff8604b8036f7617049593e6b76e7d82ad8e30"
+  },
+  "output_hashes": {
+    "strict6042_standard_dry_run.tsv": "44d2397ea3d3150467224c5039373183a48de111c65e9de8d82e62a1c62ceb0c",
+    "core448_candidates.tsv": "742fa1dcd136a598d2a74749cf42cde14bdfdd22f7b887265fed72d5619913f3",
+    "core448_cdr3_clusters.tsv": "af612dd342cb33004e7a41aad70665d3dff3cfa6c2b7c0cb80831d7b3961ca90",
+    "funnel_counts.tsv": "1b5d10aec0bb933ef2c3423d42bacc3d2c86d421452355b23006131528af0f2a"
+  },
+  "boundary": "Dry-run reproduces internal computational gates only. Official validator, full known-positive similarity audit and wet-lab BLI/expression/purity/Kd/IC50 remain separate."
+}

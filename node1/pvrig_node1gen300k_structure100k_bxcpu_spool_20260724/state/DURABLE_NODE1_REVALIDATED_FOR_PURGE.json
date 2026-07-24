@@ -1,0 +1,12 @@
+{
+  "campaign": "/publicfs04/fs04-al/home/als001821/pvrig_bxcpu_model_runtime_v1_20260721/node1_generated300k_structure100k_v1",
+  "created_at_epoch": 1784881696.3793797,
+  "durable_node1_root": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724",
+  "expected_shards": 8,
+  "nbb2_job_id": "11945474",
+  "node1_manifest_sha256": "57fbe7ffcc336f32deaaa79db0581d22c574fe31da7404fd327e43513b3c76f5",
+  "revalidation_marker_sha256": "761f44aeebb7753129a2db867f000c80be88dc703f6c7a3cf438761d4394e6d8",
+  "scientific_boundary": "Durable archive verification only; no binding or blocking claim",
+  "status": "DURABLE_NODE1_REVALIDATED",
+  "tnp_job_id": "11945644"
+}

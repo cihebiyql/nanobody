@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-07-24T09:16:45.492035+00:00",
+  "source_positive_manifest": "/mnt/d/work/抗体/node1/reports/pvrig_positive_control_calibration_20260724/positive_v3_job_manifest.tsv",
+  "source_positive_sha256": "58ec59beb0186be1a5347c5b53e82d88f3f53426b6972d5d0ac079fb9f2cf240",
+  "source_destructive_manifest": "/mnt/d/work/抗体/node1/reports/pvrig_positive_control_calibration_20260724/destructive_control_v3_job_manifest.tsv",
+  "source_destructive_sha256": "65935ef08330b34b5157723e5c322da4d1bd5af5bcadba6f0573032a5c7909d6",
+  "rosetta_jobs": 150,
+  "positive_jobs": 66,
+  "destructive_jobs": 84,
+  "md_stage_a_jobs": 3,
+  "chain_contract": {
+    "PVRIG": "T",
+    "VHH": "A",
+    "rosetta_interface": "T_A"
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "claim_boundary": "Independent dual-receptor computational Docking geometry inputs only; not binding, Kd, IC50, expression, purity, or experimental blocking evidence.",
+  "counts": {
+    "candidates": 5000,
+    "jobs": 40000,
+    "jobs_by_seed_conformation": {
+      "seed1931_8x6b": 5000,
+      "seed1931_9e6y": 5000,
+      "seed3047_8x6b": 5000,
+      "seed3047_9e6y": 5000,
+      "seed42_8x6b": 5000,
+      "seed42_9e6y": 5000,
+      "seed917_8x6b": 5000,
+      "seed917_9e6y": 5000
+    },
+    "jobs_per_shard": [
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000
+    ],
+    "materialized_pdbs": 5000,
+    "shards": 8,
+    "unique_candidate_ids": 5000,
+    "unique_job_hashes": 40000,
+    "unique_job_ids": 40000,
+    "unique_monomer_hashes": 5000,
+    "unique_sequence_hashes": 5000,
+    "unique_sequences": 5000
+  },
+  "created_at": "2026-07-24T16:52:00+08:00",
+  "docking_started": false,
+  "invariants": {
+    "candidate_job_units_not_split": true,
+    "four_seed_cfg_hashes_fixed": true,
+    "job_hash_complete_binding_validated": true,
+    "nbb2_archive_pdbs_match_manifest_sha256": true,
+    "pdb_chain_h_sequences_match_release": true,
+    "portable_support_files_are_regular_non_symlinks": true,
+    "portable_support_required_present": true,
+    "portable_support_sha256": {
+      "inputs/source/8X6B.pdb": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868",
+      "inputs/source/9E6Y.pdb": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316",
+      "inputs/source/PVRIG_hotspot_set_v1.csv": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd",
+      "scripts/aggregate_external_candidate_results.py": "941cfb1018a7126957c23a5d1940c932eaa6b31d3ae2d71363fc94b36855810b",
+      "scripts/aggregate_results.py": "986f52841cb4eaafb9a33b930e6a58be1651d13b3eaf9c2dc956af57c28aef6a",
+      "scripts/status.py": "3911523d71a06167ff3b9d780abf183cc0295c73f27cb32cda855f5771e1231c",
+      "scripts/validate_protocol.py": "387787a5e19f428c00a6b7f2f305d8eca61b34a4c39c5942867c2a1638b4f09c"
+    },
+    "protocol_core_fixed": true,
+    "release_ids_unique": true,
+    "release_sequences_unique": true,
+    "release_tsv_fasta_exact_id_sequence_closure": true,
+    "shards_exact_one_time_job_hash_closure": true,
+    "shortlist_imgt_cdrs_unique_substrings": true
+  },
+  "launch_authority": "NONE: this builder only materializes a hash-closed handoff; it never submits or runs Docking.",
+  "outputs": {
+    "candidate_manifest": {
+      "path": "inputs/top5000_candidates.tsv",
+      "rows": 5000,
+      "sha256": "15a9fb904731c85bc09ccad2de94db0e2acff85d4ce8c2b01668c67a0974e3b2"
+    },
+    "job_manifest": {
+      "path": "manifests/docking_jobs.tsv",
+      "rows": 40000,
+      "sha256": "4b5037d840784148e86451bb85881d815e20e39b73b8a23974d23bcbaf285251"
+    },
+    "ordered_candidate_binding_sha256": "59ca57c0735db5b43d71027ad17b2a0bbf965b6d2c43b3372fd0ff4b6667e547",
+    "ordered_job_hashes_sha256": "2b1a0e2eda562af6ad952ac0d9be5926c7f7506c797a59c62fda90b7bed5cb29",
+    "shard_receipt": {
+      "path": "manifests/shards_exact_8/SHARD_RECEIPT.json",
+      "sha256": "4f13253e7844eb45d77c051331ca5a3ab11e4888c72d2048ff4df366223fbd10"
+    }
+  },
+  "package_version": "pvrig_top5000_dualreceptor_4seed_handoff_v1_20260724",
+  "portable_support": {
+    "copied": [
+      {
+        "bytes": 9776,
+        "path": "scripts/validate_protocol.py",
+        "required_in_production": true,
+        "sha256": "387787a5e19f428c00a6b7f2f305d8eca61b34a4c39c5942867c2a1638b4f09c"
+      },
+      {
+        "bytes": 6585,
+        "path": "scripts/aggregate_external_candidate_results.py",
+        "required_in_production": true,
+        "sha256": "941cfb1018a7126957c23a5d1940c932eaa6b31d3ae2d71363fc94b36855810b"
+      },
+      {
+        "bytes": 40588,
+        "path": "scripts/aggregate_results.py",
+        "required_in_production": false,
+        "sha256": "986f52841cb4eaafb9a33b930e6a58be1651d13b3eaf9c2dc956af57c28aef6a"
+      },
+      {
+        "bytes": 3241,
+        "path": "scripts/status.py",
+        "required_in_production": false,
+        "sha256": "3911523d71a06167ff3b9d780abf183cc0295c73f27cb32cda855f5771e1231c"
+      },
+      {
+        "bytes": 340443,
+        "path": "inputs/source/8X6B.pdb",
+        "required_in_production": false,
+        "sha256": "b9a930e44f61ee2ba35b4f8f739bc9431eb1944dad2e2344bd9c9a7ad13bb868"
+      },
+      {
+        "bytes": 197883,
+        "path": "inputs/source/9E6Y.pdb",
+        "required_in_production": false,
+        "sha256": "fb05ec77e439b8e1f43bfa12d7eb60f05f2c53e2099f06442f6c9ced32d98316"
+      },
+      {
+        "bytes": 5558,
+        "path": "inputs/source/PVRIG_hotspot_set_v1.csv",
+        "required_in_production": false,
+        "sha256": "9e5e82ad1f8193efbbb72865a632528c6b6a08d8a686c5b3e8ac74d2fd1564dd"
+      }
+    ],
+    "required_in_production": [
+      "scripts/validate_protocol.py",
+      "scripts/aggregate_external_candidate_results.py"
+    ]
+  },
+  "production": true,
+  "protocol": {
+    "air_anchor_count": 12,
+    "cfg_hashes": {
+      "1931": {
+        "8x6b": "8d155f3264b4c86acac8ae8440abe8ba0d594abd9a2426bacee386236c0f90b1",
+        "9e6y": "01f3b4c1875617df9d1e097e16d943cb988d7d25af3ca57335d167dec8e42c73"
+      },
+      "3047": {
+        "8x6b": "21918201f2d7d8fd86e7fbe3003003c516ebb4de914b20d6f1f82a78554f6225",
+        "9e6y": "036faa08876ef5dc8e4331507bf042bf828faae3f3cf5a5fd358a89d5fb215da"
+      },
+      "42": {
+        "8x6b": "6e3411303a8196b0e07523e8d66724b2c6a9380dca7a347caa47b5632620a2a8",
+        "9e6y": "7b597e4976340689606e650f7a864d1c028938e4a1d0c4201b7092f53302813a"
+      },
+      "917": {
+        "8x6b": "e163c08b04a1b3315589b17ab3b439ddd791224da6419154a3697161f79d5e88",
+        "9e6y": "981649a809b861fc99c1838d4ab62144e10441485ae8b665eff412435f2b577e"
+      }
+    },
+    "cfg_lock_sha256": "3ad02c79616081984b7013cc3078903ab37e26d64d8db38a36ff779652f7cac0",
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "job_hash_bound_fields": [
+      "priority",
+      "entity_type",
+      "entity_id",
+      "control_class",
+      "expected_behavior",
+      "conformation",
+      "seed",
+      "sequence_sha256",
+      "cdr1_range",
+      "cdr2_range",
+      "cdr3_range",
+      "cdr_residues",
+      "monomer_source",
+      "monomer_source_kind",
+      "monomer_source_chain",
+      "monomer_sha256",
+      "receptor_pdb",
+      "receptor_sha256",
+      "receptor_chain",
+      "ligand_chain",
+      "vhh_chain",
+      "numbering",
+      "cfg_hash",
+      "restraint_hash",
+      "protocol_core_sha256",
+      "protocol_hash",
+      "candidate_priority_rank",
+      "docking_stage",
+      "repeat_selection_rank",
+      "job_hash_schema"
+    ],
+    "job_hash_schema": "pvrig.docking_job.complete_binding.v1",
+    "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+    "seeds": [
+      917,
+      1931,
+      42,
+      3047
+    ]
+  },
+  "schema_version": "pvrig.top5000.dualreceptor_4seed.handoff.v1",
+  "source": {
+    "nbb2_archives": [
+      {
+        "bytes": 486372727,
+        "name": "node_000.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_000.tar.gz",
+        "selected_pdbs": 599,
+        "sha256": "6ae7fc938fd9b0dcf02a8ab87715079cbc6dd36b5917481b878228738a26ea53"
+      },
+      {
+        "bytes": 486395462,
+        "name": "node_001.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_001.tar.gz",
+        "selected_pdbs": 651,
+        "sha256": "ec43def84c558a888937f6a97641bf089ca2aa40cf66e840db04e9307a1673ae"
+      },
+      {
+        "bytes": 486411068,
+        "name": "node_002.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_002.tar.gz",
+        "selected_pdbs": 594,
+        "sha256": "f71674b4781ad98e17583d2f37a08d98a7bbf5baa6e0bb90b1997d8e7011a7fb"
+      },
+      {
+        "bytes": 486524631,
+        "name": "node_003.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_003.tar.gz",
+        "selected_pdbs": 622,
+        "sha256": "04607dca23cf1522580ecaffb0a7017f6ab133a6085202770328ba1582d93413"
+      },
+      {
+        "bytes": 486350805,
+        "name": "node_004.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_004.tar.gz",
+        "selected_pdbs": 634,
+        "sha256": "d733d7e358c8e76e99662fd7e6193a724858fe141dc4c63a5897b47d01d52e76"
+      },
+      {
+        "bytes": 486201552,
+        "name": "node_005.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_005.tar.gz",
+        "selected_pdbs": 624,
+        "sha256": "24485f76bbf4f193199c89b5a90c323439f63ded911bb7f3b0f93275a18aec91"
+      },
+      {
+        "bytes": 486515663,
+        "name": "node_006.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_006.tar.gz",
+        "selected_pdbs": 672,
+        "sha256": "b1a794f9d51e0d2af39618254e4f8cda06a6662854af64d24b4a0dd67ec634f3"
+      },
+      {
+        "bytes": 486448074,
+        "name": "node_007.tar.gz",
+        "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/archives/node_007.tar.gz",
+        "selected_pdbs": 604,
+        "sha256": "954a35f9b4ae0f18408d421b6d4906e0843a25ed54d05d0e40587768955602eb"
+      }
+    ],
+    "nbb2_manifest_tsv": {
+      "bytes": 13336937,
+      "path": "/data1/qlyu/projects/pvrig_node1_generated300k_structure100k_nbb2_tnp_v1_20260724/metadata/aggregated_11945474/nbb2_manifest.tsv.gz",
+      "sha256": "57fbe7ffcc336f32deaaa79db0581d22c574fe31da7404fd327e43513b3c76f5"
+    },
+    "release_fasta": {
+      "bytes": 1268601,
+      "path": "/data1/qlyu/projects/pvrig_node1_generated100k_multimodal_top5_v2_20260724/release/TOP5000_MULTIMODAL_PRIMARY.fasta",
+      "sha256": "0d7ad87ab9db06a1ce29baa26861dc1a5dc4596244f9486c0b9e882b40307d2b"
+    },
+    "release_tsv": {
+      "bytes": 4407528,
+      "path": "/data1/qlyu/projects/pvrig_node1_generated100k_multimodal_top5_v2_20260724/release/TOP5000_MULTIMODAL_PRIMARY.tsv",
+      "sha256": "6115963060b4ccbd378b7b3c05315fadb0f06cd9a41aad1b95164447d6ab2b85"
+    },
+    "shortlist_tsv": {
+      "bytes": 39344802,
+      "path": "/data1/qlyu/projects/pvrig_node1_generated300k_screening_stage_v1_20260724/structure_shortlist_v1/results/STRUCTURE_PRIMARY_100K.tsv.gz",
+      "sha256": "cdaa7deb18a26b476cb0bf0c8e0c08c1eae631b4fced46dbf804099dc9f44e2e"
+    },
+    "template_lock_sha256": "19f0025ac06cd4e4396b672847823746544da0fc718ecdc458d7106de4baf0e2",
+    "template_root": "/data1/qlyu/projects/pvrig_top7500_c2_gap_recovery_v1_20260723/c2_new6220_split4220_2000_dualreceptor_2seed_handoffs_v2/c2_new4220_dualreceptor_2seed_handoff_v2"
+  },
+  "status": "READY_FOR_EXTERNAL_DOCKING_SUBMISSION"
+}

@@ -1,0 +1,7 @@
+stage	input_entities	completed_entities	primary_result	status	next_action
+S0_positive11_sequence_qc	11	11	11/11 standard AA and L1 numbering PASS	PASS	retain as biological calibration; exclude from submission novelty lane
+S1_positive11_structure_old_docking	11	11	109 old consensus poses; 11/11 NBB2 and consensus present	PASS	use only as historical geometry calibration
+S2_control36_perturbation	36	36	357 consensus poses; leakage exact=7, near=29	PASS_WITH_SPECIFICITY_WARNING	do not call perturbations experimental negatives
+S3_v3_control47_dual_conformation_3seed	47	47	282/282 jobs SUCCESS; positive robust A/B 18/18; patent11 robust A/B 11/11; patent11 robust strict-A 5/11; destructive robust strict-A 4/14	PASS_HIGH_SENSITIVITY_SPECIFICITY_LIMITED	keep strict-A and HADDOCK score as rank features, not hard truth
+S4_core448_existing_evidence_audit	448	448	fresh ANARCI H 448/448; CDR exact match 437/448; boundary review 11	PASS_WITH_CDR_BOUNDARY_REVIEW	quarantine 11 CDR2-boundary rows; run official validator/full positive library on all 448
+S5_strict6042_cascade	6042	6042	4976 conservative developability pass; 448 CORE_A	READY_NOT_FINAL	apply calibrated policy in chunks; never overwrite frozen dry-run

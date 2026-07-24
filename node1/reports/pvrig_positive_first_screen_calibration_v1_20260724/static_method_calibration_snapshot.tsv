@@ -1,0 +1,5 @@
+method	task	n	pearson	spearman	mae	mae_unit	direction_correct	direction_total	coverage	verdict
+PRODIGY_median_across_9_independent_docked_poses	absolute_cross_candidate_pKd	10	0.3887299397160154	0.3100318272768329	2.478082369594376	pKd_log10_units	4	6	10/10 known-Kd positives	weak_prior_only
+FoldX_AnalyseComplex_median_across_9_independent_docked_poses	absolute_cross_candidate_interaction_score	10	0.3655489805651368	0.2363636363636363		not_comparable_to_pKd	2	6	10/10 known-Kd positives	not_recommended_for_cross_candidate_affinity
+FoldX_fixed_parent_pose_multi_mutation_binding_ddG_median_5_repeats	same_parent_relative_ddG	5	0.1286094005785981	0.0999999999999999	1.1032901624519016	kcal_per_mol	2	5	5/5 known same-parent pairs	diagnostic_only_until_pose_calibration
+Graphinity_single_interface_mutation_additive_approximation	same_parent_relative_ddG	4	-0.9757223210269426	-0.948683298050514	0.8056209632919686	kcal_per_mol	1	4	9/79 substitutions local to interface; 4/5 known pairs scorable	rejected_for_current_candidate_ranking

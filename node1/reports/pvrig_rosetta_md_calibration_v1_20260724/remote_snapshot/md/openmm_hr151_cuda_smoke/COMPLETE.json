@@ -1,0 +1,26 @@
+{
+  "state": "COMPLETE",
+  "finished_at": "2026-07-24T09:35:31.850428+00:00",
+  "job_id": "CONTROL_CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151_8x6b_s917_f8fab9ee3ba5",
+  "input_pdb": "/data/qlyu/projects/pvrig_rosetta_md_calibration_v1_20260724/inputs/pdb/CONTROL_CTRL_PATENT_001_case02_pos_01_PVRIG-151_HR151_8x6b_s917_f8fab9ee3ba5.pdb",
+  "input_sha256": "10f5c8340c0aab25e75b1b1eeadac78b0627f591224426a33c8c2b0c6d13993b",
+  "sanitized_input_sha256": "6c18126806ada0a5e7043eda9e16511ccfba2ee2e8c6be28645a64e3d5e56fa7",
+  "openmm_version": "8.4",
+  "platform": "OpenCL",
+  "platform_properties": {
+    "DeviceIndex": "0",
+    "Precision": "mixed"
+  },
+  "force_fields": [
+    "charmm36.xml",
+    "charmm36/water.xml"
+  ],
+  "water_model": "tip3p",
+  "ionic_strength_molar": 0.15,
+  "atom_count": 46855,
+  "residue_count": 14784,
+  "initial_potential_kj_mol": -198319.21743974602,
+  "final_potential_kj_mol": -783050.8408155902,
+  "elapsed_seconds": 55.742,
+  "output_pdb_sha256": "9e986af375b923c05b8ff6acd0fadeeaa47dd040c0233101e252006d74621dc8"
+}

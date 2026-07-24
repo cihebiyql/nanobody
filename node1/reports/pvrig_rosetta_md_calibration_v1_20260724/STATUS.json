@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "snapshot_at": "2026-07-24T17:55:30+08:00",
+  "state": "RUNNING_DURABLE",
+  "node": "node1",
+  "remote_root": "/data/qlyu/projects/pvrig_rosetta_md_calibration_v1_20260724",
+  "chain_contract": {
+    "PVRIG": "T",
+    "VHH": "A",
+    "rosetta_interface": "T_A"
+  },
+  "rosetta": {
+    "state": "COMPLETE",
+    "jobs_total": 150,
+    "jobs_complete": 150,
+    "jobs_failed": 0,
+    "positive_jobs": 66,
+    "destructive_jobs": 84,
+    "entities_positive": 11,
+    "entities_destructive": 14,
+    "matched_job_pairs": 84,
+    "accepted_metrics": [],
+    "decision": "ROSETTA_DESCRIPTIVE_ONLY",
+    "controller_pid": 1595968
+  },
+  "gromacs_topology_minimization": {
+    "state": "TOPOLOGY_AND_MINIMIZATION_COMPLETE",
+    "systems_total": 3,
+    "systems_complete": 3,
+    "systems_failed": 0,
+    "force_field": "CHARMM36m February 2026 GROMACS port",
+    "water_model": "TIP3P",
+    "salt_molar": 0.15
+  },
+  "openmm_sentinel": {
+    "state": "COMPLETE",
+    "system": "HR151_positive",
+    "openmm_version": "8.4",
+    "platform": "OpenCL",
+    "force_fields": [
+      "charmm36.xml",
+      "charmm36/water.xml"
+    ],
+    "atom_count": 46855,
+    "initial_potential_kj_mol": -198319.21743974602,
+    "final_potential_kj_mol": -783050.8408155902,
+    "elapsed_seconds": 55.742,
+    "cuda_attempt": "FAILED_CUDA_ERROR_UNSUPPORTED_PTX_VERSION_222_ARCHIVED"
+  },
+  "gromacs_md_stage_a": {
+    "state": "RUNNING",
+    "systems": 3,
+    "seeds_per_system": 3,
+    "trajectories_total": 9,
+    "production_ns_each": 2,
+    "complete": 3,
+    "failed": 0,
+    "running": [
+      {
+        "system_id": "HR151_positive",
+        "seed": 1931,
+        "gpu": 0,
+        "fraction": 0.553
+      },
+      {
+        "system_id": "P20_F99A_positive",
+        "seed": 1931,
+        "gpu": 1,
+        "fraction": 0.226
+      },
+      {
+        "system_id": "P20_F99A_destructive",
+        "seed": 1931,
+        "gpu": 2,
+        "fraction": 0.121
+      }
+    ],
+    "pending": 3,
+    "controller_pid": 1670360,
+    "analysis_watcher_pid": 1709798,
+    "eta_minutes": "20-25",
+    "automatic_next_step": "analyze last 1 ns for receptor-fitted VHH RMSD, complex RMSD, interface minimum distance, 0.45 nm contacts, and interface hydrogen bonds"
+  },
+  "resources": {
+    "data_free_bytes": 18188331909120,
+    "data1_free_bytes": 62190116864,
+    "gpu_0_2_utilization_percent": "61-71",
+    "gpu_0_2_memory_mib": "443-453",
+    "write_target": "/data/qlyu/projects",
+    "data1_write_policy": "AVOID"
+  },
+  "integrity": {
+    "rosetta_manifest_sha256": "27bf446790d65555f6d0db23711ef7377e2d6d9085221fe4386e604d74739c11",
+    "md_stage_a_manifest_sha256": "30655b26e9f87049cb84deebd42acc8a2e55f57028c1b58413cd26db9cd57486",
+    "md_production_manifest_sha256": "5ac9d1d0561a9ce2252b7adfe946b116d5f2b851bec25e8d2fd65b25ccf38dea",
+    "charmm36_archive_sha256": "c2b0c70e21cced150528ee25d205e5bd3367a5e55e85c2ff0403911980528151"
+  },
+  "safety": {
+    "no_existing_v3_results_overwritten": true,
+    "project_scoped_force_field": true,
+    "controller_locks_enabled": true,
+    "complete_markers_enabled": true,
+    "failed_attempts_archived": true
+  }
+}

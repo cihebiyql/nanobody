@@ -1,0 +1,110 @@
+{
+  "schema_version": "pvrig.positive_first_screen_calibration.v1.20260724",
+  "status": "CALIBRATED_POSITIVE_RECALL_PASS_SPECIFICITY_LIMITED",
+  "objective": "Preserve known PVRIG positive recall while enforcing competition novelty and building a staged, auditable shortlist from 6042 already-docked candidates.",
+  "official_competition_alignment": {
+    "submission_count": 50,
+    "typical_experimental_entry_per_team_maximum": 10,
+    "target_mechanism": "bind PVRIG extracellular domain at the PVRL2 interface and block PVRIG-PVRL2",
+    "numbering": "ANARCI IMGT",
+    "cdr_rule": "each corresponding VHH CDR identity to any known positive must be <0.80",
+    "initial_screen": {
+      "BLI_single_concentration_weight": 0.7,
+      "expression_weight": 0.2,
+      "purity_weight": 0.1
+    },
+    "rescreen": {
+      "BLI_Kd_rank_weight": 0.5,
+      "competition_ELISA_IC50_rank_weight": 0.5
+    },
+    "boundary": "all computational values remain priors, not BLI/Kd/IC50/expression/purity measurements"
+  },
+  "lane_contract": {
+    "calibration_positive_lane": {
+      "technical_sequence_and_numbering": "must pass",
+      "known_positive_recall": "must be measured",
+      "competition_novelty": "expected fail/exclude, never call biological negative"
+    },
+    "novel_candidate_submission_lane": {
+      "technical_sequence_and_numbering": "hard gate",
+      "competition_novelty": "hard gate",
+      "known_positive_exact_or_near_leakage": "exclude or manual review"
+    }
+  },
+  "calibrated_gates": {
+    "G0_technical_hard": [
+      "unique candidate ID and matching sequence hash",
+      "standard 20 amino acids only",
+      "ANARCI/IMGT heavy-variable numbering succeeds",
+      "FR1-FR4 and CDR1-CDR3 complete",
+      "structure file exists and sequence matches when structure evidence is required"
+    ],
+    "G1_competition_submission_hard": [
+      "official ab-data-validator passes",
+      "each corresponding CDR identity <0.80",
+      "internal safety target max CDR identity <=0.75",
+      "exact known-positive leakage excluded",
+      "optimization origin recorded when applicable"
+    ],
+    "G2_developability_calibrated": {
+      "hard_or_manual_review": [
+        "unresolved sequence/structure mismatch",
+        "unpaired or unexplained odd cysteine count",
+        "multiple orthogonal severe liability signals with structural exposure",
+        "unrecoverable aggregation/clash/structure failure"
+      ],
+      "warn_and_rank_not_single_metric_blocker_fail": [
+        "FR2/VHH-like classification",
+        "TNP PNC red alone",
+        "Sapiens score or mutation burden",
+        "AbNatiV missing value or moderate score",
+        "pI, charge, GRAVY, deamidation, isomerization, oxidation",
+        "four cysteines when a plausible additional disulfide is structurally supported",
+        "one hydrophobic 5-mer",
+        "expression_purity_risk_proxy because it is not measured expression or purity"
+      ],
+      "preferred_ranges_from_positive_envelope": {
+        "length": "120-127 observed; keep broad technical 95-160",
+        "abnativ_vhh_score": "0.7523-0.8585 among 9 measured positives",
+        "sapiens_mean_self_probability": "0.6683-0.7800",
+        "cys_count": "2 or 4 observed",
+        "tnp_PNC": "0-3.0326; 2/11 known positives are red"
+      }
+    },
+    "G3_blocker_geometry_high_sensitivity": {
+      "required_completion": "2 receptor conformations x 3 seeds; at least 2 successful seeds per conformation",
+      "support_definition": "STRICT_A or SUPPORTED_AB",
+      "known_positive_recall": 1.0,
+      "destructive_control_support_rate": 1.0,
+      "interpretation": "high-sensitivity interface plausibility gate only; destructive-control specificity is absent"
+    },
+    "G4_strict_A_rank_only": {
+      "known_positive_recall": 0.45454545454545453,
+      "destructive_control_false_positive_rate": 0.2857142857142857,
+      "interpretation": "not a hard gate because recall is too low and false positives remain"
+    }
+  },
+  "binding_and_energy_policy": {
+    "DeepNano_NanoBind": "weak binding priors only; no hard cutoff",
+    "PRODIGY": "weak static prior only",
+    "FoldX_cross_candidate": "not recommended for absolute affinity ranking",
+    "FoldX_fixed_parent_ddG": "same-parent diagnostic only",
+    "Graphinity": "rejected for current multi-mutation ranking",
+    "Rosetta_InterfaceAnalyzer": "pending same-panel calibration",
+    "MD_MMGBSA": "pending paired positive/control calibration; finalists only"
+  },
+  "method_activation_thresholds": {
+    "positive_recall_minimum": 0.8,
+    "control_false_positive_rate_maximum": 0.3,
+    "entity_level_AUROC_minimum": 0.7,
+    "leave_one_family_out_direction_consistency_minimum": 0.7,
+    "failed_method_role": "descriptive_or_rank_only"
+  },
+  "expansion_order": [
+    "11 patent positives",
+    "36 perturbation/leakage controls",
+    "47 V3 controls under dual-conformation x 3-seed protocol",
+    "448 CORE_A candidates",
+    "6042 strict-docking candidates"
+  ]
+}

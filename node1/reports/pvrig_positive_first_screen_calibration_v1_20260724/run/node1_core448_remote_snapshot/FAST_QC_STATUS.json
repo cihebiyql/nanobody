@@ -1,0 +1,95 @@
+{
+  "status": "COMPLETE",
+  "finished_at_utc": "2026-07-24T08:51:29.316779+00:00",
+  "input_sha256": "047f4a630d1551eee7d7dae7ce729fd6c42f7c657b9393a6d06c0c8b8942eb65",
+  "expected_candidates": 448,
+  "portfolio_rows": 448,
+  "novelty_rows": 448,
+  "official_failure_rows": -1,
+  "output_files": {
+    "qc_out/cdr_novelty.tsv": {
+      "size": 102720,
+      "sha256": "1a43bba402eeadf31ef2824c07a17ba595091cbec77b452e5b90076340284490"
+    },
+    "qc_out/competition_qc_details.json": {
+      "size": 945,
+      "sha256": "230009a635d57f29af60f2f09a51e30c3e79e8f9524b94ecce667ec48e118813"
+    },
+    "qc_out/core448.normalized.fasta": {
+      "size": 72448,
+      "sha256": "21a2a6ec133d316526cfacc59cee0d4796c27b5170afcf98380c3c4ccbde0291"
+    },
+    "qc_out/core448.official_submit.xlsx": {
+      "size": 21312,
+      "sha256": "85c8ed2f180626e2bea820618af2cd99c0a1453d418a32098807501a238e9039"
+    },
+    "qc_out/official_failed_reasons.csv": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qc_out/official_validator.log": {
+      "size": 80,
+      "sha256": "ccea7750056ff27e9444febf5ed0f18479bffd60d57e1d6591983d175d80269c"
+    },
+    "qc_out/portfolio_ranked.tsv": {
+      "size": 226330,
+      "sha256": "cb53255ab5ef8740a7f024f9885ded9a0bd7beb6e941d1c04c3d93369acabc3b"
+    },
+    "qc_out/portfolio_report.md": {
+      "size": 1386,
+      "sha256": "bf30876f4dda28a959b2712d2fd5479e754a6164dcde47365c940869bc44f9b0"
+    },
+    "qc_out/reserve_0.fasta": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qc_out/stage_timings.tsv": {
+      "size": 614,
+      "sha256": "fe15a009998861adb04cd76abcf903bbc953e900213aa3bbfbdc58520fbe3bb1"
+    },
+    "qc_out/submission_top100000000.fasta": {
+      "size": 72448,
+      "sha256": "74bb11095a7af19069a1f0c3968ea3803afda8b8ca6a102e7252054d6cc485c5"
+    },
+    "qc_out/submission_top100000000.xlsx": {
+      "size": 21457,
+      "sha256": "8fcbf41fa8ee94eb0b2ea545719196c2f57a011076a10d627a86f546e7b62374"
+    },
+    "qc_out/team_diversity.tsv": {
+      "size": 37765,
+      "sha256": "0ef6907f069ed6193bafb7728dc89f559cd792e9096df85e3616ee06d6d2351d"
+    },
+    "qc_out/vhh_screen/core448.layer1_pass.fasta": {
+      "size": 72000,
+      "sha256": "047f4a630d1551eee7d7dae7ce729fd6c42f7c657b9393a6d06c0c8b8942eb65"
+    },
+    "qc_out/vhh_screen/core448.numbering.json": {
+      "size": 3440179,
+      "sha256": "0284d44fc126c64abe35e565408ab7cbaca0b2840de98acd171572b348a410a6"
+    },
+    "qc_out/vhh_screen/core448.vhh_eval.tsv": {
+      "size": 322329,
+      "sha256": "7288f58b130d16528f09bdd84222764c946b2320430aca094c72c0b4bd2bbfdc"
+    },
+    "qc_out/vhh_screen/logs/vhh_eval.log": {
+      "size": 698,
+      "sha256": "027f138c12d0b97d8f86b60bb5ac31805c2acc197fde592824e9876b6bdd5b9a"
+    },
+    "qc_out/vhh_screen/screen_details.json": {
+      "size": 5097286,
+      "sha256": "00416c4394d311929958bf13c9da6a54cc858d14882561a0caab593776971536"
+    },
+    "qc_out/vhh_screen/screen_report.md": {
+      "size": 2409,
+      "sha256": "21814b574619d52b585f1c702faa6ed99c35523c7d0673734d67e41e68de89d9"
+    },
+    "qc_out/vhh_screen/screen_summary.tsv": {
+      "size": 191839,
+      "sha256": "665f61d60194966aca6cfd5041eff1143d9a767bdcbe469cc9d9cade2b6b17c1"
+    },
+    "qc_out/vhh_screen.log": {
+      "size": 712,
+      "sha256": "5efc07f754d85d9c0be6f1928fa4e1e604436ff51b2957b5d72568d512568701"
+    }
+  }
+}

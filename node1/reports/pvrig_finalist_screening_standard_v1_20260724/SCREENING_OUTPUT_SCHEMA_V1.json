@@ -1,0 +1,105 @@
+{
+  "schema_version": "pvrig.finalist_screening.output.v1",
+  "required_columns": {
+    "identity": [
+      "candidate_id",
+      "sequence",
+      "sequence_sha256",
+      "route",
+      "parent_id",
+      "parent_cluster",
+      "design_method"
+    ],
+    "numbering_and_novelty": [
+      "anarci_imgt_status",
+      "cdr1",
+      "cdr2",
+      "cdr3",
+      "max_positive_cdr_identity",
+      "nearest_positive_id",
+      "official_validator_status",
+      "leakage_label"
+    ],
+    "developability": [
+      "tnp_status",
+      "tnp_review_tier",
+      "abnativ_vhh_score",
+      "sapiens_mean_self_probability",
+      "expression_purity_risk_proxy",
+      "cys_count",
+      "nglyc_motif_count",
+      "hydrophobic_5_count",
+      "developability_hardpass"
+    ],
+    "docking": [
+      "docking_protocol_id",
+      "receptor_conformations",
+      "complete_seed_count",
+      "strict_seed_passes",
+      "strict_seed_fraction",
+      "native_cross_agreement",
+      "blocking_geometry_label",
+      "docking_evidence_status"
+    ],
+    "binding_and_energy": [
+      "binding_consensus_weak_prior",
+      "prodigy_status",
+      "foldx_status",
+      "rosetta_status",
+      "static_energy_calibration_status"
+    ],
+    "dynamics": [
+      "md_status",
+      "md_protocol_id",
+      "md_completed_replicates",
+      "interface_rmsd_summary",
+      "cdr3_rmsf_summary",
+      "hotspot_contact_occupancy",
+      "pvrl2_occlusion_persistence",
+      "mmgbsa_summary"
+    ],
+    "ranking_and_portfolio": [
+      "initial_survival_proxy",
+      "rescreen_competition_proxy",
+      "candidate_tier",
+      "selection_channel",
+      "cdr3_diversity_cluster",
+      "parent_quota_status",
+      "final_rank",
+      "top10_flag"
+    ],
+    "audit": [
+      "hard_gate_status",
+      "hard_gate_reasons",
+      "technical_na_fields",
+      "source_manifest_sha256",
+      "evidence_boundary"
+    ]
+  },
+  "status_enums": {
+    "hard_gate_status": [
+      "PASS",
+      "FAIL",
+      "BLOCKED_TECHNICAL"
+    ],
+    "candidate_tier": [
+      "CORE_A",
+      "DIVERSITY_B",
+      "DISAGREEMENT_C",
+      "RESERVE_D",
+      "EXCLUDED"
+    ],
+    "evidence_status": [
+      "COMPLETE",
+      "PARTIAL",
+      "NOT_RUN",
+      "TECHNICAL_NA",
+      "FAILED"
+    ]
+  },
+  "null_policy": {
+    "required_hard_gate_field": "null becomes BLOCKED_TECHNICAL",
+    "optional_static_or_md_field": "null becomes NOT_RUN and must not be imputed as zero",
+    "experimental_field": "must remain null unless an actual assay result exists"
+  }
+}

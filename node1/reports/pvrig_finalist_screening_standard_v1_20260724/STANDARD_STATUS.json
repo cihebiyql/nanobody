@@ -1,0 +1,37 @@
+{
+  "schema_version": "pvrig.finalist_screening.standard_status.v1",
+  "created_at": "2026-07-24T16:00:00+08:00",
+  "status": "PASS_READY_FOR_OFFICIAL_VALIDATOR_AND_TOP200_PORTFOLIO",
+  "standard": "pvrig.finalist_screening.v1.20260724",
+  "dry_run": {
+    "strict_candidates": 6042,
+    "developability_hardpass": 4976,
+    "core_A": 448,
+    "parent_counts": {
+      "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 270,
+      "positive_pose_source_case02_pos_04_PVRIG-38": 32,
+      "positive_pose_source_case02_pos_10_151H7": 146
+    },
+    "cdr3_diversity": {
+      "cluster_count": 43,
+      "largest_cluster_size": 144,
+      "multi_member_cluster_count": 12,
+      "exact_cdr3_duplicate_group_count": 30,
+      "exact_cdr3_duplicate_candidate_count": 88
+    }
+  },
+  "next_blocking_stage": "official ab-data-validator plus full known-positive CDR similarity and hash closure",
+  "files": {
+    "PVRIG_FINALIST_SCREENING_STANDARD_V1_ZH.md": "1f7cf6a7bce56130b06d50e8335a07c0639479aabe5f50bc4bf3eb98ea513358",
+    "SCREENING_CONTRACT_V1.json": "e305ac798d3d573456227c44220ddc9476e6d61f02dc423b0010516b1a78f65f",
+    "SCREENING_OUTPUT_SCHEMA_V1.json": "e08bffe5942fd0062dc38d3e6a8c5b5977eab743d5928ef44ff440fc38903dc5",
+    "surrogate_high_support_snapshot.tsv": "a10b743dce408f717baca46ab8ff8604b8036f7617049593e6b76e7d82ad8e30",
+    "dry_run_existing_6042.py": "b06c1da6b455affc2cad395a3c147b645ba2fcf4c2ace50b5aee8e2dbe7dd73e",
+    "dry_run/strict6042_standard_dry_run.tsv": "44d2397ea3d3150467224c5039373183a48de111c65e9de8d82e62a1c62ceb0c",
+    "dry_run/core448_candidates.tsv": "742fa1dcd136a598d2a74749cf42cde14bdfdd22f7b887265fed72d5619913f3",
+    "dry_run/core448_cdr3_clusters.tsv": "af612dd342cb33004e7a41aad70665d3dff3cfa6c2b7c0cb80831d7b3961ca90",
+    "dry_run/funnel_counts.tsv": "1b5d10aec0bb933ef2c3423d42bacc3d2c86d421452355b23006131528af0f2a",
+    "dry_run/DRY_RUN_RECEIPT.json": "f264b5873413140713aa41d07968fd4b9f0bdce73e842fa67b9c6271f5c2e84e"
+  },
+  "scientific_boundary": "Dry-run reproduces internal computational gates only. Official validator, full known-positive similarity audit and wet-lab BLI/expression/purity/Kd/IC50 remain separate."
+}

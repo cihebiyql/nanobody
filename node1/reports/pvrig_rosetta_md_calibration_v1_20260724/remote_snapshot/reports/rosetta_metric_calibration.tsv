@@ -1,0 +1,14 @@
+metric	direction	entity_auc	threshold	positive_recall	control_fpr	balanced_accuracy	threshold_gate_feasible	paired_entity_direction_fraction	family_direction_fraction	nonconstant	accepted_for_candidate_ranking
+dG_cross	low	0.487013	-13.616	0.272727	0.142857	0.564935	False	0.5	0.25	True	False
+dG_cross/dSASAx100	low	0.487013	-0.157	0.818182	0.714286	0.551948	False	0.5	0.5	True	False
+dG_separated	low	0.376623	-3.585	0.090909	0.0	0.545455	False	0.357143	0.25	True	False
+dG_separated/dSASAx100	low	0.37013	-0.2065	0.090909	0.0	0.545455	False	0.357143	0.25	True	False
+dSASA_int	high	0.461039	1697.5185000000001	0.818182	0.571429	0.623377	False	0.571429	0.25	True	False
+delta_unsatHbonds	low	0.461039	17.0	0.545455	0.428571	0.558442	False	0.285714	0.25	True	False
+hbond_E_fraction	low	0.464286	-0.181	0.272727	0.071429	0.600649	False	0.357143	0.25	True	False
+hbonds_int	high	0.454545	4.0	0.909091	0.785714	0.561688	False	0.285714	0.25	True	False
+packstat	high	0.5	-1e-09	1.0	1.0	0.5	False	0	0	False	False
+per_residue_energy_int	low	0.402597	0.41350000000000003	0.090909	0.0	0.545455	False	0.357143	0.25	True	False
+sc_value	high	0.428571	0.5505	0.909091	0.642857	0.633117	False	0.5	0.25	True	False
+complex_normalized	low	0.461039	1.346	0.727273	0.571429	0.577922	False	0.642857	0.75	True	False
+haddock_score	low	0.493506	-78.00935	0.545455	0.285714	0.62987	False	0.714286	0.75	True	False

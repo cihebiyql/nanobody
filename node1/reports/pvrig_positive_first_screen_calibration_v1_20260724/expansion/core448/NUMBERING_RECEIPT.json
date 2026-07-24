@@ -1,0 +1,16 @@
+{
+  "stage": "FRESH_ANARCI_COMPLETE",
+  "rows": 448,
+  "anarci_rows": 448,
+  "anarci_row_present": 448,
+  "heavy_chain_rows": 448,
+  "cdr1_matches": 448,
+  "cdr2_matches": 437,
+  "cdr3_matches": 448,
+  "all_cdr_matches": 437,
+  "numbering_review_rows": 11,
+  "status": "PASS_WITH_CDR_BOUNDARY_REVIEW",
+  "anarci_sha256": "dd2ef506002a29a414282fa60ccb6ada639531ace194d30f27529ddefa46d664",
+  "audit_sha256": "9b28f5c1df7277865ff488829c6c5598f3885f88434ddb2e355fcb7bc92be27d",
+  "next_action": "Run official ab-data-validator and complete public/local positive CDR library novelty audit in a new output directory. Quarantine rows in core11_numbering_review.tsv until official CDR extraction and identity are recomputed."
+}

@@ -1,0 +1,22 @@
+{
+  "stage": "PREPARED",
+  "source": "/mnt/d/work/抗体/node1/reports/pvrig_finalist_screening_standard_v1_20260724/dry_run/core448_candidates.tsv",
+  "source_sha256": "742fa1dcd136a598d2a74749cf42cde14bdfdd22f7b887265fed72d5619913f3",
+  "rows": 448,
+  "unique_candidate_ids": 448,
+  "unique_sequences": 448,
+  "sequence_hash_match": 448,
+  "standard_20aa": 448,
+  "audit_batches": 7,
+  "batch_sizes": {
+    "B001": 64,
+    "B002": 64,
+    "B003": 64,
+    "B004": 64,
+    "B005": 64,
+    "B006": 64,
+    "B007": 64
+  },
+  "fasta": "/mnt/d/work/抗体/node1/reports/pvrig_positive_first_screen_calibration_v1_20260724/expansion/core448/core448.fasta",
+  "fasta_sha256": "047f4a630d1551eee7d7dae7ce729fd6c42f7c657b9393a6d06c0c8b8942eb65"
+}

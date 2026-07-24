@@ -1,0 +1,223 @@
+{
+  "schema_version": "pvrig.finalist_screening.v1.20260724",
+  "status": "FROZEN_DRY_RUN_PASS",
+  "objective": "Reduce several thousand already-docked PVRIG VHH candidates to a reproducible, diverse and auditable final-50 portfolio without treating computational proxies as wet-lab measurements.",
+  "scope": {
+    "primary_input": "6042 disjoint strict-docking candidates",
+    "old_top7500_strict": 1923,
+    "c2_four_seed_all_strict": 4119,
+    "current_developability_hardpass": 4976,
+    "current_core_A": 448,
+    "submission_target": 50,
+    "top_experimental_priority": 10
+  },
+  "evidence_boundaries": {
+    "expression_purity": "sequence and structure developability proxies; not measured expression yield, SDS-PAGE purity or HPLC purity",
+    "binding": "DeepNano, NanoBind and structure-energy values are rank priors; not BLI response or Kd",
+    "blocking": "dual-reference, dual-conformation and multi-seed blocker-like geometry; not competition ELISA or experimental IC50",
+    "md": "pose persistence and relative free-energy evidence; not experimental affinity or blocking",
+    "technical_na": "missing evidence; never interpret as biological negative"
+  },
+  "hard_gates": {
+    "G0_technical_integrity": {
+      "candidate_id_unique": true,
+      "sequence_sha256_present_and_matching": true,
+      "standard_20_amino_acids_only": true,
+      "no_missing_required_field": true,
+      "no_technical_na_in_required_lanes": true,
+      "nbb2_status": "SUCCESS",
+      "nbb2_pdb_sequence_match": true,
+      "required_hashes_closed": true
+    },
+    "G1_competition_compliance": {
+      "official_ab_data_validator": "PASS",
+      "numbering": "ANARCI_IMGT",
+      "anarci_qc_status": "PASS",
+      "heavy_variable_domain_complete": true,
+      "frameworks_and_three_cdrs_complete": true,
+      "official_positive_cdr_identity_rule": "each corresponding CDR identity < 0.80",
+      "internal_positive_cdr_identity_safety_margin": "max corresponding CDR identity <= 0.75",
+      "exact_known_positive_leakage": "FAIL",
+      "near_known_positive_leakage": "MANUAL_REVIEW_OR_FAIL",
+      "optimization_origin_required_when_applicable": true
+    },
+    "G2_developability": {
+      "tnp_status": "PASS",
+      "tnp_review_tier": "CLEAR",
+      "tnp_red_flag_count_max": 0,
+      "abnativ_status": "PASS",
+      "abnativ_vhh_score_min": 0.7,
+      "sapiens_mean_self_probability_min": 0.7,
+      "expression_purity_risk_proxy_min": 85,
+      "cys_count": 2,
+      "nglyc_motif_count": 0,
+      "hydrophobic_5_count": 0,
+      "pI_and_other_ptm_flags": "WARN_AND_RANK_NOT_AUTOMATIC_FAIL"
+    },
+    "G3_docking_completion": {
+      "old_top7500": {
+        "minimum_complete_seeds": 2,
+        "minimum_strict_dual_conformation_seed_passes": 2,
+        "stage3_two_seed_dual_conformation_strict": true
+      },
+      "c2_four_seed": {
+        "complete_seed_count_total": 4,
+        "strict_seed_passes_total": 4
+      },
+      "required_references": [
+        "8X6B",
+        "9E6Y"
+      ],
+      "required_interpretation": "blocker-like geometry only"
+    }
+  },
+  "soft_evidence": {
+    "S1_binding_weak_prior": {
+      "field": "binding_consensus_weak_prior",
+      "current_top20_threshold": 0.6783883333333334,
+      "use": "core-pool enrichment and rank only",
+      "hard_gate": false
+    },
+    "S2_surrogate_support": {
+      "old_top7500_label": "A_HIGH_AGREEMENT",
+      "c2_label": "high_confidence_core_flag=true",
+      "use": "mechanism-support rank only",
+      "hard_gate": false
+    },
+    "S3_static_energy": {
+      "tools": [
+        "PRODIGY",
+        "FoldX",
+        "Rosetta InterfaceAnalyzer"
+      ],
+      "activation_rule": "only methods passing the positive/control calibration contract may contribute to ranking",
+      "current_state": {
+        "PRODIGY": "weak_prior_only",
+        "FoldX_cross_candidate": "rejected_as_absolute_affinity_rank",
+        "FoldX_same_parent_ddG": "diagnostic_only",
+        "Rosetta": "pending_same_panel_calibration"
+      },
+      "hard_gate": false
+    },
+    "S4_md": {
+      "tools": [
+        "GROMACS 2024.4 CUDA",
+        "OpenMM 8.4 CUDA sentinel",
+        "gmx_MMPBSA"
+      ],
+      "activation_rule": "use only after paired positive/control calibration passes",
+      "recommended_candidate_budget": "20-50",
+      "hard_gate": false
+    }
+  },
+  "candidate_tiers": {
+    "CORE_A": "G0-G3 pass plus binding weak-prior high plus route-specific surrogate high support",
+    "DIVERSITY_B": "G0-G3 pass; selected from the 4976 developability-hardpass pool to repair parent, CDR3 or route concentration",
+    "DISAGREEMENT_C": "G0-G3 pass with strong docking but binding/surrogate model disagreement; manual or static-energy rescue",
+    "RESERVE_D": "G0-G3 pass with distinct parent, CDR3 length or sequence cluster; lower confidence and explicitly labeled"
+  },
+  "ranking": {
+    "rule": "gates first, two scores second, diversity-constrained portfolio optimization last",
+    "initial_survival_proxy": {
+      "formula": "0.70 * binding_rank + 0.20 * expression_proxy_rank + 0.10 * developability_purity_proxy_rank",
+      "boundary": "mirrors official weights but is not BLI, expression or purity"
+    },
+    "rescreen_competition_proxy": {
+      "formula": "0.50 * affinity_prior_rank + 0.50 * blocker_mechanism_rank",
+      "boundary": "mirrors official Kd/IC50 balance but is not Kd or IC50"
+    },
+    "forbidden": [
+      "do not replace two evidence lanes with one opaque total score",
+      "do not use raw FoldX, PRODIGY, Rosetta or MMGBSA values as universal hard cutoffs",
+      "do not rank technical failures as biological negatives"
+    ]
+  },
+  "stage_budgets": [
+    {
+      "stage": "P0",
+      "input": 6042,
+      "action": "technical integrity, official validator and full known-positive leakage audit",
+      "output_target": "all compliant survivors"
+    },
+    {
+      "stage": "P1",
+      "input": "P0 survivors",
+      "action": "developability hard gates",
+      "current_dry_run_output": 4976
+    },
+    {
+      "stage": "P2",
+      "input": "P1 survivors",
+      "action": "CORE_A enrichment plus diversity/disagreement rescue",
+      "current_core_A": 448,
+      "portfolio_for_static_review_target": 200,
+      "portfolio_channels": {
+        "core_exploitation": 120,
+        "parent_and_cdr3_diversity": 40,
+        "model_disagreement_rescue": 20,
+        "structural_reserve": 20
+      }
+    },
+    {
+      "stage": "P3",
+      "input_target": 200,
+      "action": "static energy, pose audit, duplicate clustering and evidence completeness review",
+      "output_target": 80
+    },
+    {
+      "stage": "P4",
+      "input_target": 80,
+      "action": "short MD on the highest-impact 20-50; retain non-MD reserves with explicit evidence status",
+      "output_target": 50
+    },
+    {
+      "stage": "P5",
+      "input": 50,
+      "action": "final validator, hashes, provenance, diversity and ranking freeze",
+      "output": 50,
+      "top_priority": 10
+    }
+  ],
+  "final_portfolio": {
+    "channels": {
+      "exploitation": 30,
+      "parent_mechanism_diversity": 10,
+      "model_disagreement_rescue": 5,
+      "structural_diversity_reserve": 5
+    },
+    "top10": {
+      "highest_confidence_core": 7,
+      "independent_parent_or_mechanism": 3,
+      "single_parent_max": 4,
+      "single_route_max": 7
+    },
+    "final50_constraints": {
+      "exact_sequence_duplicates": 0,
+      "exact_cdr3_max_per_sequence": 1,
+      "same_length_cdr3_identity_ge_0_80_cluster_max": 2,
+      "single_parent_max": 15,
+      "single_route_max": 35,
+      "minimum_parent_clusters_if_eligible": 4,
+      "constraint_exception": "must be machine-recorded with reason; never silently relaxed"
+    }
+  },
+  "required_outputs": [
+    "candidate_evidence_table.tsv",
+    "funnel_counts.tsv",
+    "hard_gate_failures.tsv",
+    "core_and_rescue_pool.tsv",
+    "pairwise_diversity_clusters.tsv",
+    "top200_pre_static.tsv",
+    "top80_post_static.tsv",
+    "md_manifest.tsv",
+    "final50_ranked.tsv",
+    "top10_priority.tsv",
+    "STATUS.json",
+    "SHA256SUMS"
+  ],
+  "stop_conditions": {
+    "pass": "50 candidates have complete provenance, no unresolved hard-gate failure, frozen ranking and hashes",
+    "block": "official validator, sequence/hash closure or required docking evidence is missing",
+    "do_not_block": "optional static-energy or MD evidence is unavailable; mark evidence status and preserve reserves"
+  }
+}
