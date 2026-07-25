@@ -1,0 +1,48 @@
+{
+  "archive_sha256": "fe791cc76461401ecf3f94f330be7278c57faa3c6cc9e5a989c01ff2f3f33c0e",
+  "expected_candidates": 106,
+  "expected_jobs": 424,
+  "expected_jobs_per_shard": 212,
+  "expected_shards": 2,
+  "generated_at_utc": "2026-07-25T00:48:47.226014+00:00",
+  "manifest_sha256": "2bb9559b3235bf1201b1d05ecaefedaaad51f7e0e825edc671a0e577298bebac",
+  "node_layout": {
+    "concurrent_jobs_per_node": 16,
+    "cpus_per_job": 4,
+    "cpus_per_node": 64,
+    "nodes": 2
+  },
+  "package_validation": {
+    "candidate_field": "entity_id",
+    "candidates": 106,
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ],
+    "jobs": 424,
+    "seeds": [
+      "3047",
+      "42"
+    ],
+    "shard_sha256": {
+      "shard_00.tsv": "38901e964b508554dd76770d267c25c248754a4d83bb4deb5315d37d0b77faf8",
+      "shard_01.tsv": "9a72101501939f844057a0eda10bb55391431d887854c1e3ca89865fae917723"
+    },
+    "shards": 2
+  },
+  "ready_sha256": "751a5fe07fcb5ebce282db1946df9e3b0c9ce72171d5e7cd1d294ef82119e656",
+  "receipt_sha256": "ef2f02fff6dd247ff557b5b3bc8033090c6c1d972b2dbe46beb93bcee836ab52",
+  "runtime": {
+    "haddock": "2025.11.0",
+    "numpy": "2.0.1"
+  },
+  "schema_version": "pvrig.top200_seed_completion.bxcpu_preflight.v1",
+  "slurm_array_validation": "accepted_dependency_gated_array_plus_static_2x64_layout; no duplicate sbatch --test-only",
+  "smoke_job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0008__00191_8x6b_s42_5b26d6103abe",
+  "smoke_validation": {
+    "compact_bytes": 864894,
+    "job_id": "CANDIDATE_P1MCPUFP__CPUFP500K_0008__00191_8x6b_s42_5b26d6103abe",
+    "status": "SUCCESS"
+  },
+  "status": "PASS_RUNTIME_PACKAGE_2_SHARDS_AND_ONE_JOB_SMOKE"
+}

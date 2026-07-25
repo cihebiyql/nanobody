@@ -1,0 +1,25 @@
+{
+  "schema_version": "pvrig.top10.md.completion.ready.v1",
+  "state": "READY",
+  "created_at": "2026-07-25T01:18:40.220049+00:00",
+  "candidates": 6,
+  "trajectories": 18,
+  "production_ns_each": 2,
+  "seeds": [
+    917,
+    1931,
+    3253
+  ],
+  "gpus": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "hashes": {
+    "md_systems.tsv": "c5d1a26b2b9091e7899dbe0a775410ac69fd2d5b95eb5c0c46689548df91af56",
+    "md_manifest.tsv": "991a6a41d65dcb8c0322a6fd15d5674f2671b72b146fa603eeb86e836a0ecd51"
+  },
+  "claim_boundary": "Descriptive pose-persistence evidence only."
+}

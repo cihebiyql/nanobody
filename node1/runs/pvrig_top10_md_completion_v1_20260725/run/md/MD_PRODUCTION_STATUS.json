@@ -1,0 +1,13 @@
+{
+  "state": "RUNNING",
+  "pid": 1609721,
+  "started_at": "2026-07-25T01:20:06.893203+00:00",
+  "total": 18,
+  "completed": 0,
+  "failed": 0,
+  "production_ns_each": 2,
+  "gpu_limit": 5,
+  "cpu_limit": 10,
+  "slots_per_gpu": 1,
+  "ntomp_per_trajectory": 2
+}

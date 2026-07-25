@@ -1,0 +1,24 @@
+{
+  "candidate_count": 9,
+  "created_at": "2026-07-25T01:24:52.978757+00:00",
+  "disruptive_control_count": 4,
+  "input_hashes": {
+    "mutant_panel": "81f42361be2e31dd8a083eb5cf28b35e1d09292635801a9a021fbe29b1d19248",
+    "positive_anarci": "c786f7b2dcedc6cd383f9b70a3d82788b6a2c0189be0a9da5347bd8d4ae44cfc",
+    "positive_fasta": "32a237011710a29ca5c410e6433b2c42d8a9e2d51b2ad423012bb18ce5ad598b",
+    "pvrig_fasta": "50d3a14e67de93395196341f0b3b8e0242431dcad1dfb183b56c112c461960cd"
+  },
+  "manifest_sha256": "c108c4c87b6b18cf7e8ea58fa131139ddbc8a10edbdae599238053bf1fc09e14",
+  "positive_count": 5,
+  "protocol_sha256": "2a739d4f5d7100bb9c7463dd02eba187b26eb91309786bb244ef4ab26892f43e",
+  "schema_version": "pvrig.control.independent_complex.prepare.v1",
+  "shard_count": 5,
+  "shard_sizes": {
+    "0": 2,
+    "1": 2,
+    "2": 2,
+    "3": 2,
+    "4": 1
+  },
+  "state": "READY"
+}

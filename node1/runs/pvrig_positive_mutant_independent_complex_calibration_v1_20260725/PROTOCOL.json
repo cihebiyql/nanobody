@@ -1,0 +1,44 @@
+{
+  "boltz": {
+    "diffusion_samples": 1,
+    "max_parallel_samples": 1,
+    "msa": "empty",
+    "no_kernels": true,
+    "output_format": "pdb",
+    "recycling_steps": 3,
+    "sampling_steps": 50
+  },
+  "chai": {
+    "low_memory": true,
+    "num_diffn_samples": 2,
+    "num_diffn_timesteps": 50,
+    "num_trunk_recycles": 3,
+    "num_trunk_samples": 1,
+    "seed_rule": "100000 + panel_order",
+    "use_esm_embeddings": false,
+    "use_msa_server": false,
+    "use_templates_server": false
+  },
+  "panel": {
+    "computational_disruptive_controls": [
+      "mut_03_PVRIG-20_cdr3_arom_F99A",
+      "mut_09_PVRIG-30_cdr3_arom_W100A",
+      "mut_14_PVRIG-38_cdr3_arom_F100A",
+      "mut_19_PVRIG-39_cdr3_arom_F99A"
+    ],
+    "destructive_control_boundary": "Alanine mutants are computational perturbation controls, not experimentally confirmed non-binders/non-blockers.",
+    "experimental_positive_blockers": [
+      "PVRIG-151_HR151",
+      "PVRIG-20",
+      "PVRIG-30",
+      "PVRIG-38",
+      "PVRIG-39"
+    ]
+  },
+  "schema_version": "pvrig.control.independent_complex.protocol.v1",
+  "target": {
+    "name": "PVRIG_8X6B_chainB_ECD",
+    "sequence": "TPEVWVQVRMESFTIRCGFLGSGSISLVTVSWGGPNGAGGTTLAVLHPERGIRQWAPARQARWETQSSISLILEGSPSANTTFCCKFASFPEGSWEACGSLPP",
+    "sequence_sha256": "957aff0c6a5a0f83c1bc4f137744cef872d6474eda4ad8e03325b0f5d63c7e4c"
+  }
+}

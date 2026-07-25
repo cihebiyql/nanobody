@@ -1,0 +1,34 @@
+{
+  "already_complete_candidates": 4,
+  "claim_boundary": "Short binary-complex MD is descriptive pose-persistence evidence, not experimental affinity or blocking.",
+  "completion_candidates": 6,
+  "created_at": "2026-07-25T01:17:28.349580+00:00",
+  "evidence_note": "The frozen Final50 and prior MD manifests show four, not five, Top10 candidates already complete; six candidates are therefore run.",
+  "gpus": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final50_ranked.tsv": "dca87287e4cc7d4a777122182fb435399427ffa34b2f34cf1243d190525df2e6",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/md/md_systems.tsv": "248402953ba2cb39d296a83343dc0b87e6680a9344639398ef646cbca6aa9323",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/static_review/STATIC_JOB_MANIFEST.tsv": "35df6557344ed9e9f380fa042157bfaef29e49ac43311c174129052613f125fd"
+  },
+  "method_role": "DESCRIPTIVE_ONLY",
+  "output_hashes": {
+    "md_manifest.tsv": "991a6a41d65dcb8c0322a6fd15d5674f2671b72b146fa603eeb86e836a0ecd51",
+    "md_systems.tsv": "c5d1a26b2b9091e7899dbe0a775410ac69fd2d5b95eb5c0c46689548df91af56"
+  },
+  "production_ns_each": 2,
+  "schema_version": "pvrig.top10.md_completion.prepare.v1",
+  "seeds": [
+    917,
+    1931,
+    3253
+  ],
+  "state": "TOP10_MD_COMPLETION_PREPARED",
+  "top10_candidates": 10,
+  "trajectories": 18
+}

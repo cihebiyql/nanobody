@@ -1,0 +1,27 @@
+{
+  "anchors": {
+    "manifest_sha256": "2bb9559b3235bf1201b1d05ecaefedaaad51f7e0e825edc671a0e577298bebac",
+    "receipt_sha256": "ef2f02fff6dd247ff557b5b3bc8033090c6c1d972b2dbe46beb93bcee836ab52"
+  },
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "counts": {
+    "candidates": 106,
+    "jobs": 424,
+    "jobs_per_shard": [
+      212,
+      212
+    ],
+    "shards": 2
+  },
+  "created_at": "2026-07-25T00:43:51.449210+00:00",
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.top200.common4_seed_completion_ready.v1",
+  "seeds": [
+    42,
+    3047
+  ],
+  "status": "READY_FOR_EXTERNAL_DOCKING_SUBMISSION"
+}

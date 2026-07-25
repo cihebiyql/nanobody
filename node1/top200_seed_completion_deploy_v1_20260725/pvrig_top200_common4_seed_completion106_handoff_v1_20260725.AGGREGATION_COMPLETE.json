@@ -1,0 +1,19 @@
+{
+  "completed_at": "2026-07-25T00:43:51.837028+00:00",
+  "counts": {
+    "candidates": 106,
+    "jobs": 424
+  },
+  "evidence": {
+    "runnable_validation": {
+      "path": "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top200_seed_completion_v1/RUNNABLE_MANIFEST_VALIDATION.json",
+      "sha256": "9693a7ba4660f3e1242b8b317c3a9e9f041f69b9698ef181f59d02643a74ce7b"
+    },
+    "seed_completion_receipt": {
+      "path": "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top200_seed_completion_v1/SEED_COMPLETION_MANIFEST_RECEIPT.json",
+      "sha256": "c130c4a8d1bc46f556305a74db3a8ba23240a5b13b98a155ff7e726c498d4772"
+    }
+  },
+  "schema_version": "pvrig.current_aggregation_gate.v1",
+  "status": "PASS_CURRENT_AGGREGATION_COMPLETE"
+}

@@ -1,0 +1,18 @@
+{
+  "claim_boundary": "Technical HADDOCK completion and evidence transport only; not biological or experimental validation.",
+  "expected_candidates": 106,
+  "expected_jobs": 424,
+  "expected_jobs_per_shard": 212,
+  "expected_shards": 2,
+  "invalid_examples": [],
+  "manifest_sha256": "2bb9559b3235bf1201b1d05ecaefedaaad51f7e0e825edc671a0e577298bebac",
+  "schema_version": "pvrig.top200_seed_completion.technical_audit.v1",
+  "shard_markers": 2,
+  "state_counts": {
+    "SUCCESS": 424
+  },
+  "status": "COMPLETE",
+  "success_evidence_jobs": 424,
+  "terminal_jobs": 424,
+  "updated_at_utc": "2026-07-25T01:44:08.403759+00:00"
+}

@@ -1,0 +1,35 @@
+{
+  "aggregation_gate": {
+    "path": "/data1/qlyu/projects/pvrig_top200_common4_seed_completion106_handoff_v1_20260725.AGGREGATION_COMPLETE.json",
+    "sha256": "f29b17d8022b1b332225da55dcfa5c02afd264d24eea3e6eb6f65cdd39e6b33d"
+  },
+  "archive": {
+    "bytes": 4505288,
+    "path": "/data1/qlyu/projects/pvrig_top200_common4_seed_completion106_handoff_v1_20260725.tar.gz",
+    "sha256": "fe791cc76461401ecf3f94f330be7278c57faa3c6cc9e5a989c01ff2f3f33c0e"
+  },
+  "counts": {
+    "candidates": 106,
+    "jobs": 424,
+    "jobs_per_shard": [
+      212,
+      212
+    ],
+    "shards": 2
+  },
+  "handoff_receipt": {
+    "path": "/data1/qlyu/projects/pvrig_top200_common4_seed_completion106_handoff_v1_20260725/HANDOFF_RECEIPT.json",
+    "sha256": "ef2f02fff6dd247ff557b5b3bc8033090c6c1d972b2dbe46beb93bcee836ab52"
+  },
+  "manifest": {
+    "path": "/data1/qlyu/projects/pvrig_top200_common4_seed_completion106_handoff_v1_20260725.manifest.tsv",
+    "sha256": "2bb9559b3235bf1201b1d05ecaefedaaad51f7e0e825edc671a0e577298bebac"
+  },
+  "package_root": "/data1/qlyu/projects/pvrig_top200_common4_seed_completion106_handoff_v1_20260725",
+  "ready": {
+    "path": "/data1/qlyu/projects/pvrig_top200_common4_seed_completion106_handoff_v1_20260725.READY.json",
+    "sha256": "751a5fe07fcb5ebce282db1946df9e3b0c9ce72171d5e7cd1d294ef82119e656"
+  },
+  "schema_version": "pvrig.top200.seed_completion_build.v1",
+  "status": "PASS_HASH_CLOSED_PACKAGE"
+}
