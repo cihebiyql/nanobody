@@ -1,0 +1,44 @@
+{
+  "already_complete_candidates": 94,
+  "candidates_needing_completion": 106,
+  "candidates_with_extra_seed_3253": 39,
+  "canonical_seeds": [
+    42,
+    917,
+    1931,
+    3047
+  ],
+  "claim_boundary": "This receipt proves a missing-seed plan only; no planned docking job is claimed complete.",
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "created_at": "2026-07-25T00:22:15.825672+00:00",
+  "input_hashes": {
+    "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722/manifests/docking_jobs_recommended_25000.tsv": "2b1d8f4c595d181c747ba1044d07e45d0be1da2b8260a9d35ab1c24c524be661",
+    "run/docking_aggregate/C2_JOB_RESULTS_41760.tsv": "3aefa7da0d80802c361c4721e758cb0c2091436baa2df25c5a34d374546bc9bd",
+    "run/docking_aggregate/OLD_PRIORITY_JOB_RESULTS_25000.tsv": "83545a0949b964fa2de2852469104ffb90bc690aaeee8efaf1d5bd7ae2349237",
+    "run/top200/top200_pre_static.tsv": "c16ce9b3ac68825392e21ea9d432c697bb658603be832528a8cb67824a1f55d6"
+  },
+  "output_hashes": {
+    "README_ZH.md": "85d7b90af7a988a9d1304bda28ce3b2956b0f3a5201c520c3dc0d01007ac6de2",
+    "TOP200_COMMON4_SEED_COMPLETION_CANDIDATES.tsv": "29aa257617fc29a349f63979113a5565cd2d924d4c8cfd5207eb65feceee70e8",
+    "TOP200_MISSING_SEED_JOBS.tsv": "5cf4d961848f8921323eb2f738306646b1b70429145db5e8b2922da4c12c02d9",
+    "TOP200_MISSING_SEED_JOBS_RUNNABLE.tsv": "2bb9559b3235bf1201b1d05ecaefedaaad51f7e0e825edc671a0e577298bebac",
+    "TOP200_NEEDS_SEED_COMPLETION_106.fasta": "47f22b76ed9aee4847ec08bc81781a93b73e37d2ded871351e1b279b60697e4a",
+    "TOP200_NEEDS_SEED_COMPLETION_106.tsv": "caee75cffd6ca6b0980d6f3b2aba57786036ba13ea9ee33a136715a056103b5b"
+  },
+  "planned_job_count": 424,
+  "planned_jobs_by_conformation": {
+    "8x6b": 212,
+    "9e6y": 212
+  },
+  "planned_jobs_by_seed": {
+    "3047": 212,
+    "42": 212
+  },
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.top200.common4_seed_completion_manifest.v1",
+  "state": "READY_NOT_RUN",
+  "top200_count": 200
+}

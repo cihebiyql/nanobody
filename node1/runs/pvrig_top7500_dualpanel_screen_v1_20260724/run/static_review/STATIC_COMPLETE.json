@@ -1,0 +1,16 @@
+{
+  "candidates": 200,
+  "claim_boundary": "Static computational diagnostics; no BLI, Kd, IC50, expression or purity claim.",
+  "jobs": 400,
+  "manifest_sha256": "35df6557344ed9e9f380fa042157bfaef29e49ac43311c174129052613f125fd",
+  "median_job_seconds": 5.2835,
+  "method_roles": {
+    "foldx": "NOT_RUN_CROSS_CANDIDATE_RANK_REJECTED",
+    "prodigy": "WEAK_PRIOR_ONLY",
+    "rosetta": "DESCRIPTIVE_ONLY"
+  },
+  "metrics_sha256": "50ecabd90f95d1e8761a9b960b71520c65bdeedeb74cd569cf97dfe6821e00dd",
+  "schema_version": "pvrig.top200.static_review.v1",
+  "state": "STATIC_COMPLETE",
+  "workers": 4
+}

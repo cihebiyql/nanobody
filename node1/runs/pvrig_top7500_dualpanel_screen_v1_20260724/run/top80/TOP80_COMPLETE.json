@@ -1,0 +1,45 @@
+{
+  "channel_counts": {
+    "CORE_EXPLOITATION": 48,
+    "PARENT_CDR3_DIVERSITY": 16,
+    "QUOTA_SAFE_BACKFILL": 8,
+    "STRUCTURAL_RESERVE": 8
+  },
+  "claim_boundary": "Computational shortlist only; static values are not experimental binding, Kd, IC50, expression or purity.",
+  "count": 80,
+  "direct_pairwise_cdr3_identity_threshold": 0.8,
+  "exact_cdr3_duplicate_count": 0,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/static_review/STATIC_COMPLETE.json": "17798a553dadca3bec5010bf65d195d62d2f0b16f2aaa39d8afe86f12b9e4976",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/static_review/STATIC_POSE_METRICS.tsv": "50ecabd90f95d1e8761a9b960b71520c65bdeedeb74cd569cf97dfe6821e00dd",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top200/top200_pre_static.tsv": "c16ce9b3ac68825392e21ea9d432c697bb658603be832528a8cb67824a1f55d6"
+  },
+  "max_cdr3_cluster_count": 27,
+  "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+  "output_hashes": {
+    "top200_to_top80_exclusions.tsv": "480a4a12d65fbf95815e4b0d8d8b58ef33c53ad561826c0df011f69c51dd29c3",
+    "top80_post_static.fasta": "7cd4c026ef28da0cd0efc3d6401c77b0c77ab29a385045f3a02f79668a6e5283",
+    "top80_post_static.tsv": "291ee92b1428c0a7a8559173bcef978b9d4117bf8df7fb79b9c458a8d924fc0d"
+  },
+  "parent_counts": {
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 23,
+    "positive_pose_source_case02_pos_02_PVRIG-20": 1,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 16,
+    "positive_pose_source_case02_pos_06_20H5": 1,
+    "positive_pose_source_case02_pos_10_151H7": 30,
+    "positive_pose_source_case02_pos_11_151H8": 9
+  },
+  "rank_policy": "calibrated static methods do not change cross-candidate rank",
+  "route_counts": {
+    "c2_four_seed": 36,
+    "old_top7500": 44
+  },
+  "schema_version": "pvrig.top80.post_static.v1",
+  "single_linkage_cdr3_clusters_reporting_only": true,
+  "state": "TOP80_COMPLETE",
+  "static_method_roles": {
+    "foldx": "NOT_RUN_CROSS_CANDIDATE_RANK_REJECTED",
+    "prodigy": "WEAK_PRIOR_ONLY",
+    "rosetta": "DESCRIPTIVE_ONLY"
+  }
+}

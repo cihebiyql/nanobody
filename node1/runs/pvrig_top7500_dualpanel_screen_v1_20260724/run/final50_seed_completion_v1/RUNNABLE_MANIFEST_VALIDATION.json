@@ -1,0 +1,16 @@
+{
+  "candidate_count": 28,
+  "checks": {
+    "cfg_hash": 112,
+    "job_hash": 112,
+    "monomer_hash": 112,
+    "restraint_hash": 112
+  },
+  "created_at": "2026-07-25T00:11:53.524810+00:00",
+  "job_count": 112,
+  "manifest_sha256": "87d6e10207037d351e0b5aa2c115dac3c9b6cae5137436766318e1156ca45429",
+  "note": "The package validator expected a legacy expected_total_jobs key and could not validate this 112-job subset; this verifier directly checked every frozen monomer, receptor, cfg, AIR restraint, job hash and job ID.",
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.final50.common4_seed_completion_validation.v1",
+  "state": "PASS_CUSTOM_FROZEN_PROTOCOL_VALIDATION"
+}

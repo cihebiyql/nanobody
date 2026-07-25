@@ -1,0 +1,9 @@
+{
+  "completed_at": "2026-07-25T02:14:49.565614+08:00",
+  "cpu_limit": 24,
+  "gpu_limit": 0,
+  "rows": 2000,
+  "schema_version": "pvrig.top7500.full_qc_2000.v1",
+  "sha256": "7a9186b8c45e46103adf997727e9a40a605850bae21517a7fc6c6a1f91500f2d",
+  "status": "PASS_FULL_QC_2000"
+}

@@ -1,0 +1,12 @@
+{
+  "state": "COMPLETE",
+  "updated_at": "2026-07-24T21:33:51.748246+00:00",
+  "total": 60,
+  "completed": 60,
+  "failed": 0,
+  "production_ns_each": 2,
+  "gpu_limit": 4,
+  "cpu_limit": 32,
+  "slots_per_gpu": 4,
+  "ntomp_per_trajectory": 2
+}

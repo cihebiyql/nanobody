@@ -13,6 +13,13 @@
 - Selected files: 1,260
 - Selected bytes: 41,304,714 (39.39 MiB)
 - Per-file threshold: 5 MiB by default (`NANOBODY_SYNC_MAX_BYTES`).
+- Total snapshot safety limit: 1 GiB by default (`NANOBODY_SYNC_MAX_TOTAL_BYTES`);
+  the sync fails closed when a newly generated tree pushes the selection above
+  this limit.
+- Portable checkout path limit: 220 characters relative to the repository root
+  by default (`NANOBODY_SYNC_MAX_RELATIVE_PATH_CHARS`), leaving room for a
+  Windows clone directory prefix and avoiding another `Filename too long`
+  checkout failure.
 - Included classes: source code, shell/Python scripts, notebooks under the threshold, Markdown/text docs, JSON/YAML/TOML config, small CSV/TSV/FASTA/PDB/CIF structure or table artifacts, and small documentation assets such as PNG/PDF/HTML.
 
 ## Included By Top-Level Area
@@ -70,9 +77,14 @@
 - `data/datasets/`, `data/models/`, and `data/model_data/` because they are large downloaded corpora, model outputs, and training data rather than lightweight source/docs.
 - Experiment-heavy directories such as `data/experiments/**/checkpoints`, `data/experiments/**/prepared`, `data/experiments/**/data_splits`, `data/experiments/**/negative_sets`, `data/experiments/**/runs`, and logs are excluded; experiment `src/`, `configs/`, `reports/`, `audits/`, and small prediction summaries remain eligible.
 - `code/downloads_background/`, `code/repro_outputs/`, model weight directories such as `NABP-BERT-models`, and downloaded model data/output folders.
+- Generated code-adjacent payloads under `code/**/run/`, `code/**/runs/`,
+  `code/**/reallocation_work/`, and `code/results/`; implementation directories
+  such as `scripts/`, `tests/`, `docs/`, configuration, and deployment runtime
+  source remain eligible.
 - `docking/**/haddock3`, `docking/**/workdirs`, pose/model output folders, remote/log/test-output folders; lightweight docking scripts, reports, inputs, and small aligned structures remain eligible.
 - `tools/nanobody_tool_survey/code/` and `tools/nanobody_tool_survey/papers/`, which are bulky external tool/paper mirrors; local survey metadata and reports remain eligible.
 - Any file over the size threshold or with a non-allowlisted binary/generated extension.
+- Any repository-relative path over the portable checkout threshold.
 
 ## Pre-push Sensitive Pattern Scan
 
@@ -84,4 +96,4 @@ A manifest-scoped scan checked for private-key blocks, GitHub/OpenAI/HuggingFace
 scripts/sync_lightweight_to_github.sh
 ```
 
-The sync script regenerates `docs/lightweight_sync_manifest.txt`, temporarily bypasses manifest-selected embedded Git checkout boundaries without adding their internal `.git/` directories, force-adds only the manifest-selected files, commits using the configured Git identity, and pushes with the dedicated GitHub SSH key.
+The sync script regenerates `docs/lightweight_sync_manifest.txt`, temporarily bypasses manifest-selected embedded Git checkout boundaries without adding their internal `.git/` directories, force-adds only the manifest-selected files, removes files selected by an older broader policy from the Git index without deleting the canonical local files, commits using the configured Git identity, and pushes with the dedicated GitHub SSH key.

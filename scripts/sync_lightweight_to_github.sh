@@ -94,6 +94,47 @@ git add -f --pathspec-from-file="$MANIFEST"
 restore_embedded_git
 trap - EXIT
 
+# The manifest is authoritative for the published snapshot. Remove files that
+# were tracked by an older, broader policy from Git's index while leaving the
+# canonical workspace files untouched on disk.
+PRUNE_LIST="$(mktemp)"
+python3 - "$MANIFEST" "$STATUS_DOC" "$PRUNE_LIST" <<'PY'
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+manifest_path = Path(sys.argv[1])
+status_path = sys.argv[2]
+output_path = Path(sys.argv[3])
+
+selected = {
+    os.fsencode(rel)
+    for rel in manifest_path.read_text(encoding="utf-8").splitlines()
+    if rel
+}
+selected.update(
+    {
+        os.fsencode(manifest_path.as_posix()),
+        os.fsencode(status_path),
+    }
+)
+tracked = {
+    rel
+    for rel in subprocess.check_output(["git", "ls-files", "-z"]).split(b"\0")
+    if rel
+}
+pruned = sorted(tracked - selected)
+with output_path.open("wb") as handle:
+    for rel in pruned:
+        handle.write(rel + b"\0")
+print(f"pruned_tracked_files={len(pruned)}")
+PY
+if [[ -s "$PRUNE_LIST" ]]; then
+  git update-index --force-remove -z --stdin < "$PRUNE_LIST"
+fi
+rm -f "$PRUNE_LIST"
+
 if git diff --cached --quiet; then
   echo "No lightweight changes to commit."
 else

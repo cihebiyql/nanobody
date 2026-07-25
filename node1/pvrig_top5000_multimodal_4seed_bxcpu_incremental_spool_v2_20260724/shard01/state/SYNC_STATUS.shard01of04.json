@@ -9,15 +9,14 @@
   "schema_version": "pvrig.top5000_multimodal_4seed.incremental_sync.v1",
   "stable_age_seconds": 90,
   "summary": {
-    "batch": 13,
-    "delivered": 1723,
+    "batch": 0,
+    "delivered": 6055,
     "expected_jobs": 40000,
     "max_spool_bytes": 4294967296,
-    "pruned": 1723,
-    "spool_bytes": 5425970,
-    "verified_batch_id": "20260724T140335_shard01of04_1784901815257243937_3797178"
+    "pruned": 6055,
+    "spool_bytes": 18457785
   },
   "sync_shard_count": 4,
   "sync_shard_index": 1,
-  "updated_at_utc": "2026-07-24T14:04:28.363391+00:00"
+  "updated_at_utc": "2026-07-25T00:43:52.085762+00:00"
 }

@@ -1,0 +1,13 @@
+{
+  "analysis_window_ns": "1.0-2.0",
+  "candidate_summary_sha256": "9b84a3289d085ecdceb22bda5ce5f683f6ca5f34d955c278f50d5db81cfe8193",
+  "candidates": 20,
+  "claim_boundary": "Short binary-complex MD measures pose persistence; it does not measure PVRL2 occlusion directly and is not experimental affinity or blocking.",
+  "created_at": "2026-07-24T21:47:37.657639+00:00",
+  "method_role": "DESCRIPTIVE_ONLY",
+  "production_ns_each": 2,
+  "schema_version": "pvrig.top80.md20_analysis.v1",
+  "state": "MD20_ANALYSIS_COMPLETE",
+  "trajectories": 60,
+  "trajectory_metrics_sha256": "df4ec1244667a60cef50711eebf9400bd0007187cb947b6148df11aeecd843e1"
+}

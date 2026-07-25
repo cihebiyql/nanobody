@@ -158,6 +158,15 @@ raise SystemExit(0 if ok else 1)
 PY
 }
 
+published_running_status() {
+    local status=$1
+    "$LOCAL_ENV/bin/python" - "$status" <<'PY' >/dev/null 2>&1
+import json, sys
+payload = json.load(open(sys.argv[1]))
+raise SystemExit(0 if payload.get("status") == "RUNNING" else 1)
+PY
+}
+
 publish_status_last() {
     local job_id=$1 source="$LOCAL_PROJECT/status/jobs/$job_id.json"
     local temporary="$PUBLISH_ROOT/status/jobs/.$job_id.json.partial.$$"
@@ -175,7 +184,8 @@ run_one() {
     if published_success "$job_id"; then
         return 100
     fi
-    if [[ -f "$PUBLISH_ROOT/status/jobs/$job_id.json" ]]; then
+    if [[ -f "$PUBLISH_ROOT/status/jobs/$job_id.json" ]] &&
+        published_running_status "$PUBLISH_ROOT/status/jobs/$job_id.json"; then
         cp -f \
             "$PUBLISH_ROOT/status/jobs/$job_id.json" \
             "$LOCAL_PROJECT/status/jobs/$job_id.json"

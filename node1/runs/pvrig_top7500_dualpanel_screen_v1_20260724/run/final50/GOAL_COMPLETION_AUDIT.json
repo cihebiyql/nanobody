@@ -1,0 +1,184 @@
+{
+  "check_count": 29,
+  "checks": {
+    "final50_count_unique": {
+      "detail": {
+        "rows": 50
+      },
+      "pass": true
+    },
+    "final50_fasta_matches": {
+      "pass": true
+    },
+    "final50_ranks": {
+      "pass": true
+    },
+    "final50_subset_top80": {
+      "pass": true
+    },
+    "final_diversity_constraints": {
+      "detail": {
+        "max_direct_cdr3_identity": 0.7894736842105263,
+        "parent_counts": {
+          "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 15,
+          "positive_pose_source_case02_pos_02_PVRIG-20": 1,
+          "positive_pose_source_case02_pos_04_PVRIG-38": 11,
+          "positive_pose_source_case02_pos_10_151H7": 15,
+          "positive_pose_source_case02_pos_11_151H8": 8
+        },
+        "route_counts": {
+          "c2_four_seed": 22,
+          "old_top7500": 28
+        }
+      },
+      "pass": true
+    },
+    "final_qc_50": {
+      "pass": true
+    },
+    "final_qc_zero_hard_fail": {
+      "pass": true
+    },
+    "final_receipt_diversity_checks": {
+      "pass": true
+    },
+    "final_receipt_input_hashes": {
+      "detail": {
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/FINAL50_PREAUDIT.json": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final50_ranked.fasta": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final50_ranked.tsv": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final_qc/FINAL50_QC_RESULTS.tsv": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/top10_priority.fasta": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/top10_priority.tsv": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/md/reports/MD20_ANALYSIS_COMPLETE.json": true,
+        "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top80/TOP80_COMPLETE.json": true
+      },
+      "pass": true
+    },
+    "final_receipt_output_hashes": {
+      "detail": {
+        "final50_ranked.fasta": true,
+        "final50_ranked.tsv": true,
+        "final50_validation_audit.tsv": true,
+        "top10_priority.fasta": true,
+        "top10_priority.tsv": true
+      },
+      "pass": true
+    },
+    "final_validation_audit": {
+      "pass": true
+    },
+    "fresh_unittests_15": {
+      "detail": {
+        "sha256": "f0f264591e896970b089f7c8002803e1d602723ce6865c42c7cbd0be9f8d3bea"
+      },
+      "pass": true
+    },
+    "full_qc_2000": {
+      "detail": {
+        "rows": 2000,
+        "sha256": "7a9186b8c45e46103adf997727e9a40a605850bae21517a7fc6c6a1f91500f2d"
+      },
+      "pass": true
+    },
+    "md20_analysis": {
+      "detail": {
+        "candidate_rows": 20,
+        "trajectory_rows": 60
+      },
+      "pass": true
+    },
+    "md60_production": {
+      "detail": {
+        "complete": 60,
+        "failed": 0,
+        "validated_logs": 60
+      },
+      "pass": true
+    },
+    "md_claim_boundary": {
+      "pass": true
+    },
+    "official_validator_50_pass": {
+      "pass": true
+    },
+    "positive_cdr_similarity_50_pass": {
+      "detail": {
+        "max_identity": 0.75
+      },
+      "pass": true
+    },
+    "static_hashes": {
+      "pass": true
+    },
+    "static_review_400": {
+      "detail": {
+        "manifest_rows": 400,
+        "metric_rows": 400
+      },
+      "pass": true
+    },
+    "terminal_controller_state": {
+      "detail": {
+        "controller_state": "FINAL50_COMPLETE",
+        "root_state": "FINAL50_COMPLETE"
+      },
+      "pass": true
+    },
+    "top10_7_plus_3": {
+      "detail": {
+        "HIGHEST_CONFIDENCE_CORE": 7,
+        "INDEPENDENT_PARENT_OR_MECHANISM": 3
+      },
+      "pass": true
+    },
+    "top10_count_subset": {
+      "pass": true
+    },
+    "top10_fasta_matches": {
+      "pass": true
+    },
+    "top10_quota_constraints": {
+      "detail": {
+        "parent_counts": {
+          "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 3,
+          "positive_pose_source_case02_pos_04_PVRIG-38": 1,
+          "positive_pose_source_case02_pos_10_151H7": 3,
+          "positive_pose_source_case02_pos_11_151H8": 3
+        },
+        "route_counts": {
+          "c2_four_seed": 6,
+          "old_top7500": 4
+        }
+      },
+      "pass": true
+    },
+    "top200_frozen": {
+      "detail": {
+        "rows": 200
+      },
+      "pass": true
+    },
+    "top200_hashes": {
+      "pass": true
+    },
+    "top80_frozen": {
+      "detail": {
+        "rows": 80
+      },
+      "pass": true
+    },
+    "top80_hashes": {
+      "pass": true
+    }
+  },
+  "claim_boundary": "Computationally audited portfolio only; experimental BLI, Kd, IC50, expression and purity remain unmeasured.",
+  "created_at": "2026-07-25T05:57:58.287929+08:00",
+  "failed_check_count": 0,
+  "final50_sha256": "dca87287e4cc7d4a777122182fb435399427ffa34b2f34cf1243d190525df2e6",
+  "final_receipt_sha256": "fb6c667c387081c497e1192528e5c5230eace8dab6aab4ad1350f47a24b5f52d",
+  "schema_version": "pvrig.top7500.goal_completion_audit.v1",
+  "state": "COMPLETE",
+  "test_log_sha256": "f0f264591e896970b089f7c8002803e1d602723ce6865c42c7cbd0be9f8d3bea",
+  "top10_sha256": "40d58611ff82f396e10643e7e4d590193648d6712bef183be5fb57e1aca60ea6"
+}

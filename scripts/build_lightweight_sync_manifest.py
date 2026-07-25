@@ -9,6 +9,17 @@ from pathlib import Path
 
 DEFAULT_MAX_BYTES = 5 * 1024 * 1024
 MAX_BYTES = int(os.environ.get("NANOBODY_SYNC_MAX_BYTES", DEFAULT_MAX_BYTES))
+DEFAULT_MAX_TOTAL_BYTES = 1024 * 1024 * 1024
+MAX_TOTAL_BYTES = int(
+    os.environ.get("NANOBODY_SYNC_MAX_TOTAL_BYTES", DEFAULT_MAX_TOTAL_BYTES)
+)
+DEFAULT_MAX_RELATIVE_PATH_CHARS = 220
+MAX_RELATIVE_PATH_CHARS = int(
+    os.environ.get(
+        "NANOBODY_SYNC_MAX_RELATIVE_PATH_CHARS",
+        DEFAULT_MAX_RELATIVE_PATH_CHARS,
+    )
+)
 
 ALLOWED_SUFFIXES = {
     ".bash",
@@ -75,6 +86,7 @@ EXCLUDED_PREFIXES = {
     "code/downloaded_models/NABP-LSTM-Att/model",
     "code/downloads_background",
     "code/repro_outputs",
+    "code/results",
     "data/.omx",
     "data/datasets",
     "data/model_data",
@@ -131,6 +143,11 @@ EXPERIMENT_SKIP_NAMES = {
     "prepared",
     "runs",
 }
+CODE_RUNTIME_SKIP_NAMES = {
+    "reallocation_work",
+    "run",
+    "runs",
+}
 
 
 def as_posix(path: Path) -> str:
@@ -158,6 +175,8 @@ def is_excluded_dir(rel: str) -> bool:
     if len(parts) >= 3 and parts[0] == "code" and parts[1] == "downloaded_models":
         if name in DOWNLOAD_MODEL_SKIP_NAMES:
             return True
+    if parts[0] == "code" and name in CODE_RUNTIME_SKIP_NAMES:
+        return True
     if parts[0] == "docking":
         if name in DOCKING_SKIP_NAMES or name.startswith("run_"):
             return True
@@ -171,6 +190,8 @@ def is_allowed_file(rel: str, size: int) -> bool:
     path = Path(rel)
     name = path.name
     if name == ".DS_Store":
+        return False
+    if len(rel) > MAX_RELATIVE_PATH_CHARS:
         return False
     if size > MAX_BYTES:
         return False
@@ -211,6 +232,19 @@ def write_manifest(files: list[tuple[str, int]], output: Path) -> None:
     output.write_text("".join(f"{rel}\n" for rel, _ in files), encoding="utf-8")
 
 
+def validate_total_size(
+    files: list[tuple[str, int]], max_total_bytes: int = MAX_TOTAL_BYTES
+) -> int:
+    total = sum(size for _, size in files)
+    if total > max_total_bytes:
+        raise ValueError(
+            "Selected lightweight payload "
+            f"{total} bytes exceeds safety limit {max_total_bytes} bytes; "
+            "tighten exclusions or explicitly raise NANOBODY_SYNC_MAX_TOTAL_BYTES"
+        )
+    return total
+
+
 def print_summary(files: list[tuple[str, int]]) -> None:
     by_top: Counter[str] = Counter()
     bytes_by_top: defaultdict[str, int] = defaultdict(int)
@@ -236,6 +270,12 @@ def main() -> int:
 
     root = Path(args.root).resolve()
     files = build_manifest(root)
+    try:
+        validate_total_size(files)
+    except ValueError as exc:
+        if args.summary:
+            print_summary(files)
+        parser.exit(3, f"{exc}\n")
     write_manifest(files, root / args.output)
     if args.summary:
         print_summary(files)

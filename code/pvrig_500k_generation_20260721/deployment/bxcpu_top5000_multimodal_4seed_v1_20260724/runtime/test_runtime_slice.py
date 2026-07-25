@@ -387,6 +387,8 @@ class StaticContractTests(unittest.TestCase):
         self.assertIn('"$LOCAL_PROJECT/status/jobs"', worker)
         self.assertIn('"$LOCAL_PROJECT/results"', worker)
         self.assertIn('"$LOCAL_PROJECT/runs"', worker)
+        self.assertIn('payload.get("status") == "RUNNING"', worker)
+        self.assertIn("published_running_status", worker)
         self.assertIn(
             "pvrig_top5000_dualreceptor_4seed_handoff_v1_20260724", worker
         )

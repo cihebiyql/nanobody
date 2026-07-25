@@ -1,0 +1,78 @@
+{
+  "completed_at": "2026-07-25T00:39:59.083122+00:00",
+  "gpus": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "nanonet_count": 200,
+  "pid": 1438472,
+  "schema_version": "pvrig.top200.structure_consistency.controller.v1",
+  "started_at": "2026-07-25T00:37:50.351723+00:00",
+  "state": "COMPLETE",
+  "summary": {
+    "candidate_count": 200,
+    "cdr3_rmsd_quantiles_a": {
+      "igfold_vs_nanonet": {
+        "max": 6.9229,
+        "median": 2.7982,
+        "min": 1.5808,
+        "q25": 2.1937,
+        "q75": 3.652
+      },
+      "igfold_vs_nbb2": {
+        "max": 7.0014,
+        "median": 2.3763,
+        "min": 1.102,
+        "q25": 1.942,
+        "q75": 2.7833
+      },
+      "nbb2_vs_nanonet": {
+        "max": 7.4378,
+        "median": 3.0432,
+        "min": 1.2405,
+        "q25": 2.1423,
+        "q75": 4.5259
+      }
+    },
+    "claim_boundary": "Cross-tool monomer consistency is a structural uncertainty diagnostic; it is not experimental binding, affinity, purity, or blocking evidence.",
+    "complete_three_tool_count": 200,
+    "created_at": "2026-07-25T00:39:58.657834+00:00",
+    "fr_rmsd_quantiles_a": {
+      "igfold_vs_nanonet": {
+        "max": 0.7027,
+        "median": 0.4532,
+        "min": 0.281,
+        "q25": 0.3758,
+        "q75": 0.5174
+      },
+      "igfold_vs_nbb2": {
+        "max": 0.9078,
+        "median": 0.4659,
+        "min": 0.2524,
+        "q25": 0.4154,
+        "q75": 0.5448
+      },
+      "nbb2_vs_nanonet": {
+        "max": 1.013,
+        "median": 0.5994,
+        "min": 0.3186,
+        "q25": 0.5018,
+        "q75": 0.704
+      }
+    },
+    "high_uncertainty_count": 77,
+    "high_uncertainty_sha256": "54bd581ad5ebeb4685984306ba7bfdf23693005063a3ee7b0b60477a615e5584",
+    "label_counts": {
+      "PASS": 200
+    },
+    "manifest_sha256": "b59fa624b866979e2111c4b2447d41259d9bf8e48cfc2391725f9de0bf0e011a",
+    "metrics_sha256": "d988ba4861e8e0d940e68600076fa1a6deaaa2b961703b4c88ebcda131cdf78f",
+    "schema_version": "pvrig.top200.structure_consistency.summary.v1"
+  }
+}

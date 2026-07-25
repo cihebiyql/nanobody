@@ -1,0 +1,43 @@
+{
+  "already_complete_candidates": 22,
+  "candidates_needing_completion": 28,
+  "candidates_with_extra_seed_3253": 9,
+  "canonical_seeds": [
+    42,
+    917,
+    1931,
+    3047
+  ],
+  "claim_boundary": "This receipt proves a missing-seed plan only; no planned docking job is claimed complete.",
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "created_at": "2026-07-25T00:11:03.211718+00:00",
+  "final50_count": 50,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/docking_aggregate/C2_JOB_RESULTS_41760.tsv": "3aefa7da0d80802c361c4721e758cb0c2091436baa2df25c5a34d374546bc9bd",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/docking_aggregate/OLD_PRIORITY_JOB_RESULTS_25000.tsv": "83545a0949b964fa2de2852469104ffb90bc690aaeee8efaf1d5bd7ae2349237",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final50_ranked.tsv": "dca87287e4cc7d4a777122182fb435399427ffa34b2f34cf1243d190525df2e6",
+    "/data1/qlyu/projects/pvrig_priority_top7500_dualreceptor_multiseed_handoff_v3_20260722/manifests/docking_jobs_recommended_25000.tsv": "2b1d8f4c595d181c747ba1044d07e45d0be1da2b8260a9d35ab1c24c524be661"
+  },
+  "output_hashes": {
+    "FINAL50_COMMON4_SEED_COMPLETION_CANDIDATES.tsv": "41ab207fdfef628984dd1db02f261f01b32148745e81a3ce4c05818bd7be517c",
+    "FINAL50_MISSING_SEED_JOBS.tsv": "71686c354aea70682d584e6fd42ca21c87b7b609a3fcf9a99421773d05e4b19a",
+    "FINAL50_MISSING_SEED_JOBS_RUNNABLE.tsv": "87d6e10207037d351e0b5aa2c115dac3c9b6cae5137436766318e1156ca45429",
+    "FINAL50_NEEDS_SEED_COMPLETION_28.fasta": "6282a35e1df82d77c7ff23d983547bf9897f63d89ff46e0ab02e08d57b7fddfb",
+    "README_ZH.md": "c2dee494c736c967536becd095046a58e67f929c07661fc0919e795ee51fd8d6"
+  },
+  "planned_job_count": 112,
+  "planned_jobs_by_conformation": {
+    "8x6b": 56,
+    "9e6y": 56
+  },
+  "planned_jobs_by_seed": {
+    "3047": 56,
+    "42": 56
+  },
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.final50.common4_seed_completion_manifest.v1",
+  "state": "READY_NOT_RUN"
+}

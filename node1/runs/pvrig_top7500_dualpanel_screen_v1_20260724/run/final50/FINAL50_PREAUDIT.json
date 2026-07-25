@@ -1,0 +1,39 @@
+{
+  "channel_counts": {
+    "EXPLOITATION": 30,
+    "PARENT_MECHANISM_DIVERSITY": 10,
+    "QUOTA_SAFE_BACKFILL": 5,
+    "STRUCTURAL_DIVERSITY_RESERVE": 5
+  },
+  "claim_boundary": "Computational portfolio; no experimental BLI, Kd, IC50, expression or purity claim.",
+  "count": 50,
+  "direct_pairwise_cdr3_identity_threshold": 0.8,
+  "exact_cdr3_duplicates": 0,
+  "exact_sequence_duplicates": 0,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/md/md_manifest.tsv": "17cf29a4218e289c87319c3678625261bf5b473e5e15beca3245eeb5065bda46",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/md/reports/md_candidate_summary.tsv": "9b84a3289d085ecdceb22bda5ce5f683f6ca5f34d955c278f50d5db81cfe8193",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top80/TOP80_COMPLETE.json": "3b19cdd6504b495a9813cd7d812499b1e3cb297cb06d4b78d90e81d83756611e",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top80/top80_post_static.tsv": "291ee92b1428c0a7a8559173bcef978b9d4117bf8df7fb79b9c458a8d924fc0d"
+  },
+  "max_cdr3_cluster_count": 15,
+  "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+  "md_completed_candidates": 20,
+  "md_role": "DESCRIPTIVE_ONLY",
+  "md_selected_candidates": 20,
+  "parent_counts": {
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 15,
+    "positive_pose_source_case02_pos_02_PVRIG-20": 1,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 11,
+    "positive_pose_source_case02_pos_10_151H7": 15,
+    "positive_pose_source_case02_pos_11_151H8": 8
+  },
+  "route_counts": {
+    "c2_four_seed": 22,
+    "old_top7500": 28
+  },
+  "schema_version": "pvrig.final50.portfolio.v1",
+  "single_linkage_cdr3_clusters_reporting_only": true,
+  "state": "FINAL50_PREAUDIT_COMPLETE",
+  "top10_count": 10
+}

@@ -1,0 +1,38 @@
+{
+  "cdr3_cluster_count": 61,
+  "channel_counts": {
+    "CORE_EXPLOITATION": 120,
+    "PARENT_CDR3_DIVERSITY": 40,
+    "QUOTA_SAFE_BACKFILL": 20,
+    "STRUCTURAL_RESERVE": 20
+  },
+  "claim_boundary": "Top200 computational static-review pool; not experimental binder/blocker ranking.",
+  "count": 200,
+  "direct_pairwise_cdr3_identity_threshold": 0.8,
+  "exact_cdr3_duplicate_count": 0,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/candidate_aggregate/candidate_evidence_table.tsv": "d826c3376502d5bac5e485760401d63f53933e73fb9b8bc1b5b79a21c1bf9759",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/full_qc/FULL_QC_RESULTS.tsv": "7a9186b8c45e46103adf997727e9a40a605850bae21517a7fc6c6a1f91500f2d"
+  },
+  "max_cdr3_cluster_count": 59,
+  "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+  "output_hashes": {
+    "top200_pre_static.fasta": "6bdeaddd87f4d81a8682e21e31ff6209ee34e87a53f5dd8b68e9641250c8eb01",
+    "top200_pre_static.tsv": "c16ce9b3ac68825392e21ea9d432c697bb658603be832528a8cb67824a1f55d6"
+  },
+  "parent_counts": {
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 60,
+    "positive_pose_source_case02_pos_02_PVRIG-20": 6,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 58,
+    "positive_pose_source_case02_pos_06_20H5": 1,
+    "positive_pose_source_case02_pos_10_151H7": 60,
+    "positive_pose_source_case02_pos_11_151H8": 15
+  },
+  "route_counts": {
+    "c2_four_seed": 94,
+    "old_top7500": 106
+  },
+  "schema_version": "pvrig.top200.static_pool.v1",
+  "single_linkage_cdr3_clusters_reporting_only": true,
+  "status": "PASS_TOP200_FROZEN"
+}

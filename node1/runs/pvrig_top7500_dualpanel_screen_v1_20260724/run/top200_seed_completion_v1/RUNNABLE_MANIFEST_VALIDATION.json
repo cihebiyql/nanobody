@@ -1,0 +1,16 @@
+{
+  "candidate_count": 106,
+  "checks": {
+    "cfg_hash": 424,
+    "job_hash": 424,
+    "job_id": 424,
+    "monomer_hash": 424,
+    "restraint_hash": 424
+  },
+  "job_count": 424,
+  "manifest_sha256": "2bb9559b3235bf1201b1d05ecaefedaaad51f7e0e825edc671a0e577298bebac",
+  "note": "Checked every planned job against the frozen monomer, rendered config, rendered AIR restraint, job hash basis, exact job ID, and full missing 2-seed x 2-conformation matrix.",
+  "protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+  "schema_version": "pvrig.top200.common4_seed_completion_validation.v1",
+  "state": "PASS_CUSTOM_FROZEN_PROTOCOL_VALIDATION"
+}
