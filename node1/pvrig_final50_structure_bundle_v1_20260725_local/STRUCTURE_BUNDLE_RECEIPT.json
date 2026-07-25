@@ -1,0 +1,23 @@
+{
+  "schema_version": "pvrig.final50.structure_bundle.v1",
+  "state": "COMPLETE",
+  "claim_boundary": "Structural files are computational docking outputs, not experimental binding/blocking proof.",
+  "final50_candidates": 50,
+  "representative_complex_pdbs": 400,
+  "per_candidate_jobs": 8,
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "seeds": [
+    42,
+    917,
+    1931,
+    3047
+  ],
+  "source_final50_tsv": "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/common4_rerank_v2_20260725/final50/final50_ranked.tsv",
+  "source_jobs_tsv": "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top200_seed_completion_v1/TOP200_COMMON4_JOB_RESULTS_1600.tsv",
+  "all_jobs_success": true,
+  "archive_symlinks": 400,
+  "sha256sums_sha256": "f57786511a0e2884fd2b4ad74d44e7f6fce65c27d36c5f00055f86eed59ed997"
+}

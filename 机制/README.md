@@ -11,6 +11,28 @@
 
 这个包不是最终候选抗体包，也不包含 Top 50 设计。
 
+## 新增：Final50 阻断机制与筛选流程独立复核
+
+已对独立候选包
+`node1/pvrig_final50_structure_bundle_v1_20260725_local` 中的 50 条序列和
+400 个代表复合物进行 PVRIG 叠合、PVRL2 overlay、hotspot、总遮挡、
+CDR3 遮挡和多 seed/双构象复核。
+
+核心结论和证据表：
+
+```text
+机制/reports/PVRIG_Final50_阻断机制与筛选流程独立复核_20260725.md
+机制/data/audits/PVRIG_Final50_400pose_机制复核明细.tsv
+机制/data/audits/PVRIG_Final50_候选级机制复核汇总.tsv
+```
+
+摘要：
+
+- Top10 的 80/80 个代表 PDB 通过当前四项 blocker-like 几何门槛；
+- Final50 中 44 条为 8/8 通过，5 条为 7/8 通过，1 条仅 2/8 通过；
+- 当前流程适合做机制富集和实验优先级排序，不等于实验 binding/Kd/IC50；
+- 仍需处理约束 docking 循环偏倚、分数饱和、151 parent 集中和 Top10 元数据问题。
+
 ## 当前在线查看器
 
 当前 Panel 服务未关闭，仍在运行：
