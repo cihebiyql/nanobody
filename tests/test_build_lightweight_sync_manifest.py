@@ -15,6 +15,7 @@ PROJECT = "code/pvrig_500k_generation_20260721"
 class LightweightSyncManifestTests(unittest.TestCase):
     def test_excludes_generated_code_runtime_trees(self) -> None:
         self.assertTrue(is_excluded_dir(f"{PROJECT}/run"))
+        self.assertTrue(is_excluded_dir("pvrig-vhh-sicbc-submission"))
         self.assertTrue(
             is_excluded_dir(
                 f"{PROJECT}/deployment/example/reallocation_work"

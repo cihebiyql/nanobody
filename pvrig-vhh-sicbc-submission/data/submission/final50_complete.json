@@ -1,0 +1,50 @@
+{
+  "cdr3_cluster_max": 15,
+  "claim_boundary": "Audited computational submission portfolio; experimental BLI, Kd, IC50, expression and purity remain to be measured by the organizer.",
+  "count": 50,
+  "diversity_checks": {
+    "direct_pairwise_cdr3_identity_below_0p80": true,
+    "exact_cdr3_duplicates_zero": true,
+    "exact_sequence_duplicates_zero": true,
+    "minimum_four_parents": true,
+    "parent_max_fifteen": true,
+    "route_max_thirtyfive": true
+  },
+  "hard_fail_count": 0,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/FINAL50_PREAUDIT.json": "4c3a05dd812d356a41b5a3ac45cee403f16eaca6e71fb4715212e9eb552e0e44",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final50_ranked.fasta": "b30ebf3f7ccd864a6fe74ba6d82fab6bb42350a3d461ec6b8a0f75ff96002b3a",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final50_ranked.tsv": "dca87287e4cc7d4a777122182fb435399427ffa34b2f34cf1243d190525df2e6",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/final_qc/FINAL50_QC_RESULTS.tsv": "9891862fc7dabf245015e2de021b3b79c4b17c1b098c6c599768cae5be524141",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/top10_priority.fasta": "26e79c185c242dca9798fd2cc1d29d8dcaa1906503cf388c34b27a6aedf01210",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/final50/top10_priority.tsv": "40d58611ff82f396e10643e7e4d590193648d6712bef183be5fb57e1aca60ea6",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/md/reports/MD20_ANALYSIS_COMPLETE.json": "c423cc964b9d82259c269201635c0c09c5dfa55989083720f288366d60dfa36c",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top80/TOP80_COMPLETE.json": "3b19cdd6504b495a9813cd7d812499b1e3cb297cb06d4b78d90e81d83756611e"
+  },
+  "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+  "md_role": "DESCRIPTIVE_ONLY",
+  "official_validator_pass": 50,
+  "output_hashes": {
+    "final50_ranked.fasta": "b30ebf3f7ccd864a6fe74ba6d82fab6bb42350a3d461ec6b8a0f75ff96002b3a",
+    "final50_ranked.tsv": "dca87287e4cc7d4a777122182fb435399427ffa34b2f34cf1243d190525df2e6",
+    "final50_validation_audit.tsv": "abc222492c156209bd3741bbad1384897f0b1db74b81d798319348ecfe44813a",
+    "top10_priority.fasta": "26e79c185c242dca9798fd2cc1d29d8dcaa1906503cf388c34b27a6aedf01210",
+    "top10_priority.tsv": "40d58611ff82f396e10643e7e4d590193648d6712bef183be5fb57e1aca60ea6"
+  },
+  "parent_counts": {
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 15,
+    "positive_pose_source_case02_pos_02_PVRIG-20": 1,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 11,
+    "positive_pose_source_case02_pos_10_151H7": 15,
+    "positive_pose_source_case02_pos_11_151H8": 8
+  },
+  "route_counts": {
+    "c2_four_seed": 22,
+    "old_top7500": 28
+  },
+  "schema_version": "pvrig.final50.audited.v1",
+  "similarity_filter_pass": 50,
+  "single_linkage_cdr3_clusters_reporting_only": true,
+  "state": "FINAL50_COMPLETE",
+  "top10_count": 10
+}

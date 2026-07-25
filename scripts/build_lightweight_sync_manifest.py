@@ -80,6 +80,7 @@ EXCLUDED_PREFIXES = {
     ".git",
     ".local",
     ".omx",
+    "pvrig-vhh-sicbc-submission",
     "code/.omx",
     "code/downloaded_models/DeepNano-data",
     "code/downloaded_models/NABP-BERT/NABP-BERT-models",
