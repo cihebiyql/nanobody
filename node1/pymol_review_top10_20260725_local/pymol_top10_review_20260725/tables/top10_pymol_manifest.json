@@ -1,0 +1,102 @@
+[
+  {
+    "priority_rank": 1,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0107__00292",
+    "sequence": "HVQLVESGGGSVQAGGSLRLSCVASGPGLSRGPWSMAWFRQAPGKEREAVAGVDWEGGTTYADSVKGRFTASRDNAGFSLFLQMNDLKPEDTAMYYCAAGRLSGGTVPTDGSGWDYWGQGTQVTVSS",
+    "pose_8x6b": "rank01_8X6B.pdb",
+    "pose_9e6y": "rank01_9E6Y.pdb",
+    "seed_8x6b": "917",
+    "seed_9e6y": "1931",
+    "pymol_script": "pymol/review_rank01.pml"
+  },
+  {
+    "priority_rank": 2,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0032__00042",
+    "sequence": "QVQLVESGGGSVQAGGSLRLSCAASYPETGPIPMAWFRQAPGKQREGVATISADQTKTYYTDSVRGRFTISRDNAKNTMYLQMNSLKPEDTAMYYCAASFEGGSYSESDYQYWGQGTQVTVSS",
+    "pose_8x6b": "rank02_8X6B.pdb",
+    "pose_9e6y": "rank02_9E6Y.pdb",
+    "seed_8x6b": "917",
+    "seed_9e6y": "917",
+    "pymol_script": "pymol/review_rank02.pml"
+  },
+  {
+    "priority_rank": 3,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0188__00549",
+    "sequence": "HVQLVESGGGLVQPGGSLRLSCVASGPDFGHPGWDMAWFRQAPGKEREAVAGIDSEGRVTYADSVKGRFTASRDNAGFSLYLQMNSLRAEDTAVYYCAGGYQPSSRISMLPDQWEYWGQGTMVTVSS",
+    "pose_8x6b": "rank03_8X6B.pdb",
+    "pose_9e6y": "rank03_9E6Y.pdb",
+    "seed_8x6b": "1931",
+    "seed_9e6y": "42",
+    "pymol_script": "pymol/review_rank03.pml"
+  },
+  {
+    "priority_rank": 4,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0188__00519",
+    "sequence": "HVQLVESGGGLVQPGGSLRLSCVASGPGFLGPEIDMAWFRQAPGKEREAVAGIDREGDVTYADSVKGRFTASRDNAGFSLYLQMNSLRAEDTAVYYCAAGYQPSSTISMRPDQWEHWGQGTMVTVSS",
+    "pose_8x6b": "rank04_8X6B.pdb",
+    "pose_9e6y": "rank04_9E6Y.pdb",
+    "seed_8x6b": "3047",
+    "seed_9e6y": "1931",
+    "pymol_script": "pymol/review_rank04.pml"
+  },
+  {
+    "priority_rank": 5,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0002__00919",
+    "sequence": "HVQLVESGGGSVQAGGSLRLSCVASGPGWSHGDFSMAWFRQAPGKEREAVAGIDSSGTVTYADSVKGRFTASRDNAGFSLFLQMNDLKPEDTAMYYCAAGFLPSGAIPSTGSGYEFWGQGTQVTVSS",
+    "pose_8x6b": "rank05_8X6B.pdb",
+    "pose_9e6y": "rank05_9E6Y.pdb",
+    "seed_8x6b": "917",
+    "seed_9e6y": "42",
+    "pymol_script": "pymol/review_rank05.pml"
+  },
+  {
+    "priority_rank": 6,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0086__00466",
+    "sequence": "HVQLVESGGGLVQPGGSLRLSCVASGPGFRDGPVSMAWFRQAPGKEREAVAGISSSGTVTYADSVKGRFTASRDNAGFSLYLQMNSLRAEDTAVYYCAAGPLGSTTVPMTESGYVYWGQGTMVTVSS",
+    "pose_8x6b": "rank06_8X6B.pdb",
+    "pose_9e6y": "rank06_9E6Y.pdb",
+    "seed_8x6b": "3253",
+    "seed_9e6y": "917",
+    "pymol_script": "pymol/review_rank06.pml"
+  },
+  {
+    "priority_rank": 7,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0100__00383",
+    "sequence": "HVQLVESGGGSVQAGGSLRLSCVASGPGFRGGPFSMAWFRQAPGKEREAVAGIDISGTTTYADSVKGRFTASRDNAGFSLFLQMNDLKPEDTAMYYCAAGFTGSTSTPTTGEGWSYWGQGTQVTVSS",
+    "pose_8x6b": "rank07_8X6B.pdb",
+    "pose_9e6y": "rank07_9E6Y.pdb",
+    "seed_8x6b": "1931",
+    "seed_9e6y": "917",
+    "pymol_script": "pymol/review_rank07.pml"
+  },
+  {
+    "priority_rank": 8,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0388__00663",
+    "sequence": "EVQLVESGGGLVQPGGSLRLSCVASGGRRRDGGRGMAWFRQAPGKGLEAVAGVDAAGTVTYADSVKGRFTISRDNAGFSLYLQMNSLRAEDTAVYYCAWGESGSATPPLDPRGWAYWGQGTMVTVSS",
+    "pose_8x6b": "rank08_8X6B.pdb",
+    "pose_9e6y": "rank08_9E6Y.pdb",
+    "seed_8x6b": "3047",
+    "seed_9e6y": "42",
+    "pymol_script": "pymol/review_rank08.pml"
+  },
+  {
+    "priority_rank": 9,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0289__00496",
+    "sequence": "EVQLVESGGGLVQPGGSLRLSCVASGGRASPGGAGMAWFRQAPGKGLEAVAGISSSGTVTYADSVKGRFTISRDNAGFSLYLQMNSLRAEDTAVYYCAMGDSGRADPPLDPRGWAHWGQGTMVTVSS",
+    "pose_8x6b": "rank09_8X6B.pdb",
+    "pose_9e6y": "rank09_9E6Y.pdb",
+    "seed_8x6b": "917",
+    "seed_9e6y": "3047",
+    "pymol_script": "pymol/review_rank09.pml"
+  },
+  {
+    "priority_rank": 10,
+    "candidate_id": "P1MCPUFP__CPUFP500K_0091__00849",
+    "sequence": "EVQLVESGGGLVQPGGSLRLSCVASGGLTRPGGAGMAWFRQAPGKGLEAVAGVSATGTVTYADSVKGRFTISRDNAGFSLYLQMNSLRAEDTAVYYCAMGPSGRPDPPLDPRGYAYWGQGTMVTVSS",
+    "pose_8x6b": "rank10_8X6B.pdb",
+    "pose_9e6y": "rank10_9E6Y.pdb",
+    "seed_8x6b": "1931",
+    "seed_9e6y": "42",
+    "pymol_script": "pymol/review_rank10.pml"
+  }
+]
