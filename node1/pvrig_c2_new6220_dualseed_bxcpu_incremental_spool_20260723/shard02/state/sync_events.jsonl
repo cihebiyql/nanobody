@@ -6386,3 +6386,9 @@
 {"campaign": "c2_new4220", "cycle_seconds": 73.23, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 73.23, "time": "2026-07-25T06:02:54.835759+00:00"}
 {"campaign": "c2_new2000", "cycle_seconds": 36.636, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 36.636, "time": "2026-07-25T06:03:35.176682+00:00"}
 {"campaigns": [{"batch": 0, "campaign": "c2_new4220", "delivered": 4245, "pruned": 4245, "reconciled_stubs": 4245}, {"batch": 0, "campaign": "c2_new2000", "delivered": 2044, "pruned": 2044, "reconciled_stubs": 2044}], "message": "sync cycle complete", "time": "2026-07-25T06:03:35.239223+00:00"}
+{"campaign": "c2_new4220", "cycle_seconds": 63.843, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 63.843, "time": "2026-07-25T06:04:59.852260+00:00"}
+{"campaign": "c2_new2000", "cycle_seconds": 35.277, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 35.277, "time": "2026-07-25T06:05:38.832464+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "c2_new4220", "delivered": 4245, "pruned": 4245, "reconciled_stubs": 4245}, {"batch": 0, "campaign": "c2_new2000", "delivered": 2044, "pruned": 2044, "reconciled_stubs": 2044}], "message": "sync cycle complete", "time": "2026-07-25T06:05:38.901602+00:00"}
+{"campaign": "c2_new4220", "cycle_seconds": 61.304, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 61.304, "time": "2026-07-25T06:06:57.385939+00:00"}
+{"campaign": "c2_new2000", "cycle_seconds": 34.243, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 34.243, "time": "2026-07-25T06:07:35.323420+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "c2_new4220", "delivered": 4245, "pruned": 4245, "reconciled_stubs": 4245}, {"batch": 0, "campaign": "c2_new2000", "delivered": 2044, "pruned": 2044, "reconciled_stubs": 2044}], "message": "sync cycle complete", "time": "2026-07-25T06:07:35.388041+00:00"}

@@ -1,7 +1,0 @@
-component	version_or_contract	bundled	sha256	acquisition_or_note
-ProteinMPNN	ProteinMPNN_v48_noise_0.2.pt	no	c9cb4a671d79604111231f8dbfc7c590e06f1197453b7a6854ac6661a642f5bd	Install from the RFantibody distribution; do not commit the weight file.
-RFdiffusion	RFdiffusion_Ab.pt	no	736c18ae8e867ed505d19853fa5380514ff439675d002ff3a73c7287acf07e3c	Install from the RFantibody distribution; do not commit the weight file.
-RFdiffusion inference source	bound rfdiffusion_inference.py	no	fe66312248ba280e6bb05fa66677a6eb96dd8206679ce7d0d9ad5760a9495aca	Versioned external stack; hash checked before a production rerun.
-AbNatiV	classic VHH checkpoint, abnativ 2.0.8	no	NOT_CAPTURED	Obtain via the official AbNatiV initialization workflow; classic VHH was used, not the 1.09-GiB VHH2 checkpoint.
-Sapiens/BioPhi	prihodad/biophi-sapiens1-vh; tokenizer	no	NOT_CAPTURED	Download from the cited upstream model repositories and record local hashes before rerunning.
-PVRIG multimodal late fusion	v4-d/v5 source in code/multimodal	no	NOT_CAPTURED	Training data and fitted run-specific artifacts are not redistributed; final predictions and source code are included.

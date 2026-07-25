@@ -6351,3 +6351,10 @@
 {"campaign": "c2_new4220", "cycle_seconds": 62.717, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 62.717, "time": "2026-07-25T06:02:08.381219+00:00"}
 {"campaign": "c2_new2000", "cycle_seconds": 39.662, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 39.662, "time": "2026-07-25T06:02:51.747638+00:00"}
 {"campaigns": [{"batch": 0, "campaign": "c2_new4220", "delivered": 4154, "pruned": 4154, "reconciled_stubs": 4154}, {"batch": 0, "campaign": "c2_new2000", "delivered": 1944, "pruned": 1944, "reconciled_stubs": 1944}], "message": "sync cycle complete", "time": "2026-07-25T06:02:51.804973+00:00"}
+{"campaign": "c2_new4220", "cycle_seconds": 72.109, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 72.109, "time": "2026-07-25T06:04:24.665173+00:00"}
+{"campaign": "c2_new2000", "cycle_seconds": 38.122, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 38.122, "time": "2026-07-25T06:05:06.516832+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "c2_new4220", "delivered": 4154, "pruned": 4154, "reconciled_stubs": 4154}, {"batch": 0, "campaign": "c2_new2000", "delivered": 1944, "pruned": 1944, "reconciled_stubs": 1944}], "message": "sync cycle complete", "time": "2026-07-25T06:05:06.576387+00:00"}
+{"campaign": "c2_new4220", "cycle_seconds": 56.622, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 56.622, "time": "2026-07-25T06:06:20.389517+00:00"}
+{"campaign": "c2_new2000", "cycle_seconds": 42.046, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 42.046, "time": "2026-07-25T06:07:06.139833+00:00"}
+{"campaigns": [{"batch": 0, "campaign": "c2_new4220", "delivered": 4154, "pruned": 4154, "reconciled_stubs": 4154}, {"batch": 0, "campaign": "c2_new2000", "delivered": 1944, "pruned": 1944, "reconciled_stubs": 1944}], "message": "sync cycle complete", "time": "2026-07-25T06:07:06.197478+00:00"}
+{"campaign": "c2_new4220", "cycle_seconds": 67.66, "message": "campaign stage timing", "stage": "metadata", "stage_seconds": 67.66, "time": "2026-07-25T06:08:34.662092+00:00"}
