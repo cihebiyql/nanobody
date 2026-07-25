@@ -1,0 +1,11 @@
+{
+  "gpus": [
+    "1",
+    "2",
+    "3"
+  ],
+  "pid": 2007340,
+  "schema_version": "pvrig.control.independent_complex.controller.v1",
+  "started_at": "2026-07-25T02:50:12.981349+00:00",
+  "state": "RUNNING_BOLTZ"
+}
