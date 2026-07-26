@@ -1,0 +1,27 @@
+{
+  "assertions": {
+    "all_original_missing_rows_retried_once": true,
+    "merged_rows_exact_50": true,
+    "original_screen_not_overwritten": true
+  },
+  "candidate_count": 50,
+  "claim_boundary": "Same TNP software retry/supplement only; technical failure is retained as uncertainty and no value is measured expression or purity.",
+  "created_at_utc": "2026-07-26T02:43:46.181710+00:00",
+  "inputs": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_competition_ranking/Final50_competition_ranked.tsv": "6d7193baaf50d0616ad4e924a1a66cf5c4fae85bbad1ad4d7276479cec38f7f3",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/input_freeze/Final50_submission_freeze.tsv": "b6f78b09f70018ec45cc8d85b0eb9114959d351ef1c2df6d99109e5b979b09c3",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/uniform_full_qc/vhh_screen/screen_summary.tsv": "11732e533d958c0cd6a9cd8b0e13d0db51545102e18c03d521b068c53d5ac73e",
+    "/data/qlyu/software/envs/vhh-eval/bin/TNP": "2815d3ef413daf27b211486e1c73fa9be4e89716fdc9e589cdd6e9fd743be38e"
+  },
+  "missing_retried": 7,
+  "original_tnp_complete": 43,
+  "outputs": {
+    "Final50_uniform_screen_summary_tnp_completed.tsv": "e3435141a01394dfec31f19681bdc38c52b19033bf61eee2757fcc3c3024c67d",
+    "Final50_uniform_tnp_completion_status.tsv": "a2a2f8b4897b720a907a75afc3884d30e7213445c63bf1d0993c9004891ce9a6"
+  },
+  "retry_success": 0,
+  "retry_technical_failure": 7,
+  "schema_version": "qc397_final50_uniform_tnp_completion_v1",
+  "state": "COMPLETE_WITH_EXPLICIT_TECHNICAL_FAILURES",
+  "total_tnp_complete_after_retry": 43
+}

@@ -1,0 +1,59 @@
+{
+  "archive_sha256": "7e84590db5dfe0c9d89a27abb4f1cb3fb45a07c0d35d168fe246edbac4342ccd",
+  "claim_boundary": "Text/provenance correction only; sequences and frozen competition ranks are unchanged.",
+  "download_archive_hash_match": true,
+  "fixed_pose_lineage_disclosed": {
+    "passed": 15,
+    "total": 15
+  },
+  "rank_exact_1_50": true,
+  "records": 50,
+  "required_boundary_disclosures": {
+    "26": "NVT@58",
+    "32": "NVT@58",
+    "34": "NVT@58",
+    "50": "NLS@101"
+  },
+  "schema_version": "pvrig_final50_submission_text_disclosure_validation_v1",
+  "sequence_order_unchanged": true,
+  "state": "PASS",
+  "top10": [
+    "PVRIG_CAND_001",
+    "PVRIG_CAND_002",
+    "PVRIG_CAND_003",
+    "PVRIG_CAND_004",
+    "PVRIG_CAND_005",
+    "PVRIG_CAND_006",
+    "PVRIG_CAND_007",
+    "PVRIG_CAND_008",
+    "PVRIG_CAND_009",
+    "PVRIG_CAND_010"
+  ],
+  "whole_sequence_nglycosylation_motif_rows": {
+    "26": [
+      {
+        "motif": "NVT",
+        "position_1based": 58
+      }
+    ],
+    "32": [
+      {
+        "motif": "NVT",
+        "position_1based": 58
+      }
+    ],
+    "34": [
+      {
+        "motif": "NVT",
+        "position_1based": 58
+      }
+    ],
+    "50": [
+      {
+        "motif": "NLS",
+        "position_1based": 101
+      }
+    ]
+  },
+  "xlsx_sha256": "7e84590db5dfe0c9d89a27abb4f1cb3fb45a07c0d35d168fe246edbac4342ccd"
+}

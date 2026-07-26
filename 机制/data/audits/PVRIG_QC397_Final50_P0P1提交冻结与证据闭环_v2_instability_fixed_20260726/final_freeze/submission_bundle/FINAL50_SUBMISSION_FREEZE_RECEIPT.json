@@ -1,0 +1,84 @@
+{
+  "assertions": {
+    "instability_wiring_fixed": true,
+    "mechanism_rank_unchanged": true,
+    "sequence_set_unchanged": true,
+    "top10_matches_001_to_010": true,
+    "validator_50_of_50": true
+  },
+  "bundle_sha256": {
+    "CDR_SIMILARITY_RECEIPT.json": "a616713e64ffd96a3e057bd4d067dacc550fcdfc831f6064099558a8546df73a",
+    "EPITOPE_FINGERPRINT_RECEIPT.json": "f0dc65719170314b6b3de8b03d138d18533980700380c8977110cb5a44936d0d",
+    "Final50_ABC_threshold_sensitivity.tsv": "ea7701852088b7e5c0001fe35c813311407560d015bb9d166c67f09d9e3f02b0",
+    "Final50_ABC_threshold_sensitivity_summary.tsv": "2747c6bfbdd18c8da3cc556939f1fa9d3369ee762f1672269bc2cdc5c40ba752",
+    "Final50_A_not_Top10_exclusion_reasons.tsv": "39e49d2157e75e2cae40e9363ef89278f71f8d682448fc749955c7136c9f0174",
+    "Final50_epitope_fingerprint_clusters.tsv": "24bc2b54f012d9fd452aa8542d6e2b3cf4fdad011f1e57c210cd244c4a5dcec0",
+    "Final50_joined_evidence.tsv": "77837563ff7110e7c738de2c3820db095e7389b146521208283242cb0a9439ca",
+    "Final50_poor_single_domain_split.tsv": "432af90b8fe1233f5a26925b83fa1cd5faba345fc9200e0eb2b0f39a96a14496",
+    "Final50_revised_Top10_priority.tsv": "884e1f34ababa076c527432d55c084c7591a883d76d1e4f33022847be023734a",
+    "Final50_revised_primary_ABC_grade.tsv": "086148e1e5da1a2fb30f176b5befc6d3d32cdae8d374a900064fbd64bb27a980",
+    "Final50_submission_freeze.fasta": "ab831fa2423827baca6aab91690d1a98e0da5ab35d1f6a2745ce41e05b7396cd",
+    "Final50_submission_freeze.tsv": "b6f78b09f70018ec45cc8d85b0eb9114959d351ef1c2df6d99109e5b979b09c3",
+    "Final50_team_CDR1_identity_matrix.tsv": "c519cd76f9849c3eba655f410f0a16fbd99cc3a1e9c89a53d5b099f63fa516f0",
+    "Final50_team_CDR2_identity_matrix.tsv": "4d0bb3e7086127781373881d2c2ed5633fa279622e01dcef3e8d8c246ce68ff7",
+    "Final50_team_CDR3_identity_matrix.tsv": "27b4f0149d6dd83d09314966933a696ff9cbb1c2bb74acd1dd11dfb9de8f7215",
+    "Final50_team_CDR_identity_pairs.tsv": "42e5b6022c5802583fc454d95698f2ae5724a3be70bee9363462ce51e836ddb5",
+    "Final50_team_CDR_nearest_neighbor_summary.tsv": "adeebd8af23493209180557c72807be56f3fded587a04c6d1140e2a6b077750e",
+    "Final50_uniform_developability_evidence.tsv": "e0d174d955b82b462036bccefb6589024c9205a65fb4c0b154277cb1a609ce70",
+    "Final50_uniform_screen_summary_tnp_completed.tsv": "e3435141a01394dfec31f19681bdc38c52b19033bf61eee2757fcc3c3024c67d",
+    "Final50_uniform_tnp_completion_status.tsv": "a2a2f8b4897b720a907a75afc3884d30e7213445c63bf1d0993c9004891ce9a6",
+    "Final50_vs_all_positive_CDR_identity_summary.tsv": "73d4cb601c2a52a11ee179012ba7df3a464d7738bdc85b3dcf7213b3e716c9e9",
+    "Final50_vs_all_positive_corresponding_CDR_identity.tsv": "24558646ee60a2659ac8dfd963f88a12a6ea68efadcc431be5e4270195ea235d",
+    "P0P1_JOINED_EVIDENCE_RECEIPT.json": "af0ace1a781596a0a6202f409a9bf77e663ecd8dc191f73dec17651f588b1984",
+    "TSV_FASTA_EXACT_ASSERTION.json": "259dea7aacfcc575ec810726b5635c94580d1b45f9aa8d2cacd8c1e0d9d03a9e",
+    "UNIFORM_TNP_COMPLETION_RECEIPT.json": "37790f01301b4473fa63bcc7ec1e9853940c384ba8527a7427a2c2e560069155",
+    "official_failed_reasons.csv": "87d24ff92ebc628cd2b6e888c390454f8b9c5193077b08223f784d5d580871eb",
+    "official_validator.log": "559194b589674cf3883c975e85a1f47767a23c38416a2fc5ee02939870636c16"
+  },
+  "change": "P1 instability_index is read from vhh_eval.tsv instead of missing screen_summary.tsv; P0 sequence/QC evidence is unchanged.",
+  "claim_boundary": "Computational developability, ranking, epitope, and Top10 fields are prioritization evidence, not measured CHO yield, purity, BLI, Kd, IC50, or blocking.",
+  "created_at_utc": "2026-07-26T04:36:31.999872+00:00",
+  "exact_sequence_count": 50,
+  "frozen_input_sha256": {
+    "Final50_submission_freeze.fasta": "ab831fa2423827baca6aab91690d1a98e0da5ab35d1f6a2745ce41e05b7396cd",
+    "Final50_submission_freeze.tsv": "b6f78b09f70018ec45cc8d85b0eb9114959d351ef1c2df6d99109e5b979b09c3",
+    "source_ranked_tsv": "6d7193baaf50d0616ad4e924a1a66cf5c4fae85bbad1ad4d7276479cec38f7f3"
+  },
+  "official_validator": {
+    "evidence_log_sha256": "559194b589674cf3883c975e85a1f47767a23c38416a2fc5ee02939870636c16",
+    "failed": 0,
+    "identity_threshold": 0.8,
+    "passed": 50,
+    "total": 50
+  },
+  "p0": {
+    "candidate_vs_all_positive_rows": 3900,
+    "official_validator_exact_fasta": "PASS_50_OF_50",
+    "team_cdr_pair_rows": 1225,
+    "tsv_fasta_row_assertion": "PASS"
+  },
+  "p1": {
+    "grade_counts": {
+      "PERMISSIVE": {
+        "A_LOWER_RISK": 20,
+        "B_REVIEW": 28,
+        "C_HIGH_RISK": 2
+      },
+      "PRIMARY": {
+        "A_LOWER_RISK": 13,
+        "B_REVIEW": 34,
+        "C_HIGH_RISK": 3
+      },
+      "STRICT": {
+        "B_REVIEW": 43,
+        "C_HIGH_RISK": 7
+      }
+    },
+    "instability_source": "vhh_eval.tsv:instability_index",
+    "joined_evidence_rows": 50,
+    "revised_top10": "PVRIG_CAND_001..PVRIG_CAND_010"
+  },
+  "records": 50,
+  "schema_version": "qc397_final50_submission_freeze_p0p1_v2_instability_fixed",
+  "state": "FINAL_FREEZE_COMPLETE"
+}

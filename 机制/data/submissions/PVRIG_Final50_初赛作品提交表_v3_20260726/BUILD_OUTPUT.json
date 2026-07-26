@@ -1,0 +1,41 @@
+{
+  "antibody_form": "VHH纳米抗体",
+  "assertions": {
+    "all_positive_corresponding_cdrs_below_0p80": true,
+    "fixed_pose_all_three_cdrs_redesigned_15_of_15": true,
+    "fixed_pose_positive_framework_pose_lineage_disclosed_15_of_15": true,
+    "full_sequence_nglycosylation_motifs_reported": true,
+    "mechanism_rank_absent_from_official_recommendation": true,
+    "official_validator_50_of_50": true,
+    "positive_cdr_identity_rendered_as_percent": true,
+    "rank_exact_1_to_50": true,
+    "scores_explicitly_labeled_nonexperimental_proxies": true,
+    "workbook_columns_exact_13": true,
+    "workbook_rows_exact_50": true,
+    "workbook_sequences_exact_joined_evidence": true
+  },
+  "claim_boundary": "Computational submission workbook; model scores are recommendation evidence, not measured expression, purity, BLI, Kd, IC50 or blocking.",
+  "columns": 13,
+  "created_at_utc": "2026-07-26T04:57:42.199097+00:00",
+  "design_type_counts": {
+    "从头设计": 27,
+    "优化改造": 23
+  },
+  "inputs": {
+    "/mnt/c/Users/ciheb/Downloads/639177230946050000.docx": "db4fbc37f1654e5d4d91ce17beff2b9347a88c1844574c9bd393a16e4fca5057",
+    "/mnt/d/work/抗体/机制/data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_2_20260726/final_freeze/FINAL50_SUBMISSION_FREEZE_RECEIPT.json": "5b21b32fb043ccaa77302334249196d221899fe74cedfafd566b67ee3b26afe5",
+    "/mnt/d/work/抗体/机制/data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_2_20260726/fixed_pose_provenance/Final50_fixed_pose_CDR123_redesign_audit.tsv": "28ea095fa94ce72b76a15384921a869a2f9c3035505e08f62c3009c57233d889",
+    "/mnt/d/work/抗体/机制/data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_2_20260726/p0p1_joined/Final50_joined_evidence.tsv": "77837563ff7110e7c738de2c3820db095e7389b146521208283242cb0a9439ca",
+    "/mnt/d/work/抗体/机制/data/sequences/PVRIG_case02_vhh_20_30_38_39_151_patent_sequences.fasta": "d429c1189d5208c0a461ab99fe7d1a95cc5132c72a58df99e2a956b711c3421d"
+  },
+  "official_validator_passed": 50,
+  "outputs": {
+    "/mnt/c/Users/ciheb/Downloads/PVRIG_Final50_抗体赛道初赛作品提交表_修订版v2_20260726.xlsx": "7e84590db5dfe0c9d89a27abb4f1cb3fb45a07c0d35d168fe246edbac4342ccd",
+    "/mnt/d/work/抗体/机制/data/submissions/PVRIG_Final50_初赛作品提交表_v3_20260726/PVRIG_Final50_抗体赛道初赛作品提交表_修订版v2_20260726.xlsx": "7e84590db5dfe0c9d89a27abb4f1cb3fb45a07c0d35d168fe246edbac4342ccd"
+  },
+  "ranking": "frozen competition_rank_1_50; literal PVRIG_CAND_001-050",
+  "records": 50,
+  "schema_version": "pvrig_final50_official_submission_xlsx_v1_2",
+  "state": "COMPLETE",
+  "template_headers_exact": true
+}

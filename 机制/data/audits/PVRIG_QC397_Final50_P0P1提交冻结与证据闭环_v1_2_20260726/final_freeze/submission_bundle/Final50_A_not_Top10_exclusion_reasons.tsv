@@ -1,0 +1,6 @@
+submission_id	frozen_competition_rank_1_50	mechanism_rank_immutable	candidate_id	primary_grade	explicit_exclusion_reason	selected_top10_count	selected_A_count	policy
+PVRIG_CAND_013	13	11	NODE1GEN_191476_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__310934EF4B70CA47	A_LOWER_RISK	PARENT_CAP_4	10	8	Every primary-profile A candidate outside Top10 receives an explicit quota/diversity exclusion reason.
+PVRIG_CAND_016	16	15	NODE1GEN_206644_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__53F648E960398F2F	A_LOWER_RISK	PARENT_CAP_4	10	8	Every primary-profile A candidate outside Top10 receives an explicit quota/diversity exclusion reason.
+PVRIG_CAND_022	22	22	P1MCPUFP__CPUFP500K_0189__00858	A_LOWER_RISK	TOP10_A_QUOTA_FILLED;LOWER_MECHANISM_PRIORITY	10	8	Every primary-profile A candidate outside Top10 receives an explicit quota/diversity exclusion reason.
+PVRIG_CAND_030	30	30	NODE1GEN_182669_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__D4BBD3AB583903E7	A_LOWER_RISK	TOP10_A_QUOTA_FILLED;LOWER_MECHANISM_PRIORITY	10	8	Every primary-profile A candidate outside Top10 receives an explicit quota/diversity exclusion reason.
+PVRIG_CAND_042	42	47	P1MCPUFP__CPUFP500K_0030__00860	A_LOWER_RISK	TOP10_A_QUOTA_FILLED;LOWER_MECHANISM_PRIORITY	10	8	Every primary-profile A candidate outside Top10 receives an explicit quota/diversity exclusion reason.

@@ -305,9 +305,24 @@ pymol visualization/pvrig_pvrl2_mechanism_view_portable.pml
 已对精确 Final50 FASTA 执行官方 validator、全部阳性参照三 CDR identity、队内三套 50×50 CDR 矩阵、TSV–FASTA–SHA256 逐条断言，以及统一开发性 pipeline 重跑。另完成 A/B/C 阈值敏感性、poor single-domain 专利 scaffold 拆分、400-pose contact fingerprint 聚类、A 候选排除原因和 50 行 joined evidence。
 
 - 完整报告：`reports/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_20260726.md`
-- 本地机器可读资产：`data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_20260726/`
+- 旧版审计资产：`data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_20260726/`（仅保留作字段错误审计）
+- 当前修订资产：`data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_2_20260726/`
+- Excel 修订说明：`reports/PVRIG_Final50_官方提交Excel修订与P1字段修复_20260726.md`
 - 官方 validator：50/50 PASS；
 - 全阳性 CDR：50/50 对 78 个阳性参照的三个对应 CDR 均 `<0.80`；
-- Primary A/B/C：17/30/3；修订 Top10 为 8A+2B；
+- `instability_index` 已改为从 `vhh_eval.tsv` 读取，50/50 数值完整；
+- Primary A/B/C：13/34/3；Top10 为 `PVRIG_CAND_001–010`；
+- 15 条 fixed-pose 候选的 H1/H2/H3 全设计 mask 来源审计为 15/15 PASS；
 - 统一 TNP：43 条有值，7 条同工具补跑后仍为 NBB2 技术失败，已显式保留不确定性；
 - 原 `mechanism_rank`、精确 50 条序列和来源排名 hash 均未改变。
+
+正式 Excel 使用（当前 v2 文案修订版；序列和 Rank 未改变）：
+
+```text
+C:\Users\ciheb\Downloads\PVRIG_Final50_抗体赛道初赛作品提交表_修订版v2_20260726.xlsx
+```
+
+该版本在原修订版基础上进一步逐条披露 15 条 fixed-pose 全新 CDR 候选的
+公开阳性 VHH framework/计算 pose 来源，并把糖基化检查扩展到完整 VHH
+序列：Rank 26/32/34 的 `NVT@58` 边界 motif 与 Rank 50 的
+`NLS@101` CDR3 motif 均已明确写入自检列。

@@ -155,6 +155,7 @@ def grade_candidate(
     official_pass: bool,
     freeze: dict[str, str],
     screen: dict[str, str],
+    vhh_eval: dict[str, str],
     structure: dict[str, str],
     prefusion: dict[str, str],
     profile_name: str,
@@ -179,7 +180,11 @@ def grade_candidate(
         or 0
     )
     exposed_unpaired_cys = as_int(prefusion.get("max_exposed_unpaired_cys_count"))
-    instability = as_float(screen.get("instability_index"))
+    # `screen_summary.tsv` intentionally aggregates the multi-layer screen but
+    # does not carry the sequence-level instability index.  Read the canonical
+    # value from the paired vhh_eval.tsv instead of silently treating it as
+    # missing for every candidate.
+    instability = as_float(vhh_eval.get("instability_index"))
     charge = as_float(screen.get("charge_pH7_4"))
     pi_value = as_float(screen.get("pI"))
     acid_rows = as_int(structure.get("exposed_noncontact_acid_clipping_rows"))
@@ -299,6 +304,7 @@ def grade_candidate(
         "median_largest_hydrophobic_patch_residues": f"{patch_n:.6f}",
         "median_largest_hydrophobic_patch_free_sasa_a2": f"{patch_area:.6f}",
         "instability_index": "" if instability is None else f"{instability:.6f}",
+        "instability_source": "vhh_eval.tsv:instability_index",
         "profile_thresholds_json": json.dumps(
             profile, sort_keys=True, separators=(",", ":")
         ),
@@ -366,6 +372,7 @@ def main() -> None:
                 official_pass=sid not in failed_by_sid,
                 freeze=freeze,
                 screen=screen_by_sid[sid],
+                vhh_eval=vhh_by_sid[sid],
                 structure=structure_by_id[freeze["candidate_id"]],
                 prefusion=prefusion_by_id[freeze["candidate_id"]],
                 profile_name=profile_name,

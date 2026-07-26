@@ -1,0 +1,35 @@
+{
+  "schema_version": "qc397_final50_cdr_similarity_v1",
+  "state": "COMPLETE",
+  "created_at_utc": "2026-07-26T02:31:49.978188+00:00",
+  "identity_method": "official ab-data-validator semantics: MUSCLE pair alignment; matches divided by non-double-gap alignment columns",
+  "candidate_count": 50,
+  "positive_reference_rows": 78,
+  "candidate_positive_rows": 3900,
+  "team_pair_rows": 1225,
+  "matrix_shape": [
+    50,
+    50
+  ],
+  "assertions": {
+    "freeze_vs_uniform_imgt_cdr_exact": true,
+    "matrix_symmetric": true,
+    "matrix_diagonal_one": true,
+    "competition_ranks_exact_1_to_50": true
+  },
+  "inputs": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/input_freeze/Final50_submission_freeze.tsv": "b6f78b09f70018ec45cc8d85b0eb9114959d351ef1c2df6d99109e5b979b09c3",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/uniform_full_qc/vhh_screen/final50_submission.vhh_eval.tsv": "d82a21551173ae3e6fdd0839912a867a5b2ff2300e32d4ffb110d825e4bd3a0c",
+    "/data/qlyu/software/vhh_eval_tools/references/official_positive_library_cdrs.csv": "2c09e01d5c8df07e575013b401b14791b0cccedb20902dae23b0a7868e7a3c6a",
+    "/data/qlyu/software/vhh_eval_tools/references/local_pvrig_positive_vhh_cdrs.csv": "9db73290404a9c709c882c77ea2dff65905cedd0c217ec403f7787d50c323eec"
+  },
+  "outputs": {
+    "Final50_vs_all_positive_corresponding_CDR_identity.tsv": "24558646ee60a2659ac8dfd963f88a12a6ea68efadcc431be5e4270195ea235d",
+    "Final50_vs_all_positive_CDR_identity_summary.tsv": "73d4cb601c2a52a11ee179012ba7df3a464d7738bdc85b3dcf7213b3e716c9e9",
+    "Final50_team_CDR_identity_pairs.tsv": "42e5b6022c5802583fc454d95698f2ae5724a3be70bee9363462ce51e836ddb5",
+    "Final50_team_CDR_nearest_neighbor_summary.tsv": "adeebd8af23493209180557c72807be56f3fded587a04c6d1140e2a6b077750e",
+    "Final50_team_CDR1_identity_matrix.tsv": "c519cd76f9849c3eba655f410f0a16fbd99cc3a1e9c89a53d5b099f63fa516f0",
+    "Final50_team_CDR2_identity_matrix.tsv": "4d0bb3e7086127781373881d2c2ed5633fa279622e01dcef3e8d8c246ce68ff7",
+    "Final50_team_CDR3_identity_matrix.tsv": "27b4f0149d6dd83d09314966933a696ff9cbb1c2bb74acd1dd11dfb9de8f7215"
+  }
+}

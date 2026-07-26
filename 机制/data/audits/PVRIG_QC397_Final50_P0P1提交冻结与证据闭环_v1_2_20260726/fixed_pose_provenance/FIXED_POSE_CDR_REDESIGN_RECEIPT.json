@@ -1,0 +1,29 @@
+{
+  "assertions": {
+    "all_output_pdbs_exist": true,
+    "all_records_resolve_to_frozen_generation_row": true,
+    "all_tasks_use_H1_H2_H3_loop_mask": true,
+    "all_three_output_cdrs_differ_from_parent_15_of_15": true,
+    "current_final50_fixed_pose_membership_exact_15": true,
+    "mask_implementation_marks_all_H1_H2_H3_residues_designable": true
+  },
+  "claim_boundary": "Proves the ProteinMPNN design mask covered all H1/H2/H3 residues and the frozen output came from that run. It does not prove binding, blocking, expression, purity, Kd, or IC50.",
+  "created_at_utc": "2026-07-26T04:29:06.926937+00:00",
+  "inputs": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_2_20260726/p0p1_joined/Final50_joined_evidence.tsv": "77837563ff7110e7c738de2c3820db095e7389b146521208283242cb0a9439ca",
+    "/data/qlyu/software/RFantibody/src/rfantibody/proteinmpnn/sample_features.py": "eb957f6989b23304a74bb06c42e1db477ece7e366f4a84b46665eca9861627cc",
+    "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722/data/fixed_pose_candidates_frozen150k.tsv.gz": "1322f7c97cbd6e811e292c988b1ba9e5a2c4fab058264c11d759c49018bae077",
+    "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722/inputs/fixed_pose_mpnn_tasks.tsv": "5d168809623bd3f41f0088c656f7b1443f88ff4873b642c53bfe4a31cbbd6e6a",
+    "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722/inputs/positive11_cdr_imgt.tsv": "6589e2b877210a7651566db6a83e60b24fd9f692a180da779ebc49e74d366264",
+    "/data1/qlyu/projects/pvrig_1m_fixed_pose_mpnn150k_v1_20260722/scripts/run_fixed_pose_mpnn_worker.sh": "892381320648909e32907e5810ceadfeac90ad0bb15c6c6d8fc0e9ff36ee4a5c"
+  },
+  "output": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_2_20260726/fixed_pose_provenance/Final50_fixed_pose_CDR123_redesign_audit.tsv": "28ea095fa94ce72b76a15384921a869a2f9c3035505e08f62c3009c57233d889"
+  },
+  "records": 15,
+  "schema_version": "pvrig_final50_fixed_pose_cdr_redesign_audit_v1",
+  "state": "COMPLETE",
+  "verdict_counts": {
+    "PASS_ALL_THREE_CDRS_REDESIGNED": 15
+  }
+}
