@@ -25,7 +25,7 @@
         "technical_na": 9
       },
       "expected": 24880,
-      "latest_status_age_seconds": 236035.32392048836,
+      "latest_status_age_seconds": 230008.30034947395,
       "terminal": 24880
     },
     "dry_run": false,
@@ -36,21 +36,21 @@
       "audit_state": "COMPLETED",
       "expected": 16880,
       "invalid": 0,
-      "latest_status_age_seconds": 201680.5423386097,
+      "latest_status_age_seconds": 195653.4829826355,
       "preflight_job_id": "11944866",
       "preflight_state": "COMPLETED",
       "success": 16867,
       "technical_na": 13,
       "terminal": 16880
     },
-    "generated_at_utc": "2026-07-26T11:49:00.167981+00:00",
+    "generated_at_utc": "2026-07-26T10:08:32.994077+00:00",
     "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
     "storage": {
       "current_archive_bytes": 212123302,
       "current_result_bytes": 58576988,
       "extra_archive_bytes": 143026389,
       "extra_result_bytes": 34284232,
-      "filesystem_free_bytes": 4908361111830528,
+      "filesystem_free_bytes": 4908311212195840,
       "filesystem_type": "gpfs",
       "known_campaign_bytes": 448010911,
       "known_campaign_soft_limit_bytes": 68719476736,
@@ -68,10 +68,10 @@
     "extra_node1_sync_status_closed": true
   },
   "errors": [],
-  "generated_at_utc": "2026-07-26T11:48:56.696167+00:00",
+  "generated_at_utc": "2026-07-26T10:08:31.391292+00:00",
   "interval_seconds": 1800,
   "local": {
-    "filesystem_free_bytes": 76674187264,
+    "filesystem_free_bytes": 76691349504,
     "filesystem_total_bytes": 2048075829248,
     "sync_paused_low_disk": false
   },
@@ -108,7 +108,7 @@
         "pvrig-c2-new6220-sync-02",
         "pvrig-c2-new6220-sync-03"
       ],
-      "latest_log_age_seconds": 50.37193298339844,
+      "latest_log_age_seconds": 45.60227060317993,
       "missing_before_repair": [],
       "stale_before_repair": []
     },
@@ -119,7 +119,7 @@
         "pvrig-c2-s42-3047-sync-02",
         "pvrig-c2-s42-3047-sync-03"
       ],
-      "latest_log_age_seconds": 57.3058545589447,
+      "latest_log_age_seconds": 49.53372097015381,
       "missing_before_repair": [],
       "stale_before_repair": []
     }
