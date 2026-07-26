@@ -1,0 +1,11 @@
+profile	A_LOWER_RISK	B_REVIEW	C_HIGH_RISK	thresholds_json	strict_to_primary_to_permissive	candidate_count
+STRICT	3	40	7	"{""abnativ_warn_below"":0.75,""acid_exposure_warn_rows"":3,""instability_warn_at"":35,""patch_hard_area_a2"":900,""patch_hard_residues"":18,""patch_warn_area_a2"":800,""patch_warn_residues"":12,""sapiens_warn_below"":0.75,""tnp_red_hard_at"":1}"		
+PRIMARY	17	30	3	"{""abnativ_warn_below"":0.7,""acid_exposure_warn_rows"":4,""instability_warn_at"":40,""patch_hard_area_a2"":1000,""patch_hard_residues"":20,""patch_warn_area_a2"":900,""patch_warn_residues"":15,""sapiens_warn_below"":0.7,""tnp_red_hard_at"":2}"		
+PERMISSIVE	21	27	2	"{""abnativ_warn_below"":0.65,""acid_exposure_warn_rows"":6,""instability_warn_at"":45,""patch_hard_area_a2"":1100,""patch_hard_residues"":22,""patch_warn_area_a2"":1000,""patch_warn_residues"":18,""sapiens_warn_below"":0.65,""tnp_red_hard_at"":2}"		
+TRANSITION					A_LOWER_RISK>A_LOWER_RISK>A_LOWER_RISK	3
+TRANSITION					B_REVIEW>A_LOWER_RISK>A_LOWER_RISK	14
+TRANSITION					B_REVIEW>B_REVIEW>A_LOWER_RISK	4
+TRANSITION					B_REVIEW>B_REVIEW>B_REVIEW	22
+TRANSITION					C_HIGH_RISK>B_REVIEW>B_REVIEW	4
+TRANSITION					C_HIGH_RISK>C_HIGH_RISK>B_REVIEW	1
+TRANSITION					C_HIGH_RISK>C_HIGH_RISK>C_HIGH_RISK	2

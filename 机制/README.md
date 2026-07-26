@@ -299,3 +299,15 @@ pymol visualization/pvrig_pvrl2_mechanism_view_portable.pml
 - 结果：融合 F1=50/50、hard fail=0；A/B/C=18/26/6；Top10=8A+2B；6 条 C 级移到竞赛队列末尾。
 
 边界：这是赛事投放顺序，不是新的 docking 排名；完整 Fc 二价结构和实验 Yield、纯度、BLI、Kd、IC50 仍未证明。
+
+## 2026-07-26 新增：Final50 P0/P1 提交冻结与完整证据表
+
+已对精确 Final50 FASTA 执行官方 validator、全部阳性参照三 CDR identity、队内三套 50×50 CDR 矩阵、TSV–FASTA–SHA256 逐条断言，以及统一开发性 pipeline 重跑。另完成 A/B/C 阈值敏感性、poor single-domain 专利 scaffold 拆分、400-pose contact fingerprint 聚类、A 候选排除原因和 50 行 joined evidence。
+
+- 完整报告：`reports/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_20260726.md`
+- 本地机器可读资产：`data/audits/PVRIG_QC397_Final50_P0P1提交冻结与证据闭环_v1_20260726/`
+- 官方 validator：50/50 PASS；
+- 全阳性 CDR：50/50 对 78 个阳性参照的三个对应 CDR 均 `<0.80`；
+- Primary A/B/C：17/30/3；修订 Top10 为 8A+2B；
+- 统一 TNP：43 条有值，7 条同工具补跑后仍为 NBB2 技术失败，已显式保留不确定性；
+- 原 `mechanism_rank`、精确 50 条序列和来源排名 hash 均未改变。

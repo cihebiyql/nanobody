@@ -1,0 +1,35 @@
+{
+  "config": {
+    "identity_threshold": 0.8,
+    "safe_identity_threshold": 0.75,
+    "cluster_identity": 0.9,
+    "cluster_limit": 50,
+    "structure_tools": "",
+    "gate_policy": "competition",
+    "large_scale_fast": false,
+    "official_validator_deferred": false,
+    "skip_abnativ": false,
+    "skip_sapiens": false,
+    "skip_tnp": false,
+    "team_diversity_deferred": false,
+    "novelty_only_official_pass": false,
+    "identity_cache_size": 200000,
+    "novelty_bound_pruning": true
+  },
+  "reference_counts": {
+    "official_positive_cdrs": 48,
+    "local_positive_cdrs": 30
+  },
+  "portfolio_count": 50,
+  "novelty_performance": {
+    "candidate_count": 50,
+    "positive_reference_count": 78,
+    "reference_pairs": 4900,
+    "identity_requests": 1065,
+    "upper_bound_pruned": 3835,
+    "muscle_cache_hits": 34,
+    "muscle_cache_misses": 1031,
+    "muscle_cache_maxsize": 200000,
+    "bound_pruning_enabled": true
+  }
+}

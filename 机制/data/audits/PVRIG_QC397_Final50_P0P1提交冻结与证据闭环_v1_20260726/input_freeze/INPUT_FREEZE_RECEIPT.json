@@ -1,0 +1,22 @@
+{
+  "schema_version": "pvrig.qc397.final50.submission_input_freeze.v1",
+  "state": "INPUT_FREEZE_COMPLETE",
+  "records": 50,
+  "exact_sequence_count": 50,
+  "source_ranked_tsv_sha256": "6d7193baaf50d0616ad4e924a1a66cf5c4fae85bbad1ad4d7276479cec38f7f3",
+  "output_sha256": {
+    "Final50_submission_freeze.tsv": "b6f78b09f70018ec45cc8d85b0eb9114959d351ef1c2df6d99109e5b979b09c3",
+    "Final50_submission_freeze.fasta": "ab831fa2423827baca6aab91690d1a98e0da5ab35d1f6a2745ce41e05b7396cd"
+  },
+  "assertions": {
+    "competition_rank_exact_1_to_50": true,
+    "standard_20_aa_only": true,
+    "submission_ids_unique": true,
+    "candidate_ids_unique": true,
+    "sequences_exact_unique": true,
+    "source_sequence_sha256_verified": true,
+    "tsv_fasta_order_and_sequence_identical": true
+  },
+  "claim_boundary": "Submission-safe identifiers and byte-frozen sequence inputs only; no ranking or biological evidence was changed.",
+  "created_at": "2026-07-26T02:11:15.708769+00:00"
+}

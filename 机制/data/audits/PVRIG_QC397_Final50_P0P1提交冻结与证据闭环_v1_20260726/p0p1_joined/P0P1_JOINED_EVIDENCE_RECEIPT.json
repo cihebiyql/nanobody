@@ -1,0 +1,98 @@
+{
+  "A_not_Top10_exclusion_count": 9,
+  "candidate_count": 50,
+  "claim_boundary": "Categorical computational risk and experiment-slot prioritization; not experimental expression, purity, BLI, Kd, IC50, or blocking.",
+  "created_at_utc": "2026-07-26T02:44:15.870641+00:00",
+  "full_hfc_construct_available": false,
+  "grade_counts": {
+    "PERMISSIVE": {
+      "A_LOWER_RISK": 21,
+      "B_REVIEW": 27,
+      "C_HIGH_RISK": 2
+    },
+    "PRIMARY": {
+      "A_LOWER_RISK": 17,
+      "B_REVIEW": 30,
+      "C_HIGH_RISK": 3
+    },
+    "STRICT": {
+      "A_LOWER_RISK": 3,
+      "B_REVIEW": 40,
+      "C_HIGH_RISK": 7
+    }
+  },
+  "inputs": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_competition_ranking/Final50_competition_ranked.tsv": "6d7193baaf50d0616ad4e924a1a66cf5c4fae85bbad1ad4d7276479cec38f7f3",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_prefusion/Top20_prefusion_candidate_audit.tsv": "076da217fcebe6a820d70a9dfe4aac81e00650bb8343d061127257d350516c5c",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_structure_sidecar/candidate_structure_manufacturability_sidecar.tsv": "aa9a1cf4f5ca1e46cde77aa6732a3bafa819fb00eb55ee509b8933ada3cf9b49",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/cdr_similarity/Final50_team_CDR_identity_pairs.tsv": "42e5b6022c5802583fc454d95698f2ae5724a3be70bee9363462ce51e836ddb5",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/cdr_similarity/Final50_team_CDR_nearest_neighbor_summary.tsv": "adeebd8af23493209180557c72807be56f3fded587a04c6d1140e2a6b077750e",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/cdr_similarity/Final50_vs_all_positive_CDR_identity_summary.tsv": "73d4cb601c2a52a11ee179012ba7df3a464d7738bdc85b3dcf7213b3e716c9e9",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/epitope_fingerprints/Final50_epitope_fingerprint_clusters.tsv": "24bc2b54f012d9fd452aa8542d6e2b3cf4fdad011f1e57c210cd244c4a5dcec0",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/input_freeze/Final50_submission_freeze.tsv": "b6f78b09f70018ec45cc8d85b0eb9114959d351ef1c2df6d99109e5b979b09c3",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/uniform_full_qc/official_failed_reasons.csv": "87d24ff92ebc628cd2b6e888c390454f8b9c5193077b08223f784d5d580871eb",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/uniform_full_qc/vhh_screen/final50_submission.vhh_eval.tsv": "d82a21551173ae3e6fdd0839912a867a5b2ff2300e32d4ffb110d825e4bd3a0c",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_submission_freeze_p0p1_v1_20260726/uniform_tnp_completion/Final50_uniform_screen_summary_tnp_completed.tsv": "e3435141a01394dfec31f19681bdc38c52b19033bf61eee2757fcc3c3024c67d"
+  },
+  "mechanism_rank_changed": false,
+  "official_validator_fail_count": 0,
+  "official_validator_pass_count": 50,
+  "outputs": {
+    "Final50_ABC_threshold_sensitivity.tsv": "4dbdf99ae71550adf33da197bdb756f74bee4789ea70aa3b1a0f88cc84f57297",
+    "Final50_ABC_threshold_sensitivity_summary.tsv": "c27e481bcc6442d639e68008446170a5e49fd20e7e2b7e1d0e4e1fed99d0f1a6",
+    "Final50_A_not_Top10_exclusion_reasons.tsv": "5163859929ea46570baf13ff7177b200bf2642559c5e7a34af31baec8f3974cd",
+    "Final50_joined_evidence.tsv": "6cbb6aaae7177f247a84cdf223bc9db7918f9958d6812e02e2840f05197720a3",
+    "Final50_poor_single_domain_split.tsv": "8b17943a1501b69b1f11b95ff6a5ce553204d5c9146e641b14ca9a803025945f",
+    "Final50_revised_Top10_priority.tsv": "09d4becfa41f45da72f785d91e3ab500e5019fd9a89c2cc7b1d4442b4b00bfa3",
+    "Final50_revised_primary_ABC_grade.tsv": "8b8388d907f1d423afb88ffdc278bff0f1fcd02267a3a425602a4486937333c1",
+    "Final50_uniform_developability_evidence.tsv": "e0d174d955b82b462036bccefb6589024c9205a65fb4c0b154277cb1a609ce70"
+  },
+  "poor_single_domain_split_counts": {
+    "NOT_POOR_SINGLE_DOMAIN": 46,
+    "PATENT_SUCCESS_SCAFFOLD_REVIEW": 4
+  },
+  "profile_thresholds": {
+    "PERMISSIVE": {
+      "abnativ_warn_below": 0.65,
+      "acid_exposure_warn_rows": 6,
+      "instability_warn_at": 45,
+      "patch_hard_area_a2": 1100,
+      "patch_hard_residues": 22,
+      "patch_warn_area_a2": 1000,
+      "patch_warn_residues": 18,
+      "sapiens_warn_below": 0.65,
+      "tnp_red_hard_at": 2
+    },
+    "PRIMARY": {
+      "abnativ_warn_below": 0.7,
+      "acid_exposure_warn_rows": 4,
+      "instability_warn_at": 40,
+      "patch_hard_area_a2": 1000,
+      "patch_hard_residues": 20,
+      "patch_warn_area_a2": 900,
+      "patch_warn_residues": 15,
+      "sapiens_warn_below": 0.7,
+      "tnp_red_hard_at": 2
+    },
+    "STRICT": {
+      "abnativ_warn_below": 0.75,
+      "acid_exposure_warn_rows": 3,
+      "instability_warn_at": 35,
+      "patch_hard_area_a2": 900,
+      "patch_hard_residues": 18,
+      "patch_warn_area_a2": 800,
+      "patch_warn_residues": 12,
+      "sapiens_warn_below": 0.75,
+      "tnp_red_hard_at": 1
+    }
+  },
+  "revised_top10_count": 10,
+  "revised_top10_grade_counts": {
+    "A_LOWER_RISK": 8,
+    "B_REVIEW": 2
+  },
+  "schema_version": "qc397_final50_p0p1_joined_evidence_v1",
+  "sensitivity_rows": 150,
+  "state": "COMPLETE",
+  "uniform_pipeline_rows": 50
+}
