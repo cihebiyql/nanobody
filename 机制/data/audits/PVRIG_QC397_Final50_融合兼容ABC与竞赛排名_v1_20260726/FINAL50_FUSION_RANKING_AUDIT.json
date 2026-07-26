@@ -1,0 +1,90 @@
+{
+  "schema_version": "pvrig.qc397.final50.fusion_ranking.audit.v1",
+  "state": "AUDIT_COMPLETE",
+  "candidates": 50,
+  "frozen_poses": 400,
+  "seeds": [
+    42,
+    917,
+    1931,
+    3047
+  ],
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "structure_ptm_rows": 5912,
+  "prefusion_grade_counts": {
+    "F1_CLEAR_NARROW_PRECHECK": 50
+  },
+  "fusion_hard_fail_count": 0,
+  "developability_grade_counts": {
+    "B_REVIEW": 26,
+    "A_LOWER_RISK": 18,
+    "C_HIGH_RISK": 6
+  },
+  "top10_grade_counts": {
+    "A_LOWER_RISK": 8,
+    "B_REVIEW": 2
+  },
+  "c_hard_risk_tail": [
+    {
+      "competition_rank": 45,
+      "mechanism_rank": 35,
+      "candidate_id": "P1MCPUFP__CPUFP500K_0289__00496",
+      "hard_fail_reasons": "NOT_VHH_LIKE_OR_POOR_SINGLE_DOMAIN;EXTREME_SURFACE_HYDROPHOBIC_PATCH"
+    },
+    {
+      "competition_rank": 46,
+      "mechanism_rank": 36,
+      "candidate_id": "P1MCPUFP__CPUFP500K_0091__00849",
+      "hard_fail_reasons": "NOT_VHH_LIKE_OR_POOR_SINGLE_DOMAIN"
+    },
+    {
+      "competition_rank": 47,
+      "mechanism_rank": 38,
+      "candidate_id": "P1MCPUFP__CPUFP500K_0388__00174",
+      "hard_fail_reasons": "NOT_VHH_LIKE_OR_POOR_SINGLE_DOMAIN"
+    },
+    {
+      "competition_rank": 48,
+      "mechanism_rank": 39,
+      "candidate_id": "P1MCPUFP__CPUFP500K_0487__00827",
+      "hard_fail_reasons": "NOT_VHH_LIKE_OR_POOR_SINGLE_DOMAIN"
+    },
+    {
+      "competition_rank": 49,
+      "mechanism_rank": 46,
+      "candidate_id": "P1MCPUFP__CPUFP500K_0188__00645",
+      "hard_fail_reasons": "EXTREME_SURFACE_HYDROPHOBIC_PATCH"
+    },
+    {
+      "competition_rank": 50,
+      "mechanism_rank": 50,
+      "candidate_id": "NODE1GEN_128929_source_rfantibody_source_id_PVRIG_RFAb_v2_P6_ekg_L_bb339_mpn06_arm_P6_ekg_L_backbone_P6_ekg_L_bb339_status_NEEDS_RF2_AND_DOCKING",
+      "hard_fail_reasons": "CDR_N_GLYCOSYLATION_MOTIF"
+    }
+  ],
+  "mechanism_rank_changed": false,
+  "full_hfc_construct_available": false,
+  "frozen_inputs": {
+    "bridge_final50_sha256": "9ceb5734741a655e9c94c0b77aba293b054473718c9bd04787dfc6fa27590218",
+    "bridge_top10_sha256": "ab03cc5257964404fe14d9812a68071dfd7416174a41360813a1e4db7319fab5",
+    "legacy_final50_sha256": "d1026f93b547013366ff803ee0fe7f1864df1cd02d758a24d72c988edcb37008"
+  },
+  "output_sha256": {
+    "final50_candidates.tsv": "365c022968968ad77a4b923188a0b3e929b7bb42c4b02810e65a247c6e538b87",
+    "representative_models_manifest.tsv": "0d8cf4a0fdeee2d608905f6313e9de4a10671274757e843aaf96ac27573061c8",
+    "candidate_structure_manufacturability_sidecar.tsv": "aa9a1cf4f5ca1e46cde77aa6732a3bafa819fb00eb55ee509b8933ada3cf9b49",
+    "pose_surface_metrics.tsv": "99c367e2bdd16d897d2c03afb427f48e1acfe5469e1f3c3f163d12b6d2953657",
+    "ptm_exposure_metrics.tsv": "2ee2af0fd362d67350c721d0c39ae208d209da8ee5679730e855a4c40578e9cd",
+    "Top20_prefusion_candidate_audit.tsv": "076da217fcebe6a820d70a9dfe4aac81e00650bb8343d061127257d350516c5c",
+    "Top20_prefusion_pose_audit.tsv": "160dd389af07a363ddafcb97971719ba9e8fb56963c4c3511b66e846c1aac281",
+    "Top20_expression_purity_risk_grades.tsv": "da25125c52902447873710835c029aad7263bcd18d0b418fb5c76e5c4017f6ce",
+    "Top10_competition_priority_after_fusion_developability.tsv": "03229a9a40106664085ba206a077d9b8a6a9d952be9d096ae6de35e9f775598e",
+    "Final50_competition_ranked.tsv": "6d7193baaf50d0616ad4e924a1a66cf5c4fae85bbad1ad4d7276479cec38f7f3",
+    "Final50_competition_ranked.fasta": "a7ccb0c43e3e8f54f48d958e88140987e376e6d5cbe9e572656cc5c575966d55"
+  },
+  "claim_boundary": "Expanded computational fusion hard-fail/tie-breaker and A/B/C risk ranking only. Exact full VHH-hFc geometry and experimental Yield, purity, SEC, Tm, BLI, Kd, IC50 and blocking remain unproven.",
+  "created_at": "2026-07-26T01:36:41.411849+00:00"
+}

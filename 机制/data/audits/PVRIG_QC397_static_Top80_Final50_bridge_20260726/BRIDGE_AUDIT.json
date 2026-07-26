@@ -1,0 +1,88 @@
+{
+  "claim_boundary": "This bridge is computational prioritization only. It does not establish experimental binding, affinity/Kd, blocking/IC50, CHO expression, yield or purity.",
+  "final50": {
+    "channel_counts": {
+      "EXPLOITATION": 30,
+      "PARENT_MECHANISM_DIVERSITY": 10,
+      "QUOTA_SAFE_BACKFILL": 5,
+      "STRUCTURAL_DIVERSITY_RESERVE": 5
+    },
+    "cohort_counts": {
+      "existing_old_new7500_top200": 35,
+      "generated_top3000": 15
+    },
+    "count": 50,
+    "generated_top3000_count": 15,
+    "legacy_frozen_final50_members_replaced": 18,
+    "legacy_frozen_final50_members_retained": 32,
+    "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+    "md_status": "not run; MD remains descriptive only and does not influence this bridge"
+  },
+  "frozen_legacy_final50": {
+    "path": "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/common4_rerank_v2_20260725/final50/final50_ranked.tsv",
+    "rows": 50,
+    "sha256": "d1026f93b547013366ff803ee0fe7f1864df1cd02d758a24d72c988edcb37008",
+    "verified_unchanged": true
+  },
+  "input_hashes": {
+    "final50": "7e07f8673ba6d47144d0658c68e22603180d4f15f57b60af8b8ecd9eb1ec59e4",
+    "qc397_input": "a4264d7434fce4705911f897f2f105d8354334be20e78884482d204a470fcf36",
+    "qc397_metrics": "d8d388400ff3c7c67b432951cff180e9b27466b50543493fbb086a87a6d67e92",
+    "top10": "8db3565b7f2bac4768b9895cc96f1cfaf274db482dea01fee2622cd64998a056",
+    "top80": "0a06062912856c0bb1ef38528da169e027f912f0501b307ed64e86dc69d83aec"
+  },
+  "rank_policy": "shared QC397 common4 geometry ordinal only; static Rosetta/PRODIGY are descriptive/weak-prior only and add zero rank contribution",
+  "schema_version": "pvrig.qc397.static_top80_final50_bridge.audit.v1",
+  "state": "BRIDGE_AUDIT_COMPLETE",
+  "static_review": {
+    "cohort_counts": {
+      "existing_old_new7500_top200": 200,
+      "generated_top3000": 197
+    },
+    "method_roles": {
+      "foldx": "NOT_RUN_CROSS_CANDIDATE_RANK_REJECTED",
+      "prodigy": "WEAK_PRIOR_ONLY",
+      "rosetta": "DESCRIPTIVE_ONLY"
+    },
+    "per_candidate": "one frozen representative pose per 8X6B and 9E6Y",
+    "qc397_candidates": 397,
+    "qc397_pose_metrics": 794,
+    "static_rank_contribution": 0
+  },
+  "top10": {
+    "candidate_ids": [
+      "P1MCPUFP__CPUFP500K_0288__00659",
+      "NODE1GEN_112448_source_rfantibody_source_id_PVRIG_RFAb_v2_P5_qkg_L_bb355_mpn01_arm_P5_qkg_L_backbone_P5_qkg_L_bb355_status_NEEDS_RF2_AND_DOCKING",
+      "NODE1GEN_229102_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__2F90E7DCCA05F9E4",
+      "P1MCPUFP__CPUFP500K_0188__00519",
+      "P1MCPUFP__CPUFP500K_0100__00092",
+      "NODE1GEN_181778_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__8EDA6734F7A8BD2C",
+      "NODE1GEN_154595_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__9B999365EA60CCE9",
+      "P1MCPUFP__CPUFP500K_0289__00496",
+      "P1MCPUFP__CPUFP500K_0091__00849",
+      "P1MCPUFP__CPUFP500K_0388__00174"
+    ],
+    "cohort_counts": {
+      "existing_old_new7500_top200": 6,
+      "generated_top3000": 4
+    },
+    "count": 10,
+    "generated_top3000_count": 4
+  },
+  "top80": {
+    "channel_counts": {
+      "CORE_EXPLOITATION": 48,
+      "PARENT_CDR3_DIVERSITY": 16,
+      "QUOTA_SAFE_BACKFILL": 8,
+      "STRUCTURAL_RESERVE": 8
+    },
+    "cohort_counts": {
+      "existing_old_new7500_top200": 50,
+      "generated_top3000": 30
+    },
+    "count": 80,
+    "generated_top3000_count": 30,
+    "legacy_frozen_final50_members_retained": 41,
+    "max_direct_pairwise_cdr3_identity": 0.7894736842105263
+  }
+}

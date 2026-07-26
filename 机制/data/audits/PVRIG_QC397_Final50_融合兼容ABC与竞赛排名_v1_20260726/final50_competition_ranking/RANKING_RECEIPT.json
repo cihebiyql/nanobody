@@ -1,0 +1,29 @@
+{
+  "schema_version": "pvrig.qc397.final50.competition_ranking.v1",
+  "state": "COMPLETE",
+  "candidates": 50,
+  "exact_sequence_count": 50,
+  "grade_counts": {
+    "A_LOWER_RISK": 18,
+    "B_REVIEW": 26,
+    "C_HIGH_RISK": 6
+  },
+  "top10_grade_counts": {
+    "A_LOWER_RISK": 8,
+    "B_REVIEW": 2
+  },
+  "c_hard_risk_tail_count": 6,
+  "mechanism_rank_changed": false,
+  "policy": "Top10 uses 8 A primary plus at most 2 high-mechanism B under diversity caps; ranks 11-50 preserve mechanism order among non-C reserves; C hard-risk candidates are placed last without deleting their records.",
+  "input_sha256": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_common4_bundle/final50_candidates.tsv": "365c022968968ad77a4b923188a0b3e929b7bb42c4b02810e65a247c6e538b87",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_abc_priority/Top20_expression_purity_risk_grades.tsv": "da25125c52902447873710835c029aad7263bcd18d0b418fb5c76e5c4017f6ce",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_abc_priority/Top10_competition_priority_after_fusion_developability.tsv": "03229a9a40106664085ba206a077d9b8a6a9d952be9d096ae6de35e9f775598e"
+  },
+  "output_sha256": {
+    "Final50_competition_ranked.tsv": "6d7193baaf50d0616ad4e924a1a66cf5c4fae85bbad1ad4d7276479cec38f7f3",
+    "Final50_competition_ranked.fasta": "a7ccb0c43e3e8f54f48d958e88140987e376e6d5cbe9e572656cc5c575966d55"
+  },
+  "claim_boundary": "Computational competition-priority sequence ranking only; not a new docking rank and not experimental expression, purity, affinity or blocking evidence.",
+  "created_at": "2026-07-26T01:35:07.682567+00:00"
+}

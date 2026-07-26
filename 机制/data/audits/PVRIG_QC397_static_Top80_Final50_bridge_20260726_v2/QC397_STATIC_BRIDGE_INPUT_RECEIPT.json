@@ -1,0 +1,43 @@
+{
+  "schema_version": "pvrig.qc397.static_bridge_input.v2",
+  "state": "QC397_STATIC_BRIDGE_INPUT_COMPLETE",
+  "candidates": 397,
+  "jobs": 794,
+  "source_counts": {
+    "existing_common4_top200": 200,
+    "generated_integrated_qc": 197
+  },
+  "method_roles": {
+    "foldx": "NOT_RUN_CROSS_CANDIDATE_RANK_REJECTED",
+    "prodigy": "WEAK_PRIOR_ONLY",
+    "rosetta": "DESCRIPTIVE_ONLY"
+  },
+  "selection_score_semantics": "1000000 - unified_qc397_geometry_rank; no source-specific pre-screen model score used",
+  "selection_channel_mapping": {
+    "EXPLOITATION": "CORE_EXPLOITATION",
+    "DIVERSITY": "PARENT_CDR3_DIVERSITY",
+    "MODEL_DISAGREEMENT": "MODEL_DISAGREEMENT_RESCUE",
+    "MODEL_DISAGREEMENT_RESCUE": "MODEL_DISAGREEMENT_RESCUE",
+    "SPECIAL_COVERAGE": "STRUCTURAL_RESERVE",
+    "STRUCTURAL_RESERVE": "STRUCTURAL_RESERVE",
+    "QUOTA_SAFE_BACKFILL": "STRUCTURAL_RESERVE",
+    "CORE_EXPLOITATION": "CORE_EXPLOITATION",
+    "PARENT_CDR3_DIVERSITY": "PARENT_CDR3_DIVERSITY"
+  },
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/combined_existing7500_generated3000_common4_v1_20260726/tables/combined_common4_qc397_geometry_ranked.tsv": "ad0fa9c8c69c46deeb7d2987b1c5e4652efb9efdce3a2140bd23f3f9853efca8",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/common4_rerank_v2_20260725/top200/top200_common4_reranked.tsv": "27a4aaf7c1aefb50939cc9ee60df338878810ed1679057107941970ff2ebb008",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/reports/integrated_full_qc_eligible_197.tsv": "6ffae9bc0dc9c957dcced8aee7b49314c0da8170c09b02a16e31398452848db0",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/run/full_qc_top200_retry4_reuse_upstream_tnp/vhh_screen/generated_top3000.vhh_eval.tsv": "4186e02ee475e44492cf244f1a5fc01f747f9395769a99dace29595360a42e1e",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/static_review/STATIC_POSE_METRICS.tsv": "50ecabd90f95d1e8761a9b960b71520c65bdeedeb74cd569cf97dfe6821e00dd",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/static_review/STATIC_COMPLETE.json": "17798a553dadca3bec5010bf65d195d62d2f0b16f2aaa39d8afe86f12b9e4976",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v1_20260726/generated197_static/STATIC_POSE_METRICS.tsv": "16435f9e202057fbabe19daebf8beca5bc6ba41d055ccbcb891a75482af1c484",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v1_20260726/generated197_static/STATIC_COMPLETE.json": "b19cefa67442e9f3bc0f0ecf320bae12448011098236c81ade3292fe8e11e2e9"
+  },
+  "output_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/unified_qc397/unified_qc397_static_input.tsv": "f5c56c1030a1f9d2f85b309db85cab04ff2fa5ba1cde6fb275a2d20bd5063a80",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/unified_qc397/unified_qc397_static_metrics_794.tsv": "d8d388400ff3c7c67b432951cff180e9b27466b50543493fbb086a87a6d67e92",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/unified_qc397/QC397_STATIC_COMPLETE.json": "604f59e98e132c2c7b32f278d5c199f212eb1385e901e67b53e64328295be1ac"
+  },
+  "claim_boundary": "Static bridge is computational evidence only; it does not establish experimental binding, affinity, expression, purity, or blocking."
+}

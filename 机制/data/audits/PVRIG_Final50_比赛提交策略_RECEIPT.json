@@ -1,0 +1,43 @@
+{
+  "affinity_consensus_rank_assigned": false,
+  "claim_boundary": "No computational sidecar is experimental BLI, expression, purity, Kd, IC50, selectivity, glycan occupancy, or blocking proof.",
+  "created_at": "2026-07-25T15:41:18.356409+00:00",
+  "final50_count": 50,
+  "independent_control_panel": {
+    "control_ranges_sha256": "2dc4336c3ffc3f048d91489976524a1604302ec14e3d2efd64a04870ec519765",
+    "disruptive_control_count": 4,
+    "disruptive_dual_tool_supported_ab": 1,
+    "experimental_positive_count": 5,
+    "positive_dual_tool_supported_ab": 1
+  },
+  "input_sha256": {
+    "CONTROL_CALIBRATION_RANGES.json": "2dc4336c3ffc3f048d91489976524a1604302ec14e3d2efd64a04870ec519765",
+    "CONTROL_INDEPENDENT_COMPLEX_CANDIDATE_SUMMARY.tsv": "15d22058245dfdfca515e411aafcf7c14342d6e0b093069d031e16c8dc4572d8",
+    "FINAL50_MANUFACTURABILITY_SIDECAR.tsv": "6a52ca2b30b9592a604286b474edf35f256a36c00f3826565d6bf208e35cbbf9",
+    "Final50_PVRIG_glycan_accessibility.tsv": "6616c72d58d6da46a22b0dce0616c6ef87ec83cc45cace0db6ef3b1e99e39015",
+    "final50_ranked.tsv": "d1026f93b547013366ff803ee0fe7f1864df1cd02d758a24d72c988edcb37008"
+  },
+  "mechanism_rank_changed": false,
+  "output_sha256": {
+    "PVRIG_Final50_Affinity多模型共识侧车.tsv": "c707061f6906d08ebabe31ceb671ec1a0b3bd6a638275552584675fbb2e62703",
+    "PVRIG_Final50_无约束重对接与Decoy校准.tsv": "eb4c91f41d0cee9cf8f8c293088bc02ca9b0ed4262f46bb433cbe1689b8c412c",
+    "PVRIG_Final50_比赛提交优先级.tsv": "ca2a041517253beef1001b3e7cea2d52ce7f7769370dcad36997b16b14866430",
+    "PVRIG_Final50_非特异性与自相互作用.tsv": "9d54b8f4e0f8567afc99b62468aba1ed57e0ec0ecec571ae8476425831302207"
+  },
+  "schema_version": "pvrig.final50.competition_submission_strategy.v1",
+  "state": "COMPLETE_PROVISIONAL_PRIORITY",
+  "top10_count": 10,
+  "top10_final_ranks": [
+    2,
+    6,
+    7,
+    1,
+    3,
+    4,
+    5,
+    28,
+    35,
+    21
+  ],
+  "unconstrained_candidate_expansion": "NO_EXPANSION_UNCALIBRATED_CONTROL_SEPARATION"
+}

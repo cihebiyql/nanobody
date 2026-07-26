@@ -1,0 +1,66 @@
+{
+  "schema_version": "pvrig.qc397.top20_plus_top10.abc_risk_and_top10_priority.v2",
+  "state": "COMPLETE",
+  "fusion_panel_count": 22,
+  "primary_top20_count": 20,
+  "current_top10_covered": 10,
+  "grade_counts": {
+    "B_REVIEW": 10,
+    "A_LOWER_RISK": 12
+  },
+  "top10_grade_counts": {
+    "A_LOWER_RISK": 8,
+    "B_REVIEW": 2
+  },
+  "top10_candidate_ids": [
+    "NODE1GEN_112448_source_rfantibody_source_id_PVRIG_RFAb_v2_P5_qkg_L_bb355_mpn01_arm_P5_qkg_L_backbone_P5_qkg_L_bb355_status_NEEDS_RF2_AND_DOCKING",
+    "NODE1GEN_229102_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__2F90E7DCCA05F9E4",
+    "P1MCPUFP__CPUFP500K_0188__00519",
+    "NODE1GEN_181778_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__8EDA6734F7A8BD2C",
+    "NODE1GEN_256613_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__0A1B353F72DFABBD",
+    "NODE1GEN_183154_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__E25C2338B83B903C",
+    "P1MCPUFP__CPUFP500K_0100__00188",
+    "P1MCPUFP__CPUFP500K_0002__00919",
+    "P1MCPUFP__CPUFP500K_0288__00659",
+    "P1MCPUFP__CPUFP500K_0100__00092"
+  ],
+  "mechanism_rank_changed": false,
+  "full_hfc_construct_available": false,
+  "rules": {
+    "C_hard": [
+      "prefusion hard fail",
+      "poor/not-VHH-like",
+      "odd/unexplained Cys",
+      "CDR N-glyc",
+      "hydrophobic run 5",
+      "hydrophobic patch >=20 residues and >=1000 A2",
+      ">=2 TNP red"
+    ],
+    "B_review": [
+      "borderline VHH",
+      "AbNatiV<0.70",
+      "Sapiens<0.70",
+      "conservative gate not clear",
+      "one TNP red/any amber",
+      "patch >=15 residues or >=900 A2",
+      "multi-pose exposed DP",
+      "instability index >=40",
+      "prefusion review"
+    ],
+    "portfolio": "8 A primary, max 2 B high-mechanism; C excluded; parent cap 4; route cap 7; direct CDR3 identity <0.80"
+  },
+  "input_sha256": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_top20_plus_top10_fusion_developability_v2_20260726/fusion_panel_common4_bundle/fusion_panel_candidates.tsv": "3fa8fea08995b3de751b73d8351a6480b444a5ba327e47da720214a6bfd99cbc",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/common4_rerank_v2_20260725/top200/top200_common4_reranked.tsv": "27a4aaf7c1aefb50939cc9ee60df338878810ed1679057107941970ff2ebb008",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/reports/integrated_full_qc_eligible_197.tsv": "6ffae9bc0dc9c957dcced8aee7b49314c0da8170c09b02a16e31398452848db0",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/run/full_qc_top200_retry4_reuse_upstream_tnp/vhh_screen/generated_top3000.vhh_eval.tsv": "4186e02ee475e44492cf244f1a5fc01f747f9395769a99dace29595360a42e1e",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_top20_plus_top10_fusion_developability_v2_20260726/fusion_panel_structure_sidecar/candidate_structure_manufacturability_sidecar.tsv": "2590dc8633564489d6da61393e717bdf1c774cfb4fb463d0bf4ac086c2c828f3",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_top20_plus_top10_fusion_developability_v2_20260726/fusion_panel_prefusion/Top20_prefusion_candidate_audit.tsv": "01885c1c6920cd7e280015a33fb9cf73856837cc27a9b235c7dc37a493c8edb6"
+  },
+  "output_sha256": {
+    "Top20_expression_purity_risk_grades.tsv": "3bf5807a9c60c9c71f623eeb7181d9a0a87d8bf7ad57e5b123ee5cef1f595edc",
+    "Top10_competition_priority_after_fusion_developability.tsv": "03229a9a40106664085ba206a077d9b8a6a9d952be9d096ae6de35e9f775598e"
+  },
+  "claim_boundary": "Risk categories and portfolio policy, not a continuous predicted Yield/purity or experimental activity score.",
+  "created_at": "2026-07-26T01:14:22.565025+00:00"
+}

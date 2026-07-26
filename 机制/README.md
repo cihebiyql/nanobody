@@ -9,7 +9,7 @@
 3. R95 / I97 / S67 这些专利表位线索到底落在什么位置；
 4. 后续如果搭建 AI/打分模型，应该围绕哪些机制约束，而不是直接做 docking 或最终抗体生成。
 
-这个包不是最终候选抗体包，也不包含 Top 50 设计。
+这个包不是最终候选抗体交付包；它会引用并审查外部 Final50 bundle，但不在本目录重复保存 400 个候选复合物。
 
 ## 新增：Final50 阻断机制与筛选流程独立复核
 
@@ -32,6 +32,32 @@ CDR3 遮挡和多 seed/双构象复核。
 - Final50 中 44 条为 8/8 通过，5 条为 7/8 通过，1 条仅 2/8 通过；
 - 当前流程适合做机制富集和实验优先级排序，不等于实验 binding/Kd/IC50；
 - 仍需处理约束 docking 循环偏倚、分数饱和、151 parent 集中和 Top10 元数据问题。
+
+## 新增：比赛评分、表达纯度与可开发性复核
+
+已读取用户提供的官方 `评价标准.pdf`，确认主办方最终测试形式为
+`VHH-hFc`，采用 CHO 瞬时表达和 Protein A 一步纯化。初筛按
+`BLI 70% + Yield 20% + 纯度 10%` 评分，复筛按 `Kd 50% + IC50 50%`
+评分。
+
+核心报告与逐候选风险表：
+
+```text
+机制/reports/PVRIG_Final50_比赛评分_表达纯度可开发性与格式风险复核_20260725.md
+机制/data/audits/PVRIG_Final50_比赛表达纯度可开发性复核.tsv
+机制/official_reference/附件7_抗体赛道实验测试流程与评分规则.pdf
+机制/official_reference/附件7_评价标准来源与关键条款.md
+机制/data/literature/PVRIG_表达纯度可开发性检索证据表.csv
+```
+
+关键结论：
+
+- 现有表达、纯度和初筛分均为未校准 proxy，不能解释成实际 mg/L、纯度百分比或 BLI 分类；
+- Final50 内部风险分层为 D1 19 条、D2 19 条、D3 12 条；
+- Top10 中 #2、#6、#7、#9 为当前较低制造风险组；
+- #8、#10 具有较明显 VHH-hFc 格式/单域属性复核风险；
+- 47/50 的 purity proxy 为 100，已经饱和，无法代替 SDS/HPLC 纯度；
+- 下一步应加入完整 VHH-hFc 格式、结构表面疏水/电荷 patch、CDR 化学 liability 暴露和 Protein A 低 pH 风险。
 
 ## 当前在线查看器
 
@@ -230,3 +256,46 @@ pymol visualization/pvrig_pvrl2_mechanism_view_portable.pml
 ```
 
 第六例已经拆解 PM1009 / SIM0348，重点说明 TIGIT/PVRIG 双抗不仅有 dual checkpoint blockade，还可能通过 CD226/DNAM-1 共刺激恢复、IgG1 Fc effector、以及 Fc-mediated Treg killing 改变 TME。这个案例把候选筛选从“PVRIG arm docking”进一步扩展到 `Fc strategy`、`Treg/TME context`、`C-terminal scFv compatibility` 等机制维度。
+
+- Final50 VHH-hFc 制造/格式侧车执行结果（TNP 50/50、400 pose 结构侧车、通用 hFc pilot 边界）：`reports/PVRIG_Final50_VHHhFc_制造格式补充执行结果_v1_20260725.md`
+
+## 新增：Final50 比赛提交组合策略
+
+比赛评分以 Top10 的真实实验表现为核心，而不是 Final50 平均计算分。因此保留冻结 `mechanism_rank`，新增独立的 `competition_submission_priority`。本轮已完成无约束独立复合物阳性/扰动校准、亲和力工具校准状态归集、400 pose 糖基化 anchor 可及性和 D1/D2/D3 + 多样性 Top10 组合。
+
+- 计划与边界：`reports/PVRIG_Final50_比赛提交策略与补充验证计划_v1_20260725.md`
+- 当前推荐组合：`reports/PVRIG_Final50_比赛Top10组合选择说明.md`
+- 机器可读提交优先级：`data/audits/PVRIG_Final50_比赛提交优先级.tsv`
+
+重要：无约束 Boltz/Chai 校准未能分离 5 个阳性与 4 个计算扰动对照，故未扩展到 Final50；亲和力多工具也未获准用于跨候选排名。这是保留的负结果，不是候选失败。
+- `reports/PVRIG_旧新7500与生成Top3000_common4合并排名_20260726.md`：保持旧 Final50 不变的 3,185 条 four-seed 几何合并榜与 397 条 QC 桥接榜。
+
+## 2026-07-26 新增：生成 QC197 的 static-review → Top80 → Final50 桥接（V2）
+
+生成 Top3000 中 197 条 QC 合格候选已接入与旧 common4 Top200 同类的冻结 pose static-review、Top80 多样性门控和 Final50 组合。**只使用 V2 桥接输出；旧冻结 Final50 未改写。**
+
+- 说明与审计：`reports/PVRIG_生成197_StaticReview_Top80_Final50桥接_20260726.md`
+- 机器可读镜像：`data/audits/PVRIG_QC397_static_Top80_Final50_bridge_20260726_v2/`
+- 核心结果：QC397 的 794 pose static 复核完成；Top80 为旧 31 / 生成 49，桥接 Final50 为旧 23 / 生成 27，Top10 为旧 3 / 生成 7。
+
+边界：排名只用共享 common4 几何序位；Rosetta/PRODIGY static 结果为描述性/弱先验且 rank contribution=0。该桥接是计算优先级，不是实验 binding、Kd、IC50、表达或纯度结果。
+
+## 2026-07-26 新增：QC397 Top20 融合兼容性与 A/B/C 风险侧车
+
+对 QC397 V2 的 `Final-rank Top20 ∪ 当前 Top10` 共 22 条候选，复用 176 个冻结 common4 pose（4 seeds × 2 构象）完成 VHH C 端融合前检查和 A/B/C 计算风险分级；原裸 VHH `mechanism_rank` 未改变。
+
+- 结果说明：`reports/PVRIG_QC397_Top20融合兼容与ABC风险复核_20260726.md`
+- 机器可读镜像：`data/audits/PVRIG_QC397_Top20PlusTop10_融合兼容与ABC风险_v2_20260726/`
+- 结果：融合窄预检 22/22 为 `F1_CLEAR`、hard fail=0；A=12、B=10、C=0；竞赛优先级侧车为 8A+2B。
+
+边界：赛事方尚未公开精确 linker/hinge/Fc/dimer 构建，故 Fc-PVRIG 碰撞、双臂暴露和二价几何仍为 deferred；A/B/C 不是实际 Yield、纯度、SEC、Tm、BLI、Kd 或 IC50。
+
+## 2026-07-26 新增：融合/可开发性检查扩大到完整 Final50
+
+已将同一套融合窄预检和 A/B/C 风险分级从 22 条扩大到完整 QC397 V2 Final50，覆盖 50 条、400 个冻结 common4 pose；另生成不改写 `mechanism_rank` 的 `competition_rank_1_50`。
+
+- 完整报告：`reports/PVRIG_QC397_Final50融合兼容ABC与Top50排名_20260726.md`
+- Top50 TSV/FASTA 与审计：`data/audits/PVRIG_QC397_Final50_融合兼容ABC与竞赛排名_v1_20260726/`
+- 结果：融合 F1=50/50、hard fail=0；A/B/C=18/26/6；Top10=8A+2B；6 条 C 级移到竞赛队列末尾。
+
+边界：这是赛事投放顺序，不是新的 docking 排名；完整 Fc 二价结构和实验 Yield、纯度、BLI、Kd、IC50 仍未证明。

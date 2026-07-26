@@ -1,0 +1,14 @@
+{
+  "schema_version": "pvrig.final50.structure_manufacturability_sidecar.v1",
+  "state": "COMPLETE",
+  "candidates": 22,
+  "pose_models": 176,
+  "ptm_rows": 2464,
+  "workers": 22,
+  "sasa_method": "in-script Shrake-Rupley, 60 sphere points/atom, probe 1.4A",
+  "claim_boundary": "Descriptive computational structural sidecar only; it does not predict experimental CHO yield, purity, aggregation, BLI, Kd, IC50, or blocking.",
+  "input_sha256": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_top20_plus_top10_fusion_developability_v2_20260726/fusion_panel_common4_bundle/fusion_panel_candidates.tsv": "3fa8fea08995b3de751b73d8351a6480b444a5ba327e47da720214a6bfd99cbc",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_top20_plus_top10_fusion_developability_v2_20260726/fusion_panel_common4_bundle/representative_models_manifest.tsv": "bce375b9e8810fe37b8831de07cd77c062c5febdcf7b9dbff1c5e2263de865a4"
+  }
+}

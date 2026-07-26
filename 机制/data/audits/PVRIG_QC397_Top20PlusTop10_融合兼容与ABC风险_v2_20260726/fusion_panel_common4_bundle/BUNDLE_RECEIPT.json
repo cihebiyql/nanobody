@@ -1,0 +1,33 @@
+{
+  "schema_version": "pvrig.qc397.top20_plus_top10.common4_bundle.v2",
+  "state": "COMPLETE",
+  "candidates": 22,
+  "poses": 176,
+  "primary_top20": 20,
+  "current_top10_covered": 10,
+  "top10_diversity_addons": 2,
+  "seeds": [
+    42,
+    917,
+    1931,
+    3047
+  ],
+  "conformations": [
+    "8x6b",
+    "9e6y"
+  ],
+  "source_counts": {
+    "existing_old_new7500_top200": 72,
+    "generated_top3000": 104
+  },
+  "manifest_sha256": "bce375b9e8810fe37b8831de07cd77c062c5febdcf7b9dbff1c5e2263de865a4",
+  "panel_sha256": "3fa8fea08995b3de751b73d8351a6480b444a5ba327e47da720214a6bfd99cbc",
+  "input_sha256": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/final50/final50_ranked.tsv": "9ceb5734741a655e9c94c0b77aba293b054473718c9bd04787dfc6fa27590218",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/final50/top10_priority.tsv": "ab03cc5257964404fe14d9812a68071dfd7416174a41360813a1e4db7319fab5",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/top200_seed_completion_v1/TOP200_COMMON4_JOB_RESULTS_1600.tsv": "0e0c5844f9325651e3d60525779a43b8766259c7065799996dbe0c26486c0e15",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/reports/job_results_24000.tsv": "2557b9ed391419fb364da7f794bb9391dd66211613daf2fa51edc6fe4e96372b"
+  },
+  "claim_boundary": "Frozen common4 docking poses only; no redocking and no experimental binding/blocking claim.",
+  "created_at": "2026-07-26T01:13:06.103522+00:00"
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "pvrig.final50.manufacturability.final_audit.v1_1",
+  "state": "PASS",
+  "final50": 50,
+  "top10": 10,
+  "tnp_complete": 50,
+  "structure_pose_models": 400,
+  "all_tnp_flags_complete": true,
+  "mechanism_rank_changed": false,
+  "format_pilot_decision": "NO_EXPANSION",
+  "output_sha256": {
+    "FINAL50_MANUFACTURABILITY_SIDECAR.tsv": "6a52ca2b30b9592a604286b474edf35f256a36c00f3826565d6bf208e35cbbf9",
+    "TOP10_EXPERIMENT_DISPATCH_SIDECAR.tsv": "d1ad389b8d804b48463b8da35aa9c4aaefc852c63e03d56e3bdb0b73928947b6",
+    "FINAL50_MANUFACTURABILITY_SIDECAR_RECEIPT.json": "ce44f249f24141c81c25d7542ae7f19d899b7862e9fbbf9c3d81ff5b3a454404"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": "pvrig.qc397.static_bridge.v1",
+  "state": "STATIC_COMPLETE",
+  "candidates": 397,
+  "jobs": 794,
+  "method_roles": {
+    "foldx": "NOT_RUN_CROSS_CANDIDATE_RANK_REJECTED",
+    "prodigy": "WEAK_PRIOR_ONLY",
+    "rosetta": "DESCRIPTIVE_ONLY"
+  },
+  "metrics_sha256": "d8d388400ff3c7c67b432951cff180e9b27466b50543493fbb086a87a6d67e92",
+  "source_static_receipts": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/static_review/STATIC_COMPLETE.json": "17798a553dadca3bec5010bf65d195d62d2f0b16f2aaa39d8afe86f12b9e4976",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v1_20260726/generated197_static/STATIC_COMPLETE.json": "b19cefa67442e9f3bc0f0ecf320bae12448011098236c81ade3292fe8e11e2e9"
+  },
+  "claim_boundary": "A merged two-conformation static diagnostics panel; not experimental binding, affinity, expression, purity, or blocking evidence."
+}

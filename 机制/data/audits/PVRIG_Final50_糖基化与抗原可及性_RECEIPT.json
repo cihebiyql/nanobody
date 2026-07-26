@@ -1,0 +1,22 @@
+{
+  "candidate_count": 50,
+  "claim_boundary": "No glycan conformer, membrane plane, full ECD stalk, or VHH-hFc was modeled; output cannot establish cell-surface accessibility, affinity, or blocking.",
+  "created_at": "2026-07-25T15:38:38.711561+00:00",
+  "input_manifest_sha256": "f8ebd06ca7afe9b22930fca4d2e8bf313b2526a7f0e2548eb18de7c4c34591bd",
+  "membrane_status": "NOT_RESOLVED_ISOLATED_DOMAIN_PVRIG_41_TO_152",
+  "output_sha256": {
+    "Final50_PVRIG_glycan_accessibility.tsv": "6616c72d58d6da46a22b0dce0616c6ef87ec83cc45cace0db6ef3b1e99e39015",
+    "Final50_PVRIG_glycan_accessibility_pose.tsv": "29be430ffcd1f75a9c0ad4b0edb7009c8e3a3df0d9bb399db940fdd8b79938d5"
+  },
+  "pose_count": 400,
+  "resolved_target_sequons": [
+    {
+      "pdb_insertion_code": "",
+      "pdb_residue_number": "129",
+      "sequence_position": 84,
+      "sequon": "NTT"
+    }
+  ],
+  "schema_version": "pvrig.final50.glycan_membrane_accessibility.v1",
+  "state": "COMPLETE_REVIEW_ONLY"
+}

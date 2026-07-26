@@ -1,0 +1,221 @@
+{
+  "schema_version": "pvrig.generated3000_existing7500.common4_merge.v1",
+  "created_at_utc": "2026-07-26T00:27:00.016614+00:00",
+  "state": "COMPLETE_GEOMETRY_AND_QC_MERGE_NO_FROZEN_RANK_OVERWRITE",
+  "protocol_compatibility": {
+    "required_protocol_core_sha256": "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3",
+    "generated": {
+      "rows": 24000,
+      "candidate_ids": 3000,
+      "protocol_core_sha256": [
+        "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3"
+      ],
+      "seeds": [
+        "1931",
+        "3047",
+        "42",
+        "917"
+      ],
+      "conformations": [
+        "8x6b",
+        "9e6y"
+      ],
+      "sha256": "f60e7f6d1a26e4e8e06ba0846515108b7fc9f7275f3b3451e9014264ffde6d1a"
+    },
+    "existing_c2": {
+      "rows": 41760,
+      "candidate_ids": 6220,
+      "protocol_core_sha256": [
+        "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3"
+      ],
+      "seeds": [
+        "1931",
+        "3047",
+        "42",
+        "917"
+      ],
+      "conformations": [
+        "8x6b",
+        "9e6y"
+      ],
+      "sha256": "3aefa7da0d80802c361c4721e758cb0c2091436baa2df25c5a34d374546bc9bd"
+    },
+    "existing_old_priority": {
+      "rows": 25000,
+      "candidate_ids": 7500,
+      "protocol_core_sha256": [
+        "8c55751f66ac2930ce115a9419321a2b2bed220b61af2e1671f7ac6e6a2e33b3"
+      ],
+      "seeds": [
+        "1931",
+        "3253",
+        "917"
+      ],
+      "conformations": [
+        "8x6b",
+        "9e6y"
+      ],
+      "sha256": "83545a0949b964fa2de2852469104ffb90bc690aaeee8efaf1d5bd7ae2349237"
+    },
+    "required_seeds": [
+      "1931",
+      "3047",
+      "42",
+      "917"
+    ],
+    "required_conformations": [
+      "8x6b",
+      "9e6y"
+    ]
+  },
+  "counts": {
+    "existing_common4_top200": 200,
+    "generated_common4_complete": 2985,
+    "generated_integrated_qc_eligible": 197,
+    "all_pool_before_exact_sequence_dedup": 3185,
+    "all_pool_after_exact_sequence_dedup": 3185,
+    "qc_pool_before_exact_sequence_dedup": 397,
+    "qc_pool_after_exact_sequence_dedup": 397,
+    "all_exact_sequence_duplicates_dropped": 0,
+    "qc_exact_sequence_duplicates_dropped": 0,
+    "frozen_final50": 50
+  },
+  "ranking_order": [
+    "strict_seed_count DESC",
+    "broad_seed_count DESC",
+    "pose_robustness_score DESC",
+    "blocking_consensus_score DESC",
+    "seed_consistency_fraction DESC",
+    "pose_pair_consensus_fraction DESC",
+    "dual_reference_agreement_fraction DESC",
+    "cdr3_occlusion_fraction DESC",
+    "sequence_sha256 ASC (deterministic tie break)"
+  ],
+  "ranking_policy": "source-specific surrogate/model/sequence scores are excluded from cross-cohort ranking; frozen Final50 remains unchanged.",
+  "top_counts": {
+    "all_complete_common4": {
+      "10": {
+        "source_cohort": {
+          "generated_top3000": 9,
+          "existing_old_new7500_top200": 1
+        },
+        "routes": {
+          "fixed_pose_mpnn": 6,
+          "rfantibody": 3,
+          "c2_four_seed": 1
+        },
+        "current_final50_members": 1
+      },
+      "50": {
+        "source_cohort": {
+          "generated_top3000": 40,
+          "existing_old_new7500_top200": 10
+        },
+        "routes": {
+          "fixed_pose_mpnn": 36,
+          "rfantibody": 4,
+          "c2_four_seed": 6,
+          "old_top7500": 4
+        },
+        "current_final50_members": 8
+      },
+      "80": {
+        "source_cohort": {
+          "generated_top3000": 67,
+          "existing_old_new7500_top200": 13
+        },
+        "routes": {
+          "fixed_pose_mpnn": 59,
+          "rfantibody": 8,
+          "c2_four_seed": 8,
+          "old_top7500": 5
+        },
+        "current_final50_members": 11
+      },
+      "200": {
+        "source_cohort": {
+          "generated_top3000": 173,
+          "existing_old_new7500_top200": 27
+        },
+        "routes": {
+          "fixed_pose_mpnn": 150,
+          "rfantibody": 23,
+          "c2_four_seed": 15,
+          "old_top7500": 12
+        },
+        "current_final50_members": 24
+      }
+    },
+    "qc_eligible": {
+      "10": {
+        "source_cohort": {
+          "generated_top3000": 5,
+          "existing_old_new7500_top200": 5
+        },
+        "routes": {
+          "rfantibody": 2,
+          "c2_four_seed": 3,
+          "fixed_pose_mpnn": 3,
+          "old_top7500": 2
+        },
+        "current_final50_members": 3
+      },
+      "50": {
+        "source_cohort": {
+          "generated_top3000": 30,
+          "existing_old_new7500_top200": 20
+        },
+        "routes": {
+          "rfantibody": 5,
+          "c2_four_seed": 10,
+          "fixed_pose_mpnn": 25,
+          "old_top7500": 10
+        },
+        "current_final50_members": 17
+      },
+      "80": {
+        "source_cohort": {
+          "generated_top3000": 48,
+          "existing_old_new7500_top200": 32
+        },
+        "routes": {
+          "rfantibody": 11,
+          "c2_four_seed": 18,
+          "fixed_pose_mpnn": 37,
+          "old_top7500": 14
+        },
+        "current_final50_members": 28
+      },
+      "200": {
+        "source_cohort": {
+          "generated_top3000": 152,
+          "existing_old_new7500_top200": 48
+        },
+        "routes": {
+          "rfantibody": 68,
+          "c2_four_seed": 26,
+          "fixed_pose_mpnn": 84,
+          "old_top7500": 22
+        },
+        "current_final50_members": 42
+      }
+    }
+  },
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/common4_rerank_v2_20260725/top200/top200_common4_reranked.tsv": "27a4aaf7c1aefb50939cc9ee60df338878810ed1679057107941970ff2ebb008",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/common4_rerank_v2_20260725/final50/final50_ranked.tsv": "d1026f93b547013366ff803ee0fe7f1864df1cd02d758a24d72c988edcb37008",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/reports/ranked_common4_complete_2985.tsv": "5167d1ef5a7eba1b2567134846cf4c069228d4da3336cb0f70939ac6167cfb2f",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/reports/integrated_full_qc_eligible_197.tsv": "6ffae9bc0dc9c957dcced8aee7b49314c0da8170c09b02a16e31398452848db0",
+    "/data/qlyu/projects/pvrig_generated_top3000_uniform_screen_v1_20260725/manifests/docking_jobs_24000.tsv": "f60e7f6d1a26e4e8e06ba0846515108b7fc9f7275f3b3451e9014264ffde6d1a",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/docking_aggregate/C2_JOB_RESULTS_41760.tsv": "3aefa7da0d80802c361c4721e758cb0c2091436baa2df25c5a34d374546bc9bd",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/docking_aggregate/OLD_PRIORITY_JOB_RESULTS_25000.tsv": "83545a0949b964fa2de2852469104ffb90bc690aaeee8efaf1d5bd7ae2349237"
+  },
+  "output_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/combined_existing7500_generated3000_common4_v1_20260726/tables/combined_common4_complete_3185_geometry_ranked.tsv": "3c91d00d5053186303d42eeec67b2f1cf997be974210baa821569048814edc4f",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/combined_existing7500_generated3000_common4_v1_20260726/tables/combined_common4_qc397_geometry_ranked.tsv": "ad0fa9c8c69c46deeb7d2987b1c5e4652efb9efdce3a2140bd23f3f9853efca8",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/combined_existing7500_generated3000_common4_v1_20260726/tables/combined_common4_qc397_top50.tsv": "be1eded1f49a56a7a71a9bf8b03e1088a3c4dd9505c78d3229322ea9c9e0949e",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/combined_existing7500_generated3000_common4_v1_20260726/tables/current_final50_common4_rank_delta.tsv": "32af2b21130da99783a854fd9f0f93205b76bb3c94e00f3efbab745b305e4748"
+  },
+  "claim_boundary": "Computational docking geometry ranking only. It is not experimental evidence for binding, Kd, IC50, expression, purity, specificity, or PVRIG-PVRL2 blocking.",
+  "next_required_bridge": "Run the same static-review/selection pipeline for the generated QC-eligible candidates before declaring a replacement competition Final50 or Top10."
+}

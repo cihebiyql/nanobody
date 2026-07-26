@@ -1,0 +1,79 @@
+{
+  "schema_version": "pvrig.qc397.top20_plus_top10.fusion_developability.audit.v2",
+  "state": "AUDIT_COMPLETE",
+  "fusion_panel": {
+    "candidates": 22,
+    "primary_final_rank_top20": 20,
+    "current_top10_covered": 10,
+    "diversity_addons": 2,
+    "frozen_poses": 176,
+    "seeds": [
+      42,
+      917,
+      1931,
+      3047
+    ],
+    "conformations": [
+      "8x6b",
+      "9e6y"
+    ]
+  },
+  "prefusion": {
+    "grade_counts": {
+      "F1_CLEAR_NARROW_PRECHECK": 22
+    },
+    "hard_fail_count": 0,
+    "full_construct_available": false,
+    "role": "HARD_FAIL_PLUS_TIE_BREAKER_ONLY",
+    "deferred_checks": [
+      "Fc-PVRIG collision",
+      "Fc-other-VHH collision",
+      "both VHH arms exposed",
+      "bivalent geometry",
+      "complete junction hydrophobicity",
+      "hinge/Fc engineered cysteines"
+    ]
+  },
+  "developability": {
+    "grade_counts": {
+      "B_REVIEW": 10,
+      "A_LOWER_RISK": 12
+    },
+    "top10_grade_counts": {
+      "A_LOWER_RISK": 8,
+      "B_REVIEW": 2
+    },
+    "top10_candidate_ids": [
+      "NODE1GEN_112448_source_rfantibody_source_id_PVRIG_RFAb_v2_P5_qkg_L_bb355_mpn01_arm_P5_qkg_L_backbone_P5_qkg_L_bb355_status_NEEDS_RF2_AND_DOCKING",
+      "NODE1GEN_229102_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__2F90E7DCCA05F9E4",
+      "P1MCPUFP__CPUFP500K_0188__00519",
+      "NODE1GEN_181778_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__8EDA6734F7A8BD2C",
+      "NODE1GEN_256613_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__0A1B353F72DFABBD",
+      "NODE1GEN_183154_source_fixed_pose_mpnn_source_id_P500K__FIXED_POSE_MPNN__E25C2338B83B903C",
+      "P1MCPUFP__CPUFP500K_0100__00188",
+      "P1MCPUFP__CPUFP500K_0002__00919",
+      "P1MCPUFP__CPUFP500K_0288__00659",
+      "P1MCPUFP__CPUFP500K_0100__00092"
+    ],
+    "continuous_expression_or_purity_score_created": false,
+    "mechanism_rank_changed": false
+  },
+  "frozen_inputs": {
+    "bridge_final50_sha256": "9ceb5734741a655e9c94c0b77aba293b054473718c9bd04787dfc6fa27590218",
+    "legacy_final50_sha256": "d1026f93b547013366ff803ee0fe7f1864df1cd02d758a24d72c988edcb37008",
+    "bridge_top10_sha256": "ab03cc5257964404fe14d9812a68071dfd7416174a41360813a1e4db7319fab5"
+  },
+  "output_sha256": {
+    "fusion_panel_candidates.tsv": "3fa8fea08995b3de751b73d8351a6480b444a5ba327e47da720214a6bfd99cbc",
+    "representative_models_manifest.tsv": "bce375b9e8810fe37b8831de07cd77c062c5febdcf7b9dbff1c5e2263de865a4",
+    "candidate_structure_manufacturability_sidecar.tsv": "2590dc8633564489d6da61393e717bdf1c774cfb4fb463d0bf4ac086c2c828f3",
+    "pose_surface_metrics.tsv": "6482fed8efe1ca744627253352f7c692055b1094bd04cdc15967e9d45b5da25d",
+    "ptm_exposure_metrics.tsv": "e750844b7c99680780e18bbe1e358fe3fd7dfbfa1ea4a779ad517824a235fce7",
+    "Top20_prefusion_candidate_audit.tsv": "01885c1c6920cd7e280015a33fb9cf73856837cc27a9b235c7dc37a493c8edb6",
+    "Top20_prefusion_pose_audit.tsv": "33e45dbda5f9ee0613c7312ff05aefcae62482906bb041d2a78d7ee5c154b92e",
+    "Top20_expression_purity_risk_grades.tsv": "3bf5807a9c60c9c71f623eeb7181d9a0a87d8bf7ad57e5b123ee5cef1f595edc",
+    "Top10_competition_priority_after_fusion_developability.tsv": "03229a9a40106664085ba206a077d9b8a6a9d952be9d096ae6de35e9f775598e"
+  },
+  "claim_boundary": "Computational hard-fail/tie-breaker and A/B/C risk sidecars only. No full VHH-hFc model was claimed because the exact organizer linker/hinge/Fc/dimer construct is not disclosed; no experimental yield, purity, SEC, Tm, BLI, Kd, IC50, avidity, or blocking claim.",
+  "created_at": "2026-07-26T01:16:19.588471+00:00"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "pvrig.qc397.top20_plus_top10.prefusion_compatibility.v2",
+  "state": "COMPLETE_WITH_FULL_CONSTRUCT_DEFERRED",
+  "candidates": 50,
+  "poses": 400,
+  "grade_counts": {
+    "F1_CLEAR_NARROW_PRECHECK": 50
+  },
+  "hard_fail_count": 0,
+  "full_construct_available": false,
+  "deferred_checks": [
+    "Fc-PVRIG collision",
+    "Fc-other-VHH collision",
+    "both VHH arms exposed",
+    "bivalent geometry",
+    "complete junction hydrophobicity",
+    "hinge/Fc engineered cysteines"
+  ],
+  "input_sha256": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_common4_bundle/final50_candidates.tsv": "365c022968968ad77a4b923188a0b3e929b7bb42c4b02810e65a247c6e538b87",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/final50_common4_bundle/representative_models_manifest.tsv": "0d8cf4a0fdeee2d608905f6313e9de4a10671274757e843aaf96ac27573061c8",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/qc397_final50_fusion_developability_v1_20260726/scripts/final50_structure_manufacturability_sidecar_v1.py": "0d9e61d839a10a1f71096ca078be6edbd53ed2a241a04552e5ca6115194bd9fc"
+  },
+  "output_sha256": {
+    "Top20_prefusion_pose_audit.tsv": "160dd389af07a363ddafcb97971719ba9e8fb56963c4c3511b66e846c1aac281",
+    "Top20_prefusion_candidate_audit.tsv": "076da217fcebe6a820d70a9dfe4aac81e00650bb8343d061127257d350516c5c"
+  },
+  "claim_boundary": "Hard fail and tie-breaker precheck only; exact full-format questions remain deferred until organizer construct disclosure.",
+  "created_at": "2026-07-26T01:34:47.765557+00:00"
+}

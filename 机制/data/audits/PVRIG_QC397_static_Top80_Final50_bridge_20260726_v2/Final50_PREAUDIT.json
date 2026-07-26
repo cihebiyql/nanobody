@@ -1,0 +1,44 @@
+{
+  "channel_counts": {
+    "EXPLOITATION": 30,
+    "MODEL_DISAGREEMENT_RESCUE": 5,
+    "PARENT_MECHANISM_DIVERSITY": 10,
+    "STRUCTURAL_DIVERSITY_RESERVE": 5
+  },
+  "claim_boundary": "QC397-bridged computational portfolio; no experimental BLI, Kd, IC50, expression or purity claim.",
+  "count": 50,
+  "direct_pairwise_cdr3_identity_threshold": 0.8,
+  "exact_cdr3_duplicates": 0,
+  "exact_sequence_duplicates": 0,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/final50/empty_md_manifest.tsv": "da33f1bcd1481dbe8c6794a10b5af9dbdc55ff9b2efcb8e2d325f947808d92bf",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/top80/TOP80_COMPLETE.json": "08809411845ca56eac747719572310ae0c2c9a38c714efdd75d4be4ffeba1ce8",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v2_20260726/top80/top80_post_static.tsv": "496f83946e0249156d9773fc143a98354319eda0664852c484f0db25d80a24d7"
+  },
+  "max_cdr3_cluster_count": 1,
+  "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+  "md_completed_candidates": 0,
+  "md_role": "DESCRIPTIVE_ONLY",
+  "md_selected_candidates": 0,
+  "parent_counts": {
+    "GENERATED_FIXED_POSE_MPNN": 15,
+    "GENERATED_RFANTIBODY_P1": 2,
+    "GENERATED_RFANTIBODY_P4": 2,
+    "GENERATED_RFANTIBODY_P5": 4,
+    "GENERATED_RFANTIBODY_P6": 4,
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 5,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 2,
+    "positive_pose_source_case02_pos_10_151H7": 12,
+    "positive_pose_source_case02_pos_11_151H8": 4
+  },
+  "route_counts": {
+    "c2_four_seed": 14,
+    "fixed_pose_mpnn": 15,
+    "old_top7500": 9,
+    "rfantibody": 12
+  },
+  "schema_version": "pvrig.qc397.final50.portfolio.v2",
+  "single_linkage_cdr3_clusters_reporting_only": true,
+  "state": "FINAL50_PREAUDIT_COMPLETE",
+  "top10_count": 10
+}

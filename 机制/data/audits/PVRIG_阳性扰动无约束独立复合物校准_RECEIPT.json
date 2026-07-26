@@ -1,0 +1,22 @@
+{
+  "schema_version": "pvrig.control.independent_complex.complete.v1",
+  "state": "COMPLETE",
+  "created_at": "2026-07-25T03:33:01.594375+00:00",
+  "candidate_count": 9,
+  "positive_count": 5,
+  "disruptive_control_count": 4,
+  "boltz_pose_count": 9,
+  "chai_pose_count": 18,
+  "scoring_python": "/home/qlyu/anaconda3/envs/boltz/bin/python",
+  "scoring_recovery_reason": "default python lacked gemmi; reused existing boltz environment gemmi",
+  "hashes": {
+    "READY.json": "8d17d99c80b9e44c8460f57d3c71e21a7ca35f2a33e8179fc53a8f3b4358c350",
+    "STATUS.json": "97646ff256f100878de9f164e0555d166bb372d8ff31d0dea539f8a5e252eef4",
+    "CONTROL_INDEPENDENT_COMPLEX_POSE_SCORES.tsv": "922ead692a88430857bfcc315018ae015a4540c29f16e7ecfb39c1a6d40812e5",
+    "CONTROL_INDEPENDENT_COMPLEX_CANDIDATE_SUMMARY.tsv": "15d22058245dfdfca515e411aafcf7c14342d6e0b093069d031e16c8dc4572d8",
+    "CONTROL_INDEPENDENT_COMPLEX_SCORING_SUMMARY.json": "0748dd2c2c0b659cf7fce3cc1442cf5f3aba34536249a6394b756b3a31d46a07",
+    "CONTROL_MATCHED_MUTATION_DELTAS.tsv": "9c0b367ca4830123a406e4448907ca65fb70c2626742942289ff5bc63f6a16c2",
+    "CONTROL_CALIBRATION_RANGES.json": "2dc4336c3ffc3f048d91489976524a1604302ec14e3d2efd64a04870ec519765"
+  },
+  "claim_boundary": "Computational calibration only; not experimental affinity/blocking."
+}

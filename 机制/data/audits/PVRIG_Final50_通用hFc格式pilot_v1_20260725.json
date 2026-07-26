@@ -1,0 +1,69 @@
+{
+  "schema_version": "pvrig.final50.generic_hfc_format_pilot.v1",
+  "state": "COMPLETE_NO_EXPANSION",
+  "scenario": "generic human-IgG1 hinge-Fc dimer with G4Sx2/G4Sx4 linker sensitivity; official scoring PDF does not specify the organizer exact linker/hinge/Fc sequence",
+  "jobs": 4,
+  "models": 8,
+  "scenario_summary": [
+    {
+      "scenario_dir": "top10__P1MCPUFP__CPUFP500K_0289__00496__long_G4Sx4",
+      "model_count": 2,
+      "aggregate_score_range": [
+        0.2393597662448883,
+        0.25549957156181335
+      ],
+      "iptm_range": [
+        0.2118809074163437,
+        0.23033927381038666
+      ],
+      "all_has_inter_chain_clashes_false": true
+    },
+    {
+      "scenario_dir": "top10__P1MCPUFP__CPUFP500K_0289__00496__short_G4Sx2",
+      "model_count": 2,
+      "aggregate_score_range": [
+        0.2626224756240845,
+        0.27544575929641724
+      ],
+      "iptm_range": [
+        0.23562650382518768,
+        0.24955543875694275
+      ],
+      "all_has_inter_chain_clashes_false": true
+    },
+    {
+      "scenario_dir": "top2__P1MCPUFP__CPUFP500K_0188__00519__long_G4Sx4",
+      "model_count": 2,
+      "aggregate_score_range": [
+        0.1741436868906021,
+        0.2256494015455246
+      ],
+      "iptm_range": [
+        0.13805334270000458,
+        0.19837579131126404
+      ],
+      "all_has_inter_chain_clashes_false": true
+    },
+    {
+      "scenario_dir": "top2__P1MCPUFP__CPUFP500K_0188__00519__short_G4Sx2",
+      "model_count": 2,
+      "aggregate_score_range": [
+        0.15867957472801208,
+        0.18457622826099396
+      ],
+      "iptm_range": [
+        0.11593037843704224,
+        0.1493242383003235
+      ],
+      "all_has_inter_chain_clashes_false": true
+    }
+  ],
+  "decision": "NO_EXPANSION",
+  "decision_basis": [
+    "four generic-scenario jobs technically produced output",
+    "inter-chain ipTM range is low (0.149-0.236), so flexible VHH-to-Fc relative placement is not a reliable discriminator",
+    "generic Fc/linker differs potentially from organizer implementation",
+    "existing docking C-terminal accessibility remains usable as a narrower geometry check"
+  ],
+  "claim_boundary": "Generic computational format pilot only; no CHO expression, Protein-A behavior, purity, aggregation, BLI, affinity, IC50, or experimental blocking claim."
+}

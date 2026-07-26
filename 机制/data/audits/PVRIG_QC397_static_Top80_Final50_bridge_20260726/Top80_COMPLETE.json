@@ -1,0 +1,47 @@
+{
+  "channel_counts": {
+    "CORE_EXPLOITATION": 48,
+    "PARENT_CDR3_DIVERSITY": 16,
+    "QUOTA_SAFE_BACKFILL": 8,
+    "STRUCTURAL_RESERVE": 8
+  },
+  "claim_boundary": "Computational shortlist only; static values are not experimental binding, Kd, IC50, expression or purity.",
+  "count": 80,
+  "direct_pairwise_cdr3_identity_threshold": 0.8,
+  "exact_cdr3_duplicate_count": 0,
+  "input_hashes": {
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v1_20260726/unified_qc397/QC397_STATIC_COMPLETE.json": "0a49ced4dfb13371d0959e253dd23e0d9c5bbc44a487ca11019b1eecb5e9d9fe",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v1_20260726/unified_qc397/unified_qc397_static_input.tsv": "a4264d7434fce4705911f897f2f105d8354334be20e78884482d204a470fcf36",
+    "/data/qlyu/projects/pvrig_top7500_dualpanel_screen_v1_20260724/run/generated197_static_top80_final50_bridge_v1_20260726/unified_qc397/unified_qc397_static_metrics_794.tsv": "d8d388400ff3c7c67b432951cff180e9b27466b50543493fbb086a87a6d67e92"
+  },
+  "max_cdr3_cluster_count": 1,
+  "max_direct_pairwise_cdr3_identity": 0.7894736842105263,
+  "output_hashes": {
+    "qc397_to_top80_exclusions.tsv": "6c157ef621ae140c94a6a1b7cb107f4d26ed88614984e77a98b0d098714eb731",
+    "top80_post_static.fasta": "5931e0f6b29f9f090beeb60499db8fb3682d507ba681382b960c0bc1ce90c8db",
+    "top80_post_static.tsv": "0a06062912856c0bb1ef38528da169e027f912f0501b307ed64e86dc69d83aec"
+  },
+  "parent_counts": {
+    "GENERATED_FIXED_POSE_MPNN": 30,
+    "positive_pose_source_case02_pos_01_PVRIG-151_HR151": 10,
+    "positive_pose_source_case02_pos_04_PVRIG-38": 8,
+    "positive_pose_source_case02_pos_10_151H7": 24,
+    "positive_pose_source_case02_pos_11_151H8": 8
+  },
+  "rank_policy": "shared common4 geometry ordinal; calibrated static methods do not change cross-candidate rank",
+  "route_counts": {
+    "c2_four_seed": 29,
+    "fixed_pose_mpnn": 22,
+    "old_top7500": 21,
+    "rfantibody": 8
+  },
+  "schema_version": "pvrig.qc397.top80.post_static.v1",
+  "single_linkage_cdr3_clusters_reporting_only": true,
+  "source_pool_size": 397,
+  "state": "TOP80_COMPLETE",
+  "static_method_roles": {
+    "foldx": "NOT_RUN_CROSS_CANDIDATE_RANK_REJECTED",
+    "prodigy": "WEAK_PRIOR_ONLY",
+    "rosetta": "DESCRIPTIVE_ONLY"
+  }
+}
