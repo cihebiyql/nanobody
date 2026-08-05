@@ -2,7 +2,7 @@
   "actions": [],
   "alerts": [
     {
-      "free_bytes": 1567645696,
+      "free_bytes": 12288,
       "issue": "NODE1_LOW_DISK",
       "severity": "critical"
     }
@@ -25,7 +25,7 @@
         "technical_na": 9
       },
       "expected": 24880,
-      "latest_status_age_seconds": 1070455.228429556,
+      "latest_status_age_seconds": 1066356.5454194546,
       "terminal": 24880
     },
     "dry_run": false,
@@ -36,21 +36,21 @@
       "audit_state": "COMPLETED",
       "expected": 16880,
       "invalid": 0,
-      "latest_status_age_seconds": 1036101.1516516209,
+      "latest_status_age_seconds": 1032002.2900626659,
       "preflight_job_id": "11944866",
       "preflight_state": "COMPLETED",
       "success": 16867,
       "technical_na": 13,
       "terminal": 16880
     },
-    "generated_at_utc": "2026-08-05T03:36:01.171536+00:00",
+    "generated_at_utc": "2026-08-05T02:27:42.412682+00:00",
     "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
     "storage": {
       "current_archive_bytes": 212123302,
       "current_result_bytes": 58576988,
       "extra_archive_bytes": 143026389,
       "extra_result_bytes": 34284232,
-      "filesystem_free_bytes": 4886098958352384,
+      "filesystem_free_bytes": 4885738369843200,
       "filesystem_type": "gpfs",
       "known_campaign_bytes": 448010911,
       "known_campaign_soft_limit_bytes": 68719476736,
@@ -68,15 +68,15 @@
     "extra_node1_sync_status_closed": true
   },
   "errors": [],
-  "generated_at_utc": "2026-08-05T03:35:25.967971+00:00",
+  "generated_at_utc": "2026-08-05T02:26:42.025562+00:00",
   "interval_seconds": 1800,
   "local": {
-    "filesystem_free_bytes": 264250449920,
+    "filesystem_free_bytes": 264250990592,
     "filesystem_total_bytes": 2048075829248,
     "sync_paused_low_disk": true
   },
   "node1": {
-    "filesystem_free_bytes": 1567645696,
+    "filesystem_free_bytes": 12288,
     "filesystem_total_bytes": 7620712947712,
     "project_bytes": {
       "current_results": 29969647971,
