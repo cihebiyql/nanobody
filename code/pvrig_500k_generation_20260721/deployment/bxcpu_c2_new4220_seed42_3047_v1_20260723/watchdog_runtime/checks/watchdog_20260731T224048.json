@@ -1,12 +1,6 @@
 {
   "actions": [],
-  "alerts": [
-    {
-      "free_bytes": 12288,
-      "issue": "NODE1_LOW_DISK",
-      "severity": "critical"
-    }
-  ],
+  "alerts": [],
   "bxcpu": {
     "actions": [],
     "current": {
@@ -25,7 +19,7 @@
         "technical_na": 9
       },
       "expected": 24880,
-      "latest_status_age_seconds": 1064277.8553004265,
+      "latest_status_age_seconds": 678289.1938724518,
       "terminal": 24880
     },
     "dry_run": false,
@@ -36,21 +30,21 @@
       "audit_state": "COMPLETED",
       "expected": 16880,
       "invalid": 0,
-      "latest_status_age_seconds": 1029923.8171925545,
+      "latest_status_age_seconds": 643934.9956376553,
       "preflight_job_id": "11944866",
       "preflight_state": "COMPLETED",
       "success": 16867,
       "technical_na": 13,
       "terminal": 16880
     },
-    "generated_at_utc": "2026-08-05T01:53:03.796624+00:00",
+    "generated_at_utc": "2026-07-31T14:39:54.995511+00:00",
     "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
     "storage": {
       "current_archive_bytes": 212123302,
       "current_result_bytes": 58576988,
       "extra_archive_bytes": 143026389,
       "extra_result_bytes": 34284232,
-      "filesystem_free_bytes": 4885858519875584,
+      "filesystem_free_bytes": 4898984866873344,
       "filesystem_type": "gpfs",
       "known_campaign_bytes": 448010911,
       "known_campaign_soft_limit_bytes": 68719476736,
@@ -64,43 +58,49 @@
     "current_node1_success_results_closed": false,
     "current_node1_sync_status_closed": false,
     "extra_bxcpu_terminal": true,
-    "extra_node1_success_results_closed": true,
-    "extra_node1_sync_status_closed": true
+    "extra_node1_success_results_closed": false,
+    "extra_node1_sync_status_closed": false
   },
-  "errors": [],
-  "generated_at_utc": "2026-08-05T01:52:03.626055+00:00",
+  "errors": [
+    {
+      "component": "node1",
+      "error": "CalledProcessError(255, ['/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe', '-o', 'BatchMode=yes', 'node1', 'python3', '-'])"
+    }
+  ],
+  "generated_at_utc": "2026-07-31T14:40:38.146035+00:00",
   "interval_seconds": 1800,
   "local": {
-    "filesystem_free_bytes": 264251990016,
+    "filesystem_free_bytes": 73301635072,
     "filesystem_total_bytes": 2048075829248,
-    "sync_paused_low_disk": true
+    "sync_paused_low_disk": false
   },
   "node1": {
-    "filesystem_free_bytes": 12288,
-    "filesystem_total_bytes": 7620712947712,
-    "project_bytes": {
-      "current_results": 29969647971,
-      "extra_results": 15421571093,
-      "rfantibody": 15232195302
-    },
-    "sync_counts": {
-      "current_2000": {
-        "result_files": 15994,
-        "status_files": 16000
-      },
-      "current_4220": {
-        "result_files": 16871,
-        "status_files": 16880
-      },
-      "extra_seed42_3047": {
-        "result_files": 16867,
-        "status_files": 16880
-      }
-    }
+    "error": "CalledProcessError(255, ['/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe', '-o', 'BatchMode=yes', 'node1', 'python3', '-'])"
   },
   "schema_version": "pvrig.all_docking.watchdog_30m.v1",
   "status": "ATTENTION_REQUIRED",
   "sync": {
-    "paused": true
+    "current": {
+      "active_after_repair": [
+        "pvrig-c2-new6220-sync-00",
+        "pvrig-c2-new6220-sync-01",
+        "pvrig-c2-new6220-sync-02",
+        "pvrig-c2-new6220-sync-03"
+      ],
+      "latest_log_age_seconds": 24.252991437911987,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    },
+    "extra_seed42_3047": {
+      "active_after_repair": [
+        "pvrig-c2-s42-3047-sync-00",
+        "pvrig-c2-s42-3047-sync-01",
+        "pvrig-c2-s42-3047-sync-02",
+        "pvrig-c2-s42-3047-sync-03"
+      ],
+      "latest_log_age_seconds": 13.331182718276978,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    }
   }
 }
