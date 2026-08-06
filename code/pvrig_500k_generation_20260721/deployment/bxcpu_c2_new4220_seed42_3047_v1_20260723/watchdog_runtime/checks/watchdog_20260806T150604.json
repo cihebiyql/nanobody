@@ -19,7 +19,7 @@
         "technical_na": 9
       },
       "expected": 24880,
-      "latest_status_age_seconds": 1171566.0459353924,
+      "latest_status_age_seconds": 1169454.2511835098,
       "terminal": 24880
     },
     "dry_run": false,
@@ -30,21 +30,21 @@
       "audit_state": "COMPLETED",
       "expected": 16880,
       "invalid": 0,
-      "latest_status_age_seconds": 1137211.2125406265,
+      "latest_status_age_seconds": 1135099.4173595905,
       "preflight_job_id": "11944866",
       "preflight_state": "COMPLETED",
       "success": 16867,
       "technical_na": 13,
       "terminal": 16880
     },
-    "generated_at_utc": "2026-08-06T07:41:10.729978+00:00",
+    "generated_at_utc": "2026-08-06T07:05:58.813193+00:00",
     "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
     "storage": {
       "current_archive_bytes": 212123302,
       "current_result_bytes": 58576988,
       "extra_archive_bytes": 143026389,
       "extra_result_bytes": 34284232,
-      "filesystem_free_bytes": 4880978501697536,
+      "filesystem_free_bytes": 4881056071155712,
       "filesystem_type": "gpfs",
       "known_campaign_bytes": 448010911,
       "known_campaign_soft_limit_bytes": 68719476736,
@@ -62,15 +62,15 @@
     "extra_node1_sync_status_closed": true
   },
   "errors": [],
-  "generated_at_utc": "2026-08-06T07:39:24.304718+00:00",
+  "generated_at_utc": "2026-08-06T07:04:28.471606+00:00",
   "interval_seconds": 1800,
   "local": {
-    "filesystem_free_bytes": 264232501248,
+    "filesystem_free_bytes": 264210804736,
     "filesystem_total_bytes": 2048075829248,
     "sync_paused_low_disk": false
   },
   "node1": {
-    "filesystem_free_bytes": 4886083313664,
+    "filesystem_free_bytes": 4955599704064,
     "filesystem_total_bytes": 7620712947712,
     "project_bytes": {
       "current_results": 29969647971,
@@ -102,7 +102,7 @@
         "pvrig-c2-new6220-sync-02",
         "pvrig-c2-new6220-sync-03"
       ],
-      "latest_log_age_seconds": 16.113789081573486,
+      "latest_log_age_seconds": 25.58090591430664,
       "missing_before_repair": [],
       "stale_before_repair": []
     },
@@ -113,7 +113,7 @@
         "pvrig-c2-s42-3047-sync-02",
         "pvrig-c2-s42-3047-sync-03"
       ],
-      "latest_log_age_seconds": 55.2331006526947,
+      "latest_log_age_seconds": 39.89442682266235,
       "missing_before_repair": [],
       "stale_before_repair": []
     }
