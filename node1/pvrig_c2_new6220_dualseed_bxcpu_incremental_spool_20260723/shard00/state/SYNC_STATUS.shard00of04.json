@@ -2,18 +2,12 @@
   "batch_size": 40,
   "campaigns": [
     {
-      "batch": 0,
       "campaign": "c2_new4220",
-      "delivered": 4154,
-      "pruned": 4154,
-      "reconciled_stubs": 4154
+      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n\")"
     },
     {
-      "batch": 0,
       "campaign": "c2_new2000",
-      "delivered": 1944,
-      "pruned": 1944,
-      "reconciled_stubs": 1944
+      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n\")"
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard00",
@@ -22,5 +16,5 @@
   "shard_count": 4,
   "shard_index": 0,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-08-07T10:02:25.507282+00:00"
+  "updated_at_utc": "2026-08-07T11:59:14.247448+00:00"
 }
