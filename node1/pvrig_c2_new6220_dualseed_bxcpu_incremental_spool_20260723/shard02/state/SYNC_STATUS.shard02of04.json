@@ -3,11 +3,11 @@
   "campaigns": [
     {
       "campaign": "c2_new4220",
-      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n\")"
+      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nchannel 0: open failed: connect failed: No route to host\\nstdio forwarding failed\\nConnection closed by UNKNOWN port 65535\\n\")"
     },
     {
       "campaign": "c2_new2000",
-      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nssh: connect to host 172.21.43.18 port 322: Connection timed out\\nConnection closed by UNKNOWN port 65535\\n\")"
+      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nchannel 0: open failed: connect failed: No route to host\\nstdio forwarding failed\\nConnection closed by UNKNOWN port 65535\\n\")"
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard02",
@@ -16,5 +16,5 @@
   "shard_count": 4,
   "shard_index": 2,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-08-07T14:00:07.370478+00:00"
+  "updated_at_utc": "2026-08-08T02:01:57.052063+00:00"
 }
