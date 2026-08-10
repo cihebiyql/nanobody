@@ -2,12 +2,18 @@
   "batch_size": 40,
   "campaigns": [
     {
+      "batch": 0,
       "campaign": "c2_new4220",
-      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nchannel 0: open failed: connect failed: No route to host\\nstdio forwarding failed\\nConnection closed by UNKNOWN port 65535\\n\")"
+      "delivered": 4245,
+      "pruned": 4245,
+      "reconciled_stubs": 4245
     },
     {
+      "batch": 0,
       "campaign": "c2_new2000",
-      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nchannel 0: open failed: connect failed: No route to host\\nstdio forwarding failed\\nConnection closed by UNKNOWN port 65535\\n\")"
+      "delivered": 2044,
+      "pruned": 2044,
+      "reconciled_stubs": 2044
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard02",
@@ -16,5 +22,5 @@
   "shard_count": 4,
   "shard_index": 2,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-08-09T14:02:35.490522+00:00"
+  "updated_at_utc": "2026-08-10T02:02:13.696202+00:00"
 }
