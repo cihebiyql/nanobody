@@ -1,0 +1,78 @@
+{
+  "actions": [],
+  "alerts": [],
+  "bxcpu": {
+    "error": "CalledProcessError(255, ['ssh', 'bxcpu', '$HOME/.local/opt/haddock3-2025.11.0/bin/python $HOME/.local/share/pvrig_c2_new4220_seed42_3047_v1_20260723/repair_docking_campaigns_if_needed.py'])"
+  },
+  "completion": {
+    "all_complete": false,
+    "current_bxcpu_terminal": false,
+    "current_node1_success_results_closed": false,
+    "current_node1_sync_status_closed": false,
+    "extra_bxcpu_terminal": false,
+    "extra_node1_success_results_closed": false,
+    "extra_node1_sync_status_closed": true
+  },
+  "errors": [
+    {
+      "component": "bxcpu",
+      "error": "CalledProcessError(255, ['ssh', 'bxcpu', '$HOME/.local/opt/haddock3-2025.11.0/bin/python $HOME/.local/share/pvrig_c2_new4220_seed42_3047_v1_20260723/repair_docking_campaigns_if_needed.py'])"
+    }
+  ],
+  "generated_at_utc": "2026-08-13T04:05:17.343796+00:00",
+  "interval_seconds": 1800,
+  "local": {
+    "filesystem_free_bytes": 334298152960,
+    "filesystem_total_bytes": 2048075829248,
+    "sync_paused_low_disk": false
+  },
+  "node1": {
+    "filesystem_free_bytes": 4887671369728,
+    "filesystem_total_bytes": 7620712947712,
+    "project_bytes": {
+      "current_results": 29969647971,
+      "extra_results": 15421571093,
+      "rfantibody": 15232195302
+    },
+    "sync_counts": {
+      "current_2000": {
+        "result_files": 15994,
+        "status_files": 16000
+      },
+      "current_4220": {
+        "result_files": 16871,
+        "status_files": 16880
+      },
+      "extra_seed42_3047": {
+        "result_files": 16867,
+        "status_files": 16880
+      }
+    }
+  },
+  "schema_version": "pvrig.all_docking.watchdog_30m.v1",
+  "status": "ATTENTION_REQUIRED",
+  "sync": {
+    "current": {
+      "active_after_repair": [
+        "pvrig-c2-new6220-sync-00",
+        "pvrig-c2-new6220-sync-01",
+        "pvrig-c2-new6220-sync-02",
+        "pvrig-c2-new6220-sync-03"
+      ],
+      "latest_log_age_seconds": 18.13570523262024,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    },
+    "extra_seed42_3047": {
+      "active_after_repair": [
+        "pvrig-c2-s42-3047-sync-00",
+        "pvrig-c2-s42-3047-sync-01",
+        "pvrig-c2-s42-3047-sync-02",
+        "pvrig-c2-s42-3047-sync-03"
+      ],
+      "latest_log_age_seconds": 50.929401874542236,
+      "missing_before_repair": [],
+      "stale_before_repair": []
+    }
+  }
+}
