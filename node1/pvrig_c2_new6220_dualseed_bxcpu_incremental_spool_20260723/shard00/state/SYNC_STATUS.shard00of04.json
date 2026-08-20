@@ -7,7 +7,7 @@
     },
     {
       "campaign": "c2_new2000",
-      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nqlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\n\")"
+      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nqlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n\")"
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new6220_dualseed_bxcpu_incremental_spool_20260723/shard00",
@@ -16,5 +16,5 @@
   "shard_count": 4,
   "shard_index": 0,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-08-20T04:01:46.487487+00:00"
+  "updated_at_utc": "2026-08-20T06:02:30.247171+00:00"
 }
