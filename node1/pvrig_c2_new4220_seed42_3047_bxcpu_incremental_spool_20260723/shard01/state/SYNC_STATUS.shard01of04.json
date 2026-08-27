@@ -2,8 +2,11 @@
   "batch_size": 40,
   "campaigns": [
     {
+      "batch": 0,
       "campaign": "c2_new4220_seed42_3047",
-      "error": "RuntimeError(\"command failed after 4 attempts rc=255: '\\\\\\\\wsl.localhost\\\\Ubuntu-22.04\\\\root'\\nCMD.EXE was started with the above path as the current directory.\\nUNC paths are not supported.  Defaulting to Windows directory.\\nqlyu-node1-proxy: cannot find a 10.101.x.x WLAN IPv4 address. Connect to campus WLAN/VPN, then retry. \\nConnection closed by UNKNOWN port 65535\\n\")"
+      "delivered": 4267,
+      "pruned": 4267,
+      "reconciled_stubs": 4267
     }
   ],
   "local_root": "/mnt/d/work/\u6297\u4f53/node1/pvrig_c2_new4220_seed42_3047_bxcpu_incremental_spool_20260723/shard01",
@@ -12,5 +15,5 @@
   "shard_count": 4,
   "shard_index": 1,
   "stable_age_seconds": 180,
-  "updated_at_utc": "2026-08-26T14:02:53.830251+00:00"
+  "updated_at_utc": "2026-08-27T02:10:04.851866+00:00"
 }
