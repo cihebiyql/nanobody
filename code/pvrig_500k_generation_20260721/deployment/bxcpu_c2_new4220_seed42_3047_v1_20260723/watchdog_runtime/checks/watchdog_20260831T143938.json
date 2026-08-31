@@ -19,7 +19,7 @@
         "technical_na": 9
       },
       "expected": 24880,
-      "latest_status_age_seconds": 3332138.9496665,
+      "latest_status_age_seconds": 3327799.3580243587,
       "terminal": 24880
     },
     "dry_run": false,
@@ -30,21 +30,21 @@
       "audit_state": "COMPLETED",
       "expected": 16880,
       "invalid": 0,
-      "latest_status_age_seconds": 3297784.234497547,
+      "latest_status_age_seconds": 3293445.178791523,
       "preflight_job_id": "11944866",
       "preflight_state": "COMPLETED",
       "success": 16867,
       "technical_na": 13,
       "terminal": 16880
     },
-    "generated_at_utc": "2026-08-31T07:50:47.538486+00:00",
+    "generated_at_utc": "2026-08-31T06:38:25.198019+00:00",
     "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
     "storage": {
       "current_archive_bytes": 212123302,
       "current_result_bytes": 58576988,
       "extra_archive_bytes": 143026389,
       "extra_result_bytes": 34284232,
-      "filesystem_free_bytes": 4879430648332288,
+      "filesystem_free_bytes": 4879454358732800,
       "filesystem_type": "gpfs",
       "known_campaign_bytes": 448010911,
       "known_campaign_soft_limit_bytes": 68719476736,
@@ -58,42 +58,27 @@
     "current_node1_success_results_closed": false,
     "current_node1_sync_status_closed": false,
     "extra_bxcpu_terminal": true,
-    "extra_node1_success_results_closed": true,
-    "extra_node1_sync_status_closed": true
+    "extra_node1_success_results_closed": false,
+    "extra_node1_sync_status_closed": false
   },
-  "errors": [],
-  "generated_at_utc": "2026-08-31T07:47:36.149872+00:00",
+  "errors": [
+    {
+      "component": "node1",
+      "error": "TimeoutExpired(['/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe', '-o', 'BatchMode=yes', 'node1', 'python3', '-'], 180)"
+    }
+  ],
+  "generated_at_utc": "2026-08-31T06:36:18.647513+00:00",
   "interval_seconds": 1800,
   "local": {
-    "filesystem_free_bytes": 74627850240,
+    "filesystem_free_bytes": 74688749568,
     "filesystem_total_bytes": 2048075829248,
     "sync_paused_low_disk": false
   },
   "node1": {
-    "filesystem_free_bytes": 4537021796352,
-    "filesystem_total_bytes": 7620712947712,
-    "project_bytes": {
-      "current_results": 29969647971,
-      "extra_results": 15421571093,
-      "rfantibody": 15232195302
-    },
-    "sync_counts": {
-      "current_2000": {
-        "result_files": 15994,
-        "status_files": 16000
-      },
-      "current_4220": {
-        "result_files": 16871,
-        "status_files": 16880
-      },
-      "extra_seed42_3047": {
-        "result_files": 16867,
-        "status_files": 16880
-      }
-    }
+    "error": "TimeoutExpired(['/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe', '-o', 'BatchMode=yes', 'node1', 'python3', '-'], 180)"
   },
   "schema_version": "pvrig.all_docking.watchdog_30m.v1",
-  "status": "PASS",
+  "status": "ATTENTION_REQUIRED",
   "sync": {
     "current": {
       "active_after_repair": [
@@ -102,7 +87,7 @@
         "pvrig-c2-new6220-sync-02",
         "pvrig-c2-new6220-sync-03"
       ],
-      "latest_log_age_seconds": 14.377606391906738,
+      "latest_log_age_seconds": 41.5450165271759,
       "missing_before_repair": [],
       "stale_before_repair": []
     },
@@ -113,7 +98,7 @@
         "pvrig-c2-s42-3047-sync-02",
         "pvrig-c2-s42-3047-sync-03"
       ],
-      "latest_log_age_seconds": 3.1542794704437256,
+      "latest_log_age_seconds": 59.86487936973572,
       "missing_before_repair": [],
       "stale_before_repair": []
     }
