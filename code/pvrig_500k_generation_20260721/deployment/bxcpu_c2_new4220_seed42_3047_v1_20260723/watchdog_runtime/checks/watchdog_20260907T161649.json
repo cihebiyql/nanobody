@@ -19,7 +19,7 @@
         "technical_na": 9
       },
       "expected": 24880,
-      "latest_status_age_seconds": 3944492.3791553974,
+      "latest_status_age_seconds": 3938423.368656397,
       "terminal": 24880
     },
     "dry_run": false,
@@ -30,21 +30,21 @@
       "audit_state": "COMPLETED",
       "expected": 16880,
       "invalid": 0,
-      "latest_status_age_seconds": 3910137.6192815304,
+      "latest_status_age_seconds": 3904069.1261236668,
       "preflight_job_id": "11944866",
       "preflight_state": "COMPLETED",
       "success": 16867,
       "technical_na": 13,
       "terminal": 16880
     },
-    "generated_at_utc": "2026-09-07T09:56:37.243410+00:00",
+    "generated_at_utc": "2026-09-07T08:15:29.962434+00:00",
     "schema_version": "pvrig.bxcpu.docking_watchdog.v1",
     "storage": {
       "current_archive_bytes": 212123302,
       "current_result_bytes": 58576988,
       "extra_archive_bytes": 143026389,
       "extra_result_bytes": 34284232,
-      "filesystem_free_bytes": 4872737961017344,
+      "filesystem_free_bytes": 4872913127735296,
       "filesystem_type": "gpfs",
       "known_campaign_bytes": 448010911,
       "known_campaign_soft_limit_bytes": 68719476736,
@@ -67,10 +67,10 @@
       "error": "CalledProcessError(255, ['/mnt/c/WINDOWS/System32/OpenSSH/ssh.exe', '-o', 'BatchMode=yes', 'node1', 'python3', '-'])"
     }
   ],
-  "generated_at_utc": "2026-09-07T09:56:41.428980+00:00",
+  "generated_at_utc": "2026-09-07T08:16:38.838228+00:00",
   "interval_seconds": 1800,
   "local": {
-    "filesystem_free_bytes": 55207223296,
+    "filesystem_free_bytes": 55208542208,
     "filesystem_total_bytes": 2048075829248,
     "sync_paused_low_disk": false
   },
@@ -87,7 +87,7 @@
         "pvrig-c2-new6220-sync-02",
         "pvrig-c2-new6220-sync-03"
       ],
-      "latest_log_age_seconds": 37.7284414768219,
+      "latest_log_age_seconds": 7.254321575164795,
       "missing_before_repair": [],
       "stale_before_repair": []
     },
@@ -98,7 +98,7 @@
         "pvrig-c2-s42-3047-sync-02",
         "pvrig-c2-s42-3047-sync-03"
       ],
-      "latest_log_age_seconds": 1.8832218647003174,
+      "latest_log_age_seconds": 1.3996496200561523,
       "missing_before_repair": [],
       "stale_before_repair": []
     }
